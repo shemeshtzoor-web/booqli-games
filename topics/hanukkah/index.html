@@ -180,8 +180,16 @@ footer a{color:#fff;font-weight:700}
 .tile{aspect-ratio:1;border:0;padding:0;cursor:pointer;border-radius:10px;overflow:hidden;background:var(--night);display:block}
 .tile svg{width:100%;height:100%;display:block}
 .tile.sel{outline:4px solid var(--pink);outline-offset:-4px}
-.pz-hint{max-width:150px;margin:12px auto 0;border-radius:12px;overflow:hidden;opacity:.85}
-.pz-hint svg{display:block;width:100%;height:auto}
+.pz-wrap{display:grid;grid-template-columns:minmax(0,520px) 200px;gap:18px;justify-content:center;align-items:start}
+.pz-wrap .pz{margin:0;width:100%}
+.pz-side{background:#fff;border-radius:18px;padding:12px;text-align:center;display:grid;gap:8px}
+.pz-side p{margin:0;font-weight:800;color:var(--magenta)}
+.pz-hint{border-radius:12px;overflow:hidden;border:3px solid var(--pink)}
+.pz-hint svg,.pz-full svg,.pz-peek svg{display:block;width:100%;height:auto}
+.pz-full{max-width:min(460px,100%);margin:0 auto;border-radius:20px;overflow:hidden;border:4px solid var(--pink)}
+.pz-peek{position:fixed;inset:0;z-index:60;background:rgba(36,50,95,.8);display:grid;place-items:center;padding:16px;cursor:pointer}
+.pz-peek svg{width:min(92vw,560px);border-radius:20px;border:4px solid var(--pink)}
+@media (max-width:700px){.pz-wrap{grid-template-columns:1fr}.pz-side{order:-1;grid-template-columns:110px 1fr;align-items:center;text-align:start}.pz-side p{grid-column:2}.pz-hint{grid-row:1/3}.pz-side .btn-sec{grid-column:2}}
 
 /* צביעה */
 .pick{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
@@ -189,7 +197,10 @@ footer a{color:#fff;font-weight:700}
 .pick button.on{border-color:var(--pink)}
 .pick svg{width:100%;height:100%}
 .canvas{background:#fff;border-radius:24px;padding:12px;max-width:560px;margin:0 auto;box-shadow:0 5px 0 var(--mint-2)}
-.canvas svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.canvas svg{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair}
+.canvas svg *:not(.rg){pointer-events:none}
+.tools{display:flex;justify-content:center;gap:8px;margin:10px 0 0;flex-wrap:wrap}
+.tools .lv{font-size:15px}
 .canvas .rg{cursor:pointer}
 .palette{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px auto;max-width:560px}
 .sw{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--mint-2);cursor:pointer}
@@ -685,18 +696,38 @@ function scene(){
     <rect x="18" y="214" width="264" height="70" rx="10" fill="#7A4E2D"/><rect x="18" y="214" width="264" height="12" rx="6" fill="#9A6A40"/>
     ${nest("hanukkiah", 40, 86, 220, 190, 8, true)}
     ${nest("sevivon", 26, 216, 64, 64, "ג")}
-    ${nest("sufganiya", 206, 222, 72, 64)}`;
+    ${nest("sufganiya", 206, 222, 72, 64)}
+    <rect x="70" y="10" width="160" height="40" rx="20" fill="#FF56C2"/>
+    <text x="150" y="38" text-anchor="middle" font-family="Fredoka,Arial" font-weight="700" font-size="22" fill="#fff">חג אורים שמח</text>
+    <path d="M18 284 h264" stroke="#C13671" stroke-width="6"/>
+    <g fill="#7FA89B"><circle cx="40" cy="70" r="7"/><circle cx="270" cy="160" r="6"/><circle cx="30" cy="180" r="5"/></g>`;
 }
-function puzzle(body, size = 3){
+function puzzle(body, size = 3, started = false){
+  if (!started){
+    const sc0 = scene();
+    body.innerHTML = `<div class="howto">זו התמונה. הסתכלו עליה טוב, ואז נערבב אותה לחלקים ותסדרו אותה בחזרה.</div>
+    <div class="levels"><button class="lv ${size===2?"on":""}" data-s="2">קל · 4 חלקים</button><button class="lv ${size===3?"on":""}" data-s="3">רגיל · 9 חלקים</button><button class="lv ${size===4?"on":""}" data-s="4">אלופים · 16 חלקים</button></div>
+    <div class="pz-full"><svg viewBox="0 0 300 300">${sc0}</svg></div>
+    <div class="center" style="margin-top:14px"><button class="btn-main" id="pzGo" type="button">🔀 לערבב ולהתחיל</button></div>`;
+    body.querySelectorAll(".lv").forEach(b => b.onclick = () => puzzle(body, +b.dataset.s));
+    $("pzGo").onclick = () => puzzle(body, size, true);
+    $("stSay").onclick = () => say("זו התמונה. הסתכלו עליה טוב, ואז לחצו לערבב ולהתחיל.");
+    return;
+  }
   const N = size * size, cell = 300 / size, sc = scene();
   let order = shuffle([...Array(N).keys()]); while (order.every((v, i) => v === i)) order = shuffle(order);
   let sel = null, moves = 0;
   body.innerHTML = `<div class="howto">לחצו על שני חלקים כדי להחליף ביניהם, עד שהתמונה מסתדרת.</div>
   <div class="levels"><button class="lv ${size===2?"on":""}" data-s="2">קל · 4 חלקים</button><button class="lv ${size===3?"on":""}" data-s="3">רגיל · 9 חלקים</button><button class="lv ${size===4?"on":""}" data-s="4">אלופים · 16 חלקים</button></div>
   <div class="status"><span id="pMoves">החלפות: 0</span></div>
-  <div class="pz" id="pz" style="grid-template-columns:repeat(${size},1fr)"></div>
-  <div class="pz-hint"><svg viewBox="0 0 300 300">${sc}</svg></div><p class="center" style="margin:4px 0 0;color:var(--muted);font-size:14px">ככה התמונה צריכה להיראות</p>`;
-  body.querySelectorAll(".lv").forEach(b => b.onclick = () => puzzle(body, +b.dataset.s));
+  <div class="pz-wrap"><div class="pz" id="pz" style="grid-template-columns:repeat(${size},1fr)"></div>
+  <div class="pz-side"><p>ככה זה צריך להיראות:</p><div class="pz-hint"><svg viewBox="0 0 300 300">${sc}</svg></div>
+  <button class="btn-sec" id="pzPeek" type="button">👀 להציץ בגדול</button></div></div>
+  <div class="pz-peek" id="pzBig" hidden><svg viewBox="0 0 300 300">${sc}</svg></div>`;
+  body.querySelectorAll(".lv").forEach(b => b.onclick = () => puzzle(body, +b.dataset.s, true));
+  $("pzPeek").onclick = () => { $("pzBig").hidden = false; setTimeout(() => $("pzBig").hidden = true, 2500); };
+  $("pzBig").onclick = () => $("pzBig").hidden = true;
+  $("stSay").onclick = () => say("לחצו על שני חלקים כדי להחליף ביניהם, עד שהתמונה נראית כמו התמונה הקטנה.");
   const draw = () => {
     $("pz").innerHTML = order.map((p, pos) => { const x = (p % size) * cell, y = Math.floor(p / size) * cell;
       return `<button class="tile ${sel === pos ? "sel" : ""}" type="button" data-pos="${pos}" aria-label="חלק ${pos+1}"><svg viewBox="${x} ${y} ${cell} ${cell}" preserveAspectRatio="none">${sc}</svg></button>`; }).join("");
@@ -705,7 +736,7 @@ function puzzle(body, size = 3){
       if (sel === null){ sel = pos; tone([[600,0,.08]]); return draw(); }
       if (sel !== pos){ [order[sel], order[pos]] = [order[pos], order[sel]]; moves++; $("pMoves").textContent = "החלפות: " + moves; good(); }
       sel = null; draw();
-      if (order.every((v, i) => v === i)) setTimeout(() => showWin(`סידרתם את התמונה ב-${moves} החלפות`, moves <= N ? 3 : moves <= N * 1.6 ? 2 : 1, () => puzzle(body, size)), 400);
+      if (order.every((v, i) => v === i)) setTimeout(() => showWin(`סידרתם את התמונה ב-${moves} החלפות`, moves <= N ? 3 : moves <= N * 1.6 ? 2 : 1, () => puzzle(body, size, true)), 400);
     });
   };
   draw();
@@ -717,17 +748,36 @@ const PALETTE = ["#FF56C2","#C13671","#E5484D","#FF8A5C","#F2B630","#FFE066","#7
 function coloring(body, pic = 0){
   let color = PALETTE[0];
   const P = COLOR_PICS[pic];
-  body.innerHTML = `<div class="howto">בחרו צבע ולחצו על חלק בציור כדי לצבוע אותו.</div>
+  body.innerHTML = `<div class="howto">בחרו צבע. לחיצה על חלק בציור צובעת אותו, ואפשר גם לצייר חופשי עם העכבר או האצבע.</div>
   <div class="pick">${COLOR_PICS.map((p, i) => `<button type="button" class="${i===pic?"on":""}" data-i="${i}" aria-label="${ART[p[0]].name}">${lineSvg(...p)}</button>`).join("")}</div>
   <div class="canvas" id="cv">${lineSvg(...P)}</div>
+  <div class="tools"><button class="lv on" type="button" data-w="3">🖍️ קו דק</button><button class="lv" type="button" data-w="7">🖌️ קו עבה</button></div>
   <div class="palette">${PALETTE.map((c, i) => `<button class="sw ${i===0?"on":""}" type="button" style="background:${c}" data-c="${c}" aria-label="צבע ${i+1}"></button>`).join("")}</div>
   <div class="row-btns"><button class="btn-sec" id="cClear" type="button">🧽 לנקות</button><button class="btn-main" id="cDone" type="button">✓ סיימתי לצבוע</button></div>
   <div class="row-btns"><button class="btn-sec" id="cPrint" type="button">🖨️ להדפיס דף צביעה ריק</button><button class="btn-sec" id="cPrintMine" type="button">🖨️ להדפיס את הציור שלי</button></div>`;
   const s = $("cv").querySelector("svg"); s.removeAttribute("aria-hidden"); s.setAttribute("role","img"); s.setAttribute("aria-label", ART[P[0]].name + " לצביעה");
   body.querySelectorAll(".pick button").forEach(b => b.onclick = () => coloring(body, +b.dataset.i));
   body.querySelectorAll(".sw").forEach(b => b.onclick = () => { body.querySelectorAll(".sw").forEach(x => x.classList.remove("on")); b.classList.add("on"); color = b.dataset.c; tone([[700,0,.06]]); });
-  $("cv").querySelectorAll(".rg").forEach(r => r.addEventListener("click", () => { r.setAttribute("fill", color); tone([[500 + Math.random()*300,0,.08]]); }));
-  $("cClear").onclick = () => $("cv").querySelectorAll(".rg").forEach(r => r.setAttribute("fill", "#fff"));
+  // לחיצה = מילוי אזור; גרירה = ציור חופשי
+  let width = 3, down = null, path = null, pts = [];
+  body.querySelectorAll(".tools .lv").forEach(b => b.onclick = () => { body.querySelectorAll(".tools .lv").forEach(x => x.classList.remove("on")); b.classList.add("on"); width = +b.dataset.w; });
+  const ink = document.createElementNS("http://www.w3.org/2000/svg", "g"); ink.setAttribute("id", "ink"); s.appendChild(ink);
+  const pt = e => { const m = s.getScreenCTM().inverse(), q = s.createSVGPoint(); q.x = e.clientX; q.y = e.clientY; const r = q.matrixTransform(m); return [Math.round(r.x * 10) / 10, Math.round(r.y * 10) / 10]; };
+  s.addEventListener("pointerdown", e => { down = {x: e.clientX, y: e.clientY, t: e.target}; pts = [pt(e)]; path = null; try { s.setPointerCapture(e.pointerId); } catch(_){} });
+  s.addEventListener("pointermove", e => {
+    if (!down) return;
+    if (!path){ if (Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6) return;
+      path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("fill", "none"); path.setAttribute("stroke", color); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
+      path.setAttribute("stroke-width", width * (s.viewBox.baseVal.width / 100)); ink.appendChild(path); }
+    pts.push(pt(e)); path.setAttribute("d", "M" + pts.map(p => p.join(" ")).join(" L"));
+  });
+  const up = () => {
+    if (down && !path && down.t.classList && down.t.classList.contains("rg")){ down.t.setAttribute("fill", color); tone([[500 + Math.random()*300,0,.08]]); }
+    down = null; path = null;
+  };
+  s.addEventListener("pointerup", up); s.addEventListener("pointercancel", () => { down = null; path = null; });
+  $("cClear").onclick = () => { $("cv").querySelectorAll(".rg").forEach(r => r.setAttribute("fill", "#fff")); ink.replaceChildren(); };
   $("cDone").onclick = () => showWin("איזה ציור יפה! אפשר להדפיס אותו ולתלות בגן", 3, () => coloring(body, (pic + 1) % COLOR_PICS.length));
   $("cPrint").onclick = () => printSheets([colorSheet(P)]);
   $("cPrintMine").onclick = () => printSheets([sheet("הציור שלי לחנוכה", "", `<div style="flex:1;display:grid;place-items:center">${$("cv").innerHTML.replace('<svg','<svg style="width:100%;height:100%;max-height:220mm"')}</div>`)]);
