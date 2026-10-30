@@ -121,6 +121,17 @@ section{padding:26px 0}
 .safe ul{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
 .safe li{background:var(--mint);border-radius:12px;padding:8px 12px;font-weight:600}
 #special{margin-top:34px}
+#books{margin-top:34px}
+.books{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.books{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.books{gap:10px}}
+.bookcard{background:#fff;border-radius:22px;padding:12px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.12);transition:transform .15s}
+.bookcard:hover{transform:translateY(-3px)}
+.bookcard img{width:100%;aspect-ratio:1;object-fit:contain;background:var(--pink-soft);border-radius:16px}
+.bookcard span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.bookcard b{font-family:Fredoka,sans-serif;font-size:19px;color:var(--magenta)}
+.bookcard i{font-style:normal;font-size:14px;color:var(--muted);line-height:1.35}
+.bookcard em{font-style:normal;font-weight:800;color:#fff;background:var(--pink-btn);border-radius:999px;padding:5px 12px;align-self:flex-start;margin-top:4px}
 .sponsors-note{text-align:center;color:var(--sage-deep);font-weight:700;margin:12px 0 0}
 
 /* ===== תחתית ===== */
@@ -181,7 +192,7 @@ footer a{color:#fff;font-weight:700}
   </section>
 
   <section id="special">
-    <div class="sec-title"><h2>מיוחדים והעשרה</h2><p>ספקים, מפעילים וטיולים לגן</p></div>
+    <div class="sec-title"><h2>מיוחדים והעשרה</h2><p>העשרה, ספקים, מפעילים וטיולים לגן</p></div>
     <div class="grid" id="gridSpecial"></div>
     <p class="sponsors-note">🤝 ספקים אמינים, שבזכותם האתר מתוחזק וממשיך להיות חינמי לכולם</p>
   </section>
@@ -200,6 +211,11 @@ footer a{color:#fff;font-weight:700}
         <ul><li>משחקים של כמה דקות</li><li>הוראות בקול, גם למי שעוד לא קורא</li><li>רגשות, חשבון ועידוד קריאה</li></ul>
       </div>
     </div>
+  </section>
+
+  <section id="books">
+    <div class="sec-title"><h2>ספרי BOOQLI</h2><p>משחקים לפי הספרים שלנו, שבהם הילד הוא הגיבור</p></div>
+    <div class="books" id="gridBooks"></div>
   </section>
 
   <section id="gifts">
@@ -284,10 +300,8 @@ const YEAR = [
   {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", event:"2027-09-01", ready:false},
   {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", event:"2027-10-02", ready:false},
   {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:false},
-  {id:"body",     name:"אני וגופי",      ic:"🧒", bg:"#E1F0EA", event:"2027-10-25", ready:false},
   {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", event:"2026-12-04", ready:true, opens:"2026-10-30"},
   {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", event:"2026-12-21", ready:false},
-  {id:"citrus",   name:"פירות הדר",      ic:"🍊", bg:"#FFEBD2", event:"2027-01-01", ready:false},
   {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", event:"2027-01-23", ready:false},
   {id:"family",   name:"יום המשפחה",    ic:"👨‍👩‍👧", bg:"#FFE3F4", event:"2027-02-07", ready:false},
   {id:"purim",    name:"פורים",         ic:"🎭", bg:"#F1E3FF", event:"2027-03-23", ready:false},
@@ -312,11 +326,24 @@ const ALWAYS = [
   {id:"yoga",     name:"יוגה לגן",             ic:"🧘", bg:"#F1E3FF", ready:false},
   {id:"sleep",    name:"שינה",                 ic:"😴", bg:"#E3ECF6", ready:false},
   {id:"honor-parents", name:"כיבוד הורים",     ic:"💐", bg:"#FFE3F4", ready:false},
-  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false}
+  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false},
+  {id:"hygiene",  name:"צחצוח שיניים ומקלחת",  ic:"🪥", bg:"#DCEBFF", ready:false},
+  {id:"morning-prayer", name:"תפילת בוקר",     ic:"🌅", bg:"#FFF3CF", ready:false}
+];
+
+/* ספרי BOOQLI – משחקים לפי הספרים (בתיקייה games/) */
+const BOOKS = [
+  {id:"superhero",      name:"גיבור/ת על",       p:"משחק טוב לב מהיר, אותיות וקריאה, מיון והבדלים", img:"games/superhero/img/m-book.png"},
+  {id:"birthday",       name:"ילד/ת יום הולדת", p:"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון",    img:"games/birthday/img/m-book.png"},
+  {id:"bye-bye-diaper", name:"ביי ביי חיתול!",   p:"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה",   img:"games/bye-bye-diaper/img/m-book.png"},
+  {id:"savanna",        name:"בסוואנה",          p:"מכירים את חיות הסוואנה בסיפור ובמשחקים",       img:"games/savanna/img/demo-book.png"}
 ];
 
 /* מיוחדים והעשרה – נפתחים כשהתוכן מוכן (ready: true) */
 const SPECIAL = [
+  {id:"body",      name:"גוף האדם",            ic:"🧒", bg:"#E1F0EA", ready:false},
+  {id:"fruits-vegetables", name:"הכרת פירות וירקות", ic:"🍎", bg:"#FFEBD2", ready:false},
+  {id:"english",   name:"אנגלית לקטנטנים",     ic:"🔤", bg:"#DCEBFF", ready:false},
   {id:"suppliers", name:"ספקים אמינים",        ic:"🤝", bg:"#E1F0EA", ready:false},
   {id:"operators", name:"מפעילים",             ic:"🎪", bg:"#FFE3F4", ready:false},
   {id:"trips",     name:"טיולים",              ic:"🚌", bg:"#FFF3CF", ready:false}
@@ -356,6 +383,7 @@ const gY = document.getElementById("gridYear"), gA = document.getElementById("gr
 YEAR.forEach(t => { const c = card(t); if (nextT && t.id === nextT.id) (c.querySelector(".card")||c).classList.add("next-up"); gY.appendChild(c); });
 ALWAYS.forEach(t => gA.appendChild(card(t)));
 SPECIAL.forEach(t => document.getElementById("gridSpecial").appendChild(card(t)));
+document.getElementById("gridBooks").innerHTML = BOOKS.map(b => `<a class="bookcard" href="games/${b.id}/"><img src="${b.img}" alt="הספר ${b.name}" loading="lazy"><span><b>${b.name}</b><i>${b.p}</i><em>לשחק ←</em></span></a>`).join("");
 
 // הנושא הבא + ספירה לאחור
 if (nextT){
