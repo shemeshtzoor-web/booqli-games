@@ -219,6 +219,35 @@ footer a{color:#fff;font-weight:700}
 .craft-steps h3{color:var(--sage-deep);font-size:20px}
 .craft-steps ol{margin:8px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 
+/* סיפור להקרנה */
+.story{max-width:860px;margin:0 auto;text-align:center}
+.st-pic{width:min(220px,50vw);height:min(220px,50vw);margin:0 auto 10px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 5px 0 var(--mint-2)}
+.st-pic svg{width:66%;height:66%}.st-pic span{font-size:min(110px,24vw);line-height:1}
+.st-text{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,3.6vw,38px);line-height:1.45;color:var(--ink);margin:6px auto 18px;max-width:30ch;text-wrap:pretty}
+.stage:fullscreen .st-text{font-size:clamp(28px,4.4vw,52px)}
+.st-nav{display:flex;align-items:center;justify-content:center;gap:14px}
+.st-nav button:disabled{opacity:.4;cursor:default}
+.st-num{font-weight:800;color:var(--sage-deep);font-variant-numeric:tabular-nums}
+.st-src{font-size:14px;color:var(--muted);margin-top:16px}
+.st-h{font-size:30px;color:var(--magenta);margin-bottom:10px}
+.talk{text-align:start;font-size:clamp(20px,3vw,30px);font-weight:700;display:grid;gap:12px;max-width:760px;margin:0 auto 10px;padding-inline-start:30px}
+/* מערך לגננת */
+.plan-head{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.plan-head div{background:#fff;border-radius:16px;padding:10px;text-align:center}
+.plan-head b{display:block;font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
+.plan-head span{font-size:13px;color:var(--muted)}
+.prep{background:#FFF1C9;border-radius:18px;padding:12px 16px;margin-bottom:14px}
+.prep h3{font-size:19px;color:#8A5A00}.prep ul{margin:6px 0 0;padding-inline-start:20px;display:grid;gap:3px}
+.plan{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.plan li{background:#fff;border-radius:18px;padding:12px;display:grid;grid-template-columns:78px 1fr;gap:12px}
+.pl-time{background:var(--pink-soft);border-radius:14px;display:grid;place-content:center;text-align:center;font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta);font-variant-numeric:tabular-nums}
+.pl-time small{display:block;font-family:Assistant,sans-serif;font-size:12px}
+.pl-body{min-width:0}.pl-body h3{font-size:19px;color:var(--sage-deep)}.pl-body p{margin:4px 0}
+.pl-age{font-size:14px;color:var(--muted)}
+.pl-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.pl-clock{font-family:Fredoka,sans-serif;font-size:22px;color:var(--magenta);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.plan-head{grid-template-columns:1fr}.plan li{grid-template-columns:62px 1fr}}
+
 /* מסך ניצחון */
 .win{position:fixed;inset:0;z-index:80;background:rgba(36,50,95,.72);display:grid;place-items:center;padding:16px}
 .win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto}
@@ -288,7 +317,7 @@ footer a{color:#fff;font-weight:700}
     <div>
       <small>booqli Games · לוח השנה של הגן</small>
       <h1>חנוכה</h1>
-      <p>8 פעילויות לחג האורים: משחקים במסך, דפי עבודה וצביעה להדפסה, וסביבון שגוזרים ומרכיבים לבד. לגן ולבית.</p>
+      <p>10 פעילויות לחג האורים: סיפור המכבים להקרנה, משחקים במסך, דפי עבודה וצביעה להדפסה, סביבון שגוזרים ומרכיבים לבד, ומערך מוכן של 45 דקות לגננת. לגן ולבית.</p>
       <div class="acts">
         <button class="btn-gift js-gift" type="button">🎁 מתנה להורים</button>
         <span id="heroLike"></span>
@@ -350,6 +379,7 @@ footer a{color:#fff;font-weight:700}
 <div id="stage" class="stage" hidden role="dialog" aria-modal="true" aria-labelledby="stTitle">
   <div class="stage-bar">
     <button class="sbtn" id="stBack" type="button">→ חזרה</button>
+    <a class="sbtn" href="../../" aria-label="לתפריט הראשי" style="text-decoration:none">🏠</a>
     <h2 id="stTitle"></h2>
     <button class="sbtn" id="stSay" type="button" aria-label="הקראת ההוראות">🔊</button>
     <button class="sbtn js-gift" type="button">🎁 להורים</button>
@@ -376,6 +406,7 @@ footer a{color:#fff;font-weight:700}
 
 <div id="print" aria-hidden="true"></div>
 
+<script src="../../qrcode.min.js"></script>
 <script src="../../common.js"></script>
 <script>
 /* =========================================================
@@ -788,7 +819,7 @@ function coloring(body, pic = 0){
 function sheet(title, sub, inner){
   return `<div class="sheet"><div class="s-head"><h1>${title}</h1><div class="nm">השם שלי: ____________</div></div>
   ${sub ? `<p class="s-sub">${sub}</p>` : ""}<div class="s-body">${inner}</div>
-  <div class="s-foot"><div class="lg"><img src="../../img/logo.png" alt="BOOQLI"></div><div class="t">booqli Games · כל התכנים מוענקים בחינם, בחסות BOOQLI<br>${couponHTML(true)}</div></div></div>`;
+  ${sitePrintFooter("hanukkah", CONFIG.coupon ? couponHTML(true) : "", "../../img/logo.png")}</div>`;
 }
 function colorSheet(P){
   const name = ART[P[0]].name;
@@ -885,8 +916,117 @@ function crafts(body){
   $("stSay").onclick = () => say("מדפיסים, צובעים, גוזרים, ומרכיבים סביבון שמסתובב באמת.");
 }
 
-/* ======================== רשימת 8 הפעילויות ======================== */
+/* ======================== 9. סיפור המכבים (להקרנה) ========================
+   סיפור מקורי של booqli Games, על פי המקורות: ספר מקבים א' ותלמוד בבלי, מסכת שבת כ"א ע"ב. */
+const STORY = [
+  {e:"🏛️", t:"לפני הרבה מאוד שנים, בארץ ישראל, עמד בירושלים בית המקדש. בתוכו הייתה מנורה גדולה של זהב, ובכל ערב הדליקו בה שמן זית זך וטהור."},
+  {e:"👑", t:"באותם ימים שלט בארץ מלך יווני בשם אנטיוכוס. הוא רצה שכל העם יחיה כמו היוונים, יעבוד את האלים שלהם וישכח את המנהגים של היהודים."},
+  {e:"📜", t:"המלך אסר על היהודים לשמור שבת וללמוד תורה. החיילים שלו נכנסו לבית המקדש, הכניסו אליו פסלים ולכלכו אותו. היהודים היו עצובים מאוד."},
+  {e:"🏡", t:"בכפר קטן בשם מודיעין גר כוהן זקן בשם מתתיהו, עם חמשת הבנים שלו. מתתיהו אמר: אנחנו לא נוותר על השבת ועל התורה שלנו!"},
+  {e:"⛰️", t:"מתתיהו ובניו יצאו אל ההרים, ויהודים רבים הצטרפו אליהם. אחרי שמתתיהו נפטר, הוביל אותם הבן שלו, יהודה. כולם קראו לו: יהודה המכבי."},
+  {e:"🔨", t:"למה מכבי? יש אומרים שהשם בא מהמילה מַקֶּבֶת, שפירושה פטיש, כי יהודה היה חזק כמו פטיש. ויש אומרים שאלה ראשי התיבות של מִי כָּמֹכָה בָּאֵלִים ה'."},
+  {e:"🐘", t:"לצבא היווני היו הרבה מאוד חיילים, ואפילו פילים גדולים. המכבים היו מעטים, אבל הם היו אמיצים, הכירו היטב את השבילים בהרים, ולא ויתרו."},
+  {e:"🧹", t:"בסוף המכבים ניצחו וחזרו לירושלים. בית המקדש היה מלוכלך והרוס. כולם עזרו יחד: הוציאו את הפסלים, ניקו, סידרו ובנו מזבח חדש."},
+  {a:["pach"], t:"רצו להדליק את המנורה, אבל כל השמן היה פסול. חיפשו וחיפשו, ומצאו רק פך שמן קטן אחד, סגור בחותמת של הכוהן הגדול. השמן הספיק ליום אחד בלבד."},
+  {a:["candle"], t:"הדליקו את המנורה, וקרה נס: השמן הקטן דלק שמונה ימים שלמים, עד שהכינו שמן טהור חדש. זה קרה בכ\"ה בכסלו."},
+  {a:["hanukkiah",8,true], t:"ומאז, בכל שנה, אנחנו מדליקים חנוכייה שמונה ימים, אוכלים מאכלים בשמן ומסובבים סביבון עם נ ג ה פ: נס גדול היה פה!"}
+];
+const STORY_Q = [
+  {q:"מה המלך היווני אסר על היהודים?", o:[["לשמור שבת וללמוד תורה"],["לאכול סופגניות"],["לשחק בסביבון"]], fact:"המלך אנטיוכוס אסר על היהודים לשמור על המנהגים שלהם."},
+  {q:"איך קראו לאבא של יהודה המכבי?", o:[["מתתיהו"],["אנטיוכוס"],["דוד"]], fact:"מתתיהו הכוהן גר במודיעין עם חמשת בניו."},
+  {q:"מה עשו המכבים כשחזרו לבית המקדש?", o:[["ניקו וסידרו אותו יחד"],["הלכו לישון"],["בנו מגדל חול"]], fact:"כולם עזרו לנקות, לסדר ולבנות מזבח חדש."},
+  {q:"מה מצאו המכבים בבית המקדש?", pic:["pach"], o:[["פך שמן קטן"],["ארגז צעצועים"],["כתר של מלך"]], fact:"מצאו פך שמן קטן אחד עם החותמת של הכוהן הגדול."},
+  {q:"כמה ימים דלק השמן?", pic:["candle"], o:[["8","שמונה"],["1","אחד"],["3","שלושה"]], fact:"השמן שהספיק ליום אחד דלק שמונה ימים. זה נס חנוכה."}
+];
+const STORY_TALK = ["מתי אתם הרגשתם אמיצים?","המכבים ניקו את בית המקדש כולם יחד. במה אתם עוזרים לסדר בגן או בבית?","איזה מנהג של חנוכה אתם הכי אוהבים, ולמה?"];
+function storyAct(body, i = 0){
+  const P = STORY[i], last = i === STORY.length - 1;
+  body.innerHTML = `<div class="story">
+    <div class="st-pic">${P.a ? svg(...P.a) : `<span>${P.e}</span>`}</div>
+    <p class="st-text">${P.t}</p>
+    <div class="st-nav">
+      <button class="btn-sec" id="sPrev" type="button" ${i ? "" : "disabled"}>→ הקודם</button>
+      <span class="st-num">${i + 1} / ${STORY.length}</span>
+      <button class="btn-main" id="sNext" type="button">${last ? "לשאלות ←" : "הבא ←"}</button>
+    </div>
+    <div class="row-btns"><button class="btn-sec" id="sFull" type="button">⛶ מסך מלא למקרן</button><button class="btn-sec" id="sRead" type="button">🔊 להקריא את העמוד</button></div>
+    ${i === 0 ? `<p class="st-src">סיפור מקורי של booqli Games על פי המקורות: ספר מקבים א' ותלמוד בבלי, מסכת שבת כ"א ע"ב. בסוף הסיפור יש שאלות לשיחה בגן. אפשר לעבור בין העמודים גם עם החצים במקלדת.</p>` : ""}
+  </div>`;
+  const read = () => say(P.t.replace(/כ"ה/g, "עשרים וחמישה"));
+  $("stSay").onclick = read; $("sRead").onclick = read;
+  $("sPrev").onclick = () => storyAct(body, i - 1);
+  $("sNext").onclick = () => last ? storyQuiz(body) : storyAct(body, i + 1);
+  $("sFull").onclick = () => { const el = $("stage"); try { document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen(); } catch(e){ toast("מסך מלא לא זמין בדפדפן הזה. אפשר ללחוץ F11."); } };
+  storyKeys = e => { if (e.key === "ArrowLeft" && !last) storyAct(body, i + 1); if (e.key === "ArrowRight" && i) storyAct(body, i - 1); };
+}
+let storyKeys = null;
+document.addEventListener("keydown", e => { if (current === "story" && storyKeys && !$("stage").hidden) storyKeys(e); });
+function storyQuiz(body, n = 0, score = 0){
+  storyKeys = null;
+  const Q = STORY_Q[n]; let missed = false; const opts = shuffle(Q.o);
+  body.innerHTML = `<div class="status"><span>שאלה ${n + 1} מתוך ${STORY_Q.length}</span><span>⭐ ${score}</span></div>
+  ${Q.pic ? `<div class="q-pic">${svg(...Q.pic)}</div>` : ""}<div class="q-text">${Q.q}</div>
+  <div class="opts">${opts.map((o, k) => `<button class="opt" type="button" data-i="${k}"><span>${o[0]}</span></button>`).join("")}</div><div class="fact" id="qFact" hidden></div>`;
+  const sq = () => say(Q.q + " " + opts.map(o => o[1] || o[0]).join(", או ") + "?"); sq(); $("stSay").onclick = sq;
+  body.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const o = opts[+b.dataset.i];
+    if (o === Q.o[0]){
+      b.classList.add("right"); good(); if (!missed) score++;
+      body.querySelectorAll(".opt").forEach(x => x.disabled = true);
+      $("qFact").hidden = false; $("qFact").textContent = "נכון! " + Q.fact; say("נכון! " + Q.fact);
+      const nx = document.createElement("div"); nx.className = "center"; nx.style.marginTop = "14px";
+      nx.innerHTML = `<button class="btn-main" type="button">${n + 1 < STORY_Q.length ? "לשאלה הבאה ←" : "לשאלות לשיחה ←"}</button>`; body.appendChild(nx);
+      nx.querySelector("button").onclick = () => n + 1 < STORY_Q.length ? storyQuiz(body, n + 1, score) : storyTalk(body, score);
+    } else { missed = true; b.classList.add("wrong"); b.disabled = true; bad(); say("לא בדיוק. נסו שוב."); }
+  });
+}
+function storyTalk(body, score){
+  body.innerHTML = `<div class="story"><div class="st-pic"><span>💬</span></div><h3 class="st-h">שאלות לשיחה במעגל</h3>
+    <ol class="talk">${STORY_TALK.map(t => `<li>${t}</li>`).join("")}</ol>
+    <div class="row-btns"><button class="btn-sec" id="sAgain" type="button">↺ לסיפור מההתחלה</button><button class="btn-main" id="sEnd" type="button">סיימנו ←</button></div></div>`;
+  say("שאלות לשיחה. " + STORY_TALK.join(" "));
+  $("stSay").onclick = () => say(STORY_TALK.join(" "));
+  $("sAgain").onclick = () => storyAct(body, 0);
+  $("sEnd").onclick = () => showWin(`שמעתם את סיפור המכבים וענו נכון על ${score} מתוך ${STORY_Q.length} שאלות`, score >= 5 ? 3 : score >= 3 ? 2 : 1, () => storyAct(body, 0));
+}
+
+/* ======================== 10. מערך 45 דקות לגננת ======================== */
+const PLAN = [
+  {m:5,  t:"מפגש פתיחה", d:"יושבים במעגל. שואלים: מה אתם כבר יודעים על חנוכה? מראים חנוכייה לא דולקת, או את החנוכייה שבראש העמוד הזה על המסך.", age:"3–4: מספיק לשאול מה רואים בתמונה. 5–6: אפשר לספור יחד את הקנים בחנוכייה."},
+  {m:10, t:"סיפור המכבים במקרן", d:"פותחים את הסיפור על המסך ומקריאים עמוד אחרי עמוד. בסוף עונים יחד על השאלות.", go:"story", age:"3–4: מקריאים רק חלק מהעמודים ומדלגים לשאלות. 5–6: כל הסיפור, כולל השאלות לשיחה."},
+  {m:7,  t:"משחק תנועה: מסע הסביבון", d:"מסובבים סביבון במעגל. נ = קופצים, ג = מגלגלים ידיים, ה = ידיים למעלה כמו להבה, פ = מסתובבים כמו פרפר. ההוראות המלאות מופיעות בתחתית עמוד חנוכה."},
+  {m:8,  t:"מדליקים את החנוכייה יחד", d:"פותחים במקרן את המשחק. בכל לילה ילד אחר ניגש למסך ו\"מדליק\" נר, וכל הגן סופר בקול.", go:"lighting", age:"3–4: עד לילה רביעי. 5–6: כל שמונת הלילות."},
+  {m:12, t:"יצירה בשולחנות", d:"מחלקים דפים שהודפסו מראש: סביבון לגזירה, או דף צביעה ולהבות לחנוכייה מגלילים.", go:"craft", age:"3–4: דף צביעה או להבות לצביעה בלבד, בלי גזירה. 5–6: סביבון לגזירה והרכבה, עם עזרה בחירור."},
+  {m:3,  t:"סיכום ומתנה להורים", d:"שואלים: מה למדנו היום? מה הכי אהבתם? אחר כך שולחים להורים את המשחקים במתנה בכפתור הוואטסאפ, כדי להמשיך בבית."}
+];
+let planTimer = null;
+function planAct(body){
+  let t0 = 0;
+  body.innerHTML = `<div class="plan-head"><div><b>⏱️ 45 דקות</b><span>זמן כולל</span></div><div><b>👧 3–6</b><span>גילאים, עם התאמות לכל גיל</span></div><div><b>📺 מקרן + 🖨️</b><span>מסך ודפים מודפסים</span></div></div>
+  <div class="prep"><h3>✅ מה להכין מראש</h3><ul>
+    <li>מסך, מקרן או מסך מגע עם האתר פתוח על עמוד חנוכה</li>
+    <li>הדפסה של "סביבון לגזירה" על נייר עבה, דף לכל ילד (גילאי 5–6)</li>
+    <li>דפי צביעה או להבות לחנוכייה מגלילים (גילאי 3–4)</li>
+    <li>מספריים, דבק, צבעים ועפרונות קצרים</li>
+    <li>סביבון אחד למשחק התנועה</li></ul></div>
+  <ol class="plan">${PLAN.map((p, k) => { const from = t0; t0 += p.m; return `<li>
+    <div class="pl-time">${from}–${t0}<small>דקות</small></div>
+    <div class="pl-body"><h3>${p.t}</h3><p>${p.d}</p>${p.age ? `<p class="pl-age">👧 ${p.age}</p>` : ""}
+    <div class="pl-btns">${p.go ? `<button class="btn-main" type="button" data-go="${p.go}" style="font-size:15px;padding:8px 16px">לפתוח ←</button>` : ""}<button class="btn-sec" type="button" data-t="${k}">⏱️ טיימר ${p.m} דק'</button><span class="pl-clock" id="clk${k}"></span></div></div></li>`; }).join("")}</ol>`;
+  body.querySelectorAll("[data-go]").forEach(b => b.onclick = () => openAct(b.dataset.go));
+  body.querySelectorAll("[data-t]").forEach(b => b.onclick = () => {
+    const k = +b.dataset.t; clearInterval(planTimer); body.querySelectorAll(".pl-clock").forEach(c => c.textContent = "");
+    let left = PLAN[k].m * 60; const c = $("clk" + k);
+    const tick = () => { c.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0"); if (left-- <= 0){ clearInterval(planTimer); c.textContent = "⏰ הזמן נגמר"; cheer(); say("הזמן נגמר. עוברים לשלב הבא."); } };
+    tick(); planTimer = setInterval(tick, 1000);
+  });
+  $("stSay").onclick = () => say("מערך של ארבעים וחמש דקות לגננת, לגילאי שלוש עד שש. " + PLAN.map(p => p.t).join(". "));
+}
+
+/* ======================== רשימת הפעילויות ======================== */
 const ACTS = [
+  {id:"plan",     t:"מערך 45 דקות לגננת",  tag:"print", tl:"לגננת · גילאי 3–6", p:"מה עושים, לפי הסדר ועם טיימר", emo:"⏱️", bg:"#E1F0EA", run:b => planAct(b), hint:""},
+  {id:"story",    t:"סיפור המכבים",        tag:"game",  tl:"להקרנה · סיפור", p:"להקריא בגן על המקרן, עם שאלות בסוף", emo:"📖", bg:"#FFF1C9", run:b => storyAct(b), hint:""},
   {id:"memory",   t:"זיכרון חנוכה",        tag:"game",  tl:"משחק", p:"מוצאים זוגות של סביבונים, סופגניות ונרות", pic:["sufganiya"], bg:"#FFE3F4", run:b => memory(b), hint:"הפכו שני קלפים, ומצאו את כל הזוגות."},
   {id:"lighting", t:"מדליקים את החנוכייה", tag:"game",  tl:"משחק · חשבון", p:"סופרים נרות, לילה אחרי לילה", pic:["hanukkiah",3,true], bg:"#DCEBFF", run:b => lighting(b), hint:""},
   {id:"sorting",  t:"של חנוכה או לא?",     tag:"game",  tl:"משחק · מיון", p:"ממיינים לסלים מה שייך לחג", pic:["sevivon","נ"], bg:"#FFF1C9", run:b => sorting(b), hint:""},
@@ -897,7 +1037,7 @@ const ACTS = [
   {id:"craft",    t:"סביבון לגזירה",       tag:"craft", tl:"יצירה · להדפסה", p:"סביבון שמסתובב באמת וחנוכייה מגלילים", pic:["sevivon","ג"], bg:"#FFF1C9", run:b => crafts(b), hint:""}
 ];
 const TAGC = {game:"t-game", print:"t-print", craft:"t-craft"};
-$("actsGrid").innerHTML = ACTS.map(a => `<button class="act" type="button" data-id="${a.id}"><div class="pic" style="background:${a.bg}">${svg(...a.pic)}</div><span class="tag ${TAGC[a.tag]}">${a.tl}</span><h3>${a.t}</h3><p>${a.p}</p></button>`).join("");
+$("actsGrid").innerHTML = ACTS.map(a => `<button class="act" type="button" data-id="${a.id}"><div class="pic" style="background:${a.bg}">${a.emo ? `<span style="font-size:46px">${a.emo}</span>` : svg(...a.pic)}</div><span class="tag ${TAGC[a.tag]}">${a.tl}</span><h3>${a.t}</h3><p>${a.p}</p></button>`).join("");
 $("actsGrid").querySelectorAll(".act").forEach(b => b.onclick = () => openAct(b.dataset.id));
 $("heroArt").innerHTML = svg("hanukkiah", 8, true);
 
@@ -913,6 +1053,7 @@ function openAct(id){
   $("stBack").focus();
 }
 function closeAct(){
+  clearInterval(planTimer); storyKeys = null;
   $("stage").hidden = true; $("win").hidden = true; document.body.style.overflow = ""; current = null;
   try { speechSynthesis.cancel(); } catch(e){}
   try { history.replaceState(null, "", location.pathname + location.search); } catch(e){}
@@ -925,12 +1066,12 @@ const startHash = location.hash.slice(1); if (ACTS.some(a => a.id === startHash)
 /* ======================== מתנה להורים + קישורים ======================== */
 const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
 function sendGift(){
-  const t = `🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם 8 פעילויות לחנוכה: משחק זיכרון, הדלקת חנוכייה וספירה, מיון, חידון, פאזל, צביעה, דפי עבודה להדפסה וסביבון לגזירה.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}`;
+  const t = `🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם פעילויות לחנוכה: סיפור המכבים, משחק זיכרון, הדלקת חנוכייה וספירה, מיון, חידון, פאזל, צביעה, דפי עבודה להדפסה וסביבון לגזירה.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}`;
   const w = window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener");
   if (!w) location.href = "https://wa.me/?text=" + encodeURIComponent(t);
 }
 document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
-siteJoinLinks(); siteDevBar();
+siteJoinLinks(); siteDevBar(); siteBackBar("../../");
 $("heroLike").appendChild(siteLikeButton("hanukkah", "אהבתי את חנוכה"));
 $("ganLink").href = CONFIG.gan; $("ganBtn").href = CONFIG.gan;
 $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
