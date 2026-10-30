@@ -30,8 +30,9 @@ h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
 
 /* ===== כותרת עליונה ===== */
 header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.brand{display:flex;align-items:center;gap:12px;padding:10px 0;flex-wrap:nowrap}
-.logo{height:44px;width:auto;display:block}
+.brand{display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
 .gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
 .gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
 .btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center}
@@ -268,25 +269,26 @@ const CONFIG = {
   gan:   "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
 };
 
-/* נושאי השנה. opens = תאריך פתיחה (שנה-חודש-יום). ready = האם התוכן כבר מוכן.
-   נושא נפתח רק כשגם התאריך הגיע וגם ready: true. */
+/* נושאי השנה. event = תאריך האירוע עצמו (שנה-חודש-יום). הנושא נפתח אוטומטית חודש לפני (OPEN_DAYS_BEFORE).
+   ready = האם התוכן כבר מוכן. נושא נפתח רק כשגם התאריך הגיע וגם ready: true. */
+const OPEN_DAYS_BEFORE = 30;
 const YEAR = [
-  {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", opens:"2027-08-10", ready:false},
-  {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", opens:"2027-08-20", ready:false},
-  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", opens:"2027-09-15", ready:false},
-  {id:"body",     name:"אני וגופי",      ic:"🧒", bg:"#E1F0EA", opens:"2027-10-10", ready:false},
-  {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", opens:"2026-11-20", ready:false},
-  {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", opens:"2026-12-14", ready:false},
-  {id:"citrus",   name:"פירות הדר",      ic:"🍊", bg:"#FFEBD2", opens:"2026-12-22", ready:false},
-  {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", opens:"2027-01-04", ready:false},
-  {id:"family",   name:"יום המשפחה",    ic:"👨‍👩‍👧", bg:"#FFE3F4", opens:"2027-01-24", ready:false},
-  {id:"purim",    name:"פורים",         ic:"🎭", bg:"#F1E3FF", opens:"2027-03-01", ready:false},
-  {id:"spring",   name:"אביב",          ic:"🌸", bg:"#FFE3F4", opens:"2027-03-10", ready:false},
-  {id:"pesach",   name:"פסח",           ic:"🍷", bg:"#F6E4D8", opens:"2027-03-28", ready:false},
-  {id:"lagbaomer",name:"ל\"ג בעומר",     ic:"🔥", bg:"#FFE6D6", opens:"2027-05-09", ready:false},
-  {id:"atzmaut",  name:"יום העצמאות",   ic:"🇮🇱", bg:"#DCEBFF", opens:"2027-04-25", ready:false},
-  {id:"shavuot",  name:"שבועות",        ic:"🌾", bg:"#FFF3CF", opens:"2027-05-24", ready:false},
-  {id:"summer",   name:"קיץ",           ic:"☀️", bg:"#FFF1C9", opens:"2027-06-08", ready:false}
+  {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", event:"2027-09-01", ready:false},
+  {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", event:"2027-10-02", ready:false},
+  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:false},
+  {id:"body",     name:"אני וגופי",      ic:"🧒", bg:"#E1F0EA", event:"2027-10-25", ready:false},
+  {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", event:"2026-12-04", ready:false},
+  {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", event:"2026-12-21", ready:false},
+  {id:"citrus",   name:"פירות הדר",      ic:"🍊", bg:"#FFEBD2", event:"2027-01-01", ready:false},
+  {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", event:"2027-01-23", ready:false},
+  {id:"family",   name:"יום המשפחה",    ic:"👨‍👩‍👧", bg:"#FFE3F4", event:"2027-02-07", ready:false},
+  {id:"purim",    name:"פורים",         ic:"🎭", bg:"#F1E3FF", event:"2027-03-23", ready:false},
+  {id:"spring",   name:"אביב",          ic:"🌸", bg:"#FFE3F4", event:"2027-03-20", ready:false},
+  {id:"pesach",   name:"פסח",           ic:"🍷", bg:"#F6E4D8", event:"2027-04-21", ready:false},
+  {id:"lagbaomer",name:"ל\"ג בעומר",     ic:"🔥", bg:"#FFE6D6", event:"2027-05-25", ready:false},
+  {id:"atzmaut",  name:"יום העצמאות",   ic:"🇮🇱", bg:"#DCEBFF", event:"2027-05-12", ready:false},
+  {id:"shavuot",  name:"שבועות",        ic:"🌾", bg:"#FFF3CF", event:"2027-06-11", ready:false},
+  {id:"summer",   name:"קיץ",           ic:"☀️", bg:"#FFF1C9", event:"2027-06-21", ready:false}
 ];
 
 /* פינות קבועות – נפתחות כשהתוכן מוכן (ready: true) */
@@ -304,6 +306,8 @@ const ALWAYS = [
 const q = new URLSearchParams(location.search).get("date");
 const TODAY = q && !isNaN(new Date(q)) ? new Date(q + "T00:00:00") : new Date();
 const d = s => new Date(s + "T00:00:00");
+const iso = x => x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2,"0") + "-" + String(x.getDate()).padStart(2,"0");
+YEAR.forEach(t => { const x = d(t.event); x.setDate(x.getDate() - OPEN_DAYS_BEFORE); t.opens = iso(x); });
 const fmt = s => { const x = d(s); return x.getDate() + "." + (x.getMonth()+1) + "." + x.getFullYear(); };
 
 function state(t){
