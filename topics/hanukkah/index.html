@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>חנוכה · booqli Games</title>
+<meta name="description" content="8 משחקים, דפי עבודה, דפי צביעה ויצירה לחנוכה, לגן ולבית. בחינם, בחסות BOOQLI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== צבעי המותג של BOOQLI + גוני לילה של חנוכה ===== */
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --night:#24325F; --night-2:#33478A; --gold:#F2B630; --flame:#FFB020;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:
+    radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);
+  min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+/* ===== כותרת עליונה (כמו בדף הראשי) ===== */
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){
+  .brand{flex-wrap:wrap}
+  .gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}
+  .btn-wa{margin-inline-start:auto}
+}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+/* ===== פתיח: לילה של חנוכה ===== */
+.hero{margin-top:22px;background:var(--night);color:#fff;border-radius:28px;padding:26px 22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(2px 2px at 12% 20%,#fff 50%,transparent 51%),radial-gradient(2px 2px at 30% 70%,#fff 50%,transparent 51%),
+  radial-gradient(1.5px 1.5px at 55% 15%,#fff 50%,transparent 51%),radial-gradient(2px 2px at 80% 40%,#fff 50%,transparent 51%),
+  radial-gradient(1.5px 1.5px at 92% 80%,#fff 50%,transparent 51%),radial-gradient(500px 220px at 20% 120%,rgba(255,176,32,.35),transparent 70%);
+  pointer-events:none}
+.hero>*{position:relative}
+.hero small{color:var(--gold);font-weight:800;letter-spacing:.4px}
+.hero h1{font-size:clamp(40px,8vw,64px);line-height:1.05;color:#fff}
+.hero p{margin:8px 0 0;font-size:clamp(16px,2.2vw,19px);max-width:560px;color:#E8ECFA}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.hero-art{width:min(260px,38vw)}
+.hero-art svg{width:100%;height:auto;display:block}
+@media (max-width:620px){.hero{grid-template-columns:1fr}.hero-art{width:220px;margin:0 auto;order:-1}}
+.btn-gift{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 18px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:999px;padding:10px 16px;font-weight:700;text-decoration:none;cursor:pointer}
+
+/* ===== כרטיסי הפעילויות ===== */
+.sec-title{text-align:center;margin:34px 0 16px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+.sec-title p{margin:4px 0 0;color:var(--muted)}
+.acts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.acts-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:380px){.acts-grid{gap:10px}}
+.act{background:var(--card);border:0;border-radius:22px;padding:14px 12px 16px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.12);transition:transform .15s}
+.act:hover{transform:translateY(-3px)}
+.act .pic{width:92px;height:92px;border-radius:50%;display:grid;place-items:center}
+.act .pic svg{width:70px;height:70px}
+.act h3{font-size:19px;color:var(--ink)}
+.act .tag{font-size:12.5px;font-weight:800;border-radius:999px;padding:2px 10px}
+.t-game{background:var(--pink-soft);color:var(--magenta)}
+.t-print{background:var(--mint);color:var(--sage-deep)}
+.t-craft{background:#FFF1C9;color:#8A5A00}
+.act p{margin:0;font-size:14px;color:var(--muted);line-height:1.35}
+
+/* ===== קופסאות מידע ===== */
+.idea{margin-top:30px;background:#fff;border-radius:24px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+.idea .big{font-size:48px;line-height:1}
+.idea h2{font-size:24px;color:var(--magenta)}
+.idea ol{margin:8px 0 0;padding-inline-start:22px;display:grid;gap:6px}
+.idea .letters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.idea .letters div{background:var(--mint);border-radius:14px;padding:8px;text-align:center;font-weight:700;font-size:14px}
+.idea .letters b{display:block;font-family:Fredoka,sans-serif;font-size:30px;color:var(--sage-deep);line-height:1.1}
+@media (max-width:620px){.idea{grid-template-columns:1fr}.idea .letters{grid-template-columns:repeat(2,1fr)}}
+.book{margin-top:22px;background:var(--magenta);color:#fff;border-radius:24px;padding:22px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.book .big{font-size:52px}
+.book h2{font-size:24px}
+.book p{margin:4px 0 0}
+.book .txt{flex:1;min-width:220px}
+.btn-white{background:#fff;color:var(--magenta);text-decoration:none;font-weight:800;border-radius:999px;padding:10px 18px;display:inline-block}
+.gan-line{margin-top:14px;background:#fff;border-radius:18px;padding:14px 18px;text-align:center;font-weight:700}
+.gan-line a{color:var(--sage-deep)}
+.wa-box{margin-top:22px;background:#fff;border-radius:24px;padding:22px;text-align:center;border:2px dashed var(--wa)}
+.wa-box h2{color:var(--wa);font-size:24px}
+.wa-box p{margin:6px 0 14px;color:var(--muted)}
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer p{margin:4px 0}
+footer .logo{height:40px;margin:0 auto 10px}
+footer a{color:#fff;font-weight:700}
+
+/* ===== במה של פעילות (מסך מלא) ===== */
+.stage{position:fixed;inset:0;z-index:50;background:linear-gradient(#F4FAF7,var(--mint));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.stage-bar{position:sticky;top:0;z-index:2;background:var(--sage-deep);color:#fff;display:flex;align-items:center;gap:10px;padding-block:calc(10px + env(safe-area-inset-top,0px)) 10px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.stage-bar h2{flex:1;font-size:20px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbtn{background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.45);color:#fff;border-radius:999px;padding:7px 12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.stage-body{max-width:900px;margin:0 auto;padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.howto{background:#fff;border-radius:16px;padding:10px 14px;font-weight:700;color:var(--sage-deep);text-align:center;margin-bottom:14px}
+.levels{display:flex;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.lv{background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 16px;font-weight:800;cursor:pointer}
+.lv.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.status{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;font-weight:800}
+.status span{background:#fff;border-radius:999px;padding:4px 14px;font-variant-numeric:tabular-nums}
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:12px 26px;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 4px 0 var(--pink-shadow)}
+.btn-main:active{transform:translateY(2px);box-shadow:0 2px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 18px;font-weight:800;cursor:pointer}
+.center{text-align:center}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.pop{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.12)}}
+
+/* זיכרון */
+.mem{display:grid;gap:10px;margin:0 auto;max-width:640px}
+.mcard{aspect-ratio:1;max-width:100%;perspective:600px;border:0;padding:0;background:none;cursor:pointer}
+.mcard .in{position:relative;width:100%;height:100%;transition:transform .4s;transform-style:preserve-3d}
+.mcard.flip .in{transform:rotateY(180deg)}
+.mcard .f,.mcard .b{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center}
+.mcard .b{background:var(--night);box-shadow:0 3px 0 #16204a}
+.mcard .b svg{width:46%;height:46%}
+.mcard .f{background:#fff;transform:rotateY(180deg);box-shadow:0 3px 0 var(--mint-2)}
+.mcard .f svg{width:78%;height:78%}
+.mcard.done .f{background:#FFF6D6}
+
+/* חנוכייה להדלקה */
+.lightbox{background:var(--night);border-radius:24px;padding:16px 10px 8px;max-width:620px;margin:0 auto}
+.lightbox svg{width:100%;height:auto;display:block}
+.cup{cursor:pointer}
+.cup .hit{fill:transparent}
+.night-big{font-family:Fredoka,sans-serif;font-size:26px;color:var(--magenta);text-align:center;margin-bottom:8px}
+.night-big b{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--pink);color:#fff;font-size:30px;margin:0 6px;vertical-align:middle}
+.dots{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.dots i{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--mint-2)}
+.dots i.ok{background:var(--gold);border-color:var(--gold)}
+
+/* מיון */
+.sort-item{width:170px;height:170px;margin:0 auto 6px;background:#fff;border-radius:28px;display:grid;place-items:center;box-shadow:0 5px 0 var(--mint-2);font-size:96px;line-height:1}
+.sort-item svg{width:78%;height:78%}
+.sort-name{text-align:center;font-family:Fredoka,sans-serif;font-size:24px;color:var(--ink);margin-bottom:14px}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:560px;margin:0 auto}
+.bin{border:0;border-radius:24px;padding:16px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800;font-size:18px}
+.bin svg{width:64px;height:64px}
+.bin .x{font-size:52px;line-height:64px}
+.bin.yes{background:#FFF1C9;box-shadow:0 5px 0 #EBCB77}
+.bin.no{background:#fff;box-shadow:0 5px 0 var(--mint-2)}
+
+/* חידון */
+.q-pic{width:140px;height:140px;margin:0 auto 8px}
+.q-pic svg{width:100%;height:100%}
+.q-text{text-align:center;font-family:Fredoka,sans-serif;font-size:clamp(22px,4vw,28px);color:var(--ink);margin-bottom:16px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;max-width:720px;margin:0 auto}
+.opt{background:#fff;border:3px solid transparent;border-radius:20px;padding:14px;font-size:20px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px;justify-content:center;box-shadow:0 4px 0 var(--mint-2);min-height:72px}
+.opt svg{width:48px;height:48px;flex-shrink:0}
+.opt.right{border-color:var(--wa);background:#E6F8EE}
+.opt.wrong{border-color:#E5484D;opacity:.6}
+.fact{margin:16px auto 0;max-width:640px;background:#FFF1C9;border-radius:16px;padding:12px 16px;font-weight:700;text-align:center}
+
+/* פאזל */
+.pz{display:grid;gap:4px;max-width:min(520px,100%);margin:0 auto;background:var(--night);padding:4px;border-radius:18px}
+.tile{aspect-ratio:1;border:0;padding:0;cursor:pointer;border-radius:10px;overflow:hidden;background:var(--night);display:block}
+.tile svg{width:100%;height:100%;display:block}
+.tile.sel{outline:4px solid var(--pink);outline-offset:-4px}
+.pz-hint{max-width:150px;margin:12px auto 0;border-radius:12px;overflow:hidden;opacity:.85}
+.pz-hint svg{display:block;width:100%;height:auto}
+
+/* צביעה */
+.pick{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.pick button{width:72px;height:72px;background:#fff;border:3px solid transparent;border-radius:18px;cursor:pointer;padding:6px}
+.pick button.on{border-color:var(--pink)}
+.pick svg{width:100%;height:100%}
+.canvas{background:#fff;border-radius:24px;padding:12px;max-width:560px;margin:0 auto;box-shadow:0 5px 0 var(--mint-2)}
+.canvas svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.canvas .rg{cursor:pointer}
+.palette{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px auto;max-width:560px}
+.sw{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--mint-2);cursor:pointer}
+.sw.on{box-shadow:0 0 0 4px var(--ink)}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+/* דפים להדפסה – תצוגה */
+.sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:16px}
+.sh-card{background:#fff;border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 0 var(--mint-2)}
+.sh-card h3{font-size:18px;color:var(--magenta)}
+.sh-card p{margin:0;font-size:14px;color:var(--muted)}
+.thumb{aspect-ratio:210/297;max-width:100%;border:1px solid #e7efe9;border-radius:8px;overflow:hidden;position:relative;background:#fff}
+.thumb .sheet{position:absolute;top:0;right:0;transform-origin:top right}
+.print-note{text-align:center;color:var(--muted);font-size:14px;margin-top:14px}
+.craft-steps{background:#fff;border-radius:20px;padding:16px 18px;margin-top:16px}
+.craft-steps h3{color:var(--sage-deep);font-size:20px}
+.craft-steps ol{margin:8px 0 0;padding-inline-start:22px;display:grid;gap:4px}
+
+/* מסך ניצחון */
+.win{position:fixed;inset:0;z-index:80;background:rgba(36,50,95,.72);display:grid;place-items:center;padding:16px}
+.win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto}
+.win .big{font-size:64px;line-height:1}
+.win h3{font-size:30px;color:var(--magenta)}
+.win .stars{font-size:30px;letter-spacing:4px}
+.coupon{margin:14px 0;background:var(--pink-soft);border:2px dashed var(--pink);border-radius:18px;padding:12px}
+.coupon b{font-family:Fredoka,sans-serif;font-size:24px;color:var(--magenta);letter-spacing:1px}
+.coupon p{margin:4px 0}
+.coupon a{color:var(--magenta);font-weight:800}
+.win .row-btns{margin-top:6px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:85;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall 2.4s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== הדפסה ===== */
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:12mm 13mm 10mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl}
+.sheet .s-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #CDE7DC;padding-bottom:4mm;margin-bottom:5mm}
+.sheet .s-head h1{font-family:Fredoka,sans-serif;font-size:26pt;color:#C13671;line-height:1.1}
+.sheet .s-head .nm{font-size:13pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.sheet .s-sub{font-size:14pt;font-weight:700;margin:0 0 4mm;color:#4E8576}
+.sheet .s-body{flex:1;min-height:0;display:flex;flex-direction:column}
+.sheet .s-body svg{display:block}
+.sheet .s-foot{border-top:2px solid #CDE7DC;padding-top:3mm;margin-top:4mm;display:flex;align-items:center;gap:4mm;font-size:10pt}
+.sheet .s-foot .lg{background:#6F988B;border-radius:999px;padding:1.5mm 4mm;display:flex;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet .s-foot .lg img{height:9mm;width:auto;display:block}
+.sheet .s-foot .t{flex:1}
+.sheet .s-foot b{color:#C13671}
+.cnt-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6mm;border:2px solid #E1F0EA;border-radius:6mm;padding:3mm 5mm;margin-bottom:4mm}
+.cnt-row .items{display:flex;flex-wrap:nowrap;gap:2mm;min-width:0}
+.cnt-row .items svg{width:22mm;height:22mm;flex-shrink:0}
+.cnt-row .nums{display:flex;gap:4mm}
+.cnt-row .nums span{width:15mm;height:15mm;border:2px solid #4E8576;border-radius:50%;display:grid;place-items:center;font-family:Fredoka,sans-serif;font-size:20pt;font-weight:600}
+.pat-row{display:flex;align-items:center;justify-content:space-between;border:2px solid #E1F0EA;border-radius:6mm;padding:3mm 5mm;margin-bottom:5mm}
+.pat-row svg{width:28mm;height:28mm}
+.pat-row .q{width:30mm;height:30mm;border:2.5px dashed #C13671;border-radius:5mm}
+.n-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;flex:1}
+.n-cell{border:2px solid #E1F0EA;border-radius:6mm;padding:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.n-cell .lab{font-family:Fredoka,sans-serif;font-size:16pt;color:#4E8576}
+.n-cell .lab b{display:inline-grid;place-items:center;width:11mm;height:11mm;border-radius:50%;background:#FFE3F4;color:#C13671;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+  #print .sheet{page-break-after:always;break-after:page}
+  #print .sheet:last-child{page-break-after:auto;break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a id="waTop" class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <small>booqli Games · לוח השנה של הגן</small>
+      <h1>חנוכה</h1>
+      <p>8 פעילויות לחג האורים: משחקים במסך, דפי עבודה וצביעה להדפסה, וסביבון שגוזרים ומרכיבים לבד. לגן ולבית.</p>
+      <div class="acts">
+        <button class="btn-gift js-gift" type="button">🎁 מתנה להורים</button>
+        <a class="btn-ghost" href="../../">→ לכל הנושאים</a>
+      </div>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </section>
+
+  <div class="sec-title"><h2>מה עושים היום?</h2><p>לוחצים על פעילות. משחקים במסך מגע, בהקרנה או בטלפון</p></div>
+  <div class="acts-grid" id="actsGrid"></div>
+
+  <section class="idea">
+    <div class="big">💡</div>
+    <div>
+      <h2>רעיון לפעילות לגננת: מסע הסביבון</h2>
+      <p>משחק תנועה במפגש, בלי הכנה. יושבים במעגל, ובכל סיבוב ילד אחר מסובב סביבון. האות שנופלת אומרת לכולם מה לעשות:</p>
+      <div class="letters">
+        <div><b>נ</b>נקפוץ שמונה קפיצות</div>
+        <div><b>ג</b>גלגול ידיים</div>
+        <div><b>ה</b>הידיים למעלה, כמו להבה</div>
+        <div><b>פ</b>פרפר מסתובב במקום</div>
+      </div>
+      <ol>
+        <li>לפני המשחק מספרים: ארבע האותיות על הסביבון הן ראשי התיבות של "נס גדול היה פה".</li>
+        <li>אחרי כל סיבוב סופרים יחד בקול את הקפיצות או הסיבובים.</li>
+        <li>לסיום, כל ילד לוקח הביתה את הסביבון שגזר והרכיב בפעילות "סביבון לגזירה".</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="book">
+    <div class="big">📖</div>
+    <div class="txt">
+      <h2>ספר אמיתי שהילד הוא הגיבור שלו</h2>
+      <p>השם של הילד לאורך כל העלילה, איורים אישיים בכל עמוד, ספר מודפס באיכות גבוהה. מתנה לחג שנשמרת לשנים.</p>
+    </div>
+    <a id="orderBtn" class="btn-white" target="_blank" rel="noopener">להזמנת ספר אישי ←</a>
+  </section>
+  <div class="gan-line">🏫 ספר אישי לכל ילד בגן, במחירים סיטונאיים. <a id="ganBtn" target="_blank" rel="noopener">לקבלת הצעת מחיר בוואטסאפ ←</a></div>
+
+  <section class="wa-box">
+    <h2>💬 רוצים לקבל את משחקי החורף לפני כולם?</h2>
+    <p>הצטרפו לעדכוני booqli Games בוואטסאפ: משחקים חדשים, דפי הדפסה והקראות.</p>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener" style="font-size:17px;padding:12px 22px">להצטרפות לעדכונים ←</a>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>כל התכנים, האיורים והטקסטים באתר מקוריים · בלי הרשמה, בלי פרסומות ובלי איסוף פרטים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<!-- במה של פעילות -->
+<div id="stage" class="stage" hidden role="dialog" aria-modal="true" aria-labelledby="stTitle">
+  <div class="stage-bar">
+    <button class="sbtn" id="stBack" type="button">→ חזרה</button>
+    <h2 id="stTitle"></h2>
+    <button class="sbtn" id="stSay" type="button" aria-label="הקראת ההוראות">🔊</button>
+    <button class="sbtn js-gift" type="button">🎁 להורים</button>
+  </div>
+  <div class="stage-body" id="stBody"></div>
+</div>
+
+<!-- מסך ניצחון -->
+<div id="win" class="win" hidden role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="in">
+    <div class="big" id="wIc" style="width:110px;margin:0 auto"></div>
+    <h3 id="wTitle">כל הכבוד!</h3>
+    <div class="stars" id="wStars"></div>
+    <p id="wText"></p>
+    <div class="coupon" id="wCoupon"></div>
+    <div class="row-btns">
+      <button class="btn-main" id="wAgain" type="button">לשחק שוב</button>
+      <button class="btn-sec" id="wNext" type="button">לפעילות הבאה ←</button>
+    </div>
+    <div class="row-btns"><button class="btn-sec js-gift" type="button">🎁 לשלוח את המשחקים להורים</button></div>
+  </div>
+</div>
+
+<div id="print" aria-hidden="true"></div>
+
+<script>
+/* =========================================================
+   הגדרות – כאן משנים קישורים וקופון. לא צריך לגעת בשאר הקוד.
+   ========================================================= */
+const CONFIG = {
+  topicName: "חנוכה",
+  // קוד הקופון לספר לילד. כשיהיה קוד – לכתוב אותו כאן בין המירכאות (למשל "HANUKKAH10")
+  coupon: "",
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=hanukkah",
+  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=coupon&utm_campaign=hanukkah",
+  whatsappJoin: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני רוצה לקבל עדכונים על booqli Games 💬"),
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+};
+
+/* ======================== איורים מקוריים (SVG) ========================
+   כל איור מצויר בשני מצבים: צבעוני (למשחקים) וקווי (לצביעה ולהדפסה). */
+const INK = "#3a2433";
+let LINE = false; // true = מצב קווי לצביעה
+const sh = (tag, a, fill) => `<${tag} ${a} class="rg" fill="${LINE ? "#fff" : fill}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>`;
+const flame = (x, y, s = 1) => {
+  const p = `M${x} ${y} q${7*s} ${10*s} ${3.5*s} ${15*s} q${-3.5*s} ${3*s} ${-7*s} 0 q${-3.5*s} ${-5*s} ${3.5*s} ${-15*s}z`;
+  return sh("path", `d="${p}"`, "#FFB020") + (LINE ? "" : `<path d="M${x} ${y+7*s} q${3*s} ${4*s} ${1.5*s} ${7*s} q${-1.5*s} ${1.5*s} ${-3*s} 0 q${-1.5*s} ${-3*s} ${1.5*s} ${-7*s}z" fill="#FFE680"/>`);
+};
+const CANDLE_COLORS = ["#FF56C2","#6FB3E8","#7FA89B","#F5C518","#B488E8","#FF8A5C","#6FB3E8","#FF56C2"];
+const HX = [8,21,34,47,73,86,99,112]; // מקומות הנרות, משמאל לימין
+const ART = {
+  sufganiya:{vb:"0 0 100 100", name:"סופגנייה", d:() =>
+    sh("ellipse",'cx="50" cy="60" rx="40" ry="27"',"#E59B4C") +
+    sh("path",'d="M16 52 Q22 30 50 30 Q78 30 84 52 Q74 46 64 50 Q56 44 48 50 Q38 44 30 50 Q22 46 16 52Z"',"#FFF6E8") +
+    sh("ellipse",'cx="50" cy="40" rx="10" ry="6"',"#D6336C") +
+    `<g fill="${INK}"><circle cx="30" cy="40" r="1.4"/><circle cx="68" cy="38" r="1.4"/><circle cx="40" cy="34" r="1.2"/><circle cx="60" cy="33" r="1.2"/><circle cx="74" cy="44" r="1.2"/></g>`},
+  levivah:{vb:"0 0 100 100", name:"לביבה", d:() =>
+    sh("ellipse",'cx="50" cy="66" rx="46" ry="16"',"#CDE7DC") +
+    sh("path",'d="M14 58 Q12 44 30 40 Q42 34 56 38 Q76 36 84 46 Q92 56 80 64 Q66 72 48 70 Q24 70 14 58Z"',"#D9A441") +
+    `<path d="M28 52 q6 -4 12 0 M50 46 q6 -4 12 0 M56 60 q6 -4 12 0 M34 62 q5 -3 10 0" fill="none" stroke="#8a5a17" stroke-width="2" stroke-linecap="round"/>`},
+  pach:{vb:"0 0 100 100", name:"פך שמן", d:() =>
+    `<path d="M66 46 Q90 46 84 66 Q81 74 72 72" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>` +
+    `<path d="M66 46 Q90 46 84 66 Q81 74 72 72" fill="none" stroke="${LINE ? "#fff" : "#C9A15A"}" stroke-width="2.5" stroke-linecap="round"/>` +
+    sh("path",'d="M38 40 Q20 54 24 74 Q28 92 50 92 Q72 92 76 74 Q80 54 62 40Z"',"#C9A15A") +
+    sh("rect",'x="40" y="22" width="20" height="20"',"#C9A15A") +
+    sh("rect",'x="35" y="14" width="30" height="10" rx="4"',"#A97A33") +
+    sh("path",'d="M50 54 Q42 66 42 70 A8 8 0 0 0 58 70 Q58 66 50 54Z"',"#F5C518")},
+  coin:{vb:"0 0 100 100", name:"מטבע שוקולד", d:() =>
+    sh("circle",'cx="50" cy="52" r="38"',"#F2B630") +
+    sh("circle",'cx="50" cy="52" r="28"',"#F7D96B") +
+    `<text x="50" y="64" text-anchor="middle" font-family="Fredoka,Arial" font-weight="700" font-size="32" fill="${INK}">₪</text>` +
+    (LINE ? "" : `<path d="M80 16 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#fff" stroke="${INK}" stroke-width="1.5"/>`)},
+  candle:{vb:"0 0 100 100", name:"נר", d:() =>
+    flame(50, 8, 1.4) + `<line x1="50" y1="29" x2="50" y2="36" stroke="${INK}" stroke-width="2.4"/>` +
+    sh("rect",'x="38" y="36" width="24" height="52" rx="5"',"#6FB3E8") +
+    sh("path",'d="M38 50 L62 44 V56 L38 62Z"',"#fff") +
+    sh("rect",'x="28" y="86" width="44" height="8" rx="4"',"#F2B630")},
+  sevivon:{vb:"0 0 100 100", name:"סביבון", d:(L = "נ") =>
+    sh("rect",'x="44" y="4" width="12" height="24" rx="5"',"#4E8576") +
+    sh("path",'d="M20 28 H80 Q84 28 84 32 V58 L50 96 L16 58 V32 Q16 28 20 28Z"',"#FF56C2") +
+    sh("path",'d="M70 30 H80 Q82 30 82 32 V58 L60 82 Z"',"#C13671") +
+    `<text x="44" y="66" text-anchor="middle" font-family="Fredoka,Arial" font-weight="700" font-size="34" fill="${LINE ? INK : "#fff"}">${L}</text>`},
+  hanukkiah:{vb:"0 0 120 104", name:"חנוכייה", d:(lit = 8, shamash = true) => {
+    let s = sh("rect",'x="38" y="94" width="44" height="8" rx="4"',"#E0A82E") + sh("rect",'x="55" y="62" width="10" height="34"',"#E0A82E");
+    s += sh("rect",'x="2" y="58" width="116" height="7" rx="3.5"',"#E0A82E");
+    s += sh("rect",'x="56" y="36" width="8" height="24"',"#E0A82E");
+    HX.forEach(x => s += sh("rect",`x="${x-5}" y="52" width="10" height="7" rx="2"`,"#E0A82E"));
+    s += sh("rect",'x="54" y="30" width="12" height="7" rx="2"',"#E0A82E");
+    // נרות: מדליקים מימין לשמאל, לכן הלילה הראשון הוא הנר הימני
+    const order = [...HX].reverse();
+    order.slice(0, lit).forEach((x, i) => {
+      s += sh("rect",`x="${x-3.5}" y="38" width="7" height="15" rx="1.5"`, CANDLE_COLORS[i]) + flame(x, 22, .95);
+    });
+    if (shamash) s += sh("rect",'x="56.5" y="14" width="7" height="17" rx="1.5"',"#fff") + flame(60, -2, .95);
+    return s; }}
+};
+function svg(key, ...args){ const a = ART[key]; return `<svg viewBox="${a.vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" overflow="visible">${a.d(...args)}</svg>`; }
+function lineSvg(key, ...args){ LINE = true; const s = svg(key, ...args); LINE = false; return s; }
+
+/* ======================== קול, צלילים והודעות ======================== */
+let heVoice = null;
+function pickVoice(){ try { heVoice = speechSynthesis.getVoices().find(v => /^he|^iw/i.test(v.lang)) || null; } catch(e){} }
+if ("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+let ttsWarned = false;
+function say(text){
+  if (!text) return;
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}☀-➿]/gu, ""));
+    u.lang = "he-IL"; u.rate = .92; if (heVoice) u.voice = heVoice;
+    u.onerror = () => warnTTS();
+    speechSynthesis.speak(u);
+    if (!heVoice && speechSynthesis.getVoices().length) warnTTS();
+  } catch(e){ warnTTS(); }
+}
+function warnTTS(){ if (ttsWarned) return; ttsWarned = true; toast("🔊 לא שומעים? הגבירו את הווליום, ופתחו את האתר בכרום או בספארי (לא מתוך אפליקציה)."); }
+let ac = null;
+function tone(notes){
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    notes.forEach(([f, t, d]) => {
+      const o = ac.createOscillator(), g = ac.createGain(); o.type = "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, ac.currentTime + t); g.gain.exponentialRampToValueAtTime(.18, ac.currentTime + t + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + t + d); o.connect(g).connect(ac.destination);
+      o.start(ac.currentTime + t); o.stop(ac.currentTime + t + d + .05);
+    });
+  } catch(e){}
+}
+const good = () => tone([[660,0,.15],[880,.12,.25]]);
+const bad = () => tone([[260,0,.25]]);
+const cheer = () => tone([[523,0,.15],[659,.13,.15],[784,.26,.15],[1046,.4,.4]]);
+let toastT;
+function toast(t){
+  let el = document.querySelector(".toast"); if (!el){ el = document.createElement("div"); el.className = "toast"; el.setAttribute("role","status"); document.body.appendChild(el); }
+  el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 5000);
+}
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const $ = id => document.getElementById(id);
+
+/* ======================== מסך ניצחון ======================== */
+function couponHTML(print){
+  if (CONFIG.coupon) return print
+    ? `🎁 קופון לספר אישי לילד: <b>${CONFIG.coupon}</b> · booqli.ai`
+    : `<p>🎁 מתנה מ-BOOQLI: קופון הנחה לספר אישי שהילד הוא הגיבור שלו</p><b>${CONFIG.coupon}</b><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a></p>`;
+  return print
+    ? `🎁 ספר אישי שהילד הוא הגיבור שלו · <b>booqli.ai</b>`
+    : `<p>🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד</p><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת ספר אישי ←</a></p>`;
+}
+let winAgain = null;
+function showWin(text, stars = 3, again){
+  winAgain = again;
+  $("wIc").innerHTML = svg("hanukkiah", 8, true);
+  $("wStars").textContent = "⭐".repeat(stars);
+  $("wText").textContent = text;
+  $("wCoupon").innerHTML = couponHTML(false);
+  $("win").hidden = false; cheer(); confetti(); say("כל הכבוד! " + text);
+  $("wAgain").focus();
+}
+$("wAgain").onclick = () => { $("win").hidden = true; winAgain && winAgain(); };
+$("wNext").onclick = () => { $("win").hidden = true; const i = ACTS.findIndex(a => a.id === current); openAct(ACTS[(i + 1) % ACTS.length].id); };
+function confetti(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = document.createElement("div"); c.className = "confetti";
+  const cols = ["#FF56C2","#F2B630","#7FA89B","#6FB3E8","#C13671"];
+  for (let i = 0; i < 40; i++){ const p = document.createElement("i"); p.style.left = Math.random()*100 + "%"; p.style.background = cols[i % 5]; p.style.animationDelay = Math.random()*.8 + "s"; c.appendChild(p); }
+  document.body.appendChild(c); setTimeout(() => c.remove(), 3500);
+}
+
+/* ======================== 1. זיכרון ======================== */
+const MEM_KEYS = [["sufganiya"],["sevivon","נ"],["hanukkiah",8,true],["pach"],["levivah"],["coin"],["candle"],["sevivon","פ"]];
+function memory(body, pairs = 6){
+  body.innerHTML = `<div class="howto">הפכו שני קלפים. מצאו את כל הזוגות!</div>
+  <div class="levels"><button class="lv ${pairs===4?"on":""}" data-p="4">קל · 4 זוגות</button><button class="lv ${pairs===6?"on":""}" data-p="6">רגיל · 6 זוגות</button><button class="lv ${pairs===8?"on":""}" data-p="8">אלופים · 8 זוגות</button></div>
+  <div class="status"><span id="mTries">ניסיונות: 0</span><span id="mPairs">זוגות: 0/${pairs}</span></div><div class="mem" id="mem"></div>`;
+  body.querySelectorAll(".lv").forEach(b => b.onclick = () => memory(body, +b.dataset.p));
+  const g = $("mem"); g.style.gridTemplateColumns = `repeat(${pairs === 4 ? 4 : pairs === 6 ? 4 : 4},1fr)`;
+  if (pairs === 8) g.style.maxWidth = "560px";
+  const deck = shuffle(MEM_KEYS.slice(0, pairs).flatMap((k, i) => [i, i]));
+  let open = [], tries = 0, found = 0, lock = false;
+  deck.forEach(i => {
+    const k = MEM_KEYS[i], b = document.createElement("button"); b.className = "mcard"; b.type = "button"; b.dataset.k = i;
+    b.setAttribute("aria-label", "קלף");
+    b.innerHTML = `<div class="in"><div class="b">${svg("candle")}</div><div class="f">${svg(...k)}</div></div>`;
+    b.onclick = () => {
+      if (lock || b.classList.contains("flip")) return;
+      b.classList.add("flip"); b.setAttribute("aria-label", ART[k[0]].name); open.push(b);
+      if (open.length < 2) return;
+      tries++; $("mTries").textContent = "ניסיונות: " + tries;
+      const [a, c] = open; open = [];
+      if (a.dataset.k === c.dataset.k){
+        found++; a.classList.add("done"); c.classList.add("done"); good(); say(ART[k[0]].name);
+        $("mPairs").textContent = `זוגות: ${found}/${pairs}`;
+        if (found === pairs) setTimeout(() => showWin(`מצאתם את כל הזוגות ב-${tries} ניסיונות`, tries <= pairs * 1.6 ? 3 : tries <= pairs * 2.4 ? 2 : 1, () => memory(body, pairs)), 600);
+      } else { lock = true; setTimeout(() => { a.classList.remove("flip"); c.classList.remove("flip"); lock = false; }, 900); }
+    };
+    g.appendChild(b);
+  });
+}
+
+/* ======================== 2. מדליקים את החנוכייה (ספירה) ======================== */
+const ORD = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שביעי","שמיני"];
+const CNT = ["נר אחד","שני נרות","שלושה נרות","ארבעה נרות","חמישה נרות","שישה נרות","שבעה נרות","שמונה נרות"];
+function lighting(body, night = 1, firstTry = 0){
+  let lit = new Set();
+  body.innerHTML = `<div class="howto">כל לילה מדליקים עוד נר אחד. לחצו על מקום בחנוכייה כדי לשים נר דולק, ואז "סיימתי".</div>
+  <div class="night-big">לילה <b>${night}</b> של חנוכה</div>
+  <div class="dots">${Array.from({length:8}, (_, i) => `<i class="${i < night - 1 ? "ok" : ""}"></i>`).join("")}</div>
+  <div class="lightbox" id="lb"></div>
+  <div class="status" style="margin-top:12px"><span id="lc">נרות דולקים: 0</span></div>
+  <div class="center"><button class="btn-main" id="lDone" type="button">✓ סיימתי</button></div>
+  <div class="fact" id="lFact" hidden></div>`;
+  const draw = () => {
+    // ציור החנוכייה עם הנרות שהילד בחר + אזורי לחיצה
+    let s = "", i = 0;
+    s += sh("rect",'x="38" y="94" width="44" height="8" rx="4"',"#E0A82E") + sh("rect",'x="55" y="62" width="10" height="34"',"#E0A82E") +
+      sh("rect",'x="2" y="58" width="116" height="7" rx="3.5"',"#E0A82E") + sh("rect",'x="56" y="36" width="8" height="24"',"#E0A82E") +
+      sh("rect",'x="54" y="30" width="12" height="7" rx="2"',"#E0A82E") + sh("rect",'x="56.5" y="14" width="7" height="17" rx="1.5"',"#fff") + flame(60, -2, .95);
+    HX.forEach((x, j) => {
+      const on = lit.has(j);
+      s += `<g class="cup" data-j="${j}" role="button" tabindex="0" aria-label="מקום לנר ${j+1}${on ? ", דולק" : ""}">` +
+        sh("rect",`x="${x-5}" y="52" width="10" height="7" rx="2"`, on ? "#E0A82E" : "#FFE3F4") +
+        (on ? sh("rect",`x="${x-3.5}" y="38" width="7" height="15" rx="1.5"`, CANDLE_COLORS[7-j]) + flame(x, 22, .95)
+            : `<circle cx="${x}" cy="44" r="4" fill="none" stroke="#FFE3F4" stroke-width="1.6" stroke-dasharray="2 2"/>`) +
+        `<rect class="hit" x="${x-6.5}" y="16" width="13" height="46"/></g>`;
+    });
+    $("lb").innerHTML = `<svg viewBox="0 -6 120 110" xmlns="http://www.w3.org/2000/svg" overflow="visible">${s}</svg>`;
+    $("lc").textContent = "נרות דולקים: " + lit.size;
+    $("lb").querySelectorAll(".cup").forEach(c => {
+      const t = () => { const j = +c.dataset.j; lit.has(j) ? lit.delete(j) : (lit.add(j), tone([[520 + lit.size * 60, 0, .15]])); draw(); };
+      c.onclick = t; c.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); t(); } };
+    });
+  };
+  draw();
+  say(`לילה ${ORD[night-1]} של חנוכה. כמה נרות מדליקים? חוץ מהשמש, מדליקים ${CNT[night-1]}.`);
+  $("stSay").onclick = () => say(`לילה ${ORD[night-1]} של חנוכה. הדליקו ${CNT[night-1]}, ואז לחצו סיימתי.`);
+  $("lDone").onclick = () => {
+    const f = $("lFact");
+    if (lit.size === night){
+      good(); f.hidden = false;
+      f.textContent = `נכון! בלילה ה${ORD[night-1]} מדליקים ${CNT[night-1]}, ועוד נר אחד: השמש, שמדליק את כולם.`;
+      say(f.textContent);
+      $("lDone").disabled = true;
+      const nf = firstTry + 1;
+      setTimeout(() => night < 8 ? lighting(body, night + 1, nf) : showWin("הדלקתם את החנוכייה בכל שמונת הלילות", 3, () => lighting(body, 1)), 2600);
+    } else {
+      bad(); $("lb").classList.remove("shake"); void $("lb").offsetWidth; $("lb").classList.add("shake");
+      const m = lit.size < night ? "חסרים נרות. נסו להוסיף עוד." : "יש יותר מדי נרות. לחצו על נר כדי להוריד אותו.";
+      f.hidden = false; f.textContent = m; say(m);
+    }
+  };
+}
+
+/* ======================== 3. מיון: של חנוכה או לא? ======================== */
+const SORT = [
+  {k:"sufganiya", n:"סופגנייה", y:1}, {k:"levivah", n:"לביבה", y:1}, {k:"sevivon", n:"סביבון", y:1},
+  {k:"hanukkiah", n:"חנוכייה", y:1}, {k:"pach", n:"פך שמן", y:1}, {k:"coin", n:"מטבע שוקולד", y:1}, {k:"candle", n:"נר", y:1},
+  {e:"🍉", n:"אבטיח", y:0, why:"אבטיח אוכלים בקיץ"}, {e:"🎭", n:"מסכה", y:0, why:"מסכות שמים בפורים"},
+  {e:"🍯", n:"דבש", y:0, why:"תפוח בדבש אוכלים בראש השנה"}, {e:"⛱️", n:"שמשייה", y:0, why:"שמשייה לוקחים לים בקיץ"},
+  {e:"🍦", n:"גלידה", y:0, why:"גלידה אוהבים בעיקר בקיץ"}
+];
+function sorting(body){
+  const deck = shuffle(SORT); let i = 0, first = 0, miss = false;
+  body.innerHTML = `<div class="howto">מה שייך לחנוכה? לחצו על הסל הנכון.</div>
+  <div class="status"><span id="sCount"></span></div>
+  <div class="sort-item" id="sItem"></div><div class="sort-name" id="sName"></div>
+  <div class="bins">
+    <button class="bin yes" id="bYes" type="button">${svg("hanukkiah",8,true)}של חנוכה</button>
+    <button class="bin no" id="bNo" type="button"><span class="x">❌</span>לא של חנוכה</button>
+  </div><div class="fact" id="sFact" hidden></div>`;
+  const show = () => {
+    const it = deck[i]; miss = false;
+    $("sCount").textContent = `${i + 1} מתוך ${deck.length}`;
+    $("sItem").innerHTML = it.k ? svg(it.k) : it.e; $("sName").textContent = it.n;
+    $("sItem").classList.remove("pop"); void $("sItem").offsetWidth; $("sItem").classList.add("pop");
+    say(it.n + ". זה של חנוכה?");
+  };
+  $("stSay").onclick = () => say("מה שייך לחנוכה? " + deck[i].n + ". לחצו על הסל הנכון.");
+  const pick = yes => {
+    const it = deck[i], f = $("sFact");
+    if (!!it.y === yes){
+      good(); if (!miss) first++;
+      f.hidden = false; f.textContent = it.y ? `נכון! ${it.n} זה של חנוכה 🕎` : `נכון! ${it.why}.`; say(f.textContent);
+      i++; if (i === deck.length) return setTimeout(() => showWin(`מיינתם נכון ${first} מתוך ${deck.length} כבר בפעם הראשונה`, first >= 11 ? 3 : first >= 8 ? 2 : 1, () => sorting(body)), 900);
+      setTimeout(show, 1100);
+    } else {
+      bad(); miss = true; const m = "לא בדיוק. נסו את הסל השני.";
+      f.hidden = false; f.textContent = m; say(m);
+      const b = yes ? $("bYes") : $("bNo"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake");
+    }
+  };
+  $("bYes").onclick = () => pick(true); $("bNo").onclick = () => pick(false);
+  show();
+}
+
+/* ======================== 4. חידון חנוכה ======================== */
+const QUIZ = [
+  {q:"כמה ימים חוגגים את חנוכה?", pic:["hanukkiah",8,true], o:[["8","שמונה"],["3","שלושה"],["1","אחד"]], fact:"חנוכה נמשך שמונה ימים, ובכל ערב מדליקים עוד נר."},
+  {q:"איך קוראים לנר שמדליק את כל הנרות?", pic:["candle"], o:[["השמש"],["הירח"],["הכוכב"]], fact:"השמש עומד קצת בצד או גבוה יותר, ובעזרתו מדליקים את שאר הנרות."},
+  {q:"אילו אותיות כתובות על הסביבון בארץ ישראל?", pic:["sevivon","ג"], o:[["נ ג ה פ","נון, גימל, הא, פא"],["א ב ג ד","אלף, בית, גימל, דלת"],["ש ל ו ם","שין, למד, וו, מם"]], fact:"נ ג ה פ: נס גדול היה פה. מחוץ לארץ ישראל כתוב ש במקום פ: נס גדול היה שם."},
+  {q:"מה אוכלים בחנוכה?", o:[["סופגניות",null,"sufganiya"],["אבטיח 🍉","אבטיח"],["מצות"]], fact:"בחנוכה אוכלים מאכלים מטוגנים בשמן, כמו סופגניות ולביבות."},
+  {q:"למה מטגנים בשמן בחנוכה?", pic:["pach"], o:[["לזכור את פך השמן"],["כי קר בחוץ"],["כי זה צבעוני"]], fact:"מספרים שבבית המקדש נמצא פך שמן קטן, והוא דלק שמונה ימים. לכן מטגנים בשמן."},
+  {q:"כמה נרות מדליקים בלילה הראשון, חוץ מהשמש?", pic:["hanukkiah",1,true], o:[["1","אחד"],["8","שמונה"],["4","ארבעה"]], fact:"בלילה הראשון מדליקים נר אחד ועוד השמש. כל לילה מוסיפים עוד נר."},
+  {q:"איך קראו לגיבור המכבים?", o:[["יהודה המכבי"],["דוד המלך"],["משה רבנו"]], fact:"יהודה המכבי ואחיו נלחמו כדי שהיהודים יוכלו לשמור על המנהגים שלהם."},
+  {q:"איפה שמים את החנוכייה?", pic:["hanukkiah",3,true], o:[["ליד החלון או הדלת"],["בתוך הארון"],["מתחת למיטה"]], fact:"שמים את החנוכייה ליד החלון או ליד הדלת, כדי שכולם יראו את האור."}
+];
+function quiz(body, n = 0, score = 0, order = null){
+  order = order || shuffle(QUIZ.map((_, i) => i));
+  const Q = QUIZ[order[n]]; let missed = false;
+  const opts = shuffle(Q.o);
+  body.innerHTML = `<div class="status"><span>שאלה ${n + 1} מתוך ${QUIZ.length}</span><span>⭐ ${score}</span></div>
+  ${Q.pic ? `<div class="q-pic">${svg(...Q.pic)}</div>` : ""}
+  <div class="q-text">${Q.q}</div>
+  <div class="opts">${opts.map((o, i) => `<button class="opt" type="button" data-i="${i}">${o[2] ? svg(o[2]) : ""}<span>${o[0]}</span></button>`).join("")}</div>
+  <div class="fact" id="qFact" hidden></div>`;
+  const speakQ = () => say(Q.q + " " + opts.map(o => o[1] || o[0].replace(/[^֐-׿ ,]/g, "")).join(", או ") + "?");
+  speakQ(); $("stSay").onclick = speakQ;
+  body.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const o = opts[+b.dataset.i];
+    if (o === Q.o[0]){
+      b.classList.add("right"); good(); if (!missed) score++;
+      body.querySelectorAll(".opt").forEach(x => x.disabled = true);
+      $("qFact").hidden = false; $("qFact").textContent = "נכון! " + Q.fact; say("נכון! " + Q.fact);
+      const nx = document.createElement("div"); nx.className = "center"; nx.style.marginTop = "14px";
+      nx.innerHTML = `<button class="btn-main" type="button">${n + 1 < QUIZ.length ? "לשאלה הבאה ←" : "לתוצאה ←"}</button>`;
+      body.appendChild(nx);
+      nx.querySelector("button").onclick = () => n + 1 < QUIZ.length ? quiz(body, n + 1, score, order)
+        : showWin(`ענו נכון ${score} מתוך ${QUIZ.length} כבר בניסיון הראשון`, score >= 7 ? 3 : score >= 5 ? 2 : 1, () => quiz(body));
+      nx.querySelector("button").focus();
+    } else { missed = true; b.classList.add("wrong"); b.disabled = true; bad(); say("לא בדיוק. נסו שוב."); }
+  });
+}
+
+/* ======================== 5. פאזל ======================== */
+function scene(){
+  // ציור לפאזל: לילה, חלון, חנוכייה דולקת, סביבון וסופגנייה. 300x300
+  const st = [[30,30],[80,18],[150,26],[220,14],[270,40],[40,90],[260,96],[120,60]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="2.4" fill="#fff"/>`).join("");
+  const nest = (key, x, y, w, h, ...a) => `<svg x="${x}" y="${y}" width="${w}" height="${h}" viewBox="${ART[key].vb}" overflow="visible">${ART[key].d(...a)}</svg>`;
+  return `<rect width="300" height="300" fill="#24325F"/>${st}
+    <circle cx="246" cy="58" r="26" fill="#FFF3C4"/><circle cx="234" cy="50" r="24" fill="#24325F"/>
+    <rect x="18" y="214" width="264" height="70" rx="10" fill="#7A4E2D"/><rect x="18" y="214" width="264" height="12" rx="6" fill="#9A6A40"/>
+    ${nest("hanukkiah", 40, 86, 220, 190, 8, true)}
+    ${nest("sevivon", 26, 216, 64, 64, "ג")}
+    ${nest("sufganiya", 206, 222, 72, 64)}`;
+}
+function puzzle(body, size = 3){
+  const N = size * size, cell = 300 / size, sc = scene();
+  let order = shuffle([...Array(N).keys()]); while (order.every((v, i) => v === i)) order = shuffle(order);
+  let sel = null, moves = 0;
+  body.innerHTML = `<div class="howto">לחצו על שני חלקים כדי להחליף ביניהם, עד שהתמונה מסתדרת.</div>
+  <div class="levels"><button class="lv ${size===2?"on":""}" data-s="2">קל · 4 חלקים</button><button class="lv ${size===3?"on":""}" data-s="3">רגיל · 9 חלקים</button><button class="lv ${size===4?"on":""}" data-s="4">אלופים · 16 חלקים</button></div>
+  <div class="status"><span id="pMoves">החלפות: 0</span></div>
+  <div class="pz" id="pz" style="grid-template-columns:repeat(${size},1fr)"></div>
+  <div class="pz-hint"><svg viewBox="0 0 300 300">${sc}</svg></div><p class="center" style="margin:4px 0 0;color:var(--muted);font-size:14px">ככה התמונה צריכה להיראות</p>`;
+  body.querySelectorAll(".lv").forEach(b => b.onclick = () => puzzle(body, +b.dataset.s));
+  const draw = () => {
+    $("pz").innerHTML = order.map((p, pos) => { const x = (p % size) * cell, y = Math.floor(p / size) * cell;
+      return `<button class="tile ${sel === pos ? "sel" : ""}" type="button" data-pos="${pos}" aria-label="חלק ${pos+1}"><svg viewBox="${x} ${y} ${cell} ${cell}" preserveAspectRatio="none">${sc}</svg></button>`; }).join("");
+    $("pz").querySelectorAll(".tile").forEach(t => t.onclick = () => {
+      const pos = +t.dataset.pos;
+      if (sel === null){ sel = pos; tone([[600,0,.08]]); return draw(); }
+      if (sel !== pos){ [order[sel], order[pos]] = [order[pos], order[sel]]; moves++; $("pMoves").textContent = "החלפות: " + moves; good(); }
+      sel = null; draw();
+      if (order.every((v, i) => v === i)) setTimeout(() => showWin(`סידרתם את התמונה ב-${moves} החלפות`, moves <= N ? 3 : moves <= N * 1.6 ? 2 : 1, () => puzzle(body, size)), 400);
+    });
+  };
+  draw();
+}
+
+/* ======================== 6. צביעה ======================== */
+const COLOR_PICS = [["hanukkiah",8,true],["sevivon","ה"],["sufganiya"],["pach"],["levivah"],["candle"]];
+const PALETTE = ["#FF56C2","#C13671","#E5484D","#FF8A5C","#F2B630","#FFE066","#7FA89B","#4E8576","#6FB3E8","#33478A","#B488E8","#8a5a17","#ffffff"];
+function coloring(body, pic = 0){
+  let color = PALETTE[0];
+  const P = COLOR_PICS[pic];
+  body.innerHTML = `<div class="howto">בחרו צבע ולחצו על חלק בציור כדי לצבוע אותו.</div>
+  <div class="pick">${COLOR_PICS.map((p, i) => `<button type="button" class="${i===pic?"on":""}" data-i="${i}" aria-label="${ART[p[0]].name}">${lineSvg(...p)}</button>`).join("")}</div>
+  <div class="canvas" id="cv">${lineSvg(...P)}</div>
+  <div class="palette">${PALETTE.map((c, i) => `<button class="sw ${i===0?"on":""}" type="button" style="background:${c}" data-c="${c}" aria-label="צבע ${i+1}"></button>`).join("")}</div>
+  <div class="row-btns"><button class="btn-sec" id="cClear" type="button">🧽 לנקות</button><button class="btn-main" id="cDone" type="button">✓ סיימתי לצבוע</button></div>
+  <div class="row-btns"><button class="btn-sec" id="cPrint" type="button">🖨️ להדפיס דף צביעה ריק</button><button class="btn-sec" id="cPrintMine" type="button">🖨️ להדפיס את הציור שלי</button></div>`;
+  const s = $("cv").querySelector("svg"); s.removeAttribute("aria-hidden"); s.setAttribute("role","img"); s.setAttribute("aria-label", ART[P[0]].name + " לצביעה");
+  body.querySelectorAll(".pick button").forEach(b => b.onclick = () => coloring(body, +b.dataset.i));
+  body.querySelectorAll(".sw").forEach(b => b.onclick = () => { body.querySelectorAll(".sw").forEach(x => x.classList.remove("on")); b.classList.add("on"); color = b.dataset.c; tone([[700,0,.06]]); });
+  $("cv").querySelectorAll(".rg").forEach(r => r.addEventListener("click", () => { r.setAttribute("fill", color); tone([[500 + Math.random()*300,0,.08]]); }));
+  $("cClear").onclick = () => $("cv").querySelectorAll(".rg").forEach(r => r.setAttribute("fill", "#fff"));
+  $("cDone").onclick = () => showWin("איזה ציור יפה! אפשר להדפיס אותו ולתלות בגן", 3, () => coloring(body, (pic + 1) % COLOR_PICS.length));
+  $("cPrint").onclick = () => printSheets([colorSheet(P)]);
+  $("cPrintMine").onclick = () => printSheets([sheet("הציור שלי לחנוכה", "", `<div style="flex:1;display:grid;place-items:center">${$("cv").innerHTML.replace('<svg','<svg style="width:100%;height:100%;max-height:220mm"')}</div>`)]);
+  $("stSay").onclick = () => say("בחרו צבע, ולחצו על חלק בציור כדי לצבוע אותו.");
+}
+
+/* ======================== דפים להדפסה ======================== */
+function sheet(title, sub, inner){
+  return `<div class="sheet"><div class="s-head"><h1>${title}</h1><div class="nm">השם שלי: ____________</div></div>
+  ${sub ? `<p class="s-sub">${sub}</p>` : ""}<div class="s-body">${inner}</div>
+  <div class="s-foot"><div class="lg"><img src="../../img/logo.png" alt="BOOQLI"></div><div class="t">booqli Games · כל התכנים מוענקים בחינם, בחסות BOOQLI<br>${couponHTML(true)}</div></div></div>`;
+}
+function colorSheet(P){
+  const name = ART[P[0]].name;
+  return sheet(`דף צביעה: ${name}`, "צבעו את הציור בצבעים שאתם אוהבים", `<div style="flex:1;display:grid;place-items:center;padding:6mm">${lineSvg(...P).replace('<svg', '<svg style="width:100%;height:100%;max-height:205mm"')}</div>`);
+}
+const small = (k, ...a) => svg(k, ...a);
+function wsCount(){
+  const rows = [["sufganiya",3,[2,3,5]],["sevivon",5,[5,4,1]],["candle",2,[3,2,6]],["coin",4,[4,6,2]],["levivah",1,[1,3,2]]];
+  return sheet("סופרים ומקיפים", "כמה יש בכל שורה? הקיפו את המספר הנכון", `<div style="flex:1;min-height:0;display:grid;grid-template-rows:repeat(5,minmax(0,1fr));gap:4mm">` + rows.map(([k, n, opts]) =>
+    `<div class="cnt-row" style="margin:0"><div class="items">${Array(n).fill(lineSvg(k, "נ")).join("")}</div><div class="nums">${opts.map(o => `<span>${o}</span>`).join("")}</div></div>`).join("") + `</div>`);
+}
+function wsPath(){
+  // שבילים מנוקדים מימין לשמאל: לעקוב עם העיפרון
+  const rows = [[["sevivon","נ"],["hanukkiah",8,true],"M232 50 Q170 10 120 50 T8 50"],[["sufganiya"],["pach"],"M232 50 L190 20 L150 80 L110 20 L70 80 L30 20 L8 50"],[["candle"],["hanukkiah",3,true],"M232 50 Q200 90 160 50 Q120 10 80 50 Q50 80 8 50"],[["coin"],["sevivon","ג"],"M232 50 H8"]];
+  return sheet("עוזרים לחברים להגיע", "עברו עם העיפרון על הקו המנוקד, מהימין לשמאל", `<div style="display:grid;grid-auto-rows:1fr;gap:5mm;flex:1">${rows.map(([a, b, d]) =>
+    `<div style="display:flex;align-items:center;gap:3mm;border:2px solid #E1F0EA;border-radius:6mm;padding:2mm 4mm"><div style="width:32mm;height:32mm;flex-shrink:0">${lineSvg(...a)}</div>
+    <svg viewBox="0 0 240 100" style="flex:1;height:30mm" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="#7FA89B" stroke-width="3.5" stroke-dasharray="2 8" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+    <div style="width:32mm;height:32mm;flex-shrink:0">${lineSvg(...b)}</div></div>`).join("")}</div>`);
+}
+function wsPattern(){
+  const rows = [["sevivon","sufganiya"],["candle","candle","coin"],["pach","levivah"],["sufganiya","sevivon","sevivon"]];
+  return sheet("מה בא אחר כך?", "המשיכו את הסדרה: ציירו בריבוע את מה שבא אחר כך", `<div style="flex:1;display:grid;grid-auto-rows:1fr;gap:5mm">` + rows.map(r => {
+    const seq = [...r, ...r, r[0]].slice(0, 5);
+    return `<div class="pat-row" style="margin:0">${seq.map(k => lineSvg(k, "נ")).join("")}<div class="q"></div></div>`; }).join("") + `</div>`);
+}
+function wsNights(){
+  return sheet("כמה נרות בכל לילה?", "ציירו בכל חנוכייה את מספר הנרות של הלילה, וצבעו את הלהבות", `<div class="n-grid">${[1,2,3,4].map(n =>
+    `<div class="n-cell"><div class="lab">לילה <b>${n}</b></div><div style="width:100%;flex:1;display:grid;place-items:center">${lineSvg("hanukkiah", 0, true).replace('<svg','<svg style="width:92%;height:auto"')}</div><div style="font-size:13pt">${"○ ".repeat(n)}</div></div>`).join("")}</div>`);
+}
+function craftSevivon(){
+  // שרטוט פריסה של קובייה: מרכזית למעלה ולמטה, ארבע הצלעות עם נ ג ה פ, ולשוניות הדבקה
+  const S = 46, ox = 18, oy = 8, L = ["נ","ג","ה","פ"];
+  let g = "";
+  const sq = (x, y, inner = "") => `<rect x="${x}" y="${y}" width="${S}" height="${S}" fill="#fff" stroke="#2B1526" stroke-width="1.2"/>${inner}`;
+  const tab = (x, y, w, h, dir) => { const t = 7; let p;
+    if (dir === "up") p = `M${x} ${y} L${x+t} ${y-t} L${x+w-t} ${y-t} L${x+w} ${y}`;
+    if (dir === "down") p = `M${x} ${y} L${x+t} ${y+t} L${x+w-t} ${y+t} L${x+w} ${y}`;
+    if (dir === "left") p = `M${x} ${y} L${x-t} ${y+t} L${x-t} ${y+h-t} L${x} ${y+h}`;
+    return `<path d="${p}" fill="#F1F7F4" stroke="#2B1526" stroke-width="1" stroke-dasharray="3 2"/>`; };
+  // שורה אמצעית: 4 פאות עם אותיות (מימין לשמאל)
+  for (let i = 0; i < 4; i++){
+    const x = ox + (3 - i) * S, y = oy + S;
+    g += sq(x, y, `<text x="${x+S/2}" y="${y+S/2+12}" text-anchor="middle" font-family="Fredoka,Arial" font-size="34" font-weight="700" fill="none" stroke="#2B1526" stroke-width="1.3">${L[i]}</text>`);
+  }
+  const cx = ox + 3 * S;
+  g += sq(cx, oy, `<circle cx="${cx+S/2}" cy="${oy+S/2}" r="3" fill="#2B1526"/><text x="${cx+S/2}" y="${oy+S-6}" text-anchor="middle" font-size="5" fill="#4E8576">חור לעיפרון</text>`);
+  g += sq(cx, oy + 2 * S, `<circle cx="${cx+S/2}" cy="${oy+2.5*S}" r="3" fill="#2B1526"/><text x="${cx+S/2}" y="${oy+3*S-6}" text-anchor="middle" font-size="5" fill="#4E8576">חור לעיפרון</text>`);
+  g += tab(ox, oy + S, S, S, "left");
+  for (let i = 0; i < 3; i++){ const x = ox + i * S; g += tab(x, oy + S, S, 0, "up") + tab(x, oy + 2 * S, S, 0, "down"); }
+  return sheet("סביבון לגזירה והרכבה", "צבעו, גזרו לאורך הקו השחור, קפלו לאורך כל הקווים והדביקו את הלשוניות",
+    `<div style="flex:1;display:grid;place-items:center"><svg viewBox="6 0 206 148" style="width:100%;height:auto">${g}</svg></div>
+    <div style="font-size:12pt;line-height:1.5;border:2px solid #E1F0EA;border-radius:5mm;padding:3mm 5mm">✂️ <b>בעזרת מבוגר:</b> מדפיסים על נייר עבה (בריסטול). אחרי ההדבקה, מבוגר מחורר את שני החורים ומשחיל עיפרון קצר ומחודד, כך שהחוד בולט מלמטה. מסובבים את העיפרון בין האצבעות, והסביבון מסתובב!</div>`);
+}
+function craftFlames(){
+  const fl = `<svg viewBox="0 0 60 80"><path d="M30 4 Q52 34 46 56 Q40 76 30 76 Q20 76 14 56 Q8 34 30 4Z" fill="#fff" stroke="#2B1526" stroke-width="1.6"/><path d="M30 34 Q40 50 36 62 Q33 68 30 68 Q27 68 24 62 Q20 50 30 34Z" fill="#fff" stroke="#2B1526" stroke-width="1.2" stroke-dasharray="3 2"/></svg>`;
+  return sheet("חנוכייה מגלילי נייר", "צבעו 9 להבות, גזרו והדביקו על גלילי נייר טואלט. 8 גלילים בשורה ועוד גליל גבוה אחד לשמש",
+    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6mm;flex:1;align-content:center">${Array(9).fill(`<div style="height:62mm;display:grid;place-items:center">${fl.replace("<svg","<svg style=\"height:100%;width:auto\"")}</div>`).join("")}</div>
+    <div style="font-size:12pt;border:2px solid #E1F0EA;border-radius:5mm;padding:3mm 5mm">✂️ צריך: 9 גלילי נייר טואלט, מספריים, דבק, צבעים ולוח קרטון ארוך. מדביקים את הגלילים על הקרטון, ובכל ערב מוסיפים להבה נוספת. חנוכייה מנייר לא מדליקים באש!</div>`);
+}
+const WORKSHEETS = [
+  {t:"סופרים ומקיפים", p:"ספירה עד 5 והתאמת מספר", f:wsCount},
+  {t:"עוזרים לחברים להגיע", p:"שבילים לעיפרון: מוטוריקה עדינה", f:wsPath},
+  {t:"מה בא אחר כך?", p:"סדרות וחשיבה", f:wsPattern},
+  {t:"כמה נרות בכל לילה?", p:"ציור וספירה, לילות 1 עד 4", f:wsNights}
+];
+const CRAFTS = [
+  {t:"סביבון לגזירה והרכבה", p:"סביבון קובייה עם נ ג ה פ שמסתובב באמת", f:craftSevivon},
+  {t:"חנוכייה מגלילי נייר", p:"9 להבות לצביעה ולגזירה", f:craftFlames}
+];
+let printed = false; window.addEventListener("beforeprint", () => printed = true);
+function printSheets(list){
+  $("print").innerHTML = list.join("");
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { window.print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+}
+function thumbs(body, list, intro){
+  body.innerHTML = `<div class="howto">${intro}</div><div class="sheets">${list.map((w, i) =>
+    `<div class="sh-card"><div class="thumb" data-i="${i}">${w.f()}</div><h3>${w.t}</h3><p>${w.p}</p><button class="btn-main" type="button" data-i="${i}" style="font-size:16px;padding:10px">🖨️ להדפסה</button></div>`).join("")}</div>
+    <div class="row-btns"><button class="btn-sec" id="pAll" type="button">🖨️ להדפיס את כל הדפים (${list.length})</button></div>
+    <p class="print-note">הדפים מותאמים לדף A4. בהדפסה מהטלפון בוחרים "שמירה כ-PDF" או מדפסת.</p>`;
+  const fit = () => body.querySelectorAll(".thumb").forEach(t => { const s = t.querySelector(".sheet"); s.style.transform = `scale(${t.clientWidth / s.offsetWidth})`; });
+  requestAnimationFrame(fit); window.addEventListener("resize", fit);
+  body.querySelectorAll(".sh-card .btn-main").forEach(b => b.onclick = () => printSheets([list[+b.dataset.i].f()]));
+  $("pAll").onclick = () => printSheets(list.map(w => w.f()));
+}
+function worksheets(body){ thumbs(body, [...WORKSHEETS, {t:"דף צביעה: חנוכייה", p:"דף צביעה גדול", f:() => colorSheet(["hanukkiah",8,true])}], "בוחרים דף ולוחצים להדפסה. כל דף מתאים לעבודה עצמאית בשולחן."); $("stSay").onclick = () => say("בוחרים דף עבודה ולוחצים להדפסה."); }
+function crafts(body){
+  thumbs(body, CRAFTS, "יצירה לחנוכה: מדפיסים, צובעים, גוזרים ומרכיבים.");
+  body.insertAdjacentHTML("beforeend", `<div class="craft-steps"><h3>✂️ איך מרכיבים את הסביבון?</h3><ol>
+    <li>מדפיסים על נייר עבה, וצובעים את כל הפאות.</li><li>גוזרים לאורך הקו השחור החיצוני, כולל הלשוניות.</li>
+    <li>מקפלים פנימה לאורך כל הקווים, כך שנוצרת קובייה.</li><li>מורחים דבק על הלשוניות וסוגרים את הקובייה.</li>
+    <li>מבוגר מחורר את שני הנקודות ומשחיל עיפרון קצר ומחודד. מסובבים, ומשחקים במסע הסביבון!</li></ol></div>`);
+  $("stSay").onclick = () => say("מדפיסים, צובעים, גוזרים, ומרכיבים סביבון שמסתובב באמת.");
+}
+
+/* ======================== רשימת 8 הפעילויות ======================== */
+const ACTS = [
+  {id:"memory",   t:"זיכרון חנוכה",        tag:"game",  tl:"משחק", p:"מוצאים זוגות של סביבונים, סופגניות ונרות", pic:["sufganiya"], bg:"#FFE3F4", run:b => memory(b), hint:"הפכו שני קלפים, ומצאו את כל הזוגות."},
+  {id:"lighting", t:"מדליקים את החנוכייה", tag:"game",  tl:"משחק · חשבון", p:"סופרים נרות, לילה אחרי לילה", pic:["hanukkiah",3,true], bg:"#DCEBFF", run:b => lighting(b), hint:""},
+  {id:"sorting",  t:"של חנוכה או לא?",     tag:"game",  tl:"משחק · מיון", p:"ממיינים לסלים מה שייך לחג", pic:["sevivon","נ"], bg:"#FFF1C9", run:b => sorting(b), hint:""},
+  {id:"quiz",     t:"חידון חנוכה",         tag:"game",  tl:"חידון", p:"8 שאלות עם הקראה בקול", pic:["pach"], bg:"#E1F0EA", run:b => quiz(b), hint:""},
+  {id:"puzzle",   t:"פאזל לילה של חנוכה",  tag:"game",  tl:"משחק · פאזל", p:"מסדרים את התמונה, 3 רמות", pic:["candle"], bg:"#E3ECF6", run:b => puzzle(b), hint:"לחצו על שני חלקים כדי להחליף ביניהם, עד שהתמונה מסתדרת."},
+  {id:"coloring", t:"צביעה במסך",          tag:"craft", tl:"ציור · יצירה", p:"6 ציורים לצביעה, וגם להדפסה", pic:["levivah"], bg:"#FFE3F4", run:b => coloring(b), hint:""},
+  {id:"sheets",   t:"דפי עבודה",           tag:"print", tl:"להדפסה", p:"ספירה, שבילים, סדרות ונרות", pic:["coin"], bg:"#E1F0EA", run:b => worksheets(b), hint:""},
+  {id:"craft",    t:"סביבון לגזירה",       tag:"craft", tl:"יצירה · להדפסה", p:"סביבון שמסתובב באמת וחנוכייה מגלילים", pic:["sevivon","ג"], bg:"#FFF1C9", run:b => crafts(b), hint:""}
+];
+const TAGC = {game:"t-game", print:"t-print", craft:"t-craft"};
+$("actsGrid").innerHTML = ACTS.map(a => `<button class="act" type="button" data-id="${a.id}"><div class="pic" style="background:${a.bg}">${svg(...a.pic)}</div><span class="tag ${TAGC[a.tag]}">${a.tl}</span><h3>${a.t}</h3><p>${a.p}</p></button>`).join("");
+$("actsGrid").querySelectorAll(".act").forEach(b => b.onclick = () => openAct(b.dataset.id));
+$("heroArt").innerHTML = svg("hanukkiah", 8, true);
+
+let current = null, lastFocus = null;
+function openAct(id){
+  const a = ACTS.find(x => x.id === id); current = id; lastFocus = lastFocus || document.activeElement;
+  $("stTitle").textContent = a.t; $("stage").hidden = false; $("stage").scrollTop = 0;
+  document.body.style.overflow = "hidden";
+  $("stSay").onclick = () => say(a.hint || a.p);
+  a.run($("stBody"));
+  if (a.hint) say(a.hint);
+  try { history.replaceState(null, "", "#" + id); } catch(e){}
+  $("stBack").focus();
+}
+function closeAct(){
+  $("stage").hidden = true; $("win").hidden = true; document.body.style.overflow = ""; current = null;
+  try { speechSynthesis.cancel(); } catch(e){}
+  try { history.replaceState(null, "", location.pathname + location.search); } catch(e){}
+  if (lastFocus) { lastFocus.focus(); lastFocus = null; }
+}
+$("stBack").onclick = closeAct;
+document.addEventListener("keydown", e => { if (e.key === "Escape"){ if (!$("win").hidden) $("win").hidden = true; else if (!$("stage").hidden) closeAct(); } });
+const startHash = location.hash.slice(1); if (ACTS.some(a => a.id === startHash)) openAct(startHash);
+
+/* ======================== מתנה להורים + קישורים ======================== */
+const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
+function sendGift(){
+  const t = `🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם 8 פעילויות לחנוכה: משחק זיכרון, הדלקת חנוכייה וספירה, מיון, חידון, פאזל, צביעה, דפי עבודה להדפסה וסביבון לגזירה.\nבחינם, בלי הרשמה ובלי פרסומות.\n\n👈 ${TOPIC_URL}`;
+  const w = window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener");
+  if (!w) location.href = "https://wa.me/?text=" + encodeURIComponent(t);
+}
+document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
+document.querySelectorAll(".js-wa").forEach(a => a.href = CONFIG.whatsappJoin);
+$("ganLink").href = CONFIG.gan; $("ganBtn").href = CONFIG.gan;
+$("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
+</script>
+</body>
+</html>
