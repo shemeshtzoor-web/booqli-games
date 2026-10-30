@@ -110,6 +110,11 @@ section{padding:26px 0}
 .gift h2{font-size:28px}
 .gift p{margin:6px 0 12px;opacity:.95}
 .btn-white{background:#fff;color:var(--magenta);text-decoration:none;font-weight:800;border-radius:999px;padding:10px 18px;display:inline-block}
+.revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.rev{background:#fff;border-radius:22px;padding:22px 20px 16px;box-shadow:0 4px 14px rgba(78,133,118,.12);position:relative;margin:0}
+.rev::before{content:"”";position:absolute;top:-6px;inset-inline-start:14px;font:700 64px/1 Fredoka,serif;color:var(--pink)}
+.rev blockquote{margin:6px 0 10px;font-size:17px;font-weight:600}
+.rev figcaption{color:var(--sage-deep);font-weight:800;font-size:14px}
 .gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
 @media (max-width:820px){.gifts{grid-template-columns:1fr}}
 .g{background:#fff;border-radius:22px;padding:20px;box-shadow:0 4px 14px rgba(78,133,118,.12);display:flex;flex-direction:column;gap:6px;border-top:6px solid var(--pink)}
@@ -230,6 +235,11 @@ footer a{color:#fff;font-weight:700}
     <div class="books" id="gridBooks"></div>
   </section>
 
+  <section id="reviews">
+    <div class="sec-title"><h2>מה גננות אומרות</h2><p>💗 תודה על המילים החמות</p></div>
+    <div class="revs" id="revs"></div>
+  </section>
+
   <section id="gifts">
     <div class="sec-title"><h2>מתנות מ-BOOQLI</h2><p>ספר מודפס שבו הילד הוא גיבור הסיפור</p></div>
     <div class="gift">
@@ -304,6 +314,15 @@ const CONFIG = {
   endOfYear: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן כמתנת סוף שנה 🎓"),
   gan:   "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
 };
+
+/* ביקורות של גננות – רק מילים אמיתיות, ורק באישור של מי שאמרה אותן. */
+const REVIEWS = [
+  {text:"די, אני בהלם! איזה כיף. רק אל תפסיקי בבקשה, אני כל כך צריכה את זה. זה מושלם. וואו, גאונות.", name:"מיכל, גננת מנתניה"},
+  {text:"תודה רבה, אני מעריכה מאוד. קניתי גם את הספרים שלכם ואני מאוד מרוצה. כל הכבוד על המיזם!", name:"שושי, גננת מבאר שבע"},
+  {text:"בדיוק התחלתי לחשוב על חנוכה, וזה הגיע בזמן. תודה רבה!", name:"דלית, גננת מתל אביב"},
+  {text:"האתר פשוט טירוף! אני שומרת אותו ושולחת גם להורים. תודה שזה מאובטח, בלי הרשמה והכל בחינם.", name:"נוגה, גננת מתל אביב"},
+  {text:"גם הספרים של בוקלי מקסימים. מחכה להמשך!", name:"תרצה, גננת מירושלים"}
+];
 
 /* נושאי השנה. event = תאריך האירוע עצמו (שנה-חודש-יום). הנושא נפתח אוטומטית חודש לפני (OPEN_DAYS_BEFORE).
    ready = האם התוכן כבר מוכן. נושא נפתח רק כשגם התאריך הגיע וגם ready: true. */
@@ -431,6 +450,14 @@ function sendGift(t){
   waShare(`🎁 מתנה מהגן: ${t.name} – לשחק וללמוד בבית!\n\nהכנו לכם משחקים, דפים להדפסה וחידון בנושא ${t.name}, כדי להמשיך בבית את מה שלמדנו בגן.\nבחינם ובלי הרשמה.\n\n👈 ${BASE}topics/${t.id}/?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=${t.id}\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
 }
 document.getElementById("shareSite").onclick = () => waShare(`🎁 מתנה מהגן: booqli Games – לשחק וללמוד בבית!\n\nמשחקים, דפי עבודה וחידונים לכל עונות השנה, שממשיכים בבית את מה שלומדים בגן.\nבחינם ובלי הרשמה.\n\n👈 ${BASE}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=site\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
+
+// ביקורות
+const rv = document.getElementById("revs");
+REVIEWS.forEach(r => { const f = document.createElement("figure"); f.className = "rev";
+  const bq = document.createElement("blockquote"); bq.textContent = r.text;
+  const c = document.createElement("figcaption"); c.textContent = "— " + (r.name || "גננת");
+  f.append(bq, c); rv.appendChild(f); });
+if (!REVIEWS.length) document.getElementById("reviews").hidden = true;
 
 // קישורים
 document.getElementById("giftBday").href = CONFIG.order;
