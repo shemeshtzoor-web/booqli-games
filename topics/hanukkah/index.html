@@ -280,6 +280,7 @@ footer a{color:#fff;font-weight:700}
       <p>8 פעילויות לחג האורים: משחקים במסך, דפי עבודה וצביעה להדפסה, וסביבון שגוזרים ומרכיבים לבד. לגן ולבית.</p>
       <div class="acts">
         <button class="btn-gift js-gift" type="button">🎁 מתנה להורים</button>
+        <span id="heroLike"></span>
         <a class="btn-ghost" href="../../">→ לכל הנושאים</a>
       </div>
     </div>
@@ -329,7 +330,7 @@ footer a{color:#fff;font-weight:700}
   <div class="wrap">
     <img class="logo" src="../../img/logo.png" alt="BOOQLI">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
-    <p>כל התכנים, האיורים והטקסטים באתר מקוריים · בלי הרשמה, בלי פרסומות ובלי איסוף פרטים</p>
+    <p>כל התכנים, האיורים והטקסטים באתר מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
     <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
   </div>
 </footer>
@@ -357,12 +358,14 @@ footer a{color:#fff;font-weight:700}
       <button class="btn-main" id="wAgain" type="button">לשחק שוב</button>
       <button class="btn-sec" id="wNext" type="button">לפעילות הבאה ←</button>
     </div>
-    <div class="row-btns"><button class="btn-sec js-gift" type="button">🎁 לשלוח את המשחקים להורים</button></div>
+    <div class="row-btns"><span id="wLike"></span><button class="btn-sec js-gift" type="button">🎁 לשלוח את המשחקים להורים</button></div>
+    <a class="report-link js-report" target="_blank" rel="noopener">🛠️ מצאתם טעות במשחק? רשמו לנו</a>
   </div>
 </div>
 
 <div id="print" aria-hidden="true"></div>
 
+<script src="../../common.js"></script>
 <script>
 /* =========================================================
    הגדרות – כאן משנים קישורים וקופון. לא צריך לגעת בשאר הקוד.
@@ -373,7 +376,7 @@ const CONFIG = {
   coupon: "",
   site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=hanukkah",
   order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=coupon&utm_campaign=hanukkah",
-  whatsappJoin: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני רוצה לקבל עדכונים על booqli Games 💬"),
+  // קישור לקבוצת הוואטסאפ, קוד המדידה ומספר הדיווח נמצאים בקובץ common.js שבתיקייה הראשית
   gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
 };
 
@@ -494,6 +497,7 @@ function showWin(text, stars = 3, again){
   $("wStars").textContent = "⭐".repeat(stars);
   $("wText").textContent = text;
   $("wCoupon").innerHTML = couponHTML(false);
+  $("wLike").replaceChildren(siteLikeButton("hanukkah-" + current, "אהבתי את המשחק"));
   $("win").hidden = false; cheer(); confetti(); say("כל הכבוד! " + text);
   $("wAgain").focus();
 }
@@ -871,12 +875,13 @@ const startHash = location.hash.slice(1); if (ACTS.some(a => a.id === startHash)
 /* ======================== מתנה להורים + קישורים ======================== */
 const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
 function sendGift(){
-  const t = `🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם 8 פעילויות לחנוכה: משחק זיכרון, הדלקת חנוכייה וספירה, מיון, חידון, פאזל, צביעה, דפי עבודה להדפסה וסביבון לגזירה.\nבחינם, בלי הרשמה ובלי פרסומות.\n\n👈 ${TOPIC_URL}`;
+  const t = `🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם 8 פעילויות לחנוכה: משחק זיכרון, הדלקת חנוכייה וספירה, מיון, חידון, פאזל, צביעה, דפי עבודה להדפסה וסביבון לגזירה.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}`;
   const w = window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener");
   if (!w) location.href = "https://wa.me/?text=" + encodeURIComponent(t);
 }
 document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
-document.querySelectorAll(".js-wa").forEach(a => a.href = CONFIG.whatsappJoin);
+siteJoinLinks(); siteDevBar();
+$("heroLike").appendChild(siteLikeButton("hanukkah", "אהבתי את חנוכה"));
 $("ganLink").href = CONFIG.gan; $("ganBtn").href = CONFIG.gan;
 $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
 </script>
