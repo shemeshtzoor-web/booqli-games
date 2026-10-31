@@ -106,6 +106,7 @@ section{padding:26px 0}
 .sos-t{flex:1;font-size:16px;line-height:1.4}.sos-t b{font-family:Fredoka,sans-serif;font-size:22px;display:block}
 .sos-t span{display:block;font-weight:700;opacity:.95;margin-top:2px}
 .sos-go{background:#fff;color:var(--magenta);font-weight:800;border-radius:999px;padding:9px 16px;white-space:nowrap;flex-shrink:0}
+.sos.bday{background:linear-gradient(135deg,#4E8576,#6F988B);box-shadow:0 8px 24px rgba(78,133,118,.3);margin-top:12px}.sos.bday .sos-go{color:var(--sage-deep)}
 @media (max-width:560px){.sos{flex-wrap:wrap;text-align:center;justify-content:center}.sos-go{width:100%;text-align:center}}
 .season-note{max-width:860px;margin:16px auto 0;background:#FFF6D6;border:2px dashed #F3D57A;border-radius:20px;padding:12px 16px;text-align:center;font-weight:700;line-height:1.55}
 .season-note a{color:var(--magenta);font-weight:800;white-space:nowrap}
@@ -224,6 +225,13 @@ footer a{color:#fff;font-weight:700}
     <span class="sos-t"><b>הגעתי לא מוכנה!</b> קראו לך להחליף? התוכנית נשארה בבית?
       <span>10 פעילויות ומשחקים בלי ציוד ובלי הכנה + דף להדפסה</span></span>
     <span class="sos-go">לפעילויות ←</span>
+  </a>
+
+  <a class="sos bday" href="topics/birthday-party/">
+    <span class="sos-e" aria-hidden="true">🎂</span>
+    <span class="sos-t"><b>יש יום הולדת בגן?</b> שעת יום הולדת מוכנה, שלב אחרי שלב: הכתרה, ברכות, כיסא המלוכה, עוגה ומשאלה
+      <span>+ משחקים להקרנה, כתר להדפסה וכרטיס ברכה עם תמונת הילד – מתנה להורים</span></span>
+    <span class="sos-go">למערך ←</span>
   </a>
 
   <div class="season-note">🗓️ התכנים באתר נפתחים לפי עונות השנה: כל נושא נפתח כחודש לפני האירוע ונסגר לקראתו.
@@ -411,6 +419,7 @@ const YEAR = [
 const ALWAYS = [
   {id:"last-minute", name:"הגעתי לא מוכנה! 10 פעילויות", ic:"🆘", bg:"#FFE3F4", ready:true, noGift:true, ages:[3,6], tags:["הרגע האחרון", "לא מוכנה", "בלי הכנה", "בלי ציוד", "ממלאת מקום", "מחליפה", "החלפה", "סייעת", "משחקי מעגל", "משחקים לגן", "היכרות", "שמות", "תנועה", "קשב", "רגשות", "ספירה", "סיפור", "דף להדפסה"]},
   {id:"morning-circle", name:"מפגש בוקר: 30 רעיונות", ic:"☀️", bg:"#FFF3CF", ready:true, noGift:true, ages:[3,6], tags:["מפגש בוקר", "מעגל בוקר", "שגרת בוקר", "פתיחת יום", "רעיונות למפגש", "מחזוריות", "סדר יום", "רגשות", "תנועה", "שפה", "חרוזים", "חשבון", "דמיון", "מחמאות", "טוב לב", "חוברת להדפסה", "הדפסה", "מערך לגננת"]},
+  {id:"birthday-party", name:"יום הולדת בגן", ic:"🎂", bg:"#FFE3F4", ready:true, ages:[3,6], tags:["יום הולדת", "ימי הולדת בגן", "מסיבת יום הולדת", "מערך יום הולדת", "שעת יום הולדת", "כתר", "זר", "כיסא המלוכה", "הרמות", "עוגה", "נרות", "משאלה", "ברכות", "חוברת ברכות", "כרטיס ברכה", "תמונה", "מדבקות", "מתנה להורים", "ספירה", "חשבון", "משחקים", "דף להדפסה", "מערך לגננת"]},
   {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
   {id:"feelings", name:"עולם הרגשות",          ic:"😊", bg:"linear-gradient(135deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8)", rainbow:true, ready:true, ages:[3,8], tags:["רגשות", "עולם הרגשות", "שמחה", "עצב", "כעס", "פחד", "הפתעה", "בושה", "קנאה", "פרצופים", "משחק פרצופים", "בונים פרצוף", "מראת רגשות", "צנצנת רגשות", "מפלצת רגשות", "מד רגשות", "הבעות פנים", "אמפתיה", "וויסות רגשי", "כישורים חברתיים", "דף להדפסה", "כיתה א", "כיתה ב"]},
   {id:"reading",  name:"עידוד קריאה",          ic:"🔤", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["אותיות", "קריאה", "אלף-בית", "צלילים", "חרוזים", "מילים", "אוריינות", "מוכנות לכיתה א"]},

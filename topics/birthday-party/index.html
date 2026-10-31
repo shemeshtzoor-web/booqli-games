@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>יום הולדת בגן: מערך שעה מוכן, משחקים וכרטיס ברכה עם תמונה · booqli Games</title>
+<meta name="description" content="שעת יום הולדת בגן, שלב אחרי שלב: הכתרה, מנהרת חברים, ברכות, כיסא המלוכה, עוגה ומשאלה. 4 משחקים להקרנה, כרטיס ברכה עם תמונת הילד ומדבקות, כתר ודפי ברכה להדפסה. בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/birthday-party/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🎂 יום הולדת בגן: שעת יום הולדת מוכנה, משחקים וכרטיס ברכה עם תמונה">
+<meta property="og:description" content="מערך של 45 דקות לפי הספר 'ילד/ת יום הולדת', משחקים להקרנה, כתר ודפי ברכה להדפסה, וכרטיס ברכה עם תמונת הילד – מתנה להורים. בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/topics/birthday-party/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --sky:#DCEBFF; --sun:#FFF3CF;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}.btn-wa{margin-inline-start:auto}}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-shadow)}
+.btn-main:disabled{opacity:.5;cursor:default}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+.sec-title{text-align:center;margin:38px 0 14px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+.sec-title p{margin:4px auto 0;color:var(--muted);max-width:660px}
+.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 0 #d9e9e1}
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+
+/* פתיח */
+.hero{margin-top:22px;background:linear-gradient(160deg,#FFE3F4,#FFF6DD 60%,#E1F0EA);border-radius:28px;padding:24px 22px;border:3px solid #FFC2E6;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.hero small{color:var(--magenta);font-weight:800}
+.hero h1{font-size:clamp(32px,6.4vw,54px);line-height:1.08;margin-top:4px}
+.hero h1 span{color:var(--magenta)}
+.hero p{font-size:18px;max-width:640px;margin:10px 0 0}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.hero-img{width:min(240px,34vw);border-radius:24px;box-shadow:0 8px 24px rgba(163,33,111,.2);display:block}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pills span{background:#fff;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:var(--sage-deep)}
+@media (max-width:620px){.hero{grid-template-columns:1fr}.hero-img{width:180px;margin:0 auto;order:-1}}
+
+/* פרטי החוגג */
+.kid{margin-top:16px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end}
+.kid label{display:flex;flex-direction:column;gap:4px;font-weight:800;color:var(--sage-deep);font-size:15px}
+.kid input,.kid select{border:2px solid var(--mint-2);border-radius:14px;padding:10px 12px;background:#fff;width:100%;min-width:0;font-size:17px}
+.kid .seg{display:flex;gap:6px}
+.kid .seg button{flex:1;background:#fff;border:2px solid var(--mint-2);border-radius:14px;padding:9px 6px;font-weight:800;cursor:pointer;white-space:nowrap}
+.kid .seg button.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.kid-note{grid-column:1/-1;margin:0;color:var(--muted);font-size:14px}
+@media (max-width:620px){.kid{grid-template-columns:1fr 1fr}.kid .nm{grid-column:1/-1}}
+@media (max-width:400px){.kid .gl{grid-column:1/-1}}
+
+/* המערך */
+.timeline{display:grid;gap:14px}
+.stage{background:#fff;border-radius:24px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.1);display:grid;grid-template-columns:200px 1fr;overflow:hidden;border-inline-start:8px solid var(--c)}
+.stage img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}
+.stage .in{padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.stage .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stage .num{background:var(--c);color:#fff;font-family:Fredoka,sans-serif;font-weight:700;border-radius:999px;padding:2px 12px;font-size:15px}
+.stage .min{background:var(--mint);border-radius:999px;padding:2px 10px;font-weight:800;font-size:14px}
+.stage h3{font-size:23px;line-height:1.15}
+.verse{font-family:"Frank Ruhl Libre",Assistant,serif;background:#FFF6DD;border-radius:14px;padding:8px 14px;margin:0;font-size:17px;line-height:1.55}
+.verse em{font-style:normal;color:var(--magenta);font-weight:800}
+.stage ol{margin:0;padding-inline-start:22px;display:grid;gap:3px}
+.stage .say{background:var(--pink-soft);border-radius:14px;padding:8px 12px;font-size:15px;margin:0}
+.stage .say b{color:var(--magenta)}
+.stage .link{align-self:flex-start}
+@media (max-width:620px){.stage{grid-template-columns:1fr}.stage img{height:200px;min-height:0;object-position:center 25%}}
+.prep{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.prep .box h3{color:var(--magenta);font-size:19px;margin-bottom:4px}
+.prep .box p,.prep .box ul{margin:0}
+.prep .box ul{padding-inline-start:20px}
+
+/* משחקים */
+.games{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.games{grid-template-columns:repeat(2,1fr)}}
+.gcard{background:#fff;border:0;border-radius:22px;padding:16px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.12);transition:transform .15s}
+.gcard:hover{transform:translateY(-3px)}
+.gcard .e{font-size:44px;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--b)}
+.gcard h3{font-size:19px}
+.gcard p{margin:0;font-size:14px;color:var(--muted);line-height:1.35}
+.gcard .tag{font-size:12.5px;font-weight:800;border-radius:999px;padding:2px 10px;background:var(--pink-soft);color:var(--magenta)}
+
+/* במה מסך מלא */
+.play{position:fixed;inset:0;z-index:50;background:linear-gradient(#F4FAF7,var(--mint));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.play-bar{position:sticky;top:0;z-index:2;background:var(--sage-deep);color:#fff;display:flex;align-items:center;gap:10px;padding-block:calc(10px + env(safe-area-inset-top,0px)) 10px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.play-bar h2{flex:1;font-size:20px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbtn{background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.45);color:#fff;border-radius:999px;padding:7px 12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.play-body{max-width:900px;margin:0 auto;padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center}
+.howto{background:#fff;border-radius:16px;padding:10px 14px;font-weight:700;color:var(--sage-deep);margin-bottom:14px}
+.levels{display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.lv{background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 16px;font-weight:800;cursor:pointer}
+.lv.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.status{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-weight:800}
+.status span{background:#fff;border-radius:999px;padding:4px 14px}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.big-n{font-family:Fredoka,sans-serif;font-size:clamp(70px,16vw,130px);line-height:1;color:var(--magenta)}
+.big-w{font-family:Fredoka,sans-serif;font-size:clamp(24px,5vw,36px);color:var(--sage-deep);min-height:1.3em}
+.chair{width:min(320px,80vw);margin:6px auto;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.chair.up{transform:translateY(-60px)}
+.chair svg{width:100%;height:auto;display:block;overflow:visible}
+.cake{width:min(420px,92vw);margin:0 auto;cursor:pointer}
+.cake svg{width:100%;height:auto;display:block}
+.task{font-family:Fredoka,sans-serif;font-size:clamp(24px,5vw,34px);margin:6px 0}
+.task b{color:var(--magenta);font-size:1.3em}
+.sort-item{width:160px;height:160px;margin:6px auto;background:#fff;border-radius:28px;display:grid;place-items:center;box-shadow:0 5px 0 var(--mint-2);font-size:92px;line-height:1}
+.sort-name{font-family:Fredoka,sans-serif;font-size:26px;margin-bottom:14px}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:560px;margin:0 auto}
+.bin{border:0;border-radius:24px;padding:16px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800;font-size:19px}
+.bin .x{font-size:52px;line-height:64px}
+.bin.yes{background:var(--pink-soft);box-shadow:0 5px 0 #F3A6D3}
+.bin.no{background:#fff;box-shadow:0 5px 0 var(--mint-2)}
+.fb{min-height:34px;font-weight:800;font-size:20px;margin-top:10px}
+.fb.ok{color:var(--wa)}.fb.no{color:#D23A44}
+.q-img{width:min(260px,70vw);aspect-ratio:1;object-fit:cover;border-radius:22px;margin:0 auto 10px;display:block;box-shadow:0 5px 0 var(--mint-2)}
+.q-text{font-family:Fredoka,sans-serif;font-size:clamp(22px,4vw,28px);margin-bottom:14px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;max-width:720px;margin:0 auto}
+.opt{background:#fff;border:3px solid transparent;border-radius:20px;padding:14px;font-size:19px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 var(--mint-2);min-height:64px}
+.opt.right{border-color:var(--wa);background:#E6F8EE}
+.opt.wrong{border-color:#E5484D;opacity:.6}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.pop{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.15)}}
+.win{position:fixed;inset:0;z-index:80;background:rgba(43,21,38,.6);display:grid;place-items:center;padding:16px}
+.win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto}
+.win .big{font-size:64px;line-height:1}
+.win h3{font-size:30px;color:var(--magenta);margin:6px 0}
+.win p{margin:6px 0}
+.win .offer{background:var(--pink-soft);border-radius:18px;padding:12px;margin:12px 0;font-size:15px}
+.win .offer a{color:var(--magenta);font-weight:800}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:95}
+
+/* כרטיס ברכה */
+.maker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+@media (max-width:820px){.maker{grid-template-columns:minmax(0,1fr)}}
+.tools,.preview{min-width:0}
+.preview{background:#fff;border-radius:24px;padding:10px;box-shadow:0 4px 0 #d9e9e1;position:sticky;top:10px}
+@media (max-width:820px){.preview{position:static}}
+#card{width:100%;height:auto;display:block;border-radius:14px;touch-action:none;cursor:grab;background:#fff}
+.tools{display:flex;flex-direction:column;gap:14px}
+.tools .box{padding:16px}
+.tools h3{font-size:19px;color:var(--sage-deep);margin-bottom:8px}
+.tools label{display:block;font-weight:700;margin:6px 0 4px}
+.tools input[type=text],.tools select,.tools textarea{width:100%;border:2px solid var(--mint-2);border-radius:12px;padding:9px 11px;background:#fff;min-width:0}
+.tools textarea{resize:vertical;min-height:70px}
+.themes{display:flex;gap:8px;flex-wrap:wrap}
+.themes button{width:46px;height:46px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--mint-2);cursor:pointer}
+.themes button.on{box-shadow:0 0 0 4px var(--ink)}
+.stickers{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.stickers button{font-size:clamp(20px,6vw,30px);padding:0;min-width:0;background:var(--mint);border:0;border-radius:14px;aspect-ratio:1;cursor:pointer;line-height:1}
+.stickers button:active{transform:scale(.92)}
+.sel-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.sel-tools button{background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 12px;font-weight:800;cursor:pointer}
+.sel-tools button:disabled{opacity:.4;cursor:default}
+.privacy{font-size:13.5px;color:var(--muted);margin:8px 0 0}
+.photo-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.photo-btn input{position:absolute;opacity:0;width:1px;height:1px}
+.saved-img{max-width:240px;width:100%;margin:10px auto 0;display:block;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+
+/* הדפסה */
+.sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px}
+.sh-card{background:#fff;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 0 var(--mint-2);text-align:center}
+.sh-card .e{font-size:48px;line-height:1}
+.sh-card h3{font-size:19px;color:var(--magenta)}
+.sh-card p{margin:0;font-size:14px;color:var(--muted);flex:1}
+
+.bookbox{margin-top:20px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:20px;align-items:center}
+.bookbox img{width:min(200px,40vw);display:block;flex-shrink:0;filter:drop-shadow(0 8px 16px rgba(0,0,0,.25))}
+.bookbox h2{font-size:26px}
+.bookbox ul{margin:8px 0 12px;padding-inline-start:20px;display:grid;gap:3px}
+.bookbox .btns{display:flex;gap:10px;flex-wrap:wrap}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+.bookbox a.ghost{background:transparent;color:#fff;border:2px solid #fff}
+.ganbox{margin-top:12px;background:#fff;border-radius:18px;padding:12px 16px;text-align:center;font-weight:700}
+.ganbox a{color:var(--sage-deep)}
+@media (max-width:620px){.bookbox{flex-direction:column;text-align:center}.bookbox ul{text-align:right}.bookbox .btns{justify-content:center}}
+.share{margin-top:16px;border:2px dashed var(--wa);text-align:center}
+.share h3{color:var(--wa);font-size:22px}
+.share p{color:var(--muted);margin:6px 0 12px}
+.share .row-btns{margin-top:0}
+.next{margin-top:16px;display:flex;align-items:center;gap:14px;text-decoration:none;background:#fff;border-radius:22px;padding:14px 18px;box-shadow:0 4px 0 #d9e9e1}
+.next .e{font-size:40px}
+.next b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--sage-deep);display:block}
+
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.sheet h1,.sheet h2{font-family:Fredoka,Assistant,sans-serif;margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
+.s-head h1{font-size:21pt;color:#C13671;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
+.s-body svg{display:block;width:100%;height:auto}
+.s-frame{flex:1;border:3px dashed #F3A6D3;border-radius:6mm;display:flex;align-items:flex-end;justify-content:center;padding:3mm;color:#C9B8C4;font-size:11pt}
+.s-lines{display:grid;gap:7mm;font-size:13pt;font-weight:700;color:#4E8576}
+.s-lines span{border-bottom:1.5px solid #CDE7DC;display:block;height:8mm}
+.s-tip{background:#FFF6DD;border-radius:4mm;padding:2.5mm 4mm;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.s-photo{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.s-photo img{max-width:100%;max-height:100%;display:block}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <small>booqli Games · לגננות ולהורים · לפי הספר "ילד/ת יום הולדת"</small>
+      <h1>🎂 יום הולדת בגן<br><span>שעת יום הולדת מוכנה</span></h1>
+      <p>מה עושים בכל שלב, מה אומרים, ואיזה חרוז מקריאים. ועוד משחקים להקרנה, כתר ודפי ברכה להדפסה, וכרטיס ברכה עם התמונה של החוגג/ת – מתנה להורים להדפיס בבית.</p>
+      <div class="pills"><span>⏱️ 45 דקות</span><span>👑 7 שלבים</span><span>🎮 4 משחקים</span><span>🖨️ 3 דפי הדפסה</span><span>📸 כרטיס עם תמונה</span></div>
+      <div class="acts">
+        <a class="btn-main" href="#plan">👇 למערך</a>
+        <a class="btn-sec" href="#card-maker">📸 כרטיס ברכה עם תמונה</a>
+        <span id="heroLike"></span>
+      </div>
+    </div>
+    <img class="hero-img" id="heroImg" src="../../games/birthday/img/g13.jpg" alt="ילדת יום הולדת על כיסא המלוכה, מתוך הספר של BOOQLI">
+  </section>
+
+  <section class="box kid" aria-label="פרטי החוגג">
+    <label class="nm">🎉 מי חוגג/ת היום?<input id="kName" type="text" maxlength="16" placeholder="השם של הילד/ה" autocomplete="off"></label>
+    <label>בן/בת כמה?<select id="kAge"></select></label>
+    <label class="gl">ילד/ה<span class="seg"><button type="button" data-g="f" class="on">👧 ילדה</button><button type="button" data-g="m">👦 ילד</button></span></label>
+    <p class="kid-note">השם והגיל נכנסים לבד למערך, למשחקים, לכתר ולכרטיס. הכל נשאר רק במכשיר שלכם.</p>
+  </section>
+
+  <div class="sec-title" id="plan"><h2>⏰ שעת יום הולדת, שלב אחרי שלב</h2><p>7 שלבים לפי הסיפור "ילד/ת יום הולדת". בכל שלב: החרוז מהספר להקראה, מה עושים, ומה אומרים.</p></div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="sec-title"><h2>📝 לפני יום ההולדת</h2></div>
+  <div class="prep">
+    <div class="box"><h3>💌 שבוע לפני – להורים</h3><ul><li>תמונה של הילד/ה מכל שנה (לשלב 3)</li><li>לשאול על אלרגיות לפני כל כיבוד</li><li>זר או כתר (או הכתר להדפסה כאן למטה)</li></ul></div>
+    <div class="box"><h3>🖨️ יום לפני – בגן</h3><ul><li>להדפיס דף ברכה לכל ילד</li><li>להכין כיסא מקושט ("כיסא המלוכה")</li><li>לבחור עוגה ונרות: כמו הגיל, ועוד אחד</li></ul></div>
+    <div class="box"><h3>🙈 ילד/ה ביישן/ית?</h3><p>לתת לחוגג/ת לבחור: לעבור במנהרה או לשבת ולהסתכל, כמה הרמות, ומי יחזיק את העוגה. בחירה נותנת ביטחון.</p></div>
+    <div class="box"><h3>🦺 בטיחות</h3><p>רק מבוגרים מרימים את הכיסא, נמוך ולאט, ארבעה מבוגרים, אחד בכל רגל. נרות מדליק ומכבה רק מבוגר, הרחק מהשיער ומהזר.</p></div>
+  </div>
+
+  <div class="sec-title" id="games"><h2>🎮 משחקים ליום ההולדת</h2><p>מתאימים להקרנה ולמסך מגע בגן, וגם לטלפון בבית.</p></div>
+  <div class="games">
+    <button class="gcard" type="button" data-play="chair" style="--b:#FFE3F4"><span class="e">🪑</span><h3>מרימים את הכיסא!</h3><p>סופרים יחד כל הרמה, עד הגיל ועוד אחד לשנה הבאה</p><span class="tag">ספירה</span></button>
+    <button class="gcard" type="button" data-play="cake" style="--b:#FFF3CF"><span class="e">🕯️</span><h3>נרות על העוגה</h3><p>שמים על העוגה בדיוק את מספר הנרות, ונושפים</p><span class="tag">חשבון</span></button>
+    <button class="gcard" type="button" data-play="sort" style="--b:#E1F0EA"><span class="e">🎈</span><h3>מה מביאים למסיבה?</h3><p>מה שייך ליום הולדת, ומה ממש לא?</p><span class="tag">מיון</span></button>
+    <button class="gcard" type="button" data-play="quiz" style="--b:#DCEBFF"><span class="e">📖</span><h3>מי זוכר את הסיפור?</h3><p>7 שאלות על הספר "ילד/ת יום הולדת", עם האיורים</p><span class="tag">חידון</span></button>
+  </div>
+
+  <div class="sec-title" id="card-maker"><h2>📸 כרטיס ברכה עם תמונה – מתנה להורים</h2><p>מעלים תמונה של החוגג/ת, בוחרים ברכה, מוסיפים מדבקות, ושומרים או מדפיסים. ההורים מקבלים מזכרת מהגן.</p></div>
+  <div class="maker">
+    <div class="preview">
+      <canvas id="card" width="1000" height="1414" aria-label="כרטיס הברכה"></canvas>
+      <p class="privacy">💡 גוררים מדבקה עם האצבע כדי להזיז אותה.</p>
+    </div>
+    <div class="tools">
+      <div class="box">
+        <h3>1. התמונה</h3>
+        <label class="btn-main photo-btn">📷 העלאת תמונה של החוגג/ת<input type="file" id="photo" accept="image/*"></label>
+        <label for="zoom">הגדלה</label>
+        <input type="range" id="zoom" min="100" max="250" value="100" style="width:100%">
+        <p class="privacy">🔒 התמונה נשארת רק במכשיר שלכם. היא לא נשלחת לשום מקום, ו-BOOQLI לא מקבלת אותה.</p>
+      </div>
+      <div class="box">
+        <h3>2. הברכה</h3>
+        <label for="greetSel">ברכה מוכנה</label>
+        <select id="greetSel"></select>
+        <label for="greet">או לכתוב ברכה משלכם</label>
+        <textarea id="greet" maxlength="140"></textarea>
+        <label for="from">מי מברכים?</label>
+        <input type="text" id="from" maxlength="30" value="באהבה, כל חברי הגן והצוות">
+        <label>צבע הכרטיס</label>
+        <div class="themes" id="themes"></div>
+      </div>
+      <div class="box">
+        <h3>3. מדבקות</h3>
+        <div class="stickers" id="stickers"></div>
+        <div class="sel-tools"><button type="button" id="stBig">➕ גדול</button><button type="button" id="stSmall">➖ קטן</button><button type="button" id="stDel">🗑️ מחיקה</button></div>
+      </div>
+      <div class="box">
+        <h3>4. שומרים ומדפיסים</h3>
+        <div class="row-btns" style="justify-content:flex-start;margin-top:0">
+          <button class="btn-main" type="button" id="saveCard">💾 שמירה כתמונה</button>
+          <button class="btn-sec" type="button" id="printCard">🖨️ הדפסה</button>
+        </div>
+        <img class="saved-img" id="savedImg" alt="כרטיס הברכה – לחיצה ארוכה לשמירה" hidden>
+        <p class="privacy" id="savedNote" hidden>בטלפון: לחיצה ארוכה על התמונה ← "שמירה". אחר כך אפשר לשלוח להורים בוואטסאפ.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title" id="prints"><h2>🖨️ דפים להדפסה</h2><p>עם השם והגיל של החוגג/ת. דף A4, בצבע או בשחור לבן.</p></div>
+  <div class="sheets">
+    <div class="sh-card"><span class="e">👑</span><h3>כתר יום הולדת לגזירה</h3><p>צובעים, גוזרים ומחברים פס נייר מאחור. השם והגיל במרכז.</p><button class="btn-main" type="button" data-print="crown">🖨️ הדפסה</button></div>
+    <div class="sh-card"><span class="e">💌</span><h3>דף ברכה מחבר</h3><p>כל ילד מצייר ומברך, והגננת כורכת חוברת – בדיוק כמו בספר.</p><button class="btn-main" type="button" data-print="wish">🖨️ הדפסה</button></div>
+    <div class="sh-card"><span class="e">🎂</span><h3>צובעים וסופרים</h3><p>עוגה עם נרות כמספר הגיל ובלונים לספירה. לצבוע ולכתוב כמה.</p><button class="btn-main" type="button" data-print="count">🖨️ הדפסה</button></div>
+  </div>
+
+  <section class="bookbox">
+    <img id="bookImg" src="../../games/birthday/img/f-book.png" alt="הספר ילדת יום הולדת של BOOQLI">
+    <div>
+      <h2 id="bookTitle">המתנה הכי מיוחדת: ספר שהחוגג/ת הוא הגיבור שלו</h2>
+      <ul>
+        <li><b>השם של הילד לאורך כל העלילה</b> – לא רק על הכריכה</li>
+        <li><b>איורים אישיים</b> – הילד מאויר בכל עמוד, מהראשון ועד האחרון</li>
+        <li><b>ספר מודפס באיכות גבוהה</b> – מתנה שנשמרת לשנים</li>
+        <li><b>שולחים תמונה אחת</b> – ואנחנו עושים את כל השאר</li>
+      </ul>
+      <p style="margin:0 0 12px">מתנה מהגן או מההורים, שמספרת את הבוקר הזה בדיוק: הזר, הברכות, כיסא המלוכה והמשאלה.</p>
+      <div class="btns"><a id="orderBtn" target="_blank" rel="noopener">להזמנת ספר יום הולדת ←</a><a class="ghost" href="../../games/birthday/">למשחק של הספר ←</a></div>
+    </div>
+  </section>
+  <div class="ganbox">🏫 גננות וועדי הורים: ספר אישי לכל ילד בגן ליום ההולדת שלו, במחירים סיטונאיים מעולים. <a id="ganLink2" target="_blank" rel="noopener">לקבלת הצעת מחיר ←</a></div>
+
+  <section class="box share">
+    <h3>📲 שולחים להורים</h3>
+    <p>הודעה מוכנה לקבוצת ההורים: מה עשינו היום, ורעיון קטן להמשך בבית.</p>
+    <div class="row-btns">
+      <button class="btn-wa-big" type="button" id="parentsBtn">📲 הודעה להורים בוואטסאפ</button>
+      <button class="btn-sec" type="button" id="giftBtn">🎁 מתנה להורים</button>
+      <button class="btn-sec" type="button" id="shareBtn">💬 לשלוח לגננת</button>
+    </div>
+  </section>
+
+  <a class="next" href="../hanukkah/"><span class="e">🕎</span><span><b>מה עוד פתוח? חנוכה ←</b>8 משחקים, דפי עבודה, סיפור המכבים ומערך לגננת.</span></a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>החרוזים והאיורים מתוך הספר "ילד/ת יום הולדת" של BOOQLI · כל השאר מקורי · בלי הרשמה ובלי איסוף פרטים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<div class="play" id="play" hidden>
+  <div class="play-bar"><h2 id="playTitle"></h2><button class="sbtn" type="button" id="playClose">✕ סגירה</button></div>
+  <div class="play-body" id="playBody"></div>
+</div>
+<div class="win" id="win" hidden><div class="in" id="winIn"></div></div>
+<canvas id="confetti" hidden></canvas>
+<div id="print" aria-hidden="true"></div>
+
+<script src="../../qrcode.min.js"></script>
+<script src="../../common.js"></script>
+<script>
+const TOPIC = "birthday_party";
+const TOPIC_URL = "https://games.booqli.ai/topics/birthday-party/";
+const CONFIG = {
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=" + TOPIC,
+  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=" + TOPIC,
+  orderWin: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=win&utm_campaign=" + TOPIC,
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const IMGDIR = "../../games/birthday/img/";
+
+/* ---------- פרטי החוגג (נשמר רק במכשיר) ---------- */
+const S = {name:"", g:"f", age:5};
+try { Object.assign(S, JSON.parse(localStorage.getItem("bq_bday_kid") || "{}")); } catch(e){}
+const g = (f,m) => S.g === "f" ? f : m;
+const NAME = () => S.name.trim() || g("ילדת יום ההולדת","ילד יום ההולדת");
+const KID = () => g("יַלְדַּת","יֶלֶד");
+const IMG = k => IMGDIR + (S.g === "f" ? "g" : "b") + k + ".jpg";
+function saveKid(){ try { localStorage.setItem("bq_bday_kid", JSON.stringify(S)); } catch(e){} }
+
+$("kAge").innerHTML = [2,3,4,5,6,7,8].map(a => `<option value="${a}">${a}</option>`).join("");
+$("kAge").value = S.age; $("kName").value = S.name;
+document.querySelectorAll(".kid .seg button").forEach(b => {
+  b.classList.toggle("on", b.dataset.g === S.g);
+  b.onclick = () => { S.g = b.dataset.g; document.querySelectorAll(".kid .seg button").forEach(x => x.classList.toggle("on", x === b)); saveKid(); renderAll(); };
+});
+$("kName").oninput = () => { S.name = $("kName").value; saveKid(); renderAll(); };
+$("kAge").onchange = () => { S.age = +$("kAge").value; saveKid(); renderAll(); };
+
+/* מספרים במילים (נקבה – "הרמה", "שנה") */
+const WORDS_F = ["אפס","אחת","שתיים","שלוש","ארבע","חמש","שש","שבע","שמונה","תשע","עשר","אחת עשרה","שתים עשרה"];
+
+/* ---------- המערך: 7 שלבים לפי הספר ---------- */
+function stages(){
+  const n = esc(NAME()), k = KID(), a = S.age, he = g("היא","הוא");
+  return [
+    {c:"#C13671", img:"05", min:"5 דק׳", title:"👑 הכתרה",
+     verse:["נָעַלְתִּי אֶת הַנַּעֲלַיִם הַחֲדָשׁוֹת,","זֵר פְּרָחִים הֵנַחְתִּי עַל הָרֹאשׁ,",`לָבַשְׁתִּי אֶת ${g("הַשִּׂמְלָה","הַחֻלְצָה")} הַלְּבָנָה –`,"כַּמָּה נִפְלָא לִגְדֹּל בְּשָׁנָה!"],
+     steps:[`${n} ${g("יושבת","יושב")} על כיסא מקושט מול כל הילדים`, `מניחים על הראש זר פרחים או את הכתר (להדפסה למטה)`, `כולם קוראים יחד בקול: "מזל טוב, ${n}!" ומוחאים כפיים`],
+     say:`"היום ${n} ${g("חוגגת","חוגג")} יום הולדת ${a}! מי רוצה לספר מה הכי אוהבים ב${g("ה","ו")}?"`},
+    {c:"#4E8576", img:"07", min:"5 דק׳", title:"🌉 מנהרת החברים",
+     verse:[`לַגַּן מִהַרְתִּי, ${g("מִתְרַגֶּשֶׁת","מִתְרַגֵּשׁ")} עַד הַגַּג,`,"כִּי הַיּוֹם בִּשְׁבִילִי הוּא יוֹם שֶׁל חַג!","הַיְּלָדִים וְהַיְּלָדוֹת כְּבָר חִכּוּ לִי בַּדֶּלֶת –",`כֵּיף לִהְיוֹת ${k} יוֹם הֻלֶּדֶת!`],
+     steps:["הילדים עומדים בזוגות, פנים אל פנים, ומרימים ידיים מחוברות – כמו גשר", `${n} ${g("עוברת","עובר")} לאט בתוך המנהרה, וכולם מוחאים כפיים בקצב`, `בסוף המנהרה ${n} ${g("מקבלת","מקבל")} חיבוק קבוצתי (רק מי שרוצה)`],
+     say:`חרוז קצר לקריאה יחד: "מִי עוֹבֵר בַּמִּנְהָרָה? ${k} יוֹם הֻלֶּדֶת ${g("יָפָה","נֶהְדָּר")}!"`},
+    {c:"#2F6FB3", img:"09", min:"8 דק׳", title:"📸 סיפור מכל שנה",
+     verse:["הַגַּן הָיָה כֻּלּוֹ צִבְעוֹנִי וַחֲגִיגִי,","עַל הַקִּירוֹת נִתְלוּ בָּלוֹנִים לִכְבוֹדִי,","וְאִמָּא הִגִּיעָה עִם הַפְתָּעוֹת טְעִימוֹת:","חֲבִיתוֹת רֵיחָנִיּוֹת וְלַחְמָנִיּוֹת טְרִיּוֹת."],
+     steps:[`ההורים מראים תמונה מכל שנה – מתינוק/ת ועד גיל ${a}`, "על כל תמונה סיפור קצר אחד, וכל הילדים סופרים יחד: שנה אחת, שתיים, שלוש…", "מגישים את הכיבוד שההורים הביאו (אחרי שבדקתם אלרגיות)"],
+     say:`שאלה לילדים: "מה ${n} ${g("יודעת","יודע")} לעשות היום, שלא ${g("ידעה כשהייתה קטנה","ידע כשהיה קטן")}?"`},
+    {c:"#7A4FB3", img:"11", min:"8 דק׳", title:"💌 ברכות וחוברת",
+     verse:["חֲבֵרַי לַגַּן צִיְּרוּ לִי בְּרָכוֹת צִבְעוֹנִיּוֹת","בִּצְבָעִים זוֹרְחִים עִם מַדְבֵּקוֹת,","וְהַגַּנֶּנֶת כָּרְכָה אֶת כֻּלָּן לְחוֹבֶרֶת –",`כַּמּוּבָן, לִכְבוֹד <em>${n}</em> - ${k} יוֹם הַהֻלֶּדֶת!`],
+     steps:["כל ילד מקבל \"דף ברכה מחבר\" (להדפסה למטה), מצייר ומדביק מדבקות", "מי שרוצה – אומר את הברכה שלו בקול", "הגננת אוספת את הדפים וכורכת חוברת מתנה"],
+     say:`להתחלה: "מה אנחנו מאחלים ל${n}? אפשר לאחל משהו לגוף, ללב, או סתם משהו מצחיק!"`},
+    {c:"#C2581F", img:"13", min:"5 דק׳", title:"🪑 כיסא המלוכה",
+     verse:["הִגִּיעַ הָרֶגַע, הִגִּיעָה הַשָּׁעָה,","שֶׁאֵשֵׁב עַל כִּסֵּא הַמְּלוּכָה,","וְשֶׁיָּרִימוּ אוֹתִי כִּמְעַט עַד הַתִּקְרָה –","וְעוֹד אֶחָד לַשָּׁנָה הַבָּאָה."],
+     steps:[`${n} ${g("יושבת","יושב")} על הכיסא, וארבעה מבוגרים מחזיקים את הרגליים`, `מרימים נמוך ולאט, וכל הילדים סופרים בקול: אחת, שתיים… עד ${WORDS_F[a] || a}`, "ובסוף – ועוד אחת, לשנה הבאה! 🎉"],
+     say:"רוצים שכולם יספרו על המסך? משחק \"מרימים את הכיסא\" כאן למטה, להקרנה.", link:["chair","🪑 להקרנה: מרימים את הכיסא"]},
+    {c:"#C13671", img:"15", min:"7 דק׳", title:"🎂 העוגה והמשאלה",
+     verse:["וְעַכְשָׁו הִגִּיעַ הַתּוֹר שֶׁל הָעוּגָה.","עָצַמְתִּי אֶת הָעֵינַיִם בִּשְׁתִיקָה,","כִּבִּיתִי הַנֵּרוֹת וְהִבַּעְתִּי מִשְׁאָלָה:",`"הַלְוַאי וּלְכָל הַיְּלָדִים תִּהְיֶה כָּזֹאת חֲגִיגָה".`],
+     steps:[`סופרים יחד את הנרות על העוגה: ${a} ועוד אחד`, `מבוגר מדליק, ${n} ${g("עוצמת","עוצם")} עיניים ו${g("מביעה","מביע")} משאלה בשקט – ואז ${g("נושפת","נושף")}`, `סבב משאלות: כל ילד אומר משאלה אחת קצרה ל${n}`],
+     say:`כמו בספר: "המשאלה של ${n} הייתה גם בשביל כל הילדים. מה אתם מאחלים לחברים?"`, link:["cake","🕯️ להקרנה: נרות על העוגה"]},
+    {c:"#4E8576", img:"17", min:"7 דק׳", title:"🎁 מתנה ופרידה",
+     verse:["קִבַּלְתִּי הַיּוֹם מַתָּנָה מְיֻחֶדֶת –",`סֵפֶר יְפֵהפֶה בְּשֵׁם "${k} יוֹם הֻלֶּדֶת".`,"אֶשְׁמֹר עָלָיו מִכָּל מִשְׁמָר וְאוּלַי","אַרְאֶה אוֹתוֹ יוֹם אֶחָד לִנְכָדַי."],
+     steps:[`מעניקים ל${n} את חוברת הברכות מהחברים`, `מצלמים את ${n} עם הזר, ויוצרים כאן כרטיס ברכה עם התמונה – מתנה להורים להדפיס בבית`, `שולחים להורים הודעה מוכנה: מה עשינו היום (כפתור למטה)`],
+     say:`לסיום, כולם יחד: "מזל טוב ${n}, עד מאה ועשרים!" 🎉`, link:["#card-maker","📸 לכרטיס הברכה"]}
+  ];
+}
+function renderTimeline(){
+  $("timeline").innerHTML = stages().map((s,i) => `<article class="stage" style="--c:${s.c}">
+    <img src="${IMG(s.img)}" alt="" loading="lazy">
+    <div class="in">
+      <div class="top"><span class="num">שלב ${i+1}</span><span class="min">⏱️ ${s.min}</span><h3>${s.title}</h3></div>
+      <p class="verse">${s.verse.join("<br>")}</p>
+      <ol>${s.steps.map(x => `<li>${x}</li>`).join("")}</ol>
+      <p class="say"><b>💬 אומרים:</b> ${s.say}</p>
+      ${s.link ? (s.link[0][0] === "#" ? `<a class="btn-sec link" href="${s.link[0]}">${s.link[1]}</a>` : `<button class="btn-sec link" type="button" data-play="${s.link[0]}">${s.link[1]}</button>`) : ""}
+    </div></article>`).join("");
+  bindPlay();
+}
+
+/* ---------- משחקים ---------- */
+let cleanup = null;
+function openPlay(id){
+  $("play").hidden = false; document.body.style.overflow = "hidden";
+  $("playTitle").textContent = {chair:"🪑 מרימים את הכיסא!", cake:"🕯️ נרות על העוגה", sort:"🎈 מה מביאים למסיבה?", quiz:"📖 מי זוכר את הסיפור?"}[id];
+  ({chair:gChair, cake:gCake, sort:gSort, quiz:gQuiz})[id]();
+  if (window.siteEvent) siteEvent("game", TOPIC + "_" + id);
+}
+function closePlay(){ if (cleanup) { cleanup(); cleanup = null; } $("play").hidden = true; $("win").hidden = true; document.body.style.overflow = ""; }
+$("playClose").onclick = closePlay;
+function bindPlay(){ document.querySelectorAll("[data-play]").forEach(b => b.onclick = () => openPlay(b.dataset.play)); }
+
+function winPop(big, title, text, again){
+  confetti();
+  $("winIn").innerHTML = `<div class="big">${big}</div><h3>${title}</h3><p>${text}</p>
+    <div class="offer">📖 <b>ספר אמיתי ש${esc(NAME())} ${g("היא הגיבורה","הוא הגיבור")} שלו</b> – עם השם ${g("שלה","שלו")} לאורך כל העלילה, איורים אישיים בכל עמוד, מודפס באיכות גבוהה.<br><a href="${CONFIG.orderWin}" target="_blank" rel="noopener">להזמנת ספר יום הולדת ←</a></div>
+    <div class="row-btns"><button class="btn-main" type="button" id="wAgain">🔄 עוד פעם</button><button class="btn-sec" type="button" id="wClose">לתפריט</button></div>`;
+  $("win").hidden = false;
+  $("wAgain").onclick = () => { $("win").hidden = true; again(); };
+  $("wClose").onclick = closePlay;
+}
+
+/* משחק 1: מרימים את הכיסא */
+function chairSVG(){
+  const ph = photoURL ? `<clipPath id="cf"><circle cx="160" cy="92" r="56"/></clipPath><image href="${photoURL}" x="104" y="36" width="112" height="112" preserveAspectRatio="xMidYMid slice" clip-path="url(#cf)"/>` : `<text x="160" y="118" font-size="84" text-anchor="middle">${S.g === "f" ? "👧" : "👦"}</text>`;
+  return `<svg viewBox="0 0 320 340" aria-hidden="true">
+    <text x="160" y="34" font-size="40" text-anchor="middle">👑</text>
+    <circle cx="160" cy="92" r="60" fill="#FFE3F4" stroke="#FF56C2" stroke-width="6"/>${ph}
+    <path d="M70 170 Q70 140 100 140 H220 Q250 140 250 170 V230 H70Z" fill="#F7C948" stroke="#C9971C" stroke-width="5"/>
+    <rect x="58" y="226" width="204" height="30" rx="12" fill="#FF56C2" stroke="#A3216F" stroke-width="5"/>
+    <rect x="72" y="254" width="16" height="70" rx="6" fill="#C9971C"/><rect x="232" y="254" width="16" height="70" rx="6" fill="#C9971C"/>
+    <text x="160" y="200" font-size="26" text-anchor="middle" fill="#7a4d00" font-family="Fredoka,sans-serif" font-weight="700">${esc(NAME()).slice(0,14)}</text></svg>`;
+}
+function gChair(){
+  let c = 0; const goal = S.age + 1;
+  $("playBody").innerHTML = `<div class="howto">כל הגן סופר בקול! לוחצים "הרמה" בכל פעם שמרימים את ${esc(NAME())}.</div>
+    <div class="big-n" id="cN">0</div><div class="big-w" id="cW">מוכנים?</div>
+    <div class="chair" id="cChair">${chairSVG()}</div>
+    <div class="row-btns"><button class="btn-main" type="button" id="cUp" style="font-size:22px;padding:14px 34px">⬆️ הרמה!</button></div>
+    <p class="howto" style="margin-top:14px">יום הולדת ${S.age}: מרימים ${S.age} פעמים, ועוד אחת לשנה הבאה.</p>`;
+  $("cUp").onclick = () => {
+    if (c >= goal) return;
+    c++; $("cN").textContent = c; $("cN").classList.remove("pop"); void $("cN").offsetWidth; $("cN").classList.add("pop");
+    $("cW").textContent = c === goal ? "ועוד אחת – לשנה הבאה! 🎉" : (WORDS_F[c] || c);
+    $("cChair").classList.add("up"); setTimeout(() => $("cChair") && $("cChair").classList.remove("up"), 380);
+    if (c === goal - 1) $("cUp").textContent = "⬆️ ועוד אחת לשנה הבאה!";
+    if (c === goal) { $("cUp").disabled = true; setTimeout(() => winPop("🎉", `מזל טוב, ${esc(NAME())}!`, `הרמנו ${S.age} פעמים ועוד אחת לשנה הבאה. עד מאה ועשרים!`, gChair), 700); }
+  };
+}
+
+/* משחק 2: נרות על העוגה */
+let cakeLevel = 0;
+function cakeSVG(n, lit){
+  const slots = 10, w = 300, x0 = 60;
+  let cs = "";
+  for (let i = 0; i < n; i++){
+    const x = x0 + (i + .5) * (w / Math.max(n,1));
+    const col = ["#FF56C2","#3AA7F0","#46C46E","#FFB020","#B05BE8"][i % 5];
+    cs += `<rect x="${x-7}" y="70" width="14" height="60" rx="4" fill="${col}"/><rect x="${x-7}" y="80" width="14" height="6" fill="#fff" opacity=".6"/><rect x="${x-7}" y="100" width="14" height="6" fill="#fff" opacity=".6"/>`;
+    cs += lit ? `<path d="M${x} 38 Q${x+10} 56 ${x} 66 Q${x-10} 56 ${x} 38Z" fill="#FFB020"><animate attributeName="opacity" values="1;.7;1" dur=".6s" repeatCount="indefinite"/></path><path d="M${x} 50 Q${x+4} 58 ${x} 64 Q${x-4} 58 ${x} 50Z" fill="#FFF3CF"/>` : `<path d="M${x} 64 q6 -10 0 -18 q-6 -8 2 -16" stroke="#bbb" stroke-width="3" fill="none" opacity=".7"/>`;
+  }
+  return `<svg viewBox="0 0 420 290" aria-hidden="true">
+    <ellipse cx="210" cy="270" rx="190" ry="16" fill="#CDE7DC"/>
+    <rect x="50" y="130" width="320" height="130" rx="22" fill="#FFF6DD" stroke="#E8C67A" stroke-width="5"/>
+    <path d="M50 160 Q90 190 130 160 T210 160 T290 160 T370 160 V150 Q370 130 348 130 H72 Q50 130 50 150Z" fill="#FFB3DE"/>
+    ${[90,150,210,270,330].map(x => `<circle cx="${x}" cy="215" r="9" fill="#FF56C2"/>`).join("")}
+    ${cs}</svg>`;
+}
+function gCake(){
+  const max = cakeLevel ? 10 : 5, min = cakeLevel ? 3 : 1;
+  let round = 0, score = 0, n = 0, target = 0, last = 0, phase = "put";
+  const ROUNDS = 5;
+  $("playBody").innerHTML = `<div class="levels"><button class="lv ${cakeLevel?"":"on"}" data-l="0">גילאי 3–4 (עד 5)</button><button class="lv ${cakeLevel?"on":""}" data-l="1">גילאי 5–6 (עד 10)</button></div>
+    <div class="status"><span id="kR"></span><span id="kS"></span></div>
+    <div class="task" id="kT"></div>
+    <div class="cake" id="kCake"></div>
+    <div class="row-btns"><button class="btn-sec" type="button" id="kMinus" style="font-size:20px">➖ נר</button><button class="btn-sec" type="button" id="kPlus" style="font-size:20px">➕ נר</button><button class="btn-main" type="button" id="kGo">✔️ בדיקה</button></div>
+    <div class="fb" id="kFb"></div>`;
+  document.querySelectorAll(".lv").forEach(b => b.onclick = () => { cakeLevel = +b.dataset.l; gCake(); });
+  function next(){
+    round++; n = 0; phase = "put";
+    do { target = min + Math.floor(Math.random() * (max - min + 1)); } while (target === last);
+    last = target;
+    $("kR").textContent = `עוגה ${round} מתוך ${ROUNDS}`; $("kS").textContent = `⭐ ${score}`;
+    $("kT").innerHTML = `שימו על העוגה <b>${target}</b> נרות`;
+    $("kGo").textContent = "✔️ בדיקה"; $("kFb").textContent = ""; $("kFb").className = "fb"; draw();
+  }
+  function draw(){ $("kCake").innerHTML = cakeSVG(n, phase !== "blown"); }
+  function add(d){ if (phase !== "put") return; n = Math.max(0, Math.min(10, n + d)); draw(); }
+  $("kPlus").onclick = () => add(1); $("kMinus").onclick = () => add(-1); $("kCake").onclick = () => add(1);
+  $("kGo").onclick = () => {
+    if (phase === "put"){
+      if (n === target){ phase = "blow"; score++; $("kS").textContent = `⭐ ${score}`; $("kFb").textContent = `נכון! ${target} נרות. עכשיו – עוצמים עיניים, משאלה, ונושפים!`; $("kFb").className = "fb ok"; $("kGo").textContent = "💨 נושפים!"; }
+      else { $("kFb").textContent = n < target ? `עוד לא… יש ${n}, צריך ${target}. הוסיפו עוד ${target - n}` : `יותר מדי! יש ${n}, צריך ${target}. הורידו ${n - target}`; $("kFb").className = "fb no"; $("kCake").classList.remove("shake"); void $("kCake").offsetWidth; $("kCake").classList.add("shake"); }
+    } else if (phase === "blow"){
+      phase = "blown"; draw(); $("kFb").textContent = "פוּף! 💨 המשאלה בדרך"; $("kGo").textContent = round < ROUNDS ? "לעוגה הבאה ←" : "🎉 סיום";
+    } else {
+      if (round < ROUNDS) next(); else winPop("🎂", "אלופי הנרות!", `שמתם נרות על ${ROUNDS} עוגות, וספרתם נכון ${score === ROUNDS ? "בכולן" : score + " פעמים בפעם הראשונה"}.`, gCake);
+    }
+  };
+  next();
+}
+
+/* משחק 3: מה מביאים למסיבה */
+const SORT = [
+  ["🎂","עוגה",1],["🎈","בלונים",1],["🎁","מתנה",1],["🕯️","נרות",1],["👑","כתר",1],["🎉","קישוטים",1],["🧁","קאפקייק",1],["🪅","פיניאטה",1],["🥳","כובע מסיבה",1],["💌","כרטיס ברכה",1],
+  ["🪥","מברשת שיניים",0],["☂️","מטרייה",0],["🧹","מטאטא",0],["🧦","גרב מלוכלכת",0],["🧯","מטף",0],["🪣","דלי",0],["🔧","מפתח ברגים",0],["🧽","ספוג",0]
+];
+function gSort(){
+  const yes = SORT.filter(x => x[2]).sort(() => Math.random() - .5).slice(0,5), no = SORT.filter(x => !x[2]).sort(() => Math.random() - .5).slice(0,5);
+  const deck = [...yes, ...no].sort(() => Math.random() - .5);
+  let i = 0, score = 0, lock = false;
+  $("playBody").innerHTML = `<div class="howto">שייך למסיבת יום הולדת? לוחצים על הצד הנכון.</div>
+    <div class="status"><span id="sR"></span><span id="sS"></span></div>
+    <div class="sort-item" id="sI"></div><div class="sort-name" id="sN"></div>
+    <div class="bins"><button class="bin yes" type="button" data-v="1"><span class="x">🎉</span>למסיבה!</button><button class="bin no" type="button" data-v="0"><span class="x">🙅</span>לא למסיבה</button></div>
+    <div class="fb" id="sFb"></div>`;
+  function show(){ const it = deck[i]; $("sI").textContent = it[0]; $("sN").textContent = it[1]; $("sR").textContent = `${i+1} מתוך ${deck.length}`; $("sS").textContent = `⭐ ${score}`; $("sFb").textContent = ""; $("sFb").className = "fb"; lock = false; }
+  document.querySelectorAll(".bin").forEach(b => b.onclick = () => {
+    if (lock) return; lock = true;
+    const it = deck[i], ok = +b.dataset.v === it[2];
+    if (ok) score++;
+    $("sFb").textContent = ok ? (it[2] ? "נכון! בלי זה אין מסיבה 🎉" : "נכון! את זה משאירים בבית 😄") : (it[2] ? `אופס – ${it[1]} דווקא כן שייך למסיבה!` : `חחח, ${it[1]} במסיבה? ממש לא!`);
+    $("sFb").className = "fb " + (ok ? "ok" : "no");
+    $("sI").classList.remove("pop","shake"); void $("sI").offsetWidth; $("sI").classList.add(ok ? "pop" : "shake");
+    setTimeout(() => { i++; if (i < deck.length) show(); else winPop("🎈", "המסיבה מוכנה!", `מיינתם נכון ${score} מתוך ${deck.length}.`, gSort); }, 1200);
+  });
+  show();
+}
+
+/* משחק 4: חידון על הספר */
+function gQuiz(){
+  const n = esc(NAME());
+  const Q = [
+    {img:"05", q:`מה ${n} ${g("שמה","שם")} על הראש?`, o:["זר פרחים","כובע צמר","קסדה"], f:"בספר: \"זֵר פְּרָחִים הֵנַחְתִּי עַל הָרֹאשׁ\"."},
+    {img:"07", q:"מי חיכו בדלת של הגן?", o:["הילדים והילדות","הדוור","חתול"], f:"כל החברים חיכו בדלת – כיף להיות חוגג/ת!"},
+    {img:"09", q:"מה אמא הביאה לגן?", o:["חביתות ולחמניות","גלידה","פיצה"], f:"חביתות ריחניות ולחמניות טריות."},
+    {img:"11", q:"מה הגננת עשתה עם הברכות של החברים?", o:["כרכה אותן לחוברת","תלתה על העץ","שלחה בדואר"], f:"כל הציורים נכרכו לחוברת אחת – מתנה!"},
+    {img:"13", q:"כמה פעמים מרימים את הכיסא?", o:["כמו הגיל, ועוד אחת","רק פעם אחת","מאה פעמים"], f:"ועוד אחת – לשנה הבאה!"},
+    {img:"15", q:"מה הייתה המשאלה?", o:["שלכל הילדים תהיה חגיגה כזאת","הרבה ממתקים","אופניים חדשים"], f:"משאלה טובה, גם בשביל אחרים."},
+    {img:"17", q:"איזו מתנה מיוחדת התקבלה?", o:[`ספר "${KID()} יום הולדת"`,"כדור","בובה"], f:"ספר ששומרים עליו, ואולי מראים פעם לנכדים."}
+  ];
+  let i = 0, score = 0, lock = false;
+  $("playBody").innerHTML = `<div class="status"><span id="qR"></span><span id="qS"></span></div>
+    <img class="q-img" id="qImg" alt=""><div class="q-text" id="qT"></div><div class="opts" id="qO"></div><div class="fb" id="qF"></div>`;
+  function show(){
+    const q = Q[i]; lock = false;
+    $("qR").textContent = `שאלה ${i+1} מתוך ${Q.length}`; $("qS").textContent = `⭐ ${score}`;
+    $("qImg").src = IMG(q.img); $("qT").textContent = q.q; $("qF").textContent = ""; $("qF").className = "fb";
+    const opts = q.o.map((t,k) => ({t, ok:k === 0})).sort(() => Math.random() - .5);
+    $("qO").innerHTML = opts.map((o,k) => `<button class="opt" type="button" data-k="${k}">${esc(o.t)}</button>`).join("");
+    $("qO").querySelectorAll(".opt").forEach(b => b.onclick = () => {
+      if (lock) return; lock = true;
+      const ok = opts[+b.dataset.k].ok; if (ok) score++;
+      $("qO").querySelectorAll(".opt").forEach((x,k) => { if (opts[k].ok) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+      $("qF").textContent = (ok ? "נכון! " : "כמעט! ") + q.f; $("qF").className = "fb " + (ok ? "ok" : "no");
+      setTimeout(() => { i++; if (i < Q.length) show(); else winPop("📖", score >= 5 ? "זוכרים מצוין!" : "כל הכבוד!", `ענית נכון על ${score} מתוך ${Q.length} שאלות.`, gQuiz); }, 2300);
+    });
+  }
+  show();
+}
+
+/* זיקוקים */
+function confetti(){
+  const c = $("confetti"); c.hidden = false; c.width = innerWidth; c.height = innerHeight;
+  const x = c.getContext("2d"), cols = ["#FF56C2","#FFB020","#46C46E","#3AA7F0","#B05BE8","#C13671"];
+  const P = Array.from({length:140}, () => ({x:Math.random()*c.width, y:-20 - Math.random()*c.height*.5, r:4+Math.random()*6, vy:2+Math.random()*4, vx:-2+Math.random()*4, c:cols[Math.floor(Math.random()*6)], a:Math.random()*6}));
+  let t = 0;
+  (function f(){ x.clearRect(0,0,c.width,c.height); P.forEach(p => { p.y += p.vy; p.x += p.vx; p.a += .1; x.fillStyle = p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6); x.restore(); }); if (++t < 150) requestAnimationFrame(f); else c.hidden = true; })();
+}
+
+/* ---------- כרטיס ברכה עם תמונה ---------- */
+const CV = $("card"), CX = CV.getContext("2d"), W = 1000, H = 1414;
+const THEMES = [
+  {id:"pink", a:"#FFE3F4", b:"#FFF6DD", main:"#C13671", acc:"#FF56C2"},
+  {id:"sky",  a:"#DCEBFF", b:"#F4FAFF", main:"#2F5FA0", acc:"#3AA7F0"},
+  {id:"mint", a:"#E1F0EA", b:"#FFF9EC", main:"#3F7466", acc:"#6F988B"},
+  {id:"sun",  a:"#FFF1C9", b:"#FFE3F4", main:"#B0571A", acc:"#FFB020"}
+];
+let theme = THEMES[0], photo = null, photoURL = "", zoom = 1, stickers = [], selected = -1, drag = null;
+const GREETS = () => [
+  `מאחלים לך שנה מלאה בצחוק, חברים טובים והרבה הרפתקאות!`,
+  `${g("תמשיכי","תמשיך")} לחייך, לגלות דברים חדשים ולהאיר לנו את הגן!`,
+  `שכל המשאלות שלך יתגשמו – ועוד אחת לשנה הבאה!`,
+  `${g("את","אתה")} ${g("חברה","חבר")} ${g("מיוחדת","מיוחד")} – כיף לנו שאת${g("","ה")} איתנו בגן!`
+];
+function fillGreets(){
+  const cur = $("greetSel").selectedIndex;
+  $("greetSel").innerHTML = GREETS().map((t,i) => `<option value="${i}">${esc(t)}</option>`).join("");
+  $("greetSel").selectedIndex = Math.max(0, cur);
+  if (!$("greet").dataset.own) $("greet").value = GREETS()[$("greetSel").selectedIndex];
+}
+$("greetSel").onchange = () => { delete $("greet").dataset.own; $("greet").value = GREETS()[$("greetSel").selectedIndex]; drawCard(); };
+$("greet").oninput = () => { $("greet").dataset.own = "1"; drawCard(); };
+$("from").oninput = drawCard;
+$("themes").innerHTML = THEMES.map((t,i) => `<button type="button" data-i="${i}" style="background:linear-gradient(135deg,${t.a},${t.acc})" aria-label="צבע ${i+1}" class="${i?"":"on"}"></button>`).join("");
+$("themes").querySelectorAll("button").forEach(b => b.onclick = () => { theme = THEMES[+b.dataset.i]; $("themes").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); drawCard(); });
+const ST = ["🎈","🎂","🎁","👑","⭐","🌸","🎉","🧁","💖","🦄","🌈","🕯️"];
+$("stickers").innerHTML = ST.map(s => `<button type="button" aria-label="מדבקה ${s}">${s}</button>`).join("");
+$("stickers").querySelectorAll("button").forEach((b,i) => b.onclick = () => {
+  const spots = [[150,330],[850,330],[140,900],[860,900],[500,170],[180,1180],[820,1180]];
+  const sp = spots[stickers.length % spots.length];
+  stickers.push({e:ST[i], x:sp[0] + (Math.random()*40-20), y:sp[1] + (Math.random()*40-20), s:110});
+  selected = stickers.length - 1; drawCard(); selTools();
+});
+function selTools(){ ["stBig","stSmall","stDel"].forEach(id => $(id).disabled = selected < 0); }
+$("stBig").onclick = () => { if (selected >= 0){ stickers[selected].s = Math.min(260, stickers[selected].s + 25); drawCard(); } };
+$("stSmall").onclick = () => { if (selected >= 0){ stickers[selected].s = Math.max(50, stickers[selected].s - 25); drawCard(); } };
+$("stDel").onclick = () => { if (selected >= 0){ stickers.splice(selected,1); selected = -1; drawCard(); selTools(); } };
+selTools();
+
+$("photo").onchange = e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { const im = new Image(); im.onload = () => { photo = im; photoURL = r.result; drawCard(); }; im.src = r.result; };
+  r.readAsDataURL(f);
+};
+$("zoom").oninput = () => { zoom = $("zoom").value / 100; drawCard(); };
+
+function rr(x,y,w,h,r){ CX.beginPath(); CX.moveTo(x+r,y); CX.arcTo(x+w,y,x+w,y+h,r); CX.arcTo(x+w,y+h,x,y+h,r); CX.arcTo(x,y+h,x,y,r); CX.arcTo(x,y,x+w,y,r); CX.closePath(); }
+function wrap(text, maxW){ const words = text.split(/\s+/), lines = []; let cur = ""; words.forEach(w => { const t = cur ? cur + " " + w : w; if (CX.measureText(t).width > maxW && cur){ lines.push(cur); cur = w; } else cur = t; }); if (cur) lines.push(cur); return lines; }
+function drawCard(selBox){
+  const t = theme;
+  const gr = CX.createLinearGradient(0,0,0,H); gr.addColorStop(0,t.a); gr.addColorStop(1,t.b);
+  CX.fillStyle = gr; CX.fillRect(0,0,W,H);
+  // נקודות קונפטי (קבועות)
+  const cols = ["#FF56C2","#FFB020","#46C46E","#3AA7F0","#B05BE8"];
+  for (let i = 0; i < 70; i++){ const x = (i*137.5) % W, y = (i*251.3) % H; CX.fillStyle = cols[i%5]; CX.globalAlpha = .35; CX.beginPath(); CX.arc(x,y,6 + (i%4)*2,0,7); CX.fill(); }
+  CX.globalAlpha = 1;
+  // מסגרת
+  CX.lineWidth = 14; CX.strokeStyle = t.acc; rr(30,30,W-60,H-60,48); CX.stroke();
+  CX.direction = "rtl"; CX.textAlign = "center"; CX.textBaseline = "alphabetic";
+  CX.fillStyle = t.main; CX.font = "700 96px Fredoka, Assistant, sans-serif";
+  CX.fillText("מזל טוב", W/2, 175);
+  CX.font = "700 84px Fredoka, Assistant, sans-serif";
+  CX.fillText(NAME(), W/2, 275, W - 140);
+  CX.font = "800 46px Assistant, sans-serif"; CX.fillStyle = t.acc;
+  CX.fillText(`${g("בת","בן")} ${S.age} היום! 🎉`, W/2, 345);
+  // תמונה
+  const px = 190, py = 395, pw = 620, ph = 620;
+  CX.save(); rr(px,py,pw,ph,60); CX.fillStyle = "#fff"; CX.fill(); CX.clip();
+  if (photo){
+    const sc = Math.max(pw/photo.width, ph/photo.height) * zoom, iw = photo.width*sc, ih = photo.height*sc;
+    CX.drawImage(photo, px + (pw-iw)/2, py + (ph-ih)/2, iw, ih);
+  } else {
+    CX.fillStyle = t.a; CX.fillRect(px,py,pw,ph);
+    CX.fillStyle = t.main; CX.font = "200px sans-serif"; CX.fillText(S.g === "f" ? "👧" : "👦", W/2, py + 360);
+    CX.font = "700 40px Assistant, sans-serif"; CX.fillText("כאן תופיע התמונה", W/2, py + 470);
+  }
+  CX.restore();
+  CX.lineWidth = 12; CX.strokeStyle = "#fff"; rr(px,py,pw,ph,60); CX.stroke();
+  // ברכה
+  CX.fillStyle = "#2B1526"; CX.font = "700 46px Assistant, sans-serif";
+  const lines = wrap($("greet").value || "", W - 200).slice(0,4);
+  lines.forEach((l,i) => CX.fillText(l, W/2, 1100 + i*60));
+  CX.fillStyle = t.main; CX.font = "800 40px Assistant, sans-serif";
+  CX.fillText($("from").value, W/2, 1100 + lines.length*60 + 30, W - 160);
+  // תחתית
+  CX.fillStyle = "#6b5a66"; CX.font = "600 24px Assistant, sans-serif";
+  CX.fillText("נוצר ב-booqli Games · games.booqli.ai · בחסות BOOQLI", W/2, H - 58);
+  // מדבקות
+  CX.textBaseline = "middle";
+  stickers.forEach((s,i) => {
+    CX.font = `${s.s}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; CX.fillText(s.e, s.x, s.y);
+    if (i === selected && selBox !== false){ CX.setLineDash([12,10]); CX.lineWidth = 4; CX.strokeStyle = t.main; CX.strokeRect(s.x - s.s*.65, s.y - s.s*.65, s.s*1.3, s.s*1.3); CX.setLineDash([]); }
+  });
+  CX.textBaseline = "alphabetic";
+}
+function pt(e){ const r = CV.getBoundingClientRect(); return {x:(e.clientX - r.left) * W / r.width, y:(e.clientY - r.top) * H / r.height}; }
+CV.addEventListener("pointerdown", e => {
+  const p = pt(e); let hit = -1;
+  for (let i = stickers.length - 1; i >= 0; i--){ const s = stickers[i]; if (Math.abs(p.x - s.x) < s.s*.65 && Math.abs(p.y - s.y) < s.s*.65){ hit = i; break; } }
+  selected = hit; selTools();
+  if (hit >= 0){ drag = {dx:p.x - stickers[hit].x, dy:p.y - stickers[hit].y}; CV.setPointerCapture(e.pointerId); }
+  drawCard();
+});
+CV.addEventListener("pointermove", e => { if (!drag || selected < 0) return; const p = pt(e); stickers[selected].x = Math.max(40, Math.min(W-40, p.x - drag.dx)); stickers[selected].y = Math.max(40, Math.min(H-40, p.y - drag.dy)); drawCard(); });
+CV.addEventListener("pointerup", () => drag = null);
+CV.addEventListener("pointercancel", () => drag = null);
+
+function cardDataURL(){ drawCard(false); const u = CV.toDataURL("image/png"); drawCard(); return u; }
+$("saveCard").onclick = () => {
+  const u = cardDataURL();
+  $("savedImg").src = u; $("savedImg").hidden = false; $("savedNote").hidden = false;
+  const a = document.createElement("a"); a.href = u; a.download = "כרטיס-יום-הולדת-" + (S.name.trim() || "booqli") + ".png";
+  document.body.appendChild(a); a.click(); a.remove();
+  if (window.siteEvent) siteEvent("save", TOPIC + "_card");
+};
+$("printCard").onclick = () => {
+  const u = cardDataURL();
+  doPrint(`<div class="sheet" style="padding:10mm"><div class="s-photo"><img src="${u}" alt=""></div></div>`);
+};
+
+/* ---------- דפי הדפסה ---------- */
+const FOOT = () => sitePrintFooter(TOPIC, "", "../../img/logo.png");
+function head(t){ return `<div class="s-head"><h1>${t}</h1><span class="nm">booqli Games</span></div>`; }
+function crownSheet(){
+  const n = esc(NAME()), a = S.age;
+  const pts = "10,230 10,90 95,160 180,40 265,160 350,20 435,160 520,40 605,160 690,90 690,230";
+  return `<div class="sheet">${head("👑 כתר יום הולדת")}<div class="s-body">
+    <div class="s-tip">✂️ צובעים, גוזרים לאורך הקו השחור, ומחברים מאחור פס נייר באורך שמתאים לראש.</div>
+    ${[0,1].map(() => `<svg viewBox="0 0 700 250"><polygon points="${pts}" fill="#fff" stroke="#2B1526" stroke-width="4" stroke-linejoin="round"/>
+      ${[[180,70],[350,52],[520,70]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="14" fill="none" stroke="#2B1526" stroke-width="3"/>`).join("")}
+      ${[[60,200],[640,200]].map(([x,y]) => `<path d="M${x} ${y-16} l5 11 12 2 -9 8 2 12 -10 -6 -10 6 2 -12 -9 -8 12 -2z" fill="none" stroke="#2B1526" stroke-width="2.5"/>`).join("")}
+      <text x="350" y="212" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="44" font-weight="700" fill="none" stroke="#2B1526" stroke-width="2">${n}</text>
+      <text x="350" y="150" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="64" font-weight="700" fill="none" stroke="#2B1526" stroke-width="2.5">${a}</text></svg>
+    <svg viewBox="0 0 700 56"><rect x="10" y="8" width="680" height="40" rx="6" fill="#fff" stroke="#2B1526" stroke-width="3" stroke-dasharray="10 6"/><text x="350" y="35" text-anchor="middle" font-size="18" font-family="Assistant,sans-serif" fill="#6b5a66">פס לחיבור מאחור</text></svg>`).join('<div style="text-align:center;color:#6b5a66;font-size:10pt">✂ · · · כתר נוסף: לגיבוי, לאח/ות או לחבר/ה הכי טוב/ה · · · ✂</div>')}
+  </div>${FOOT()}</div>`;
+}
+function wishSheet(){
+  const n = esc(NAME());
+  return `<div class="sheet">${head(`💌 ברכה ל${n} ליום ההולדת ה-${S.age}`)}<div class="s-body">
+    <div class="s-frame">ציירו כאן ציור מתנה ל${n} 🎨 · אפשר להדביק מדבקות</div>
+    <div class="s-lines"><div>הברכה שלי:</div><span></span><span></span><div>מאת: ______________________</div></div>
+  </div>${FOOT()}</div>`;
+}
+function countSheet(){
+  const a = S.age, c = a + 1;
+  let candles = "";
+  for (let i = 0; i < c; i++){ const x = 150 + (i + .5) * (400 / c); candles += `<rect x="${x-9}" y="120" width="18" height="80" rx="4" fill="#fff" stroke="#2B1526" stroke-width="3"/><path d="M${x} 82 Q${x+13} 104 ${x} 116 Q${x-13} 104 ${x} 82Z" fill="#fff" stroke="#2B1526" stroke-width="3"/>`; }
+  const balloons = [[90,90],[600,70],[640,190],[70,230],[620,320]].slice(0, Math.min(5, a));
+  return `<div class="sheet">${head(`🎂 צובעים וסופרים · יום הולדת ${a}`)}<div class="s-body">
+    <svg viewBox="0 0 700 520">
+      ${candles}
+      <rect x="130" y="200" width="440" height="200" rx="26" fill="#fff" stroke="#2B1526" stroke-width="4"/>
+      <path d="M130 250 Q185 290 240 250 T350 250 T460 250 T570 250" fill="none" stroke="#2B1526" stroke-width="3"/>
+      ${[190,270,350,430,510].map(x => `<circle cx="${x}" cy="330" r="14" fill="#fff" stroke="#2B1526" stroke-width="3"/>`).join("")}
+      <rect x="100" y="400" width="500" height="22" rx="10" fill="#fff" stroke="#2B1526" stroke-width="3"/>
+      ${balloons.map(([x,y]) => `<ellipse cx="${x}" cy="${y}" rx="34" ry="42" fill="#fff" stroke="#2B1526" stroke-width="3"/><path d="M${x} ${y+42} q8 30 -4 60" fill="none" stroke="#2B1526" stroke-width="2"/>`).join("")}
+    </svg>
+    <div class="s-lines"><div>🕯️ כמה נרות יש על העוגה? ______  (כמו הגיל, ועוד אחד לשנה הבאה!)</div><div>🎈 כמה בלונים? ______</div><div>✏️ כתבו או ציירו את המספר ${a}: ____________________</div></div>
+  </div>${FOOT()}</div>`;
+}
+let printed = false; addEventListener("beforeprint", () => printed = true);
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4000); }
+function doPrint(html){
+  $("print").innerHTML = html;
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+}
+const SHEETS = {crown:crownSheet, wish:wishSheet, count:countSheet};
+document.querySelectorAll("[data-print]").forEach(b => b.onclick = () => { doPrint(SHEETS[b.dataset.print]()); if (window.siteEvent) siteEvent("print", TOPIC + "_" + b.dataset.print); });
+const sp = new URLSearchParams(location.search).get("sheet");
+if (sp && SHEETS[sp]) $("print").innerHTML = SHEETS[sp]();
+
+/* ---------- וואטסאפ ---------- */
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+$("parentsBtn").onclick = () => { const n = NAME(); waSend(`🎂 היום חגגנו בגן יום הולדת ${S.age} ל${n}!\n\n${n} ${g("קיבלה","קיבל")} זר, ${g("עברה","עבר")} במנהרת החברים, החברים ציירו ברכות, הרמנו את כיסא המלוכה ${S.age} פעמים ועוד אחת לשנה הבאה, ו${g("ביקשה","ביקש")} משאלה מעל העוגה.\n\n💛 רעיון קטן לבית: לספור יחד את הנרות, ולשאל "מה הכי נהנית היום?". ויש גם משחקי יום הולדת וכרטיס ברכה עם תמונה:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=${TOPIC}\n\nבחינם ובלי הרשמה, בחסות BOOQLI ❤️`); };
+$("giftBtn").onclick = () => waSend(`🎁 מתנה מהגן: משחקי יום הולדת לבית!\n\nמרימים את הכיסא, נרות על העוגה, מה מביאים למסיבה וחידון על הסיפור. ועוד כרטיס ברכה עם תמונה ומדבקות שאפשר להדפיס.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=${TOPIC}\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
+$("shareBtn").onclick = () => waSend(`🎂 יש יום הולדת בגן? מצאתי שעת יום הולדת מוכנה!\n\n7 שלבים עם חרוז לכל שלב, 4 משחקים להקרנה, כתר ודף ברכה להדפסה, וכרטיס ברכה עם תמונת הילד – מתנה להורים.\nבחינם, בלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=${TOPIC}\n\nבחסות BOOQLI ❤️`);
+
+/* ---------- הפעלה ---------- */
+function renderAll(){
+  renderTimeline(); fillGreets(); drawCard();
+  $("heroImg").src = IMG("13");
+  $("bookImg").src = IMGDIR + (S.g === "f" ? "f" : "m") + "-book.png";
+  $("bookImg").alt = "הספר " + (S.g === "f" ? "ילדת" : "ילד") + " יום הולדת של BOOQLI";
+  $("bookTitle").textContent = S.name.trim() ? `המתנה הכי מיוחדת: ספר ש${S.name.trim()} ${g("היא הגיבורה","הוא הגיבור")} שלו` : "המתנה הכי מיוחדת: ספר שהחוגג/ת הוא הגיבור שלו";
+}
+renderAll();
+if (document.fonts && document.fonts.load) Promise.all([document.fonts.load("700 80px Fredoka"), document.fonts.load("700 40px Assistant")]).then(drawCard).catch(() => {});
+siteJoinLinks(); siteDevBar(); siteBackBar("../../");
+$("heroLike").appendChild(siteLikeButton("birthday-party", "אהבתי"));
+$("ganLink").href = CONFIG.gan; $("ganLink2").href = CONFIG.gan; $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
+</script>
+</body>
+</html>
