@@ -101,6 +101,18 @@ section{padding:26px 0}
 .card.closed::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
 .card.closed .st{background:#eee;color:#6b5a66}
 .card .closes{font-size:12.5px;font-weight:800;color:var(--magenta);background:var(--pink-soft);border-radius:999px;padding:3px 10px}
+.keybox{max-width:860px;margin:18px auto 0;display:flex;gap:14px;align-items:flex-start;background:#fff;border:3px solid #1FA855;border-radius:24px;padding:16px 18px;box-shadow:0 8px 24px rgba(31,168,85,.18)}
+.kb-ic{font-size:42px;line-height:1;flex-shrink:0}
+.kb-t{flex:1;min-width:0}.kb-t b{font-family:Fredoka,sans-serif;font-size:21px;display:block;color:#13773A}
+.kb-t>span{display:block;color:#6b5a66;margin:2px 0 10px}
+#kbForm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#kbIn{width:150px;font:inherit;font-size:20px;text-align:center;border:3px solid #CDE7DC;border-radius:14px;padding:6px 10px;direction:ltr}
+#kbIn:focus{outline:none;border-color:#FF56C2}
+#kbForm button{font:inherit;font-weight:800;background:#E0399F;color:#fff;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;box-shadow:0 3px 0 #A3216F}
+.kb-join{color:#13773A;font-weight:800;text-decoration:underline;white-space:nowrap}
+.kb-msg{min-height:22px;margin-top:6px;font-weight:800}.kb-msg.bad{color:#E5484D}.kb-msg.ok{color:#1FA855}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:560px){.keybox{flex-direction:column;align-items:center;text-align:center}#kbForm{justify-content:center}}
 .sos{max-width:860px;margin:18px auto 0;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;text-decoration:none;border-radius:24px;padding:16px 18px;box-shadow:0 8px 24px rgba(163,33,111,.28);transition:transform .15s}
 .sos:hover{transform:translateY(-2px)}
 .sos-e{font-size:44px;line-height:1;flex-shrink:0}
@@ -220,6 +232,21 @@ footer a{color:#fff;font-weight:700}
       <span class="chip">❓ חידונים</span><span class="chip">📖 הקראת ספרים</span><span class="chip">✨ בחינם</span>
     </div>
   </div>
+
+  <section class="keybox" id="keybox" hidden aria-labelledby="kbT">
+    <div class="kb-ic" aria-hidden="true">🔑</div>
+    <div class="kb-t">
+      <b id="kbT">כל הנושאים נפתחים במספר סודי</b>
+      <span>המספר כתוב בתיאור קבוצת העדכונים בוואטסאפ. בחינם, לוקח חצי דקה. משחקי ספרי BOOQLI פתוחים לכולם.</span>
+      <form id="kbForm" novalidate>
+        <label for="kbIn" class="vh">המספר הסודי</label>
+        <input id="kbIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="8" placeholder="המספר הסודי">
+        <button type="submit">🔓 לפתוח</button>
+        <a class="js-wa kb-join" target="_blank" rel="noopener">💬 אין לי? להצטרפות לקבוצה</a>
+      </form>
+      <div class="kb-msg" id="kbMsg" aria-live="polite"></div>
+    </div>
+  </section>
 
   <a class="sos" href="topics/last-minute/">
     <span class="sos-e" aria-hidden="true">🆘</span>
@@ -483,7 +510,7 @@ function card(t){
   b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && SITE.locked && SITE.locked[t.id] && !siteUnlocked() ? `<span class="key">🔑 נפתח במספר סודי מקבוצת הוואטסאפ</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);
   b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
   if (s !== "open" || t.noGift) return b;
@@ -609,6 +636,18 @@ if (!REVIEWS.length) document.getElementById("reviews").hidden = true;
 
 // בקשה לפתוח תוכן
 document.getElementById("askLink").href = siteAskLink("");
+
+// מספר סודי בדף הבית
+if (!siteUnlocked()) {
+  const kb = document.getElementById("keybox"); kb.hidden = false;
+  document.getElementById("kbForm").addEventListener("submit", e => {
+    e.preventDefault(); const v = document.getElementById("kbIn").value.trim(), msg = document.getElementById("kbMsg");
+    siteCheckCode(v).then(ok => {
+      if (ok){ msg.className = "kb-msg ok"; msg.textContent = "🎉 נפתח! כל הנושאים פתוחים לכם עכשיו"; siteEvent("code-ok", "home"); document.querySelectorAll(".card .key").forEach(k => k.remove()); setTimeout(() => kb.hidden = true, 2200); }
+      else { msg.className = "kb-msg bad"; msg.textContent = "המספר לא נכון. בדקו שוב בתיאור הקבוצה 🙂"; siteEvent("code-bad", "home"); }
+    });
+  });
+}
 
 // קישורים
 document.getElementById("giftBday").href = CONFIG.order;

@@ -103,7 +103,12 @@ function siteJoinLinks(){
    כאן לא כתוב המספר עצמו, רק "טביעת אצבע" שלו (SHA-256 של "booqli:" + המספר).
    החלפת מספר: מחשבים טביעה חדשה ומחליפים את codeHash. מי שהקליד את הישן יתבקש להקליד את החדש.
    בדיקה בלי מספר: ?unlock=<המספר> בכתובת. */
-window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן" };
+// lockAllTopics: true = כל עמודי הנושאים (topics/) נעולים, גם נושאים חדשים, חוץ ממה שב-openTopics.
+// משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
+window.SITE.lockAllTopics = true;
+window.SITE.openTopics = [];
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה" };
+function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
 function siteUnlocked(){ try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
 function siteCheckCode(code){
@@ -119,7 +124,8 @@ function siteCheckCode(code){
 }
 function siteCodeGate(){
   var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
-  if (!id || !SITE.locked[id] || siteUnlocked() || document.querySelector(".closed-box")) return;
+  if (!siteIsLocked(id) || siteUnlocked() || document.querySelector(".closed-box")) return;
+  var nm = SITE.locked[id] || "התוכן הזה";
   var main = document.querySelector("main"); if (!main) return;
   var un = new URLSearchParams(location.search).get("unlock");
   main.hidden = true;
@@ -147,10 +153,9 @@ function siteCodeGate(){
   document.head.appendChild(css);
   var box = document.createElement("section");
   box.className = "code-gate"; box.setAttribute("aria-labelledby", "cgT");
-  var others = Object.keys(SITE.locked).filter(function(k){ return k !== id; }).map(function(k){ return SITE.locked[k]; });
   box.innerHTML = '<div class="lk" aria-hidden="true">🔑</div>' +
-    '<h2 id="cgT">' + SITE.locked[id] + ' פתוח לחברי קבוצת העדכונים</h2>' +
-    '<p class="sub">זה בחינם ולוקח חצי דקה. מספר סודי אחד פותח את ' + SITE.locked[id] + (others.length ? ' וגם את ' + others.join(" ואת ") : '') + '.</p>' +
+    '<h2 id="cgT">' + nm + ' פתוח לחברי קבוצת העדכונים</h2>' +
+    '<p class="sub">זה בחינם ולוקח חצי דקה. מספר סודי אחד פותח את <b>כל הנושאים באתר</b>, עכשיו ובהמשך.</p>' +
     '<ol>' +
       '<li><span class="n">1</span><span>מצטרפים לקבוצת העדכונים השקטה בוואטסאפ.<br><a class="js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 להצטרפות לקבוצה</a></span></li>' +
       '<li><span class="n">2</span><span>בקבוצה לוחצים על <b>שם הקבוצה</b> למעלה. המספר הסודי כתוב ב<b>תיאור הקבוצה</b>.</span></li>' +
@@ -235,7 +240,7 @@ function siteJoinPopup(){
       '<h2 id="bqjT">רוצים לדעת <b>ראשונים</b> כשעולה משחק חדש?</h2>' +
       '<p class="lead">הצטרפו לקבוצת העדכונים השקטה של <bdi style="white-space:nowrap">booqli Games</bdi> בוואטסאפ.</p>' +
       '<ul>' +
-        '<li><span class="e">🔑</span><span><b>המספר הסודי</b> שפותח את הנושאים המיוחדים (חנוכה, יום הולדת בגן) כתוב בתיאור הקבוצה.</span></li>' +
+        '<li><span class="e">🔑</span><span><b>המספר הסודי</b> שפותח את כל הנושאים באתר כתוב בתיאור הקבוצה.</span></li>' +
         '<li><span class="e">🆕</span><span><b>ראשונים לדעת</b> כשנפתח נושא חדש: חורף, ט"ו בשבט, פורים ועוד הרבה בדרך.</span></li>' +
         '<li><span class="e">⏳</span><span><b>לא מפספסים.</b> התכנים נפתחים לפי עונות השנה, ונסגרים כשהעונה נגמרת.</span></li>' +
         '<li><span class="e">🤫</span><span><b>קבוצה שקטה.</b> רק אנחנו שולחים, רק כשיש משהו חדש. בלי הודעות מאחרים ובלי הצפות.</span></li>' +
