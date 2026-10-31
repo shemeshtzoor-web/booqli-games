@@ -526,3 +526,15 @@ function siteMainNav(){
   function run(){ siteMainNav(); siteLogoLinks(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
 })();
+
+/* אייקון הלשונית (favicon) – החד־קרן של BOOQLI, לכל העמודים. הקבצים בשורש האתר וב-img/ */
+(function siteFavicon(){
+  try {
+    var cs = document.currentScript, root = cs && cs.src ? cs.src.replace(/common\.js(\?.*)?$/, "") : "/";
+    document.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"]').forEach(function(l){ l.remove(); });
+    [["icon", "image/png", "32x32", "img/favicon-32.png"], ["icon", "image/png", "192x192", "img/favicon-192.png"], ["apple-touch-icon", "", "180x180", "img/apple-touch-icon.png"]].forEach(function(a){
+      var l = document.createElement("link"); l.rel = a[0]; if (a[1]) l.type = a[1]; l.sizes = a[2]; l.href = root + a[3];
+      document.head.appendChild(l);
+    });
+  } catch (e) {}
+})();
