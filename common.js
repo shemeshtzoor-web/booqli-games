@@ -124,7 +124,7 @@ function siteBackBar(homeHref){
     var p = document.createElement("p");
     p.className = "site-copy";
     p.style.cssText = "margin:10px auto 0;padding:0 16px 14px;max-width:900px;text-align:center;font-size:12.5px;line-height:1.5;opacity:.85";
-    p.textContent = "© " + Math.max(2026, new Date().getFullYear()) + " BOOQLI. כל הזכויות שמורות. התכנים, הטקסטים, האיורים והמשחקים באתר מוגנים בזכויות יוצרים. מותר להשתמש בהם בגן ובבית, אך אין להעתיק, לשכפל, להפיץ או לפרסם אותם, כולם או חלקם, ללא אישור בכתב מ-BOOQLI.";
+    p.textContent = "© " + Math.max(2026, new Date().getFullYear()) + " BOOQLI. כל הזכויות שמורות. מותר ומומלץ לשתף את האתר ואת דפי ההדפסה עם גננות, הורים וחברים, בחינם וכמו שהם (עם הקרדיט של BOOQLI). אסור להשתמש בתכנים לשימוש מסחרי: למכור אותם, לגבות עליהם כסף, לשלב אותם במוצר או בשירות בתשלום, או לפרסם אותם בשם אחר, ללא אישור בכתב מ-BOOQLI.";
     var f = document.querySelector("footer");
     (f || document.body).appendChild(p);
   }
