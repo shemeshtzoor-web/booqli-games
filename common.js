@@ -220,3 +220,83 @@ function siteCloseBar(id, name, homeHref){
   };
   tick(); setInterval(tick, 30000);
 }
+
+/* ======================== חיבור לאתר הראשי של BOOQLI ========================
+   כלל קבוע: בכל עמוד יש פס עליון עם קישורים לאתר הראשי (בעברית), ולחיצה על כל לוגו
+   של BOOQLI מובילה לעמוד הבית של האתר הראשי. הכל נפתח בחלון חדש, כדי שאתר המשחקים יישאר פתוח.
+   הכתובות נבדקו באתר החי (31.10.2026). משנים כתובת – רק כאן. */
+window.SITE.main = {
+  home: "https://www.booqli.ai/he",
+  links: [
+    { icon: "👦", label: "ספרים לבנים", short: "לבנים",   href: "https://www.booqli.ai/he/choose-book/boys-hebrew" },
+    { icon: "👧", label: "ספרים לבנות", short: "לבנות",   href: "https://www.booqli.ai/he/choose-book/girls-hebrew" },
+    { icon: "🖼️", label: "גלריה",       short: "גלריה",   href: "https://www.booqli.ai/he/gallery" },
+    { icon: "📝", label: "מאמרים",      short: "מאמרים",  href: "https://www.booqli.ai/he/articles" },
+    { icon: "🏫", label: "גני ילדים",   short: "גנים",    href: "https://www.booqli.ai/he/kindergartens" }
+  ]
+};
+function siteIsLogo(img){
+  if (!img || img.tagName !== "IMG") return false;
+  var src = img.getAttribute("src") || "";
+  return img.classList.contains("logo") || img.alt === "BOOQLI" || /(^|\/)logo(-dark)?\.png$/.test(src);
+}
+function siteLogoLinks(){
+  document.querySelectorAll("img").forEach(function(img){
+    if (!siteIsLogo(img)) return;
+    var a = img.closest("a");
+    if (!a) {
+      a = document.createElement("a");
+      img.parentNode.insertBefore(a, img); a.appendChild(img);
+      a.className = "bq-logo-link";
+      // הלוגו בתחתית מוצג במרכז – הקישור שומר על אותו מיקום
+      var cs = getComputedStyle(img);
+      if (cs.display === "block") a.style.display = "block";
+    }
+    a.href = SITE.main.home; a.target = "_blank"; a.rel = "noopener";
+    a.setAttribute("aria-label", "BOOQLI – לאתר הראשי (נפתח בחלון חדש)");
+  });
+}
+/* לוגו שנוצר אחר כך (למשל בתוך חלונית) – גם לחיצה עליו מובילה לאתר הראשי */
+document.addEventListener("click", function(e){
+  var img = e.target;
+  if (!siteIsLogo(img) || img.closest("a") || img.closest(".s-foot")) return;
+  window.open(SITE.main.home, "_blank", "noopener");
+});
+function siteMainNav(){
+  if (document.querySelector(".bq-nav")) return;
+  var css = document.createElement("style");
+  css.textContent =
+    ".bq-nav{position:relative;z-index:40;background:linear-gradient(90deg,#FFE3F4,#FFF3FA 45%,#E1F0EA);border-bottom:2px solid #FFC8EA;font-family:Assistant,Arial,sans-serif;direction:rtl}" +
+    ".bq-nav .in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:6px max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}" +
+    ".bq-nav .home{display:inline-flex;align-items:center;gap:6px;color:#C13671;font-weight:800;font-size:14.5px;text-decoration:none;white-space:nowrap;flex-shrink:0}" +
+    ".bq-nav .home b{font-family:Fredoka,Assistant,sans-serif;letter-spacing:.5px}" +
+    ".bq-nav ul{list-style:none;margin:0 auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}" +
+    ".bq-nav li a{display:inline-flex;align-items:center;gap:5px;background:#fff;color:#C13671;border:2px solid #FF56C2;border-radius:999px;padding:4px 12px;font-weight:800;font-size:14px;line-height:1.3;text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}" +
+    ".bq-nav li a:hover,.bq-nav li a:focus-visible{background:#E0399F;border-color:#E0399F;color:#fff;outline:none}" +
+    ".bq-nav li a:focus-visible,.bq-nav .home:focus-visible{box-shadow:0 0 0 3px #4E8576}" +
+    ".bq-nav .s{display:none}" +
+    "@media (min-width:700px){.bq-nav{position:sticky;top:0;box-shadow:0 2px 10px rgba(193,54,113,.10)}html{scroll-padding-top:56px}}" +
+    "@media (max-width:860px){.bq-nav .home .t{display:none}}" +
+    /* טלפון: חמישה כפתורים בשורה אחת, אייקון מעל מילה – נוח לאצבע */
+    "@media (max-width:600px){.bq-nav .in{padding:5px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));flex-direction:column;align-items:stretch;gap:4px}" +
+    ".bq-nav .home{justify-content:center;font-size:13px}.bq-nav .home .t{display:inline}" +
+    ".bq-nav ul{margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}" +
+    ".bq-nav li a{display:flex;flex-direction:column;gap:0;justify-content:center;width:100%;min-height:44px;padding:3px 2px;border-radius:12px;font-size:12.5px;border-width:1.5px}" +
+    ".bq-nav li a .i{font-size:17px;line-height:1.1}.bq-nav .f{display:none}.bq-nav .s{display:inline}}" +
+    "@media (max-width:420px){.bq-nav .home .t{display:none}}" +
+    "@media print{.bq-nav{display:none!important}}";
+  document.head.appendChild(css);
+  var nav = document.createElement("nav");
+  nav.className = "bq-nav"; nav.setAttribute("aria-label", "האתר הראשי של BOOQLI");
+  var items = SITE.main.links.map(function(l){
+    return '<li><a href="' + l.href + '" target="_blank" rel="noopener" title="' + l.label + ' – באתר BOOQLI (נפתח בחלון חדש)">' +
+      '<span class="i" aria-hidden="true">' + l.icon + '</span><span class="f">' + l.label + '</span><span class="s">' + l.short + '</span></a></li>';
+  }).join("");
+  nav.innerHTML = '<div class="in"><a class="home" href="' + SITE.main.home + '" target="_blank" rel="noopener" title="לאתר הראשי של BOOQLI (נפתח בחלון חדש)">' +
+    '📚 <span>לאתר <b>BOOQLI</b></span><span class="t">· ספרים אישיים שהילד הוא הגיבור ↖</span></a><ul>' + items + '</ul></div>';
+  document.body.insertBefore(nav, document.body.firstChild);
+}
+(function siteConnectMain(){
+  function run(){ siteMainNav(); siteLogoLinks(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
+})();
