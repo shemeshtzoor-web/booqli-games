@@ -190,6 +190,12 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .vers div.cur{border-color:var(--pink);background:var(--pink-soft)}
 .vers b{color:var(--magenta)}
 .m-nav{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;margin-top:16px}
+.parents{margin-top:16px;border:2px dashed var(--wa);display:grid;gap:10px}
+.parents h3{font-size:21px;color:var(--wa)}
+.parents p{margin:0;color:var(--muted)}
+.msg{white-space:pre-wrap;background:#F2FBF5;border-radius:16px;padding:12px 14px;font:inherit;font-size:15px;line-height:1.5;margin:0;max-height:300px;overflow:auto}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+.m-home{background:#F2FBF5;border-radius:14px;padding:10px 12px;margin-top:6px}
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
@@ -231,6 +237,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .p-idea .ages div{border-radius:3mm;padding:1.5mm 2.5mm;background:#FFF3CF;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .p-idea .vv{font-size:11.4pt;display:grid;gap:1mm}
 .p-idea .vv div::before{content:"☐ ";color:var(--c)}
+.p-idea .home{font-size:11pt;background:#F2FBF5;border-radius:3mm;padding:1.4mm 3mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .p-track td{height:9mm}
 .p-notes{flex:1;border:2px dashed #CDE7DC;border-radius:5mm;padding:3mm 5mm;background:repeating-linear-gradient(transparent 0 8.5mm,#E1F0EA 8.5mm 9mm)}
 @media print{
@@ -286,6 +293,12 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     </div>
   </div>
   <div class="week" id="week"></div>
+  <section class="box parents" id="parents">
+    <h3>💌 הודעה להורים: מה עשינו השבוע במפגש</h3>
+    <p>הודעה מוכנה עם הרעיונות של השבוע ורעיון קטן להמשך בבית לכל יום. שולחים לקבוצת ההורים בלחיצה.</p>
+    <pre class="msg" id="pMsg"></pre>
+    <div class="t-btns"><button class="btn-wa-big" type="button" id="pSend">💬 לשלוח להורים בוואטסאפ</button><button class="btn-sec" type="button" id="pCopy">📋 להעתיק</button></div>
+  </section>
 
   <!-- כמה זמן -->
   <div class="sec-title" id="time"><h2>⏱️ כמה זמן מחזיקים מפגש בוקר?</h2><p>קצר ושמח עדיף על ארוך ועייף. סיימו כשהילדים עוד נהנים</p></div>
@@ -336,7 +349,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
       <ul>
         <li>כמה זמן לכל גיל והמבנה הקבוע של המפגש, עם חרוז הבוקר</li>
         <li>טבלת המחזוריות: 5 שבועות × 6 ימים, לתלות על הקיר</li>
-        <li>30 כרטיסי רעיון, שניים בעמוד: מה צריך, שלבים, התאמות לגיל ו-3 גרסאות לסימון ☐</li>
+        <li>30 כרטיסי רעיון, שניים בעמוד: מה צריך, שלבים, התאמות לגיל, רעיון להמשך בבית ו-3 גרסאות לסימון ☐</li>
         <li>דף מעקב שנתי ודף הערות של הגננת</li>
       </ul>
       <div class="t-btns">
@@ -520,7 +533,31 @@ function renderWeek(ref){
     if (p) b.onclick = () => openIdea(p.idea.n, p.ver); else b.disabled = true;
     w.appendChild(b);
   }
+  renderParents(ref);
 }
+/* ---------- הודעה להורים ----------
+   כלל קבוע באתר: בכל פעילות יש משהו דיגיטלי לשלוח להורים */
+const HOME_URL = "https://shemeshtzoor-web.github.io/booqli-games/?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=morning_circle";
+let parentsMsg = "";
+function weekMessage(ref){
+  const s = sunday(ref), rows = [], tips = [];
+  for (let i = 0; i < S.days; i++){ const y = new Date(s); y.setDate(y.getDate()+i); const p = planFor(y);
+    if (p){ rows.push(`${DAYS[i]} – ${p.idea.ic} ${p.idea.name}`); tips.push(`• ${p.idea.name}: ${p.idea.home}`); } }
+  if (!rows.length) return "";
+  return `☀️ השבוע במפגש הבוקר בגן\n\n${rows.join("\n")}\n\n🏡 רוצים להמשיך לתרגל בבית? רעיון קטן לכל יום:\n${tips.join("\n")}\n\nעוד משחקים ודפים לגן ולבית, בחינם:\n👈 ${HOME_URL}\n\nשבוע טוב ובאהבה מהגן 💛\n(התכנים מוענקים בחינם, בחסות BOOQLI)`;
+}
+function ideaMessage(i){
+  return `☀️ היום במפגש הבוקר בגן: ${i.ic} ${i.name}\n\n🏡 רוצים להמשיך בבית?\n${i.home}\n\nעוד משחקים ודפים לגן ולבית, בחינם:\n👈 ${HOME_URL}\n\n(התכנים מוענקים בחינם, בחסות BOOQLI)`;
+}
+function renderParents(ref){
+  parentsMsg = weekMessage(ref);
+  $("parents").hidden = !parentsMsg;
+  $("pMsg").textContent = parentsMsg;
+}
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+function copyText(t){ (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("✅ ההודעה הועתקה. מדביקים בקבוצת ההורים"), () => toast("סמנו את הטקסט והעתיקו ידנית")); }
+$("pSend").onclick = () => waSend(parentsMsg);
+$("pCopy").onclick = () => copyText(parentsMsg);
 document.querySelectorAll("#segDays button").forEach(b => b.onclick = () => { S.days = +b.dataset.d; save(); renderToday(); });
 $("startDate").onchange = e => { if (e.target.value) { S.start = e.target.value; save(); renderToday(); } };
 $("nMinus").onclick = () => { S.nudge--; save(); renderToday(); };
@@ -552,10 +589,13 @@ function openIdea(n, cur){
     <h3>🎯 התאמה לגיל</h3><p><b>3–4:</b> ${i.young}</p><p><b>5–6:</b> ${i.old}</p>
     <h3>🔄 3 גרסאות לסבבים</h3>
     <div class="vers"><div class="${cur===0?"cur":""}"><b>סבב 1, 4:</b> גרסת הבסיס, כמו שכתוב למעלה.</div><div class="${cur===1?"cur":""}"><b>סבב 2, 5:</b> ${i.v[0]}</div><div class="${cur===2?"cur":""}"><b>סבב 3, 6:</b> ${i.v[1]}</div></div>
+    <h3>🏡 להמשך בבית</h3><div class="m-home">${i.home}</div>
+    <div class="t-btns"><button class="btn-wa-big" type="button" id="mSend">💬 לשלוח להורים</button></div>
     <div class="m-nav"><button class="btn-sec" type="button" id="mPrev">→ הקודם</button><button class="btn-sec" type="button" id="mNext">הבא ←</button></div>
   </div>`);
   $("modal").hidden = false; document.body.style.overflow = "hidden";
   $("mX").onclick = closeIdea;
+  $("mSend").onclick = () => waSend(ideaMessage(i));
   $("mPrev").onclick = () => openIdea(n === 1 ? 30 : n - 1);
   $("mNext").onclick = () => openIdea(n === 30 ? 1 : n + 1);
   $("mX").focus();
@@ -574,6 +614,7 @@ function ideaPrint(i){
     <div class="need"><b>מה צריך:</b> ${i.need}</div>
     <ol>${i.steps.map(s => `<li>${s}</li>`).join("")}</ol>
     <div class="ages"><div><b>3–4:</b> ${i.young}</div><div><b>5–6:</b> ${i.old}</div></div>
+    <div class="home"><b>🏡 להורים, להמשך בבית:</b> ${i.home}</div>
     <div class="vv"><div><b>סבב 1, 4:</b> גרסת הבסיס</div><div><b>סבב 2, 5:</b> ${i.v[0]}</div><div><b>סבב 3, 6:</b> ${i.v[1]}</div></div>
   </div>`;
 }

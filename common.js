@@ -92,14 +92,15 @@ function siteQR(url){
   for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) d += "M" + c + " " + r + "h1v1h-1z";
   return '<svg viewBox="-2 -2 ' + (n + 4) + " " + (n + 4) + '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="-2" y="-2" width="' + (n + 4) + '" height="' + (n + 4) + '" fill="#fff"/><path d="' + d + '" fill="#2B1526"/></svg>';
 }
-/* תחתית קבועה לדף הדפסה: לוגו, פנייה להורים וקוד לסריקה */
+/* תחתית קבועה לדף הדפסה: לוגו, פנייה להורים וקוד לסריקה.
+   בדפים לבנים משתמשים ב-logo-dark.png (האותיות כהות, בלי רקע ירוק) */
 function sitePrintFooter(topic, couponLine, logoSrc){
   return '<div class="s-foot" style="display:flex;align-items:center;gap:4mm;border-top:2px solid #CDE7DC;padding-top:3mm;margin-top:4mm;font-size:10pt;direction:rtl">' +
     '<div style="width:22mm;height:22mm;flex-shrink:0">' + siteQR(siteOrderLink(topic)) + '</div>' +
     '<div style="flex:1;line-height:1.35"><b style="font-size:12.5pt;color:#C13671">להורים: ספר אמיתי שהילד שלכם הוא הגיבור שלו! 📖</b><br>' +
     'השם של הילד לאורך כל העלילה ואיורים אישיים בכל עמוד. סרקו את הקוד והכירו' + (couponLine ? '<br>' + couponLine : '') +
     '<br><span style="color:#4E8576">booqli Games · כל התכנים מוענקים בחינם, בחסות BOOQLI</span></div>' +
-    '<div style="background:#6F988B;border-radius:999px;padding:1.5mm 4mm;display:flex;-webkit-print-color-adjust:exact;print-color-adjust:exact"><img src="' + logoSrc + '" alt="BOOQLI" style="height:9mm;width:auto;display:block"></div></div>';
+    '<img src="' + String(logoSrc).replace(/logo\.png$/, "logo-dark.png") + '" alt="BOOQLI" style="height:11mm;width:auto;display:block;flex-shrink:0"></div>';
 }
 
 /* ======================== כפתור חזרה לתפריט הראשי ========================
