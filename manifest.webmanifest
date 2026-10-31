@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "booqli Games – משחקים ופעילויות לגיל הרך",
+  "short_name": "booqli Games",
+  "description": "משחקים, דפי עבודה, חידונים ומערכים לגן ולבית, לפי לוח השנה של הגן. בחינם, בחסות BOOQLI.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/?utm_source=app&utm_medium=pwa&utm_campaign=home_screen",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#E1F0EA",
+  "theme_color": "#E1F0EA",
+  "categories": ["education", "kids"],
+  "icons": [
+    { "src": "/img/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/app/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/img/app/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "חנוכה", "url": "/topics/hanukkah/?utm_source=app&utm_medium=pwa&utm_campaign=shortcut", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "יום הולדת בגן", "url": "/topics/birthday-party/?utm_source=app&utm_medium=pwa&utm_campaign=shortcut", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "סתיו", "url": "/topics/autumn/?utm_source=app&utm_medium=pwa&utm_campaign=shortcut", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "הגעתי לא מוכנה!", "url": "/topics/last-minute/?utm_source=app&utm_medium=pwa&utm_campaign=shortcut", "icons": [{ "src": "/img/app/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

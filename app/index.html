@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>האפליקציה של booqli Games – התקנה בטלפון בלחיצה · booqli Games</title>
+<meta name="description" content="מתקינים את booqli Games כאפליקציה בטלפון ישירות מהאתר, בלי חנות: אייקון על המסך, נפתח בלחיצה אחת, מסך מלא. באייפון ובאנדרואיד, בחינם.">
+<link rel="canonical" href="https://games.booqli.ai/app/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="📲 booqli Games – עכשיו גם כאפליקציה בטלפון">
+<meta property="og:description" content="משחקים, דפי עבודה ומערכים לגן – אייקון על המסך שנפתח בלחיצה אחת. מתקינים ישירות מהאתר, בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/app/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+img{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:760px}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.brand .sp{flex:1}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.hero{text-align:center;padding:28px 0 8px}
+.hero .ic{width:108px;height:108px;border-radius:26px;box-shadow:0 10px 30px rgba(193,54,113,.25);display:block;margin:0 auto 14px}
+.hero h1{font-size:clamp(28px,6.5vw,46px);color:var(--magenta);line-height:1.15}
+.hero h1 span{color:var(--sage-deep)}
+.hero p{font-size:clamp(16.5px,2.4vw,19px);color:var(--muted);margin:10px auto 0;max-width:600px}
+
+.card{background:#fff;border-radius:26px;box-shadow:0 8px 28px rgba(78,133,118,.14);padding:22px 20px;margin-top:20px}
+.status{text-align:center;border:3px solid var(--pink-soft)}
+.status h2{font-size:24px;color:var(--ink)}
+.status p{margin:8px 0 0;color:var(--muted);font-size:16.5px}
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:15px 26px;font-weight:800;font-size:19px;cursor:pointer;box-shadow:0 4px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px}
+.btn-main:active{transform:translateY(2px);box-shadow:0 2px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:16px}
+.done-ic{font-size:54px;line-height:1}
+
+.tabs{display:flex;gap:8px;justify-content:center;margin:4px 0 16px;flex-wrap:wrap}
+.tabs button{border:2px solid var(--sage-deep);background:#fff;color:var(--sage-deep);border-radius:999px;padding:8px 18px;font-weight:800;cursor:pointer;font-size:16px}
+.tabs button[aria-selected="true"]{background:var(--sage-deep);color:#fff}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:#F4FAF7;border-radius:18px;padding:12px 14px;font-size:17px;line-height:1.4;counter-increment:s}
+.steps li::before{content:counter(s);flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--pink-btn);color:#fff;font-weight:800;display:grid;place-items:center;font-family:Fredoka,sans-serif;font-size:18px}
+.steps li b{color:var(--magenta)}
+.key{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;min-width:30px;height:30px;padding:0 6px;border-radius:9px;background:#fff;border:2px solid #d8e6df;color:#1a73e8;font-weight:800;margin:0 2px}
+.key svg{width:20px;height:20px}
+.tip{margin:12px 0 0;font-size:15px;color:var(--muted);background:#FFF7E0;border-radius:14px;padding:10px 12px}
+.sec-title{text-align:center;margin:34px 0 4px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}
+.why div{background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(78,133,118,.1)}
+.why .e{font-size:30px;line-height:1}
+.why b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:18px;margin:6px 0 2px;color:var(--ink)}
+.why span{color:var(--muted);font-size:15.5px}
+
+.qr{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.qr .box{width:170px;height:170px;background:#fff;border-radius:16px;padding:8px;border:2px solid var(--mint-2)}
+
+details{background:#fff;border-radius:18px;padding:12px 16px;margin-top:10px;box-shadow:0 3px 12px rgba(78,133,118,.08)}
+summary{cursor:pointer;font-weight:800;font-size:17px;list-style-position:inside}
+details p{margin:8px 0 2px;color:var(--muted)}
+.share{text-align:center;margin-top:26px}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer .logo{margin:0 auto 8px;height:40px}
+footer p{margin:4px 0}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);text-align:center;font-weight:700}
+@media (max-width:420px){.brand .btn-wa span{display:none}.steps li{font-size:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI"></a>
+    <span class="sp"></span>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 <span>עדכונים בוואטסאפ</span></a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap narrow">
+  <div class="hero">
+    <img class="ic" src="../img/app/icon-192.png" alt="" width="108" height="108">
+    <h1>booqli Games <span>בטלפון</span> 📲</h1>
+    <p>אייקון על המסך, נפתח בלחיצה אחת, במסך מלא. מתקינים ישירות מהאתר, בלי חנות אפליקציות. בחינם.</p>
+  </div>
+
+  <!-- המצב הנוכחי: כבר באפליקציה / כפתור התקנה / הסבר -->
+  <section class="card status" id="st" aria-live="polite">
+    <div id="stIn" hidden>
+      <div class="done-ic" aria-hidden="true">🎉</div>
+      <h2>את/ה כבר בתוך האפליקציה!</h2>
+      <p>מעכשיו booqli Games נפתח מהאייקון במסך הבית.</p>
+      <a class="btn-main" href="../">לכל המשחקים והפעילויות ←</a>
+    </div>
+    <div id="stBtn" hidden>
+      <h2>התקנה בלחיצה אחת</h2>
+      <p>לוחצים על הכפתור, מאשרים, והאייקון מופיע במסך הבית.</p>
+      <button class="btn-main" id="installBtn" type="button">📲 להתקנת האפליקציה</button>
+    </div>
+    <div id="stOk" hidden>
+      <div class="done-ic" aria-hidden="true">✅</div>
+      <h2>האפליקציה הותקנה!</h2>
+      <p>חפשו את החד־קרן של <bdi>booqli Games</bdi> במסך הבית של הטלפון.</p>
+    </div>
+    <div id="stInApp" hidden>
+      <h2>קודם פותחים בדפדפן</h2>
+      <p>מתוך פייסבוק, אינסטגרם או וואטסאפ אי אפשר להתקין. פתחו את העמוד הזה בדפדפן הרגיל (<b>ספארי</b> באייפון, <b>כרום</b> באנדרואיד):</p>
+      <p>לוחצים על <span class="key">⋯</span> או <span class="key">⋮</span> בפינה ← <b>"פתיחה בדפדפן"</b>.</p>
+      <button class="btn-sec" id="copyBtn" type="button" style="margin-top:12px">🔗 העתקת הקישור</button>
+    </div>
+    <div id="stDesk" hidden>
+      <h2>סורקים ומתקינים בטלפון</h2>
+      <p>מכוונים את המצלמה של הטלפון לקוד, ונפתח העמוד הזה בטלפון.</p>
+      <div class="qr"><div class="box" id="qr" aria-label="קוד לסריקה שפותח את העמוד בטלפון"></div></div>
+      <button class="btn-wa-big" id="selfBtn" type="button" style="margin-top:14px">💬 לשלוח לעצמי בוואטסאפ</button>
+    </div>
+  </section>
+
+  <!-- הוראות לפי מכשיר -->
+  <section class="card" id="how" aria-labelledby="howT">
+    <h2 id="howT" style="text-align:center;font-size:24px;color:var(--sage-deep);margin-bottom:10px">איך מתקינים? 3 צעדים</h2>
+    <div class="tabs" role="tablist" aria-label="סוג הטלפון">
+      <button type="button" role="tab" id="tIos" aria-controls="pIos" aria-selected="true">🍎 אייפון</button>
+      <button type="button" role="tab" id="tAnd" aria-controls="pAnd" aria-selected="false">🤖 אנדרואיד</button>
+    </div>
+    <div role="tabpanel" id="pIos" aria-labelledby="tIos">
+      <ol class="steps">
+        <li><span>פותחים את <b>games.booqli.ai</b> בדפדפן <b>ספארי</b>.</span></li>
+        <li><span>לוחצים על כפתור השיתוף <span class="key" aria-label="שיתוף"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11v9h12v-9"/></svg></span> (ריבוע עם חץ למעלה) – בתחתית המסך או ליד שורת הכתובת.</span></li>
+        <li><span>גוללים למטה, בוחרים <b>"הוספה למסך הבית"</b> <span class="key" aria-hidden="true">＋</span>, ולוחצים <b>"הוספה"</b>. זהו! 🎉</span></li>
+      </ol>
+      <p class="tip">💡 לא רואים "הוספה למסך הבית"? לוחצים על "עריכת פעולות" בתחתית הרשימה ומוסיפים אותה. בכרום באייפון: כפתור השיתוף נמצא ליד שורת הכתובת.</p>
+    </div>
+    <div role="tabpanel" id="pAnd" aria-labelledby="tAnd" hidden>
+      <ol class="steps">
+        <li><span>פותחים את <b>games.booqli.ai</b> בדפדפן <b>כרום</b>.</span></li>
+        <li><span>לוחצים על שלוש הנקודות <span class="key">⋮</span> בפינה העליונה.</span></li>
+        <li><span>בוחרים <b>"התקנת אפליקציה"</b> (או <b>"הוספה למסך הבית"</b>) ומאשרים. זהו! 🎉</span></li>
+      </ol>
+      <p class="tip">💡 בדפדפן של סמסונג: לוחצים על <span class="key">☰</span> בתחתית ← "הוספת דף אל" ← "מסך הבית".</p>
+    </div>
+  </section>
+
+  <div class="sec-title"><h2>למה כדאי?</h2></div>
+  <div class="why">
+    <div><span class="e">👆</span><b>לחיצה אחת</b><span>האייקון במסך הבית, ליד הוואטסאפ. לא מחפשים קישורים.</span></div>
+    <div><span class="e">🖥️</span><b>מסך מלא</b><span>בלי שורת כתובת ובלי הסחות – נוח לילדים ולהקרנה בגן.</span></div>
+    <div><span class="e">📶</span><b>גם כשהאינטרנט חלש</b><span>עמודים שכבר פתחתם נשמרים בטלפון ונפתחים מהר.</span></div>
+    <div><span class="e">🔄</span><b>תמיד מעודכן</b><span>כל נושא חדש שנפתח באתר מופיע מיד גם באפליקציה.</span></div>
+    <div><span class="e">🪶</span><b>קלה מאוד</b><span>כמעט לא תופסת מקום בטלפון.</span></div>
+    <div><span class="e">🆓</span><b>בחינם</b><span>כמו כל האתר, בחסות BOOQLI. אתר בטוח להורים ולילדים.</span></div>
+  </div>
+
+  <div class="sec-title"><h2>שאלות</h2></div>
+  <details><summary>למה זה לא בחנות האפליקציות?</summary><p>כי לא צריך. האפליקציה נבנית ישירות מהאתר שלנו – אותו אתר, רק עם אייקון משלו ובמסך מלא. ככה היא תמיד מעודכנת ולא צריך לחכות לעדכונים.</p></details>
+  <details><summary>המספר הסודי עובד גם באפליקציה?</summary><p>כן. באנדרואיד הוא בדרך כלל כבר שמור. באייפון האפליקציה נפרדת מספארי, ולכן מקלידים את המספר פעם אחת גם בתוכה (הוא כתוב בתיאור קבוצת העדכונים בוואטסאפ).</p></details>
+  <details><summary>אפשר להדפיס מהאפליקציה?</summary><p>ברוב הטלפונים כן. אם חלון ההדפסה לא נפתח – פותחים את אותו עמוד בדפדפן הרגיל ומדפיסים משם.</p></details>
+  <details><summary>איך מוחקים?</summary><p>כמו כל אפליקציה: לחיצה ארוכה על האייקון ← "הסרה". שום דבר אחר לא נמחק מהטלפון.</p></details>
+  <details><summary>האפליקציה אוספת עליי פרטים?</summary><p>לא. אין חשבון ואין איסוף פרטים על הילדים. תמונות שמעלים לכרטיסי ברכה נשארות רק בטלפון.</p></details>
+
+  <div class="share">
+    <button class="btn-wa-big" id="shareBtn" type="button">💬 לשלוח את האפליקציה לגננת חברה</button>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../img/logo.png" alt="BOOQLI">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>כל הפעילויות והטקסטים מקוריים · אתר בטוח להורים ולילדים</p>
+    <p><a href="https://www.booqli.ai/he" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<script src="../qrcode.min.js"></script>
+<script src="../common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const APP_URL = "https://games.booqli.ai/app/";
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+
+/* ---------- טאבים: אייפון / אנדרואיד ---------- */
+function tab(which){
+  const ios = which === "ios";
+  $("tIos").setAttribute("aria-selected", ios); $("tAnd").setAttribute("aria-selected", !ios);
+  $("pIos").hidden = !ios; $("pAnd").hidden = ios;
+}
+$("tIos").onclick = () => tab("ios");
+$("tAnd").onclick = () => tab("and");
+[$("tIos"), $("tAnd")].forEach(b => b.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") { const o = b.id === "tIos" ? $("tAnd") : $("tIos"); o.click(); o.focus(); }
+}));
+
+/* ---------- מה מציגים למעלה ---------- */
+const ua = navigator.userAgent || "";
+const inAppBrowser = /FBAN|FBAV|FB_IAB|Instagram|Line\/|; wv\)|WhatsApp/i.test(ua);
+function show(id){ ["stIn","stBtn","stOk","stInApp","stDesk"].forEach(x => $(x).hidden = x !== id); }
+function refresh(){
+  const plat = sitePlatform();
+  if (siteIsStandalone()) { show("stIn"); $("how").hidden = true; return; }
+  if (siteCanInstall()) { show("stBtn"); return; }
+  if (inAppBrowser) { show("stInApp"); return; }
+  if (plat === "desktop") { show("stDesk"); return; }
+  $("st").hidden = true; // בטלפון בלי כפתור – ההוראות למטה מספיקות
+}
+tab(sitePlatform() === "android" ? "and" : "ios");
+refresh();
+document.addEventListener("site-can-install", () => { $("st").hidden = false; refresh(); });
+document.addEventListener("site-installed", () => { $("st").hidden = false; show("stOk"); });
+$("installBtn").onclick = () => siteInstall("app-page").then(ok => { if (ok) { show("stOk"); } else refresh(); });
+
+/* קוד לסריקה במחשב */
+try { $("qr").innerHTML = siteQR(APP_URL + "?utm_source=app_page&utm_medium=qr&utm_campaign=app"); } catch (e) {}
+$("selfBtn").onclick = () => { siteEvent("app", "send-self"); waSend("📲 להתקנת האפליקציה של booqli Games בטלפון:\n" + APP_URL + "?utm_source=whatsapp&utm_medium=self&utm_campaign=app"); };
+$("copyBtn").onclick = () => {
+  const u = APP_URL + "?utm_source=app_page&utm_medium=copy&utm_campaign=app";
+  (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast("✔️ הקישור הועתק – הדביקו אותו בדפדפן")).catch(() => prompt("העתיקו את הקישור:", u));
+};
+$("shareBtn").onclick = () => { siteEvent("app", "share"); waSend("📲 גילית כבר? יש אפליקציה ל-booqli Games!\nמשחקים, דפי עבודה ומערכים לגן לפי לוח השנה – אייקון על המסך שנפתח בלחיצה אחת.\nמתקינים ישירות מהאתר, בחינם, בחסות BOOQLI 👇\n" + APP_URL + "?utm_source=whatsapp&utm_medium=gan_share&utm_campaign=app"); };
+
+siteJoinLinks(); siteDevBar(); siteBackBar("../");
+</script>
+</body>
+</html>

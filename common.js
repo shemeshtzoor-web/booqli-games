@@ -240,7 +240,7 @@ function siteCodeGate(){
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 function siteJoinPopup(){
   var qs = location.search || "";
-  if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join")) return;
+  if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
   try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
   var save = function(o){ try { localStorage.setItem("booqli_join", JSON.stringify(o)); } catch (e) {} };
@@ -539,4 +539,108 @@ function siteMainNav(){
       document.head.appendChild(l);
     });
   } catch (e) {}
+})();
+
+/* ======================== אפליקציה לטלפון (מ-31.10.2026) ========================
+   האתר מותקן כאפליקציה ישירות מהדפדפן, בלי חנות (PWA): manifest.webmanifest + sw.js בשורש.
+   כאן: חיבור הקבצים, כפתור התקנה, ופס קטן "התקינו את האפליקציה" בדף הבית בטלפון.
+   עמוד ההסבר: app/ . מדידה: event/app/<פעולה> */
+window.SITE.app = { page: "/app/", barDelayMs: 15000, barAgainDays: 7 };
+window.siteInstallPrompt = null;
+function siteIsStandalone(){
+  try { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; } catch (e) { return false; }
+}
+/* ios = אייפון/אייפד · android · desktop */
+function sitePlatform(){
+  var ua = navigator.userAgent || "";
+  if (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return "ios";
+  if (/Android/.test(ua)) return "android";
+  return "desktop";
+}
+function siteCanInstall(){ return !!window.siteInstallPrompt; }
+/* פותח את חלון ההתקנה של הדפדפן (אנדרואיד / כרום / אדג'). מחזיר true אם אישרו */
+function siteInstall(where){
+  var p = window.siteInstallPrompt;
+  siteEvent("app", "install-click-" + (where || "page"));
+  if (!p) { location.href = SITE.app.page; return Promise.resolve(false); }
+  p.prompt();
+  return p.userChoice.then(function(c){
+    window.siteInstallPrompt = null;
+    if (c && c.outcome === "accepted") { siteEvent("app", "accepted-" + (where || "page")); return true; }
+    return false;
+  }).catch(function(){ return false; });
+}
+(function siteApp(){
+  try {
+    var head = document.head;
+    if (!document.querySelector('link[rel="manifest"]')) {
+      var m = document.createElement("link"); m.rel = "manifest"; m.href = "/manifest.webmanifest"; head.appendChild(m);
+    }
+    [["theme-color", "#E1F0EA"], ["mobile-web-app-capable", "yes"], ["apple-mobile-web-app-capable", "yes"],
+     ["apple-mobile-web-app-title", "booqli Games"], ["apple-mobile-web-app-status-bar-style", "default"]].forEach(function(a){
+      if (document.querySelector('meta[name="' + a[0] + '"]')) return;
+      var t = document.createElement("meta"); t.name = a[0]; t.content = a[1]; head.appendChild(t);
+    });
+  } catch (e) {}
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", function(){ navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(function(){}); });
+  }
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault(); window.siteInstallPrompt = e;
+    document.dispatchEvent(new Event("site-can-install"));
+  });
+  window.addEventListener("appinstalled", function(){
+    window.siteInstallPrompt = null;
+    try { localStorage.setItem("booqli_app", JSON.stringify({ installed: Date.now() })); } catch (e) {}
+    siteEvent("app", "installed");
+    document.dispatchEvent(new Event("site-installed"));
+    var b = document.querySelector(".bq-appbar"); if (b) b.remove();
+  });
+  if (siteIsStandalone()) {
+    try { if (!sessionStorage.getItem("booqli_app_open")) { sessionStorage.setItem("booqli_app_open", "1"); setTimeout(function(){ siteEvent("app", "open"); }, 800); } } catch (e) {}
+    document.documentElement.classList.add("in-app");
+  }
+})();
+/* פס קטן בתחתית דף הבית, רק בטלפון, רק בדפדפן (לא בתוך האפליקציה) */
+function siteAppBar(){
+  if (siteIsStandalone() || /[?&]sheet=/.test(location.search)) return;
+  var home = location.pathname === "/" || /\/index\.html$/.test(location.pathname);
+  var force = /[?&]appbar=1/.test(location.search);
+  if (!home && !force) return;
+  if (!force && sitePlatform() === "desktop") return;
+  var st = {};
+  try { st = JSON.parse(localStorage.getItem("booqli_app") || "{}") || {}; } catch (e) {}
+  if (!force && (st.installed || (st.later && Date.now() - st.later < SITE.app.barAgainDays * 864e5))) return;
+  var save = function(o){ try { localStorage.setItem("booqli_app", JSON.stringify(o)); } catch (e) {} };
+  var tries = 0;
+  var show = function(){
+    // לא מתנגשים עם חלון ההצטרפות או המספר הסודי
+    if (document.querySelector(".bq-join,.code-gate,.bq-appbar")) { if (++tries < 40) setTimeout(show, 4000); return; }
+    var css = document.createElement("style");
+    css.textContent =
+      ".bq-appbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:150;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px;background:#fff;color:#2B1526;border-radius:20px;padding:10px 10px 10px 12px;box-shadow:0 10px 30px rgba(43,21,38,.25);border:2px solid #E1F0EA;font-family:Assistant,Arial,sans-serif;direction:rtl;animation:bqaUp .4s cubic-bezier(.2,.9,.3,1.2)}" +
+      ".bq-appbar img{width:46px;height:46px;border-radius:12px;flex-shrink:0}" +
+      ".bq-appbar .t{flex:1;min-width:0;font-size:14px;line-height:1.3}.bq-appbar .t b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:16.5px;color:#C13671}" +
+      ".bq-appbar .go{background:#E0399F;color:#fff;border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;white-space:nowrap;text-decoration:none;flex-shrink:0}" +
+      ".bq-appbar .x{background:#F2F2F2;border:0;border-radius:50%;width:30px;height:30px;color:#6b5a66;font-weight:800;cursor:pointer;flex-shrink:0;line-height:1}" +
+      "@keyframes bqaUp{from{transform:translateY(120%);opacity:0}}" +
+      "@media (prefers-reduced-motion:reduce){.bq-appbar{animation:none}}@media print{.bq-appbar{display:none!important}}";
+    document.head.appendChild(css);
+    var bar = document.createElement("div");
+    bar.className = "bq-appbar"; bar.setAttribute("role", "region"); bar.setAttribute("aria-label", "התקנת האפליקציה");
+    bar.innerHTML = '<button class="x" type="button" aria-label="סגירה">✕</button>' +
+      '<img src="/img/app/icon-192.png" alt="" width="46" height="46">' +
+      '<span class="t"><b>האפליקציה בטלפון 📲</b>נפתחת בלחיצה אחת. בחינם.</span>' +
+      '<a class="go" href="' + SITE.app.page + '">להתקנה</a>';
+    bar.querySelector(".x").onclick = function(){ save({ later: Date.now() }); bar.remove(); siteEvent("app", "bar-close"); };
+    bar.querySelector(".go").addEventListener("click", function(e){
+      if (siteCanInstall()) { e.preventDefault(); siteInstall("bar").then(function(ok){ if (ok) bar.remove(); }); }
+    });
+    document.body.appendChild(bar);
+    siteEvent("app", "bar-show");
+  };
+  setTimeout(show, force ? 300 : SITE.app.barDelayMs);
+}
+(function(){
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteAppBar); else siteAppBar();
 })();
