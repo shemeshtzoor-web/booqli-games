@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>עולם הרגשות: משחק פרצופים ופעילויות רגשות לילדים · booqli Games</title>
+<meta name="description" content="משחק פרצופים לזיהוי רגשות, בונים פרצוף, מראת רגשות, צנצנת רגשות, מפלצת רגשות ומד רגשות להדפסה. מהגן ועד כיתה ב'–ג'. בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/feelings/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🌈 עולם הרגשות: משחק פרצופים ו-6 פעילויות רגשות לילדים">
+<meta property="og:description" content="שמח, עצוב, כועס, מפחד, מופתע, מתבייש, מקנא: משחקים ודפים להדפסה לזיהוי רגשות. מהגן ועד כיתה ב'–ג'. בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/topics/feelings/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== צבעי המותג של BOOQLI + צבעי הקשת של עולם הרגשות ===== */
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --r1:#FF4D5E; --r2:#FF9A2E; --r3:#FFD23F; --r4:#46C46E; --r5:#3AA7F0; --r6:#5B6CF0; --r7:#B05BE8;
+  --rainbow:linear-gradient(90deg,var(--r1),var(--r2),var(--r3),var(--r4),var(--r5),var(--r6),var(--r7));
+  --ok:#22A55B; --bad:#E5484D;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}.btn-wa{margin-inline-start:auto}}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+
+/* ===== פתיח בצבעי הקשת ===== */
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:var(--rainbow)}
+.hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.hero small{font-weight:800;color:var(--magenta)}
+.hero h1{font-size:clamp(36px,7.4vw,60px);line-height:1.05;margin-top:4px}
+.rb{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;max-width:640px;margin:10px 0 0}
+.faces-row{display:flex;flex-wrap:wrap;gap:4px;max-width:300px;justify-content:center}
+.faces-row svg{width:62px;height:62px;animation:bob 2.4s ease-in-out infinite}
+.faces-row svg:nth-child(2n){animation-delay:.4s}.faces-row svg:nth-child(3n){animation-delay:.8s}
+@keyframes bob{50%{transform:translateY(-5px) rotate(-4deg)}}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pills span{background:var(--mint);border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:var(--sage-deep)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+@media (max-width:700px){.hero .grid{grid-template-columns:1fr}.faces-row{order:-1;margin:0 auto;max-width:280px}.faces-row svg{width:54px;height:54px}}
+
+/* ===== תפריט הפעילויות ===== */
+.sec-title{text-align:center;margin:36px 0 14px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+.sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.menu a{background:#fff;border-radius:22px;padding:14px 10px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 0 #d9e9e1;border-top:6px solid var(--c);transition:transform .15s}
+.menu a:hover{transform:translateY(-3px)}
+.menu .e{font-size:38px;line-height:1.1}
+.menu b{font-family:Fredoka,sans-serif;font-size:17px;line-height:1.2}
+.menu span{font-size:12.5px;font-weight:800;border-radius:999px;padding:1px 10px;background:var(--pink-soft);color:var(--magenta)}
+.menu span.pr{background:var(--mint);color:var(--sage-deep)}
+.menu a.main{grid-column:1/-1;flex-direction:row;justify-content:center;gap:14px;border-top:0;background:linear-gradient(#fff,#fff) padding-box,var(--rainbow) border-box;border:4px solid transparent}
+.menu a.main .e{font-size:48px}
+.menu a.main b{font-size:22px}
+
+/* ===== קופסת פעילות ===== */
+.act{margin-top:30px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px}
+.act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
+.act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
+.act-h h2{font-size:26px;line-height:1.1}
+.act .intro{margin:2px 0 14px;color:var(--muted)}
+.why{background:#F7FBF9;border-radius:14px;padding:8px 12px;font-size:15px;margin-top:14px}
+.why b{color:var(--sage-deep)}
+.chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 14px;font-weight:800;cursor:pointer}
+.chip.on{background:var(--pink);border-color:var(--pink);color:#fff}
+
+/* ===== משחק פרצופים ===== */
+#game{--c:var(--r3);--b:#FFF6CF}
+#game.act{border-top:0;position:relative;overflow:hidden}
+#game.act::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:var(--rainbow)}
+.dots{display:flex;justify-content:center;gap:7px;margin:4px 0 10px}
+.dots i{width:16px;height:16px;border-radius:50%;background:#EEE;border:2px solid #ddd}
+.dots i.ok{background:var(--ok);border-color:var(--ok)}
+.dots i.no{background:var(--bad);border-color:var(--bad)}
+.dots i.now{border-color:var(--pink);transform:scale(1.2)}
+.qface{width:min(250px,62vw);margin:0 auto;display:block;animation:pop .45s}
+@keyframes pop{0%{transform:scale(.7);opacity:.3}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.qtext{text-align:center;font-family:Fredoka,sans-serif;font-size:clamp(20px,4vw,26px);margin:6px 0 14px}
+.opts{display:flex;flex-direction:column;gap:12px;max-width:440px;margin:0 auto}
+.opt{position:relative;background:#fff;border:3px solid var(--mint-2);border-radius:20px;padding:10px 16px;font-size:24px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 4px 0 var(--mint-2);min-height:66px;transition:background .2s,border-color .2s}
+.opt .mf{width:44px;height:44px;flex-shrink:0;display:block}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 4px 0 #157A40}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 4px 0 #A82F33}
+.opt.dim{opacity:.45}
+.answer{display:flex;align-items:center;justify-content:center;gap:10px;background:#E8F8EE;border:3px dashed var(--ok);border-radius:18px;padding:8px 14px;font-weight:800;font-size:19px;color:#157A40;animation:pop .35s}
+.answer svg{width:40px;height:40px}
+.burst{position:absolute;top:50%;left:10px;width:0;height:0;pointer-events:none;z-index:3}
+.burst i{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--c);animation:fly .9s ease-out forwards}
+.burst i.s{width:6px;height:6px;margin:-3px;border-radius:1px}
+@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
+.next-row{text-align:center;margin-top:16px;min-height:52px}
+
+/* ===== בונים פרצוף ===== */
+.builder{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:18px;align-items:start}
+@media (max-width:760px){.builder{grid-template-columns:minmax(0,1fr)}}
+.stagebox{background:linear-gradient(160deg,#FFF6CF,#FFE3F4);border-radius:24px;padding:12px;text-align:center;position:sticky;top:8px}
+@media (max-width:760px){.stagebox{position:static}}
+.stagebox svg.big{width:min(240px,70vw);height:auto;display:block;margin:0 auto}
+.target{font-family:Fredoka,sans-serif;font-size:21px;margin-bottom:6px}
+.target b{color:var(--magenta)}
+.hint{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;color:var(--muted);margin-top:6px}
+.hint svg{width:56px;height:56px}
+.parts h3{font-size:17px;color:var(--sage-deep);margin:10px 0 6px}
+.prow{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+.pb{flex:0 0 auto;width:66px;height:58px;background:#fff;border:3px solid var(--mint-2);border-radius:16px;padding:4px;cursor:pointer;display:grid;place-items:center}
+.pb svg{width:100%;height:100%}
+.pb.on{border-color:var(--pink);background:var(--pink-soft)}
+.pb.base{height:66px}
+.pb.txt{font-weight:800;font-size:13px}
+.done-msg{font-weight:800;color:var(--magenta);margin-top:6px;min-height:24px}
+
+/* ===== מראה ===== */
+.mirror{max-width:520px;margin:0 auto;text-align:center}
+.frame{background:linear-gradient(#fff,#fff) padding-box,var(--rainbow) border-box;border:10px solid transparent;border-radius:999px 999px 40px 40px;padding:26px 18px 18px}
+.frame svg{width:min(150px,40vw);display:block;margin:0 auto}
+.say{font-family:Fredoka,sans-serif;font-size:clamp(26px,6vw,36px);line-height:1.15;margin:8px 0}
+.say b{color:var(--c2)}
+.how{background:#F7FBF9;border-radius:14px;padding:8px 12px;font-weight:700;color:var(--sage-deep)}
+
+/* ===== מה היית מרגיש אם ===== */
+.sit{max-width:640px;margin:0 auto;text-align:center}
+.sit .scene{font-size:64px;line-height:1.1;margin-bottom:4px}
+.sit .q{font-family:Fredoka,sans-serif;font-size:clamp(22px,4.6vw,28px);line-height:1.25;margin-bottom:14px}
+.egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.eb{background:#fff;border:3px solid var(--mint-2);border-radius:18px;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:18px;box-shadow:0 3px 0 var(--mint-2)}
+.eb svg{width:38px;height:38px;flex-shrink:0}
+.eb.on{border-color:var(--c);background:var(--b)}
+.fb{margin-top:14px;background:#FFF6CF;border-radius:18px;padding:12px 16px;font-weight:700;animation:pop .35s}
+.fb p{margin:4px 0}
+
+/* ===== דפי הדפסה – תצוגה ===== */
+.pv{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:18px;align-items:center}
+@media (max-width:700px){.pv{grid-template-columns:1fr}}
+.pv-img{background:#fff;border:2px solid var(--mint);border-radius:18px;padding:10px;max-width:260px;margin:0 auto;width:100%}
+.pv-img svg{width:100%;height:auto;display:block}
+.pv ol{margin:0;padding-inline-start:22px;display:grid;gap:4px}
+.pv .need{margin:8px 0 0;color:var(--muted);font-size:15px}
+
+/* ===== שליחה ושיתוף ===== */
+.share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
+.share h3{color:var(--wa);font-size:22px}
+.share p{color:var(--muted);margin:6px 0 4px}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+@media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
+
+/* ===== מסך הניצחון + זיקוקים ===== */
+#fw{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none}
+.win{position:fixed;inset:0;z-index:85;background:rgba(43,21,38,.55);display:grid;place-items:center;padding:16px}
+.win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto;position:relative}
+.win .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;border-radius:28px 28px 0 0;background:var(--rainbow)}
+.win .big{width:120px;margin:4px auto 0}
+.win h3{font-size:32px;color:var(--magenta)}
+.win p{margin:6px 0}
+.coupon{margin:14px 0;background:var(--pink-soft);border:2px dashed var(--pink);border-radius:18px;padding:12px}
+.coupon b{font-family:Fredoka,sans-serif;font-size:24px;color:var(--magenta);letter-spacing:1px}
+.coupon p{margin:4px 0}
+.coupon a{color:var(--magenta);font-weight:800}
+
+/* ===== דפי הדפסה ===== */
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
+.s-head h1{font-size:22pt;color:#C13671;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-rb{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8);margin-bottom:4mm}
+.s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
+.p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:3mm 5mm}
+.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:1mm}
+.p-box ol{margin:0;padding-inline-start:6mm}
+.p-box li{margin:.4mm 0}
+.lines{display:grid;gap:5mm;margin-top:2mm}
+.lines div{border-bottom:1.5px dotted #6b5a66;height:7mm;font-weight:700}
+.legend{display:grid;gap:2.2mm}
+.legend div{display:flex;align-items:center;gap:3mm;font-weight:800;font-size:13pt}
+.legend svg{width:13mm;height:13mm}
+.legend i{width:11mm;height:11mm;border:2px solid #2B1526;border-radius:2mm;display:block;margin-inline-start:auto}
+.cutnote{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <small>booqli Games · לגן, לבית ולכיתות הנמוכות</small>
+        <h1>🌈 <span class="rb">עולם הרגשות</span></h1>
+        <p>שמח, עצוב, כועס, מפחד, מופתע, מתבייש ומקנא. משחק פרצופים צבעוני ועוד 6 פעילויות ודפי יצירה, כדי לזהות רגשות, לתת להם שם ולדבר עליהם.</p>
+        <div class="pills"><span>👧 מהגן ועד כיתה ב'–ג'</span><span>😊 7 רגשות</span><span>🖨️ 3 דפים להדפסה</span><span>🆓 בחינם, בלי הרשמה</span></div>
+        <div class="acts">
+          <a class="btn-main" href="#game">▶️ למשחק הפרצופים</a>
+          <button class="btn-sec js-gift" type="button">🎁 מתנה להורים</button>
+          <span id="heroLike"></span>
+        </div>
+      </div>
+      <div class="faces-row" id="heroFaces" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <div class="sec-title"><h2>🎨 מה יש בעולם הרגשות?</h2><p>לוחצים על פעילות ומגיעים אליה.</p></div>
+  <nav class="menu" id="menu" aria-label="הפעילויות"></nav>
+
+  <!-- ===== משחק ראשי: משחק פרצופים ===== -->
+  <section class="act" id="game">
+    <div class="act-h"><span class="e" aria-hidden="true">😊</span><div><small>המשחק הראשי</small><h2>משחק פרצופים</h2></div></div>
+    <p class="intro">מסתכלים על הסמיילי ובוחרים: מה הוא מרגיש? 7 שאלות, אחת לכל רגש. ליד כל מילה יש סמיילי קטן, ככה גם מי שעוד לא קורא יכול לשחק.</p>
+    <div class="chips" id="gLevel" role="group" aria-label="רמה">
+      <button class="chip on" type="button" data-n="3">🐣 קטנים · 3 תשובות</button>
+      <button class="chip" type="button" data-n="4">🦉 גדולים · 4 תשובות</button>
+    </div>
+    <div class="dots" id="gDots" aria-hidden="true"></div>
+    <div id="gFace"></div>
+    <div class="qtext" id="gQ">מה הסמיילי מרגיש?</div>
+    <div class="opts" id="gOpts"></div>
+    <div class="next-row" id="gNext"></div>
+    <p class="why"><b>מה מתרגלים:</b> זיהוי רגשות לפי הבעת פנים (עיניים, גבות ופה) ושפה רגשית. אחרי המשחק אפשר לשאול: "מתי אתה הרגשת ככה?"</p>
+  </section>
+
+  <!-- ===== 1. בונים פרצוף ===== -->
+  <section class="act" id="build" style="--c:var(--r2);--b:#FFEBD2">
+    <div class="act-h"><span class="e" aria-hidden="true">🧩</span><div><small>פעילות 1 · משחק</small><h2>בונים פרצוף</h2></div></div>
+    <p class="intro">בוחרים חיה או סמיילי צהוב, ואז עיניים, גבות ופה. אפשר לבנות פרצוף לפי רגש, או פרצוף מצחיק ומטורף.</p>
+    <div class="chips" id="bMode" role="group" aria-label="סוג המשחק">
+      <button class="chip on" type="button" data-m="emo">😊 פרצוף לפי רגש</button>
+      <button class="chip" type="button" data-m="crazy">🤪 פרצוף מצחיק ומטורף</button>
+    </div>
+    <div class="builder">
+      <div class="stagebox">
+        <div class="target" id="bTarget"></div>
+        <div id="bPreview"></div>
+        <div class="row-btns" id="bBtns"></div>
+        <div class="hint" id="bHint" hidden></div>
+        <div class="done-msg" id="bDone" aria-live="polite"></div>
+      </div>
+      <div class="parts" id="bParts"></div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> אילו חלקים בפנים "מספרים" על הרגש: גבות מכווצות בכעס, גבות מורמות בהפתעה, פה למטה בעצב. וגם דמיון והרבה צחוק.</p>
+  </section>
+
+  <!-- ===== 2. מראת רגשות ===== -->
+  <section class="act" id="mirror" style="--c:var(--r1);--b:#FFE0E3">
+    <div class="act-h"><span class="e" aria-hidden="true">🪞</span><div><small>פעילות 2 · משחק תנועה</small><h2>מראת רגשות</h2></div></div>
+    <p class="intro">המשחק אומר איזה פרצוף לעשות, והילד עושה אותו מול מראה או מול ההורה. אחר כך מתחלפים: ההורה עושה פרצוף והילד מנחש!</p>
+    <div class="chips" id="mWho" role="group" aria-label="למי פונים">
+      <button class="chip on" type="button" data-g="m">👦 ילד</button>
+      <button class="chip" type="button" data-g="f">👧 ילדה</button>
+    </div>
+    <div class="mirror">
+      <div class="frame"><div id="mFace"></div><div class="say" id="mSay" aria-live="polite"></div></div>
+      <p class="how" id="mHow"></p>
+      <div class="row-btns">
+        <button class="btn-main" type="button" id="mNext">הפרצוף הבא ←</button>
+        <button class="btn-sec" type="button" id="mSpeak">🔊 להקריא</button>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> הבעה רגשית בגוף ובפנים, מודעות עצמית, ויצירת קשר עין עם ההורה. כשהילד "משחק" רגש, קל לו יותר לזהות אותו אצל אחרים.</p>
+  </section>
+
+  <!-- ===== 3. צנצנת רגשות ===== -->
+  <section class="act" id="jar" style="--c:var(--r4);--b:#DDF5E5">
+    <div class="act-h"><span class="e" aria-hidden="true">🫙</span><div><small>פעילות 3 · דף יצירה להדפסה</small><h2>צנצנת רגשות</h2></div></div>
+    <div class="pv">
+      <div class="pv-img" id="jarPv"></div>
+      <div>
+        <ol>
+          <li>בוחרים צבע לכל רגש וצובעים את הריבוע שלידו.</li>
+          <li>חושבים: כמה הרגשתי היום מכל רגש?</li>
+          <li>צובעים בצנצנת שכבות: הרבה שמחה? הרבה שכבות בצבע של שמח.</li>
+          <li>מספרים להורה: מה גרם לי להרגיש ככה?</li>
+        </ol>
+        <p class="need">✏️ צריך: צבעים. הגדולים יכולים גם לכתוב בשורות למטה.</p>
+        <div class="row-btns" style="justify-content:flex-start"><button class="btn-main" type="button" data-print="jar">🖨️ להדפסה</button></div>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> להבין שביום אחד יש הרבה רגשות יחד, ושכולם בסדר. גם תחושת כמות (יותר ופחות).</p>
+  </section>
+
+  <!-- ===== 4. מפלצת רגשות ===== -->
+  <section class="act" id="monster" style="--c:var(--r5);--b:#DCEFFD">
+    <div class="act-h"><span class="e" aria-hidden="true">👾</span><div><small>פעילות 4 · גזירה והדבקה להדפסה</small><h2>מפלצת רגשות</h2></div></div>
+    <div class="pv">
+      <div class="pv-img" id="monPv"></div>
+      <div>
+        <ol>
+          <li>מדפיסים 2 דפים: המפלצת והגלגל.</li>
+          <li>צובעים את המפלצת בצבעים שאוהבים.</li>
+          <li>גוזרים את המפלצת, את הגלגל ואת חלון הפנים (בעזרת מבוגר).</li>
+          <li>מניחים את הגלגל מאחורי המפלצת ומחברים בנקודה האמצעית.</li>
+          <li>מסובבים את הגלגל, והמפלצת מחליפה פרצוף!</li>
+        </ol>
+        <p class="need">✂️ צריך: מספריים, צבעים וסיכה מתפצלת (או עיפרון וגוש פלסטלינה). מומלץ להדביק על בריסטול.</p>
+        <div class="row-btns" style="justify-content:flex-start"><button class="btn-main" type="button" data-print="monster">🖨️ להדפסה (2 דפים)</button></div>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> מוטוריקה עדינה (גזירה), ושפה רגשית: "המפלצת שלי עכשיו מתביישת, כי..."</p>
+  </section>
+
+  <!-- ===== 5. מה היית מרגיש אם ===== -->
+  <section class="act" id="whatif" style="--c:var(--r6);--b:#E3E6FF">
+    <div class="act-h"><span class="e" aria-hidden="true">🤔</span><div><small>פעילות 5 · משחק שיחה</small><h2>מה היית מרגיש אם...?</h2></div></div>
+    <p class="intro">מצבים מצחיקים (וקצת מוזרים). בוחרים איך הייתם מרגישים. ברגשות אין תשובה לא נכונה!</p>
+    <div class="sit">
+      <div class="dots" id="wDots" aria-hidden="true"></div>
+      <div class="scene" id="wScene" aria-hidden="true"></div>
+      <div class="q" id="wQ"></div>
+      <div class="egrid" id="wOpts"></div>
+      <div id="wFb" aria-live="polite"></div>
+      <div class="row-btns"><button class="btn-main" type="button" id="wNext">מצב הבא ←</button></div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> לחבר בין מה שקורה לבין מה שמרגישים, ולהבין שלאנשים שונים יש רגשות שונים לאותו מצב (אמפתיה).</p>
+  </section>
+
+  <!-- ===== 6. מד רגשות למקרר ===== -->
+  <section class="act" id="meter" style="--c:var(--r7);--b:#F1E3FF">
+    <div class="act-h"><span class="e" aria-hidden="true">🧲</span><div><small>פעילות 6 · דף להדפסה</small><h2>מד רגשות למקרר</h2></div></div>
+    <div class="pv">
+      <div class="pv-img" id="metPv"></div>
+      <div>
+        <ol>
+          <li>מדפיסים, צובעים וגוזרים את המד ואת החץ.</li>
+          <li>מחברים את החץ בנקודה האמצעית, ותולים על המקרר עם מגנט.</li>
+          <li>כל יום (בבוקר או אחרי הגן) מזיזים את החץ לרגש של היום.</li>
+          <li>שואלים: "מה קרה היום? מה יכול לעזור?"</li>
+        </ol>
+        <p class="need">✂️ צריך: מספריים, סיכה מתפצלת ומגנט. מומלץ להדביק על בריסטול.</p>
+        <div class="row-btns" style="justify-content:flex-start"><button class="btn-main" type="button" data-print="meter">🖨️ להדפסה</button></div>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> שגרה קבועה של שיחה על רגשות בבית, ולמידה שרגשות משתנים מיום ליום.</p>
+  </section>
+
+  <section class="share">
+    <h3>💌 לגננות: לשלוח להורים</h3>
+    <p>הודעה מוכנה להורים: "היום שיחקנו בעולם הרגשות", עם רעיון קטן להמשך בבית וקישור לאתר.</p>
+    <div class="row-btns">
+      <button class="btn-wa-big" type="button" id="parentsBtn">📲 הודעה להורים בוואטסאפ</button>
+      <button class="btn-sec" type="button" id="shareBtn">💬 לשלוח לגננת חברה</button>
+    </div>
+  </section>
+
+  <section class="bookbox">
+    <div style="font-size:56px">📖</div>
+    <div>
+      <h2>ספר אמיתי שהילד הוא הגיבור שלו</h2>
+      <p>השם של הילד לאורך כל העלילה · איורים אישיים בכל עמוד · ספר מודפס באיכות גבוהה. גננות וועדי הורים: ספר אישי לכל ילד בגן, במחירים סיטונאיים.</p>
+      <a id="orderBtn" target="_blank" rel="noopener">להכיר את הספרים ←</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<div id="win" class="win" hidden role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="in">
+    <div class="big" id="winFace"></div>
+    <h3 id="wTitle">כל הכבוד!</h3>
+    <p id="winText"></p>
+    <div class="coupon" id="winCoupon"></div>
+    <div class="row-btns">
+      <button class="btn-main" id="winAgain" type="button">לשחק שוב</button>
+      <button class="btn-sec" id="winNext" type="button">לפעילות הבאה ←</button>
+    </div>
+    <div class="row-btns"><span id="winLike"></span><button class="btn-sec js-gift" type="button">🎁 לשלוח להורים</button></div>
+  </div>
+</div>
+<canvas id="fw" hidden aria-hidden="true"></canvas>
+<div id="print" aria-hidden="true"></div>
+
+<script src="../../qrcode.min.js"></script>
+<script src="../../common.js"></script>
+<script>
+/* ======================== הגדרות – כאן משנים קישורים וקופון ======================== */
+const CONFIG = {
+  topicName: "עולם הרגשות",
+  // קוד הקופון לספר לילד. כשיהיה קוד – לכתוב אותו כאן בין המירכאות
+  coupon: "",
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=feelings",
+  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=feelings",
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+};
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* ======================== ציור הפרצופים (SVG מקורי) ======================== */
+const INK = "#3B2416";
+const S = (d, w = 7) => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+const both = f => f(72) + f(128);
+function starPath(cx, cy, R, r){ let d = ""; for (let i = 0; i < 10; i++){ const a = -Math.PI/2 + i*Math.PI/5, rr = i % 2 ? r : R; d += (i ? "L" : "M") + (cx + rr*Math.cos(a)).toFixed(1) + " " + (cy + rr*Math.sin(a)).toFixed(1); } return d + "Z"; }
+
+const EYES = {
+  dot:    () => both(x => `<circle cx="${x}" cy="88" r="10" fill="${INK}"/><circle cx="${x+3}" cy="84" r="3" fill="#fff"/>`),
+  big:    () => both(x => `<ellipse cx="${x}" cy="88" rx="16" ry="19" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="${x}" cy="91" r="8.5" fill="${INK}"/><circle cx="${x+3}" cy="87" r="3" fill="#fff"/>`),
+  happy:  () => S("M58 93 Q72 75 86 93") + S("M114 93 Q128 75 142 93"),
+  side:   c => both(x => `<ellipse cx="${x}" cy="91" rx="16" ry="14" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="${x+7}" cy="94" r="7" fill="${INK}"/><path d="M${x-18} 89 A18 18 0 0 1 ${x+18} 89 Z" fill="${c}"/>` + S(`M${x-17} 89 L${x+17} 89`, 5)),
+  wide:   () => both(x => `<circle cx="${x}" cy="88" r="19" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="${x}" cy="88" r="5" fill="${INK}"/>`),
+  down:   c => both(x => `<ellipse cx="${x}" cy="90" rx="15" ry="15" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="${x-3}" cy="97" r="7" fill="${INK}"/><path d="M${x-17} 86 A17 17 0 0 1 ${x+17} 86 Z" fill="${c}"/>` + S(`M${x-16} 86 Q${x} 92 ${x+16} 86`, 5)),
+  closed: () => S("M58 88 Q72 99 86 88") + S("M114 88 Q128 99 142 88"),
+  crazy:  () => `<circle cx="70" cy="86" r="23" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="76" cy="80" r="9" fill="${INK}"/><circle cx="130" cy="92" r="11" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="127" cy="95" r="4.5" fill="${INK}"/>`,
+  hearts: () => both(x => `<path d="M${x} 102 C${x-24} 86 ${x-12} 66 ${x} 80 C${x+12} 66 ${x+24} 86 ${x} 102Z" fill="#FF3B6B" stroke="${INK}" stroke-width="3"/>`),
+  stars:  () => both(x => `<path d="${starPath(x, 88, 18, 8)}" fill="#FFF3A0" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>`),
+  spiral: () => both(x => S(`M${x} 88 a3 3 0 1 1 6 0 a6 6 0 1 1 -12 0 a9 9 0 1 1 18 0 a12 12 0 1 1 -24 0 a15 15 0 1 1 30 0`, 4.5)),
+  xx:     () => both(x => S(`M${x-11} 77 L${x+11} 99 M${x+11} 77 L${x-11} 99`, 7))
+};
+const BROWS = {
+  none:  () => "",
+  flat:  () => S("M58 62 L86 62", 6) + S("M114 62 L142 62", 6),
+  up:    () => S("M55 60 Q72 43 89 56", 6) + S("M111 56 Q128 43 145 60", 6),
+  angry: () => S("M55 57 L89 72", 7) + S("M145 57 L111 72", 7),
+  sad:   () => S("M55 70 L89 57", 6) + S("M145 70 L111 57", 6),
+  mixed: () => S("M55 55 Q72 44 89 53", 6) + S("M111 70 L145 61", 7),
+  uni:   () => S("M52 62 q12 -11 24 0 t24 0 t24 0 t24 0", 9)
+};
+const MOUTH = {
+  smile:  () => S("M68 132 Q100 162 132 132"),
+  grin:   () => `<path d="M62 126 Q100 184 138 126 Z" fill="#8A2E22" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M66 128 L134 128 Q131 136 127 140 L73 140 Q69 136 66 128Z" fill="#fff"/><path d="M80 157 Q100 147 120 157 Q100 172 80 157Z" fill="#FF7E92"/>`,
+  frown:  () => S("M68 157 Q100 126 132 157"),
+  o:      () => `<ellipse cx="100" cy="146" rx="15" ry="19" fill="#8A2E22" stroke="${INK}" stroke-width="5"/>`,
+  flat:   () => S("M76 147 L124 147"),
+  wavy:   () => S("M66 149 q8.5 -9 17 0 t17 0 t17 0 t17 0", 6),
+  small:  () => S("M86 143 Q100 153 114 143", 6),
+  pout:   () => S("M92 151 Q109 138 126 149"),
+  teeth:  () => `<rect x="70" y="134" width="60" height="24" rx="9" fill="#fff" stroke="${INK}" stroke-width="5"/>` + S("M72 146 L128 146 M85 136 L85 156 M100 136 L100 156 M115 136 L115 156", 3),
+  tongue: () => S("M66 134 Q100 160 134 134") + `<path d="M88 146 Q88 176 100 176 Q112 176 112 146 Z" fill="#FF7E92" stroke="${INK}" stroke-width="4"/>` + S("M100 150 L100 166", 3),
+  zigzag: () => S("M64 142 l12 10 l12 -10 l12 10 l12 -10 l12 10 l12 -10", 6)
+};
+const EXTRA = {
+  none:  () => "",
+  blush: () => `<ellipse cx="52" cy="120" rx="14" ry="9" fill="#FF8FB1" opacity=".8"/><ellipse cx="148" cy="120" rx="14" ry="9" fill="#FF8FB1" opacity=".8"/>`,
+  blush2:() => `<ellipse cx="52" cy="118" rx="19" ry="12" fill="#FF6F9C" opacity=".85"/><ellipse cx="148" cy="118" rx="19" ry="12" fill="#FF6F9C" opacity=".85"/>` + S("M42 112 l6 -4 M52 112 l6 -4 M138 112 l6 -4 M148 112 l6 -4", 2.5),
+  tear:  () => `<path d="M138 102 Q128 120 131 127 Q138 136 145 127 Q148 120 138 102Z" fill="#5AB6F5" stroke="#2C86C9" stroke-width="2.5"/>`,
+  sweat: () => `<path d="M158 44 Q149 60 152 66 Q158 74 164 66 Q167 60 158 44Z" fill="#9AD7FF" stroke="#2C86C9" stroke-width="2.5"/>`,
+  red:   () => `<ellipse cx="52" cy="120" rx="16" ry="10" fill="#FF4A2E" opacity=".55"/><ellipse cx="148" cy="120" rx="16" ry="10" fill="#FF4A2E" opacity=".55"/>`,
+  love:  () => `<path d="M168 40 C156 32 160 20 168 28 C176 20 180 32 168 40Z" fill="#FF3B6B"/><path d="M34 52 C26 46 29 38 34 43 C39 38 42 46 34 52Z" fill="#FF3B6B"/>`
+};
+
+/* בסיס: סמיילי צהוב או חיה */
+const BASES = {
+  smiley: {name:"סמיילי", c:"#FFD23F",
+    back: () => `<circle cx="100" cy="100" r="88" fill="#FFD23F" stroke="#E9A319" stroke-width="6"/><ellipse cx="66" cy="42" rx="20" ry="10" fill="#fff" opacity=".45" transform="rotate(-25 66 42)"/>`, front: () => ""},
+  cat: {name:"חתול", c:"#F4A24C",
+    back: () => `<path d="M30 76 L40 12 L90 40Z M170 76 L160 12 L110 40Z" fill="#F4A24C" stroke="#C0702A" stroke-width="5" stroke-linejoin="round"/><path d="M42 58 L47 28 L72 44Z M158 58 L153 28 L128 44Z" fill="#FFB3C7"/><circle cx="100" cy="108" r="80" fill="#F4A24C" stroke="#C0702A" stroke-width="5"/>`,
+    front: () => `<path d="M91 112 L109 112 L100 122Z" fill="#FF7E92" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>` + S("M56 120 L22 113 M56 128 L22 134 M144 120 L178 113 M144 128 L178 134", 3)},
+  bear: {name:"דוב", c:"#B9814F",
+    back: () => `<circle cx="42" cy="44" r="25" fill="#B9814F" stroke="#80532D" stroke-width="5"/><circle cx="158" cy="44" r="25" fill="#B9814F" stroke="#80532D" stroke-width="5"/><circle cx="42" cy="44" r="12" fill="#E8C9A3"/><circle cx="158" cy="44" r="12" fill="#E8C9A3"/><circle cx="100" cy="108" r="80" fill="#B9814F" stroke="#80532D" stroke-width="5"/><ellipse cx="100" cy="142" rx="44" ry="32" fill="#E8C9A3"/>`,
+    front: () => `<ellipse cx="100" cy="119" rx="12" ry="8" fill="${INK}"/>`},
+  bunny: {name:"ארנב", c:"#F3EEF4",
+    back: () => `<ellipse cx="70" cy="40" rx="17" ry="40" fill="#F3EEF4" stroke="#B9A6BC" stroke-width="5" transform="rotate(-10 70 40)"/><ellipse cx="130" cy="40" rx="17" ry="40" fill="#F3EEF4" stroke="#B9A6BC" stroke-width="5" transform="rotate(10 130 40)"/><ellipse cx="70" cy="40" rx="8" ry="28" fill="#FFB3C7" transform="rotate(-10 70 40)"/><ellipse cx="130" cy="40" rx="8" ry="28" fill="#FFB3C7" transform="rotate(10 130 40)"/><circle cx="100" cy="112" r="78" fill="#F3EEF4" stroke="#B9A6BC" stroke-width="5"/>`,
+    front: () => `<ellipse cx="100" cy="117" rx="8" ry="6" fill="#FF7E92"/>` + S("M60 122 L28 117 M60 129 L28 134 M140 122 L172 117 M140 129 L172 134", 2.5)},
+  lion: {name:"אריה", c:"#F8C55B",
+    back: () => { let m = ""; for (let i = 0; i < 14; i++){ const a = i * Math.PI * 2 / 14; m += `<circle cx="${(100 + 74*Math.cos(a)).toFixed(1)}" cy="${(106 + 74*Math.sin(a)).toFixed(1)}" r="24" fill="#E07B24"/>`; } return m + `<circle cx="100" cy="106" r="74" fill="#E07B24"/><circle cx="100" cy="108" r="66" fill="#F8C55B" stroke="#C98A1E" stroke-width="5"/>`; },
+    front: () => `<path d="M90 112 L110 112 L100 122Z" fill="#8A4A1E"/>`},
+  frog: {name:"צפרדע", c:"#79C85A",
+    back: () => `<circle cx="66" cy="64" r="30" fill="#79C85A" stroke="#4E9437" stroke-width="5"/><circle cx="134" cy="64" r="30" fill="#79C85A" stroke="#4E9437" stroke-width="5"/><ellipse cx="100" cy="114" rx="88" ry="72" fill="#79C85A" stroke="#4E9437" stroke-width="5"/>`,
+    front: () => `<circle cx="93" cy="116" r="3" fill="${INK}"/><circle cx="107" cy="116" r="3" fill="${INK}"/>`}
+};
+
+/* שבעת הרגשות – כל רגש בצבע של הקשת */
+const EMO = [
+  {id:"happy",     w:"שמח",    c:"#E0A800", b:"#FFF6CF", f:{eyes:"happy", brows:"none",  mouth:"grin",  extra:"blush"},
+   how:"מרימים את הלחיים, מחייכים חיוך גדול, והעיניים נהיות קטנות."},
+  {id:"sad",       w:"עצוב",   c:"#2C86C9", b:"#DCEFFD", f:{eyes:"big",   brows:"sad",   mouth:"frown", extra:"tear"},
+   how:"מורידים את קצוות הפה למטה, והגבות עולות באמצע."},
+  {id:"angry",     w:"כועס",   c:"#E0384A", b:"#FFE0E3", f:{eyes:"dot",   brows:"angry", mouth:"teeth", extra:"red"},
+   how:"מכווצים את הגבות, לוחצים שיניים, ואפשר לשים ידיים על המותניים."},
+  {id:"scared",    w:"מפחד",   c:"#8A45C9", b:"#F1E3FF", f:{eyes:"wide",  brows:"up",    mouth:"wavy",  extra:"sweat"},
+   how:"פותחים עיניים גדולות, מרימים גבות ומכווצים את הכתפיים."},
+  {id:"surprised", w:"מופתע",  c:"#E2741B", b:"#FFEBD2", f:{eyes:"big",   brows:"up",    mouth:"o",     extra:"none"},
+   how:"מרימים את הגבות הכי גבוה שאפשר ופותחים את הפה כמו O."},
+  {id:"shy",       w:"מתבייש", c:"#D63C8E", b:"#FFE3F4", f:{eyes:"down",  brows:"none",  mouth:"small", extra:"blush2"},
+   how:"מסתכלים למטה, מחייכים חיוך קטן, ומסתירים קצת את הפנים בידיים."},
+  {id:"jealous",   w:"מקנא",   c:"#2E9A55", b:"#DDF5E5", f:{eyes:"side",  brows:"mixed", mouth:"pout",  extra:"none"},
+   how:"מסתכלים הצידה, משרבבים את השפתיים ומכווצים גבה אחת."}
+];
+const E = Object.fromEntries(EMO.map(e => [e.id, e]));
+
+function faceG(p){
+  const base = BASES[p.base || "smiley"];
+  return base.back() + (EXTRA[p.extra || "none"])() + base.front() + BROWS[p.brows]() + EYES[p.eyes](base.c) + MOUTH[p.mouth]();
+}
+const faceSVG = (p, cls = "", label = "") => `<svg viewBox="0 0 200 200" class="${cls}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"'} xmlns="http://www.w3.org/2000/svg">${faceG(p)}</svg>`;
+const emoSVG = (id, cls = "", label = "") => faceSVG(E[id].f, cls, label);
+
+/* ======================== פתיח + תפריט ======================== */
+$("heroFaces").innerHTML = EMO.map(e => emoSVG(e.id)).join("");
+const MENU = [
+  {h:"#game", e:"😊", t:"משחק פרצופים", s:"המשחק הראשי", c:"var(--r3)", main:1},
+  {h:"#build", e:"🧩", t:"בונים פרצוף", s:"משחק", c:"var(--r2)"},
+  {h:"#mirror", e:"🪞", t:"מראת רגשות", s:"משחק תנועה", c:"var(--r1)"},
+  {h:"#jar", e:"🫙", t:"צנצנת רגשות", s:"להדפסה", c:"var(--r4)", pr:1},
+  {h:"#monster", e:"👾", t:"מפלצת רגשות", s:"גזירה להדפסה", c:"var(--r5)", pr:1},
+  {h:"#whatif", e:"🤔", t:"מה היית מרגיש אם...?", s:"משחק שיחה", c:"var(--r6)"},
+  {h:"#meter", e:"🧲", t:"מד רגשות למקרר", s:"להדפסה", c:"var(--r7)", pr:1}
+];
+$("menu").innerHTML = MENU.map(m => `<a href="${m.h}" class="${m.main ? "main" : ""}" style="--c:${m.c}"><span class="e" aria-hidden="true">${m.e}</span><b>${m.t}</b><span class="${m.pr ? "pr" : ""}">${m.s}</span></a>`).join("");
+
+/* ======================== צליל ניצחון (הצליל היחיד במשחק הפרצופים) ======================== */
+let AC = null;
+function audio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); } catch(e){ AC = null; } return AC; }
+function winSound(){
+  const C = audio(); if (!C) return;
+  const t0 = C.currentTime + .05, out = C.createGain(); out.gain.value = .22; out.connect(C.destination);
+  const tone = (f, t, d, type = "square", v = .5) => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t0+t); g.gain.linearRampToValueAtTime(v, t0+t+.02); g.gain.exponentialRampToValueAtTime(.001, t0+t+d); o.connect(g); g.connect(out); o.start(t0+t); o.stop(t0+t+d+.05); };
+  [[523,0],[659,.11],[784,.22],[1047,.33],[784,.46],[1047,.57]].forEach(([f,t]) => { tone(f, t, .2); tone(f*2, t, .12, "triangle", .2); });
+  [523,659,784,1047].forEach(f => { tone(f, .74, 1.1, "square", .32); tone(f/2, .74, 1.1, "triangle", .35); });
+  for (let i = 0; i < 9; i++) tone(1800 + Math.random()*1600, .9 + i*.08, .14, "sine", .25);
+}
+
+/* ======================== זיקוקים ======================== */
+function burstAt(el){
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#fff"];
+  [0, 260, 520].forEach((delay, k) => setTimeout(() => {
+    const b = document.createElement("span"); b.className = "burst"; b.style.left = (10 + k*16) + "px";
+    for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2, r = 34 + Math.random()*26, d = document.createElement("i");
+      if (i % 3 === 0) d.className = "s";
+      d.style.setProperty("--x", (Math.cos(a)*r).toFixed(0) + "px"); d.style.setProperty("--y", (Math.sin(a)*r).toFixed(0) + "px"); d.style.setProperty("--c", cols[(i + k) % cols.length]); b.appendChild(d); }
+    el.appendChild(b); setTimeout(() => b.remove(), 1000);
+  }, delay));
+}
+function bigFireworks(ms = 4200){
+  const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const P = [], R = []; const start = performance.now(); let last = 0;
+  function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(cols)}); }
+  function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(cols) : r.c}); } }
+  (function frame(t){
+    const el = t - start; x.clearRect(0, 0, W, H);
+    if (el < ms - 1200 && t - last > 260){ rocket(); if (Math.random() < .5) rocket(); last = t; }
+    for (let i = R.length - 1; i >= 0; i--){ const r = R[i]; r.y += r.vy; x.fillStyle = "#fff"; x.beginPath(); x.arc(r.x, r.y, 3*dpr, 0, 7); x.fill(); if (r.y <= r.ty){ explode(r); R.splice(i, 1); } }
+    for (let i = P.length - 1; i >= 0; i--){ const p = P[i]; p.x += p.vx; p.y += p.vy; p.vy += .06*dpr; p.vx *= .985; p.l -= .012; if (p.l <= 0){ P.splice(i, 1); continue; } x.globalAlpha = p.l; x.fillStyle = p.c; x.beginPath(); x.arc(p.x, p.y, 3*dpr, 0, 7); x.fill(); }
+    x.globalAlpha = 1;
+    if (el < ms || P.length) requestAnimationFrame(frame); else cv.hidden = true;
+  })(start);
+}
+
+/* ======================== משחק פרצופים ======================== */
+let G = {n: 3, order: [], i: 0, res: [], lock: false};
+function gStart(){ G.order = shuffle(EMO.map(e => e.id)); G.i = 0; G.res = []; gRender(); }
+function gDots(){ $("gDots").innerHTML = G.order.map((_, k) => `<i class="${G.res[k] === true ? "ok" : G.res[k] === false ? "no" : k === G.i ? "now" : ""}"></i>`).join(""); }
+function gRender(){
+  G.lock = false; const id = G.order[G.i];
+  gDots();
+  $("gFace").innerHTML = emoSVG(id, "qface", "סמיילי שמרגיש משהו");
+  $("gQ").textContent = `שאלה ${G.i + 1} מתוך ${G.order.length}: מה הסמיילי מרגיש?`;
+  const opts = shuffle([id, ...shuffle(EMO.map(e => e.id).filter(x => x !== id)).slice(0, G.n - 1)]);
+  $("gOpts").innerHTML = opts.map(o => `<button class="opt" type="button" data-id="${o}"><span>${E[o].w}</span>${emoSVG(o, "mf")}</button>`).join("");
+  $("gNext").innerHTML = "";
+  $("gOpts").querySelectorAll(".opt").forEach(b => b.onclick = () => gAnswer(b));
+}
+function gAnswer(b){
+  if (G.lock) return; G.lock = true; audio();   // רק "מעיר" את מערכת הקול לצליל הסיום – בלי להשמיע כלום
+  const id = G.order[G.i], ok = b.dataset.id === id;
+  G.res[G.i] = ok;
+  $("gOpts").querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x !== b) x.classList.add("dim"); });
+  if (ok){ b.classList.add("right"); b.classList.remove("dim"); burstAt(b); }
+  else {
+    b.classList.add("wrong");
+    const a = document.createElement("div"); a.className = "answer";
+    a.innerHTML = `✅ התשובה הנכונה: ${E[id].w} ${emoSVG(id)}`;
+    b.after(a);
+  }
+  gDots();
+  const last = G.i === G.order.length - 1;
+  $("gNext").innerHTML = `<button class="btn-main" type="button">${last ? "🎉 לסיום" : "לשאלה הבאה ←"}</button>`;
+  const nb = $("gNext").querySelector("button"); nb.onclick = () => last ? gEnd() : (G.i++, gRender(), $("gFace").scrollIntoView({block:"center", behavior:"smooth"}));
+  setTimeout(() => nb.focus({preventScroll:true}), 50);
+}
+function couponHTML(){
+  if (CONFIG.coupon) return `<p>🎁 מתנה מ-BOOQLI: קופון הנחה לספר אישי שהילד הוא הגיבור שלו</p><b>${CONFIG.coupon}</b><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a></p>`;
+  return `<p>🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד</p><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת ספר אישי ←</a></p>`;
+}
+function gEnd(){
+  const sc = G.res.filter(Boolean).length, n = G.order.length;
+  $("winFace").innerHTML = emoSVG("happy");
+  $("wTitle").textContent = sc === n ? "מושלם! 🌈" : sc >= n - 2 ? "כל הכבוד! 🎉" : "יופי של משחק! ⭐";
+  $("winText").textContent = `זיהית נכון ${sc} מתוך ${n} רגשות.` + (sc < n ? " רוצים לנסות לקבל את כולם?" : " את כל הרגשות!");
+  $("winCoupon").innerHTML = couponHTML();
+  $("win").hidden = false; bigFireworks(); winSound();
+  setTimeout(() => $("winAgain").focus({preventScroll:true}), 60);
+}
+$("winAgain").onclick = () => { $("win").hidden = true; gStart(); $("game").scrollIntoView({behavior:"smooth"}); };
+$("winNext").onclick = () => { $("win").hidden = true; $("build").scrollIntoView({behavior:"smooth"}); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("win").hidden) $("win").hidden = true; });
+$("gLevel").querySelectorAll(".chip").forEach(c => c.onclick = () => { $("gLevel").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === c)); G.n = +c.dataset.n; gStart(); });
+gStart();
+
+/* ======================== 1. בונים פרצוף ======================== */
+const PARTS = [
+  {k:"base",  t:"🐾 חיה או סמיילי?", list:Object.keys(BASES)},
+  {k:"eyes",  t:"👀 עיניים", list:Object.keys(EYES), vb:"40 54 120 66"},
+  {k:"brows", t:"〰️ גבות", list:Object.keys(BROWS), vb:"40 36 120 48"},
+  {k:"mouth", t:"👄 פה", list:Object.keys(MOUTH), vb:"52 112 96 72"},
+  {k:"extra", t:"✨ תוספות", list:Object.keys(EXTRA), vb:"20 20 160 120"}
+];
+const CRAZY = {eyes:["crazy","hearts","stars","spiral","xx","wide"], brows:["uni","mixed","up"], mouth:["tongue","zigzag","grin","o","teeth"], extra:["love","sweat","blush2","red"]};
+let B = {mode:"emo", target:"happy", p:{base:"smiley", eyes:"dot", brows:"none", mouth:"flat", extra:"none"}};
+function partBtn(part, v){
+  const on = B.p[part.k] === v;
+  if (part.k === "base") return `<button class="pb base ${on ? "on" : ""}" type="button" data-k="base" data-v="${v}" aria-label="${BASES[v].name}" title="${BASES[v].name}">${faceSVG({base:v, eyes:"dot", brows:"none", mouth:"smile", extra:"none"})}</button>`;
+  if (v === "none") return `<button class="pb txt ${on ? "on" : ""}" type="button" data-k="${part.k}" data-v="none">בלי</button>`;
+  const one = {eyes:"", brows:"", mouth:"", extra:""};
+  const g = part.k === "eyes" ? EYES[v]("#FFD23F") : part.k === "brows" ? BROWS[v]() : part.k === "mouth" ? MOUTH[v]() : EXTRA[v]() + (v === "love" ? "" : `<circle cx="100" cy="100" r="60" fill="none" stroke="#ddd" stroke-width="3" stroke-dasharray="6 6"/>`);
+  return `<button class="pb ${on ? "on" : ""}" type="button" data-k="${part.k}" data-v="${v}" aria-label="${part.t.replace(/^\S+ /, "")}"><svg viewBox="${part.vb}" aria-hidden="true">${g}</svg></button>`;
+}
+function bRender(){
+  $("bPreview").innerHTML = faceSVG(B.p, "big", "הפרצוף שבניתם");
+  $("bParts").innerHTML = PARTS.map(part => `<h3>${part.t}</h3><div class="prow">${part.list.map(v => partBtn(part, v)).join("")}</div>`).join("");
+  $("bParts").querySelectorAll(".pb").forEach(b => b.onclick = () => { B.p[b.dataset.k] = b.dataset.v; $("bDone").textContent = ""; bRender(); });
+}
+function bHead(){
+  $("bHint").hidden = true; $("bDone").textContent = "";
+  if (B.mode === "emo"){
+    $("bTarget").innerHTML = `בנו פרצוף <b style="color:${E[B.target].c}">${E[B.target].w}</b>`;
+    $("bBtns").innerHTML = `<button class="btn-sec" type="button" id="bHintBtn">💡 רמז</button><button class="btn-sec" type="button" id="bOther">🔄 רגש אחר</button><button class="btn-main" type="button" id="bOk">✨ מוכן!</button>`;
+    $("bHintBtn").onclick = () => { $("bHint").innerHTML = `${emoSVG(B.target)} <span>${E[B.target].how}</span>`; $("bHint").hidden = false; };
+    $("bOther").onclick = () => { B.target = pick(EMO.map(e => e.id).filter(x => x !== B.target)); bHead(); };
+  } else {
+    $("bTarget").innerHTML = `בנו את הפרצוף <b>הכי מטורף</b> שיש!`;
+    $("bBtns").innerHTML = `<button class="btn-sec" type="button" id="bMix">🎲 ערבוב מטורף</button><button class="btn-main" type="button" id="bOk">✨ מוכן!</button>`;
+    $("bMix").onclick = () => { B.p = {base: pick(Object.keys(BASES)), eyes: pick(CRAZY.eyes), brows: pick(CRAZY.brows), mouth: pick(CRAZY.mouth), extra: pick(CRAZY.extra)}; bRender(); $("bDone").textContent = ""; };
+  }
+  $("bOk").onclick = () => { burstAt($("bOk")); $("bDone").textContent = B.mode === "emo" ? `איזה פרצוף ${E[B.target].w}! עכשיו נסו לעשות אותו בעצמכם 😄` : "איזה פרצוף מטורף! איך תקראו לו? 🤪"; };
+}
+$("bMode").querySelectorAll(".chip").forEach(c => c.onclick = () => { $("bMode").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === c)); B.mode = c.dataset.m; if (B.mode === "emo") B.target = pick(EMO.map(e => e.id)); bHead(); });
+B.target = pick(EMO.map(e => e.id)); bHead(); bRender();
+
+/* ======================== 2. מראת רגשות ======================== */
+let M = {g:"m", list: shuffle(EMO.map(e => e.id)), i: 0};
+function mRender(){
+  const e = E[M.list[M.i]];
+  $("mFace").innerHTML = emoSVG(e.id);
+  $("mSay").innerHTML = `${M.g === "m" ? "תעשה" : "תעשי"} פרצוף <b style="color:${e.c}">${e.w}</b>!`;
+  $("mHow").textContent = "💡 איך? " + e.how;
+}
+$("mNext").onclick = () => { M.i++; if (M.i >= M.list.length){ M.list = shuffle(M.list); M.i = 0; } mRender(); };
+$("mWho").querySelectorAll(".chip").forEach(c => c.onclick = () => { $("mWho").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === c)); M.g = c.dataset.g; mRender(); });
+$("mSpeak").onclick = () => {
+  const t = $("mSay").textContent;
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .9;
+    const v = speechSynthesis.getVoices().find(v => /^he|iw/i.test(v.lang)); if (v) u.voice = v;
+    let started = false; u.onstart = () => started = true; speechSynthesis.speak(u);
+    setTimeout(() => { if (!started) toast("🔈 לא שומעים? בדקו שהקול פתוח, פתחו את האתר בכרום או בספארי (לא מתוך אפליקציה), ובאנדרואיד ודאו שמותקן קול בעברית."); }, 1800);
+  } catch(e){ toast("🔈 ההקראה לא נתמכת בדפדפן הזה. ההורה יכול להקריא 😊"); }
+};
+mRender();
+
+/* ======================== 5. מה היית מרגיש אם...? ======================== */
+const SITS = [
+  {s:"🐘🥪", q:"פיל ישב לך על הסנדוויץ'!", a:["angry","surprised"]},
+  {s:"🐧🎒", q:"פינגווין הגיע לגן עם תיק, והתיישב לידך.", a:["surprised","happy"]},
+  {s:"🍦😮", q:"הגלידה שלך נפלה על הרצפה, בדיוק בביס הראשון.", a:["sad","angry"]},
+  {s:"🐶🥁", q:"הכלב שלך למד לנגן בתופים, באמצע הלילה.", a:["surprised","happy"]},
+  {s:"🚲✨", q:"לחבר שלך יש אופניים חדשים ונוצצים, ולך עוד לא.", a:["jealous"]},
+  {s:"🦖🪟", q:"דינוזאור קטן הציץ אלייך מהחלון בחושך.", a:["scared","surprised"]},
+  {s:"👕🙃", q:"באת לגן עם החולצה הפוכה, וכולם שמו לב.", a:["shy"]},
+  {s:"🎈☁️", q:"הבלון שלך ברח ועף עד לשמיים.", a:["sad"]},
+  {s:"🎂👵", q:"סבתא הכינה לך את העוגה הכי אהובה עליך.", a:["happy"]},
+  {s:"⚽🙅", q:"ילד לקח לך את הכדור בלי לבקש.", a:["angry"]},
+  {s:"🎤😶", q:"שכחת את המילים באמצע הופעה מול כל ההורים.", a:["shy","scared"]},
+  {s:"👶🤱", q:"האח הקטן מקבל עכשיו את כל החיבוקים של אמא.", a:["jealous","sad"]},
+  {s:"⛈️💥", q:"פתאום נשמע רעם חזק מאוד!", a:["scared","surprised"]},
+  {s:"🎁🦄", q:"קיבלת מתנה ענקית, ובתוכה חד-קרן מדבר!", a:["surprised","happy"]},
+  {s:"🧦🐙", q:"תמנון גנב לך את כל הגרביים מהמגירה.", a:["angry","surprised"]},
+  {s:"🏆🏃", q:"ניצחת במרוץ השקים בגן!", a:["happy"]}
+];
+let W = {list: shuffle(SITS), i: 0, n: 7};
+function wRender(){
+  const s = W.list[W.i];
+  $("wDots").innerHTML = Array.from({length: W.n}, (_, k) => `<i class="${k < W.i ? "ok" : k === W.i ? "now" : ""}"></i>`).join("");
+  $("wScene").textContent = s.s; $("wQ").textContent = "מה היית מרגיש אם... " + s.q;
+  $("wOpts").innerHTML = EMO.map(e => `<button class="eb" type="button" data-id="${e.id}" style="--c:${e.c};--b:${e.b}">${emoSVG(e.id)}<span>${e.w}</span></button>`).join("");
+  $("wFb").innerHTML = ""; $("wNext").textContent = W.i === W.n - 1 ? "🔄 עוד סבב" : "מצב הבא ←";
+  $("wOpts").querySelectorAll(".eb").forEach(b => b.onclick = () => {
+    $("wOpts").querySelectorAll(".eb").forEach(x => x.classList.toggle("on", x === b));
+    const me = E[b.dataset.id], common = s.a.map(x => E[x].w);
+    const same = s.a.includes(me.id);
+    $("wFb").innerHTML = `<div class="fb"><p>${same ? `גם הרבה ילדים אחרים היו מרגישים <b>${me.w}</b>! 💛` : `מרגישים <b>${me.w}</b>? גם זה בסדר גמור! לכל אחד מותר להרגיש אחרת 💛`}</p><p>הרבה ילדים אומרים: ${common.join(" או ")}.</p><p>🗣️ שאלה לשיחה: למה דווקא ${me.w}? ומה היה עוזר לך?</p></div>`;
+  });
+}
+$("wNext").onclick = () => { W.i++; if (W.i >= W.n){ W.list = shuffle(SITS); W.i = 0; } wRender(); };
+wRender();
+
+/* ======================== דפי ההדפסה ======================== */
+const F = (id, x, y, size) => `<g transform="translate(${x - size/2} ${y - size/2}) scale(${size/200})">${faceG(E[id].f)}</g>`;
+const LINE = "#2B1526";
+
+function jarSVG(){
+  let g = `<rect x="22" y="6" width="76" height="14" rx="4" fill="#FFE3F4" stroke="${LINE}" stroke-width="1.2"/><rect x="26" y="20" width="68" height="11" rx="2" fill="#fff" stroke="${LINE}" stroke-width="1.2"/>`;
+  g += `<path d="M24 31 Q12 33 12 46 V136 Q12 150 28 150 H92 Q108 150 108 136 V46 Q108 33 96 31 Z" fill="#fff" stroke="${LINE}" stroke-width="1.4"/>`;
+  for (let y = 48; y <= 138; y += 10) g += `<line x1="15" y1="${y}" x2="105" y2="${y}" stroke="#C9B8C5" stroke-width=".5" stroke-dasharray="2 1.6"/>`;
+  g += `<path d="M20 50 Q18 80 20 110" fill="none" stroke="#E1F0EA" stroke-width="3" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 120 156" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+function monsterSVG(withWheel){
+  const P = {x:95, y:128}, Wc = {x:95, y:80};
+  let g = "";
+  if (withWheel) g += `<g transform="translate(${P.x} ${P.y})">${wheelG()}</g>`;
+  g += `<path d="M56 44 L44 8 L80 34Z M134 44 L146 8 L110 34Z" fill="#fff" stroke="${LINE}" stroke-width="1.3" stroke-linejoin="round"/>`;
+  g += `<path d="M38 112 Q8 108 8 80 Q22 94 40 98Z M152 112 Q182 108 182 80 Q168 94 150 98Z" fill="#fff" stroke="${LINE}" stroke-width="1.3" stroke-linejoin="round"/>`;
+  g += `<ellipse cx="68" cy="186" rx="20" ry="9" fill="#fff" stroke="${LINE}" stroke-width="1.3"/><ellipse cx="122" cy="186" rx="20" ry="9" fill="#fff" stroke="${LINE}" stroke-width="1.3"/>`;
+  g += `<path d="M38 62 Q38 30 70 32 Q95 16 120 32 Q152 30 152 62 L160 150 Q164 182 128 182 L62 182 Q26 182 30 150 Z" fill="${withWheel ? "#8FD0F7" : "#fff"}" stroke="${LINE}" stroke-width="1.4"/>`;
+  g += `<circle cx="60" cy="150" r="7" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="132" cy="160" r="5" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="140" cy="138" r="3.5" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="48" cy="128" r="4" fill="none" stroke="${LINE}" stroke-width="1"/>`;
+  g += withWheel ? `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="none" stroke="${LINE}" stroke-width="1.4"/>` : `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="#fff" stroke="${LINE}" stroke-width="1" stroke-dasharray="2.4 1.6"/><text x="${Wc.x}" y="${Wc.y - 2}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#6b5a66" font-family="Assistant,Arial">✂️ גוזרים את</text><text x="${Wc.x}" y="${Wc.y + 4}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#6b5a66" font-family="Assistant,Arial">חלון הפנים</text>`;
+  g += `<circle cx="${P.x}" cy="${P.y}" r="2" fill="${LINE}"/>` + (withWheel ? "" : `<text x="${P.x}" y="${P.y + 7}" font-size="4" text-anchor="middle" fill="#6b5a66" font-family="Assistant,Arial">נקודת חיבור</text>`);
+  return `<svg viewBox="0 0 190 200" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+function wheelG(){
+  const n = EMO.length, R = 70; let g = "";
+  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FFE3F4","#DDF5E5"];
+  EMO.forEach((e, k) => {
+    const a0 = (k - .5) / n * Math.PI * 2 - Math.PI/2, a1 = (k + .5) / n * Math.PI * 2 - Math.PI/2;
+    g += `<path d="M0 0 L${(R*Math.cos(a0)).toFixed(2)} ${(R*Math.sin(a0)).toFixed(2)} A${R} ${R} 0 0 1 ${(R*Math.cos(a1)).toFixed(2)} ${(R*Math.sin(a1)).toFixed(2)} Z" fill="${cols[k]}" stroke="${LINE}" stroke-width=".8"/>`;
+  });
+  EMO.forEach((e, k) => { g += `<g transform="rotate(${(k * 360 / n).toFixed(2)})">${F(e.id, 0, -48, 37)}</g>`; });
+  g += `<circle r="${R}" fill="none" stroke="${LINE}" stroke-width="1.4"/><circle r="2" fill="${LINE}"/>`;
+  return g;
+}
+function meterSVG(){
+  const cx = 90, cy = 92, R = 86, r = 30, n = EMO.length; let g = "";
+  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FFE3F4","#DDF5E5"];
+  const pt = (rad, a) => `${(cx + rad*Math.cos(a)).toFixed(2)} ${(cy + rad*Math.sin(a)).toFixed(2)}`;
+  EMO.forEach((e, k) => {
+    const a0 = Math.PI + k / n * Math.PI, a1 = Math.PI + (k + 1) / n * Math.PI, am = (a0 + a1) / 2;
+    g += `<path d="M${pt(r, a0)} L${pt(R, a0)} A${R} ${R} 0 0 1 ${pt(R, a1)} L${pt(r, a1)} A${r} ${r} 0 0 0 ${pt(r, a0)} Z" fill="${cols[k]}" stroke="${LINE}" stroke-width="1"/>`;
+    const fx = cx + 66*Math.cos(am), fy = cy + 66*Math.sin(am);
+    g += F(e.id, fx, fy, 24);
+    const tx = cx + 41*Math.cos(am), ty = cy + 41*Math.sin(am);
+    g += `<text x="${tx.toFixed(1)}" y="${(ty + 1.6).toFixed(1)}" font-size="5.2" font-weight="800" text-anchor="middle" fill="${e.c}" font-family="Assistant,Arial" transform="rotate(${(am * 180 / Math.PI + 90).toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)})">${e.w}</text>`;
+  });
+  g += `<circle cx="${cx}" cy="${cy}" r="9" fill="#fff" stroke="${LINE}" stroke-width="1.2"/><circle cx="${cx}" cy="${cy}" r="1.8" fill="${LINE}"/>`;
+  return `<svg viewBox="0 0 180 98" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+function arrowSVG(){
+  return `<svg viewBox="0 0 22 82" xmlns="http://www.w3.org/2000/svg"><path d="M11 2 L20 18 L14 18 L14 70 Q14 79 11 79 Q8 79 8 70 L8 18 L2 18 Z" fill="#FF56C2" stroke="${LINE}" stroke-width="1" stroke-dasharray="2 1.4" stroke-linejoin="round"/><circle cx="11" cy="70" r="1.6" fill="${LINE}"/></svg>`;
+}
+
+const head = (t) => `<div class="s-head"><h1>${t}</h1><span class="nm">השם שלי: ____________</span></div><div class="s-rb"></div>`;
+function sheetJar(){
+  return `<div class="sheet">${head("🫙 צנצנת הרגשות שלי")}<div class="s-body">
+    <div class="p-box"><h2>איך עושים?</h2><ol><li>בוחרים צבע לכל רגש וצובעים את הריבוע שלידו.</li><li>כמה הרגשתי היום מכל רגש? צובעים בצנצנת שכבות, כל רגש בצבע שלו.</li><li>מספרים: מה גרם לי להרגיש ככה?</li></ol></div>
+    <div style="display:flex;gap:8mm;align-items:center;flex:1;min-height:0">
+      <div style="width:108mm;flex-shrink:0">${jarSVG()}</div>
+      <div class="legend" style="flex:1">${EMO.map(e => `<div><svg viewBox="0 0 200 200">${faceG(e.f)}</svg><span>${e.w}</span><i></i></div>`).join("")}<div style="font-size:10pt;color:#6b5a66;justify-content:flex-end">הצבע שלי ↑</div></div>
+    </div>
+    <div class="p-box"><h2>✏️ לגדולים (או שההורה כותב)</h2><div class="lines"><div>היום הרגשתי הכי הרבה:</div><div>כי:</div></div></div>
+  </div>${sitePrintFooter("feelings", "", "../../img/logo.png")}</div>`;
+}
+function sheetMonster(){
+  return `<div class="sheet">${head("👾 מפלצת הרגשות שלי · דף 1")}<div class="s-body">
+    <p class="cutnote" style="margin:0">צובעים את המפלצת ✏️ · גוזרים מסביב ✂️ · גוזרים את חלון הפנים · מנקבים בנקודת החיבור (בעזרת מבוגר)</p>
+    <div style="flex:1;min-height:0;display:flex;justify-content:center;align-items:center"><div style="width:178mm"><!-- 178/190: הגלגל בדף 2 מוקטן באותו יחס, כדי שהפרצוף ייפול בדיוק בחלון -->${monsterSVG(false)}</div></div>
+  </div>${sitePrintFooter("feelings", "", "../../img/logo.png")}</div>
+  <div class="sheet">${head("🎡 גלגל הפרצופים · דף 2")}<div class="s-body">
+    <p class="cutnote" style="margin:0">גוזרים את הגלגל ✂️ · מנקבים באמצע</p>
+    <div style="display:flex;justify-content:center"><svg viewBox="-73 -73 146 146" style="width:136.8mm;height:136.8mm" xmlns="http://www.w3.org/2000/svg">${wheelG()}</svg></div>
+    <div class="p-box"><h2>איך מרכיבים?</h2><ol><li>מניחים את הגלגל מאחורי המפלצת, כך שהנקודה של הגלגל מתחת לנקודת החיבור.</li><li>מחברים את שתיהן עם סיכה מתפצלת (או מעבירים עיפרון ומשאירים גוש פלסטלינה מאחור).</li><li>מסובבים את הגלגל: פרצוף חדש מופיע בחלון!</li><li>משחקים: "המפלצת שלי עכשיו ___ כי ___". אפשר להמציא לה סיפור.</li></ol></div>
+  </div></div>`;
+}
+function sheetMeter(){
+  return `<div class="sheet">${head("🧲 מד הרגשות שלי")}<div class="s-body">
+    <div style="display:flex;justify-content:center"><div style="width:182mm">${meterSVG()}</div></div>
+    <div style="display:flex;gap:6mm;align-items:stretch">
+      <div style="width:24mm;flex-shrink:0;text-align:center"><div style="width:20mm;margin:0 auto">${arrowSVG()}</div><span class="cutnote">✂️ החץ</span></div>
+      <div class="p-box" style="flex:1"><h2>איך עושים?</h2><ol><li>צובעים וגוזרים את המד ואת החץ (מומלץ להדביק על בריסטול).</li><li>מחברים את החץ בנקודה האמצעית עם סיכה מתפצלת.</li><li>תולים על המקרר עם מגנט.</li><li>כל יום מזיזים את החץ לרגש של היום, ומדברים: מה קרה? מה יכול לעזור?</li></ol></div>
+    </div>
+    <div class="p-box"><h2>💛 מה עוזר לי כשקשה לי?</h2><div class="lines"><div>1.</div><div>2.</div><div>3.</div></div></div>
+  </div>${sitePrintFooter("feelings", "", "../../img/logo.png")}</div>`;
+}
+const SHEETS = {jar: sheetJar, monster: sheetMonster, meter: sheetMeter};
+
+$("jarPv").innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div style="flex:1">${jarSVG()}</div><div style="width:34%;display:grid;gap:3px">${EMO.map(e => `<div style="display:flex;align-items:center;gap:4px;font-weight:800;font-size:12px">${emoSVG(e.id).replace("<svg", '<svg width="22" height="22"')}${e.w}</div>`).join("")}</div></div>`;
+$("monPv").innerHTML = monsterSVG(true);
+$("metPv").innerHTML = meterSVG();
+
+let printed = false; addEventListener("beforeprint", () => printed = true);
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4500); }
+document.querySelectorAll("[data-print]").forEach(b => b.onclick = () => {
+  $("print").innerHTML = SHEETS[b.dataset.print]();
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+});
+const sheetParam = new URLSearchParams(location.search).get("sheet");
+if (SHEETS[sheetParam]) $("print").innerHTML = SHEETS[sheetParam]();
+
+/* ======================== הודעות וואטסאפ ======================== */
+const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+function sendGift(){ waSend(`🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם משחק פרצופים לזיהוי רגשות, בונים פרצוף, מראת רגשות, "מה היית מרגיש אם...?", ודפי יצירה להדפסה: צנצנת רגשות, מפלצת רגשות ומד רגשות למקרר.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=feelings\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
+document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
+$("parentsBtn").onclick = () => waSend(`🌈 היום בגן שיחקנו בעולם הרגשות!\n\nלמדנו לזהות רגשות לפי הפנים: שמח, עצוב, כועס, מפחד, מופתע, מתבייש ומקנא.\n\n💛 רעיון קטן לבית: בארוחת הערב כל אחד מספר "מה הרגשתי היום ולמה". אפשר גם לשחק יחד במשחק הפרצופים:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=feelings\n\nבחינם ובלי הרשמה, בחסות BOOQLI ❤️`);
+$("shareBtn").onclick = () => waSend(`🌈 מצאתי משהו מקסים לנושא הרגשות: משחק פרצופים, בונים פרצוף, מראת רגשות ו-3 דפי יצירה להדפסה (צנצנת רגשות, מפלצת רגשות עם גלגל ומד רגשות למקרר).\nמהגן ועד כיתה ב'–ג', בחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=feelings\n\nבחסות BOOQLI ❤️`);
+
+/* ======================== הפעלה ======================== */
+siteJoinLinks(); siteDevBar(); siteBackBar("../../");
+$("heroLike").appendChild(siteLikeButton("feelings", "אהבתי"));
+$("winLike").appendChild(siteLikeButton("feelings-game", "אהבתי את המשחק"));
+$("ganLink").href = CONFIG.gan; $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
+</script>
+</body>
+</html>

@@ -90,6 +90,9 @@ section{padding:26px 0}
 .card h3{font-size:19px}
 .card .st{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px}
 .card.locked .ic{filter:grayscale(.35);opacity:.85}
+/* מרובע בצבעי הקשת (עולם הרגשות) */
+.card.rainbow{border:4px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8) border-box}
+.card.rainbow h3{background:linear-gradient(90deg,#E0384A,#E2741B,#C99400,#2E9A55,#2C86C9,#4B57D6,#8A45C9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.locked::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
 .card.open .st{background:var(--pink);color:#fff}
 .card.soon .st{background:var(--pink-soft);color:var(--magenta)}
@@ -409,7 +412,7 @@ const ALWAYS = [
   {id:"last-minute", name:"הגעתי לא מוכנה! 10 פעילויות", ic:"🆘", bg:"#FFE3F4", ready:true, noGift:true, ages:[3,6], tags:["הרגע האחרון", "לא מוכנה", "בלי הכנה", "בלי ציוד", "ממלאת מקום", "מחליפה", "החלפה", "סייעת", "משחקי מעגל", "משחקים לגן", "היכרות", "שמות", "תנועה", "קשב", "רגשות", "ספירה", "סיפור", "דף להדפסה"]},
   {id:"morning-circle", name:"מפגש בוקר: 30 רעיונות", ic:"☀️", bg:"#FFF3CF", ready:true, noGift:true, ages:[3,6], tags:["מפגש בוקר", "מעגל בוקר", "שגרת בוקר", "פתיחת יום", "רעיונות למפגש", "מחזוריות", "סדר יום", "רגשות", "תנועה", "שפה", "חרוזים", "חשבון", "דמיון", "מחמאות", "טוב לב", "חוברת להדפסה", "הדפסה", "מערך לגננת"]},
   {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
-  {id:"feelings", name:"רגשות",                ic:"💗", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["רגשות", "שמחה", "עצב", "כעס", "פחד", "אמפתיה", "חברות", "וויסות רגשי", "כישורים חברתיים"]},
+  {id:"feelings", name:"עולם הרגשות",          ic:"😊", bg:"linear-gradient(135deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8)", rainbow:true, ready:true, ages:[3,8], tags:["רגשות", "עולם הרגשות", "שמחה", "עצב", "כעס", "פחד", "הפתעה", "בושה", "קנאה", "פרצופים", "משחק פרצופים", "בונים פרצוף", "מראת רגשות", "צנצנת רגשות", "מפלצת רגשות", "מד רגשות", "הבעות פנים", "אמפתיה", "וויסות רגשי", "כישורים חברתיים", "דף להדפסה", "כיתה א", "כיתה ב"]},
   {id:"reading",  name:"עידוד קריאה",          ic:"🔤", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["אותיות", "קריאה", "אלף-בית", "צלילים", "חרוזים", "מילים", "אוריינות", "מוכנות לכיתה א"]},
   {id:"math",     name:"חשבון לגיל הרך",       ic:"🔢", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["חשבון", "מספרים", "ספירה", "כמויות", "צורות", "סדרות", "יותר ופחות", "מתמטיקה", "מוכנות לכיתה א"]},
   {id:"safety",   name:"מוגנות: אזעקות ומרחב מוגן", ic:"🛡️", bg:"#E3ECF6", ready:false, ages:[3,6], tags:["מוגנות", "ביטחון", "אזעקה", "מרחב מוגן", "ממ\"ד", "מקלט", "פיקוד העורף", "חוסן", "הרגעה", "רגשות"]},
@@ -467,7 +470,7 @@ const LABEL = {open:"פתוח לשחק ←", soon:"בהכנה", locked:"", close
 
 function card(t){
   const s = state(t), b = document.createElement("button");
-  b.className = "card " + s; b.type = "button";
+  b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
   b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
