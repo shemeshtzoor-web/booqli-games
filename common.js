@@ -122,8 +122,48 @@ function siteCheckCode(code){
     return true;
   });
 }
+/* ======================== פתיחה הדרגתית (מ-31.10.2026) ========================
+   כל נושא שכתוב כאן נעול עד התאריך (שעון ישראל, מחצות). אחרי התאריך – נפתח לבד (ועדיין צריך את המספר הסודי).
+   דף הבית קורא את אותה רשימה ומציג "נפתח ב-...". להזיז פתיחה = לשנות תאריך כאן. בדיקה: ?date=2026-11-04 */
+window.SITE.opens = {
+  "morning-circle": "2026-11-04",  // רביעי
+  feelings:         "2026-11-08",  // ראשון
+  calendar:         "2026-11-11",  // רביעי
+  math:             "2026-11-15",  // ראשון
+  earthquake:       "2026-11-18",  // רביעי
+  "last-minute":    "2026-11-22"   // ראשון
+};
+function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o + "T00:00:00+02:00") : null; }
+function siteIsSoon(id){ var d = siteOpenDate(id); return !!d && siteNow() < d; }
+function siteSoonGate(id, main){
+  var d = siteOpenDate(id), nm = SITE.locked[id] || "התוכן הזה";
+  var wd = SITE_DAYS[new Date(SITE.opens[id] + "T12:00:00+02:00").getUTCDay()];
+  main.hidden = true;
+  var css = document.createElement("style");
+  css.textContent = ".soon-gate{max-width:560px;margin:24px max(16px,calc((100% - 560px) / 2)) 10px;background:#fff;border-radius:28px;padding:24px 20px 20px;text-align:center;box-shadow:0 10px 30px rgba(78,133,118,.18);position:relative;overflow:hidden;font-family:Assistant,Arial,sans-serif;color:#2B1526}" +
+    ".soon-gate::before{content:'';position:absolute;inset:0 0 auto 0;height:9px;background:linear-gradient(90deg,#FF56C2,#3AA7F0,#6F988B)}" +
+    ".soon-gate .lk{font-size:58px;line-height:1.1}.soon-gate h2{font-family:Fredoka,Assistant,sans-serif;color:#C13671;font-size:27px;line-height:1.2;margin:6px 0}" +
+    ".soon-gate p{color:#6b5a66;font-size:17px;margin:6px 0}.soon-gate .cd{display:flex;justify-content:center;gap:10px;margin:14px 0}" +
+    ".soon-gate .cd div{background:#E1F0EA;border-radius:16px;min-width:72px;padding:8px}.soon-gate .cd b{display:block;font-family:Fredoka,sans-serif;font-size:30px;color:#4E8576}" +
+    ".soon-gate a.wa{display:inline-block;margin-top:8px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:11px 20px;box-shadow:0 3px 0 #13773A}" +
+    ".soon-gate a.home{display:inline-block;margin-top:12px;color:#C13671;font-weight:800}";
+  document.head.appendChild(css);
+  var box = document.createElement("section"); box.className = "soon-gate";
+  var dm = SITE.opens[id].split("-");
+  box.innerHTML = '<div class="lk" aria-hidden="true">🎁</div><h2>' + nm + ' נפתח ביום ' + wd + ', ' + (+dm[2]) + '.' + (+dm[1]) + '</h2>' +
+    '<p>אנחנו פותחים תוכן חדש כל כמה ימים. חברי קבוצת העדכונים בוואטסאפ מקבלים הודעה ברגע שזה נפתח.</p>' +
+    '<div class="cd" aria-live="polite"></div>' +
+    '<a class="wa js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 להצטרפות לקבוצת העדכונים</a><br>' +
+    '<a class="home" href="../../">לתכנים שכבר פתוחים ←</a>';
+  main.parentNode.insertBefore(box, main);
+  var tick = function(){ var ms = Math.max(0, d - siteNow()), D = Math.floor(ms / 864e5); ms -= D * 864e5; var H = Math.floor(ms / 36e5); ms -= H * 36e5; var M = Math.floor(ms / 6e4);
+    box.querySelector(".cd").innerHTML = "<div><b>" + D + "</b>ימים</div><div><b>" + H + "</b>שעות</div><div><b>" + M + "</b>דקות</div>"; };
+  tick(); setInterval(tick, 30000);
+  siteEvent("soon-gate", id);
+}
 function siteCodeGate(){
   var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
+  if (siteIsSoon(id)) { var mm = document.querySelector("main"); if (mm && !document.querySelector(".soon-gate")) siteSoonGate(id, mm); return; }
   if (!siteIsLocked(id) || siteUnlocked() || document.querySelector(".closed-box")) return;
   var nm = SITE.locked[id] || "התוכן הזה";
   var main = document.querySelector("main"); if (!main) return;
