@@ -107,7 +107,7 @@ function siteJoinLinks(){
 // משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
 window.SITE.lockAllTopics = true;
 window.SITE.openTopics = [];
-window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה" };
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", winter: "החורף" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
 function siteUnlocked(){ try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
@@ -131,7 +131,8 @@ window.SITE.opens = {
   calendar:         "2026-11-11",  // רביעי
   math:             "2026-11-15",  // ראשון
   earthquake:       "2026-11-18",  // רביעי
-  "last-minute":    "2026-11-22"   // ראשון
+  "last-minute":    "2026-11-22",  // ראשון
+  winter:           "2026-11-25"   // רביעי (בלי התאריך הזה היה נפתח בשבת 21.11)
 };
 function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o + "T00:00:00+02:00") : null; }
 function siteIsSoon(id){ var d = siteOpenDate(id); return !!d && siteNow() < d; }
@@ -379,6 +380,7 @@ function siteBackBar(homeHref){
    בדיקה: להוסיף לכתובת ?date=2026-12-03T17:30 כדי לראות איך זה ייראה אחרי הסגירה. */
 window.SITE.closes = {
   hanukkah: "2026-12-12T23:59:00+02:00",  // סוף חנוכה: היום השמיני, שבת 12.12.2026
+  winter:   "2027-03-19T23:59:00+02:00",  // סוף החורף: יום לפני האביב (20.3.2027). בשנה הבאה – לעדכן
   autumn:   "2026-12-20T23:59:00+02:00"   // סוף הסתיו: יום לפני תחילת החורף (21.12.2026). בשנה הבאה – לעדכן את התאריך
 };
 function siteNow(){
