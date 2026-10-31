@@ -133,13 +133,14 @@ window.SITE.opens = {
   earthquake:       "2026-11-18",  // רביעי
   "last-minute":    "2026-11-22",  // ראשון
   winter:           "2026-11-25",  // רביעי (בלי התאריך הזה היה נפתח בשבת 21.11)
-  colors:           "2026-11-29"   // ראשון
+  colors:           "2026-11-01T12:00"   // ראשון 1.11 בשעה 12:00 בצהריים (בקשת שמש)
 };
-function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o + "T00:00:00+02:00") : null; }
+// תאריך בלבד ("2026-11-29") = נפתח בחצות. תאריך + שעה ("2026-11-01T12:00") = נפתח בשעה הזאת (שעון ישראל).
+function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o.length > 10 ? o + ":00+02:00" : o + "T00:00:00+02:00") : null; }
 function siteIsSoon(id){ var d = siteOpenDate(id); return !!d && siteNow() < d; }
 function siteSoonGate(id, main){
   var d = siteOpenDate(id), nm = SITE.locked[id] || "התוכן הזה";
-  var wd = SITE_DAYS[new Date(SITE.opens[id] + "T12:00:00+02:00").getUTCDay()];
+  var wd = SITE_DAYS[new Date(SITE.opens[id].slice(0, 10) + "T12:00:00+02:00").getUTCDay()], hm = SITE.opens[id].length > 10 ? " בשעה " + SITE.opens[id].slice(11, 16) : "";
   main.hidden = true;
   var css = document.createElement("style");
   css.textContent = ".soon-gate{max-width:560px;margin:24px max(16px,calc((100% - 560px) / 2)) 10px;background:#fff;border-radius:28px;padding:24px 20px 20px;text-align:center;box-shadow:0 10px 30px rgba(78,133,118,.18);position:relative;overflow:hidden;font-family:Assistant,Arial,sans-serif;color:#2B1526}" +
@@ -151,8 +152,8 @@ function siteSoonGate(id, main){
     ".soon-gate a.home{display:inline-block;margin-top:12px;color:#C13671;font-weight:800}";
   document.head.appendChild(css);
   var box = document.createElement("section"); box.className = "soon-gate";
-  var dm = SITE.opens[id].split("-");
-  box.innerHTML = '<div class="lk" aria-hidden="true">🎁</div><h2>' + nm + ' נפתח ביום ' + wd + ', ' + (+dm[2]) + '.' + (+dm[1]) + '</h2>' +
+  var dm = SITE.opens[id].slice(0, 10).split("-");
+  box.innerHTML = '<div class="lk" aria-hidden="true">🎁</div><h2>' + nm + ' נפתח ביום ' + wd + ', ' + (+dm[2]) + '.' + (+dm[1]) + hm + '</h2>' +
     '<p>אנחנו פותחים תוכן חדש כל כמה ימים. חברי קבוצת העדכונים בוואטסאפ מקבלים הודעה ברגע שזה נפתח.</p>' +
     '<div class="cd" aria-live="polite"></div>' +
     '<a class="wa js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 להצטרפות לקבוצת העדכונים</a><br>' +

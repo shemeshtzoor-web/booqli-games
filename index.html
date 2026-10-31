@@ -516,11 +516,11 @@ const CATS = [{k:"all", t:"הכל"}, {k:"year", t:"לוח השנה"}, {k:"always
 // לבדיקה: אפשר להוסיף לכתובת ?date=2026-11-25 כדי לראות איך האתר ייראה בתאריך אחר
 const q = new URLSearchParams(location.search).get("date");
 const TODAY = siteNow();
-const d = s => new Date(s + "T00:00:00");
+const d = s => new Date(s.length > 10 ? s + ":00+02:00" : s + "T00:00:00");
 const iso = x => x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2,"0") + "-" + String(x.getDate()).padStart(2,"0");
 [...YEAR, ...ALWAYS, ...SPECIAL].forEach(t => { if (window.SITE && SITE.opens && SITE.opens[t.id]) t.opens = SITE.opens[t.id]; });
 YEAR.forEach(t => { if (t.opens) return; const x = d(t.event); x.setDate(x.getDate() - OPEN_DAYS_BEFORE); t.opens = iso(x); });
-const fmt = s => { const x = d(s); return x.getDate() + "." + (x.getMonth()+1) + "." + x.getFullYear(); };
+const fmt = s => { const x = d(s); return x.getDate() + "." + (x.getMonth()+1) + "." + x.getFullYear() + (s.length > 10 ? " בשעה " + s.slice(11, 16) : ""); };
 
 function state(t){
   if (window.SITE && SITE.closes && SITE.closes[t.id] && siteIsClosed(t.id)) return "closed";
