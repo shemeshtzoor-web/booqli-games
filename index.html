@@ -97,6 +97,13 @@ section{padding:26px 0}
 .card.closed::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
 .card.closed .st{background:#eee;color:#6b5a66}
 .card .closes{font-size:12.5px;font-weight:800;color:var(--magenta);background:var(--pink-soft);border-radius:999px;padding:3px 10px}
+.sos{max-width:860px;margin:18px auto 0;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;text-decoration:none;border-radius:24px;padding:16px 18px;box-shadow:0 8px 24px rgba(163,33,111,.28);transition:transform .15s}
+.sos:hover{transform:translateY(-2px)}
+.sos-e{font-size:44px;line-height:1;flex-shrink:0}
+.sos-t{flex:1;font-size:16px;line-height:1.4}.sos-t b{font-family:Fredoka,sans-serif;font-size:22px;display:block}
+.sos-t span{display:block;font-weight:700;opacity:.95;margin-top:2px}
+.sos-go{background:#fff;color:var(--magenta);font-weight:800;border-radius:999px;padding:9px 16px;white-space:nowrap;flex-shrink:0}
+@media (max-width:560px){.sos{flex-wrap:wrap;text-align:center;justify-content:center}.sos-go{width:100%;text-align:center}}
 .season-note{max-width:860px;margin:16px auto 0;background:#FFF6D6;border:2px dashed #F3D57A;border-radius:20px;padding:12px 16px;text-align:center;font-weight:700;line-height:1.55}
 .season-note a{color:var(--magenta);font-weight:800;white-space:nowrap}
 .card.locked .st{background:var(--mint);color:var(--sage-deep)}
@@ -208,6 +215,13 @@ footer a{color:#fff;font-weight:700}
       <span class="chip">❓ חידונים</span><span class="chip">📖 הקראת ספרים</span><span class="chip">✨ בחינם</span>
     </div>
   </div>
+
+  <a class="sos" href="topics/last-minute/">
+    <span class="sos-e" aria-hidden="true">🆘</span>
+    <span class="sos-t"><b>הגעתי לא מוכנה!</b> קראו לך להחליף? התוכנית נשארה בבית?
+      <span>10 פעילויות ומשחקים בלי ציוד ובלי הכנה + דף להדפסה</span></span>
+    <span class="sos-go">לפעילויות ←</span>
+  </a>
 
   <div class="season-note">🗓️ התכנים באתר נפתחים לפי עונות השנה: כל נושא נפתח כחודש לפני האירוע ונסגר לקראתו.
     רוצים שנפתח לכם תוכן מסוים? <a id="askLink" target="_blank" rel="noopener">כתבו לנו ←</a></div>
@@ -392,6 +406,7 @@ const YEAR = [
 
 /* פינות קבועות – נפתחות כשהתוכן מוכן (ready: true) */
 const ALWAYS = [
+  {id:"last-minute", name:"הגעתי לא מוכנה! 10 פעילויות", ic:"🆘", bg:"#FFE3F4", ready:true, noGift:true, ages:[3,6], tags:["הרגע האחרון", "לא מוכנה", "בלי הכנה", "בלי ציוד", "ממלאת מקום", "מחליפה", "החלפה", "סייעת", "משחקי מעגל", "משחקים לגן", "היכרות", "שמות", "תנועה", "קשב", "רגשות", "ספירה", "סיפור", "דף להדפסה"]},
   {id:"morning-circle", name:"מפגש בוקר: 30 רעיונות", ic:"☀️", bg:"#FFF3CF", ready:true, noGift:true, ages:[3,6], tags:["מפגש בוקר", "מעגל בוקר", "שגרת בוקר", "פתיחת יום", "רעיונות למפגש", "מחזוריות", "סדר יום", "רגשות", "תנועה", "שפה", "חרוזים", "חשבון", "דמיון", "מחמאות", "טוב לב", "חוברת להדפסה", "הדפסה", "מערך לגננת"]},
   {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
   {id:"feelings", name:"רגשות",                ic:"💗", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["רגשות", "שמחה", "עצב", "כעס", "פחד", "אמפתיה", "חברות", "וויסות רגשי", "כישורים חברתיים"]},

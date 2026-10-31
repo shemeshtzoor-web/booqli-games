@@ -137,7 +137,7 @@ function siteBackBar(homeHref){
    אחרי הסגירה העמוד ננעל, וכרטיס הנושא בדף הבית מציג "נסגר".
    בדיקה: להוסיף לכתובת ?date=2026-12-03T17:30 כדי לראות איך זה ייראה אחרי הסגירה. */
 window.SITE.closes = {
-  hanukkah: "2026-12-03T17:00:00+02:00"   // יום לפני חנוכה (נר ראשון 4.12.2026) בשעה 17:00
+  hanukkah: "2026-12-12T23:59:00+02:00"   // סוף חנוכה: היום השמיני, שבת 12.12.2026
 };
 function siteNow(){
   var q = new URLSearchParams(location.search).get("date");
