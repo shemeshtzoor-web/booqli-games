@@ -97,6 +97,94 @@ function siteJoinLinks(){
   document.querySelectorAll(".js-wa").forEach(function(a){ a.href = SITE.whatsappGroup; });
 }
 
+/* ======================== נושאים שנפתחים במספר סודי ========================
+   כלל קבוע (מ-31.10.2026): חלק מהנושאים נפתחים רק עם מספר סודי, שכתוב בתיאור קבוצת העדכונים בוואטסאפ.
+   מספר אחד פותח את כל הנושאים הנעולים, ונשמר בדפדפן (לא צריך להקליד שוב).
+   כאן לא כתוב המספר עצמו, רק "טביעת אצבע" שלו (SHA-256 של "booqli:" + המספר).
+   החלפת מספר: מחשבים טביעה חדשה ומחליפים את codeHash. מי שהקליד את הישן יתבקש להקליד את החדש.
+   בדיקה בלי מספר: ?unlock=<המספר> בכתובת. */
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן" };
+window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
+function siteUnlocked(){ try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
+function siteCheckCode(code){
+  var txt = "booqli:" + String(code || "").replace(/\D/g, "");
+  if (!window.crypto || !crypto.subtle || !window.TextEncoder) return Promise.resolve(false);
+  return crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)).then(function(b){
+    var h = Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+    if (h !== SITE.codeHash) return false;
+    window.__booqliOpen = true;
+    try { localStorage.setItem("booqli_code", h); localStorage.setItem("booqli_join", JSON.stringify({ joined: Date.now() })); } catch (e) {}
+    return true;
+  });
+}
+function siteCodeGate(){
+  var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
+  if (!id || !SITE.locked[id] || siteUnlocked() || document.querySelector(".closed-box")) return;
+  var main = document.querySelector("main"); if (!main) return;
+  var un = new URLSearchParams(location.search).get("unlock");
+  main.hidden = true;
+  var css = document.createElement("style");
+  css.textContent =
+    ".code-gate{max-width:560px;margin:24px max(16px,calc((100% - 560px) / 2)) 10px;background:#fff;border-radius:28px;padding:24px 20px 20px;text-align:center;box-shadow:0 10px 30px rgba(78,133,118,.18);position:relative;overflow:hidden;font-family:Assistant,Arial,sans-serif}" +
+    ".code-gate::before{content:'';position:absolute;inset:0 0 auto 0;height:9px;background:linear-gradient(90deg,#1FA855,#6F988B,#FF56C2)}" +
+    ".code-gate .lk{font-size:58px;line-height:1.1}" +
+    ".code-gate h2{font-family:Fredoka,Assistant,sans-serif;color:#C13671;font-size:27px;line-height:1.2;margin:6px 0}" +
+    ".code-gate .sub{color:#6b5a66;font-size:17px;margin:0 0 14px}" +
+    ".code-gate ol{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:10px;text-align:right}" +
+    ".code-gate li{display:flex;gap:12px;align-items:flex-start;background:#F4FAF7;border-radius:16px;padding:10px 12px;font-size:16px;line-height:1.4}" +
+    ".code-gate li .n{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#1FA855;color:#fff;font-weight:800;display:grid;place-items:center}" +
+    ".code-gate li a{display:inline-block;margin-top:6px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:9px 16px;box-shadow:0 3px 0 #13773A}" +
+    ".code-gate form{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}" +
+    ".code-gate input{width:170px;font:inherit;font-family:Fredoka,Assistant,sans-serif;font-size:28px;letter-spacing:6px;text-align:center;border:3px solid #CDE7DC;border-radius:16px;padding:6px 10px;direction:ltr}" +
+    ".code-gate input:focus{outline:none;border-color:#FF56C2}" +
+    ".code-gate button{font:inherit;font-weight:800;font-size:18px;background:#E0399F;color:#fff;border:0;border-radius:999px;padding:10px 22px;cursor:pointer;box-shadow:0 3px 0 #A3216F}" +
+    ".code-gate .msg{min-height:24px;margin-top:8px;font-weight:800}" +
+    ".code-gate .msg.bad{color:#E5484D}.code-gate .msg.ok{color:#1FA855}" +
+    ".code-gate.shake form{animation:cgShake .4s}" +
+    "@keyframes cgShake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}" +
+    ".code-gate .help{font-size:14px;color:#6b5a66;margin:12px 0 0}" +
+    "@media (prefers-reduced-motion:reduce){.code-gate.shake form{animation:none}}";
+  document.head.appendChild(css);
+  var box = document.createElement("section");
+  box.className = "code-gate"; box.setAttribute("aria-labelledby", "cgT");
+  var others = Object.keys(SITE.locked).filter(function(k){ return k !== id; }).map(function(k){ return SITE.locked[k]; });
+  box.innerHTML = '<div class="lk" aria-hidden="true">🔑</div>' +
+    '<h2 id="cgT">' + SITE.locked[id] + ' פתוח לחברי קבוצת העדכונים</h2>' +
+    '<p class="sub">זה בחינם ולוקח חצי דקה. מספר סודי אחד פותח את ' + SITE.locked[id] + (others.length ? ' וגם את ' + others.join(" ואת ") : '') + '.</p>' +
+    '<ol>' +
+      '<li><span class="n">1</span><span>מצטרפים לקבוצת העדכונים השקטה בוואטסאפ.<br><a class="js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 להצטרפות לקבוצה</a></span></li>' +
+      '<li><span class="n">2</span><span>בקבוצה לוחצים על <b>שם הקבוצה</b> למעלה. המספר הסודי כתוב ב<b>תיאור הקבוצה</b>.</span></li>' +
+      '<li><span class="n">3</span><span>חוזרים לכאן ומקלידים את המספר:</span></li>' +
+    '</ol>' +
+    '<form novalidate><label for="cgIn" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">המספר הסודי</label>' +
+      '<input id="cgIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="8" placeholder="••••">' +
+      '<button type="submit">🔓 לפתוח</button></form>' +
+    '<div class="msg" aria-live="polite"></div>' +
+    '<p class="help">כבר בקבוצה? פשוט פותחים אותה ובודקים בתיאור. את המספר מקלידים פעם אחת, והוא נשמר בדפדפן.</p>';
+  main.parentNode.insertBefore(box, main);
+  var form = box.querySelector("form"), inp = box.querySelector("input"), msg = box.querySelector(".msg");
+  var tryCode = function(v){
+    return siteCheckCode(v).then(function(ok){
+      if (ok) {
+        msg.className = "msg ok"; msg.textContent = "🎉 נפתח! תהנו";
+        siteEvent("code-ok", id);
+        setTimeout(function(){ box.remove(); main.hidden = false; window.scrollTo(0, 0); }, 700);
+      } else if (v) {
+        msg.className = "msg bad"; msg.textContent = "המספר לא נכון. בדקו שוב בתיאור הקבוצה 🙂";
+        box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+        siteEvent("code-bad", id);
+      }
+      return ok;
+    });
+  };
+  form.addEventListener("submit", function(e){ e.preventDefault(); tryCode(inp.value.trim()); });
+  if (un) tryCode(un);
+  siteEvent("code-gate", id);
+}
+(function(){
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteCodeGate); else setTimeout(siteCodeGate, 0);
+})();
+
 /* ======================== חלון "הצטרפו לקבוצת העדכונים" ========================
    כלל קבוע (מ-31.10.2026): בכניסה לאתר נפתח חלון שמשכנע להצטרף לקבוצת העדכונים השקטה בוואטסאפ.
    לא חוסם את האתר. "אולי אחר כך" = יופיע שוב אחרי againDays ימים. "הצטרפתי" / לחיצה על ההצטרפות = לא יופיע יותר.
@@ -137,7 +225,7 @@ function siteJoinPopup(){
     "@media (prefers-reduced-motion:reduce){.bq-join,.bq-join .c,.bq-join .go{animation:none}}" +
     "@media print{.bq-join{display:none!important}}";
   var show = function(){
-    if (document.querySelector(".bq-join")) return;
+    if (document.querySelector(".bq-join") || document.querySelector(".code-gate") || siteUnlocked()) return;
     document.head.appendChild(css);
     var box = document.createElement("div");
     box.className = "bq-join"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-labelledby", "bqjT");
@@ -147,6 +235,7 @@ function siteJoinPopup(){
       '<h2 id="bqjT">רוצים לדעת <b>ראשונים</b> כשעולה משחק חדש?</h2>' +
       '<p class="lead">הצטרפו לקבוצת העדכונים השקטה של <bdi style="white-space:nowrap">booqli Games</bdi> בוואטסאפ.</p>' +
       '<ul>' +
+        '<li><span class="e">🔑</span><span><b>המספר הסודי</b> שפותח את הנושאים המיוחדים (חנוכה, יום הולדת בגן) כתוב בתיאור הקבוצה.</span></li>' +
         '<li><span class="e">🆕</span><span><b>ראשונים לדעת</b> כשנפתח נושא חדש: חורף, ט"ו בשבט, פורים ועוד הרבה בדרך.</span></li>' +
         '<li><span class="e">⏳</span><span><b>לא מפספסים.</b> התכנים נפתחים לפי עונות השנה, ונסגרים כשהעונה נגמרת.</span></li>' +
         '<li><span class="e">🤫</span><span><b>קבוצה שקטה.</b> רק אנחנו שולחים, רק כשיש משהו חדש. בלי הודעות מאחרים ובלי הצפות.</span></li>' +

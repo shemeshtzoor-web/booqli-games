@@ -91,6 +91,7 @@ section{padding:26px 0}
 .card .st{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px}
 .card.locked .ic{filter:grayscale(.35);opacity:.85}
 /* מרובע בצבעי הקשת (עולם הרגשות) */
+.card .key{display:block;margin-top:4px;font-size:12px;font-weight:800;color:#13773A;background:#E6F7EC;border-radius:999px;padding:2px 8px;line-height:1.3}
 .card.rainbow{border:4px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8) border-box}
 .card.rainbow h3{background:linear-gradient(90deg,#E0384A,#E2741B,#C99400,#2E9A55,#2C86C9,#4B57D6,#8A45C9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.locked::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
@@ -482,7 +483,7 @@ function card(t){
   b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && SITE.locked && SITE.locked[t.id] && !siteUnlocked() ? `<span class="key">🔑 נפתח במספר סודי מקבוצת הוואטסאפ</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);
   b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
   if (s !== "open" || t.noGift) return b;
