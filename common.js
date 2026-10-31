@@ -115,3 +115,18 @@ function siteBackBar(homeHref){
   var after = document.querySelector(".devbar") || document.querySelector(".sponsor") || document.querySelector("header");
   if (after) after.insertAdjacentElement("afterend", bar);
 }
+
+/* ======================== זכויות יוצרים ========================
+   כלל קבוע: מופיע אוטומטית בתחתית כל עמוד שטוען את common.js */
+(function siteCopyright(){
+  function add(){
+    if (document.querySelector(".site-copy")) return;
+    var p = document.createElement("p");
+    p.className = "site-copy";
+    p.style.cssText = "margin:10px auto 0;padding:0 16px 14px;max-width:900px;text-align:center;font-size:12.5px;line-height:1.5;opacity:.85";
+    p.textContent = "© " + Math.max(2026, new Date().getFullYear()) + " BOOQLI. כל הזכויות שמורות. התכנים, הטקסטים, האיורים והמשחקים באתר מוגנים בזכויות יוצרים. מותר להשתמש בהם בגן ובבית, אך אין להעתיק, לשכפל, להפיץ או לפרסם אותם, כולם או חלקם, ללא אישור בכתב מ-BOOQLI.";
+    var f = document.querySelector("footer");
+    (f || document.body).appendChild(p);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
+})();

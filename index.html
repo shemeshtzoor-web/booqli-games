@@ -149,6 +149,21 @@ section{padding:26px 0}
 .bookcard b{font-family:Fredoka,sans-serif;font-size:19px;color:var(--magenta)}
 .bookcard i{font-style:normal;font-size:14px;color:var(--muted);line-height:1.35}
 .bookcard em{font-style:normal;font-weight:800;color:#fff;background:var(--pink-btn);border-radius:999px;padding:5px 12px;align-self:flex-start;margin-top:4px}
+.finder{max-width:860px;margin:18px auto 4px;background:#fff;border-radius:24px;padding:16px;box-shadow:0 8px 24px rgba(78,133,118,.13)}
+.finder .srch{display:flex;align-items:center;gap:8px;background:var(--mint);border-radius:999px;padding:4px 6px 4px 14px;border:2px solid transparent}
+.finder .srch:focus-within{border-color:var(--pink)}
+.finder .srch span{font-size:20px;padding-inline-start:6px}
+.finder input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:17px;padding:9px 4px;color:var(--ink);outline:none}
+.finder .clr{border:0;background:#fff;color:var(--sage-deep);font:inherit;font-weight:800;border-radius:999px;padding:6px 12px;cursor:pointer}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.frow>b{font-size:14px;color:var(--sage-deep);margin-inline-end:4px}
+.fchip{border:2px solid #d6e8df;background:#fff;color:var(--ink);font:inherit;font-weight:700;font-size:14px;border-radius:999px;padding:5px 12px;cursor:pointer}
+.fchip[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+.frow select{font:inherit;font-weight:700;font-size:14px;border:2px solid #d6e8df;border-radius:999px;padding:5px 10px;background:#fff;color:var(--ink)}
+#results .count-line{color:var(--muted);margin:0 0 12px;font-weight:700}
+.res-empty{background:#fff;border-radius:22px;padding:24px;text-align:center;box-shadow:0 4px 14px rgba(78,133,118,.12)}
+.card .ages{font-size:12px;color:var(--muted);font-weight:700}
+.card .ic img{width:70%;height:auto}
 .sponsors-note{text-align:center;color:var(--sage-deep);font-weight:700;margin:12px 0 0}
 
 /* ===== תחתית ===== */
@@ -187,6 +202,28 @@ footer a{color:#fff;font-weight:700}
       <span class="chip">❓ חידונים</span><span class="chip">📖 הקראת ספרים</span><span class="chip">✨ בחינם</span>
     </div>
   </div>
+
+  <div class="finder" role="search">
+    <label class="srch"><span aria-hidden="true">🔍</span>
+      <input id="fq" type="search" placeholder="חיפוש: סביבון, אותיות, רגשות, חורף..." aria-label="חיפוש באתר" autocomplete="off">
+      <button type="button" class="clr" id="fclear" hidden>ניקוי</button>
+    </label>
+    <div class="frow" id="fage"><b>גיל:</b></div>
+    <div class="frow" id="fcat"><b>סוג:</b></div>
+    <div class="frow"><b>מיון:</b>
+      <select id="fsort" aria-label="מיון">
+        <option value="year">לפי לוח השנה</option>
+        <option value="open">פתוחים קודם</option>
+        <option value="abc">לפי א"ב</option>
+      </select>
+    </div>
+  </div>
+
+  <section id="results" hidden aria-live="polite">
+    <div class="sec-title"><h2>תוצאות</h2></div>
+    <p class="count-line" id="rcount"></p>
+    <div class="grid" id="gridResults"></div>
+  </section>
 
   <div id="next" class="next" hidden>
     <div class="big" id="nextIc"></div>
@@ -328,57 +365,64 @@ const REVIEWS = [
    ready = האם התוכן כבר מוכן. נושא נפתח רק כשגם התאריך הגיע וגם ready: true. */
 const OPEN_DAYS_BEFORE = 30;
 const YEAR = [
-  {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", event:"2027-09-01", ready:false},
-  {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", event:"2027-10-02", ready:false},
-  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:false},
-  {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", event:"2026-12-04", ready:true, opens:"2026-10-30"},
-  {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", event:"2026-12-21", ready:false},
-  {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", event:"2027-01-23", ready:false},
-  {id:"family",   name:"יום המשפחה",    ic:"👨‍👩‍👧", bg:"#FFE3F4", event:"2027-02-07", ready:false},
-  {id:"purim",    name:"פורים",         ic:"🎭", bg:"#F1E3FF", event:"2027-03-23", ready:false},
-  {id:"spring",   name:"אביב",          ic:"🌸", bg:"#FFE3F4", event:"2027-03-20", ready:false},
-  {id:"pesach",   name:"פסח",           ic:"🍷", bg:"#F6E4D8", event:"2027-04-21", ready:false},
-  {id:"lagbaomer",name:"ל\"ג בעומר",     ic:"🔥", bg:"#FFE6D6", event:"2027-05-25", ready:false},
-  {id:"atzmaut",  name:"יום העצמאות",   ic:"🇮🇱", bg:"#DCEBFF", event:"2027-05-12", ready:false},
-  {id:"shavuot",  name:"שבועות",        ic:"🌾", bg:"#FFF3CF", event:"2027-06-11", ready:false},
-  {id:"summer",   name:"קיץ",           ic:"☀️", bg:"#FFF1C9", event:"2027-06-21", ready:false}
+  {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", event:"2027-09-01", ready:false, ages:[3,6], tags:["גן חדש", "הסתגלות", "היכרות", "חברים", "כללי הגן", "פרידה מההורים", "ספטמבר"]},
+  {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", event:"2027-10-02", ready:false, ages:[3,6], tags:["ראש השנה", "יום כיפור", "סוכות", "שמחת תורה", "תפוח בדבש", "רימון", "שופר", "סוכה", "ארבעת המינים", "חגים"]},
+  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:false, ages:[3,6], tags:["עונות", "עלים", "יורה", "מזג אוויר", "טבע", "ציפורים נודדות"]},
+  {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", event:"2026-12-04", ready:true, opens:"2026-10-30", ages:[3,6], tags:["חנוכה", "חנוכייה", "נרות", "סביבון", "סופגנייה", "לביבה", "פך שמן", "מכבים", "נס", "אור", "חגים", "משחקים", "פאזל", "זיכרון", "דפי עבודה", "צביעה", "יצירה", "סיפור", "מערך לגננת", "הדפסה"]},
+  {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", event:"2026-12-21", ready:false, ages:[3,6], tags:["עונות", "גשם", "מטרייה", "ענן", "קור", "מזג אוויר", "ביגוד", "טבע"]},
+  {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", event:"2027-01-23", ready:false, ages:[3,6], tags:["ט\"ו בשבט", "עצים", "נטיעה", "פירות יבשים", "שבעת המינים", "טבע", "ראש השנה לאילנות", "חגים"]},
+  {id:"family",   name:"יום המשפחה",    ic:"👨‍👩‍👧", bg:"#FFE3F4", event:"2027-02-07", ready:false, ages:[3,6], tags:["משפחה", "אמא", "אבא", "אחים", "סבא וסבתא", "בית", "אהבה", "רגשות"]},
+  {id:"purim",    name:"פורים",         ic:"🎭", bg:"#F1E3FF", event:"2027-03-23", ready:false, ages:[3,6], tags:["פורים", "תחפושות", "משלוח מנות", "מגילה", "אסתר", "מרדכי", "רעשן", "אוזני המן", "חגים"]},
+  {id:"spring",   name:"אביב",          ic:"🌸", bg:"#FFE3F4", event:"2027-03-20", ready:false, ages:[3,6], tags:["עונות", "פרחים", "פריחה", "פרפרים", "טבע", "ציפורים"]},
+  {id:"pesach",   name:"פסח",           ic:"🍷", bg:"#F6E4D8", event:"2027-04-21", ready:false, ages:[3,6], tags:["פסח", "ליל הסדר", "מצה", "יציאת מצרים", "משה", "קערת הסדר", "אפיקומן", "ניקיון", "חגים"]},
+  {id:"lagbaomer",name:"ל\"ג בעומר",     ic:"🔥", bg:"#FFE6D6", event:"2027-05-25", ready:false, ages:[3,6], tags:["ל\"ג בעומר", "מדורה", "קשת וחץ", "תפוחי אדמה", "חגים"]},
+  {id:"atzmaut",  name:"יום העצמאות",   ic:"🇮🇱", bg:"#DCEBFF", event:"2027-05-12", ready:false, ages:[3,6], tags:["יום העצמאות", "ישראל", "דגל", "מדינה", "יום הולדת למדינה", "חגים"]},
+  {id:"shavuot",  name:"שבועות",        ic:"🌾", bg:"#FFF3CF", event:"2027-06-11", ready:false, ages:[3,6], tags:["שבועות", "ביכורים", "חקלאות", "מוצרי חלב", "גבינה", "שבעת המינים", "חגים"]},
+  {id:"summer",   name:"קיץ",           ic:"☀️", bg:"#FFF1C9", event:"2027-06-21", ready:false, ages:[3,6], tags:["עונות", "קיץ", "ים", "שמש", "מים", "חופש גדול", "סוף שנה"]}
 ];
 
 /* פינות קבועות – נפתחות כשהתוכן מוכן (ready: true) */
 const ALWAYS = [
-  {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false},
-  {id:"feelings", name:"רגשות",                ic:"💗", bg:"#FFE3F4", ready:false},
-  {id:"reading",  name:"עידוד קריאה",          ic:"🔤", bg:"#E1F0EA", ready:false},
-  {id:"math",     name:"חשבון לגיל הרך",       ic:"🔢", bg:"#DCEBFF", ready:false},
-  {id:"safety",   name:"מוגנות: אזעקות ומרחב מוגן", ic:"🛡️", bg:"#E3ECF6", ready:false},
-  {id:"calendar", name:"לוח חופשות תשפ\"ז",     ic:"📅", bg:"#FFF3CF", ready:false},
-  {id:"healthy-eating", name:"אכילה בריאה",    ic:"🥕", bg:"#FFEBD2", ready:false},
-  {id:"movement", name:"תנועה וספורט",         ic:"🤸", bg:"#DDF1DF", ready:false},
-  {id:"yoga",     name:"יוגה לגן",             ic:"🧘", bg:"#F1E3FF", ready:false},
-  {id:"sleep",    name:"שינה",                 ic:"😴", bg:"#E3ECF6", ready:false},
-  {id:"honor-parents", name:"כיבוד הורים",     ic:"💐", bg:"#FFE3F4", ready:false},
-  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false},
-  {id:"hygiene",  name:"צחצוח שיניים ומקלחת",  ic:"🪥", bg:"#DCEBFF", ready:false},
-  {id:"morning-prayer", name:"תפילת בוקר",     ic:"🌅", bg:"#FFF3CF", ready:false}
+  {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
+  {id:"feelings", name:"רגשות",                ic:"💗", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["רגשות", "שמחה", "עצב", "כעס", "פחד", "אמפתיה", "חברות", "וויסות רגשי", "כישורים חברתיים"]},
+  {id:"reading",  name:"עידוד קריאה",          ic:"🔤", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["אותיות", "קריאה", "אלף-בית", "צלילים", "חרוזים", "מילים", "אוריינות", "מוכנות לכיתה א"]},
+  {id:"math",     name:"חשבון לגיל הרך",       ic:"🔢", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["חשבון", "מספרים", "ספירה", "כמויות", "צורות", "סדרות", "יותר ופחות", "מתמטיקה", "מוכנות לכיתה א"]},
+  {id:"safety",   name:"מוגנות: אזעקות ומרחב מוגן", ic:"🛡️", bg:"#E3ECF6", ready:false, ages:[3,6], tags:["מוגנות", "ביטחון", "אזעקה", "מרחב מוגן", "ממ\"ד", "מקלט", "פיקוד העורף", "חוסן", "הרגעה", "רגשות"]},
+  {id:"calendar", name:"לוח חופשות תשפ\"ז",     ic:"📅", bg:"#FFF3CF", ready:false, ages:[3,6], tags:["לוח חופשות", "חופשות", "חגים", "משרד החינוך", "תשפ\"ז", "תאריכים"]},
+  {id:"healthy-eating", name:"אכילה בריאה",    ic:"🥕", bg:"#FFEBD2", ready:false, ages:[3,6], tags:["אכילה בריאה", "תזונה", "פירות", "ירקות", "בריאות", "ארוחה"]},
+  {id:"movement", name:"תנועה וספורט",         ic:"🤸", bg:"#DDF1DF", ready:false, ages:[3,6], tags:["תנועה", "ספורט", "פעילות גופנית", "ריצה", "משחקי חצר", "בריאות"]},
+  {id:"yoga",     name:"יוגה לגן",             ic:"🧘", bg:"#F1E3FF", ready:false, ages:[3,6], tags:["יוגה", "נשימה", "הרגעה", "גמישות", "תנועה", "ריכוז", "מיינדפולנס"]},
+  {id:"sleep",    name:"שינה",                 ic:"😴", bg:"#E3ECF6", ready:false, ages:[3,6], tags:["שינה", "לילה", "מיטה", "הרגלים", "בריאות", "שגרה"]},
+  {id:"honor-parents", name:"כיבוד הורים",     ic:"💐", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["כיבוד הורים", "משפחה", "ערכים", "נימוס", "תודה", "עזרה"]},
+  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false, ages:[3,6], tags:["סדר", "ארגון", "ניקיון", "אחריות", "עצמאות", "הרגלים"]},
+  {id:"hygiene",  name:"צחצוח שיניים ומקלחת",  ic:"🪥", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["היגיינה", "צחצוח שיניים", "מקלחת", "שטיפת ידיים", "בריאות", "הרגלים"]},
+  {id:"morning-prayer", name:"תפילת בוקר",     ic:"🌅", bg:"#FFF3CF", ready:false, ages:[3,6], tags:["תפילת בוקר", "מודה אני", "תפילה", "בוקר", "מסורת", "ערכים"]}
 ];
 
 /* ספרי BOOQLI – משחקים לפי הספרים (בתיקייה games/) */
 const BOOKS = [
-  {id:"superhero",      name:"גיבור/ת על",       p:"משחק טוב לב מהיר, אותיות וקריאה, מיון והבדלים", img:"games/superhero/img/m-book.png"},
-  {id:"birthday",       name:"ילד/ת יום הולדת", p:"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון",    img:"games/birthday/img/m-book.png"},
-  {id:"bye-bye-diaper", name:"ביי ביי חיתול!",   p:"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה",   img:"games/bye-bye-diaper/img/m-book.png"},
-  {id:"savanna",        name:"בסוואנה",          p:"מכירים את חיות הסוואנה בסיפור ובמשחקים",       img:"games/savanna/img/demo-book.png"}
+  {id:"superhero",      name:"גיבור/ת על",       p:"משחק טוב לב מהיר, אותיות וקריאה, מיון והבדלים", img:"games/superhero/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "גיבור על", "טוב לב", "אמפתיה", "אותיות", "קריאה", "מיון", "מצא את ההבדלים"]},
+  {id:"birthday",       name:"ילד/ת יום הולדת", p:"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון",    img:"games/birthday/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "יום הולדת", "חשבון", "ספירה", "עוגה", "נרות", "זיכרון"]},
+  {id:"bye-bye-diaper", name:"ביי ביי חיתול!",   p:"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה",   img:"games/bye-bye-diaper/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "גמילה מחיתול", "סיר", "עצמאות", "לוח מדבקות", "הדפסה"]},
+  {id:"savanna",        name:"בסוואנה",          p:"מכירים את חיות הסוואנה בסיפור ובמשחקים",       img:"games/savanna/img/demo-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "סוואנה", "חיות", "בעלי חיים", "טבע", "אפריקה"]}
 ];
 
 /* מיוחדים והעשרה – נפתחים כשהתוכן מוכן (ready: true) */
 const SPECIAL = [
-  {id:"body",      name:"גוף האדם",            ic:"🧒", bg:"#E1F0EA", ready:false},
-  {id:"fruits-vegetables", name:"הכרת פירות וירקות", ic:"🍎", bg:"#FFEBD2", ready:false},
-  {id:"english",   name:"אנגלית לקטנטנים",     ic:"🔤", bg:"#DCEBFF", ready:false},
-  {id:"suppliers", name:"ספקים אמינים",        ic:"🤝", bg:"#E1F0EA", ready:false},
-  {id:"operators", name:"מפעילים",             ic:"🎪", bg:"#FFE3F4", ready:false},
-  {id:"trips",     name:"טיולים",              ic:"🚌", bg:"#FFF3CF", ready:false}
+  {id:"body",      name:"גוף האדם",            ic:"🧒", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["גוף האדם", "איברי הגוף", "חושים", "בריאות", "אני וגופי"]},
+  {id:"fruits-vegetables", name:"הכרת פירות וירקות", ic:"🍎", bg:"#FFEBD2", ready:false, ages:[3,6], tags:["פירות", "ירקות", "צבעים", "תזונה", "אכילה בריאה", "טבע"]},
+  {id:"english",   name:"אנגלית לקטנטנים",     ic:"🔤", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["אנגלית", "צבעים", "מספרים", "מילים", "שפה"]},
+  {id:"suppliers", name:"ספקים אמינים",        ic:"🤝", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["ספקים", "גננות", "ציוד לגן", "המלצות"]},
+  {id:"operators", name:"מפעילים",             ic:"🎪", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["מפעילים", "הפעלות", "ימי הולדת בגן", "מסיבות", "הצגות"]},
+  {id:"trips",     name:"טיולים",              ic:"🚌", bg:"#FFF3CF", ready:false, ages:[3,6], tags:["טיולים", "יציאה מהגן", "טבע", "סיורים"]}
 ];
+
+/* ======================== חיפוש ומיון ========================
+   כלל קבוע: לכל נושא חדש מוסיפים ages:[מגיל, עד גיל] ו-tags:[מילות מפתח].
+   אם אין ages – הנושא נחשב מתאים לגילאי DEFAULT_AGES. */
+const DEFAULT_AGES = [3,6];
+const AGE_FILTERS = [{k:"all", t:"כל הגילאים"}, {k:"3-4", t:"3–4"}, {k:"4-5", t:"4–5"}, {k:"5-6", t:"5–6"}];
+const CATS = [{k:"all", t:"הכל"}, {k:"year", t:"לוח השנה"}, {k:"always", t:"פינות"}, {k:"special", t:"העשרה"}, {k:"books", t:"ספרי BOOQLI"}];
 
 /* ======================== הקוד ======================== */
 // לבדיקה: אפשר להוסיף לכתובת ?date=2026-11-25 כדי לראות איך האתר ייראה בתאריך אחר
@@ -399,10 +443,11 @@ function card(t){
   const s = state(t), b = document.createElement("button");
   b.className = "card " + s; b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="st">${st}</span>`;
+  const ag = t.ages || DEFAULT_AGES;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>`;
   b.setAttribute("aria-label", t.name + ", " + st);
-  b.onclick = () => s === "open" ? location.href = "topics/" + t.id + "/" : showLocked(t, s);
-  if (s !== "open") return b;
+  b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
+  if (s !== "open" || t.noGift) return b;
   const w = document.createElement("div"); w.className = "tile"; w.appendChild(b);
   const g = document.createElement("button"); g.type = "button"; g.className = "gift-mini";
   g.textContent = "🎁 מתנה להורים"; g.onclick = () => sendGift(t); w.appendChild(g);
@@ -416,9 +461,71 @@ ALWAYS.forEach(t => gA.appendChild(card(t)));
 SPECIAL.forEach(t => document.getElementById("gridSpecial").appendChild(card(t)));
 document.getElementById("gridBooks").innerHTML = BOOKS.map(b => `<a class="bookcard" href="games/${b.id}/"><img src="${b.img}" alt="הספר ${b.name}" loading="lazy"><span><b>${b.name}</b><i>${b.p}</i><em>לשחק ←</em></span></a>`).join("");
 
+// ---------- חיפוש ומיון ----------
+const ALL = [
+  ...YEAR.map((t,i) => ({...t, cat:"year", order:i})),
+  ...ALWAYS.map((t,i) => ({...t, cat:"always", order:100+i})),
+  ...SPECIAL.map((t,i) => ({...t, cat:"special", order:200+i})),
+  ...BOOKS.map((b,i) => ({...b, cat:"books", order:300+i, ic:`<img src="${b.img}" alt="">`, bg:"#FFE3F4", ready:true, href:"games/" + b.id + "/", noGift:true}))
+];
+const CAT_NAME = {year:"לוח השנה", always:"פינות לכל השנה", special:"העשרה", books:"ספרי BOOQLI"};
+// נרמול עברית: בלי ניקוד, גרשיים ומקפים, אותיות סופיות כרגילות
+const norm = x => String(x||"").toLowerCase().replace(/[\u0591-\u05C7]/g,"").replace(/["'״׳`]/g,"").replace(/[.,:;!?()\-–־/]/g," ")
+  .replace(/ך/g,"כ").replace(/ם/g,"מ").replace(/ן/g,"נ").replace(/ף/g,"פ").replace(/ץ/g,"צ").replace(/\s+/g," ").trim();
+ALL.forEach(t => { t.ages = t.ages || DEFAULT_AGES; t.hay = " " + norm([t.name, t.p, CAT_NAME[t.cat], ...(t.tags||[])].join(" ")) + " "; });
+const PREFIX = "והבלמשכ";
+function wordHit(hay, w){
+  if (hay.includes(w)) return true;
+  // "בחנוכה", "והסביבון" – מורידים אות שימוש אחת או שתיים בתחילת המילה
+  for (let i = 1; i <= 2 && w.length - i >= 3 && PREFIX.includes(w[i-1]); i++) if (hay.includes(w.slice(i))) return true;
+  return false;
+}
+const F = {q:"", age:"all", cat:"all", sort:"year"};
+function chips(el, list, key){
+  list.forEach(o => { const b = document.createElement("button"); b.type = "button"; b.className = "fchip"; if (/^\d/.test(o.t)) { const sp = document.createElement("span"); sp.dir = "ltr"; sp.textContent = o.t; b.appendChild(sp); } else b.textContent = o.t;
+    b.dataset.k = o.k; b.setAttribute("aria-pressed", o.k === F[key]);
+    b.onclick = () => { F[key] = o.k; el.querySelectorAll(".fchip").forEach(x => x.setAttribute("aria-pressed", x.dataset.k === o.k)); applyFilter(); };
+    el.appendChild(b); });
+}
+chips(document.getElementById("fage"), AGE_FILTERS, "age");
+chips(document.getElementById("fcat"), CATS, "cat");
+const fq = document.getElementById("fq"), fclear = document.getElementById("fclear"), fsort = document.getElementById("fsort");
+fq.addEventListener("input", () => { F.q = fq.value; applyFilter(); });
+fsort.onchange = () => { F.sort = fsort.value; applyFilter(); };
+fclear.onclick = () => { fq.value = ""; F.q = ""; applyFilter(); fq.focus(); };
+const RANK = {open:0, soon:1, locked:2};
+function applyFilter(){
+  const words = norm(F.q).split(" ").filter(Boolean);
+  const active = words.length || F.age !== "all" || F.cat !== "all" || F.sort !== "year";
+  fclear.hidden = !F.q;
+  ["year","always","special","books"].forEach(id => { const sec = document.getElementById(id); if (sec) sec.hidden = active; });
+  document.getElementById("next").hidden = active || !nextT;
+  const res = document.getElementById("results"); res.hidden = !active;
+  if (!active) return;
+  let list = ALL.filter(t => {
+    if (F.cat !== "all" && t.cat !== F.cat) return false;
+    if (F.age !== "all") { const [a,b] = F.age.split("-").map(Number); if (t.ages[1] < a || t.ages[0] > b) return false; }
+    return words.every(w => wordHit(t.hay, w));
+  });
+  if (F.sort === "abc") list.sort((a,b) => a.name.localeCompare(b.name, "he"));
+  else if (F.sort === "open") list.sort((a,b) => RANK[state(a)] - RANK[state(b)] || a.order - b.order);
+  else list.sort((a,b) => a.order - b.order);
+  const g = document.getElementById("gridResults"); g.innerHTML = "";
+  document.getElementById("rcount").textContent = list.length ? "נמצאו " + list.length + " תכנים" + (F.q ? " עבור \"" + F.q.trim() + "\"" : "") : "";
+  if (!list.length){
+    g.innerHTML = '<div class="res-empty" style="grid-column:1/-1"><div style="font-size:44px">🔎</div><h3>לא מצאנו תוכן כזה (עדיין)</h3><p>נסו מילה אחרת, או ספרו לנו מה הייתם רוצים שנכין.</p><a class="btn-wa js-wa" target="_blank" rel="noopener">💬 מה חסר לכם? כתבו לנו</a></div>';
+    g.querySelector(".js-wa").href = (window.SITE ? "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent("היי BOOQLI, חיפשתי באתר booqli Games: " + F.q + "\nאשמח שתכינו: ") : "#");
+    return;
+  }
+  list.forEach(t => g.appendChild(card(t)));
+}
+const startQ = new URLSearchParams(location.search).get("q");
+if (startQ){ fq.value = startQ; F.q = startQ; }
+applyFilter();
+
 // הנושא הבא + ספירה לאחור
 if (nextT){
-  document.getElementById("next").hidden = false;
+  document.getElementById("next").hidden = !document.getElementById("results").hidden;
   document.getElementById("nextIc").textContent = nextT.ic;
   document.getElementById("nextName").textContent = nextT.name + " · נפתח ב-" + fmt(nextT.opens);
   const tick = () => {
