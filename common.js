@@ -23,15 +23,33 @@ window.SITE = {
 
 /* רישום פעולה (למשל לייק) כביקור בכתובת וירטואלית, כדי שיופיע בלוח המדידה.
    הכתובת מתחלפת לרגע וחוזרת מיד, הדף עצמו לא נטען מחדש. */
-function siteTrack(name){
+var SITE_DIR = location.pathname.replace(/[^/]*$/, ""), siteVirtual = null, siteTimer = null;
+function siteTrack(name, kind){
   if (!SITE.analyticsToken) return;
   try {
-    var back = location.pathname + location.search + location.hash;
-    var dir = location.pathname.replace(/[^/]*$/, "");
-    history.pushState(null, "", dir + "like/" + encodeURIComponent(name));
-    setTimeout(function(){ history.replaceState(null, "", back); }, 400);
+    // הכתובת האמיתית נשמרת פעם אחת, כך שגם כמה לחיצות מהירות נספרות כל אחת בנפרד
+    var back = siteVirtual || (location.pathname + location.search + location.hash);
+    siteVirtual = back;
+    var path = kind ? SITE_DIR + "event/" + kind + "/" + encodeURIComponent(name) : SITE_DIR + "like/" + encodeURIComponent(name);
+    history.pushState(null, "", path);
+    clearTimeout(siteTimer);
+    siteTimer = setTimeout(function(){ history.replaceState(null, "", back); siteVirtual = null; }, 400);
   } catch (e) {}
 }
+/* ספירת פעולות (בלי לדעת מי): הצטרפות לוואטסאפ, מתנה להורים, הזמנת ספר, הצעת מחיר לגן, הדפסה.
+   מופיעות בלוח של Cloudflare כעמודים שהכתובת שלהם מכילה event/<סוג>/<מקום> */
+function siteEvent(kind, name){ siteTrack(name || "page", kind); }
+document.addEventListener("click", function(e){
+  var el = e.target.closest && e.target.closest("a,button");
+  if (!el) return;
+  var where = (location.pathname.match(/(topics|games)\/([^/]+)/) || [,"","home"])[2] || "home";
+  var href = el.getAttribute("href") || "";
+  if (el.classList.contains("js-wa") || href.indexOf("chat.whatsapp.com") > -1) siteEvent("join-whatsapp", where);
+  else if (el.classList.contains("js-gift")) siteEvent("gift-parents", where);
+  else if (el.id === "ganLink" || el.id === "ganBtn" || href.indexOf("%D7%92%D7%9F%20%F0%9F%8F%AB") > -1) siteEvent("gan-quote", where);
+  else if (href.indexOf("booqli.ai") > -1) siteEvent("to-booqli", where);
+  else if (el.classList.contains("js-report")) siteEvent("report-error", where);
+}, true);
 
 /* ======================== פס "האתר בפיתוח" ======================== */
 function siteReportLink(){

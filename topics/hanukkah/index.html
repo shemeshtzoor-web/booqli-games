@@ -934,6 +934,7 @@ const CRAFTS = [
 ];
 let printed = false; window.addEventListener("beforeprint", () => printed = true);
 function printSheets(list){
+  try { siteEvent("print", "hanukkah-" + (current || "page")); } catch(e){}
   $("print").innerHTML = list.join("");
   const imgs = [...$("print").querySelectorAll("img")];
   Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
