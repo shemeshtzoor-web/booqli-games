@@ -44,7 +44,7 @@ document.addEventListener("click", function(e){
   if (!el) return;
   var where = (location.pathname.match(/(topics|games)\/([^/]+)/) || [,"","home"])[2] || "home";
   var href = el.getAttribute("href") || "";
-  if (el.classList.contains("js-wa") || href.indexOf("chat.whatsapp.com") > -1) siteEvent("join-whatsapp", where);
+  if (el.classList.contains("js-wa") || href.indexOf("chat.whatsapp.com") > -1) siteEvent("join-whatsapp", (el.closest(".bq-join") ? "popup-" : "") + where);
   else if (el.classList.contains("js-gift")) siteEvent("gift-parents", where);
   else if (el.id === "ganLink" || el.id === "ganBtn" || href.indexOf("%D7%92%D7%9F%20%F0%9F%8F%AB") > -1) siteEvent("gan-quote", where);
   else if (href.indexOf("booqli.ai") > -1) siteEvent("to-booqli", where);
@@ -96,6 +96,95 @@ function siteLikeButton(id, label){
 function siteJoinLinks(){
   document.querySelectorAll(".js-wa").forEach(function(a){ a.href = SITE.whatsappGroup; });
 }
+
+/* ======================== חלון "הצטרפו לקבוצת העדכונים" ========================
+   כלל קבוע (מ-31.10.2026): בכניסה לאתר נפתח חלון שמשכנע להצטרף לקבוצת העדכונים השקטה בוואטסאפ.
+   לא חוסם את האתר. "אולי אחר כך" = יופיע שוב אחרי againDays ימים. "הצטרפתי" / לחיצה על ההצטרפות = לא יופיע יותר.
+   לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
+window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
+function siteJoinPopup(){
+  var qs = location.search || "";
+  if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join")) return;
+  var force = /[?&]join=1/.test(qs), st = null;
+  try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
+  var save = function(o){ try { localStorage.setItem("booqli_join", JSON.stringify(o)); } catch (e) {} };
+  if (!force) {
+    // בלי זיכרון בדפדפן (גלישה פרטית חסומה) – מציגים רק בדף הבית, כדי לא להציק בכל עמוד
+    if (st === null && /\/(topics|games)\//.test(location.pathname)) return;
+    if (st && (st.joined || (st.later && Date.now() - st.later < SITE.joinPopup.againDays * 864e5))) return;
+  }
+  var css = document.createElement("style");
+  css.textContent =
+    ".bq-join{position:fixed;inset:0;z-index:200;background:rgba(43,21,38,.55);display:flex;align-items:center;justify-content:center;padding:16px;font-family:Assistant,Arial,sans-serif;direction:rtl;animation:bqjFade .25s}" +
+    ".bq-join .c{position:relative;background:#fff;color:#2B1526;border-radius:28px;max-width:440px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:26px 22px 18px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:bqjUp .35s cubic-bezier(.2,.9,.3,1.2)}" +
+    ".bq-join .c::before{content:'';position:absolute;inset:0 0 auto 0;height:9px;border-radius:28px 28px 0 0;background:linear-gradient(90deg,#1FA855,#6F988B,#FF56C2)}" +
+    ".bq-join .x{position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;border:0;background:#F2F2F2;color:#6b5a66;font-size:18px;font-weight:800;cursor:pointer;line-height:1}" +
+    ".bq-join .ic{width:72px;height:72px;margin:0 auto 6px;border-radius:50%;background:#E6F7EC;display:grid;place-items:center;font-size:38px}" +
+    ".bq-join h2{font-family:Fredoka,Assistant,sans-serif;font-size:25px;line-height:1.2;margin:0 0 6px;color:#2B1526;text-wrap:balance}" +
+    ".bq-join h2 b{color:#1FA855}" +
+    ".bq-join .lead{margin:0 0 12px;font-size:16.5px;color:#6b5a66}" +
+    ".bq-join ul{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px;text-align:right}" +
+    ".bq-join li{display:flex;gap:10px;align-items:flex-start;background:#F4FAF7;border-radius:14px;padding:8px 12px;font-size:15.5px;line-height:1.35}" +
+    ".bq-join li .e{font-size:20px;line-height:1.2;flex-shrink:0}.bq-join li b{color:#4E8576}" +
+    ".bq-join .go{display:flex;align-items:center;justify-content:center;gap:8px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;font-size:18px;border-radius:999px;padding:14px 18px;box-shadow:0 4px 0 #13773A;animation:bqjPulse 2.2s ease-in-out 1s infinite}" +
+    ".bq-join .go:active{transform:translateY(2px);box-shadow:0 2px 0 #13773A}" +
+    ".bq-join .low{display:flex;justify-content:center;gap:6px 16px;flex-wrap:wrap;margin-top:12px}" +
+    ".bq-join .low button{background:none;border:0;color:#6b5a66;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;text-decoration:underline;padding:6px 4px}" +
+    ".bq-join .note{margin:10px 0 0;font-size:12.5px;color:#8a7a86}" +
+    "@keyframes bqjFade{from{opacity:0}}@keyframes bqjUp{from{transform:translateY(40px);opacity:0}}" +
+    "@keyframes bqjPulse{50%{transform:scale(1.03)}}" +
+    "@media (max-width:520px){.bq-join{align-items:flex-end;padding:0}.bq-join .c{border-radius:26px 26px 0 0;max-height:92vh;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}.bq-join .c::before{border-radius:26px 26px 0 0}.bq-join h2{font-size:22px}}" +
+    "@media (prefers-reduced-motion:reduce){.bq-join,.bq-join .c,.bq-join .go{animation:none}}" +
+    "@media print{.bq-join{display:none!important}}";
+  var show = function(){
+    if (document.querySelector(".bq-join")) return;
+    document.head.appendChild(css);
+    var box = document.createElement("div");
+    box.className = "bq-join"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-labelledby", "bqjT");
+    box.innerHTML = '<div class="c">' +
+      '<button class="x" type="button" aria-label="סגירה">✕</button>' +
+      '<div class="ic" aria-hidden="true">🔔</div>' +
+      '<h2 id="bqjT">רוצים לדעת <b>ראשונים</b> כשעולה משחק חדש?</h2>' +
+      '<p class="lead">הצטרפו לקבוצת העדכונים השקטה של <bdi style="white-space:nowrap">booqli Games</bdi> בוואטסאפ.</p>' +
+      '<ul>' +
+        '<li><span class="e">🆕</span><span><b>ראשונים לדעת</b> כשנפתח נושא חדש: חורף, ט"ו בשבט, פורים ועוד הרבה בדרך.</span></li>' +
+        '<li><span class="e">⏳</span><span><b>לא מפספסים.</b> התכנים נפתחים לפי עונות השנה, ונסגרים כשהעונה נגמרת.</span></li>' +
+        '<li><span class="e">🤫</span><span><b>קבוצה שקטה.</b> רק אנחנו שולחים, רק כשיש משהו חדש. בלי הודעות מאחרים ובלי הצפות.</span></li>' +
+        '<li><span class="e">🆓</span><span><b>בחינם.</b> ואפשר לצאת מהקבוצה בכל רגע.</span></li>' +
+      '</ul>' +
+      '<a class="go js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 אני רוצה להצטרף לקבוצה</a>' +
+      '<div class="low"><button type="button" class="later">אולי אחר כך</button><button type="button" class="done">כבר הצטרפתי ✓</button></div>' +
+      '<p class="note">כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</p>' +
+      '</div>';
+    var prev = document.activeElement;
+    var close = function(how){
+      if (how === "joined") save({ joined: Date.now() }); else save({ later: Date.now() });
+      box.remove(); document.removeEventListener("keydown", onKey, true);
+      if (prev && prev.focus) try { prev.focus({ preventScroll: true }); } catch (e) {}
+    };
+    var onKey = function(e){
+      if (e.key === "Escape") { e.stopPropagation(); close("later"); }
+      if (e.key === "Tab") { // שומרים את הפוקוס בתוך החלון
+        var f = box.querySelectorAll("a,button"), a = f[0], z = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+        else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+      }
+    };
+    box.querySelector(".go").addEventListener("click", function(){ setTimeout(function(){ close("joined"); }, 300); });
+    box.querySelector(".done").onclick = function(){ close("joined"); };
+    box.querySelector(".later").onclick = function(){ close("later"); };
+    box.querySelector(".x").onclick = function(){ close("later"); };
+    box.addEventListener("click", function(e){ if (e.target === box) close("later"); });
+    document.addEventListener("keydown", onKey, true);
+    document.body.appendChild(box);
+    try { box.querySelector(".go").focus({ preventScroll: true }); } catch (e) {}
+    siteEvent("join-popup", (location.pathname.match(/(topics|games)\/([^/]+)/) || [,"","home"])[2] || "home");
+  };
+  setTimeout(show, force ? 300 : SITE.joinPopup.delayMs);
+}
+(function(){
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteJoinPopup); else siteJoinPopup();
+})();
 
 /* ======================== קוד QR לדפי הדפסה ========================
    כלל קבוע: בכל דף שמדפיסים יש קוד לסריקה להורים, שמוביל להזמנת ספר אישי.
@@ -155,7 +244,8 @@ function siteBackBar(homeHref){
    אחרי הסגירה העמוד ננעל, וכרטיס הנושא בדף הבית מציג "נסגר".
    בדיקה: להוסיף לכתובת ?date=2026-12-03T17:30 כדי לראות איך זה ייראה אחרי הסגירה. */
 window.SITE.closes = {
-  hanukkah: "2026-12-12T23:59:00+02:00"   // סוף חנוכה: היום השמיני, שבת 12.12.2026
+  hanukkah: "2026-12-12T23:59:00+02:00",  // סוף חנוכה: היום השמיני, שבת 12.12.2026
+  autumn:   "2026-12-20T23:59:00+02:00"   // סוף הסתיו: יום לפני תחילת החורף (21.12.2026). בשנה הבאה – לעדכן את התאריך
 };
 function siteNow(){
   var q = new URLSearchParams(location.search).get("date");
@@ -200,7 +290,7 @@ function siteCloseBar(id, name, homeHref){
     if (main) main.hidden = true;
     var box = document.createElement("div"); box.className = "closed-box";
     box.innerHTML = '<div style="font-size:64px">🔒</div><h2>התכנים של ' + name + ' נסגרו לשנה הזו</h2>' +
-      '<p>התכנים באתר נפתחים לפי עונות השנה. ' + name + ' תיפתח שוב לקראת החג בשנה הבאה.</p>' +
+      '<p>התכנים באתר נפתחים לפי עונות השנה, ויחזרו בעונה שלהם בשנה הבאה.</p>' +
       '<a class="h" href="' + homeHref + '">🏠 לתכנים הפתוחים עכשיו</a>' +
       '<a class="g js-join" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>' +
       '<a class="w" target="_blank" rel="noopener" href="' + siteAskLink(name) + '">רוצים שנפתח לכם? כתבו לנו</a>';

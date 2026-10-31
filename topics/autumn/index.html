@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>סתיו לילדים: משחק עלי שלכת, חידון סתיו וציור · booqli Games</title>
+<meta name="description" content="משחק העץ והרוח: אוספים עלי שלכת לפח. חידון סתיו עם הקראה: עלי שלכת, נחליאלי, חצב, גשם ועוד. הידעת על הנחליאלי, ציור סתיו עם האצבע ודף צביעה להדפסה. לגן ולבית, בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/autumn/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🍂 הסתיו הגיע! משחק עלי שלכת, חידון סתיו וציור לילדים">
+<meta property="og:description" content="הרוח מעיפה את העלים, והילדים אוספים אותם לפח. וגם חידון עם הקראה, הנחליאלי, החצב, ציור עם האצבע ודף להדפסה. בחינם ובלי הרשמה.">
+<meta property="og:url" content="https://games.booqli.ai/topics/autumn/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== צבעי המותג של BOOQLI + צבעי הסתיו ===== */
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --a1:#F2B33D; --a2:#E8762B; --a3:#D9432B; --a4:#B5651D; --a5:#7BAE3E;
+  --au:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a4));
+  --ok:#22A55B; --bad:#E5484D;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, #FFE6C9 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#FFF8F0, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}.btn-wa{margin-inline-start:auto}}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-wind{background:linear-gradient(135deg,#7CC4F2,#3AA7F0);color:#fff;border:0;border-radius:999px;padding:11px 22px;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 3px 0 #1F7DBA}
+.btn-wind:active{transform:translateY(2px);box-shadow:0 1px 0 #1F7DBA}
+.btn-wind:disabled{opacity:.45;cursor:default}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+
+/* ===== פתיח ===== */
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #ecdcc8}
+.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:var(--au)}
+.hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.hero small{font-weight:800;color:var(--magenta)}
+.hero h1{font-size:clamp(36px,7.4vw,60px);line-height:1.05;margin-top:4px}
+.au{background:linear-gradient(90deg,#D99A1E,#E8762B,#D9432B,#9C5418);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;max-width:640px;margin:10px 0 0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pills span{background:#FFF1DE;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:#A4521D}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.hero-art{position:relative;width:230px;height:200px}
+.hero-art svg.t{width:100%;height:100%;display:block}
+.hero-art .hl{position:absolute;width:30px;height:30px;top:30%;animation:hfall 5.5s linear infinite;opacity:0}
+.hero-art .hl svg{width:100%;height:100%}
+.hero-art .hl:nth-child(2){left:30%;animation-delay:0s}
+.hero-art .hl:nth-child(3){left:55%;animation-delay:1.8s}
+.hero-art .hl:nth-child(4){left:42%;animation-delay:3.6s}
+@keyframes hfall{0%{transform:translate(0,0) rotate(0);opacity:0}8%{opacity:1}50%{transform:translate(-30px,60px) rotate(160deg)}90%{opacity:1}100%{transform:translate(-60px,120px) rotate(320deg);opacity:0}}
+@media (max-width:700px){.hero .grid{grid-template-columns:1fr}.hero-art{order:-1;margin:0 auto;width:190px;height:165px}}
+
+/* ===== תפריט הפעילויות ===== */
+.sec-title{text-align:center;margin:36px 0 14px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+.sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.menu a{background:#fff;border-radius:22px;padding:14px 10px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 0 #ecdcc8;border-top:6px solid var(--c);transition:transform .15s}
+.menu a:hover{transform:translateY(-3px)}
+.menu .e{font-size:38px;line-height:1.1}
+.menu b{font-family:Fredoka,sans-serif;font-size:17px;line-height:1.2}
+.menu span{font-size:12.5px;font-weight:800;border-radius:999px;padding:1px 10px;background:var(--pink-soft);color:var(--magenta)}
+.menu span.pr{background:var(--mint);color:var(--sage-deep)}
+.menu a.main{grid-column:1/-1;flex-direction:row;justify-content:center;gap:14px;border-top:0;background:linear-gradient(#fff,#fff) padding-box,var(--au) border-box;border:4px solid transparent}
+.menu a.main .e{font-size:48px}
+.menu a.main b{font-size:22px}
+
+/* ===== קופסת פעילות ===== */
+.act{margin-top:30px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #ecdcc8;border-top:8px solid var(--c);scroll-margin-top:12px}
+.act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
+.act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
+.act-h h2{font-size:26px;line-height:1.1}
+.act .intro{margin:2px 0 14px;color:var(--muted)}
+.why{background:#FFF8F0;border-radius:14px;padding:8px 12px;font-size:15px;margin-top:14px}
+.why b{color:#A4521D}
+.chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:#fff;border:2px solid #F3DCC2;border-radius:999px;padding:6px 14px;font-weight:800;cursor:pointer}
+.chip.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.dots{display:flex;justify-content:center;gap:7px;margin:4px 0 10px;flex-wrap:wrap}
+.dots i{width:16px;height:16px;border-radius:50%;background:#EEE;border:2px solid #ddd}
+.dots i.ok{background:var(--ok);border-color:var(--ok)}
+.dots i.no{background:var(--bad);border-color:var(--bad)}
+.dots i.now{border-color:var(--pink);transform:scale(1.2)}
+.burst{position:absolute;top:30%;left:50%;width:0;height:0;pointer-events:none;z-index:7}
+.burst i{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--c);animation:fly .9s ease-out forwards}
+.burst i.s{width:6px;height:6px;margin:-3px;border-radius:1px}
+@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
+@keyframes pop{0%{transform:scale(.7);opacity:.3}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+
+/* ===== משחק העץ והרוח ===== */
+#tree{--c:var(--a2);--b:#FFE9D4}
+.gbar{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.count{font-family:Fredoka,sans-serif;font-size:20px;background:#FFF1DE;border-radius:999px;padding:6px 16px;color:#A4521D;white-space:nowrap}
+.snd{background:#fff;border:2px solid #F3DCC2;border-radius:999px;padding:6px 12px;font-weight:800;cursor:pointer}
+.stage{position:relative;width:min(100%,calc(68vh * 4 / 3));aspect-ratio:4/3;margin:0 auto;border-radius:22px;overflow:hidden;user-select:none;-webkit-user-select:none;box-shadow:inset 0 0 0 3px #F6D9B8;background:#FFF4E0}
+.stage .bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.crown{transform-box:view-box;transform-origin:290px 262px}
+.stage.windy .crown{animation:sway 1.4s ease-in-out}
+@keyframes sway{30%{transform:rotate(-2.5deg)}70%{transform:rotate(1.2deg)}}
+.leaf{position:absolute;width:max(40px,8.5%);aspect-ratio:1;padding:0;border:0;background:none;transform:translate(-50%,-50%) rotate(var(--r,0deg));touch-action:none;cursor:grab;z-index:3;-webkit-tap-highlight-color:transparent}
+.leaf svg{width:100%;height:100%;display:block;pointer-events:none;filter:drop-shadow(0 2px 1px rgba(90,50,10,.25));transition:transform .15s}
+.leaf.tree{cursor:pointer}
+.stage.windy .leaf.tree svg{animation:shiver .35s ease-in-out 3}
+.leaf.nudge svg{animation:shiver .3s ease-in-out 2}
+@keyframes shiver{50%{transform:rotate(16deg) translateX(-2px)}}
+.leaf.drag{z-index:6;cursor:grabbing}
+.leaf.drag svg{transform:scale(1.3)}
+.leaf.fly{transition:left .45s ease-in,top .45s ease-in,transform .45s ease-in;z-index:6}
+.bin{position:absolute;left:3%;bottom:4%;width:21%;z-index:2;pointer-events:none}
+.bin svg{width:100%;display:block;transition:filter .15s}
+.bin.hit{animation:binhop .35s}
+@keyframes binhop{40%{transform:scale(1.08) rotate(-3deg)}}
+.bin.glow svg{filter:drop-shadow(0 0 10px #FFD23F) drop-shadow(0 0 4px #FFD23F)}
+.windlines{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:4}
+.windlines i{position:absolute;height:4px;border-radius:4px;background:rgba(255,255,255,.95);left:110%;width:20%;box-shadow:0 0 6px rgba(120,180,230,.6)}
+.stage.windy .windlines{animation:windfade 1.4s}
+.stage.windy .windlines i{animation:gust 1.3s linear}
+.windlines i:nth-child(2){animation-delay:.12s!important}.windlines i:nth-child(3){animation-delay:.25s!important}.windlines i:nth-child(4){animation-delay:.05s!important}
+@keyframes gust{from{left:110%}to{left:-30%}}
+@keyframes windfade{10%,85%{opacity:1}}
+.thint{text-align:center;font-weight:800;color:#A4521D;min-height:26px;margin-top:8px}
+
+/* ===== חידון הסתיו ===== */
+#quiz{--c:var(--a3);--b:#FFE2DC}
+.qwrap{position:relative;max-width:520px;margin:0 auto}
+.qpic{width:min(280px,72vw);height:auto;margin:0 auto;display:block;background:#FFF8F0;border-radius:22px;border:3px solid #F6E2CC;animation:pop .45s}
+.qtext{display:flex;align-items:center;justify-content:center;gap:10px;font-family:Fredoka,sans-serif;font-size:clamp(20px,4vw,25px);margin:10px 0 12px;text-align:center}
+.say{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:3px solid #F3DCC2;background:#fff;font-size:21px;cursor:pointer;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 #F3DCC2}
+.say:active{transform:translateY(2px);box-shadow:0 1px 0 #F3DCC2}
+.qopts{display:flex;flex-direction:column;gap:10px}
+.qrow{display:flex;gap:10px;align-items:center}
+.opt{flex:1;background:#fff;border:3px solid #F3DCC2;border-radius:20px;padding:10px 16px;font-size:24px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #F3DCC2;min-height:62px;transition:background .2s,border-color .2s}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 4px 0 #157A40}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 4px 0 #A82F33}
+.opt.dim{opacity:.45}
+.fact{margin-top:14px;background:#FFF4D6;border-radius:18px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;animation:pop .35s}
+.fact p{margin:0;font-size:17px}.fact b{color:#A4521D}
+.fact a{color:var(--magenta);font-weight:800}
+.qnext{text-align:center;margin-top:14px;min-height:52px}
+.qstart{position:absolute;inset:-6px;z-index:5;background:rgba(255,248,240,.94);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px}
+.qstart b{font-family:Fredoka,sans-serif;font-size:24px}
+.qstart p{margin:0;color:var(--muted)}
+
+/* ===== הידעת? הנחליאלי ===== */
+#bird{--c:#6F7F8C;--b:#E8EEF2}
+.bird{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:center}
+@media (max-width:760px){.bird{grid-template-columns:minmax(0,1fr)}}
+.bird-pic{background:linear-gradient(#EAF4FB,#FFF8F0);border-radius:22px;padding:8px}
+.bird-pic svg{width:100%;height:auto;display:block}
+.mk circle{transition:transform .2s;transform-box:fill-box;transform-origin:center}
+.mk.on circle{fill:#E0399F;transform:scale(1.35)}
+.facts{display:grid;gap:8px}
+.facts button{display:flex;gap:10px;align-items:flex-start;text-align:right;background:#fff;border:2px solid #E3E9ED;border-radius:16px;padding:8px 12px;cursor:pointer;font-size:16px;line-height:1.35}
+.facts button .n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FF56C2;color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
+.facts button .n.g{background:#6F988B}
+.facts button.on{border-color:var(--pink);background:var(--pink-soft)}
+.facts b{color:#4E5C66}
+
+/* ===== מציירים סתיו ===== */
+#draw{--c:var(--a1);--b:#FFF1CC}
+.tools{display:grid;gap:8px;margin-bottom:10px}
+.cols{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.cols button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #E7D7C5;cursor:pointer;padding:0}
+.cols button.on{box-shadow:0 0 0 3px var(--ink);transform:scale(1.12)}
+.trow{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.tb{background:#fff;border:2px solid #F3DCC2;border-radius:999px;padding:6px 12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px;min-height:40px}
+.tb.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.tb .dot{display:inline-block;border-radius:50%;background:currentColor}
+.idea{text-align:center;font-family:Fredoka,sans-serif;font-size:19px;color:#A4521D;min-height:28px;margin-bottom:8px}
+#dCv{display:block;width:min(100%,calc(64vh * 4 / 3));height:auto;margin:0 auto;background:#fff;border:3px solid #F3DCC2;border-radius:18px;touch-action:none;cursor:crosshair}
+
+/* ===== דף הדפסה – תצוגה ===== */
+.pv{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:18px;align-items:center}
+@media (max-width:700px){.pv{grid-template-columns:1fr}}
+.pv-img{background:#fff;border:2px solid #F6E2CC;border-radius:18px;padding:10px;max-width:260px;margin:0 auto;width:100%}
+.pv-img svg{width:100%;height:auto;display:block}
+.pv ol{margin:0;padding-inline-start:22px;display:grid;gap:4px}
+.pv .need{margin:8px 0 0;color:var(--muted);font-size:15px}
+
+/* ===== שליחה ושיתוף ===== */
+.share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
+.share h3{color:var(--wa);font-size:22px}
+.share p{color:var(--muted);margin:6px 0 4px}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+@media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
+.next{margin-top:16px;display:flex;align-items:center;gap:14px;text-decoration:none;background:#fff;border-radius:22px;padding:14px 18px;box-shadow:0 4px 0 #ecdcc8}
+.next .e{font-size:40px}
+.next b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--sage-deep);display:block}
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
+
+/* ===== מסך הניצחון + זיקוקים ===== */
+#fw{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none}
+.win{position:fixed;inset:0;z-index:85;background:rgba(43,21,38,.55);display:grid;place-items:center;padding:16px}
+.win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto;position:relative}
+.win .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;border-radius:28px 28px 0 0;background:var(--au)}
+.win .big{font-size:70px;line-height:1.1;margin-top:4px}
+.win h3{font-size:32px;color:var(--magenta)}
+.win p{margin:6px 0}
+.coupon{margin:14px 0;background:var(--pink-soft);border:2px dashed var(--pink);border-radius:18px;padding:12px}
+.coupon b{font-family:Fredoka,sans-serif;font-size:24px;color:var(--magenta);letter-spacing:1px}
+.coupon p{margin:4px 0}
+.coupon a{color:var(--magenta);font-weight:800}
+
+/* ===== דף הדפסה ===== */
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.sheet h1,.sheet h2{font-family:Fredoka,Assistant,sans-serif;margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
+.s-head h1{font-size:22pt;color:#C13671;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-au{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#F2B33D,#E8762B,#D9432B,#B5651D);margin-bottom:4mm}
+.s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
+.p-box{border:2px solid #F6E2CC;border-radius:5mm;padding:3mm 5mm}
+.p-box h2{font-size:13pt;color:#A4521D;margin-bottom:1mm}
+.p-box ol{margin:0;padding-inline-start:6mm}
+.p-box li{margin:.4mm 0}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <small>booqli Games · לגן ולבית</small>
+        <h1>🍂 <span class="au">הסתיו הגיע!</span></h1>
+        <p>הרוח נושבת ועלי השלכת עפים מהעצים. אוספים את העלים לפח, עונים על חידון סתיו עם הקראה, מכירים את הנחליאלי ומציירים סתיו עם האצבע.</p>
+        <div class="pills"><span>👧 גילאי 3–6</span><span>🔊 עם הקראה</span><span>🖍️ ציור על המסך</span><span>🖨️ דף צביעה</span><span>🆓 בחינם, בלי הרשמה</span></div>
+        <div class="acts">
+          <a class="btn-main" href="#tree">▶️ למשחק העץ והרוח</a>
+          <button class="btn-sec js-gift" type="button">🎁 מתנה להורים</button>
+          <span id="heroLike"></span>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <div class="sec-title"><h2>🍁 מה יש בסתיו?</h2><p>לוחצים על פעילות ומגיעים אליה.</p></div>
+  <nav class="menu" id="menu" aria-label="הפעילויות"></nav>
+
+  <!-- ===== משחק ראשי: העץ והרוח ===== -->
+  <section class="act" id="tree">
+    <div class="act-h"><span class="e" aria-hidden="true">🌳</span><div><small>המשחק הראשי</small><h2>העץ והרוח</h2></div></div>
+    <p class="intro">הרוח נושבת ומעיפה את עלי השלכת מהעץ. גוררים כל עלה שנפל אל הפח (או פשוט לוחצים עליו). כשכל העלים בפח: זיקוקים! 🎆</p>
+    <div class="chips" id="tLevel" role="group" aria-label="רמה">
+      <button class="chip on" type="button" data-n="8">🐣 קטנים · 8 עלים</button>
+      <button class="chip" type="button" data-n="14">🦉 גדולים · 14 עלים</button>
+    </div>
+    <div class="gbar">
+      <span class="count" id="tCount" aria-live="polite"></span>
+      <button class="btn-wind" type="button" id="tWind">🌬️ רוח!</button>
+      <button class="snd" type="button" id="tSnd" aria-pressed="true">🔊 צלילים</button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="windlines" aria-hidden="true"><i style="top:18%"></i><i style="top:34%"></i><i style="top:52%"></i><i style="top:70%"></i></div>
+      <div class="bin" id="bin" aria-hidden="true"></div>
+    </div>
+    <div class="thint" id="tHint" aria-live="polite"></div>
+    <p class="why"><b>מה מתרגלים:</b> מוטוריקה עדינה (גרירה מדויקת), ספירה עד 8 או 14, ושיחה על הסתיו: למה העלים נושרים? מה עוד קורה בסתיו? ואפשר לצאת לחצר ולאסוף עלים אמיתיים!</p>
+  </section>
+
+  <!-- ===== 1. חידון הסתיו ===== -->
+  <section class="act" id="quiz">
+    <div class="act-h"><span class="e" aria-hidden="true">❓</span><div><small>פעילות 1 · חידון עם הקראה</small><h2>חידון הסתיו</h2></div></div>
+    <p class="intro">רואים תמונה ולוחצים על המילה הנכונה. עוד לא קוראים? לוחצים על 🔊 ושומעים כל מילה. אחרי כל שאלה יש "הידעת?" קטן.</p>
+    <div class="chips" id="qLevel" role="group" aria-label="רמה">
+      <button class="chip on" type="button" data-n="3">🐣 קטנים · 3 מילים</button>
+      <button class="chip" type="button" data-n="4">🦉 גדולים · 4 מילים</button>
+      <button class="chip on" type="button" id="qAuto" aria-pressed="true">🔊 הקראה אוטומטית</button>
+    </div>
+    <div class="qwrap">
+      <div class="dots" id="qDots" aria-hidden="true"></div>
+      <div id="qPic"></div>
+      <div class="qtext"><span id="qQ"></span><button class="say" type="button" id="qSayAll" aria-label="להקריא את השאלה">🔊</button></div>
+      <div class="qopts" id="qOpts"></div>
+      <div id="qFact" aria-live="polite"></div>
+      <div class="qnext" id="qNext"></div>
+      <div class="qstart" id="qStart">
+        <div style="font-size:54px" aria-hidden="true">🍂</div>
+        <b>מוכנים לחידון הסתיו?</b>
+        <p>8 שאלות על הסתיו, וההקראה עוזרת למי שעוד לא קורא.</p>
+        <button class="btn-main" type="button" id="qGo">▶️ מתחילים!</button>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> אוצר מילים של הסתיו, הקשבה וזיהוי מילה כתובה (ראשית קריאה). הגדולים יכולים לנסות לקרוא לבד, ורק אחר כך לבדוק עם 🔊.</p>
+  </section>
+
+  <!-- ===== 2. הידעת? הנחליאלי ===== -->
+  <section class="act" id="bird">
+    <div class="act-h"><span class="e" aria-hidden="true">🐦</span><div><small>פעילות 2 · הידעת?</small><h2>הנחליאלי: הציפור של הסתיו</h2></div></div>
+    <p class="intro">לוחצים על מספר ושומעים מה מיוחד בגוף של הנחליאלי. אחר כך יוצאים לחצר ומחפשים נחליאלי אמיתי, שרץ על הדשא ומנענע את הזנב!</p>
+    <div class="bird">
+      <div class="bird-pic" id="birdPic"></div>
+      <div>
+        <div class="facts" id="birdFacts"></div>
+        <div class="row-btns" style="justify-content:flex-start"><button class="btn-sec" type="button" id="birdAll">🔊 להקריא הכל</button></div>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> התבוננות בטבע וחלקי גוף של ציפור (מקור, זנב, רגליים), והבנה שיש ציפורים שעוברות ממקום למקום לפי העונה.</p>
+  </section>
+
+  <!-- ===== 3. מציירים סתיו ===== -->
+  <section class="act" id="draw">
+    <div class="act-h"><span class="e" aria-hidden="true">🖍️</span><div><small>פעילות 3 · ציור על המסך</small><h2>מציירים סתיו</h2></div></div>
+    <p class="intro">כל ילד מצייר מה שהוא רוצה מהסתיו, עם האצבע. יש צבעים, מחק, וחותמות של עלים וטיפות גשם. בסוף שומרים את הציור (הוא נשאר רק במכשיר שלכם).</p>
+    <div class="tools">
+      <div class="cols" id="dCols" role="group" aria-label="צבעים"></div>
+      <div class="trow" id="dTools" role="group" aria-label="כלים">
+        <button class="tb on" type="button" data-t="pen">✏️ מכחול</button>
+        <button class="tb" type="button" data-t="leaf">🍂 חותמת עלה</button>
+        <button class="tb" type="button" data-t="drop">💧 חותמת טיפה</button>
+        <button class="tb" type="button" data-t="eraser">🧽 מחק</button>
+      </div>
+      <div class="trow" id="dSizes" role="group" aria-label="עובי">
+        <button class="tb" type="button" data-s="8" aria-label="דק"><span class="dot" style="width:8px;height:8px"></span> דק</button>
+        <button class="tb on" type="button" data-s="18" aria-label="בינוני"><span class="dot" style="width:14px;height:14px"></span> בינוני</button>
+        <button class="tb" type="button" data-s="36" aria-label="עבה"><span class="dot" style="width:20px;height:20px"></span> עבה</button>
+      </div>
+    </div>
+    <div class="idea" id="dIdea"></div>
+    <canvas id="dCv" width="1200" height="900" aria-label="דף ציור"></canvas>
+    <div class="row-btns">
+      <button class="btn-sec" type="button" id="dIdeaBtn">💡 על מה לצייר?</button>
+      <button class="btn-sec" type="button" id="dUndo">↩️ ביטול</button>
+      <button class="btn-sec" type="button" id="dNew">🗑️ דף חדש</button>
+      <button class="btn-main" type="button" id="dSave">💾 לשמור את הציור</button>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> יצירה ודמיון, שליטה באצבע (טרום כתיבה), והכרת צבעי הסתיו. שאלה טובה אחרי הציור: "ספר/י לי מה ציירת".</p>
+  </section>
+
+  <!-- ===== 4. דף צביעה להדפסה ===== -->
+  <section class="act" id="color" style="--c:var(--a4);--b:#F5E3D0">
+    <div class="act-h"><span class="e" aria-hidden="true">🖨️</span><div><small>פעילות 4 · דף להדפסה</small><h2>העץ שלי בסתיו</h2></div></div>
+    <div class="pv">
+      <div class="pv-img" id="treePv"></div>
+      <div>
+        <ol>
+          <li>צובעים את העלים בצבעי סתיו: צהוב, כתום, אדום וחום.</li>
+          <li>סופרים כמה עלים נפלו לאדמה, וכותבים את המספר.</li>
+          <li>מותחים קו מכל עלה שנפל אל הפח.</li>
+          <li>מציירים בשמיים משהו מהסתיו: ענן, טיפות גשם או ציפורים.</li>
+        </ol>
+        <p class="need">✏️ צריך: צבעים. אפשר גם להדביק עלים אמיתיים מהחצר!</p>
+        <div class="row-btns" style="justify-content:flex-start"><button class="btn-main" type="button" data-print="tree">🖨️ להדפסה</button></div>
+      </div>
+    </div>
+    <p class="why"><b>מה מתרגלים:</b> צביעה ומוטוריקה עדינה, ספירה וכתיבת מספר, ומעקב עין־יד (מתיחת קו).</p>
+  </section>
+
+  <section class="share">
+    <h3>💌 לגננות: לשלוח להורים</h3>
+    <p>הודעה מוכנה להורים: "היום למדנו על הסתיו", עם רעיון קטן להמשך בבית וקישור לאתר.</p>
+    <div class="row-btns">
+      <button class="btn-wa-big" type="button" id="parentsBtn">📲 הודעה להורים בוואטסאפ</button>
+      <button class="btn-sec" type="button" id="shareBtn">💬 לשלוח לגננת חברה</button>
+    </div>
+  </section>
+
+  <section class="bookbox">
+    <div style="font-size:56px">📖</div>
+    <div>
+      <h2>ספר אמיתי שהילד הוא הגיבור שלו</h2>
+      <p>השם של הילד לאורך כל העלילה · איורים אישיים בכל עמוד · ספר מודפס באיכות גבוהה. גננות וועדי הורים: ספר אישי לכל ילד בגן, במחירים סיטונאיים.</p>
+      <a id="orderBtn" target="_blank" rel="noopener">להכיר את הספרים ←</a>
+    </div>
+  </section>
+
+  <a class="next" href="../hanukkah/"><span class="e">🕎</span><span><b>מה עוד פתוח? חנוכה ←</b>8 משחקים, דפי עבודה, סיפור המכבים ומערך לגננת.</span></a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<div id="win" class="win" hidden role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="in">
+    <div class="big" id="winIc" aria-hidden="true">🍂</div>
+    <h3 id="wTitle">כל הכבוד!</h3>
+    <p id="winText"></p>
+    <div class="coupon" id="winCoupon"></div>
+    <div class="row-btns">
+      <button class="btn-main" id="winAgain" type="button">לשחק שוב</button>
+      <button class="btn-sec" id="winNext" type="button">לפעילות הבאה ←</button>
+    </div>
+    <div class="row-btns"><span id="winLike"></span><button class="btn-sec js-gift" type="button">🎁 לשלוח להורים</button></div>
+  </div>
+</div>
+<canvas id="fw" hidden aria-hidden="true"></canvas>
+<div id="print" aria-hidden="true"></div>
+
+<script src="../../qrcode.min.js"></script>
+<script src="../../common.js"></script>
+<script>
+/* ======================== הגדרות – כאן משנים קישורים וקופון ======================== */
+const CONFIG = {
+  topic: "autumn",
+  topicName: "הסתיו",
+  // קוד הקופון לספר לילד. כשיהיה קוד – לכתוב אותו כאן בין המירכאות
+  coupon: "",
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=autumn",
+  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=autumn",
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+};
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4500); }
+
+/* ======================== איורים מקוריים (SVG) ======================== */
+const LEAF_COLS = ["#E8762B","#D9432B","#F2B33D","#B5651D","#E05A2A","#C9A227"];
+const LEAF_D = [
+  // עלה מחודד (כמו אדר)
+  "M20 2 L23 10 L30 7 L28 15 L37 16 L31 22 L34 28 L24 26 L22 33 L20 32 L18 33 L16 26 L6 28 L9 22 L3 16 L12 15 L10 7 L17 10 Z",
+  // עלה אליפטי
+  "M20 3 C31 10 33 24 20 34 C7 24 9 10 20 3 Z",
+  // עלה עגול
+  "M20 5 C30 5 35 15 30 25 C27 30 23 32 20 34 C17 32 13 30 10 25 C5 15 10 5 20 5 Z"
+];
+const LEAF_V = ["M20 32 L20 9 M20 24 L30 17 M20 24 L10 17", "M20 33 L20 7 M20 20 L27 14 M20 25 L13 19", "M20 33 L20 9 M20 21 L27 15 M20 21 L13 15"];
+function leafG(t, c, outline){
+  return `<path d="M20 31 L20 39" stroke="${outline ? "#2B1526" : "#7A3E12"}" stroke-width="${outline ? 1.4 : 2}" stroke-linecap="round"/>` +
+    `<path d="${LEAF_D[t]}" fill="${outline ? "#fff" : c}" stroke="${outline ? "#2B1526" : "rgba(80,30,5,.45)"}" stroke-width="${outline ? 1.4 : 1.2}" stroke-linejoin="round"/>` +
+    `<path d="${LEAF_V[t]}" fill="none" stroke="${outline ? "#2B1526" : "rgba(80,30,5,.35)"}" stroke-width="${outline ? .9 : 1.2}" stroke-linecap="round"/>`;
+}
+const leafSVG = (t, c) => `<svg viewBox="0 0 40 40" aria-hidden="true">${leafG(t, c)}</svg>`;
+const leafAt = (t, c, x, y, s, r, outline) => `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s}) translate(-20 -20)">${leafG(t, c, outline)}</g>`;
+
+function crownG(){
+  return `<g class="crown"><circle cx="290" cy="92" r="58" fill="#E8962B"/><circle cx="250" cy="106" r="38" fill="#F2B33D"/><circle cx="330" cy="102" r="40" fill="#E07A2B"/><circle cx="270" cy="62" r="36" fill="#F2B33D"/><circle cx="314" cy="64" r="34" fill="#E8762B"/><circle cx="292" cy="122" r="38" fill="#D9822B"/><circle cx="262" cy="80" r="10" fill="#F7C866" opacity=".8"/><circle cx="318" cy="90" r="8" fill="#F7C866" opacity=".6"/></g>`;
+}
+const TRUNK = `<path d="M280 262 Q283 200 278 160 L258 128 L266 123 L282 148 L284 110 L294 110 L292 150 L312 120 L320 126 L298 162 Q296 210 302 262 Z" fill="#8A5A2B"/>`;
+function stageBG(){
+  let grass = ""; [20, 60, 120, 170, 215, 350, 385].forEach((x, k) => grass += `<path d="M${x} ${244 + (k % 3) * 8} l3 -9 l2 9 l3 -7 l2 7" fill="none" stroke="#A88A52" stroke-width="2" stroke-linecap="round"/>`);
+  return `<svg class="bg" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6E6"/><stop offset="1" stop-color="#FCE1C2"/></linearGradient></defs>
+    <rect width="400" height="300" fill="url(#sky)"/>
+    <circle cx="62" cy="48" r="24" fill="#FFE08A" opacity=".8"/>
+    <g fill="#fff" opacity=".9"><ellipse cx="150" cy="42" rx="26" ry="11"/><ellipse cx="172" cy="34" rx="20" ry="12"/><ellipse cx="192" cy="43" rx="22" ry="10"/></g>
+    <path d="M0 218 Q100 190 200 214 T400 204 V300 H0Z" fill="#EBCB9C"/>
+    <path d="M0 236 Q200 226 400 238 V300 H0 Z" fill="#D8B178"/>${grass}${TRUNK}${crownG()}
+  </svg>`;
+}
+function binSVG(){
+  return `<svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 22 H72 L66 85 Q65 89 60 89 H20 Q15 89 14 85 Z" fill="#4FAE6E" stroke="#2F6E45" stroke-width="2"/>
+    <path d="M24 34 L26 80 M40 34 L40 80 M56 34 L54 80" stroke="#3E9459" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="40" cy="22" rx="34" ry="7" fill="#3E8E5A" stroke="#2F6E45" stroke-width="2"/>
+    <ellipse cx="40" cy="22" rx="28" ry="4.5" fill="#24563A"/>
+    <rect x="22" y="44" width="36" height="24" rx="9" fill="#fff" opacity=".95"/>
+    <text x="40" y="62" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-weight="700" font-size="16" fill="#2F6E45">פח</text>
+  </svg>`;
+}
+/* הנחליאלי (בקואורדינטות 240×170) */
+function birdG(){
+  return `<path d="M8 140 H232" stroke="#B9A07A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M30 140 l3 -8 l2 8 M180 140 l3 -9 l3 9 M210 140 l2 -6 l2 6" stroke="#9DB36A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M126 86 L208 110 L205 119 L123 97 Z" fill="#1E1E22"/>
+    <path d="M128 96 L205 119" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M92 104 L88 133 M88 133 L80 135 M88 133 L94 136 M104 104 L106 133 M106 133 L98 135 M106 133 L113 136" stroke="#222" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+    <ellipse cx="100" cy="88" rx="40" ry="21" fill="#9AA3A8" transform="rotate(12 100 88)"/>
+    <ellipse cx="94" cy="99" rx="30" ry="11" fill="#fff" transform="rotate(10 94 99)"/>
+    <path d="M86 76 Q120 70 140 96 Q112 97 90 90 Z" fill="#4A4F55"/>
+    <path d="M97 81 L127 86 M101 88 L132 93" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="58" cy="64" r="17" fill="#fff"/>
+    <path d="M43 58 Q48 44 63 45 Q77 49 78 66 Q75 72 72 74 Q70 60 54 58 Z" fill="#1E1E22"/>
+    <path d="M47 72 Q56 93 80 88 Q78 77 70 72 Q58 75 47 72 Z" fill="#1E1E22"/>
+    <path d="M43 63 L22 66 L43 68 Z" fill="#1E1E22"/>
+    <circle cx="51" cy="62" r="2.8" fill="#111"/><circle cx="52" cy="61" r=".9" fill="#fff"/>`;
+}
+function cloudG(x, y, s, c){
+  return `<g transform="translate(${x} ${y}) scale(${s})" fill="${c}"><ellipse cx="0" cy="10" rx="42" ry="18"/><circle cx="-18" cy="0" r="18"/><circle cx="8" cy="-8" r="24"/><circle cx="30" cy="4" r="16"/></g>`;
+}
+function drop(x, y, s){ return `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -10 C5 -2 7 2 7 5 A7 7 0 0 1 -7 5 C-7 2 -5 -2 0 -10 Z" fill="#3AA7F0"/>`; }
+function star6(x, y, r){
+  let d = ""; for (let i = 0; i < 12; i++){ const a = i * Math.PI / 6 - Math.PI / 2, rr = i % 2 ? r * .45 : r; d += (i ? "L" : "M") + (x + rr * Math.cos(a)).toFixed(1) + " " + (y + rr * Math.sin(a)).toFixed(1); }
+  return `<path d="${d}Z" fill="#fff" stroke="#C9C2B0" stroke-width=".6"/><circle cx="${x}" cy="${y}" r="${(r * .28).toFixed(1)}" fill="#C7D36A"/>`;
+}
+/* תמונות החידון (200×160) */
+const PIC = {
+  leaves: () => `<rect width="200" height="160" fill="#FFF4E0"/><path d="M0 128 Q100 118 200 130 V160 H0Z" fill="#E3C08A"/>` +
+    leafAt(0, "#E8762B", 62, 118, 1.5, -20) + leafAt(1, "#D9432B", 112, 124, 1.3, 35) + leafAt(2, "#F2B33D", 150, 112, 1.3, -60) +
+    leafAt(0, "#B5651D", 88, 60, 1.1, 40) + leafAt(1, "#F2B33D", 140, 40, 1, -30) + leafAt(2, "#E05A2A", 44, 36, .9, 70),
+  bird: () => `<rect width="200" height="160" fill="#EAF4FB"/><g transform="translate(-5 2) scale(.88)">${birdG()}</g>`,
+  rain: () => { let g = `<rect width="200" height="160" fill="#E3ECF3"/>` + cloudG(100, 40, 1.35, "#9AA9B8");
+    [[58,92],[86,104],[114,90],[142,102],[72,124],[100,120],[128,126],[156,88]].forEach(([x,y]) => g += drop(x, y, 1));
+    return g + `<ellipse cx="100" cy="148" rx="60" ry="7" fill="#A9CDE8"/>`; },
+  squill: () => { let g = `<rect width="200" height="160" fill="#FFF4E0"/><path d="M0 138 Q100 132 200 140 V160 H0Z" fill="#D8B178"/><ellipse cx="100" cy="138" rx="17" ry="11" fill="#C9A27A" stroke="#9A7650" stroke-width="1.5"/><path d="M100 130 Q101 80 100 22" stroke="#7C6A3A" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    for (let k = 0; k < 30; k++){ const y = 36 + k * 2.6, x = 100 + Math.sin(k * 2.4) * (5 + (k % 3) * 2.2); g += star6(+x.toFixed(1), +y.toFixed(1), 4.4); }
+    for (let k = 0; k < 5; k++) g += `<ellipse cx="${100 + (k % 2 ? 3 : -3)}" cy="${22 + k * 3}" rx="2" ry="3" fill="#A7B866"/>`;
+    return g; },
+  cloud: () => `<rect width="200" height="160" fill="#CFE6F7"/>` + cloudG(96, 74, 1.7, "#fff") + cloudG(160, 36, .6, "#F2F7FB"),
+  umbrella: () => { let g = `<rect width="200" height="160" fill="#E3ECF3"/>`;
+    [[30,20],[60,10],[150,16],[175,40],[20,60]].forEach(([x,y]) => g += drop(x, y, .7));
+    g += `<path d="M30 82 Q100 8 170 82 Q152 72 135 82 Q117 72 100 82 Q83 72 65 82 Q48 72 30 82 Z" fill="#E8762B" stroke="#B5501D" stroke-width="2"/><path d="M100 82 Q92 40 100 16 M65 82 Q72 40 100 16 M135 82 Q128 40 100 16" fill="none" stroke="#B5501D" stroke-width="1.6"/><path d="M100 82 V136 Q100 148 90 148 Q81 148 81 139" fill="none" stroke="#6B3E1E" stroke-width="5" stroke-linecap="round"/>`;
+    return g; },
+  boots: () => { const boot = (x) => `<path transform="translate(${x} 0)" d="M0 40 H34 V108 Q34 114 40 116 L58 118 Q68 120 68 130 V136 H0 Z" fill="#F2B33D" stroke="#B8801E" stroke-width="2.5" stroke-linejoin="round"/><rect x="${x - 2}" y="36" width="38" height="10" rx="4" fill="#E8962B"/>`;
+    return `<rect width="200" height="160" fill="#E3ECF3"/><ellipse cx="100" cy="140" rx="86" ry="12" fill="#A9CDE8"/>` + boot(36) + boot(98) + drop(26, 120, .8) + drop(180, 118, .8); },
+  birds: () => { let g = `<rect width="200" height="160" fill="#CFE6F7"/>` + cloudG(40, 130, .7, "#fff");
+    [[100,50],[80,64],[120,64],[60,78],[140,78],[40,92],[160,92]].forEach(([x,y]) => g += `<path d="M${x - 12} ${y} Q${x - 6} ${y - 8} ${x} ${y} Q${x + 6} ${y - 8} ${x + 12} ${y}" fill="none" stroke="#3B3B46" stroke-width="3" stroke-linecap="round"/>`);
+    return g; }
+};
+
+/* ======================== פתיח + תפריט ======================== */
+$("heroArt").innerHTML = `<svg class="t" viewBox="200 10 200 270"><path d="M200 262 H400" stroke="#D8B178" stroke-width="8"/>${TRUNK}${crownG()}</svg>` +
+  [0, 1, 2].map(k => `<span class="hl">${leafSVG(k, LEAF_COLS[k])}</span>`).join("");
+const MENU = [
+  {h:"#tree", e:"🌳", t:"העץ והרוח", s:"המשחק הראשי", c:"var(--a2)", main:1},
+  {h:"#quiz", e:"❓", t:"חידון הסתיו", s:"עם הקראה", c:"var(--a3)"},
+  {h:"#bird", e:"🐦", t:"הנחליאלי", s:"הידעת?", c:"#6F7F8C"},
+  {h:"#draw", e:"🖍️", t:"מציירים סתיו", s:"ציור על המסך", c:"var(--a1)"},
+  {h:"#color", e:"🖨️", t:"העץ שלי בסתיו", s:"להדפסה", c:"var(--a4)", pr:1}
+];
+$("menu").innerHTML = MENU.map(m => `<a href="${m.h}" class="${m.main ? "main" : ""}" style="--c:${m.c}"><span class="e" aria-hidden="true">${m.e}</span><b>${m.t}</b><span class="${m.pr ? "pr" : ""}">${m.s}</span></a>`).join("");
+
+/* ======================== צלילים ======================== */
+let AC = null, SOUND = true;
+function audio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); } catch(e){ AC = null; } return AC; }
+function noise(dur, f0, f1, vol, type){
+  const C = audio(); if (!C || !SOUND) return;
+  const len = Math.floor(C.sampleRate * dur), buf = C.createBuffer(1, len, C.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = C.createBufferSource(); src.buffer = buf;
+  const f = C.createBiquadFilter(); f.type = type || "bandpass"; f.Q.value = .8;
+  const t = C.currentTime; f.frequency.setValueAtTime(f0, t); f.frequency.linearRampToValueAtTime(f1, t + dur * .5); f.frequency.linearRampToValueAtTime(f0, t + dur);
+  const g = C.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + dur * .35); g.gain.linearRampToValueAtTime(0, t + dur);
+  src.connect(f); f.connect(g); g.connect(C.destination); src.start(t); src.stop(t + dur + .05);
+}
+const windSound = () => noise(1.5, 280, 900, .22);
+const rustle = () => noise(.18, 2500, 4000, .12, "highpass");
+function winSound(){
+  const C = audio(); if (!C || !SOUND) return;
+  const t0 = C.currentTime + .05, out = C.createGain(); out.gain.value = .22; out.connect(C.destination);
+  const tone = (f, t, d, type = "square", v = .5) => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t0+t); g.gain.linearRampToValueAtTime(v, t0+t+.02); g.gain.exponentialRampToValueAtTime(.001, t0+t+d); o.connect(g); g.connect(out); o.start(t0+t); o.stop(t0+t+d+.05); };
+  [[523,0],[659,.11],[784,.22],[1047,.33],[784,.46],[1047,.57]].forEach(([f,t]) => { tone(f, t, .2); tone(f*2, t, .12, "triangle", .2); });
+  [523,659,784,1047].forEach(f => { tone(f, .74, 1.1, "square", .32); tone(f/2, .74, 1.1, "triangle", .35); });
+  for (let i = 0; i < 9; i++) tone(1800 + Math.random()*1600, .9 + i*.08, .14, "sine", .25);
+}
+$("tSnd").onclick = () => { SOUND = !SOUND; $("tSnd").textContent = SOUND ? "🔊 צלילים" : "🔈 בלי צלילים"; $("tSnd").setAttribute("aria-pressed", SOUND); };
+
+/* ======================== הקראה ======================== */
+let speechWarned = false;
+function speak(list){
+  list = [].concat(list).filter(Boolean);
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel();
+    const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang));
+    let started = false;
+    list.forEach((t, k) => { const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; if (v) u.voice = v; if (k === 0) u.onstart = () => started = true; speechSynthesis.speak(u); });
+    setTimeout(() => { if (!started && !speechWarned){ speechWarned = true; toast("🔈 לא שומעים? בדקו שהקול פתוח, פתחו את האתר בכרום או בספארי (לא מתוך אפליקציה), ובאנדרואיד ודאו שמותקן קול בעברית."); } }, 2200);
+  } catch(e){ if (!speechWarned){ speechWarned = true; toast("🔈 ההקראה לא נתמכת בדפדפן הזה. מבוגר יכול להקריא 😊"); } }
+}
+if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); } catch(e){} }
+
+/* ======================== זיקוקים ======================== */
+const FW_COLS = ["#F2B33D","#E8762B","#D9432B","#FFD23F","#7BAE3E","#FF56C2","#3AA7F0","#fff"];
+function burstAt(el){
+  [0, 240].forEach((delay, k) => setTimeout(() => {
+    const b = document.createElement("span"); b.className = "burst";
+    for (let i = 0; i < 14; i++){ const a = i / 14 * Math.PI * 2, r = 30 + Math.random()*24, d = document.createElement("i");
+      if (i % 3 === 0) d.className = "s";
+      d.style.setProperty("--x", (Math.cos(a)*r).toFixed(0) + "px"); d.style.setProperty("--y", (Math.sin(a)*r).toFixed(0) + "px"); d.style.setProperty("--c", FW_COLS[(i + k) % FW_COLS.length]); b.appendChild(d); }
+    el.appendChild(b); setTimeout(() => b.remove(), 1000);
+  }, delay));
+}
+function bigFireworks(ms = 4200){
+  const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
+  const P = [], R = []; const start = performance.now(); let last = 0;
+  function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(FW_COLS)}); }
+  function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(FW_COLS) : r.c}); } }
+  (function frame(t){
+    const el = t - start; x.clearRect(0, 0, W, H);
+    if (el < ms - 1200 && t - last > 260){ rocket(); if (Math.random() < .5) rocket(); last = t; }
+    for (let i = R.length - 1; i >= 0; i--){ const r = R[i]; r.y += r.vy; x.fillStyle = "#fff"; x.beginPath(); x.arc(r.x, r.y, 3*dpr, 0, 7); x.fill(); if (r.y <= r.ty){ explode(r); R.splice(i, 1); } }
+    for (let i = P.length - 1; i >= 0; i--){ const p = P[i]; p.x += p.vx; p.y += p.vy; p.vy += .06*dpr; p.vx *= .985; p.l -= .012; if (p.l <= 0){ P.splice(i, 1); continue; } x.globalAlpha = p.l; x.fillStyle = p.c; x.beginPath(); x.arc(p.x, p.y, 3*dpr, 0, 7); x.fill(); }
+    x.globalAlpha = 1;
+    if (el < ms || P.length) requestAnimationFrame(frame); else cv.hidden = true;
+  })(start);
+}
+
+/* ======================== מסך ניצחון ======================== */
+let WIN = {again: null, next: null};
+function couponHTML(){
+  if (CONFIG.coupon) return `<p>🎁 מתנה מ-BOOQLI: קופון הנחה לספר אישי שהילד הוא הגיבור שלו</p><b>${CONFIG.coupon}</b><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a></p>`;
+  return `<p>🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד</p><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת ספר אישי ←</a></p>`;
+}
+function winPop(ic, title, text, again, next){
+  $("winIc").textContent = ic; $("wTitle").textContent = title; $("winText").textContent = text;
+  $("winCoupon").innerHTML = couponHTML(); WIN = {again, next};
+  $("win").hidden = false; bigFireworks(); winSound();
+  setTimeout(() => $("winAgain").focus({preventScroll:true}), 60);
+}
+$("winAgain").onclick = () => { $("win").hidden = true; if (WIN.again) WIN.again(); };
+$("winNext").onclick = () => { $("win").hidden = true; if (WIN.next) $(WIN.next).scrollIntoView({behavior:"smooth"}); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("win").hidden) $("win").hidden = true; });
+
+/* ======================== המשחק הראשי: העץ והרוח ======================== */
+const stage = $("stage"), binEl = $("bin");
+stage.insertAdjacentHTML("afterbegin", stageBG());
+binEl.innerHTML = binSVG();
+const T = {n: 8, total: 0, leaves: [], inBin: 0, timer: null, raf: 0, last: 0, done: false};
+function place(L){ L.el.style.left = L.x + "%"; L.el.style.top = L.y + "%"; L.el.style.setProperty("--r", L.rot.toFixed(0) + "deg"); }
+function onTree(){ return T.leaves.filter(l => l.st === "tree"); }
+function tCount(){
+  $("tCount").textContent = `🍂 ${T.inBin} / ${T.total} בפח`;
+  const left = onTree().length, down = T.leaves.filter(l => l.st === "fall" || l.st === "ground").length;
+  $("tWind").disabled = !left || T.done;
+  $("tHint").textContent = T.done ? "🎉 כל העלים בפח!" : down ? "👆 גוררים את העלים שנפלו אל הפח" : left ? "🌬️ מחכים לרוח... או לוחצים על הכפתור רוח!" : "";
+}
+function tStart(){
+  clearTimeout(T.timer); cancelAnimationFrame(T.raf); T.raf = 0;
+  stage.querySelectorAll(".leaf").forEach(l => l.remove());
+  T.leaves = []; T.inBin = 0; T.done = false;
+  const spots = []; let tries = 0;
+  const minD = T.n > 10 ? 6.2 : 7.5;
+  while (spots.length < T.n && tries < 4000){
+    tries++; const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random());
+    const x = 72.5 + Math.cos(a) * r * 16, y = 29 + Math.sin(a) * r * 17;
+    if (spots.every(s => Math.hypot(s.x - x, (s.y - y) * .75) > minD)) spots.push({x, y});
+  }
+  spots.forEach((s, i) => {
+    const L = {x: s.x, y: s.y, vx: 0, vy: 0, rot: rand(-50, 50), vr: 0, ph: Math.random() * 6, st: "tree", gy: 0};
+    const el = document.createElement("button"); el.type = "button"; el.className = "leaf tree";
+    el.setAttribute("aria-label", "עלה על העץ"); el.innerHTML = leafSVG(i % 3, LEAF_COLS[i % LEAF_COLS.length]);
+    L.el = el; stage.appendChild(el); place(L); bindLeaf(L); T.leaves.push(L);
+  });
+  T.total = spots.length; tCount();
+  T.timer = setTimeout(() => gust(false), 1500);
+}
+function gust(manual){
+  const on = onTree(); if (!on.length || T.done) return;
+  stage.classList.remove("windy"); void stage.offsetWidth; stage.classList.add("windy");
+  clearTimeout(T.windOff); T.windOff = setTimeout(() => stage.classList.remove("windy"), 1450);
+  windSound();
+  const k = Math.min(on.length, manual ? 2 + (Math.random() < .5 ? 1 : 0) : 1 + Math.floor(Math.random() * 3));
+  shuffle(on).slice(0, k).forEach((L, i) => setTimeout(() => { if (L.st === "tree") dropLeaf(L); }, 150 + i * 220));
+  clearTimeout(T.timer);
+  if (on.length > k) T.timer = setTimeout(() => gust(false), 3400 + Math.random() * 1800);
+}
+function dropLeaf(L){
+  L.st = "fall"; L.el.classList.remove("tree"); L.el.setAttribute("aria-label", "עלה שנפל – לגרור אל הפח או ללחוץ עליו");
+  L.tx = null; L.vx = -(8 + Math.random() * 14); L.vy = -2 - Math.random() * 4; L.vr = (Math.random() - .5) * 160; L.gy = 81 + Math.random() * 9;
+  loop(); tCount();
+}
+function loop(){ if (T.raf) return; T.last = performance.now(); T.raf = requestAnimationFrame(step); }
+function step(t){
+  const dt = Math.min(.05, (t - T.last) / 1000); T.last = t; let any = false;
+  T.leaves.forEach(L => {
+    if (L.st !== "fall") return; any = true;
+    L.vy = Math.min(L.vy + 20 * dt, 16); L.vx *= 1 - .5 * dt;
+    L.x += (L.vx + Math.sin(t / 300 + L.ph) * 7) * dt; L.y += L.vy * dt; L.rot += L.vr * dt;
+    if (L.tx == null && L.y > L.gy - 14) pickSpot(L);
+    if (L.tx != null) L.x += (L.tx - L.x) * Math.min(1, 3.5 * dt);
+    if (L.x < 30){ L.x = 30; L.vx = Math.abs(L.vx) * .3; }
+    if (L.x > 96) L.x = 96;
+    if (L.y >= L.gy){ L.y = L.gy; if (L.tx != null) L.x = L.x + (L.tx - L.x) * .5; L.st = "ground"; L.rot %= 360; tCount(); }
+    place(L);
+  });
+  T.raf = any ? requestAnimationFrame(step) : 0;
+}
+/* בדרך לאדמה בוחרים מקום פנוי, כדי שהעלים לא יסתירו זה את זה ולא ייערמו ליד הפח */
+function pickSpot(L){
+  const others = T.leaves.filter(o => o !== L && (o.st === "ground" || (o.st === "fall" && o.tx != null)));
+  let best = null, bestD = -1;
+  for (let k = 0; k < 12; k++){
+    const x = clamp(L.x + (k ? rand(-12, 12) : 0), 32, 95), y = k ? 81 + Math.random() * 9 : L.gy;
+    const dmin = others.reduce((m, o) => Math.min(m, Math.hypot((o.tx ?? o.x) - x, (o.gy - y) * 1.3)), 99);
+    if (dmin > bestD){ bestD = dmin; best = {x, y}; }
+    if (dmin > 8) break;
+  }
+  L.tx = best.x; L.gy = best.y;
+}
+function overBin(e){
+  const b = binEl.getBoundingClientRect(), p = b.width * .18;
+  return e.clientX > b.left - p && e.clientX < b.right + p && e.clientY > b.top - p * 1.5 && e.clientY < b.bottom + p;
+}
+function bindLeaf(L){
+  const el = L.el;
+  el.addEventListener("pointerdown", e => {
+    if (T.done || L.st === "bin") return;
+    audio();
+    if (L.st === "tree"){ el.classList.remove("nudge"); void el.offsetWidth; el.classList.add("nudge"); $("tHint").textContent = "🌬️ העלה עוד מחובר לעץ. רק הרוח יכולה להעיף אותו!"; return; }
+    e.preventDefault();
+    try { el.setPointerCapture(e.pointerId); } catch(_){}
+    const r = stage.getBoundingClientRect();
+    L.st = "drag"; el.classList.add("drag");
+    L.sx = e.clientX; L.sy = e.clientY; L.moved = false;
+    L.ox = L.x - (e.clientX - r.left) / r.width * 100; L.oy = L.y - (e.clientY - r.top) / r.height * 100;
+  });
+  el.addEventListener("pointermove", e => {
+    if (L.st !== "drag") return;
+    const r = stage.getBoundingClientRect();
+    if (Math.hypot(e.clientX - L.sx, e.clientY - L.sy) > 8) L.moved = true;
+    L.x = clamp((e.clientX - r.left) / r.width * 100 + L.ox, 2, 98); L.y = clamp((e.clientY - r.top) / r.height * 100 + L.oy, 3, 96);
+    place(L); binEl.classList.toggle("glow", overBin(e));
+  });
+  const end = (e, cancel) => {
+    if (L.st !== "drag") return;
+    el.classList.remove("drag"); binEl.classList.remove("glow");
+    if (!cancel && (!L.moved || overBin(e))) toBin(L);
+    else { L.st = "fall"; L.tx = null; L.vx = 0; L.vy = 0; L.vr = (Math.random() - .5) * 60; L.gy = clamp(Math.max(L.y, 81 + Math.random() * 9), 0, 92); loop(); }
+  };
+  el.addEventListener("pointerup", e => end(e, false));
+  el.addEventListener("pointercancel", e => end(e, true));
+  el.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && (L.st === "ground" || L.st === "fall")){ e.preventDefault(); toBin(L); } });
+}
+function toBin(L){
+  L.st = "bin"; const el = L.el; el.classList.add("fly");
+  const r = stage.getBoundingClientRect(), b = binEl.getBoundingClientRect();
+  const tx = (b.left + b.width / 2 - r.left) / r.width * 100, ty = (b.top + b.height * .2 - r.top) / r.height * 100;
+  requestAnimationFrame(() => { el.style.left = tx + "%"; el.style.top = ty + "%"; el.style.transform = `translate(-50%,-50%) rotate(${(L.rot + 200).toFixed(0)}deg) scale(.35)`; });
+  setTimeout(() => {
+    el.remove(); T.inBin++;
+    binEl.classList.remove("hit"); void binEl.offsetWidth; binEl.classList.add("hit");
+    rustle(); burstAt(binEl); tCount();
+    if (T.inBin >= T.total && !T.done) tWin();
+  }, 470);
+}
+function tWin(){
+  T.done = true; clearTimeout(T.timer); tCount();
+  setTimeout(() => winPop("🍂", "החצר נקייה! 🎉", `אספתם את כל ${T.total} העלים לפח. כל הכבוד! 💡 הידעת? עלים יבשים הופכים עם הזמן לאדמה טובה, שעוזרת לצמחים לגדול.`, () => { tStart(); $("tree").scrollIntoView({behavior:"smooth"}); }, "quiz"), 350);
+}
+$("tWind").onclick = () => { audio(); gust(true); };
+$("tLevel").querySelectorAll(".chip").forEach(c => c.onclick = () => { $("tLevel").querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === c)); T.n = +c.dataset.n; tStart(); });
+tStart();
+
+/* ======================== 1. חידון הסתיו ======================== */
+const QUIZ = [
+  {w:"עלי שלכת", pic:"leaves", f:"בסתיו העלים של חלק מהעצים מחליפים צבע: לצהוב, לכתום, לאדום ולחום, ואז נושרים מהעץ. העץ נח בחורף, ובאביב צומחים לו עלים ירוקים חדשים."},
+  {w:"נחליאלי", pic:"bird", f:"הנחליאלי הוא ציפור קטנה עם מקור דק וזנב ארוך, שכל הזמן מנענע למעלה ולמטה. בקיץ הוא גר בארצות קרות, ובסתיו הוא עף אלינו, בדרך כלל יחד עם הגשמים הראשונים.", more:1},
+  {w:"גשם", pic:"rain", f:"לגשם הראשון של השנה קוראים \"יורה\". אחרי הקיץ החם האדמה צמאה, והגשם משקה אותה."},
+  {w:"חצב", pic:"squill", f:"החצב הוא פרח לבן וגבוה שפורח בסוף הקיץ ובתחילת הסתיו. הפרחים שלו מופיעים עוד לפני העלים, ואומרים שהוא מבשר שהגשם בדרך."},
+  {w:"ענן", pic:"cloud", f:"ענן עשוי מהמון טיפות מים קטנטנות. כשהטיפות מתחברות ונהיות כבדות, הן נופלות למטה. זה הגשם!"},
+  {w:"מטרייה", pic:"umbrella", f:"המטרייה שומרת עלינו יבשים בגשם. הטיפות נופלות עליה, מחליקות ויורדות לצדדים."},
+  {w:"מגפיים", pic:"boots", f:"מגפי גומי לא נותנים למים להיכנס. ככה אפשר לקפוץ בשלוליות, והרגליים נשארות יבשות!"},
+  {w:"ציפורים נודדות", pic:"birds", f:"בסתיו מיליוני ציפורים עפות מעל ישראל בדרך לארצות חמות. העגורים אפילו נשארים אצלנו כל החורף, בעמק החולה."}
+];
+const QZ = {n: 3, order: [], i: 0, res: [], lock: false, auto: true, started: false, opts: []};
+function qStart(){ QZ.order = shuffle(QUIZ.map((_, i) => i)); QZ.i = 0; QZ.res = []; qRender(); }
+function qDots(){ $("qDots").innerHTML = QZ.order.map((_, k) => `<i class="${QZ.res[k] === true ? "ok" : QZ.res[k] === false ? "no" : k === QZ.i ? "now" : ""}"></i>`).join(""); }
+function qRender(){
+  QZ.lock = false; const q = QUIZ[QZ.order[QZ.i]];
+  qDots();
+  $("qPic").innerHTML = `<svg viewBox="0 0 200 160" class="qpic" role="img" aria-label="תמונה מהסתיו" xmlns="http://www.w3.org/2000/svg">${PIC[q.pic]()}</svg>`;
+  $("qQ").textContent = `שאלה ${QZ.i + 1} מתוך ${QZ.order.length}: מה רואים בתמונה?`;
+  QZ.opts = shuffle([q.w, ...shuffle(QUIZ.map(x => x.w).filter(w => w !== q.w)).slice(0, QZ.n - 1)]);
+  $("qOpts").innerHTML = QZ.opts.map(w => `<div class="qrow"><button class="say" type="button" data-say="${w}" aria-label="להקריא: ${w}">🔊</button><button class="opt" type="button" data-w="${w}">${w}</button></div>`).join("");
+  $("qFact").innerHTML = ""; $("qNext").innerHTML = "";
+  $("qOpts").querySelectorAll(".opt").forEach(b => b.onclick = () => qAnswer(b));
+  $("qOpts").querySelectorAll(".say").forEach(b => b.onclick = () => speak(b.dataset.say));
+  if (QZ.auto && QZ.started) qRead();
+}
+function qRead(){ speak(["מה רואים בתמונה?", ...QZ.opts]); }
+$("qSayAll").onclick = qRead;
+function qAnswer(b){
+  if (QZ.lock) return; QZ.lock = true; audio();
+  const q = QUIZ[QZ.order[QZ.i]], ok = b.dataset.w === q.w;
+  QZ.res[QZ.i] = ok;
+  $("qOpts").querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x !== b && x.dataset.w !== q.w) x.classList.add("dim"); });
+  if (ok){ b.classList.add("right"); b.parentNode.style.position = "relative"; burstAt(b.parentNode); }
+  else { b.classList.add("wrong"); $("qOpts").querySelector(`.opt[data-w="${q.w}"]`).classList.add("right"); }
+  $("qFact").innerHTML = `<div class="fact"><button class="say" type="button" id="qSayFact" aria-label="להקריא את ההידעת">🔊</button><p><b>${ok ? "✅ נכון! " : "✅ התשובה: " + q.w + ". "}💡 הידעת?</b> ${q.f}${q.more ? ` <a href="#bird">עוד על הנחליאלי ←</a>` : ""}</p></div>`;
+  $("qSayFact").onclick = () => speak(q.f);
+  if (QZ.auto) speak([ok ? "נכון! " + q.w : "התשובה הנכונה: " + q.w, q.f]);
+  qDots();
+  const last = QZ.i === QZ.order.length - 1;
+  $("qNext").innerHTML = `<button class="btn-main" type="button">${last ? "🎉 לסיום" : "לשאלה הבאה ←"}</button>`;
+  const nb = $("qNext").querySelector("button");
+  nb.onclick = () => { if (last) qEnd(); else { QZ.i++; qRender(); $("qPic").scrollIntoView({block:"center", behavior:"smooth"}); } };
+}
+function qEnd(){
+  try { speechSynthesis.cancel(); } catch(e){}
+  const sc = QZ.res.filter(Boolean).length, n = QZ.order.length;
+  winPop("🍁", sc === n ? "מושלם! 🍂" : sc >= n - 2 ? "כל הכבוד! 🎉" : "יופי של חידון! ⭐", `ענית נכון על ${sc} מתוך ${n} שאלות.` + (sc < n ? " רוצים לנסות שוב ולקבל את כולן?" : " את כל המילים של הסתיו!"), () => { qStart(); $("quiz").scrollIntoView({behavior:"smooth"}); }, "bird");
+}
+$("qGo").onclick = () => { QZ.started = true; $("qStart").hidden = true; audio(); if (QZ.auto) qRead(); };
+$("qAuto").onclick = () => { QZ.auto = !QZ.auto; $("qAuto").classList.toggle("on", QZ.auto); $("qAuto").setAttribute("aria-pressed", QZ.auto); $("qAuto").textContent = QZ.auto ? "🔊 הקראה אוטומטית" : "🔈 בלי הקראה אוטומטית"; if (!QZ.auto) try { speechSynthesis.cancel(); } catch(e){} };
+$("qLevel").querySelectorAll(".chip[data-n]").forEach(c => c.onclick = () => { $("qLevel").querySelectorAll(".chip[data-n]").forEach(x => x.classList.toggle("on", x === c)); QZ.n = +c.dataset.n; qStart(); });
+qStart();
+
+/* ======================== 2. הידעת? הנחליאלי ======================== */
+const BIRD = [
+  {n:1, x:30, y:52, t:"המקור", f:"המקור של הנחליאלי שחור, דק וחד, כמו פינצטה. ככה הוא תופס חרקים קטנים ותולעים מהאדמה."},
+  {n:2, x:66, y:96, t:"הסינר", f:"על החזה יש לו כתם שחור, כמו סינר קטן. הפנים והבטן לבנות."},
+  {n:3, x:112, y:62, t:"הגב", f:"הגב שלו אפור, ועל הכנפיים יש פסים לבנים."},
+  {n:4, x:178, y:96, t:"הזנב", f:"יש לו זנב ארוך שכל הזמן זז למעלה ולמטה, כאילו הוא אומר שלום."},
+  {n:5, x:120, y:128, t:"הרגליים", f:"הרגליים שלו דקות. הוא לא רק עף, הוא גם רץ מהר מאוד על הדשא."}
+];
+const BIRD_MORE = [
+  {t:"הגודל", f:"הנחליאלי הוא ציפור קטנה, בערך באורך של כף יד של מבוגר."},
+  {t:"מתי הוא מגיע?", f:"בקיץ הוא גר בארצות קרות ורחוקות, ובסתיו הוא עף אלינו לישראל, בדרך כלל יחד עם הגשמים הראשונים."}
+];
+$("birdPic").innerHTML = `<svg viewBox="0 0 240 150" role="img" aria-label="ציור של נחליאלי עם מספרים על חלקי הגוף" xmlns="http://www.w3.org/2000/svg">${birdG()}${BIRD.map(b => `<g class="mk" id="mk${b.n}"><circle cx="${b.x}" cy="${b.y}" r="9" fill="#FF56C2" stroke="#fff" stroke-width="2"/><text x="${b.x}" y="${b.y + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Assistant,Arial">${b.n}</text></g>`).join("")}</svg>`;
+$("birdFacts").innerHTML = BIRD.map(b => `<button type="button" data-n="${b.n}"><span class="n">${b.n}</span><span><b>${b.t}:</b> ${b.f}</span></button>`).join("") +
+  BIRD_MORE.map((b, k) => `<button type="button" data-m="${k}"><span class="n g">${k ? "✈️" : "📏"}</span><span><b>${b.t}</b> ${b.f}</span></button>`).join("");
+$("birdFacts").querySelectorAll("button").forEach(btn => btn.onclick = () => {
+  $("birdFacts").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === btn));
+  document.querySelectorAll(".mk").forEach(m => m.classList.remove("on"));
+  if (btn.dataset.n){ const b = BIRD[btn.dataset.n - 1]; $("mk" + b.n).classList.add("on"); speak(b.t + ". " + b.f); }
+  else { const b = BIRD_MORE[btn.dataset.m]; speak(b.t + " " + b.f); }
+});
+$("birdAll").onclick = () => speak(["הנחליאלי, הציפור של הסתיו.", ...BIRD.map(b => b.t + ". " + b.f), ...BIRD_MORE.map(b => b.t + " " + b.f)]);
+
+/* ======================== 3. מציירים סתיו ======================== */
+const DCOLS = [["#D9432B","אדום"],["#E8762B","כתום"],["#F2B33D","צהוב כתום"],["#FFD23F","צהוב"],["#B5651D","חום"],["#6B3E1E","חום כהה"],["#7BAE3E","ירוק"],["#3E7D3A","ירוק כהה"],["#3AA7F0","כחול"],["#9AA3A8","אפור"],["#2B1526","שחור"],["#FF56C2","ורוד"]];
+const cv = $("dCv"), cx = cv.getContext("2d");
+const D = {col:"#E8762B", size:18, tool:"pen", undo:[], drawing:false, last:null};
+$("dCols").innerHTML = DCOLS.map(([c, n]) => `<button type="button" style="background:${c}" data-c="${c}" aria-label="${n}" class="${c === D.col ? "on" : ""}"></button>`).join("");
+$("dCols").querySelectorAll("button").forEach(b => b.onclick = () => { D.col = b.dataset.c; $("dCols").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); if (D.tool === "eraser") setTool("pen"); });
+function setTool(t){ D.tool = t; $("dTools").querySelectorAll(".tb").forEach(x => x.classList.toggle("on", x.dataset.t === t)); }
+$("dTools").querySelectorAll(".tb").forEach(b => b.onclick = () => setTool(b.dataset.t));
+$("dSizes").querySelectorAll(".tb").forEach(b => b.onclick = () => { D.size = +b.dataset.s; $("dSizes").querySelectorAll(".tb").forEach(x => x.classList.toggle("on", x === b)); });
+function dClear(){ cx.fillStyle = "#fff"; cx.fillRect(0, 0, cv.width, cv.height); }
+function snap(){ try { D.undo.push(cx.getImageData(0, 0, cv.width, cv.height)); if (D.undo.length > 12) D.undo.shift(); } catch(e){} }
+function pt(e){ const r = cv.getBoundingClientRect(); return {x: (e.clientX - r.left) * cv.width / r.width, y: (e.clientY - r.top) * cv.height / r.height}; }
+const DROP_D = "M20 3 C28 17 32 23 32 27 A12 12 0 0 1 8 27 C8 23 12 17 20 3 Z";
+function stamp(p){
+  const isLeaf = D.tool === "leaf", t = Math.floor(Math.random() * 3);
+  const s = (D.size * 4 + 90) / 40;
+  cx.save(); cx.translate(p.x, p.y); cx.rotate(isLeaf ? rand(-.9, .9) : 0); cx.scale(s, s); cx.translate(-20, -20);
+  if (isLeaf){
+    cx.strokeStyle = "rgba(80,30,5,.5)"; cx.lineWidth = 1.6; cx.lineCap = "round";
+    cx.beginPath(); cx.moveTo(20, 31); cx.lineTo(20, 39); cx.stroke();
+    const path = new Path2D(LEAF_D[t]); cx.fillStyle = D.col; cx.fill(path); cx.lineWidth = 1.2; cx.stroke(path);
+    cx.strokeStyle = "rgba(80,30,5,.35)"; cx.stroke(new Path2D(LEAF_V[t]));
+  } else {
+    const path = new Path2D(DROP_D); cx.fillStyle = D.col; cx.fill(path);
+    cx.fillStyle = "rgba(255,255,255,.55)"; cx.beginPath(); cx.ellipse(15, 24, 2.5, 4, -.3, 0, 7); cx.fill();
+  }
+  cx.restore();
+}
+cv.addEventListener("pointerdown", e => {
+  e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch(_){}
+  snap(); const p = pt(e);
+  if (D.tool === "leaf" || D.tool === "drop"){ stamp(p); return; }
+  D.drawing = true; D.last = p;
+  cx.lineCap = "round"; cx.lineJoin = "round";
+  cx.strokeStyle = cx.fillStyle = D.tool === "eraser" ? "#fff" : D.col;
+  cx.lineWidth = D.tool === "eraser" ? D.size * 2.4 : D.size;
+  cx.beginPath(); cx.arc(p.x, p.y, cx.lineWidth / 2, 0, 7); cx.fill();
+});
+cv.addEventListener("pointermove", e => {
+  if (!D.drawing) return;
+  const evs = (e.getCoalescedEvents && e.getCoalescedEvents().length) ? e.getCoalescedEvents() : [e];
+  evs.forEach(ev => { const p = pt(ev); cx.beginPath(); cx.moveTo(D.last.x, D.last.y); cx.lineTo(p.x, p.y); cx.stroke(); D.last = p; });
+});
+["pointerup", "pointercancel", "pointerleave"].forEach(n => cv.addEventListener(n, () => D.drawing = false));
+$("dUndo").onclick = () => { const s = D.undo.pop(); if (s) cx.putImageData(s, 0, 0); };
+$("dNew").onclick = () => { snap(); dClear(); };
+$("dSave").onclick = () => {
+  try {
+    cv.toBlob(b => {
+      if (!b){ toast("לא הצלחנו לשמור. נסו לצלם מסך 📸"); return; }
+      const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "הציור-שלי-בסתיו.png";
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      toast("💾 הציור נשמר במכשיר שלכם");
+    }, "image/png");
+  } catch(e){ toast("לא הצלחנו לשמור. נסו לצלם מסך 📸"); }
+};
+const IDEAS = ["עץ עם עלים בצבעי סתיו 🍂", "נחליאלי עם זנב ארוך 🐦", "חצב לבן וגבוה 🌸", "ענן גשם ומטרייה ☂️", "ילד או ילדה קופצים בשלולית עם מגפיים 🥾", "ציפורים עפות לארצות חמות 🕊️", "הרוח מעיפה עלים 🌬️", "הגשם הראשון יורד על הגן 🌧️"];
+let ideaI = -1;
+$("dIdeaBtn").onclick = () => { let k; do { k = Math.floor(Math.random() * IDEAS.length); } while (k === ideaI); ideaI = k; $("dIdea").textContent = "💡 אולי לצייר: " + IDEAS[k]; };
+dClear();
+
+/* ======================== 4. דף צביעה להדפסה ======================== */
+function treeSheetSVG(){
+  const L = "#2B1526";
+  let g = `<path d="M6 186 H194" stroke="${L}" stroke-width="1.4" stroke-linecap="round"/>`;
+  g += `<path d="M88 186 C92 160 93 140 92 124 C86 110 76 98 66 90 L70 86 C80 92 90 102 95 110 C96 92 96 78 97 62 L104 62 C104 80 104 92 104 104 C112 96 120 88 128 80 L132 85 C122 96 112 108 106 122 C105 145 107 165 112 186 Z" fill="#fff" stroke="${L}" stroke-width="1.4" stroke-linejoin="round"/>`;
+  g += `<path d="M73 90 L58 78 M97 64 L88 48 M103 64 L114 46 M128 83 L146 74 M128 83 L134 66" stroke="${L}" stroke-width="1.4" stroke-linecap="round" fill="none"/>`;
+  [[52,72,-40,0],[60,56,10,1],[84,42,-20,2],[96,30,5,0],[118,38,30,1],[140,64,40,2],[150,82,70,0],[132,58,-10,2],[74,74,-60,1],[112,58,20,0],[86,58,-5,2]]
+    .forEach(([x,y,r,t]) => g += leafAt(t, "", x, y, .62, r, true));
+  [[124,180,80,0],[146,182,-30,1],[168,179,40,2],[182,183,-70,0],[136,170,15,2],[160,168,-50,1]]
+    .forEach(([x,y,r,t]) => g += leafAt(t, "", x, y, .55, r, true));
+  g += `<g transform="translate(10 136)"><path d="M3 9 H45 L41 50 Q40 52 37 52 H11 Q8 52 7 50 Z" fill="#fff" stroke="${L}" stroke-width="1.4"/><ellipse cx="24" cy="9" rx="23" ry="4.5" fill="#fff" stroke="${L}" stroke-width="1.4"/><text x="24" y="36" text-anchor="middle" font-family="Fredoka,Assistant,Arial" font-weight="700" font-size="12" fill="${L}">פח</text></g>`;
+  return `<svg viewBox="0 0 200 192" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+const head = (t) => `<div class="s-head"><h1>${t}</h1><span class="nm">השם שלי: ____________</span></div><div class="s-au"></div>`;
+function sheetTree(){
+  return `<div class="sheet">${head("🍂 העץ שלי בסתיו")}<div class="s-body">
+    <div class="p-box"><h2>איך עושים?</h2><ol><li>צובעים את העלים בצבעי סתיו: צהוב, כתום, אדום וחום.</li><li>סופרים כמה עלים נפלו לאדמה. כמה? ______</li><li>מותחים קו מכל עלה שנפל אל הפח.</li><li>מציירים בשמיים משהו מהסתיו: ענן, טיפות גשם או ציפורים.</li></ol></div>
+    <div style="flex:1;min-height:0;display:flex;justify-content:center;align-items:center"><div style="width:172mm">${treeSheetSVG()}</div></div>
+  </div>${sitePrintFooter("autumn", "", "../../img/logo.png")}</div>`;
+}
+const SHEETS = {tree: sheetTree};
+$("treePv").innerHTML = treeSheetSVG();
+let printed = false; addEventListener("beforeprint", () => printed = true);
+document.querySelectorAll("[data-print]").forEach(b => b.onclick = () => {
+  $("print").innerHTML = SHEETS[b.dataset.print]();
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+});
+const sheetParam = new URLSearchParams(location.search).get("sheet");
+if (SHEETS[sheetParam]) $("print").innerHTML = SHEETS[sheetParam]();
+
+/* ======================== הודעות וואטסאפ ======================== */
+const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+function sendGift(){ waSend(`🎁 מתנה מהגן: הסתיו – לשחק וללמוד בבית!\n\nהכנו לכם משחק "העץ והרוח" (אוספים עלי שלכת לפח), חידון סתיו עם הקראה, הכרות עם הנחליאלי, ציור סתיו עם האצבע ודף צביעה להדפסה.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=autumn\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
+document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
+$("parentsBtn").onclick = () => waSend(`🍂 היום בגן למדנו על הסתיו!\n\nדיברנו על עלי השלכת שנושרים מהעצים, על הנחליאלי שמגיע אלינו בסתיו, על החצב שפורח ועל הגשם הראשון – היורה.\n\n💛 רעיון קטן לבית: לצאת לטיול קצר בשכונה, לאסוף עלי שלכת בכמה צבעים ולסדר אותם מהבהיר לכהה. אפשר גם לחפש יחד נחליאלי שמנענע את הזנב!\n\nואפשר להמשיך לשחק בבית:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=autumn\n\nבחינם ובלי הרשמה, בחסות BOOQLI ❤️`);
+$("shareBtn").onclick = () => waSend(`🍂 מצאתי משהו מקסים לסתיו: משחק "העץ והרוח" (הרוח מעיפה עלים והילדים אוספים לפח), חידון סתיו עם הקראה, הידעת על הנחליאלי, ציור על המסך ודף צביעה להדפסה.\nלגילאי 3–6, בחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=autumn\n\nבחסות BOOQLI ❤️`);
+
+/* ======================== הפעלה ======================== */
+siteJoinLinks(); siteDevBar(); siteBackBar("../../"); siteCloseBar("autumn", "הסתיו", "../../");
+$("heroLike").appendChild(siteLikeButton("autumn", "אהבתי"));
+$("winLike").appendChild(siteLikeButton("autumn-game", "אהבתי את המשחק"));
+$("ganLink").href = CONFIG.gan; $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
+</script>
+</body>
+</html>
