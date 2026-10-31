@@ -9,7 +9,7 @@
 <meta property="og:title" content="הספר שלכם בכריכה קשה – מעצבים ומדפיסים">
 <meta property="og:description" content="מעצבים ספר משלכם במחשב, 24 עמודים בכריכה קשה פרימיום. להורים ולגננות.">
 <meta property="og:url" content="https://games.booqli.ai/book-maker/">
-<meta property="og:image" content="https://games.booqli.ai/book-maker/sample/p03.jpg">
+<meta property="og:image" content="https://games.booqli.ai/book-maker/img/og.jpg">
 <link rel="icon" href="../img/logo-dark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,14 @@ button{cursor:pointer}
 .hero h1{font-family:Fredoka,Assistant,sans-serif;font-size:34px;line-height:1.15;margin:0 0 8px;color:var(--mag)}
 .hero p{font-size:18px;line-height:1.5;margin:0 0 10px}
 .hero ul{margin:0;padding:0 18px 0 0;line-height:1.7;font-size:16.5px}
-.hero .pics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hero .pics img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 4px 14px rgba(193,54,113,.18)}
-.hero .pics img:first-child{grid-column:1/3;aspect-ratio:2/1}
+.hero .pics img{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 18px rgba(51,38,61,.18))}
+.ideas{margin:18px 0 4px}
+.ideas h2{font-family:Fredoka,Assistant,sans-serif;color:var(--mag);font-size:22px;margin:0 0 10px}
+.ideas .row5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.ideas figure{margin:0;background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px 8px 10px;text-align:center}
+.ideas img{width:100%;height:auto;display:block}
+.ideas figcaption{font-weight:800;font-size:15px;margin-top:4px;color:var(--ink)}
+@media (max-width:900px){.ideas .row5{grid-template-columns:repeat(2,1fr)}.ideas figure:last-child{grid-column:1/3;max-width:50%;justify-self:center}}
 .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
 .steps3 div{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px;font-size:16px;line-height:1.45}
 .steps3 b{display:block;font-size:18px;color:var(--mag);margin-bottom:4px}
@@ -162,17 +167,24 @@ button{cursor:pointer}
         <li>להורים ולגננות</li>
       </ul>
     </div>
-    <div class="pics">
-      <img src="sample/cover-bg.jpg" alt="כריכה של ספר לדוגמה">
-      <img src="sample/p03.jpg" alt="עמוד מתוך הספר לדוגמה">
-      <img src="sample/p09.jpg" alt="עמוד נוסף מתוך הספר לדוגמה">
-    </div>
+    <div class="pics"><img src="img/books-fan.webp" alt="ספרים בכריכה קשה שאפשר לעצב: ילדת יום הולדת, עולה לכיתה א', הרפתקה עם דרקון, הספר הראשון" width="1100" height="520"></div>
   </section>
 
   <div class="mobile-note">💻 <b>העורך עובד במחשב</b> (או בטאבלט גדול), כי צריך מסך רחב כדי לעצב ספר בנוחות.<br>
     שלחו לעצמכם את הקישור ופתחו אותו במחשב:<br>
     <a class="big-btn green" id="sendSelf" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">📲 לשלוח לעצמי את הקישור</a>
   </div>
+
+  <section class="ideas">
+    <h2>💡 רעיונות לספר שלכם</h2>
+    <div class="row5">
+      <figure><img src="img/book1.webp" alt="ספר יום הולדת" loading="lazy" width="560" height="560"><figcaption>🎂 ספר יום הולדת</figcaption></figure>
+      <figure><img src="img/book2.webp" alt="ספר עולה לכיתה א'" loading="lazy" width="560" height="560"><figcaption>🎒 עולים לכיתה א'</figcaption></figure>
+      <figure><img src="img/book3.webp" alt="סיפור הרפתקה עם דרקון" loading="lazy" width="560" height="560"><figcaption>🐉 סיפור הרפתקה</figcaption></figure>
+      <figure><img src="img/book4.webp" alt="סיפור שהילדים כתבו" loading="lazy" width="560" height="560"><figcaption>✏️ סיפור שהילדים כתבו</figcaption></figure>
+      <figure><img src="img/book5.webp" alt="הספר הראשון של התינוק" loading="lazy" width="560" height="560"><figcaption>👶 הספר הראשון</figcaption></figure>
+    </div>
+  </section>
 
   <div class="steps3">
     <div><b>1. מעצבים</b>מתחילים מהספר לדוגמה או מספר ריק. גוררים, מחליפים תמונות וכותבים.</div>
