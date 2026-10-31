@@ -1115,7 +1115,7 @@ function sendGift(){
   if (!w) location.href = "https://wa.me/?text=" + encodeURIComponent(t);
 }
 document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
-siteJoinLinks(); siteDevBar(); siteBackBar("../../");
+siteJoinLinks(); siteDevBar(); siteBackBar("../../"); siteCloseBar("hanukkah", "חנוכה", "../../");
 $("heroLike").appendChild(siteLikeButton("hanukkah", "אהבתי את חנוכה"));
 $("ganLink").href = CONFIG.gan; $("ganBtn").href = CONFIG.gan;
 $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;

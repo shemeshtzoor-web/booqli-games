@@ -131,3 +131,74 @@ function siteBackBar(homeHref){
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
 })();
+
+/* ======================== פתיחה וסגירה של נושאים ========================
+   כלל קבוע: נושא עונתי נסגר בתאריך ובשעה שכתובים כאן (שעון ישראל).
+   אחרי הסגירה העמוד ננעל, וכרטיס הנושא בדף הבית מציג "נסגר".
+   בדיקה: להוסיף לכתובת ?date=2026-12-03T17:30 כדי לראות איך זה ייראה אחרי הסגירה. */
+window.SITE.closes = {
+  hanukkah: "2026-12-03T17:00:00+02:00"   // יום לפני חנוכה (נר ראשון 4.12.2026) בשעה 17:00
+};
+function siteNow(){
+  var q = new URLSearchParams(location.search).get("date");
+  if (q) { var d = new Date(q.indexOf("T") > 0 ? q : q + "T00:00:00"); if (!isNaN(d)) return d; }
+  return new Date();
+}
+function siteIsClosed(id){ var c = SITE.closes[id]; return !!c && siteNow() >= new Date(c); }
+var SITE_DAYS = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+function siteCloseText(id){
+  var c = new Date(SITE.closes[id]);
+  var p = new Intl.DateTimeFormat("en-GB", {timeZone:"Asia/Jerusalem", weekday:"short", day:"numeric", month:"numeric", hour:"2-digit", minute:"2-digit", hour12:false}).formatToParts(c);
+  var g = function(t){ for (var i = 0; i < p.length; i++) if (p[i].type === t) return p[i].value; return ""; };
+  var wd = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(g("weekday"));
+  return "יום " + SITE_DAYS[wd] + " " + parseInt(g("day"),10) + "." + parseInt(g("month"),10) + " בשעה " + g("hour") + ":" + g("minute");
+}
+function siteLeft(id){
+  var ms = Math.max(0, new Date(SITE.closes[id]) - siteNow());
+  var D = Math.floor(ms / 864e5); ms -= D * 864e5;
+  var H = Math.floor(ms / 36e5); ms -= H * 36e5;
+  var M = Math.floor(ms / 6e4);
+  return {D:D, H:H, M:M};
+}
+function siteAskLink(what){
+  return "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent("היי BOOQLI, אשמח שתפתחו באתר booqli Games תוכן על: " + (what || ""));
+}
+/* בעמוד נושא: פס ספירה לאחור עד הסגירה, ואחרי הסגירה – נעילת העמוד */
+function siteCloseBar(id, name, homeHref){
+  if (!SITE.closes[id]) return;
+  var css = document.createElement("style");
+  css.textContent =
+    ".closebar{max-width:1100px;margin:12px auto 0;padding:0 16px}" +
+    ".closebar .in{background:#fff;border:3px solid #FFE3F4;border-radius:20px;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;text-align:center;box-shadow:0 4px 14px rgba(78,133,118,.12)}" +
+    ".closebar b{color:#C13671}.closebar .t{display:flex;gap:6px;direction:rtl}" +
+    ".closebar .t span{background:#E1F0EA;border-radius:10px;padding:4px 9px;font-weight:800;color:#4E8576;font-size:15px}" +
+    ".closed-box{max-width:640px;margin:30px max(16px,calc((100% - 640px) / 2));background:#fff;border-radius:26px;padding:28px 22px;text-align:center;box-shadow:0 10px 30px rgba(78,133,118,.18)}" +
+    ".closed-box h2{color:#C13671;font-size:28px;margin:8px 0}.closed-box p{color:#6b5a66;font-size:17px}" +
+    ".closed-box a{display:inline-block;margin:6px;border-radius:999px;padding:11px 18px;font-weight:800;text-decoration:none}" +
+    ".closed-box .g{background:#1FA855;color:#fff}.closed-box .h{background:#E0399F;color:#fff}.closed-box .w{border:2px solid #4E8576;color:#4E8576}";
+  document.head.appendChild(css);
+  var main = document.querySelector("main");
+  if (siteIsClosed(id)) {
+    if (main) main.hidden = true;
+    var box = document.createElement("div"); box.className = "closed-box";
+    box.innerHTML = '<div style="font-size:64px">🔒</div><h2>התכנים של ' + name + ' נסגרו לשנה הזו</h2>' +
+      '<p>התכנים באתר נפתחים לפי עונות השנה. ' + name + ' תיפתח שוב לקראת החג בשנה הבאה.</p>' +
+      '<a class="h" href="' + homeHref + '">🏠 לתכנים הפתוחים עכשיו</a>' +
+      '<a class="g js-join" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>' +
+      '<a class="w" target="_blank" rel="noopener" href="' + siteAskLink(name) + '">רוצים שנפתח לכם? כתבו לנו</a>';
+    (main ? main.parentNode : document.body).insertBefore(box, main ? main.nextSibling : null);
+    var j = box.querySelector(".js-join"); j.href = SITE.whatsappGroup;
+    return;
+  }
+  var bar = document.createElement("div"); bar.className = "closebar";
+  bar.innerHTML = '<div class="in"><div>⏳ התכנים של ' + name + ' זמינים עד <b>' + siteCloseText(id) + '</b></div><div class="t" aria-live="polite"></div></div>';
+  var after = document.querySelector(".backbar") || document.querySelector(".devbar") || document.querySelector(".sponsor") || document.querySelector("header");
+  if (after) after.insertAdjacentElement("afterend", bar);
+  var t = bar.querySelector(".t");
+  var tick = function(){
+    if (siteIsClosed(id)) { location.reload(); return; }
+    var l = siteLeft(id);
+    t.innerHTML = "<span>" + l.D + " ימים</span><span>" + l.H + " שעות</span><span>" + l.M + " דקות</span>";
+  };
+  tick(); setInterval(tick, 30000);
+}

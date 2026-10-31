@@ -93,6 +93,12 @@ section{padding:26px 0}
 .card.locked::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
 .card.open .st{background:var(--pink);color:#fff}
 .card.soon .st{background:var(--pink-soft);color:var(--magenta)}
+.card.closed .ic{filter:grayscale(.6);opacity:.7}
+.card.closed::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
+.card.closed .st{background:#eee;color:#6b5a66}
+.card .closes{font-size:12.5px;font-weight:800;color:var(--magenta);background:var(--pink-soft);border-radius:999px;padding:3px 10px}
+.season-note{max-width:860px;margin:16px auto 0;background:#FFF6D6;border:2px dashed #F3D57A;border-radius:20px;padding:12px 16px;text-align:center;font-weight:700;line-height:1.55}
+.season-note a{color:var(--magenta);font-weight:800;white-space:nowrap}
 .card.locked .st{background:var(--mint);color:var(--sage-deep)}
 .card.next-up{outline:3px solid var(--pink);outline-offset:2px}
 
@@ -202,6 +208,9 @@ footer a{color:#fff;font-weight:700}
       <span class="chip">❓ חידונים</span><span class="chip">📖 הקראת ספרים</span><span class="chip">✨ בחינם</span>
     </div>
   </div>
+
+  <div class="season-note">🗓️ התכנים באתר נפתחים לפי עונות השנה: כל נושא נפתח כחודש לפני האירוע ונסגר לקראתו.
+    רוצים שנפתח לכם תוכן מסוים? <a id="askLink" target="_blank" rel="noopener">כתבו לנו ←</a></div>
 
   <div class="finder" role="search">
     <label class="srch"><span aria-hidden="true">🔍</span>
@@ -428,24 +437,25 @@ const CATS = [{k:"all", t:"הכל"}, {k:"year", t:"לוח השנה"}, {k:"always
 /* ======================== הקוד ======================== */
 // לבדיקה: אפשר להוסיף לכתובת ?date=2026-11-25 כדי לראות איך האתר ייראה בתאריך אחר
 const q = new URLSearchParams(location.search).get("date");
-const TODAY = q && !isNaN(new Date(q)) ? new Date(q + "T00:00:00") : new Date();
+const TODAY = siteNow();
 const d = s => new Date(s + "T00:00:00");
 const iso = x => x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2,"0") + "-" + String(x.getDate()).padStart(2,"0");
 YEAR.forEach(t => { if (t.opens) return; const x = d(t.event); x.setDate(x.getDate() - OPEN_DAYS_BEFORE); t.opens = iso(x); });
 const fmt = s => { const x = d(s); return x.getDate() + "." + (x.getMonth()+1) + "." + x.getFullYear(); };
 
 function state(t){
+  if (window.SITE && SITE.closes && SITE.closes[t.id] && siteIsClosed(t.id)) return "closed";
   if (t.opens && d(t.opens) > TODAY) return "locked";
   return t.ready ? "open" : "soon";
 }
-const LABEL = {open:"פתוח לשחק ←", soon:"בהכנה", locked:""};
+const LABEL = {open:"פתוח לשחק ←", soon:"בהכנה", locked:"", closed:"נסגר · ייפתח בשנה הבאה"};
 
 function card(t){
   const s = state(t), b = document.createElement("button");
   b.className = "card " + s; b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>`;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);
   b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
   if (s !== "open" || t.noGift) return b;
@@ -494,7 +504,7 @@ const fq = document.getElementById("fq"), fclear = document.getElementById("fcle
 fq.addEventListener("input", () => { F.q = fq.value; applyFilter(); });
 fsort.onchange = () => { F.sort = fsort.value; applyFilter(); };
 fclear.onclick = () => { fq.value = ""; F.q = ""; applyFilter(); fq.focus(); };
-const RANK = {open:0, soon:1, locked:2};
+const RANK = {open:0, soon:1, locked:2, closed:3};
 function applyFilter(){
   const words = norm(F.q).split(" ").filter(Boolean);
   const active = words.length || F.age !== "all" || F.cat !== "all" || F.sort !== "year";
@@ -542,7 +552,9 @@ const modal = document.getElementById("modal");
 function showLocked(t, s){
   document.getElementById("mIc").textContent = t.ic;
   document.getElementById("mTitle").textContent = t.name;
-  document.getElementById("mText").textContent = s === "locked"
+  document.getElementById("mText").textContent = s === "closed"
+    ? "התכנים של " + t.name + " נסגרו לשנה הזו. התכנים באתר נפתחים לפי עונות השנה, והם ייפתחו שוב לקראת האירוע בשנה הבאה."
+    : s === "locked"
     ? "הנושא ייפתח ב-" + fmt(t.opens) + ". הצטרפו לעדכונים ותקבלו הודעה ברגע שהמשחקים עולים."
     : "אנחנו מכינים את התכנים ממש עכשיו. הצטרפו לעדכונים ותקבלו הודעה כשזה מוכן.";
   modal.hidden = false; document.getElementById("mClose").focus();
@@ -566,6 +578,9 @@ REVIEWS.forEach(r => { const f = document.createElement("figure"); f.className =
   const c = document.createElement("figcaption"); c.textContent = "— " + (r.name || "גננת");
   f.append(bq, c); rv.appendChild(f); });
 if (!REVIEWS.length) document.getElementById("reviews").hidden = true;
+
+// בקשה לפתוח תוכן
+document.getElementById("askLink").href = siteAskLink("");
 
 // קישורים
 document.getElementById("giftBday").href = CONFIG.order;
