@@ -193,6 +193,9 @@ section{padding:26px 0}
 #results .count-line{color:var(--muted);margin:0 0 12px;font-weight:700}
 .res-empty{background:#fff;border-radius:22px;padding:24px;text-align:center;box-shadow:0 4px 14px rgba(78,133,118,.12)}
 .card .ages{font-size:12px;color:var(--muted);font-weight:700}
+.sped-b{display:inline-block;background:#F1E3FF;color:#6B2FA3;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:800;font-style:normal;align-self:center;max-width:100%;line-height:1.3;text-align:center}
+.bookcard .sped-b{align-self:flex-start}
+.fchip.sp[aria-pressed="true"]{background:#9B5DE5;border-color:#9B5DE5}
 .card .ic img{width:70%;height:auto}
 .sponsors-note{text-align:center;color:var(--sage-deep);font-weight:700;margin:12px 0 0}
 
@@ -272,6 +275,7 @@ footer a{color:#fff;font-weight:700}
     </label>
     <div class="frow" id="fage"><b>גיל:</b></div>
     <div class="frow" id="fcat"><b>סוג:</b></div>
+    <div class="frow"><b>מתאים גם ל:</b><button type="button" class="fchip sp" id="fsped" aria-pressed="false">💜 חינוך מיוחד</button></div>
     <div class="frow"><b>מיון:</b>
       <select id="fsort" aria-label="מיון">
         <option value="year">לפי לוח השנה</option>
@@ -428,7 +432,7 @@ const OPEN_DAYS_BEFORE = 30;
 const YEAR = [
   {id:"opening",  name:"פתיחת שנה",     ic:"🎒", bg:"#FFE3F4", event:"2027-09-01", ready:false, ages:[3,6], tags:["גן חדש", "הסתגלות", "היכרות", "חברים", "כללי הגן", "פרידה מההורים", "ספטמבר"]},
   {id:"tishrei",  name:"חגי תשרי",      ic:"🍎", bg:"#FFE9D6", event:"2027-10-02", ready:false, ages:[3,6], tags:["ראש השנה", "יום כיפור", "סוכות", "שמחת תורה", "תפוח בדבש", "רימון", "שופר", "סוכה", "ארבעת המינים", "חגים"]},
-  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:true, opens:"2026-10-31", ages:[3,6], tags:["סתיו", "עונות", "עלי שלכת", "עלים", "רוח", "יורה", "גשם", "ענן", "מטרייה", "מגפיים", "נחליאלי", "חצב", "ציפורים נודדות", "מזג אוויר", "טבע", "משחקים", "חידון", "הקראה", "ציור", "דף צביעה"]},
+  {id:"autumn",   name:"סתיו",          ic:"🍂", bg:"#FCE6CF", event:"2027-09-23", ready:true, opens:"2026-10-31", sped:true, ages:[3,6], tags:["סתיו", "עונות", "עלי שלכת", "עלים", "רוח", "יורה", "גשם", "ענן", "מטרייה", "מגפיים", "נחליאלי", "חצב", "ציפורים נודדות", "מזג אוויר", "טבע", "משחקים", "חידון", "הקראה", "ציור", "דף צביעה"]},
   {id:"hanukkah", name:"חנוכה",         ic:"🕎", bg:"#DCEBFF", event:"2026-12-04", ready:true, opens:"2026-10-30", ages:[3,6], tags:["חנוכה", "חנוכייה", "נרות", "סביבון", "סופגנייה", "לביבה", "פך שמן", "מכבים", "נס", "אור", "חגים", "משחקים", "פאזל", "זיכרון", "דפי עבודה", "צביעה", "יצירה", "סיפור", "מערך לגננת", "הדפסה"]},
   {id:"winter",   name:"חורף",          ic:"🌧️", bg:"#E3ECF6", event:"2026-12-21", ready:false, ages:[3,6], tags:["עונות", "גשם", "מטרייה", "ענן", "קור", "מזג אוויר", "ביגוד", "טבע"]},
   {id:"tubishvat",name:"ט\"ו בשבט",      ic:"🌳", bg:"#DDF1DF", event:"2027-01-23", ready:false, ages:[3,6], tags:["ט\"ו בשבט", "עצים", "נטיעה", "פירות יבשים", "שבעת המינים", "טבע", "ראש השנה לאילנות", "חגים"]},
@@ -445,24 +449,24 @@ const YEAR = [
 /* פינות קבועות – נפתחות כשהתוכן מוכן (ready: true) */
 const ALWAYS = [
   {id:"last-minute", name:"הגעתי לא מוכנה! 10 פעילויות", ic:"🆘", bg:"#FFE3F4", ready:true, noGift:true, ages:[3,6], tags:["הרגע האחרון", "לא מוכנה", "בלי הכנה", "בלי ציוד", "ממלאת מקום", "מחליפה", "החלפה", "סייעת", "משחקי מעגל", "משחקים לגן", "היכרות", "שמות", "תנועה", "קשב", "רגשות", "ספירה", "סיפור", "דף להדפסה"]},
-  {id:"morning-circle", name:"מפגש בוקר: 30 רעיונות", ic:"☀️", bg:"#FFF3CF", ready:true, noGift:true, ages:[3,6], tags:["מפגש בוקר", "מעגל בוקר", "שגרת בוקר", "פתיחת יום", "רעיונות למפגש", "מחזוריות", "סדר יום", "רגשות", "תנועה", "שפה", "חרוזים", "חשבון", "דמיון", "מחמאות", "טוב לב", "חוברת להדפסה", "הדפסה", "מערך לגננת"]},
+  {id:"morning-circle", name:"מפגש בוקר: 30 רעיונות", ic:"☀️", bg:"#FFF3CF", ready:true, noGift:true, sped:true, ages:[3,6], tags:["מפגש בוקר", "מעגל בוקר", "שגרת בוקר", "פתיחת יום", "רעיונות למפגש", "מחזוריות", "סדר יום", "רגשות", "תנועה", "שפה", "חרוזים", "חשבון", "דמיון", "מחמאות", "טוב לב", "חוברת להדפסה", "הדפסה", "מערך לגננת"]},
   {id:"birthday-party", name:"יום הולדת בגן", ic:"🎂", bg:"#FFE3F4", ready:true, ages:[3,6], tags:["יום הולדת", "ימי הולדת בגן", "מסיבת יום הולדת", "מערך יום הולדת", "שעת יום הולדת", "כתר", "זר", "כיסא המלוכה", "הרמות", "עוגה", "נרות", "משאלה", "ברכות", "חוברת ברכות", "כרטיס ברכה", "תמונה", "מדבקות", "מתנה להורים", "ספירה", "חשבון", "משחקים", "דף להדפסה", "מערך לגננת"]},
-  {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
-  {id:"feelings", name:"עולם הרגשות",          ic:"😊", bg:"linear-gradient(135deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8)", rainbow:true, ready:true, ages:[3,8], tags:["רגשות", "עולם הרגשות", "שמחה", "עצב", "כעס", "פחד", "הפתעה", "בושה", "קנאה", "פרצופים", "משחק פרצופים", "בונים פרצוף", "מראת רגשות", "צנצנת רגשות", "מפלצת רגשות", "מד רגשות", "הבעות פנים", "אמפתיה", "וויסות רגשי", "כישורים חברתיים", "דף להדפסה", "כיתה א", "כיתה ב"]},
+  {id:"stories",  name:"פינת הסיפור",          ic:"📖", bg:"#FFE3F4", ready:false, sped:true, ages:[3,6], tags:["סיפור", "הקראה", "ספרים", "האזנה", "BOOQLI", "עידוד קריאה"]},
+  {id:"feelings", name:"עולם הרגשות",          ic:"😊", bg:"linear-gradient(135deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8)", rainbow:true, ready:true, sped:true, ages:[3,8], tags:["רגשות", "עולם הרגשות", "שמחה", "עצב", "כעס", "פחד", "הפתעה", "בושה", "קנאה", "פרצופים", "משחק פרצופים", "בונים פרצוף", "מראת רגשות", "צנצנת רגשות", "מפלצת רגשות", "מד רגשות", "הבעות פנים", "אמפתיה", "וויסות רגשי", "כישורים חברתיים", "דף להדפסה", "כיתה א", "כיתה ב"]},
   {id:"reading",  name:"עידוד קריאה",          ic:"🔤", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["אותיות", "קריאה", "אלף-בית", "צלילים", "חרוזים", "מילים", "אוריינות", "מוכנות לכיתה א"]},
-  {id:"math",     name:"חשבון לגיל הרך",       ic:"🔢", bg:"#DCEBFF", ready:true, ages:[1,8], tags:["חשבון", "מתמטיקה", "מספרים", "ספירה", "כמויות", "אחד והרבה", "גדול וקטן", "צורות", "סדרות", "יותר ופחות", "חיבור", "חיסור", "השלמה ל-10", "לוח הכפל", "שעון", "דף עבודה", "דפי עבודה", "משחקים", "פעוטות", "מוכנות לכיתה א"]},
-  {id:"safety",   name:"מוגנות: אזעקות ומרחב מוגן", ic:"🛡️", bg:"#E3ECF6", ready:false, ages:[3,6], tags:["מוגנות", "ביטחון", "אזעקה", "מרחב מוגן", "ממ\"ד", "מקלט", "פיקוד העורף", "חוסן", "הרגעה", "רגשות"]},
+  {id:"math",     name:"חשבון לגיל הרך",       ic:"🔢", bg:"#DCEBFF", ready:true, sped:true, ages:[1,8], tags:["חשבון", "מתמטיקה", "מספרים", "ספירה", "כמויות", "אחד והרבה", "גדול וקטן", "צורות", "סדרות", "יותר ופחות", "חיבור", "חיסור", "השלמה ל-10", "לוח הכפל", "שעון", "דף עבודה", "דפי עבודה", "משחקים", "פעוטות", "מוכנות לכיתה א"]},
+  {id:"safety",   name:"מוגנות: אזעקות ומרחב מוגן", ic:"🛡️", bg:"#E3ECF6", ready:false, sped:true, ages:[3,6], tags:["מוגנות", "ביטחון", "אזעקה", "מרחב מוגן", "ממ\"ד", "מקלט", "פיקוד העורף", "חוסן", "הרגעה", "רגשות"]},
   {id:"calendar", name:"לוח חופשות תשפ\"ז",     ic:"📅", bg:"#FFF3CF", ready:true, noGift:true, ages:[3,6], tags:["לוח חופשות", "חופשות", "חופשת חנוכה", "חופשת פסח", "פורים", "שבועות", "החופש הגדול", "חגים", "משרד החינוך", "תשפ\"ז", "תאריכים", "מתי חוזרים לגן", "להדפסה", "וואטסאפ", "הודעה להורים", "תרגול בחופש"]},
-  {id:"earthquake", name:"רעידת אדמה: מה עושים?", ic:"🌍", bg:"#F6E4D8", ready:false, ages:[3,6], tags:["רעידת אדמה", "רעידות אדמה", "מוגנות", "בטיחות", "פיקוד העורף", "שטח פתוח", "מרחב מוגן", "תרגיל", "חוסן", "הרגעה", "מה עושים"]},
-  {id:"lost", name:"הלכתי לאיבוד: מה עושים?", ic:"🧭", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["הלכתי לאיבוד", "ילד אבוד", "לאיבוד", "מוגנות", "בטיחות", "מספר טלפון", "לבקש עזרה", "קניון", "חוף ים", "טיול", "עומדים במקום", "זרים", "מה עושים"]},
+  {id:"earthquake", name:"רעידת אדמה: מה עושים?", ic:"🌍", bg:"#F6E4D8", ready:true, sped:true, ages:[3,6], tags:["רעידת אדמה", "רעידות אדמה", "מוגנות", "בטיחות", "פיקוד העורף", "שטח פתוח", "מקום פתוח", "מרחב מוגן", "ממ\"ד", "תרגיל", "חוסן", "הרגעה", "מה עושים", "סרטון", "צבי הצב", "משחק הצב", "סיפור חברתי", "דפים להדפסה", "מערך לגננת", "בלי להפחיד"]},
+  {id:"lost", name:"הלכתי לאיבוד: מה עושים?", ic:"🧭", bg:"#DCEBFF", ready:false, sped:true, ages:[3,6], tags:["הלכתי לאיבוד", "ילד אבוד", "לאיבוד", "מוגנות", "בטיחות", "מספר טלפון", "לבקש עזרה", "קניון", "חוף ים", "טיול", "עומדים במקום", "זרים", "מה עושים"]},
   {id:"first-grade", name:"הכנה לכיתה א׳", ic:"🎒", bg:"#FFE3F4", ready:false, ages:[5,6], tags:["כיתה א", "הכנה לכיתה א", "מוכנות לכיתה א", "בית ספר", "חובה", "אותיות", "חשבון", "קשב", "עצמאות", "ילקוט", "מעבר לבית הספר", "רגשות"]},
-  {id:"healthy-eating", name:"אכילה בריאה",    ic:"🥕", bg:"#FFEBD2", ready:false, ages:[3,6], tags:["אכילה בריאה", "תזונה", "פירות", "ירקות", "בריאות", "ארוחה"]},
-  {id:"movement", name:"תנועה וספורט",         ic:"🤸", bg:"#DDF1DF", ready:false, ages:[3,6], tags:["תנועה", "ספורט", "פעילות גופנית", "ריצה", "משחקי חצר", "בריאות"]},
-  {id:"yoga",     name:"יוגה לגן",             ic:"🧘", bg:"#F1E3FF", ready:false, ages:[3,6], tags:["יוגה", "נשימה", "הרגעה", "גמישות", "תנועה", "ריכוז", "מיינדפולנס"]},
-  {id:"sleep",    name:"שינה",                 ic:"😴", bg:"#E3ECF6", ready:false, ages:[3,6], tags:["שינה", "לילה", "מיטה", "הרגלים", "בריאות", "שגרה"]},
+  {id:"healthy-eating", name:"אכילה בריאה",    ic:"🥕", bg:"#FFEBD2", ready:false, sped:true, ages:[3,6], tags:["אכילה בריאה", "תזונה", "פירות", "ירקות", "בריאות", "ארוחה"]},
+  {id:"movement", name:"תנועה וספורט",         ic:"🤸", bg:"#DDF1DF", ready:false, sped:true, ages:[3,6], tags:["תנועה", "ספורט", "פעילות גופנית", "ריצה", "משחקי חצר", "בריאות"]},
+  {id:"yoga",     name:"יוגה לגן",             ic:"🧘", bg:"#F1E3FF", ready:false, sped:true, ages:[3,6], tags:["יוגה", "נשימה", "הרגעה", "גמישות", "תנועה", "ריכוז", "מיינדפולנס"]},
+  {id:"sleep",    name:"שינה",                 ic:"😴", bg:"#E3ECF6", ready:false, sped:true, ages:[3,6], tags:["שינה", "לילה", "מיטה", "הרגלים", "בריאות", "שגרה"]},
   {id:"honor-parents", name:"כיבוד הורים",     ic:"💐", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["כיבוד הורים", "משפחה", "ערכים", "נימוס", "תודה", "עזרה"]},
-  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false, ages:[3,6], tags:["סדר", "ארגון", "ניקיון", "אחריות", "עצמאות", "הרגלים"]},
-  {id:"hygiene",  name:"צחצוח שיניים ומקלחת",  ic:"🪥", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["היגיינה", "צחצוח שיניים", "מקלחת", "שטיפת ידיים", "בריאות", "הרגלים"]},
+  {id:"tidy",     name:"סדר וארגון",           ic:"🧺", bg:"#FFF1C9", ready:false, sped:true, ages:[3,6], tags:["סדר", "ארגון", "ניקיון", "אחריות", "עצמאות", "הרגלים"]},
+  {id:"hygiene",  name:"צחצוח שיניים ומקלחת",  ic:"🪥", bg:"#DCEBFF", ready:false, sped:true, ages:[3,6], tags:["היגיינה", "צחצוח שיניים", "מקלחת", "שטיפת ידיים", "בריאות", "הרגלים"]},
   {id:"morning-prayer", name:"תפילת בוקר",     ic:"🌅", bg:"#FFF3CF", ready:false, ages:[3,6], tags:["תפילת בוקר", "מודה אני", "תפילה", "בוקר", "מסורת", "ערכים"]}
 ];
 
@@ -470,14 +474,14 @@ const ALWAYS = [
 const BOOKS = [
   {id:"superhero",      name:"גיבור/ת על",       p:"משחק טוב לב מהיר, אותיות וקריאה, מיון והבדלים", img:"games/superhero/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "גיבור על", "טוב לב", "אמפתיה", "אותיות", "קריאה", "מיון", "מצא את ההבדלים"]},
   {id:"birthday",       name:"ילד/ת יום הולדת", p:"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון",    img:"games/birthday/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "יום הולדת", "חשבון", "ספירה", "עוגה", "נרות", "זיכרון"]},
-  {id:"bye-bye-diaper", name:"ביי ביי חיתול!",   p:"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה",   img:"games/bye-bye-diaper/img/m-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "גמילה מחיתול", "סיר", "עצמאות", "לוח מדבקות", "הדפסה"]},
+  {id:"bye-bye-diaper", name:"ביי ביי חיתול!",   p:"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה",   img:"games/bye-bye-diaper/img/m-book.png", sped:true, ages:[3,6], tags:["BOOQLI", "ספר אישי", "גמילה מחיתול", "סיר", "עצמאות", "לוח מדבקות", "הדפסה"]},
   {id:"savanna",        name:"בסוואנה",          p:"מכירים את חיות הסוואנה בסיפור ובמשחקים",       img:"games/savanna/img/demo-book.png", ages:[3,6], tags:["BOOQLI", "ספר אישי", "סוואנה", "חיות", "בעלי חיים", "טבע", "אפריקה"]}
 ];
 
 /* מיוחדים והעשרה – נפתחים כשהתוכן מוכן (ready: true) */
 const SPECIAL = [
-  {id:"body",      name:"גוף האדם",            ic:"🧒", bg:"#E1F0EA", ready:false, ages:[3,6], tags:["גוף האדם", "איברי הגוף", "חושים", "בריאות", "אני וגופי"]},
-  {id:"fruits-vegetables", name:"הכרת פירות וירקות", ic:"🍎", bg:"#FFEBD2", ready:false, ages:[3,6], tags:["פירות", "ירקות", "צבעים", "תזונה", "אכילה בריאה", "טבע"]},
+  {id:"body",      name:"גוף האדם",            ic:"🧒", bg:"#E1F0EA", ready:false, sped:true, ages:[3,6], tags:["גוף האדם", "איברי הגוף", "חושים", "בריאות", "אני וגופי"]},
+  {id:"fruits-vegetables", name:"הכרת פירות וירקות", ic:"🍎", bg:"#FFEBD2", ready:false, sped:true, ages:[3,6], tags:["פירות", "ירקות", "צבעים", "תזונה", "אכילה בריאה", "טבע"]},
   {id:"english",   name:"אנגלית לקטנטנים",     ic:"🔤", bg:"#DCEBFF", ready:false, ages:[3,6], tags:["אנגלית", "צבעים", "מספרים", "מילים", "שפה"]},
   {id:"suppliers", name:"ספקי מתנות לגן",      ic:"🎁", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["ספקים", "ספקיות", "מתנות לגן", "מתנה לחנוכה", "מתנה לראש השנה", "מתנה לפורים", "משלוחי מנות", "מתנה ליום הולדת", "מתנה לסוף שנה", "יום המשפחה", "יום העצמאות", "ט\"ו בשבט", "מתנה לגננת", "ועד הורים", "גננות"]},
   {id:"operators", name:"מפעילים",             ic:"🎪", bg:"#FFE3F4", ready:false, ages:[3,6], tags:["מפעילים", "הפעלות", "ימי הולדת בגן", "מסיבות", "הצגות"]},
@@ -512,7 +516,7 @@ function card(t){
   b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${t.sped ? `<span class="sped-b">💜 גם לחינוך מיוחד</span>` : ""}${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);
   b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
   if (s !== "open" || t.noGift) return b;
@@ -527,7 +531,7 @@ const gY = document.getElementById("gridYear"), gA = document.getElementById("gr
 YEAR.forEach(t => { const c = card(t); if (nextT && t.id === nextT.id) (c.querySelector(".card")||c).classList.add("next-up"); gY.appendChild(c); });
 ALWAYS.forEach(t => gA.appendChild(card(t)));
 SPECIAL.forEach(t => document.getElementById("gridSpecial").appendChild(card(t)));
-document.getElementById("gridBooks").innerHTML = BOOKS.map(b => `<a class="bookcard" href="games/${b.id}/"><img src="${b.img}" alt="הספר ${b.name}" loading="lazy"><span><b>${b.name}</b><i>${b.p}</i><em>לשחק ←</em></span></a>`).join("");
+document.getElementById("gridBooks").innerHTML = BOOKS.map(b => `<a class="bookcard" href="games/${b.id}/"><img src="${b.img}" alt="הספר ${b.name}" loading="lazy"><span><b>${b.name}</b><i>${b.p}</i>${b.sped ? `<small class="sped-b">💜 גם לחינוך מיוחד</small>` : ""}<em>לשחק ←</em></span></a>`).join("");
 
 // ---------- חיפוש ומיון ----------
 const ALL = [
@@ -540,7 +544,7 @@ const CAT_NAME = {year:"לוח השנה", always:"פינות לכל השנה", s
 // נרמול עברית: בלי ניקוד, גרשיים ומקפים, אותיות סופיות כרגילות
 const norm = x => String(x||"").toLowerCase().replace(/[\u0591-\u05C7]/g,"").replace(/["'״׳`]/g,"").replace(/[.,:;!?()\-–־/]/g," ")
   .replace(/ך/g,"כ").replace(/ם/g,"מ").replace(/ן/g,"נ").replace(/ף/g,"פ").replace(/ץ/g,"צ").replace(/\s+/g," ").trim();
-ALL.forEach(t => { t.ages = t.ages || DEFAULT_AGES; t.hay = " " + norm([t.name, t.p, CAT_NAME[t.cat], ...(t.tags||[])].join(" ")) + " "; });
+ALL.forEach(t => { t.ages = t.ages || DEFAULT_AGES; t.hay = " " + norm([t.name, t.p, CAT_NAME[t.cat], ...(t.tags||[]), t.sped ? "חינוך מיוחד חנ\"מ התאמות" : ""].join(" ")) + " "; });
 const PREFIX = "והבלמשכ";
 function wordHit(hay, w){
   if (hay.includes(w)) return true;
@@ -548,7 +552,7 @@ function wordHit(hay, w){
   for (let i = 1; i <= 2 && w.length - i >= 3 && PREFIX.includes(w[i-1]); i++) if (hay.includes(w.slice(i))) return true;
   return false;
 }
-const F = {q:"", age:"all", cat:"all", sort:"year"};
+const F = {q:"", age:"all", cat:"all", sort:"year", sped:false};
 function chips(el, list, key){
   list.forEach(o => { const b = document.createElement("button"); b.type = "button"; b.className = "fchip"; if (/^\d/.test(o.t)) { const sp = document.createElement("span"); sp.dir = "ltr"; sp.textContent = o.t; b.appendChild(sp); } else b.textContent = o.t;
     b.dataset.k = o.k; b.setAttribute("aria-pressed", o.k === F[key]);
@@ -560,11 +564,13 @@ chips(document.getElementById("fcat"), CATS, "cat");
 const fq = document.getElementById("fq"), fclear = document.getElementById("fclear"), fsort = document.getElementById("fsort");
 fq.addEventListener("input", () => { F.q = fq.value; applyFilter(); });
 fsort.onchange = () => { F.sort = fsort.value; applyFilter(); };
+const fsped = document.getElementById("fsped");
+fsped.onclick = () => { F.sped = !F.sped; fsped.setAttribute("aria-pressed", F.sped); applyFilter(); };
 fclear.onclick = () => { fq.value = ""; F.q = ""; applyFilter(); fq.focus(); };
 const RANK = {open:0, soon:1, locked:2, closed:3};
 function applyFilter(){
   const words = norm(F.q).split(" ").filter(Boolean);
-  const active = words.length || F.age !== "all" || F.cat !== "all" || F.sort !== "year";
+  const active = words.length || F.age !== "all" || F.cat !== "all" || F.sort !== "year" || F.sped;
   fclear.hidden = !F.q;
   ["year","always","special","books"].forEach(id => { const sec = document.getElementById(id); if (sec) sec.hidden = active; });
   document.getElementById("next").hidden = active || !nextT;
@@ -572,6 +578,7 @@ function applyFilter(){
   if (!active) return;
   let list = ALL.filter(t => {
     if (F.cat !== "all" && t.cat !== F.cat) return false;
+    if (F.sped && !t.sped) return false;
     if (F.age !== "all") { const [a,b] = F.age.split("-").map(Number); if (t.ages[1] < a || t.ages[0] > b) return false; }
     return words.every(w => wordHit(t.hay, w));
   });
@@ -589,6 +596,7 @@ function applyFilter(){
 }
 const startQ = new URLSearchParams(location.search).get("q");
 if (startQ){ fq.value = startQ; F.q = startQ; }
+if (new URLSearchParams(location.search).get("sped") === "1"){ F.sped = true; fsped.setAttribute("aria-pressed", "true"); }
 applyFilter();
 
 // הנושא הבא + ספירה לאחור
