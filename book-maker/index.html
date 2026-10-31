@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הספר שלכם בכריכה קשה – מעצבים ומדפיסים | booqli Games</title>
+<meta name="description" content="מעצבים ספר משלכם במחשב – 24 עמודים בכריכה קשה פרימיום: תמונות, טקסט בעברית ובאנגלית, מדבקות וספר לדוגמה. להורים ולגננות. בסיום שולחים ל-BOOQLI להדפסה.">
+<link rel="canonical" href="https://games.booqli.ai/book-maker/">
+<meta property="og:title" content="הספר שלכם בכריכה קשה – מעצבים ומדפיסים">
+<meta property="og:description" content="מעצבים ספר משלכם במחשב, 24 עמודים בכריכה קשה פרימיום. להורים ולגננות.">
+<meta property="og:url" content="https://games.booqli.ai/book-maker/">
+<meta property="og:image" content="https://games.booqli.ai/book-maker/sample/p03.jpg">
+<link rel="icon" href="../img/logo-dark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Fredoka:wght@500;700&family=Heebo:wght@400;700&family=Rubik:wght@400;700&family=Varela+Round&family=Secular+One&family=Suez+One&family=Frank+Ruhl+Libre:wght@400;700&family=David+Libre:wght@400;700&family=Amatic+SC:wght@400;700&family=Karantina:wght@400;700&family=Bellefair&family=Noto+Sans+Hebrew:wght@400;700&family=Pacifico&family=Patrick+Hand&display=swap">
+<style>
+:root{--pink:#FF56C2;--btn:#E0399F;--mint:#E1F0EA;--sage:#6F988B;--sage2:#4E8576;--mag:#C13671;--wa:#1FA855;--ink:#33263D;--line:#EAD7E3}
+*{box-sizing:border-box}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);background:#FFF7FB}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+/* ===== מסך פתיחה ===== */
+.intro{max-width:980px;margin:0 auto;padding:22px 16px 40px}
+.intro .back{display:inline-block;color:var(--mag);font-weight:800;text-decoration:none;margin-bottom:10px}
+.hero{background:linear-gradient(135deg,#FFE3F4,#fff 55%,var(--mint));border:2px solid #FFC8EA;border-radius:26px;padding:24px;display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:center}
+.hero h1{font-family:Fredoka,Assistant,sans-serif;font-size:34px;line-height:1.15;margin:0 0 8px;color:var(--mag)}
+.hero p{font-size:18px;line-height:1.5;margin:0 0 10px}
+.hero ul{margin:0;padding:0 18px 0 0;line-height:1.7;font-size:16.5px}
+.hero .pics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hero .pics img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 4px 14px rgba(193,54,113,.18)}
+.hero .pics img:first-child{grid-column:1/3;aspect-ratio:2/1}
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.steps3 div{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px;font-size:16px;line-height:1.45}
+.steps3 b{display:block;font-size:18px;color:var(--mag);margin-bottom:4px}
+.start{background:#fff;border:2px solid #FFC8EA;border-radius:22px;padding:20px;margin-top:6px}
+.start h2{margin:0 0 12px;font-family:Fredoka,Assistant,sans-serif;color:var(--mag);font-size:24px}
+.choices{display:flex;flex-wrap:wrap;gap:10px}
+.big-btn{border:0;border-radius:999px;padding:13px 22px;font-weight:800;font-size:17px;background:var(--btn);color:#fff;box-shadow:0 3px 0 #A8237A}
+.big-btn.alt{background:#fff;color:var(--mag);border:2px solid var(--pink);box-shadow:none}
+.big-btn.green{background:var(--sage2);box-shadow:0 3px 0 #355E53}
+.resume{background:var(--mint);border-radius:16px;padding:12px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.mobile-note{display:none;background:#FFF3D6;border:2px solid #F3C969;border-radius:16px;padding:14px;margin:14px 0;font-size:16.5px;line-height:1.5}
+.mobile-note .big-btn{margin-top:8px}
+.notice{font-size:14.5px;color:#6b5a72;margin-top:14px;line-height:1.5}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}.steps3{grid-template-columns:1fr}
+  .mobile-note{display:block}
+  .hero h1{font-size:27px}
+}
+
+/* ===== חלונות ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(51,38,61,.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:#fff;border-radius:22px;max-width:620px;width:100%;max-height:92vh;overflow:auto;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{margin:0 0 10px;font-family:Fredoka,Assistant,sans-serif;color:var(--mag);font-size:24px}
+.modal p,.modal li{font-size:16.5px;line-height:1.55}
+.modal ul{padding-right:20px;margin:6px 0 12px}
+.modal .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.modal .box{background:var(--mint);border-radius:14px;padding:10px 14px;margin:10px 0}
+.modal .warn{background:#FFF3D6;border-radius:14px;padding:10px 14px;margin:10px 0}
+.modal .ok{background:#E6F6EC;border-radius:14px;padding:10px 14px;margin:10px 0}
+.bar{height:14px;background:#F4E6EF;border-radius:99px;overflow:hidden;margin:12px 0 4px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--mag));transition:width .2s}
+
+/* ===== העורך ===== */
+.ed{position:fixed;inset:0;z-index:500;background:#F6EEF3;display:grid;grid-template-rows:58px minmax(0,1fr) 100px;grid-template-columns:270px 1fr 250px;grid-template-areas:"top top top" "tools stage props" "strip strip strip"}
+.top{grid-area:top;display:flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border-bottom:2px solid var(--line);overflow:hidden;min-width:0}
+.top .logo{height:30px}
+.top .title{border:2px solid transparent;border-radius:10px;padding:5px 8px;font-weight:800;font-size:17px;width:220px;background:#FFF7FB}
+.top .title:hover,.top .title:focus{border-color:#FFC8EA;outline:none}
+.top .status{font-size:13.5px;color:var(--sage2);min-width:90px}
+.top .sp{flex:1}
+.tbtn{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 11px;font-weight:700;font-size:14.5px;white-space:nowrap}
+.tbtn:hover{border-color:var(--pink)}
+.tbtn:disabled{opacity:.4;cursor:default}
+.tbtn.done{background:var(--btn);color:#fff;border-color:var(--btn);font-size:15.5px;padding:8px 16px;box-shadow:0 3px 0 #A8237A}
+.tools{grid-area:tools;background:#fff;border-left:2px solid var(--line);overflow:auto;padding:12px}
+.props{grid-area:props;background:#fff;border-right:2px solid var(--line);overflow:auto;padding:12px}
+.tools h3,.props h3{font-size:15px;margin:14px 0 8px;color:var(--mag)}
+.tools h3:first-child,.props h3:first-child{margin-top:0}
+.addrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.add{border:2px dashed #FFC8EA;background:#FFF7FB;border-radius:14px;padding:10px 6px;font-weight:800;font-size:14.5px;line-height:1.25}
+.add span{display:block;font-size:22px}
+.add:hover{border-color:var(--pink);background:#FFE3F4}
+.stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.stk-tabs button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:2px 9px;font-size:13px}
+.stk-tabs button.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.stk{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.stk button{border:0;background:#FFF7FB;border-radius:10px;padding:4px;aspect-ratio:1}
+.stk button:hover{background:#FFE3F4}
+.stk img{width:100%;height:100%}
+.swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.swatches button{aspect-ratio:1;border-radius:50%;border:2px solid #e5d9e0}
+.swatches button.on{outline:3px solid var(--mag);outline-offset:1px}
+.credit{font-size:12px;color:#8a7a90;margin-top:12px;line-height:1.4}
+.credit a{color:inherit}
+.help-list{font-size:14px;line-height:1.5;padding-right:16px;margin:4px 0}
+.stage{grid-area:stage;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}
+.labels{display:flex;justify-content:space-around;width:100%;font-weight:800;color:var(--mag);font-size:14px;margin-bottom:6px}
+.wrap{position:relative;box-shadow:0 8px 30px rgba(51,38,61,.18)}
+.wrap canvas{display:block}
+#overlay{position:absolute;inset:0;pointer-events:none}
+.sel{position:absolute;border:2px solid #7A5CFF;pointer-events:none}
+.sel.bad{border-color:#E53935}
+.sel .h{position:absolute;width:14px;height:14px;background:#fff;border:2px solid #7A5CFF;border-radius:50%;pointer-events:auto}
+.sel .h.nw{top:-8px;left:-8px;cursor:nwse-resize}.sel .h.ne{top:-8px;right:-8px;cursor:nesw-resize}
+.sel .h.sw{bottom:-8px;left:-8px;cursor:nesw-resize}.sel .h.se{bottom:-8px;right:-8px;cursor:nwse-resize}
+.sel .h.e{top:calc(50% - 7px);right:-8px;cursor:ew-resize}.sel .h.w{top:calc(50% - 7px);left:-8px;cursor:ew-resize}
+.sel .h.rot{top:-34px;left:calc(50% - 8px);width:16px;height:16px;cursor:grab;background:#7A5CFF}
+.sel .stem{position:absolute;top:-22px;left:calc(50% - 1px);width:2px;height:20px;background:#7A5CFF}
+.hint{position:absolute;background:#FFDD55;color:#4a3800;font-weight:800;font-size:12.5px;border-radius:99px;padding:2px 9px;white-space:nowrap;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.2);transform:translate(50%,-50%)}
+.guide{position:absolute;background:#FF2E9A;pointer-events:none}
+.ph-add{position:absolute;pointer-events:auto;border:0;background:var(--btn);color:#fff;border-radius:99px;padding:6px 12px;font-weight:800;font-size:13.5px;transform:translate(50%,-50%);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+#textEdit{position:absolute;border:2px dashed #7A5CFF;background:rgba(255,255,255,.85);resize:none;outline:none;padding:0;margin:0;overflow:hidden;white-space:pre-wrap;z-index:5}
+.zoom{position:absolute;bottom:8px;left:10px;display:flex;gap:4px;align-items:center;background:#fff;border-radius:99px;padding:3px 6px;box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:13px}
+.zoom button{border:0;background:#FFF0F8;border-radius:50%;width:26px;height:26px;font-weight:800}
+.legend{position:absolute;bottom:8px;right:10px;background:rgba(255,255,255,.95);border-radius:12px;padding:5px 10px;font-size:12.5px;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.legend i{display:inline-block;width:18px;height:0;vertical-align:middle;margin-left:4px}
+.strip{grid-area:strip;background:#fff;border-top:2px solid var(--line);display:flex;align-items:center;gap:8px;padding:8px 10px;overflow-x:auto}
+.strip .nav{flex-shrink:0;font-size:20px;width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:#fff}
+.thumbs{display:flex;gap:8px;direction:rtl}
+.th{flex-shrink:0;border:3px solid transparent;border-radius:10px;padding:2px;background:#fff;text-align:center;font-size:12px;font-weight:700;color:#6b5a72}
+.th.on{border-color:var(--pink);color:var(--mag)}
+.th canvas{display:block;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.15);margin-bottom:2px}
+.prop-row{display:flex;align-items:center;gap:6px;margin:8px 0;font-size:14px}
+.prop-row label{min-width:62px;font-weight:700}
+.prop-row select,.prop-row input[type=number]{flex:1;border:2px solid var(--line);border-radius:10px;padding:5px;min-width:0}
+.prop-row input[type=range]{flex:1}
+.prop-row input[type=color]{width:42px;height:32px;border:2px solid var(--line);border-radius:10px;padding:1px;background:#fff}
+.seg{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden;flex:1}
+.seg button{flex:1;border:0;background:#fff;padding:5px 2px;font-weight:800}
+.seg button.on{background:#FFE3F4;color:var(--mag)}
+.pbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.pbtns .tbtn{font-size:13.5px;padding:6px 4px}
+.props .tbtn{white-space:normal;line-height:1.25}
+.props>.tbtn{width:100%;margin-bottom:6px}
+.pbtns .wide{grid-column:1/3}
+.pbtns .del{color:#C62828}
+.empty-props{font-size:14px;color:#6b5a72;line-height:1.55}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;font-weight:700;z-index:2000;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;gap:10px;align-items:center;max-width:90vw}
+.toast button{border:0;border-radius:99px;padding:5px 12px;font-weight:800;background:var(--pink);color:#fff}
+.lowres{color:#B26A00;font-size:13px;font-weight:700;background:#FFF3D6;border-radius:10px;padding:6px 8px;margin-top:6px}
+@media (max-width:1150px){.ed{grid-template-columns:230px 1fr 215px}.top .title{width:150px}}
+</style>
+</head>
+<body>
+<div class="bq-join" hidden></div><!-- מונע את חלון ההצטרפות בזמן העבודה בעורך -->
+
+<!-- ===== מסך פתיחה ===== -->
+<main class="intro" id="intro">
+  <a class="back" href="../">→ חזרה לכל המשחקים והפעילויות</a>
+  <section class="hero">
+    <div>
+      <h1>📖 הספר שלכם, בכריכה קשה</h1>
+      <p>מעצבים ספר משלכם במחשב, ואנחנו מדפיסים אותו בכריכה קשה פרימיום. ספר של הגן, ספר יום הולדת, ספר זיכרונות מהשנה, או סיפור שהילדים כתבו.</p>
+      <ul>
+        <li>24 עמודים בגודל 20 × 20 ס"מ</li>
+        <li>תמונות שלכם, טקסט בעברית ובאנגלית, מדבקות ורקעים</li>
+        <li>ספר לדוגמה מוכן: מחליפים תמונות ומשנים טקסט</li>
+        <li>להורים ולגננות</li>
+      </ul>
+    </div>
+    <div class="pics">
+      <img src="sample/cover-bg.jpg" alt="כריכה של ספר לדוגמה">
+      <img src="sample/p03.jpg" alt="עמוד מתוך הספר לדוגמה">
+      <img src="sample/p09.jpg" alt="עמוד נוסף מתוך הספר לדוגמה">
+    </div>
+  </section>
+
+  <div class="mobile-note">💻 <b>העורך עובד במחשב</b> (או בטאבלט גדול), כי צריך מסך רחב כדי לעצב ספר בנוחות.<br>
+    שלחו לעצמכם את הקישור ופתחו אותו במחשב:<br>
+    <a class="big-btn green" id="sendSelf" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">📲 לשלוח לעצמי את הקישור</a>
+  </div>
+
+  <div class="steps3">
+    <div><b>1. מעצבים</b>מתחילים מהספר לדוגמה או מספר ריק. גוררים, מחליפים תמונות וכותבים.</div>
+    <div><b>2. שומרים</b>הכל נשמר לבד במחשב. כדאי לשמור גם קובץ גיבוי.</div>
+    <div><b>3. שולחים להדפסה</b>בסיום נוצרים שני קבצים (כריכה ועמודים) ושולחים לנו בוואטסאפ. נחזור אליכם עם הצעת מחיר.</div>
+  </div>
+
+  <section class="start" id="startBox">
+    <h2>בואו נתחיל</h2>
+    <div class="resume hidden" id="resumeBox">
+      <span>📚 יש לכם ספר שמור במחשב הזה: <b id="resumeName"></b> <small id="resumeWhen"></small></span>
+      <button class="big-btn green" id="btnResume">להמשיך לעבוד על הספר ←</button>
+    </div>
+    <div class="choices">
+      <button class="big-btn" id="btnSample">✨ להתחיל מהספר לדוגמה</button>
+      <button class="big-btn alt" id="btnBlank">📄 ספר ריק</button>
+      <button class="big-btn alt" id="btnOpen">📂 פתיחת קובץ גיבוי</button>
+    </div>
+    <p class="notice">🔒 התמונות והטקסטים נשארים רק אצלכם במחשב. אנחנו לא רואים ולא שומרים כלום, עד שתשלחו לנו את הקבצים להדפסה. המחיר נקבע בהצעה אישית בוואטסאפ.</p>
+  </section>
+</main>
+<input type="file" id="fileBackup" accept=".booqli,application/json" hidden>
+<input type="file" id="filePhoto" accept="image/*" hidden>
+
+<!-- ===== העורך ===== -->
+<div class="ed hidden" id="ed">
+  <header class="top">
+    <img class="logo" src="../img/logo-dark.png" alt="BOOQLI">
+    <input class="title" id="title" aria-label="שם הספר" maxlength="60">
+    <span class="status" id="status">✓ נשמר במחשב</span>
+    <button class="tbtn" id="undo" title="ביטול (Ctrl+Z)">↶ ביטול</button>
+    <button class="tbtn" id="redo" title="חזרה (Ctrl+Y)">↷ חזרה</button>
+    <span class="sp"></span>
+    <button class="tbtn" id="btnBackup" title="מוריד קובץ אחד עם כל הספר">💾 שמירת גיבוי</button>
+    <button class="tbtn" id="btnOpen2">📂 פתיחת גיבוי</button>
+    <button class="tbtn" id="btnHelp">❓ עזרה</button>
+    <button class="tbtn" id="btnExit">🏠 יציאה</button>
+    <button class="tbtn done" id="btnDone">✅ סיימתי – שליחה להדפסה</button>
+  </header>
+
+  <aside class="tools">
+    <h3>➕ הוספה לעמוד</h3>
+    <div class="addrow">
+      <button class="add" id="addTitle"><span>🔤</span>כותרת</button>
+      <button class="add" id="addText"><span>✏️</span>טקסט</button>
+      <button class="add" id="addPhoto"><span>📷</span>תמונה מהמחשב</button>
+      <button class="add" id="addFrame"><span>🖼️</span>מסגרת לתמונה</button>
+    </div>
+    <h3>⭐ מדבקות</h3>
+    <div class="stk-tabs" id="stkTabs"></div>
+    <div class="stk" id="stk"></div>
+    <h3>🔷 צורות</h3>
+    <div class="addrow">
+      <button class="add" data-shape="rect"><span>⬛</span>ריבוע</button>
+      <button class="add" data-shape="round"><span>▢</span>מלבן מעוגל</button>
+      <button class="add" data-shape="circle"><span>⚫</span>עיגול</button>
+      <button class="add" data-shape="band"><span>➖</span>פס רוחב</button>
+    </div>
+    <h3>🎨 צבע רקע לעמוד</h3>
+    <div id="bgTargets" class="prop-row"></div>
+    <div class="swatches" id="bgSw"></div>
+    <div class="credit">מדבקות: <a href="https://github.com/jdecked/twemoji" target="_blank" rel="noopener">Twemoji</a> (CC-BY 4.0). גופנים: Google Fonts (חינמיים).</div>
+  </aside>
+
+  <section class="stage" id="stage">
+    <div class="labels" id="labels"></div>
+    <div class="wrap" id="wrap">
+      <canvas id="cv"></canvas>
+      <div id="overlay"></div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="zoom"><button id="zOut" aria-label="הקטנה">−</button><span id="zVal">100%</span><button id="zIn" aria-label="הגדלה">+</button></div>
+  </section>
+
+  <aside class="props" id="props"></aside>
+
+  <div class="strip">
+    <button class="nav" id="prevSp" aria-label="הכפולה הקודמת">→</button>
+    <div class="thumbs" id="thumbs"></div>
+    <button class="nav" id="nextSp" aria-label="הכפולה הבאה">←</button>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../common.js"></script>
+<script src="sample.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>
