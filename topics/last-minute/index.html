@@ -168,7 +168,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
   <section class="box share">
     <h3>💌 יש לך חברה גננת? שלחי לה</h3>
-    <p>זה יכול להציל לה בוקר. בחינם, בלי הרשמה.</p>
+    <p>זה יכול להציל לה בוקר. בחינם · אתר בטוח להורים ולילדים.</p>
     <button class="btn-wa-big" type="button" id="shareBtn">💬 לשלוח לגננת בוואטסאפ</button>
   </section>
 
@@ -186,7 +186,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
   <div class="wrap">
     <img class="logo" src="../../img/logo.png" alt="BOOQLI">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
-    <p>כל הפעילויות והטקסטים מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
+    <p>כל הפעילויות והטקסטים מקוריים · אתר בטוח להורים ולילדים</p>
     <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
   </div>
 </footer>
@@ -286,7 +286,7 @@ if (new URLSearchParams(location.search).has("sheet")) $("print").innerHTML = sh
 
 /* ---------- שיתוף ---------- */
 function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
-$("shareBtn").onclick = () => waSend("🆘 הגעת לא מוכנה? קראו לך להחליף בגן אחר?\n\n10 פעילויות ומשחקים לגילאי 3–6 בלי שום ציוד ובלי הכנה, עם תוכנית מוכנה לחצי שעה ודף להדפסה לתיק.\nבחינם, בלי הרשמה.\n\n👈 " + location.href.split(/[?#]/)[0] + "?utm_source=whatsapp&utm_medium=share&utm_campaign=last_minute\n\nבחסות BOOQLI ❤️");
+$("shareBtn").onclick = () => waSend("🆘 הגעת לא מוכנה? קראו לך להחליף בגן אחר?\n\n10 פעילויות ומשחקים לגילאי 3–6 בלי שום ציוד ובלי הכנה, עם תוכנית מוכנה לחצי שעה ודף להדפסה לתיק.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 " + location.href.split(/[?#]/)[0] + "?utm_source=whatsapp&utm_medium=share&utm_campaign=last_minute\n\nבחסות BOOQLI ❤️");
 
 /* ---------- הפעלה ---------- */
 siteJoinLinks(); siteDevBar(); siteBackBar("../../");

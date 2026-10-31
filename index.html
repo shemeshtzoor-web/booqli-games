@@ -10,7 +10,7 @@
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="booqli Games">
 <meta property="og:title" content="booqli Games – משחקים ופעילויות לגן">
-<meta property="og:description" content="משחקים, דפי עבודה, חידונים ומערכים לגן ולבית, לפי לוח השנה. בחינם, בלי הרשמה, בחסות BOOQLI.">
+<meta property="og:description" content="משחקים, דפי עבודה, חידונים ומערכים לגן ולבית, לפי לוח השנה. בחינם, בחסות BOOQLI. אתר בטוח להורים ולילדים.">
 <meta property="og:url" content="https://games.booqli.ai/">
 <meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
 <meta property="og:image:width" content="1200">
@@ -371,9 +371,8 @@ footer a{color:#fff;font-weight:700}
 
   <section>
     <div class="safe">
-      <h3>🔒 אתר בטוח לילדים</h3>
+      <h3>🔒 אתר בטוח להורים ולילדים</h3>
       <ul>
-        <li>✓ בלי הרשמה ובלי סיסמה</li>
         <li>✓ בלי פרטי תשלום</li>
         <li>✓ מתאים לגן ולבית</li>
         <li>✓ לא אוספים פרטים על הילדים</li>
@@ -622,9 +621,9 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden
 const BASE = location.href.split(/[?#]/)[0].replace(/[^/]*\.html?$/, "");
 function waShare(text){ window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener"); }
 function sendGift(t){
-  waShare(`🎁 מתנה מהגן: ${t.name} – לשחק וללמוד בבית!\n\nהכנו לכם משחקים, דפים להדפסה וחידון בנושא ${t.name}, כדי להמשיך בבית את מה שלמדנו בגן.\nבחינם ובלי הרשמה.\n\n👈 ${BASE}topics/${t.id}/?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=${t.id}\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
+  waShare(`🎁 מתנה מהגן: ${t.name} – לשחק וללמוד בבית!\n\nהכנו לכם משחקים, דפים להדפסה וחידון בנושא ${t.name}, כדי להמשיך בבית את מה שלמדנו בגן.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${BASE}topics/${t.id}/?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=${t.id}\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
 }
-document.getElementById("shareSite").onclick = () => waShare(`🎁 מתנה מהגן: booqli Games – לשחק וללמוד בבית!\n\nמשחקים, דפי עבודה וחידונים לכל עונות השנה, שממשיכים בבית את מה שלומדים בגן.\nבחינם ובלי הרשמה.\n\n👈 ${BASE}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=site\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
+document.getElementById("shareSite").onclick = () => waShare(`🎁 מתנה מהגן: booqli Games – לשחק וללמוד בבית!\n\nמשחקים, דפי עבודה וחידונים לכל עונות השנה, שממשיכים בבית את מה שלומדים בגן.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${BASE}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=site\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`);
 
 // ביקורות
 const rv = document.getElementById("revs");

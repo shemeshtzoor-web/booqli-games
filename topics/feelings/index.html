@@ -249,7 +249,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
         <small>booqli Games · לגן, לבית ולכיתות הנמוכות</small>
         <h1>🌈 <span class="rb">עולם הרגשות</span></h1>
         <p>שמח, עצוב, כועס, מפחד, מופתע, מתבייש ומקנא. משחק פרצופים צבעוני ועוד 6 פעילויות ודפי יצירה, כדי לזהות רגשות, לתת להם שם ולדבר עליהם.</p>
-        <div class="pills"><span>👧 מהגן ועד כיתה ב'–ג'</span><span>😊 7 רגשות</span><span>🖨️ 3 דפים להדפסה</span><span>🆓 בחינם, בלי הרשמה</span></div>
+        <div class="pills"><span>👧 מהגן ועד כיתה ב'–ג'</span><span>😊 7 רגשות</span><span>🖨️ 3 דפים להדפסה</span><span>🆓 בחינם</span><span>🛡️ אתר בטוח להורים ולילדים</span></div>
         <div class="acts">
           <a class="btn-main" href="#game">▶️ למשחק הפרצופים</a>
           <button class="btn-sec js-gift" type="button">🎁 מתנה להורים</button>
@@ -415,7 +415,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
   <div class="wrap">
     <img class="logo" src="../../img/logo.png" alt="BOOQLI">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
-    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
+    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · אתר בטוח להורים ולילדים</p>
     <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
   </div>
 </footer>
@@ -860,10 +860,10 @@ if (SHEETS[sheetParam]) $("print").innerHTML = SHEETS[sheetParam]();
 /* ======================== הודעות וואטסאפ ======================== */
 const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
 function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
-function sendGift(){ waSend(`🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם משחק פרצופים לזיהוי רגשות, בונים פרצוף, מראת רגשות, "מה היית מרגיש אם...?", ודפי יצירה להדפסה: צנצנת רגשות, מפלצת רגשות ומד רגשות למקרר.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=feelings\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
+function sendGift(){ waSend(`🎁 מתנה מהגן: ${CONFIG.topicName} – לשחק וללמוד בבית!\n\nהכנו לכם משחק פרצופים לזיהוי רגשות, בונים פרצוף, מראת רגשות, "מה היית מרגיש אם...?", ודפי יצירה להדפסה: צנצנת רגשות, מפלצת רגשות ומד רגשות למקרר.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=feelings\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
 document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
-$("parentsBtn").onclick = () => waSend(`🌈 היום בגן שיחקנו בעולם הרגשות!\n\nלמדנו לזהות רגשות לפי הפנים: שמח, עצוב, כועס, מפחד, מופתע, מתבייש ומקנא.\n\n💛 רעיון קטן לבית: בארוחת הערב כל אחד מספר "מה הרגשתי היום ולמה". אפשר גם לשחק יחד במשחק הפרצופים:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=feelings\n\nבחינם ובלי הרשמה, בחסות BOOQLI ❤️`);
-$("shareBtn").onclick = () => waSend(`🌈 מצאתי משהו מקסים לנושא הרגשות: משחק פרצופים, בונים פרצוף, מראת רגשות ו-3 דפי יצירה להדפסה (צנצנת רגשות, מפלצת רגשות עם גלגל ומד רגשות למקרר).\nמהגן ועד כיתה ב'–ג', בחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=feelings\n\nבחסות BOOQLI ❤️`);
+$("parentsBtn").onclick = () => waSend(`🌈 היום בגן שיחקנו בעולם הרגשות!\n\nלמדנו לזהות רגשות לפי הפנים: שמח, עצוב, כועס, מפחד, מופתע, מתבייש ומקנא.\n\n💛 רעיון קטן לבית: בארוחת הערב כל אחד מספר "מה הרגשתי היום ולמה". אפשר גם לשחק יחד במשחק הפרצופים:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=feelings\n\nבחינם, בחסות BOOQLI · אתר בטוח להורים ולילדים ❤️`);
+$("shareBtn").onclick = () => waSend(`🌈 מצאתי משהו מקסים לנושא הרגשות: משחק פרצופים, בונים פרצוף, מראת רגשות ו-3 דפי יצירה להדפסה (צנצנת רגשות, מפלצת רגשות עם גלגל ומד רגשות למקרר).\nמהגן ועד כיתה ב'–ג', בחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=feelings\n\nבחסות BOOQLI ❤️`);
 
 /* ======================== הפעלה ======================== */
 siteJoinLinks(); siteDevBar(); siteBackBar("../../");

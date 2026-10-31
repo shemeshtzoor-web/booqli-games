@@ -10,7 +10,7 @@
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="booqli Games">
 <meta property="og:title" content="🍂 הסתיו הגיע! משחק עלי שלכת, חידון סתיו וציור לילדים">
-<meta property="og:description" content="הרוח מעיפה את העלים, והילדים אוספים אותם לפח. וגם חידון עם הקראה, הנחליאלי, החצב, ציור עם האצבע ודף להדפסה. בחינם ובלי הרשמה.">
+<meta property="og:description" content="הרוח מעיפה את העלים, והילדים אוספים אותם לפח. וגם חידון עם הקראה, הנחליאלי, החצב, ציור עם האצבע ודף להדפסה. בחינם · אתר בטוח להורים ולילדים.">
 <meta property="og:url" content="https://games.booqli.ai/topics/autumn/">
 <meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -280,7 +280,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
         <small>booqli Games · לגן ולבית</small>
         <h1>🍂 <span class="au">הסתיו הגיע!</span></h1>
         <p>הרוח נושבת ועלי השלכת עפים מהעצים. אוספים את העלים לפח, עונים על חידון סתיו עם הקראה, מכירים את הנחליאלי ומציירים סתיו עם האצבע.</p>
-        <div class="pills"><span>👧 גילאי 3–6</span><span>🔊 עם הקראה</span><span>🖍️ ציור על המסך</span><span>🖨️ דף צביעה</span><span>🆓 בחינם, בלי הרשמה</span></div>
+        <div class="pills"><span>👧 גילאי 3–6</span><span>🔊 עם הקראה</span><span>🖍️ ציור על המסך</span><span>🖨️ דף צביעה</span><span>🆓 בחינם</span><span>🛡️ אתר בטוח להורים ולילדים</span></div>
         <div class="acts">
           <a class="btn-main" href="#tree">▶️ למשחק העץ והרוח</a>
           <button class="btn-sec js-gift" type="button">🎁 מתנה להורים</button>
@@ -428,7 +428,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
   <div class="wrap">
     <img class="logo" src="../../img/logo.png" alt="BOOQLI">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
-    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · בלי הרשמה ובלי איסוף פרטים</p>
+    <p>כל הפעילויות, הטקסטים והאיורים מקוריים · אתר בטוח להורים ולילדים</p>
     <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
   </div>
 </footer>
@@ -962,10 +962,10 @@ if (SHEETS[sheetParam]) $("print").innerHTML = SHEETS[sheetParam]();
 /* ======================== הודעות וואטסאפ ======================== */
 const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
 function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
-function sendGift(){ waSend(`🎁 מתנה מהגן: הסתיו – לשחק וללמוד בבית!\n\nהכנו לכם משחק "העץ והרוח" (אוספים עלי שלכת לפח), חידון סתיו עם הקראה, הכרות עם הנחליאלי, ציור סתיו עם האצבע ודף צביעה להדפסה.\nבחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=autumn\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
+function sendGift(){ waSend(`🎁 מתנה מהגן: הסתיו – לשחק וללמוד בבית!\n\nהכנו לכם משחק "העץ והרוח" (אוספים עלי שלכת לפח), חידון סתיו עם הקראה, הכרות עם הנחליאלי, ציור סתיו עם האצבע ודף צביעה להדפסה.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=autumn\n\nהתכנים מוענקים בחינם, בחסות BOOQLI ❤️`); }
 document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
-$("parentsBtn").onclick = () => waSend(`🍂 היום בגן למדנו על הסתיו!\n\nדיברנו על עלי השלכת שנושרים מהעצים, על הנחליאלי שמגיע אלינו בסתיו, על החצב שפורח ועל הגשם הראשון – היורה.\n\n💛 רעיון קטן לבית: לצאת לטיול קצר בשכונה, לאסוף עלי שלכת בכמה צבעים ולסדר אותם מהבהיר לכהה. אפשר גם לחפש יחד נחליאלי שמנענע את הזנב!\n\nואפשר להמשיך לשחק בבית:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=autumn\n\nבחינם ובלי הרשמה, בחסות BOOQLI ❤️`);
-$("shareBtn").onclick = () => waSend(`🍂 מצאתי משהו מקסים לסתיו: משחק "העץ והרוח" (הרוח מעיפה עלים והילדים אוספים לפח), חידון סתיו עם הקראה, הידעת על הנחליאלי, ציור על המסך ודף צביעה להדפסה.\nלגילאי 3–6, בחינם ובלי הרשמה.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=autumn\n\nבחסות BOOQLI ❤️`);
+$("parentsBtn").onclick = () => waSend(`🍂 היום בגן למדנו על הסתיו!\n\nדיברנו על עלי השלכת שנושרים מהעצים, על הנחליאלי שמגיע אלינו בסתיו, על החצב שפורח ועל הגשם הראשון – היורה.\n\n💛 רעיון קטן לבית: לצאת לטיול קצר בשכונה, לאסוף עלי שלכת בכמה צבעים ולסדר אותם מהבהיר לכהה. אפשר גם לחפש יחד נחליאלי שמנענע את הזנב!\n\nואפשר להמשיך לשחק בבית:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=autumn\n\nבחינם, בחסות BOOQLI · אתר בטוח להורים ולילדים ❤️`);
+$("shareBtn").onclick = () => waSend(`🍂 מצאתי משהו מקסים לסתיו: משחק "העץ והרוח" (הרוח מעיפה עלים והילדים אוספים לפח), חידון סתיו עם הקראה, הידעת על הנחליאלי, ציור על המסך ודף צביעה להדפסה.\nלגילאי 3–6, בחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=autumn\n\nבחסות BOOQLI ❤️`);
 
 /* ======================== הפעלה ======================== */
 siteJoinLinks(); siteDevBar(); siteBackBar("../../"); siteCloseBar("autumn", "הסתיו", "../../");

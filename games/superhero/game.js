@@ -385,13 +385,13 @@ function splash(){
       <button class="btn cta go" id="start">🦸 יוצאים לדרך!</button>
       <p class="note" id="need" hidden>כתבו קודם את השם</p>
     </div>
-    <p class="note">חינם · בלי הרשמה · תמונה רק אם רוצים</p>
+    <p class="note">חינם · אתר בטוח להורים ולילדים · תמונה רק אם רוצים</p>
     <div class="safebox" aria-label="משחק בטוח לילדים">
       <b>🔒 משחק בטוח לילדים</b>
       <ul>
         <li>פועל על Claude, פלטפורמת הבינה המלאכותית של חברת Anthropic</li>
-        <li>בלי הרשמה, בלי סיסמה ובלי פרטי תשלום</li>
-        <li>בלי פרסומות ובלי קניות בתוך המשחק</li>
+        <li>בלי פרטי תשלום</li>
+        <li>בלי קניות בתוך המשחק</li>
         <li>התמונה והשם של הילד נשמרים רק במכשיר שלכם. BOOQLI לא מקבלת אותם</li>
       </ul>
     </div>
@@ -1296,8 +1296,8 @@ function parents(){
     </div>
     <section class="panel parents-safe"><h3 class="q" style="font-size:18px">🔒 משחק בטוח לילדים</h3><ul style="margin:0;padding-inline-start:18px;font-size:15px;line-height:1.6">
       <li>פועל על Claude, פלטפורמת הבינה המלאכותית של חברת Anthropic</li>
-      <li>בלי הרשמה, בלי סיסמה ובלי פרטי תשלום</li>
-      <li>בלי פרסומות ובלי קניות בתוך המשחק</li>
+      <li>בלי פרטי תשלום</li>
+      <li>בלי קניות בתוך המשחק</li>
       <li>התמונה והשם של הילד נשמרים רק במכשיר שלכם. BOOQLI לא מקבלת אותם</li></ul></section>
     <section class="panel"><h3 class="q" style="font-size:18px">מקורות</h3><ul class="srcs" style="margin:0;padding-inline-start:18px;font-size:14px;line-height:1.6">
       <li><a href="https://www.mpg.de/532681/pressRelease20060302" target="_blank" rel="noopener">Warneken &amp; Tomasello (2006). Altruistic helping in human infants and young chimpanzees. Science (Max Planck)</a></li>
