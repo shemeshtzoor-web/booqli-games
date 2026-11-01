@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כל התכנים · booqli Games</title>
+<meta name="description" content="כל התכנים של booqli Games במקום אחד: חיפוש וסינון לפי גיל, קהל, תחום, סוג וחינוך מיוחד, וסידור לפי תאריך פתיחה.">
+<link rel="canonical" href="https://games.booqli.ai/library/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="כל התכנים · booqli Games">
+<meta property="og:description" content="כל התכנים של booqli Games במקום אחד: חיפוש וסינון לפי גיל, קהל, תחום, סוג וחינוך מיוחד, וסידור לפי תאריך פתיחה.">
+<meta property="og:url" content="https://games.booqli.ai/library/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – דף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap">
+<nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>🔍 כל התכנים</span></nav>
+<section class="zone-hero" style="--zc:#4E8576;--zb:#E1F0EA">
+  <div style="font-size:70px;line-height:1" aria-hidden="true">🔍</div>
+  <div><small>booqli Games · הספרייה</small><h1>כל התכנים</h1><p>מחפשים לפי מילה, גיל, תחום או סוג. כל התכנים, במקום אחד.</p></div>
+</section>
+<div class="tools" role="search">
+  <label class="vh" for="fq">חיפוש</label><input id="fq" type="search" placeholder="חיפוש: סביבון, צבעים, רגשות, חורף..." autocomplete="off">
+  <label>גיל <select id="fage"><option value="">כל הגילאים</option></select></label>
+  <label>למי <select id="faud"><option value="">לכולם</option></select></label>
+  <label>תחום <select id="fsubj"><option value="">כל התחומים</option></select></label>
+  <label>סוג <select id="ftype"><option value="">כל הסוגים</option></select></label>
+  <label class="chk"><input type="checkbox" id="fsped"> 💜 חינוך מיוחד</label>
+  <label class="chk"><input type="checkbox" id="fdeaf"> 🦻 כבדי שמיעה</label>
+  <label>סדר <select id="fsort"></select></label>
+  <span class="count" id="fcount" aria-live="polite"></span>
+</div>
+<div id="res" style="margin-top:18px"></div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <img class="logo" src="../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+  </div>
+</footer>
+<script src="../common.js"></script>
+<script src="../catalog.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const fill = (id, list) => list.forEach(o => { const op = document.createElement("option"); op.value = o.k; op.textContent = o.t; $(id).appendChild(op); });
+fill("fage", CAT.AGES);
+fill("faud", Object.keys(CAT.AUD).map(k => ({k, t: CAT.AUD[k].ic + " " + CAT.AUD[k].name})));
+fill("fsubj", CAT.SUBJECTS.map(s => ({k:s, t:s})));
+fill("ftype", Object.keys(CAT.TYPES).map(k => ({k, t: CAT.TYPES[k]})));
+fill("fsort", CAT.SORTS);
+const qs = new URLSearchParams(location.search);
+const F = {q: qs.get("q") || "", age: qs.get("age") || "", aud: qs.get("aud") || "", subj: qs.get("subj") || "", type: qs.get("type") || "", sped: qs.get("sped") === "1", deaf: qs.get("deaf") === "1", sort: qs.get("sort") || "open"};
+$("fq").value = F.q; $("fage").value = F.age; $("faud").value = F.aud; $("fsubj").value = F.subj; $("ftype").value = F.type; $("fsped").checked = F.sped; $("fdeaf").checked = F.deaf; $("fsort").value = F.sort;
+const sync = () => { const p = new URLSearchParams(); Object.keys(F).forEach(k => { if (F[k] && !(k === "sort" && F[k] === "open")) p.set(k, F[k] === true ? "1" : F[k]); }); history.replaceState(null, "", location.pathname + (p.toString() ? "?" + p : "")); };
+let tq = 0;
+const render = () => {
+  const list = CATALOG.filter(t => !t.zone && (!F.q || CAT.match(t, F.q)) && (!F.age || CAT.ageHit(t, F.age)) && (!F.aud || t.aud.includes(F.aud)) &&
+    (!F.subj || t.subj.includes(F.subj)) && (!F.type || t.type.includes(F.type)) && (!F.sped || t.sped) && (!F.deaf || t.deaf)).sort(CAT.sorters[F.sort]);
+  const res = $("res"); res.innerHTML = "";
+  $("fcount").textContent = "נמצאו " + list.length + " תכנים";
+  if (!list.length) {
+    res.innerHTML = '<section class="panel" style="text-align:center"><div style="font-size:44px">🔎</div><h2>לא מצאנו תוכן כזה (עדיין)</h2><p>נסו מילה אחרת, או ספרו לנו מה הייתם רוצים שנכין.</p><div class="quick" style="justify-content:center"><a class="btn-wa-big" target="_blank" rel="noopener" id="askA">💬 כתבו לנו מה להכין</a></div></section>';
+    $("askA").href = siteAskLink(F.q || ""); return;
+  }
+  res.appendChild(CAT.grid(list, {gift: F.aud === "t"}));
+  sync();
+  clearTimeout(tq); if (F.q) tq = setTimeout(() => siteEvent("search", F.q.trim().slice(0, 40)), 1500);
+};
+CAT.refresh = render;
+$("fq").addEventListener("input", e => { F.q = e.target.value; render(); });
+["age","aud","subj","type","sort"].forEach(k => $("f" + k).onchange = e => { F[k] = e.target.value; siteEvent("filter", k + "-" + F[k]); render(); });
+["sped","deaf"].forEach(k => $("f" + k).onchange = e => { F[k] = e.target.checked; render(); });
+render();
+siteJoinLinks();
+</script>
+</body>
+</html>

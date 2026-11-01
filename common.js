@@ -219,7 +219,8 @@ function siteCodeGate(){
       '<input id="cgIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="8" placeholder="••••">' +
       '<button type="submit">🔓 לפתוח</button></form>' +
     '<div class="msg" aria-live="polite"></div>' +
-    '<p class="help">כבר בקבוצה? פשוט פותחים אותה ובודקים בתיאור. את המספר מקלידים פעם אחת, והוא נשמר בדפדפן.</p>';
+    '<p class="help">כבר בקבוצה? פשוט פותחים אותה ובודקים בתיאור. את המספר מקלידים פעם אחת, והוא נשמר בדפדפן.</p>' +
+    '<p class="help">בהצטרפות לקבוצה שאר החברות יכולות לראות את המספר שלך. BOOQLI לא מעבירה ולא מפרסמת אותו.</p>';
   main.parentNode.insertBefore(box, main);
   var form = box.querySelector("form"), inp = box.querySelector("input"), msg = box.querySelector(".msg");
   var tryCode = function(v){
@@ -302,7 +303,7 @@ function siteJoinPopup(){
       '</ul>' +
       '<a class="go js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 אני רוצה להצטרף לקבוצה</a>' +
       '<div class="low"><button type="button" class="later">אולי אחר כך</button><button type="button" class="done">כבר הצטרפתי ✓</button></div>' +
-      '<p class="note">כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</p>' +
+      '<p class="note">כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️<br>בהצטרפות לקבוצה שאר החברות יכולות לראות את המספר שלך. BOOQLI לא מעבירה ולא מפרסמת אותו.</p>' +
       '</div>';
     var prev = document.activeElement;
     var close = function(how){
@@ -370,6 +371,85 @@ function siteBackBar(homeHref){
   bar.innerHTML = '<a href="' + homeHref + '">→ 🏠 חזרה לתפריט הראשי</a>';
   var after = document.querySelector(".devbar") || document.querySelector(".sponsor") || document.querySelector("header");
   if (after) after.insertAdjacentElement("afterend", bar);
+  siteFavButton(bar);
+}
+
+/* ======================== מועדפים (מ-1.11.2026) ========================
+   "לשמור לעתיד": נשמר בדפדפן (booqli_favs), אותו זיכרון כמו בכרטיסים (catalog.js). העמוד: /my/ */
+function siteFavs(){ try { return JSON.parse(localStorage.getItem("booqli_favs") || "[]") || []; } catch (e) { return []; } }
+function siteFavButton(bar){
+  var m = location.pathname.match(/\/(topics|games)\/([^/]+)/), id = m && m[2];
+  if (!id || !bar) return;
+  var css = document.createElement("style");
+  css.textContent = ".backbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.backbar .fav{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#C13671;border:2px solid #FF56C2;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;font-size:15px;cursor:pointer}" +
+    ".backbar .fav[aria-pressed=true]{background:#FFE3F4}.backbar .mine{color:#4E8576;font-weight:800;font-size:14px}";
+  document.head.appendChild(css);
+  var b = document.createElement("button"); b.type = "button"; b.className = "fav";
+  var paint = function(){ var on = siteFavs().indexOf(id) > -1; b.setAttribute("aria-pressed", on); b.textContent = on ? "❤️ שמור במועדפים" : "🤍 לשמור לעתיד"; };
+  b.onclick = function(){
+    var f = siteFavs(), i = f.indexOf(id);
+    if (i > -1) f.splice(i, 1); else f.unshift(id);
+    try { localStorage.setItem("booqli_favs", JSON.stringify(f)); } catch (e) {}
+    siteEvent(i > -1 ? "unfav" : "fav", id); paint();
+  };
+  paint(); bar.appendChild(b);
+  var a = document.createElement("a"); a.className = "mine"; a.href = "/my/"; a.textContent = "המועדפים שלי ←"; bar.appendChild(a);
+}
+
+/* ======================== תפריט הדלתות (מ-1.11.2026) ========================
+   כלל קבוע: בכל עמוד, מתחת לפס של האתר הראשי – 4 דלתות לפי קהל ועוד קישורים. משנים כאן בלבד. */
+window.SITE.doors = [
+  { ic: "👩‍🏫", t: "לגננות", href: "/teachers/" },
+  { ic: "👨‍👩‍👧", t: "להורים", href: "/parents/" },
+  { ic: "🧒", t: "לילדים", href: "/kids/" },
+  { ic: "🎒", t: "כיתות א'–ג'", s: "כיתות", href: "/school/" }
+];
+window.SITE.more = [
+  { ic: "🏠", t: "דף הבית", href: "/" },
+  { ic: "🔍", t: "כל התכנים", href: "/library/" },
+  { ic: "❤️", t: "המועדפים שלי", href: "/my/" },
+  { ic: "🎁", t: "מתנות לגן", href: "/gifts/" },
+  { ic: "🤝", t: "ספקים", href: "/suppliers/" },
+  { ic: "📖", t: "הספר שלכם", href: "/book-maker/" },
+  { ic: "📲", t: "האפליקציה", href: "/app/" }
+];
+function siteDoorsNav(){
+  if (document.querySelector(".bq-doors") || /[?&]sheet=/.test(location.search) || /\/offline\.html$/.test(location.pathname)) return;
+  var path = location.pathname;
+  var css = document.createElement("style");
+  css.textContent =
+    ".bq-doors{background:#fff;border-bottom:1px solid #E1F0EA;font-family:Assistant,Arial,sans-serif;direction:rtl;position:relative;z-index:39}" +
+    ".bq-doors .in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}" +
+    ".bq-doors a.d,.bq-doors .mb{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 14px;font-weight:800;font-size:15px;text-decoration:none;color:#2B1526;border:2px solid transparent;background:#F4FAF7;white-space:nowrap;cursor:pointer;font-family:inherit}" +
+    ".bq-doors a.d:hover,.bq-doors .mb:hover{border-color:#CDE7DC}" +
+    ".bq-doors a.d[aria-current=page]{background:#4E8576;color:#fff}" +
+    ".bq-doors .mb{margin-inline-start:auto;background:#fff;border-color:#CDE7DC}" +
+    ".bq-doors .menu{position:absolute;top:100%;left:max(16px,calc((100% - 1100px) / 2 + 16px));background:#fff;border-radius:18px;box-shadow:0 12px 30px rgba(43,21,38,.18);padding:8px;display:grid;gap:2px;min-width:220px;z-index:60}" +
+    ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;text-decoration:none;color:#2B1526;font-weight:700}" +
+    ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#F4FAF7}" +
+    ".bq-doors .s{display:none}" +
+    "@media (max-width:600px){.bq-doors .in{padding:6px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));gap:4px}" +
+    ".bq-doors a.d,.bq-doors .mb{flex:1;flex-direction:column;gap:0;padding:4px 2px;border-radius:12px;font-size:12.5px;min-height:46px;justify-content:center}" +
+    ".bq-doors .i{font-size:18px;line-height:1.1}.bq-doors .f{display:none}.bq-doors .s{display:inline}.bq-doors .mb{flex:0 0 auto;padding:4px 10px}" +
+    ".bq-doors .menu{left:8px;right:8px}}" +
+    "@media print{.bq-doors{display:none!important}}";
+  document.head.appendChild(css);
+  var nav = document.createElement("nav");
+  nav.className = "bq-doors"; nav.setAttribute("aria-label", "אזורי האתר");
+  var cur = function(h){ return h !== "/" && path.indexOf(h) === 0 ? ' aria-current="page"' : (h === "/" && (path === "/" || /\/index\.html$/.test(path) && path.split("/").length < 3) ? ' aria-current="page"' : ""); };
+  nav.innerHTML = '<div class="in">' + SITE.doors.map(function(x){
+      return '<a class="d" href="' + x.href + '"' + cur(x.href) + '><span class="i" aria-hidden="true">' + x.ic + '</span><span class="f">' + x.t + '</span><span class="s">' + (x.s || x.t) + '</span></a>';
+    }).join("") +
+    '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>עוד</span></button></div>' +
+    '<div class="menu" id="bqMore" hidden>' + SITE.more.map(function(x){ return '<a href="' + x.href + '"' + cur(x.href) + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + '</a>'; }).join("") + '</div>';
+  var top = document.querySelector(".bq-nav");
+  if (top) top.insertAdjacentElement("afterend", nav); else document.body.insertBefore(nav, document.body.firstChild);
+  var mb = nav.querySelector(".mb"), menu = nav.querySelector(".menu");
+  var close = function(){ menu.hidden = true; mb.setAttribute("aria-expanded", "false"); };
+  mb.onclick = function(e){ e.stopPropagation(); menu.hidden = !menu.hidden; mb.setAttribute("aria-expanded", String(!menu.hidden)); };
+  document.addEventListener("click", function(e){ if (!nav.contains(e.target)) close(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") close(); });
+  nav.addEventListener("click", function(e){ var a = e.target.closest("a"); if (a) siteEvent("nav", (a.getAttribute("href") || "").replace(/\//g, "") || "home"); });
 }
 
 /* ======================== זכויות יוצרים ========================
@@ -383,6 +463,16 @@ function siteBackBar(homeHref){
     p.textContent = "© " + Math.max(2026, new Date().getFullYear()) + " BOOQLI. כל הזכויות שמורות. מותר ומומלץ לשתף את האתר ואת דפי ההדפסה עם גננות, הורים וחברים, בחינם וכמו שהם (עם הקרדיט של BOOQLI). אסור להשתמש בתכנים לשימוש מסחרי: למכור אותם, לגבות עליהם כסף, לשלב אותם במוצר או בשירות בתשלום, או לפרסם אותם בשם אחר, ללא אישור בכתב מ-BOOQLI.";
     var f = document.querySelector("footer");
     (f || document.body).appendChild(p);
+    /* תחתית קבועה (מ-1.11.2026): מסמכים, יצירת קשר ושייכות לאתר הראשי */
+    if (/[?&]sheet=/.test(location.search) || document.querySelector(".site-legal")) return;
+    var l = document.createElement("p");
+    l.className = "site-legal";
+    l.style.cssText = "margin:0 auto;padding:0 16px 18px;max-width:900px;text-align:center;font-size:13.5px;line-height:1.9";
+    var lk = "color:inherit;font-weight:800;text-decoration:underline;display:inline-block;margin:0 5px;white-space:nowrap";
+    l.innerHTML = '<a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
+      '<a style="' + lk + '" href="https://wa.me/' + SITE.phone + '" target="_blank" rel="noopener">יצירת קשר</a><br>' +
+      '<span>games.booqli.ai מופעל על ידי BOOQLI (ח.פ 558577037) והוא חלק מ-<a style="color:inherit;font-weight:800" href="https://www.booqli.ai/he" target="_blank" rel="noopener">booqli.ai</a> · בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
+    (f || document.body).appendChild(l);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
 })();
@@ -544,7 +634,7 @@ function siteMainNav(){
   document.body.insertBefore(nav, document.body.firstChild);
 }
 (function siteConnectMain(){
-  function run(){ siteMainNav(); siteLogoLinks(); }
+  function run(){ siteMainNav(); siteDoorsNav(); siteLogoLinks(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
 })();
 
@@ -564,7 +654,7 @@ function siteMainNav(){
    האתר מותקן כאפליקציה ישירות מהדפדפן, בלי חנות (PWA): manifest.webmanifest + sw.js בשורש.
    כאן: חיבור הקבצים, כפתור התקנה, ופס קטן "התקינו את האפליקציה" בדף הבית בטלפון.
    עמוד ההסבר: app/ . מדידה: event/app/<פעולה> */
-window.SITE.app = { page: "/app/", barDelayMs: 15000, barAgainDays: 7 };
+window.SITE.app = { page: "/app/", barDelayMs: 6000 };
 window.siteInstallPrompt = null;
 function siteIsStandalone(){
   try { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; } catch (e) { return false; }
@@ -620,21 +710,24 @@ function siteInstall(where){
     document.documentElement.classList.add("in-app");
   }
 })();
-/* פס קטן בתחתית דף הבית, רק בטלפון, רק בדפדפן (לא בתוך האפליקציה) */
+/* חלון קטן "התקינו את האפליקציה" (מ-1.11.2026, בקשת שמש): בכל ביקור, עד שמתקינים.
+   פעם אחת בכל ביקור (לא בכל עמוד). לא באזור הילדים, לא בדפי הדפסה, לא בתוך האפליקציה, לא במכשיר של שמש.
+   במחשב – רק כשהדפדפן מאפשר התקנה. לא קופץ יחד עם חלון הוואטסאפ או המספר הסודי. בדיקה: ?appbar=1 */
 function siteAppBar(){
-  if (siteIsStandalone() || siteOwnerDevice() || /[?&]sheet=/.test(location.search)) return;
-  var home = location.pathname === "/" || /\/index\.html$/.test(location.pathname);
   var force = /[?&]appbar=1/.test(location.search);
-  if (!home && !force) return;
-  if (!force && sitePlatform() === "desktop") return;
+  if (siteIsStandalone() || (siteOwnerDevice() && !force) || /[?&]sheet=/.test(location.search) || /^\/(kids|app)\/|\/offline\.html$/.test(location.pathname)) return;
   var st = {};
   try { st = JSON.parse(localStorage.getItem("booqli_app") || "{}") || {}; } catch (e) {}
-  if (!force && (st.installed || (st.later && Date.now() - st.later < SITE.app.barAgainDays * 864e5))) return;
+  if (!force && st.installed) return;
+  var seen = false; try { seen = sessionStorage.getItem("booqli_app_visit") === "1"; } catch (e) {}
+  if (!force && seen) return;
   var save = function(o){ try { localStorage.setItem("booqli_app", JSON.stringify(o)); } catch (e) {} };
   var tries = 0;
   var show = function(){
-    // לא מתנגשים עם חלון ההצטרפות או המספר הסודי
-    if (document.querySelector(".bq-join,.code-gate,.bq-appbar")) { if (++tries < 40) setTimeout(show, 4000); return; }
+    if (!force && sitePlatform() === "desktop" && !siteCanInstall()) { if (++tries < 6) setTimeout(show, 3000); return; }
+    // לא מתנגשים עם חלון ההצטרפות, המספר הסודי או חלון מידע
+    if (document.querySelector(".bq-join,.code-gate,.bq-appbar,.c-modal,.soon-gate")) { if (++tries < 40) setTimeout(show, 4000); return; }
+    try { sessionStorage.setItem("booqli_app_visit", "1"); } catch (e) {}
     var css = document.createElement("style");
     css.textContent =
       ".bq-appbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:150;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px;background:#fff;color:#2B1526;border-radius:20px;padding:10px 10px 10px 12px;box-shadow:0 10px 30px rgba(43,21,38,.25);border:2px solid #E1F0EA;font-family:Assistant,Arial,sans-serif;direction:rtl;animation:bqaUp .4s cubic-bezier(.2,.9,.3,1.2)}" +
@@ -649,7 +742,7 @@ function siteAppBar(){
     bar.className = "bq-appbar"; bar.setAttribute("role", "region"); bar.setAttribute("aria-label", "התקנת האפליקציה");
     bar.innerHTML = '<button class="x" type="button" aria-label="סגירה">✕</button>' +
       '<img src="/img/app/icon-192.png" alt="" width="46" height="46">' +
-      '<span class="t"><b>האפליקציה בטלפון 📲</b>נפתחת בלחיצה אחת. בחינם.</span>' +
+      '<span class="t"><b>booqli Games כאפליקציה 📲</b>' + (sitePlatform() === "ios" ? "בשתי לחיצות: שיתוף ← הוספה למסך הבית. בחינם." : "אייקון על המסך, נפתח בלחיצה אחת. בחינם.") + '</span>' +
       '<a class="go" href="' + SITE.app.page + '">להתקנה</a>';
     bar.querySelector(".x").onclick = function(){ save({ later: Date.now() }); bar.remove(); siteEvent("app", "bar-close"); };
     bar.querySelector(".go").addEventListener("click", function(e){

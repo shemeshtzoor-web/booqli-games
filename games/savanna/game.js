@@ -167,7 +167,7 @@ function saveHTML(){
       <a class="btn sv-send" href="#" target="_blank" rel="noopener">שמירה ←</a>
     </div>
     <p class="sv-msg" aria-live="polite"></p>
-    <p class="sv-note">🔒 המספר לא נשלח אלינו ולא נשמר אצלנו. הוואטסאפ שלכם נפתח עם הודעה מוכנה, ונשאר רק ללחוץ "שליחה".</p>
+    <p class="sv-note">📲 הוואטסאפ שלכם נפתח עם הודעה מוכנה, ונשאר רק ללחוץ "שליחה".</p>
     <div class="savebtns">
       <button type="button" class="btn ghost small sv-copy">🔗 העתקת הקישור</button>
       <button type="button" class="btn ghost small sv-home" aria-expanded="false">📌 אייקון במסך הבית</button>
@@ -256,10 +256,8 @@ function splash(){
     <div class="safebox" aria-label="משחק בטוח לילדים">
       <b>🔒 משחק בטוח לילדים</b>
       <ul>
-        <li>פועל על Claude, פלטפורמת הבינה המלאכותית של חברת Anthropic</li>
-        <li>בלי פרטי תשלום</li>
-        <li>בלי קניות בתוך המשחק</li>
-        <li>התמונה והשם של הילד נשמרים רק במכשיר שלכם. BOOQLI לא מקבלת אותם</li>
+        <li>חלק מ-booqli Games, בחסות BOOQLI</li>
+        <li>השימוש בכפוף למדיניות הפרטיות של האתר</li>
       </ul>
     </div>
   </div></section>`;
@@ -280,11 +278,11 @@ function drawPhotoBox(){
   box.innerHTML=S.photo
     ?`<div class="photorow"><img class="kidthumb" src="${S.photo}" alt="התמונה שנבחרה"><div class="photoacts"><b>התמונה נוספה לסיפור</b><div class="row" style="justify-content:flex-start;gap:8px"><label class="btn ghost small" for="ph">החלפה</label><button type="button" class="btn ghost small" id="phdel">הסרה</button></div></div></div>
        <input type="file" id="ph" accept="image/*" hidden>
-       <p class="privacy">🔒 התמונה נשארת רק במכשיר שלכם. היא לא נשלחת לשום מקום, לא נשמרת אצלנו ונמחקת כשסוגרים את המשחק.</p>`
+       <p class="privacy">🔒 אתר בטוח להורים ולילדים.</p>`
     :`<details class="photoopt"><summary>רוצים שגם הפנים של הילד יופיעו בסיפור? <span>(לא חובה)</span></summary>
        <div class="photoin"><label class="btn ghost" for="ph">בחירת תמונה</label>
        <input type="file" id="ph" accept="image/*" hidden>
-       <p class="privacy">🔒 <b>פרטיות:</b> התמונה נשארת רק במכשיר שלכם. היא לא נשלחת לשום מקום, לא נשמרת אצלנו, ונמחקת ברגע שסוגרים את המשחק. מומלץ תמונה של הפנים מקרוב.</p>
+       <p class="privacy">💡 מומלץ תמונה של הפנים מקרוב.</p>
        <p class="note" id="pherr" hidden></p></div></details>`;
   const inp=document.getElementById("ph");
   inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)loadPhoto(f)};

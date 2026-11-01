@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כיתות א'–ג' · booqli Games</title>
+<meta name="description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', ובקרוב קריאה וכתיבה, הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/school/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="כיתות א'–ג' · booqli Games">
+<meta property="og:description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', ובקרוב קריאה וכתיבה, הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
+<meta property="og:url" content="https://games.booqli.ai/school/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – דף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap">
+<nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>🎒 כיתות א'–ג'</span></nav>
+<section class="zone-hero" style="--zc:#6B2FA3;--zb:#F1E3FF">
+  <img src="../img/family/alef.webp" alt="" width="120" height="124">
+  <div><small>booqli Games · למורות, לתלמידים ולהורים</small><h1>כיתות א'–ג'</h1><p>אותה חלוקה כמו בגן, ברמה של בית ספר: מערכים למורה, משחקים לתלמידים ותרגול קצר בבית. מתחילים בחשבון וברגשות, ועוד מקצועות בדרך.</p><div class="bubble">שָׁלוֹם! אני אֲלֶפְבּוּקְלִי, ויחד עם חֶשְׁבּוּקְלִי נלמד המון ✏️</div></div>
+</section><div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
+<div id="zone"></div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <img class="logo" src="../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+  </div>
+</footer>
+<script src="../common.js"></script>
+<script src="../catalog.js"></script>
+<script>
+const LIST = CATALOG.filter(t => t.aud.includes("s") || t.ages[1] >= 7);
+const OPT = {};
+const SECTIONS = [
+  {id:"open", title:"✨ פתוח עכשיו", filter: t => CAT.state(t) === "open" && !t.book, sort:"open"},
+  {id:"bridge", title:"🌉 המעבר מהגן", filter: t => t.id === "first-grade", sort:"year"},
+  {id:"coming", title:"🛠️ מקצועות בדרך", sub:"לוחצים על \"ספרו לי\" כדי שנדע מה לפתח קודם", filter: t => !t.book, sort:"abc", collapsed:true}
+];
+const sel = document.getElementById("zsort");
+[{k:"", t:"מומלץ"}].concat(CAT.SORTS).forEach(o => { const op = document.createElement("option"); op.value = o.k; op.textContent = o.t; sel.appendChild(op); });
+let SORT = new URLSearchParams(location.search).get("sort") || "";
+sel.value = SORT;
+const render = () => {
+  const secs = SECTIONS.map(s => Object.assign({}, s, SORT ? {sort: SORT} : {}));
+  CAT.sections(document.getElementById("zone"), LIST, secs, OPT);
+  const n = LIST.filter(t => CAT.state(t) === "open").length;
+  document.getElementById("zcount").textContent = n + " תכנים פתוחים · " + LIST.length + " בסך הכל";
+};
+CAT.refresh = render;
+sel.onchange = () => { SORT = sel.value; siteEvent("sort", SORT); render(); };
+render();
+
+siteJoinLinks();
+</script>
+</body>
+</html>

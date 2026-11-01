@@ -955,7 +955,7 @@ var SAVE_HELP =
   '<li>מנקים את היסטוריית הגלישה בדפדפן</li><li>עובדים בחלון גלישה בסתר</li>' +
   '<li>עוברים למחשב אחר או לדפדפן אחר (שם הספר פשוט לא יופיע)</li></ul></div>' +
   '<div class="box"><b>💾 כדי לא לאבד את העבודה:</b> לחצו מדי פעם על "שמירת גיבוי" (למעלה). יורד למחשב קובץ אחד עם כל הספר. כדי להמשיך, גם ממחשב אחר, לוחצים "פתיחת גיבוי" ובוחרים את הקובץ.</div>' +
-  '<p>🔒 התמונות והטקסטים נשארים רק אצלכם. אנחנו לא רואים ולא שומרים כלום, עד שתשלחו לנו את הקבצים להדפסה.</p>';
+  '<p>💾 הספר נשמר בדפדפן במחשב הזה, ולכן כדאי לשמור גיבוי.</p>';
 function showSaveHelp(after){
   var m = modal(SAVE_HELP + '<label style="display:flex;gap:8px;align-items:center;font-size:15px;margin-top:6px"><input type="checkbox" id="noMore"> לא להציג שוב במחשב הזה</label><div class="row"><button class="big-btn" id="okHelp">הבנתי, בואו נתחיל ←</button></div>', { sticky: true });
   m.querySelector("#okHelp").onclick = function(){

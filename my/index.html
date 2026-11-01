@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>המועדפים שלי · booqli Games</title>
+<meta name="description" content="התכנים ששמרת לעתיד, והנושאים שביקשת שנספר לך כשהם נפתחים.">
+<link rel="canonical" href="https://games.booqli.ai/my/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="המועדפים שלי · booqli Games">
+<meta property="og:description" content="התכנים ששמרת לעתיד, והנושאים שביקשת שנספר לך כשהם נפתחים.">
+<meta property="og:url" content="https://games.booqli.ai/my/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – דף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap">
+<nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>❤️ המועדפים שלי</span></nav>
+<section class="zone-hero" style="--zc:#C13671;--zb:#FFE3F4">
+  <img src="../img/family/booqli.webp" alt="" width="120" height="124">
+  <div><small>booqli Games · האזור שלי</small><h1>המועדפים שלי</h1><p>כאן נמצא כל מה ששמרת לעתיד (🤍), והנושאים שביקשת שנספר לך עליהם (🔔).</p></div>
+</section>
+<div id="ready"></div>
+<section class="c-sec"><div class="c-sec-h"><h2>❤️ שמרתי לעתיד</h2></div><div id="favs"></div></section>
+<section class="c-sec"><div class="c-sec-h"><h2>🔔 ביקשתי שיספרו לי</h2><p>כשנושא נפתח, הוא עובר לראש העמוד הזה ולדף הבית. מודיעים גם בקבוצת העדכונים בוואטסאפ.</p></div><div id="notes"></div></section>
+<section class="panel"><h2>💾 איפה זה נשמר?</h2><p>כרגע המועדפים נשמרים בדפדפן במכשיר הזה. בעתיד תהיה הרשמה, ואז המועדפים יישמרו בחשבון ויופיעו בכל מכשיר.</p></section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <img class="logo" src="../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+  </div>
+</footer>
+<script src="../common.js"></script>
+<script src="../catalog.js"></script>
+<script>
+const empty = (t, a, h) => '<section class="panel" style="text-align:center;margin-top:0"><p>' + t + '</p><div class="quick" style="justify-content:center"><a href="' + h + '">' + a + '</a></div></section>';
+const render = () => {
+  const favs = CAT.favs().map(CAT.byId).filter(Boolean);
+  const notes = CAT.notifies().map(n => CAT.byId(n.id)).filter(Boolean);
+  const fv = document.getElementById("favs"); fv.innerHTML = "";
+  if (favs.length) fv.appendChild(CAT.grid(favs, {onChange: render})); else fv.innerHTML = empty("עוד לא שמרת כלום. בכל כרטיס פתוח יש כפתור 🤍 לשמור.", "🔍 לכל התכנים", "../library/");
+  const ready = notes.filter(t => CAT.stateReal(t) === "open"), wait = notes.filter(t => CAT.stateReal(t) !== "open");
+  const rd = document.getElementById("ready"); rd.innerHTML = "";
+  if (ready.length) { const s = document.createElement("section"); s.className = "c-sec"; s.innerHTML = '<div class="c-sec-h"><h2>🎉 נפתח בשבילך!</h2><p>ביקשת שנספר לך, וזה כבר פתוח:</p></div>'; s.appendChild(CAT.grid(ready, {onChange: render})); rd.appendChild(s); }
+  const nt = document.getElementById("notes"); nt.innerHTML = "";
+  if (wait.length) nt.appendChild(CAT.grid(wait, {onChange: render})); else nt.innerHTML = empty("אין כרגע בקשות. בכל נושא שעוד לא נפתח יש כפתור 🔔 ספרו לי.", "🛠️ מה בדרך", "../teachers/#coming");
+};
+CAT.refresh = render;
+render();
+siteJoinLinks();
+</script>
+</body>
+</html>

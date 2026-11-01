@@ -3,11 +3,13 @@
      אם אין אינטרנט – הגרסה האחרונה ששמורה בטלפון, ואם אין – דף "אין חיבור".
    - תמונות וגופנים: מהטלפון מיד (מהיר), ומתעדכנים ברקע.
    מעלים את VERSION רק כשמשנים את הקובץ הזה עצמו. */
-var VERSION = "booqli-v2";
+var VERSION = "booqli-v3";
 var CORE = [
   "/",
   "/offline.html",
   "/common.js",
+  "/catalog.js",
+  "/site.css",
   "/manifest.webmanifest",
   "/img/app/icon-192.png",
   "/img/logo.png",
