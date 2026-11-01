@@ -31,6 +31,133 @@ function siteOwner(){ try { return siteOwnerDevice() && localStorage.getItem("bo
   document.head.appendChild(s);
 })();
 
+/* ======================== מצב ילדים נעול (מ-1.11.2026) ========================
+   הורה מפעיל (בעמוד האפליקציה app/ או באזור הילדים) ובוחר קוד של 4 ספרות. מאז, במכשיר הזה:
+   רק אזור הילדים (kids/, kids/play/), משחקי הנושאים במצב ילדים (topics/<id>/?play=1) ומשחקי ספרי BOOQLI (games/).
+   כל קישור אחר, וואטסאפ, אתר BOOQLI, שיתוף וחלונות קופצים – חסומים. יציאה: כפתור 🔒 בפינה + הקוד של ההורה
+   (שכחתם? תרגיל כפל להורים). נשמר רק בדפדפן: booqli_kidlock = {on, h (טביעת הקוד), t}.
+   מה שהאתר לא יכול לחסום (כפתור הבית של הטלפון) – בהסבר בעמוד app/: "גישה מודרכת" באייפון, "הצמדת אפליקציה" באנדרואיד. */
+var SITE_KL_KEY = "booqli_kidlock";
+function siteKidLock(){ try { var o = JSON.parse(localStorage.getItem(SITE_KL_KEY) || "null"); return o && o.on ? o : null; } catch (e) { return null; } }
+function siteKidAllowed(href){
+  var u; try { u = new URL(href, location.href); } catch (e) { return false; }
+  if (u.origin !== location.origin) return false;
+  var p = u.pathname;
+  if (/^\/kids(\/|$)/.test(p) || /^\/games\/[^/]+(\/|\/index\.html)?$/.test(p) || p === "/offline.html") return true;
+  if (/^\/topics\/[^/]+(\/|\/index\.html)?$/.test(p)) return /[?&]play=1(&|$)/.test(u.search);
+  return false;
+}
+function siteKidHash(pin){
+  var txt = "booqli-kid:" + String(pin || "").replace(/\D/g, "");
+  if (window.crypto && crypto.subtle && window.TextEncoder) return crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join(""); });
+  var h = 0; for (var i = 0; i < txt.length; i++) h = (h * 31 + txt.charCodeAt(i)) | 0; return Promise.resolve("s" + h);
+}
+(function siteKidGuard(){
+  if (!siteKidLock()) return;
+  document.documentElement.classList.add("bq-kidlock");
+  var fix = function(){
+    if (siteKidAllowed(location.href)) return false;
+    window.__bqKlGo = true; // כבר בדרך לעמוד אחר – שום בדיקה אחרת לא מפנה שוב
+    var u = new URL(location.href);
+    if (/^\/topics\/[^/]+(\/|\/index\.html)?$/.test(u.pathname)) { u.searchParams.set("play", "1"); location.replace(u.toString()); }
+    else location.replace("/kids/");
+    return true;
+  };
+  if (fix()) return;
+  window.addEventListener("pageshow", function(e){ if (e.persisted) fix(); });
+  var css = document.createElement("style");
+  css.textContent = "html.bq-kidlock .bq-nav,html.bq-kidlock .bq-doors,html.bq-kidlock .crumbs,html.bq-kidlock header .gan,html.bq-kidlock header .btn-wa,html.bq-kidlock .sponsor," +
+    "html.bq-kidlock .bq-teach,html.bq-kidlock .bookbox,html.bq-kidlock .share,html.bq-kidlock .kg-win .book,html.bq-kidlock footer,html.bq-kidlock .foot,html.bq-kidlock .site-legal,html.bq-kidlock .site-copy," +
+    "html.bq-kidlock .devbar,html.bq-kidlock .backbar,html.bq-kidlock .js-gift,html.bq-kidlock .btn-gift,html.bq-kidlock .js-wa,html.bq-kidlock .bq-owner,html.bq-kidlock .bq-appbar,html.bq-kidlock .bq-join," +
+    "html.bq-kidlock a[target=_blank],html.bq-kidlock .room-lock,html.bq-kidlock .like-btn,html.bq-kidlock .fav,html.bq-kidlock .c-act,html.bq-kidlock #ganLink,html.bq-kidlock #waLink{display:none!important}" +
+    ".bq-klbtn{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:190;border:0;border-radius:999px;background:#2B1526;color:#fff;font:800 14px Assistant,Arial,sans-serif;padding:9px 14px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;opacity:.85}" +
+    ".bq-kltoast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:195;background:#2B1526;color:#fff;font:800 15px Assistant,Arial,sans-serif;border-radius:999px;padding:9px 18px;direction:rtl;pointer-events:none}" +
+    "@media print{.bq-klbtn,.bq-kltoast{display:none}}";
+  document.head.appendChild(css);
+  var toast = function(){ var t = document.querySelector(".bq-kltoast"); if (t) t.remove(); t = document.createElement("div"); t.className = "bq-kltoast"; t.textContent = "🔒 מצב ילדים – רק משחקים"; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 1800); };
+  // קישורים: רק בתוך אזור הילדים
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest("a[href]"); if (!a) return;
+    var h = a.getAttribute("href") || "";
+    if (h.charAt(0) === "#" || /^javascript:/i.test(h)) return;
+    if (!siteKidAllowed(a.href) || a.target === "_blank") { e.preventDefault(); e.stopImmediatePropagation(); toast(); }
+  }, true);
+  // וואטסאפ, שיתוף וחלונות חדשים מתוך המשחקים
+  window.open = function(){ toast(); return null; };
+  try { if (navigator.share) navigator.share = function(){ toast(); return Promise.reject(new Error("kidlock")); }; } catch (e) {}
+  // כפתור "חזרה" של הטלפון בעמוד הבית של הילדים – נשארים בפנים
+  if (/^\/kids\/?(index\.html)?$/.test(location.pathname)) {
+    try { history.pushState({bqkl: 1}, "", location.href); } catch (e) {}
+    window.addEventListener("popstate", function(){ try { history.pushState({bqkl: 1}, "", location.href); } catch (e) {} });
+  }
+  var add = function(){
+    var b = document.createElement("button"); b.type = "button"; b.className = "bq-klbtn"; b.textContent = "🔒 הורים";
+    b.setAttribute("aria-label", "יציאה ממצב ילדים – להורים בלבד");
+    b.onclick = siteKidLockExit; document.body.appendChild(b);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
+})();
+/* חלון משותף להפעלה וליציאה */
+function siteKidModal(html){
+  var css = document.getElementById("bqKlCss");
+  if (!css) { css = document.createElement("style"); css.id = "bqKlCss";
+    css.textContent = ".bq-klm{position:fixed;inset:0;z-index:220;background:rgba(43,21,38,.6);display:flex;align-items:center;justify-content:center;padding:16px;direction:rtl;font-family:Assistant,Arial,sans-serif}" +
+      ".bq-klm .c{background:#fff;color:#2B1526;border-radius:26px;max-width:420px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:22px 20px 18px;text-align:center;position:relative}" +
+      ".bq-klm .c::before{content:'';position:absolute;inset:0 0 auto 0;height:9px;border-radius:26px 26px 0 0;background:linear-gradient(90deg,#FF56C2,#FFC93C,#6F988B)}" +
+      ".bq-klm .ic{font-size:46px;line-height:1.1}.bq-klm h2{font-family:Fredoka,Assistant,sans-serif;font-size:24px;margin:4px 0 6px;color:#C13671}" +
+      ".bq-klm p{margin:4px 0 10px;color:#6b5a66;font-size:15.5px;line-height:1.45}.bq-klm ul{text-align:right;margin:0 0 12px;padding:0 18px 0 0;font-size:15px;line-height:1.5}" +
+      ".bq-klm label{display:block;font-weight:800;margin:8px 0 4px}" +
+      ".bq-klm input{width:170px;font:700 28px Fredoka,Assistant,sans-serif;letter-spacing:8px;text-align:center;border:3px solid #CDE7DC;border-radius:16px;padding:6px;direction:ltr}" +
+      ".bq-klm input:focus{outline:none;border-color:#FF56C2}" +
+      ".bq-klm .go{display:block;width:100%;margin-top:14px;border:0;border-radius:999px;background:#E0399F;color:#fff;font:800 18px Assistant,Arial,sans-serif;padding:13px;cursor:pointer;box-shadow:0 3px 0 #A3216F}" +
+      ".bq-klm .no{margin-top:10px;border:0;background:none;color:#4E8576;font:800 15px Assistant,Arial,sans-serif;cursor:pointer;text-decoration:underline}" +
+      ".bq-klm .msg{min-height:22px;font-weight:800;color:#C13671;margin-top:8px}";
+    document.head.appendChild(css); }
+  var m = document.createElement("div"); m.className = "bq-klm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+  m.innerHTML = '<div class="c">' + html + '</div>'; document.body.appendChild(m);
+  m.addEventListener("click", function(e){ if (e.target === m || e.target.closest(".no[data-close]")) m.remove(); });
+  var f = m.querySelector("input"); if (f) try { f.focus(); } catch (e) {}
+  return m;
+}
+function siteKidLockStart(){
+  if (siteKidLock()) { location.href = "/kids/"; return; }
+  var m = siteKidModal('<div class="ic" aria-hidden="true">🔒</div><h2>מצב ילדים</h2>' +
+    '<p>מעבירים את הטלפון לילד בראש שקט:</p><ul><li>רק <b>אזור הילדים</b> – כל המשחקים, בכל הגילאים.</li><li>בלי וואטסאפ, בלי קישורים החוצה ובלי חלונות קופצים.</li><li>כדי לצאת צריך את <b>הקוד של ההורה</b>.</li></ul>' +
+    '<form novalidate><label for="klP1">בוחרים קוד של 4 ספרות (להורים)</label><input id="klP1" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" type="password">' +
+    '<label for="klP2">ושוב, לאישור</label><input id="klP2" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" type="password">' +
+    '<div class="msg" aria-live="polite"></div><button type="submit" class="go">🔒 להפעיל מצב ילדים</button></form>' +
+    '<button type="button" class="no" data-close>ביטול</button>');
+  m.querySelector("form").onsubmit = function(e){
+    e.preventDefault();
+    var a = m.querySelector("#klP1").value.replace(/\D/g, ""), b = m.querySelector("#klP2").value.replace(/\D/g, ""), msg = m.querySelector(".msg");
+    if (a.length !== 4) { msg.textContent = "צריך קוד של 4 ספרות"; return; }
+    if (a !== b) { msg.textContent = "הקודים לא זהים. נסו שוב"; return; }
+    siteKidHash(a).then(function(h){
+      try { localStorage.setItem(SITE_KL_KEY, JSON.stringify({on: 1, h: h, t: Date.now()})); } catch (e2) { msg.textContent = "הדפדפן לא מאפשר לשמור. נסו בדפדפן רגיל"; return; }
+      siteEvent("kidlock", "on"); setTimeout(function(){ location.href = "/kids/"; }, 450);
+    });
+  };
+}
+function siteKidLockExit(){
+  var kl = siteKidLock(); if (!kl) return;
+  var a = 12 + Math.floor(Math.random() * 8), b = 3 + Math.floor(Math.random() * 7);
+  var m = siteKidModal('<div class="ic" aria-hidden="true">👨‍👩‍👧</div><h2>להורים בלבד</h2><p>כדי לצאת ממצב ילדים, מקלידים את הקוד שבחרתם.</p>' +
+    '<form novalidate class="f1"><input id="klIn" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" type="password" aria-label="הקוד של ההורה"><div class="msg" aria-live="polite"></div><button type="submit" class="go">🔓 יציאה ממצב ילדים</button></form>' +
+    '<button type="button" class="no" id="klForgot">שכחתי את הקוד</button><br><button type="button" class="no" data-close>חזרה למשחקים</button>');
+  var off = function(){ try { localStorage.removeItem(SITE_KL_KEY); } catch (e) {} siteEvent("kidlock", "off"); location.href = "/"; };
+  m.querySelector(".f1").onsubmit = function(e){
+    e.preventDefault(); var v = m.querySelector("#klIn").value, msg = m.querySelector(".msg");
+    siteKidHash(v).then(function(h){ if (h === kl.h) off(); else { msg.textContent = "הקוד לא נכון"; m.querySelector("#klIn").value = ""; } });
+  };
+  m.querySelector("#klForgot").onclick = function(){
+    m.querySelector(".c").innerHTML = '<div class="ic" aria-hidden="true">🧮</div><h2>שאלה להורים</h2><p>כמה זה ' + a + ' × ' + b + '?</p>' +
+      '<form novalidate class="f2"><input id="klM" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="התשובה"><div class="msg" aria-live="polite"></div><button type="submit" class="go">🔓 יציאה ממצב ילדים</button></form>' +
+      '<button type="button" class="no" data-close>חזרה למשחקים</button>';
+    m.querySelector(".f2").onsubmit = function(e){ e.preventDefault(); if (+m.querySelector("#klM").value === a * b) off(); else { m.querySelector(".msg").textContent = "לא נכון. נסו שוב"; m.querySelector("#klM").value = ""; } };
+    try { m.querySelector("#klM").focus(); } catch (e) {}
+  };
+}
+
 /* רישום פעולה (למשל לייק) כביקור בכתובת וירטואלית, כדי שיופיע בלוח המדידה.
    הכתובת מתחלפת לרגע וחוזרת מיד, הדף עצמו לא נטען מחדש. */
 var SITE_DIR = location.pathname.replace(/[^/]*$/, ""), siteVirtual = null, siteTimer = null;
@@ -221,8 +348,10 @@ function sitePlay(id){
   siteEvent("play", id);
 }
 function siteCodeGate(){
+  if (window.__bqKlGo) return;
   var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
   // משחקי ילדים: פתוחים מיד, גם לפני תאריך הפתיחה של הנושא (בקשת שמש 1.11.2026). סגירת עונה עדיין חלה.
+  if (id && siteKidLock() && (!siteKidsGames(id).length || document.querySelector(".closed-box"))) { location.replace("/kids/"); return; }
   if (sitePlayMode() && siteKidsGames(id).length && !document.querySelector(".closed-box")) { sitePlay(id); return; }
   if (siteIsSoon(id)) { var mm = document.querySelector("main"); if (mm && !document.querySelector(".soon-gate")) siteSoonGate(id, mm); return; }
   if (!siteIsLocked(id) || siteUnlocked() || document.querySelector(".closed-box")) return;
@@ -298,6 +427,7 @@ function siteCodeGate(){
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 function siteJoinPopup(){
+  if (siteKidLock()) return;
   var qs = location.search || "";
   if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
@@ -803,6 +933,7 @@ function siteInstall(where){
    פעם אחת בכל ביקור (לא בכל עמוד). לא באזור הילדים, לא בדפי הדפסה, לא בתוך האפליקציה, לא במכשיר של שמש.
    במחשב – רק כשהדפדפן מאפשר התקנה. לא קופץ יחד עם חלון הוואטסאפ או המספר הסודי. בדיקה: ?appbar=1 */
 function siteAppBar(){
+  if (siteKidLock()) return;
   var force = /[?&]appbar=1/.test(location.search);
   if (siteIsStandalone() || (siteOwnerDevice() && !force) || /[?&]sheet=/.test(location.search) || /^\/(kids|app)\/|\/offline\.html$/.test(location.pathname)) return;
   var st = {};

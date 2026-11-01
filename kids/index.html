@@ -62,7 +62,7 @@
   <img src="../img/family/booqli.webp" alt="" width="120" height="124">
   <div><small>booqli Games · לילדים</small><h1>בּוֹאוּ נְשַׂחֵק!</h1>
   <p>בוחרים חבר מהמשפחה של בּוּקְלִי, ומשחקים. לוחצים על 🔊 כדי לשמוע.</p>
-  <button type="button" class="btn-main" id="sayHi" style="margin-top:10px">🔊 שָׁלוֹם!</button></div>
+  <button type="button" class="btn-main" id="sayHi" style="margin-top:10px">🔊 שָׁלוֹם!</button> <button type="button" class="btn-sec room-lock" id="lockBtn" style="margin-top:10px">🔒 מצב ילדים (להורים)</button></div>
 </section>
 <section class="agepick" aria-labelledby="apT">
   <h2 id="apT">בֶּן אוֹ בַּת כַּמָּה? <button type="button" class="say-btn" id="sayAge" aria-label="להקריא">🔊</button></h2>
@@ -133,6 +133,7 @@ document.getElementById("ggrid").addEventListener("click", e => { const a = e.ta
 document.getElementById("sayAge").onclick = () => say("בן או בת כמה? בוחרים את הגיל, ומשחקים!");
 const OPT = {host: false, kids: true};
 const say = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch(e){} };
+document.getElementById("lockBtn").onclick = () => siteKidLockStart();
 document.getElementById("sayHi").onclick = () => say("שלום! אני בּוּקְלִי. בוחרים חבר מהמשפחה שלי, ומשחקים!");
 const SECTIONS = CAT.HOST_ORDER.map(k => ({id:"h-" + k, title:'<img src="../' + CAT.HOSTS[k].img + '" alt="" width="54" height="56" style="vertical-align:middle;margin-inline-end:8px">' + CAT.HOSTS[k].name + ' <span style="font-size:.7em;color:#6b5a66">· ' + CAT.HOSTS[k].role + '</span> <button type="button" class="say" data-k="' + k + '" aria-label="להקריא" style="border:0;background:#fff;border-radius:999px;width:40px;height:40px;font-size:20px;cursor:pointer;box-shadow:0 2px 0 #CDE7DC">🔊</button>',
   filter: t => t.host === k && CAT.kidState(t) !== "soon" && !t.book, sort:"open"}));

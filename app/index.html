@@ -150,6 +150,19 @@ footer p{margin:4px 0}
     </div>
   </section>
 
+  <!-- מצב ילדים נעול (1.11.2026) -->
+  <section class="card" id="kidmode" aria-labelledby="kmT" style="text-align:center">
+    <div style="font-size:46px;line-height:1.1" aria-hidden="true">👶🔒</div>
+    <h2 id="kmT" style="font-size:24px;color:var(--sage-deep);margin:4px 0 6px">מצב ילדים</h2>
+    <p style="max-width:520px;margin:0 auto">נותנים לילד את הטלפון? מפעילים <b>מצב ילדים</b>: הוא יוכל לשחק בכל המשחקים, בכל הגילאים – אבל <b>רק באזור הילדים</b>. בלי וואטסאפ, בלי קישורים החוצה ובלי חלונות קופצים. כדי לצאת צריך <b>קוד שרק אתם יודעים</b>.</p>
+    <button class="btn-main" id="kidBtn" type="button">🔒 להפעלת מצב ילדים</button>
+    <details style="text-align:right;margin-top:16px"><summary>💡 רוצים שהילד גם לא יוכל לצאת מהאפליקציה?</summary>
+      <p>מצב ילדים שומר על הילד בתוך אזור הילדים. כדי שגם כפתור הבית של הטלפון לא יוציא אותו מהאפליקציה, יש בכל טלפון נעילה מובנית (השמות משתנים מעט בין הטלפונים):</p>
+      <p><b>🍎 אייפון – "גישה מודרכת":</b> הגדרות ← נגישות ← גישה מודרכת ← מפעילים ובוחרים קוד. פותחים את האפליקציה, לוחצים 3 פעמים על הכפתור הצדדי (או על כפתור הבית) ← "התחל". ליציאה: שוב 3 לחיצות ומקלידים את הקוד.</p>
+      <p><b>🤖 אנדרואיד – "הצמדת אפליקציה":</b> הגדרות ← אבטחה (לפעמים בתוך "הגדרות נוספות") ← הצמדת אפליקציה ← מפעילים. פותחים את האפליקציה ← מסך האפליקציות האחרונות ← לוחצים על האייקון שלה ← "הצמדה". ליציאה: לוחצים יחד לחיצה ארוכה על "חזרה" ו"סקירה" (או מחליקים למעלה ומחזיקים).</p>
+    </details>
+  </section>
+
   <!-- הוראות לפי מכשיר -->
   <section class="card" id="how" aria-labelledby="howT">
     <h2 id="howT" style="text-align:center;font-size:24px;color:var(--sage-deep);margin-bottom:10px">איך מתקינים? 3 צעדים</h2>
@@ -254,6 +267,7 @@ $("copyBtn").onclick = () => {
 $("shareBtn").onclick = () => { siteEvent("app", "share"); waSend("📲 גילית כבר? יש אפליקציה ל-booqli Games!\nמשחקים, דפי עבודה ומערכים לגן לפי לוח השנה – אייקון על המסך שנפתח בלחיצה אחת.\nמתקינים ישירות מהאתר, בחינם, בחסות BOOQLI 👇\n" + APP_URL + "?utm_source=whatsapp&utm_medium=gan_share&utm_campaign=app"); };
 
 siteJoinLinks(); siteDevBar(); siteBackBar("../");
+document.getElementById("kidBtn").onclick = function(){ siteKidLockStart(); };
 </script>
 </body>
 </html>
