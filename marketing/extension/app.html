@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>בוקלי – מרכז הפרסום</title>
+<link rel="icon" href="icons/icon32.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <img src="icons/logo.png" alt="BOOQLI" class="logo" width="95" height="40">
+  <div class="ttl"><b>מרכז הפרסום</b><span id="sub">booqli Games</span></div>
+  <nav id="tabs">
+    <button data-v="today" class="on">📌 היום</button>
+    <button data-v="month">📅 לוח החודש</button>
+    <button data-v="topics">🗂️ נושאים וטקסטים</button>
+    <button data-v="camps">📣 קמפיינים</button>
+    <button data-v="guide">🧭 האסטרטגיה</button>
+    <button data-v="settings">⚙️ הגדרות</button>
+  </nav>
+</header>
+<main id="main"></main>
+<div id="toast" role="status"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
