@@ -149,6 +149,9 @@ button{cursor:pointer}
 .lowres{color:#B26A00;font-size:13px;font-weight:700;background:#FFF3D6;border-radius:10px;padding:6px 8px;margin-top:6px}
 @media (max-width:1150px){.ed{grid-template-columns:230px 1fr 215px}.top .title{width:150px}}
 </style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../common.js" as="script">
 </head>
 <body>
 <div class="bq-join" hidden></div><!-- מונע את חלון ההצטרפות בזמן העבודה בעורך -->
@@ -212,7 +215,7 @@ button{cursor:pointer}
 <!-- ===== העורך ===== -->
 <div class="ed hidden" id="ed">
   <header class="top">
-    <img class="logo" src="../img/logo-dark.png" alt="BOOQLI">
+    <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40">
     <input class="title" id="title" aria-label="שם הספר" maxlength="60">
     <span class="status" id="status">✓ נשמר במחשב</span>
     <button class="tbtn" id="undo" title="ביטול (Ctrl+Z)">↶ ביטול</button>

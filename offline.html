@@ -17,6 +17,9 @@ p{color:var(--muted);font-family:Assistant,Arial,sans-serif;font-size:17px;line-
 button{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:13px 24px;font:inherit;font-weight:700;font-size:18px;cursor:pointer;box-shadow:0 4px 0 var(--pink-shadow)}
 a{color:var(--sage-deep);font-weight:700}
 </style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="/common.js" as="script">
 </head>
 <body>
 <div class="pg"><div class="c">

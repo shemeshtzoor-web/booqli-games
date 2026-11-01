@@ -798,3 +798,13 @@ function siteAppBar(){
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
 })();
+
+/* ======================== בלי "קפיצות" בטעינה (מ-1.11.2026) ========================
+   הסרגלים העליונים (BOOQLI, הדלתות) והפסים שמתחת לכותרת (חזרה, "זמין עד", בפיתוח) נוספים בקוד.
+   קודם הם נוספו אחרי שהעמוד כבר הוצג, וכל התוכן "קפץ" למטה (CLS גרוע בלוח המדידה).
+   עכשיו כל עמוד מסתיר את עצמו לרגע (קטע קטן ב-<head>), וכאן מציגים אותו מיד כשהכל במקום.
+   גיבוי: אם הקובץ הזה לא נטען – העמוד מוצג לבד אחרי 1.5 שניות. עמוד חדש: להעתיק את הקטע מה-<head> של עמוד קיים. */
+(function siteReveal(){
+  function show(){ document.documentElement.classList.add("bq-ready"); }
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", show); else show();
+})();

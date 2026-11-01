@@ -230,12 +230,15 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
 </head>
 <body>
 
 <header>
   <div class="wrap brand">
-    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI"></a>
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
     <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
     <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
   </div>
@@ -413,7 +416,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 <footer>
   <div class="wrap">
-    <img class="logo" src="../../img/logo.png" alt="BOOQLI">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
     <p>כל הפעילויות, הטקסטים והאיורים מקוריים · אתר בטוח להורים ולילדים</p>
     <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>

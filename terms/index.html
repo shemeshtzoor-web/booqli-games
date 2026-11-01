@@ -18,6 +18,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../site.css">
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../common.js" as="script">
 </head>
 <body>
 <header class="top">
