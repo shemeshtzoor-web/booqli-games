@@ -124,13 +124,6 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .pbar i.on{background:var(--pink)}
 .note{font-size:14px;color:var(--muted);margin:10px 0 0;text-align:center}
 
-/* ===== סרטון ===== */
-.yt{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#2B1526}
-.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.yt button{position:absolute;inset:0;border:0;padding:0;cursor:pointer;background:none;width:100%;height:100%}
-.yt button img{width:100%;height:100%;object-fit:cover;display:block}
-.yt .ytplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;background:#E0399F;color:#fff;font-size:36px;display:grid;place-items:center;border:4px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.25);padding-inline-start:6px}
-.yt .ytlab{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(43,21,38,.75);color:#fff;border-radius:999px;padding:6px 14px;font-weight:800;white-space:nowrap;font-size:15px}
 
 /* ===== פרח ונר ===== */
 .breath{background:linear-gradient(160deg,#FFF0F8,#F4EEFF 60%,#fff);border-radius:22px;padding:14px 10px 16px;text-align:center}
@@ -294,7 +287,7 @@ body>footer p{margin:4px 0}body>footer .logo{height:40px;margin:0 auto 10px}body
         <p class="by">ספר קטן להבנת הפחד ולהתמודדות בריאה · סיפור: שמש צור · ייעוץ מקצועי: אורית מיכאלי · עריכה לשונית: גילת עירון־בהר</p>
         <p class="lead">הפחד מספר לילדים את הסיפור שלו: הוא בכלל לא אויב – הוא חבר קצת לחוץ שבא לשמור עלינו. כאן תמצאו את הספר כולו עם הקראה, נשימת "פרח ונר", כרטיס "מה עוזר לי", ומה עושים כשיש אזעקה.</p>
         <div class="pills">
-          <span class="open">🔓 פתוח תמיד לכולם</span><span>📖 הספר המלא + הקראה</span><span>🎬 סרטון</span><span>🌸 פרח ונר</span><span>📲 עובד גם בלי אינטרנט</span><span>👧 גילאי 3–8</span>
+          <span class="open">🔓 פתוח תמיד לכולם</span><span>📖 הספר המלא + הקראה</span><span>📥 להורדה</span><span>🌸 פרח ונר</span><span>📲 עובד גם בלי אינטרנט</span><span>👧 גילאי 3–8</span>
         </div>
         <div class="acts">
           <a class="btn-red" href="#now">🚨 יש אזעקה עכשיו?</a>
@@ -308,7 +301,7 @@ body>footer p{margin:4px 0}body>footer .logo{height:40px;margin:0 auto 10px}body
     <nav class="menu" aria-label="מה יש בעמוד">
       <a class="red" href="#now"><span>🚨</span>באזעקה</a>
       <a href="#book"><span>📖</span>הספר</a>
-      <a href="#video"><span>🎬</span>סרטון</a>
+      <a href="#print-sheets"><span>🖨️</span>להדפסה</a>
       <a href="#breathe"><span>🌸</span>פרח ונר</a>
       <a href="#helps"><span>💛</span>מה עוזר לי</a>
       <a href="#ready"><span>📲</span>שיהיה זמין</a>
@@ -347,12 +340,6 @@ body>footer p{margin:4px 0}body>footer .logo{height:40px;margin:0 auto 10px}body
       </div>
     </div>
     <p class="note">ההקראה בקול ממוחשב של הטלפון או המחשב. אם לא שומעים – בודקים שהקול פתוח, או מקריאים בעצמכם 💛</p>
-  </section>
-
-  <section class="act" id="video" style="--c:#FF56C2;--b:#FFE3F4">
-    <div class="act-h"><span class="e" aria-hidden="true">🎬</span><div><small>כ-5 דקות · צריך אינטרנט</small><h2>הספר בסרטון</h2></div></div>
-    <p class="intro">אחרי שהספר הופץ בחינם, הוא הגיע לסרטון מוקרא ששותף איתנו – תודה למי שיצר אותו 💛 בלי אינטרנט? לחצו ▶️ הקראה בספר שלמעלה.</p>
-    <div class="yt" id="yt"><button type="button" id="ytBtn" aria-label="לצפייה בסרטון"></button></div>
   </section>
 
   <section class="act" id="breathe" style="--c:#FF56C2;--b:#FFE3F4">
@@ -508,8 +495,7 @@ const CONFIG = {
   books: "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=book_box&utm_campaign=fear-book",
   article: "https://www.booqli.ai/he/articles/%D7%9E%D7%94-%D7%90%D7%AA%D7%94-%D7%A2%D7%95%D7%A9%D7%94-%D7%9B%D7%90%D7%9F-%D7%A4%D7%97%D7%93?utm_source=booqli_games&utm_medium=site&utm_campaign=fear-book",
   order: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אשמח להזמין את הספר המודפס \"מה אתה עושה כאן, פחד?\" 📕"),
-  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫"),
-  youtube: "A50Kj2yn_N4"
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
 };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -594,15 +580,6 @@ let touchX = null;
 $("art").addEventListener("touchstart", e => touchX = e.touches[0].clientX, {passive:true});
 $("art").addEventListener("touchend", e => { if (touchX === null) return; const d = e.changedTouches[0].clientX - touchX; touchX = null; if (Math.abs(d) > 50) (d > 0 ? $("bNext") : $("bPrev")).click(); }, {passive:true});
 
-/* ======================== סרטון (נטען רק בלחיצה) ======================== */
-$("ytBtn").innerHTML = `<img src="img/cover-wide.webp" alt="" width="1280" height="720" loading="lazy"><span class="ytplay" aria-hidden="true">▶</span><span class="ytlab">לצפייה בסרטון (צריך אינטרנט)</span>`;
-$("ytBtn").onclick = () => {
-  if (!navigator.onLine){ toast("📶 אין אינטרנט כרגע. לחצו ▶️ הקראה בספר שלמעלה – זה עובד גם בלי אינטרנט."); $("book").scrollIntoView({behavior:"smooth"}); return; }
-  rStop(); rDraw();
-  $("yt").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${CONFIG.youtube}?autoplay=1&rel=0" title="מה אתה עושה כאן, פחד? – הסרטון" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-  siteEvent && siteEvent("fear-video", "safety");
-};
-
 /* ======================== פרח ונר ======================== */
 const B = {round: 0, on: false, token: 0, voice: true, total: 5};
 function brDraw(phase){
@@ -685,7 +662,7 @@ $("hPng").onclick = () => {
 
 /* ======================== שיהיה זמין: שמירה בטלפון ======================== */
 const ROOT = new URL("../../", location.href).href;
-const OFFLINE_URLS = [location.href.split(/[?#]/)[0], ...SLIDES.map((_, i) => new URL(imgSrc(i), location.href).href), new URL("mah-ata-ose-kan-pahad.pdf", location.href).href, new URL("img/cover-wide.webp", location.href).href, new URL("img/kids.webp", location.href).href, ROOT + "common.js", ROOT + "catalog.js", ROOT + "img/logo.png", ROOT + "img/logo-dark.png", ROOT + "offline.html",
+const OFFLINE_URLS = [location.href.split(/[?#]/)[0], ...SLIDES.map((_, i) => new URL(imgSrc(i), location.href).href), new URL("mah-ata-ose-kan-pahad.pdf", location.href).href, new URL("img/kids.webp", location.href).href, ROOT + "common.js", ROOT + "catalog.js", ROOT + "img/logo.png", ROOT + "img/logo-dark.png", ROOT + "offline.html",
   ...[...document.querySelectorAll('link[rel="stylesheet"]')].map(l => l.href)];
 async function saveOffline(silent){
   const m = $("saveMsg");

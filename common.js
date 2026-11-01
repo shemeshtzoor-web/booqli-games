@@ -309,7 +309,7 @@ function siteSoonGate(id, main){
 var SITE_PLAY = /[?&]play=1(&|$)/.test(location.search) && /\/topics\//.test(location.pathname);
 function sitePlayMode(){ return SITE_PLAY; }
 function siteKidsGames(id){ return (window.KIDS_GAMES || []).filter(function(g){ return g.topic === id; }); }
-var SITE_PLAY_KEEP = { "birthday-party": ["games"], math: ["pick", "agePick", "ageArea"], safety: ["now", "video"] };
+var SITE_PLAY_KEEP = { "birthday-party": ["games"], math: ["pick", "agePick", "ageArea"], safety: ["now"] };
 function sitePlay(id){
   var main = document.querySelector("main"); if (!main) return;
   var keep = siteKidsGames(id).map(function(g){ return (g.href.match(/#(.+)$/) || [])[1]; }).filter(Boolean).concat(SITE_PLAY_KEEP[id] || []);
