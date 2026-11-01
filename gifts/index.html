@@ -120,14 +120,15 @@ function supCard(s, o){
     '<div class="btns">' + (wa ? '<a class="btn-wa-big js-sup" data-k="supplier-wa" data-n="' + esc(s.name) + '" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">💬 וואטסאפ</a>' : '') +
     (url ? '<a class="btn-sec js-sup" data-k="supplier-site" data-n="' + esc(s.name) + '" href="' + esc(url) + '" target="_blank" rel="noopener nofollow">🌐 לאתר</a>' : '') + '</div></article>';
 }
+const BQ = ["birthday", "end-of-year"]; /* הספר של BOOQLI מוצג רק כמתנה ליום הולדת ולסוף שנה */
 const GANMSG = o => "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן, כמתנה ל" + o.name + " 🎁");
 function renderOcc(o){
   document.title = "מתנות ל" + o.name + " לגן · ספקיות · booqli Games";
   $("oIc").textContent = o.ic; $("oName").textContent = "מתנות ל" + o.name; $("oDesc").textContent = o.desc || ""; $("oWhen").textContent = (o === NEXT ? "הקרוב · " : "") + when(o);
   $("crRoot").insertAdjacentHTML("afterend", ' <span aria-hidden="true">›</span> <span>' + o.ic + " " + esc(o.name) + '</span>');
   const list = SUP.filter(s => (s.gifts || []).includes(o.id));
-  $("oList").innerHTML = list.map(s => supCard(s, o)).join("") +
-    '<article class="sup bq"><span class="tag">⭐ מבית BOOQLI</span><h3>📖 ספר אישי לכל ילד בגן</h3><p class="sells">ספר שהילד הוא הגיבור שלו: השם שלו לאורך העלילה ואיורים אישיים. מתנה ל' + esc(o.name) + ' שנשארת לשנים, במחירים סיטונאיים לגנים.</p><div class="btns"><a class="btn-main" style="color:#fff" href="' + GANMSG(o) + '" target="_blank" rel="noopener">💬 הצעת מחיר</a></div></article>' +
+  $("oList").innerHTML = (!list.length && !BQ.includes(o.id) ? '<article class="sup"><h3>🌱 הספקיות בדרך</h3><p class="sells">אנחנו מצרפות ספקיות למתנות ל' + esc(o.name) + ' בימים אלה. רוצים לדעת כשיש? הצטרפו לעדכונים בוואטסאפ.</p><div class="btns"><a class="btn-wa-big js-wa" href="' + SITE.whatsappGroup + '" target="_blank" rel="noopener">💬 לעדכונים</a></div></article>' : '') + list.map(s => supCard(s, o)).join("") +
+    (BQ.includes(o.id) ? '<article class="sup bq"><span class="tag">⭐ מבית BOOQLI</span><h3>📖 ספר אישי לכל ילד בגן</h3><p class="sells">ספר שהילד הוא הגיבור שלו: השם שלו לאורך העלילה ואיורים אישיים. מתנה ל' + esc(o.name) + ' שנשארת לשנים, במחירים סיטונאיים לגנים.</p><div class="btns"><a class="btn-main" style="color:#fff" href="' + GANMSG(o) + '" target="_blank" rel="noopener">💬 הצעת מחיר</a></div></article>' : '') +
     (spotsLeft() > 0 ? '<article class="sup free"><h3>✨ מקום פנוי לספקית</h3><p>מוכרת מתנות ל' + esc(o.name) + '? כאן גננות וועדי הורים יראו אותך.</p><div class="btns"><a class="btn-sec" href="#join">🙋‍♀️ להצטרף</a></div></article>' : '');
   $("oMore").innerHTML = '<a href="./">🎁 כל המועדים</a>' + [...dated, ...always].filter(x => x !== o).map(x => '<a href="?gift=' + x.id + '">' + x.ic + ' ' + esc(x.name) + '</a>').join("");
   $("oShare").onclick = () => { siteEvent("gift-share", o.id); CAT.wa("🎁 ספקיות מתנות ל" + o.name + " לגן, במקום אחד, עם וואטסאפ ישיר לכל ספקית.\nבחינם, בחסות BOOQLI ❤️\nhttps://games.booqli.ai/gifts/?gift=" + o.id + "&utm_source=whatsapp&utm_medium=share_vaad&utm_campaign=gifts"); };
