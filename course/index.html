@@ -73,6 +73,19 @@ section{margin-top:36px}
 .gain b{display:block;font-size:19px}
 .gain p{margin:3px 0 0;color:var(--muted);font-size:16.5px}
 
+.costs{padding:18px 16px}
+.costs .row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 4px;border-bottom:1px dashed #e3d5de}
+.costs .row b{color:var(--magenta);white-space:nowrap}
+.costs .row em{font-style:normal;font-weight:800;color:var(--sage-deep);font-size:15.5px;white-space:nowrap}
+.costs .head{font-weight:800;color:var(--muted);font-size:15px;border-bottom:2px solid var(--mint-2)}
+.costs .total{border-bottom:0;font-weight:800;font-size:20px}
+.costs .total b{font-size:22px;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--sage-deep)}
+.costs .vs{margin-top:10px;background:var(--mint);border-radius:18px;padding:14px 16px;text-align:center}
+.costs .vs small{display:block;font-weight:700;color:var(--sage-deep);font-size:16px}
+.costs .vs b{font-family:Fredoka,sans-serif;font-size:44px;color:var(--magenta);line-height:1.1}
+.costs .vs .plus{font-weight:800;margin-top:6px}
+.costs .note{font-size:14px;color:var(--muted);margin:12px 0 0}
+@media (max-width:520px){.costs .row{grid-template-columns:minmax(0,1fr) auto}.costs .row em{grid-column:1/-1;margin-top:-6px}.costs .head span:nth-child(3){display:none}}
 .save{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .save div{background:#fff;border-radius:20px;padding:16px 10px;text-align:center;box-shadow:0 4px 16px rgba(78,133,118,.12)}
 .save b{display:block;font-size:30px}
@@ -157,11 +170,11 @@ section{margin-top:36px}
 <div class="hero">
   <div>
     <span class="tag">✍️ קורס בזום · עם שמש צור, סופרת הילדים הראשית של BOOQLI</span>
-    <h1>יש לכם כתב יד שמחכה במגירה?<span>עכשיו תלמדו להוציא אותו לאור בעצמכם, בקלות ובחיסכון גדול</span></h1>
-    <p class="lead">כתב יד, סיפור לנכדים או חיבור שרציתם מזמן להוציא לאור? בקורס "כל אחד יכול להיות סופר" תלמדו להיעזר בכלי בינה מלאכותית כדי להפוך אותו לספר ילדים מאויר ומודפס, בלי לשלם להוצאה לאור, למאיירת ולמעמדת. לומדים גם כתיבה יוצרת, עלילה וחרוזים, ובסוף מדפיסים, בונים דף לספר ויוצאים למכור.</p>
+    <h1>יש לכם כתב יד שמחכה במגירה?<span>עכשיו תלמדו להוציא אותו לאור בעצמכם, בקלות ובחיסכון של אלפי שקלים</span></h1>
+    <p class="lead">כתב יד, סיפור לנכדים או חיבור שרציתם מזמן להוציא לאור? בקורס "כל אחד יכול להיות סופר" תלמדו להיעזר בכלי בינה מלאכותית כדי להפוך אותו לספר מודפס: ספר ילדים, ספר זיכרונות או חיבור. בלי לשלם להוצאה לאור, למאיירת, לגרפיקאית, לעורכת ולמעמדת. לומדים גם כתיבה יוצרת, עלילה וחרוזים, ובסוף מדפיסים, בונים דף לספר ויוצאים למכור.</p>
     <ul class="facts">
       <li>💻 6 מפגשים חיים בזום</li>
-      <li>📅 בימי ראשון ב-18:00</li>
+      <li>📅 בימי ראשון 18:00–19:00</li>
       <li>🤝 ליווי אישי עד שהספר יוצא לאור</li>
       <li>🖨️ הדפסה מוזלת דרכנו</li>
     </ul>
@@ -180,7 +193,7 @@ section{margin-top:36px}
   <div class="who">
     <div><b>📜</b>מי שיש לו כתב יד או חיבור במגירה</div>
     <div><b>👵</b>סבים וסבתות שרוצים ספר לנכדים</div>
-    <div><b>🍎</b>גננות, מורות ומטפלות, גם בגמלאות</div>
+    <div><b>📖</b>מי שרוצה ספר זיכרונות למשפחה</div>
     <div><b>✨</b>מי שתמיד חלם להוציא ספר לאור</div>
   </div>
 </section>
@@ -203,31 +216,39 @@ section{margin-top:36px}
     <p>את כל הכתיבה עושים אתם, בקול שלכם. הבינה המלאכותית היא עוזרת, לא כותבת במקומכם.</p>
   </div>
   <ul class="gain">
-    <li><span>✍️</span><div><b>לכתוב סיפור ילדים טוב</b><p>כתיבה יוצרת: מה הופך סיפור לכזה שילדים מבקשים לשמוע שוב ושוב.</p></div></li>
+    <li><span>✍️</span><div><b>לכתוב סיפור טוב</b><p>כתיבה יוצרת: לספר ילדים, לספר זיכרונות או לחיבור, בקול שלכם.</p></div></li>
     <li><span>🧭</span><div><b>לבנות עלילה</b><p>גיבור, בעיה, מתח ופתרון, וחלוקה נכונה לעמודים.</p></div></li>
-    <li><span>🎵</span><div><b>לכתוב בחרוזים</b><p>חרוז שזורם ונשמע טבעי, קצב, וניקוד נכון.</p></div></li>
-    <li><span>🎨</span><div><b>איורים עקביים בסגנון אחד</b><p>אותה דמות בכל עמוד, בסגנון שבחרתם, בעזרת כלי בינה מלאכותית.</p></div></li>
+    <li><span>🎵</span><div><b>לכתוב בחרוזים לספרי ילדים</b><p>חרוז שזורם ונשמע טבעי, קצב, וניקוד נכון.</p></div></li>
+    <li><span>🎨</span><div><b>איורים עקביים בסגנון אחד</b><p>אותה דמות בכל עמוד, בסגנון שבחרתם, בעזרת כלי בינה מלאכותית. בספר זיכרונות: שילוב תמונות משפחתיות.</p></div></li>
     <li><span>🚀</span><div><b>להביא את הספר לרמה מקצועית</b><p>איך משתמשים בבינה מלאכותית כדי לשפר, לבדוק וללטש, כך שהספר ייראה כמו של הוצאה.</p></div></li>
     <li><span>📖</span><div><b>להדפיס בצורה מקצועית, במחיר מוזל</b><p>עימוד, כריכה וסוגי הדפסה, והדפסה מוזלת משמעותית דרך BOOQLI, מהספר הראשון ועד כמויות.</p></div></li>
     <li><span>🌐</span><div><b>דף נחיתה לספר שלכם</b><p>עמוד יפה שמציג את הספר ומקבל הזמנות.</p></div></li>
     <li><span>💰</span><div><b>לשווק ולמכור</b><p>השקה, פרסום בתקציב קטן, גנים, ספריות, חנויות ואירועים.</p></div></li>
     <li><span>🤝</span><div><b>ליווי אישי עד שהספר יוצא לאור</b><p>גם אחרי שהקורס נגמר, אתם לא לבד עד שהספר ביד.</p></div></li>
-    <li><span>💻</span><div><b>מפגשים חיים, לא מוקלטים</b><p>6 מפגשים בזום, בימי ראשון ב-18:00, עם זמן לשאלות.</p></div></li>
+    <li><span>💻</span><div><b>מפגשים חיים, לא מוקלטים</b><p>6 מפגשים בזום, בימי ראשון 18:00–19:00, עם זמן לשאלות.</p></div></li>
   </ul>
 </section>
 
-<section>
+<section id="save">
   <div class="sec-h">
-    <h2>מוציאים לאור בעצמכם, וחוסכים</h2>
-    <p>כדי להוציא ספר ילדים לאור צריך בדרך כלל עורכת, מאיירת, מנקדת, מעמדת ומשווקת. בקורס לומדים לעשות את כל אלה בעצמכם.</p>
+    <h2>כמה זה עולה בדרך כלל, וכמה תחסכו</h2>
+    <p>להוציא ספר לאור דרך אנשי מקצוע עולה אלפי שקלים, ולפעמים עשרות אלפים. בקורס לומדים לעשות את רוב העבודה בעצמכם, בעזרת בינה מלאכותית.</p>
   </div>
-  <div class="save">
-    <div><b>✏️</b><span>עריכה</span><s>עורכת</s></div>
-    <div><b>🎨</b><span>איורים</span><s>מאיירת</s></div>
-    <div><b>📐</b><span>עימוד</span><s>מעמדת</s></div>
-    <div><b>📣</b><span>שיווק</span><s>משווקת</s></div>
+  <div class="card costs">
+    <div class="row head"><span>מה צריך</span><span>מחיר מקובל בשוק</span><span></span></div>
+    <div class="row"><span>🎨 מאיירת לספר ילדים (12 איורים)</span><b><span dir="ltr">6,000–12,000</span> ₪</b><em>✔️ חוסכים</em></div>
+    <div class="row"><span>🖼️ גרפיקאית לעיצוב כריכה</span><b><span dir="ltr">1,100–3,600</span> ₪</b><em>✔️ חוסכים</em></div>
+    <div class="row"><span>✏️ עורכת לשונית והגהה</span><b><span dir="ltr">400–2,500</span> ₪</b><em>✔️ חוסכים</em></div>
+    <div class="row"><span>📐 מעמדת</span><b>עד 1,100 ₪</b><em>✔️ חוסכים</em></div>
+    <div class="row"><span>🌐 אתר או דף לספר</span><b><span dir="ltr">360–1,800</span> ₪</b><em>✔️ חוסכים</em></div>
+    <div class="row"><span>📣 שיווק ופרסום</span><b><span dir="ltr">1,800–7,500</span> ₪</b><em>✔️ לומדים לעשות לבד</em></div>
+    <div class="row total"><span>סה"כ בדרך כלל</span><b>כ-<span dir="ltr">10,000–28,000</span> ₪</b><em></em></div>
+    <div class="vs">
+      <div><small>הקורס, כולל ליווי אישי עד שהספר יוצא לאור</small><b id="vsPrice"></b></div>
+      <div class="plus">ועוד: 🖨️ הדפסה מוזלת משמעותית דרך BOOQLI, מהספר הראשון ועד כמויות</div>
+    </div>
+    <p class="note">המחירים לפי מחירונים ומדריכים שפורסמו בישראל, לספר ילדים עם 12 איורים, לא כולל הדפסה. בספר זיכרונות או בחיבור אין בדרך כלל איורים, אבל העריכה ארוכה ויקרה יותר. מקורות: <a href="https://www.hon.co.il/?p=108131" target="_blank" rel="noopener">הון</a> · <a href="https://www.simplestory.co.il/book-illustrations/" target="_blank" rel="noopener">סיפור פשוט</a> · <a href="https://booktrade.co.il/how-much-it-costs-to-publish-a-book/" target="_blank" rel="noopener">מביאים תרבות</a></p>
   </div>
-  <p class="save-note">בואו להוציא לאור ספר משלכם, מהמילה הראשונה ועד הספר הראשון שנמכר.</p>
 </section>
 
 <section id="program">
@@ -237,9 +258,10 @@ section{margin-top:36px}
   </div>
   <div class="meets">
     <article class="meet"><div class="n">1</div><div>
-      <h3>איך כותבים סיפור ילדים טוב</h3>
+      <h3>איך כותבים סיפור טוב</h3>
       <ul>
-        <li>מה עושה סיפור לילדים לסיפור שאוהבים</li>
+        <li>ספר ילדים, ספר זיכרונות או חיבור: מה שונה בכל אחד</li>
+        <li>מה עושה סיפור לסיפור שאוהבים</li>
         <li>למי הספר: גיל 2–4, 4–6 או 6–8, ומה זה משנה בכתיבה</li>
         <li>גיבור שילדים מתחברים אליו, ומסר בלי להטיף</li>
         <li>תרגילי כתיבה יוצרת למציאת הרעיון שלכם</li>
@@ -327,6 +349,7 @@ section{margin-top:36px}
       <li>💻 קורס חי בזום, בקבוצה קטנה של עד 10</li>
       <li>🤝 ליווי אישי ומלא עד להוצאת הספר לאור, גם אחרי הקורס</li>
       <li>🖨️ הדפסה מוזלת משמעותית דרך BOOQLI, מהספר הראשון ועד כמויות</li>
+      <li>💳 תשלום בביט, בפייבוקס, באשראי או בהעברה בנקאית</li>
     </ul>
     <a class="btn-main js-reg" target="_blank" rel="noopener" data-where="price">💬 שומרים לי מקום</a>
     <div><span class="deadline" id="deadline2"></span></div>
@@ -340,9 +363,11 @@ section{margin-top:36px}
   <details><summary>הבינה המלאכותית כותבת את הספר במקומי?</summary><p>לא. את הסיפור כותבים אתם, ולומדים כתיבה יוצרת, עלילה וחרוזים. הבינה המלאכותית עוזרת באיורים, בבדיקה ובליטוש.</p></details>
   <details><summary>אני לא יודע לצייר. איך יהיו איורים?</summary><p>בונים אותם בעזרת כלי בינה מלאכותית, ולומדים איך לקבל דמות אחידה וסגנון אחד לכל הספר. מי שרוצה יכול להתחיל גם מציור או מתמונה משלו.</p></details>
   <details><summary>יש עלויות נוספות?</summary><p>ההדפסה עצמה על חשבונכם, ואתם בוחרים כמה עותקים להדפיס. יש כלי בינה מלאכותית חינמיים, ונדבר גם על כלים בתשלום למי שרוצה.</p></details>
-  <details><summary>זה קורס מוקלט?</summary><p>לא. כל המפגשים חיים בזום, בימי ראשון ב-18:00, בקבוצה קטנה. רואים אתכם, עונים לכם ונותנים משוב על הספר שלכם.</p></details>
+  <details><summary>זה קורס מוקלט?</summary><p>לא. כל המפגשים חיים בזום, בימי ראשון 18:00–19:00, בקבוצה קטנה. רואים אתכם, עונים לכם ונותנים משוב על הספר שלכם.</p></details>
   <details><summary>מה קורה אחרי שהקורס נגמר?</summary><p>ממשיכים ללוות אתכם באופן אישי עד שהספר יוצא לאור, ואת ההדפסה אפשר לעשות דרכנו במחיר מוזל משמעותית.</p></details>
-  <details><summary>איך נרשמים?</summary><p>לוחצים על כפתור הוואטסאפ ושולחים הודעה. מקבלים את כל הפרטים ואת אפשרויות התשלום, והמקום נשמר עם התשלום.</p></details>
+  <details><summary>איך נרשמים?</summary><p>לוחצים על כפתור הוואטסאפ ושולחים הודעה. מקבלים את כל הפרטים, והמקום נשמר עם התשלום: בביט, בפייבוקס, באשראי או בהעברה בנקאית.</p></details>
+  <details><summary>אילו ספרים אפשר להוציא לאור?</summary><p>ספר ילדים, ספר זיכרונות, סיפור משפחתי או חיבור שכתבתם. כל השלבים בקורס מתאימים לכולם, והחלקים של חרוזים ואיורים מיועדים בעיקר לספרי ילדים.</p></details>
+  <details><summary>יש קורס המשך?</summary><p>ייתכן שיהיה קורס המשך, בתשלום נוסף, למי שירצה להעמיק. הליווי האישי עד שהספר יוצא לאור כלול בקורס הזה.</p></details>
   <details><summary>מה קורה אם הקורס לא ייפתח?</summary><p>הקורס נפתח ב-4 משתתפים. אם לא ייפתח, הכסף חוזר אליכם במלואו.</p></details>
 </section>
 
@@ -368,11 +393,12 @@ section{margin-top:36px}
 /* משנים רק כאן: מחירים, סוף ההרשמה ומתי מתחילים */
 const PRICE_NOW = 690, PRICE_REGULAR = 900;
 const REG_UNTIL = "2026-11-26T23:59";            // שעון ישראל
-const START_TEXT = "📅 6 מפגשים בימי ראשון ב-18:00: 13.12, 20.12, 27.12, 3.1, 10.1, 17.1";
+const START_TEXT = "📅 6 מפגשים בימי ראשון 18:00–19:00: 13.12, 20.12, 27.12, 3.1, 10.1, 17.1";
 
 document.getElementById("nowPrice").textContent = PRICE_NOW + " ₪";
 document.getElementById("oldPrice").textContent = "המחיר הרגיל: " + PRICE_REGULAR + " ₪";
 document.getElementById("whenLine").textContent = START_TEXT;
+document.getElementById("vsPrice").textContent = PRICE_NOW + " ₪";
 
 const until = new Date(REG_UNTIL + ":00+02:00");
 function dl(){
