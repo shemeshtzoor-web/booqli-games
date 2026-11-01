@@ -546,7 +546,7 @@ const LABEL = {open:"פתוח לשחק ←", soon:"בהכנה", locked:"", close
 function card(t){
   const s = state(t), b = document.createElement("button");
   b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
-  const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
+  const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : s === "soon" && siteOwner() ? "בהכנה · עוד אין תוכן" : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
   b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${t.sped ? `<span class="sped-b">💜 גם לחינוך מיוחד</span>` : ""}${s === "open" && stateReal(t) !== "open" ? `<span class="own-b">👑 פתוח רק לך</span>` : ""}${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);

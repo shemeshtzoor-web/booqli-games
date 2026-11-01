@@ -3,7 +3,7 @@
      אם אין אינטרנט – הגרסה האחרונה ששמורה בטלפון, ואם אין – דף "אין חיבור".
    - תמונות וגופנים: מהטלפון מיד (מהיר), ומתעדכנים ברקע.
    מעלים את VERSION רק כשמשנים את הקובץ הזה עצמו. */
-var VERSION = "booqli-v1";
+var VERSION = "booqli-v2";
 var CORE = [
   "/",
   "/offline.html",
@@ -59,8 +59,10 @@ self.addEventListener("fetch", function (e) {
   }
 
   // דפים, קוד ונתונים: קודם מהאינטרנט
+  // קוד ונתונים (js/json/css) – תמיד בודקים מול השרת, כדי שעדכון באתר יגיע מיד גם אם הדפדפן שמר עותק
+  var fresh = req.mode === "navigate" ? fetch(req) : fetch(req, { cache: "no-cache" });
   e.respondWith(
-    fetch(req).then(function (res) { put(req, res); return res; }).catch(function () {
+    fresh.then(function (res) { put(req, res); return res; }).catch(function () {
       return caches.match(req).then(function (hit) {
         if (hit) return hit;
         return caches.match(req, { ignoreSearch: true }).then(function (hit2) {
