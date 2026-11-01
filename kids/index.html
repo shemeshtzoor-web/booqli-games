@@ -21,6 +21,31 @@
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
 <link rel="preload" href="../common.js" as="script">
+<style>
+/* בחירת גיל + משחקים לפי גיל (1.11.2026) */
+.agepick{margin-top:16px;background:#fff;border-radius:28px;padding:18px 18px 20px;box-shadow:0 6px 0 #F3DFA6;border-top:10px solid #FFC93C;text-align:center}
+.agepick h2{font-family:Fredoka,Assistant,sans-serif;color:#9A5800;font-size:clamp(24px,5vw,32px);line-height:1.2;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.agepick p{color:#6b5a66;margin-top:4px}
+.ages{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px}
+.ages button{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:26px;min-width:68px;min-height:68px;padding:6px 12px;border-radius:22px;border:3px solid #FFD98A;background:#FFF8E6;color:#7A4600;cursor:pointer;box-shadow:0 4px 0 #F3DFA6;line-height:1}
+.ages button small{display:block;font-family:Assistant,sans-serif;font-size:13px;font-weight:800;margin-top:3px}
+.ages button[aria-pressed=true]{background:#FF56C2;border-color:#E0399F;color:#fff;box-shadow:0 4px 0 #A3216F}
+.ages button.all{font-size:17px}
+.ages button:focus-visible{outline:3px solid #4E8576;outline-offset:2px}
+.say-btn{border:0;background:#FFF1C9;border-radius:999px;width:44px;height:44px;font-size:21px;cursor:pointer;box-shadow:0 2px 0 #F3DFA6}
+.agegames{margin-top:18px}
+.agegames h2{font-family:Fredoka,Assistant,sans-serif;color:#2B1526;font-size:clamp(22px,4.5vw,28px);margin-bottom:10px}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.g-card{position:relative;display:flex;gap:12px;align-items:center;background:#fff;border-radius:22px;padding:12px 14px;padding-inline-end:34px;text-decoration:none;color:#2B1526;box-shadow:0 4px 0 #d9e9e1;border:2px solid transparent;min-height:84px}
+.g-card:hover{border-color:#FFC8EA}
+.g-card:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
+.g-card .ic{flex-shrink:0;width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--gb,#FFF1C9)}
+.g-card b{display:block;font-size:17px;line-height:1.25}
+.g-card small{display:block;color:#6b5a66;font-size:13.5px;margin-top:2px}
+.g-card .key{position:absolute;top:6px;left:8px;font-size:12px;font-weight:800;color:#4E8576;background:#E1F0EA;border-radius:999px;padding:1px 7px}
+.g-soon{margin-top:10px;color:#6b5a66;font-size:15px;text-align:center}
+@media (max-width:600px){.g-grid{grid-template-columns:minmax(0,1fr)}.ages button{min-width:56px;min-height:60px;font-size:23px}.ages{gap:8px}}
+</style>
 </head>
 <body>
 <header class="top">
@@ -39,6 +64,12 @@
   <p>בוחרים חבר מהמשפחה של בּוּקְלִי, ומשחקים. לוחצים על 🔊 כדי לשמוע.</p>
   <button type="button" class="btn-main" id="sayHi" style="margin-top:10px">🔊 שָׁלוֹם!</button></div>
 </section>
+<section class="agepick" aria-labelledby="apT">
+  <h2 id="apT">בֶּן אוֹ בַּת כַּמָּה? <button type="button" class="say-btn" id="sayAge" aria-label="להקריא">🔊</button></h2>
+  <p>בוחרים את הגיל, ומקבלים את המשחקים שמתאימים בדיוק.</p>
+  <div class="ages" id="ages" role="group" aria-label="גיל הילד"></div>
+</section>
+<section class="agegames" id="agegames" hidden aria-live="polite"><h2 id="agT"></h2><div class="g-grid" id="ggrid"></div><p class="g-soon" id="gsoon"></p></section>
 <nav class="quick" id="hosts" aria-label="הדמויות"></nav>
 <div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
 <div id="zone"></div>
@@ -53,7 +84,52 @@
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
 <script>
-const LIST = CATALOG.filter(t => t.aud.includes("k") && !t.zone);
+const ALL = CATALOG.filter(t => t.aud.includes("k") && !t.zone);
+let LIST = ALL;
+/* ---------- בחירת גיל: המשחקים מ-KIDS_GAMES (גיל לכל משחק) ---------- */
+const AGE_OPTS = [{k:"2", t:"2", s:"שנתיים", say:"שנתיים"}, {k:"3", t:"3", s:"", say:"שלוש"}, {k:"4", t:"4", s:"", say:"ארבע"}, {k:"5", t:"5", s:"", say:"חמש"}, {k:"6", t:"6", s:"", say:"שש"}, {k:"7-8", t:"7–8", s:"כיתות א'–ב'", say:"שבע ושמונה"}];
+const KIND = {game:"🎮 משחק", story:"📖 סיפור", draw:"🎨 ציור", learn:"💡 לומדים", craft:"✂️ יצירה"};
+const TOPIC = id => CATALOG.find(t => t.id === id);
+const range = k => { const a = String(k).split("-").map(Number); return [a[0], a[1] || a[0]]; };
+const hitG = (g, k) => { const [lo, hi] = range(k); return !(g.ages[1] < lo || g.ages[0] > hi); };
+const hitT = (t, k) => { const gs = KIDS_GAMES.filter(g => g.topic === t.id); if (gs.length) return gs.some(g => hitG(g, k)); const [lo, hi] = range(k); return !(t.ages[1] < lo || t.ages[0] > hi); };
+let AGE = new URLSearchParams(location.search).get("age") || (() => { try { return localStorage.getItem("booqli_kid_age") || ""; } catch(e) { return ""; } })();
+if (!AGE_OPTS.some(o => o.k === AGE)) AGE = "";
+const agesBox = document.getElementById("ages");
+agesBox.innerHTML = AGE_OPTS.map(o => '<button type="button" data-k="' + o.k + '">' + o.t + (o.s ? '<small>' + o.s + '</small>' : '') + '</button>').join("") + '<button type="button" class="all" data-k="">כל<br>הגילאים</button>';
+const renderAge = () => {
+  agesBox.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === AGE)));
+  const box = document.getElementById("agegames");
+  LIST = AGE ? ALL.filter(t => hitT(t, AGE)) : ALL;
+  if (!AGE) { box.hidden = true; return; }
+  const all = KIDS_GAMES.filter(g => hitG(g, AGE));
+  const open = all.filter(g => { const t = TOPIC(g.topic); return t && CAT.state(t) === "open"; });
+  const soon = all.length - open.length;
+  const o = AGE_OPTS.find(x => x.k === AGE);
+  document.getElementById("agT").textContent = "🎮 " + open.length + " משחקים לגיל " + o.t;
+  document.getElementById("ggrid").innerHTML = open.map(g => {
+    const t = TOPIC(g.topic), h = CAT.HOSTS[t.host] || CAT.HOSTS.booqli;
+    const key = /^topics\//.test(g.href) && typeof siteIsLocked === "function" && siteIsLocked(g.topic) && !siteUnlocked();
+    return '<a class="g-card" href="' + CAT.root + g.href + '" data-g="' + g.id + '" style="--gb:' + (/^#/.test(t.bg) ? t.bg : "#FFF1C9") + '">' +
+      (key ? '<span class="key" title="נפתח במספר הסודי">🔑</span>' : '') +
+      '<span class="ic" aria-hidden="true">' + g.ic + '</span><span><b>' + g.name + '</b><small>' + KIND[g.kind] + ' · ' + (t.book ? "ספרי BOOQLI" : t.name) + '</small></span></a>';
+  }).join("") || '<p class="g-soon">עוד אין משחקים פתוחים לגיל הזה. הם בדרך!</p>';
+  document.getElementById("gsoon").textContent = soon ? "⏳ ועוד " + soon + " משחקים לגיל הזה נפתחים בקרוב" : "";
+  box.hidden = false;
+};
+agesBox.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  AGE = b.dataset.k;
+  try { if (AGE) localStorage.setItem("booqli_kid_age", AGE); else localStorage.removeItem("booqli_kid_age"); } catch(e) {}
+  try { const u = new URL(location.href); if (AGE) u.searchParams.set("age", AGE); else u.searchParams.delete("age"); history.replaceState(null, "", u); } catch(e) {}
+  const o = AGE_OPTS.find(x => x.k === AGE);
+  say(o ? "משחקים לגיל " + o.say : "כל המשחקים");
+  siteEvent("kid-age", AGE || "all");
+  render();
+  if (AGE) document.getElementById("agegames").scrollIntoView({behavior: "smooth", block: "start"});
+});
+document.getElementById("ggrid").addEventListener("click", e => { const a = e.target.closest(".g-card"); if (a) siteEvent("kid-game", a.dataset.g + (AGE ? "-age" + AGE : "")); });
+document.getElementById("sayAge").onclick = () => say("בן או בת כמה? בוחרים את הגיל, ומשחקים!");
 const OPT = {host: false, kids: true};
 const say = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch(e){} };
 document.getElementById("sayHi").onclick = () => say("שלום! אני בּוּקְלִי. בוחרים חבר מהמשפחה שלי, ומשחקים!");
@@ -68,6 +144,7 @@ const sel = document.getElementById("zsort");
 let SORT = new URLSearchParams(location.search).get("sort") || "";
 sel.value = SORT;
 const render = () => {
+  renderAge();
   const secs = SECTIONS.map(s => Object.assign({}, s, SORT ? {sort: SORT} : {}));
   CAT.sections(document.getElementById("zone"), LIST, secs, OPT);
   const n = LIST.filter(t => CAT.state(t) === "open").length;

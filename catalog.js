@@ -73,6 +73,71 @@ window.REVIEWS = [
 ];
 
 /* =====================================================================
+   KIDS_GAMES – כל משחק בנפרד, עם גיל אמיתי (מ-1.11.2026). אזור הילדים (kids/) מסנן לפי גיל הילד מכאן.
+   topic = ה-id של הנושא ב-CATALOG (המשחק מוצג רק כשהנושא פתוח) · ages = [מגיל, עד גיל] של המשחק עצמו
+   kind: game משחק · story סיפור · draw ציור · learn לומדים · craft יצירה · href = מהשורש של האתר
+   משחק חדש בנושא = שורה חדשה כאן (גם אם הנושא כבר מופיע).
+   ===================================================================== */
+window.KIDS_GAMES = [
+  {id:"autumn-tree",   topic:"autumn",   ic:"🍂", name:"העץ והרוח",            kind:"game",  ages:[2,6], href:"topics/autumn/#tree"},
+  {id:"autumn-draw",   topic:"autumn",   ic:"🖌️", name:"מציירים סתיו באצבע",   kind:"draw",  ages:[2,6], href:"topics/autumn/#draw"},
+  {id:"autumn-quiz",   topic:"autumn",   ic:"❓", name:"חידון הסתיו",           kind:"game",  ages:[3,6], href:"topics/autumn/#quiz"},
+  {id:"autumn-bird",   topic:"autumn",   ic:"🐦", name:"הנחליאלי",              kind:"learn", ages:[4,6], href:"topics/autumn/#bird"},
+  {id:"han-coloring",  topic:"hanukkah", ic:"🎨", name:"צביעה של חנוכה",        kind:"draw",  ages:[2,6], href:"topics/hanukkah/#coloring"},
+  {id:"han-memory",    topic:"hanukkah", ic:"🃏", name:"זיכרון חנוכה",          kind:"game",  ages:[3,6], href:"topics/hanukkah/#memory"},
+  {id:"han-lighting",  topic:"hanukkah", ic:"🕯️", name:"מדליקים את החנוכייה",   kind:"game",  ages:[3,6], href:"topics/hanukkah/#lighting"},
+  {id:"han-sorting",   topic:"hanukkah", ic:"🧺", name:"של חנוכה או לא?",       kind:"game",  ages:[3,6], href:"topics/hanukkah/#sorting"},
+  {id:"han-puzzle",    topic:"hanukkah", ic:"🧩", name:"פאזל לילה של חנוכה",    kind:"game",  ages:[3,6], href:"topics/hanukkah/#puzzle"},
+  {id:"han-story",     topic:"hanukkah", ic:"📖", name:"סיפור המכבים",          kind:"story", ages:[3,6], href:"topics/hanukkah/#story"},
+  {id:"han-quiz",      topic:"hanukkah", ic:"❓", name:"חידון חנוכה",           kind:"game",  ages:[4,6], href:"topics/hanukkah/#quiz"},
+  {id:"win-dress",     topic:"winter",   ic:"🧥", name:"מלבישים את צבי לחורף",  kind:"game",  ages:[2,6], href:"topics/winter/#g-dress"},
+  {id:"win-garden",    topic:"winter",   ic:"🌺", name:"מגדלים כלניות בגשם",    kind:"game",  ages:[3,6], href:"topics/winter/#g-garden"},
+  {id:"win-quiz",      topic:"winter",   ic:"❓", name:"חידון חורף",            kind:"game",  ages:[4,6], href:"topics/winter/#g-quiz"},
+  {id:"win-cycle",     topic:"winter",   ic:"💧", name:"לאן נעלמת השלולית?",    kind:"learn", ages:[4,6], href:"topics/winter/#cycle"},
+  {id:"pur-memory",    topic:"purim",    ic:"🐱", name:"משחק הזיכרון של מיצי",  kind:"game",  ages:[3,6], href:"topics/purim/#g-memory"},
+  {id:"pur-tracks",    topic:"purim",    ic:"🐾", name:"הולכים אחרי העקבות",    kind:"game",  ages:[3,6], href:"topics/purim/#g-tracks"},
+  {id:"pur-basket",    topic:"purim",    ic:"🧺", name:"משלוח מנות לעכבר",      kind:"game",  ages:[3,6], href:"topics/purim/#g-basket"},
+  {id:"pur-mitzi",     topic:"purim",    ic:"📖", name:"מיצי הבלשית",           kind:"story", ages:[3,6], href:"topics/purim/#mitzi"},
+  {id:"pur-card",      topic:"purim",    ic:"💌", name:"כרטיס ברכה לפורים",     kind:"craft", ages:[3,6], href:"topics/purim/#card"},
+  {id:"pur-missing",   topic:"purim",    ic:"🐭", name:"מה העכבר לקח?",         kind:"game",  ages:[4,6], href:"topics/purim/#g-missing"},
+  {id:"pur-megillah",  topic:"purim",    ic:"📜", name:"סיפור מגילת אסתר",      kind:"story", ages:[4,6], href:"topics/purim/#megillah"},
+  {id:"bday-chair",    topic:"birthday-party", ic:"🪑", name:"מרימים את הכיסא",  kind:"game",  ages:[3,6], href:"topics/birthday-party/#games"},
+  {id:"bday-candles",  topic:"birthday-party", ic:"🎂", name:"נרות על העוגה",    kind:"game",  ages:[3,6], href:"topics/birthday-party/#games"},
+  {id:"bday-bring",    topic:"birthday-party", ic:"🎁", name:"מה מביאים למסיבה?", kind:"game", ages:[3,6], href:"topics/birthday-party/#games"},
+  {id:"bday-quiz",     topic:"birthday-party", ic:"❓", name:"מי זוכר את הסיפור?", kind:"game", ages:[4,6], href:"topics/birthday-party/#games"},
+  {id:"feel-build",    topic:"feelings", ic:"🙂", name:"בונים פרצוף",           kind:"game",  ages:[2,8], href:"topics/feelings/#build"},
+  {id:"feel-faces",    topic:"feelings", ic:"😊", name:"משחק פרצופים",          kind:"game",  ages:[3,8], href:"topics/feelings/#game"},
+  {id:"feel-mirror",   topic:"feelings", ic:"🪞", name:"מראת רגשות",            kind:"game",  ages:[3,8], href:"topics/feelings/#mirror"},
+  {id:"feel-whatif",   topic:"feelings", ic:"🤔", name:"מה היית מרגיש אם...?",  kind:"game",  ages:[4,8], href:"topics/feelings/#whatif"},
+  {id:"col-monster",   topic:"colors",   ic:"🧦", name:"גרבולי – המפלצת שאוכלת גרביים", kind:"game", ages:[2,6], href:"topics/colors/#g-monster"},
+  {id:"col-lab",       topic:"colors",   ic:"🧪", name:"מעבדת הצבעים",          kind:"game",  ages:[3,6], href:"topics/colors/#lab"},
+  {id:"math-balloons", topic:"math", ic:"🎈", name:"מפוצצים בלונים",   kind:"game", ages:[1,2], href:"topics/math/?age=1"},
+  {id:"math-hand",     topic:"math", ic:"✋", name:"היד סופרת",         kind:"game", ages:[1,2], href:"topics/math/?age=1"},
+  {id:"math-many",     topic:"math", ic:"🍎", name:"אחד או הרבה?",      kind:"game", ages:[2,3], href:"topics/math/?age=2"},
+  {id:"math-bigsmall", topic:"math", ic:"🐘", name:"גדול או קטן?",      kind:"game", ages:[2,3], href:"topics/math/?age=2"},
+  {id:"math-count3",   topic:"math", ic:"🍎", name:"כמה יש? (עד 3)",    kind:"game", ages:[3,4], href:"topics/math/?age=3"},
+  {id:"math-shapes",   topic:"math", ic:"🔷", name:"איפה הצורה?",       kind:"game", ages:[3,4], href:"topics/math/?age=3"},
+  {id:"math-count5",   topic:"math", ic:"⭐", name:"כמה יש? (עד 5)",    kind:"game", ages:[4,5], href:"topics/math/?age=4"},
+  {id:"math-pattern",  topic:"math", ic:"🔴", name:"מה בא אחר כך?",     kind:"game", ages:[4,5], href:"topics/math/?age=4"},
+  {id:"math-more",     topic:"math", ic:"⚖️", name:"איפה יותר?",        kind:"game", ages:[5,6], href:"topics/math/?age=5"},
+  {id:"math-missing",  topic:"math", ic:"❓", name:"איזה מספר חסר?",    kind:"game", ages:[5,6], href:"topics/math/?age=5"},
+  {id:"math-add10",    topic:"math", ic:"➕", name:"כמה ביחד?",         kind:"game", ages:[6,7], href:"topics/math/?age=6"},
+  {id:"math-ten",      topic:"math", ic:"🔟", name:"כמה חסר עד 10?",    kind:"game", ages:[6,7], href:"topics/math/?age=6"},
+  {id:"math-addsub",   topic:"math", ic:"🧮", name:"חיבור וחיסור עד 20", kind:"game", ages:[7,8], href:"topics/math/?age=7"},
+  {id:"math-skip",     topic:"math", ic:"🐸", name:"קופצים במספרים",    kind:"game", ages:[7,8], href:"topics/math/?age=7"},
+  {id:"math-mult",     topic:"math", ic:"✖️", name:"לוח הכפל",          kind:"game", ages:[8,8], href:"topics/math/?age=8"},
+  {id:"math-clock",    topic:"math", ic:"🕒", name:"מה השעה?",          kind:"game", ages:[8,8], href:"topics/math/?age=8"},
+  {id:"eq-turtle",     topic:"earthquake", ic:"🐢", name:"משחק הצב",          kind:"game",  ages:[2,6], href:"topics/earthquake/#g-turtle"},
+  {id:"eq-video",      topic:"earthquake", ic:"🎬", name:"צבי הצב: כשהאדמה רועדת", kind:"story", ages:[3,6], href:"topics/earthquake/#video"},
+  {id:"eq-what",       topic:"earthquake", ic:"🤔", name:"מה עושים?",         kind:"game",  ages:[3,6], href:"topics/earthquake/#g-what"},
+  {id:"eq-park",       topic:"earthquake", ic:"🌳", name:"איפה בטוח בחוץ?",   kind:"game",  ages:[3,6], href:"topics/earthquake/#g-park"},
+  {id:"book-diaper",   topic:"bye-bye-diaper", ic:"🚽", name:"ביי ביי חיתול!",  kind:"game", ages:[2,4], href:"games/bye-bye-diaper/"},
+  {id:"book-superhero",topic:"superhero",      ic:"🦸", name:"גיבור/ת על",      kind:"game", ages:[3,6], href:"games/superhero/"},
+  {id:"book-birthday", topic:"birthday",       ic:"🎉", name:"ילד/ת יום הולדת", kind:"game", ages:[3,6], href:"games/birthday/"},
+  {id:"book-savanna",  topic:"savanna",        ic:"🦒", name:"בסוואנה",         kind:"game", ages:[3,6], href:"games/savanna/"}
+];
+
+/* =====================================================================
    המנוע: מצב כל תוכן, כרטיס אחיד, מיון וסינון, מועדפים ו"ספרו לי"
    כל הדפים (דף הבית, הדלתות, הספרייה, המועדפים) נבנים מכאן.
    ===================================================================== */
