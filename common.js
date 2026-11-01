@@ -243,7 +243,7 @@ function siteJoinLinks(){
 // lockAllTopics: true = כל עמודי הנושאים (topics/) נעולים, גם נושאים חדשים, חוץ ממה שב-openTopics.
 // משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
 window.SITE.lockAllTopics = true;
-window.SITE.openTopics = [];
+window.SITE.openTopics = ["calendar"];  // לוח החופשות פתוח לכולם (בקשת שמש 1.11.2026)
 window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", winter: "החורף", colors: "עולם הצבעים", purim: "פורים" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
@@ -265,7 +265,6 @@ function siteCheckCode(code){
 window.SITE.opens = {
   "morning-circle": "2026-11-04",  // רביעי
   feelings:         "2026-11-08",  // ראשון
-  calendar:         "2026-11-11",  // רביעי
   math:             "2026-11-15",  // ראשון
   earthquake:       "2026-11-18",  // רביעי
   winter:           "2026-11-25",  // רביעי (בלי התאריך הזה היה נפתח בשבת 21.11)
