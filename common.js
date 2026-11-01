@@ -176,9 +176,54 @@ function siteSoonGate(id, main){
   tick(); setInterval(tick, 30000);
   siteEvent("soon-gate", id);
 }
+/* ======================== מצב משחקים לילדים – בלי מספר סודי (מ-1.11.2026) ========================
+   מאזור הילדים (kids/) כל משחק נפתח עם ?play=1. בעמוד הנושא מוצגים אז רק המשחקים שב-KIDS_GAMES (catalog.js),
+   בלי מספר סודי. המערכים, דפי ההדפסה והחומרים לגננת מוסתרים ונשארים במספר הסודי.
+   עמוד נושא עם משחקים טוען גם את catalog.js (אחרי common.js). תאריכי פתיחה וסגירה עדיין חלים. */
+// נקבע פעם אחת בטעינה: siteEvent מחליף את הכתובת לרגע (מדידה), ואז location.search ריק
+var SITE_PLAY = /[?&]play=1(&|$)/.test(location.search) && /\/topics\//.test(location.pathname);
+function sitePlayMode(){ return SITE_PLAY; }
+function siteKidsGames(id){ return (window.KIDS_GAMES || []).filter(function(g){ return g.topic === id; }); }
+var SITE_PLAY_KEEP = { "birthday-party": ["games"], math: ["pick", "agePick", "ageArea"] };
+function sitePlay(id){
+  var main = document.querySelector("main"); if (!main) return;
+  var keep = siteKidsGames(id).map(function(g){ return (g.href.match(/#(.+)$/) || [])[1]; }).filter(Boolean).concat(SITE_PLAY_KEEP[id] || []);
+  document.documentElement.classList.add("bq-play");
+  var css = document.createElement("style");
+  css.textContent = "html.bq-play [data-bq-hide]{display:none!important}html.bq-play #ageArea>:not([id^='g-']){display:none!important}" +
+    ".bq-playbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:#FFF1C9;border:2px solid #FFD98A;border-radius:20px;padding:10px 14px;margin:14px 0;font-family:Assistant,Arial,sans-serif;font-weight:800;color:#7A4600}" +
+    ".bq-playbar a{background:#fff;color:#9A5800;border:2px solid #FFC93C;border-radius:999px;padding:7px 14px;text-decoration:none;white-space:nowrap}" +
+    ".bq-teach{margin:22px 0 6px;background:#fff;border-radius:22px;padding:16px;text-align:center;box-shadow:0 4px 0 #d9e9e1;font-family:Assistant,Arial,sans-serif}" +
+    ".bq-teach b{color:#C13671}.bq-teach a{display:inline-block;margin-top:8px;color:#4E8576;font-weight:800}" +
+    "@media print{.bq-playbar,.bq-teach{display:none}}";
+  document.head.appendChild(css);
+  Array.prototype.forEach.call(main.children, function(c){
+    var ok = c.matches(".hero,.bookbox,.share") || keep.indexOf(c.id) > -1 || (id === "hanukkah" && c.id === "actsGrid") ||
+      (c.previousElementSibling && c.previousElementSibling.id === "games" && id === "birthday-party");
+    if (!ok) c.setAttribute("data-bq-hide", "");
+  });
+  // חנוכה: כרטיסי פעילויות – רק המשחקים
+  var grid = document.getElementById("actsGrid");
+  if (grid) Array.prototype.forEach.call(grid.querySelectorAll("[data-id]"), function(b){ if (keep.indexOf(b.getAttribute("data-id")) < 0) b.setAttribute("data-bq-hide", ""); });
+  // כפתורים שמובילים לחלק מוסתר (למשל "למערך") – לא מציגים במצב ילדים
+  Array.prototype.forEach.call(main.querySelectorAll('a[href^="#"]'), function(a){
+    var tg = document.getElementById(a.getAttribute("href").slice(1));
+    if (tg && tg.closest("[data-bq-hide]")) a.setAttribute("data-bq-hide", "");
+  });
+  var age = ""; try { age = localStorage.getItem("booqli_kid_age") || ""; } catch (e) {}
+  var root = SITE_DIR.replace(/topics\/[^/]+\/$/, "");
+  var bar = document.createElement("div"); bar.className = "bq-playbar";
+  bar.innerHTML = '<span>🎮 משחקים לילדים · בחינם</span><a href="' + root + 'kids/' + (age ? "?age=" + age : "") + '">← לכל המשחקים' + (age ? " לגיל " + age.replace("-", "–") : "") + '</a>';
+  var hero = main.querySelector(".hero"); if (hero) hero.insertAdjacentElement("afterend", bar); else main.insertBefore(bar, main.firstChild);
+  var t = document.createElement("div"); t.className = "bq-teach";
+  t.innerHTML = '👩‍🏫 <b>גננות?</b> המערך המלא, דפי ההדפסה והחומרים לגן נמצאים בעמוד המלא, ונפתחים במספר הסודי מקבוצת העדכונים.<br><a href="' + SITE_DIR + '">לעמוד המלא לגננות ←</a>';
+  var book = main.querySelector(".bookbox"); main.insertBefore(t, book || null);
+  siteEvent("play", id);
+}
 function siteCodeGate(){
   var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
   if (siteIsSoon(id)) { var mm = document.querySelector("main"); if (mm && !document.querySelector(".soon-gate")) siteSoonGate(id, mm); return; }
+  if (sitePlayMode() && siteKidsGames(id).length && !document.querySelector(".closed-box")) { sitePlay(id); return; }
   if (!siteIsLocked(id) || siteUnlocked() || document.querySelector(".closed-box")) return;
   var nm = SITE.locked[id] || "התוכן הזה";
   var main = document.querySelector("main"); if (!main) return;
@@ -255,9 +300,12 @@ function siteJoinPopup(){
   var qs = location.search || "";
   if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
+  var kids = /\/kids\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
+  try { kidsOk = localStorage.getItem("booqli_kids_ok") === "1"; } catch (e) { kidsOk = true; }
   try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
   var save = function(o){ try { localStorage.setItem("booqli_join", JSON.stringify(o)); } catch (e) {} };
-  if (!force) {
+  if (kids && !force) { if (kidsOk) return; }
+  else if (!force) {
     // בלי זיכרון בדפדפן (גלישה פרטית חסומה) – מציגים רק בדף הבית, כדי לא להציק בכל עמוד
     if (st === null && /\/(topics|games)\//.test(location.pathname)) return;
     if (st && (st.joined || (st.later && Date.now() - st.later < SITE.joinPopup.againDays * 864e5))) return;
@@ -286,8 +334,9 @@ function siteJoinPopup(){
     "@media (prefers-reduced-motion:reduce){.bq-join,.bq-join .c,.bq-join .go{animation:none}}" +
     "@media print{.bq-join{display:none!important}}";
   var show = function(){
-    if (document.querySelector(".bq-join") || document.querySelector(".code-gate") || siteUnlocked()) return;
+    if (document.querySelector(".bq-join") || document.querySelector(".code-gate") || (!kids && siteUnlocked())) return;
     document.head.appendChild(css);
+    if (kids) return siteKidsPopup(css, st, save);
     var box = document.createElement("div");
     box.className = "bq-join"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-labelledby", "bqjT");
     box.innerHTML = '<div class="c">' +
@@ -330,7 +379,45 @@ function siteJoinPopup(){
     try { box.querySelector(".go").focus({ preventScroll: true }); } catch (e) {}
     siteEvent("join-popup", (location.pathname.match(/(topics|games)\/([^/]+)/) || [,"","home"])[2] || "home");
   };
-  setTimeout(show, force ? 300 : SITE.joinPopup.delayMs);
+  setTimeout(show, force ? 300 : (kids ? 600 : SITE.joinPopup.delayMs));
+}
+/* חלון לאזור הילדים ולמצב משחקים: השימוש באחריות ההורים + המלצה להצטרף לקבוצת העדכונים. פעם אחת בכל מכשיר (booqli_kids_ok). */
+function siteKidsPopup(css, st, save){
+  var joined = !!(st && st.joined);
+  var box = document.createElement("div");
+  box.className = "bq-join bq-kids"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-labelledby", "bqkT");
+  box.innerHTML = '<div class="c">' +
+    '<div class="ic" aria-hidden="true">👨‍👩‍👧</div>' +
+    '<h2 id="bqkT">משחקים לילדים – <b>בחינם</b></h2>' +
+    '<p class="lead">המשחקים מתאימים לגיל הרך. <b>השימוש של ילדים באתר הוא באחריות ההורים</b> – כדאי לשבת ליד הילד, לשחק יחד ולשים לב לזמן המסך.</p>' +
+    (joined ? '' :
+    '<ul>' +
+      '<li><span class="e">🆕</span><span><b>ממליצים להצטרף לקבוצת העדכונים</b> – ראשונים לדעת כשעולה משחק חדש לגיל של הילד.</span></li>' +
+      '<li><span class="e">🤫</span><span><b>קבוצה שקטה.</b> רק אנחנו שולחים, רק כשיש משהו חדש.</span></li>' +
+      '<li><span class="e">🆓</span><span><b>בחינם.</b> ואפשר לצאת מהקבוצה בכל רגע.</span></li>' +
+    '</ul>' +
+    '<a class="go js-wa" target="_blank" rel="noopener" href="' + SITE.whatsappGroup + '">💬 להצטרפות לקבוצת העדכונים</a>') +
+    '<div class="low"><button type="button" class="ok"' + (joined ? ' style="background:#E0399F;color:#fff;font-size:18px;padding:12px 22px;border-radius:999px"' : '') + '>הבנתי, בואו נשחק ▶</button></div>' +
+    (joined ? '' : '<p class="note">בהצטרפות לקבוצה שאר החברות יכולות לראות את המספר שלך. BOOQLI לא מעבירה ולא מפרסמת אותו.</p>') +
+    '</div>';
+  var prev = document.activeElement;
+  var close = function(){
+    try { localStorage.setItem("booqli_kids_ok", "1"); } catch (e) {}
+    box.remove(); document.removeEventListener("keydown", onKey, true);
+    if (prev && prev.focus) try { prev.focus({ preventScroll: true }); } catch (e) {}
+  };
+  var onKey = function(e){
+    if (e.key === "Escape") { e.stopPropagation(); close(); }
+    if (e.key === "Tab") { var f = box.querySelectorAll("a,button"), a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
+  };
+  var go = box.querySelector(".go");
+  if (go) go.addEventListener("click", function(){ save({ joined: Date.now() }); setTimeout(close, 300); });
+  box.querySelector(".ok").onclick = close;
+  document.addEventListener("keydown", onKey, true);
+  document.body.appendChild(box);
+  try { (go || box.querySelector(".ok")).focus({ preventScroll: true }); } catch (e) {}
+  siteEvent("kids-popup", sitePlayMode() ? (SITE_DIR.match(/topics\/([^/]+)/) || [,""])[1] : "kids");
 }
 (function(){
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteJoinPopup); else siteJoinPopup();

@@ -42,7 +42,6 @@
 .g-card .ic{flex-shrink:0;width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--gb,#FFF1C9)}
 .g-card b{display:block;font-size:17px;line-height:1.25}
 .g-card small{display:block;color:#6b5a66;font-size:13.5px;margin-top:2px}
-.g-card .key{position:absolute;top:6px;left:8px;font-size:12px;font-weight:800;color:#4E8576;background:#E1F0EA;border-radius:999px;padding:1px 7px}
 .g-soon{margin-top:10px;color:#6b5a66;font-size:15px;text-align:center}
 @media (max-width:600px){.g-grid{grid-template-columns:minmax(0,1fr)}.ages button{min-width:56px;min-height:60px;font-size:23px}.ages{gap:8px}}
 </style>
@@ -90,6 +89,8 @@ let LIST = ALL;
 const AGE_OPTS = [{k:"2", t:"2", s:"שנתיים", say:"שנתיים"}, {k:"3", t:"3", s:"", say:"שלוש"}, {k:"4", t:"4", s:"", say:"ארבע"}, {k:"5", t:"5", s:"", say:"חמש"}, {k:"6", t:"6", s:"", say:"שש"}, {k:"7-8", t:"7–8", s:"כיתות א'–ב'", say:"שבע ושמונה"}];
 const KIND = {game:"🎮 משחק", story:"📖 סיפור", draw:"🎨 ציור", learn:"💡 לומדים", craft:"✂️ יצירה"};
 const TOPIC = id => CATALOG.find(t => t.id === id);
+/* משחק בעמוד נושא נפתח במצב ילדים (?play=1) – בלי מספר סודי */
+const playHref = h => /^topics\//.test(h) ? h.replace(/^([^?#]*)(\?[^#]*)?(#.*)?$/, (m, a, q, hs) => a + (q ? q + "&" : "?") + "play=1" + (hs || "")) : h;
 const range = k => { const a = String(k).split("-").map(Number); return [a[0], a[1] || a[0]]; };
 const hitG = (g, k) => { const [lo, hi] = range(k); return !(g.ages[1] < lo || g.ages[0] > hi); };
 const hitT = (t, k) => { const gs = KIDS_GAMES.filter(g => g.topic === t.id); if (gs.length) return gs.some(g => hitG(g, k)); const [lo, hi] = range(k); return !(t.ages[1] < lo || t.ages[0] > hi); };
@@ -109,9 +110,7 @@ const renderAge = () => {
   document.getElementById("agT").textContent = "🎮 " + open.length + " משחקים לגיל " + o.t;
   document.getElementById("ggrid").innerHTML = open.map(g => {
     const t = TOPIC(g.topic), h = CAT.HOSTS[t.host] || CAT.HOSTS.booqli;
-    const key = /^topics\//.test(g.href) && typeof siteIsLocked === "function" && siteIsLocked(g.topic) && !siteUnlocked();
-    return '<a class="g-card" href="' + CAT.root + g.href + '" data-g="' + g.id + '" style="--gb:' + (/^#/.test(t.bg) ? t.bg : "#FFF1C9") + '">' +
-      (key ? '<span class="key" title="נפתח במספר הסודי">🔑</span>' : '') +
+    return '<a class="g-card" href="' + CAT.root + playHref(g.href) + '" data-g="' + g.id + '" style="--gb:' + (/^#/.test(t.bg) ? t.bg : "#FFF1C9") + '">' +
       '<span class="ic" aria-hidden="true">' + g.ic + '</span><span><b>' + g.name + '</b><small>' + KIND[g.kind] + ' · ' + (t.book ? "ספרי BOOQLI" : t.name) + '</small></span></a>';
   }).join("") || '<p class="g-soon">עוד אין משחקים פתוחים לגיל הזה. הם בדרך!</p>';
   document.getElementById("gsoon").textContent = soon ? "⏳ ועוד " + soon + " משחקים לגיל הזה נפתחים בקרוב" : "";

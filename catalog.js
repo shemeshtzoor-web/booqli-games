@@ -282,7 +282,7 @@ C.card = function(t, opt){
   var a = wrap.firstChild;
   a.setAttribute("aria-label", t.name + ", " + C.statusText(t, s));
   if (s !== "open") a.addEventListener("click", function(e){ e.preventDefault(); C.info(t, s); });
-  else if (opt.kids) a.href = C.href(t) + (t.book ? "" : "#play");
+  else if (opt.kids) a.href = C.href(t) + (t.book ? "" : (window.KIDS_GAMES || []).some(function(g){ return g.topic === t.id; }) ? "?play=1" : "#play");
   var act = document.createElement("div"); act.className = "c-act";
   if (s === "open") {
     var f = document.createElement("button"); f.type = "button"; f.className = "c-fav";
