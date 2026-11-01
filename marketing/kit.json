@@ -1,5 +1,5 @@
 {
- "version": "2026-11-01.2",
+ "version": "2026-11-01.3",
  "guide": [
   {
    "h": "🧭 המטרה במשפט אחד",
@@ -53,6 +53,462 @@
    ]
   }
  ],
+ "ideasSeed": [
+  {
+   "id": "s1",
+   "title": "הרשמה מרצון לאתר",
+   "cat": "אתר",
+   "notes": "מי שנרשמת – הכל פתוח לה, גם עונות שנסגרו. מתוכנן להפעיל ב-20.12 (כשהסתיו נסגר), כשיש 150–200 חברות בקבוצה.",
+   "status": "בתכנון"
+  },
+  {
+   "id": "s2",
+   "title": "ט\"ו בשבט",
+   "cat": "נושא לאתר",
+   "notes": "אמור להיפתח בערך ב-24.12. עדיין אין תוכן.",
+   "status": "רעיון"
+  },
+  {
+   "id": "s3",
+   "title": "הלכתי לאיבוד: מה עושים?",
+   "cat": "נושא לאתר",
+   "notes": "יש ריבוע \"בהכנה\" באתר.",
+   "status": "רעיון"
+  },
+  {
+   "id": "s4",
+   "title": "הכנה לכיתה א׳",
+   "cat": "נושא לאתר",
+   "notes": "גילאי 5–6. יש ריבוע \"בהכנה\".",
+   "status": "רעיון"
+  },
+  {
+   "id": "s5",
+   "title": "מוגנות: אזעקות ומרחב מוגן",
+   "cat": "נושא לאתר",
+   "notes": "מחכה לחומרים ממך. רק לפי פיקוד העורף.",
+   "status": "מחכה לי"
+  },
+  {
+   "id": "s6",
+   "title": "פינת הסיפור – הקראות של ספרי BOOQLI",
+   "cat": "נושא לאתר",
+   "notes": "לבחור: ספר מדבר / סרטון / הקלטה.",
+   "status": "רעיון"
+  },
+  {
+   "id": "s7",
+   "title": "דירוג בכוכבים אמיתי",
+   "cat": "אתר",
+   "notes": "שכולם רואים.",
+   "status": "רעיון"
+  },
+  {
+   "id": "s8",
+   "title": "אפליקציה בגוגל פליי",
+   "cat": "אתר",
+   "notes": "25$ + 12 בודקים ל-14 יום. בינתיים יש התקנה מהדפדפן.",
+   "status": "רעיון"
+  },
+  {
+   "id": "s9",
+   "title": "הביקורת של אלונה מכפר נטר",
+   "cat": "שיווק",
+   "notes": "לחכות לנוסח ממנה.",
+   "status": "מחכה לי"
+  },
+  {
+   "id": "s10",
+   "title": "מילוי ספקיות במתנות",
+   "cat": "שיווק",
+   "notes": "30 הראשונות חודשיים בחינם; כל ספקית מצרפת 3 לקבוצה.",
+   "status": "בתכנון"
+  }
+ ],
+ "siteSnapshot": {
+  "items": [
+   {
+    "id": "opening",
+    "name": "פתיחת שנה",
+    "ic": "🎒",
+    "ready": false,
+    "event": "2027-09-01",
+    "season": true,
+    "aud": "tp"
+   },
+   {
+    "id": "tishrei",
+    "name": "חגי תשרי",
+    "ic": "🍎",
+    "ready": false,
+    "event": "2027-10-02",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "autumn",
+    "name": "סתיו",
+    "ic": "🍂",
+    "ready": true,
+    "event": "2027-09-23",
+    "opens": "2026-10-31",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "hanukkah",
+    "name": "חנוכה",
+    "ic": "🕎",
+    "ready": true,
+    "event": "2026-12-04",
+    "opens": "2026-10-30",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "winter",
+    "name": "חורף",
+    "ic": "🌧️",
+    "ready": true,
+    "event": "2026-12-21",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "tubishvat",
+    "name": "ט\"ו בשבט",
+    "ic": "🌳",
+    "ready": false,
+    "event": "2027-01-23",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "family",
+    "name": "יום המשפחה",
+    "ic": "👨‍👩‍👧",
+    "ready": false,
+    "event": "2027-02-07",
+    "season": true,
+    "aud": "tp"
+   },
+   {
+    "id": "purim",
+    "name": "פורים",
+    "ic": "🎭",
+    "ready": true,
+    "event": "2027-03-23",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "spring",
+    "name": "אביב",
+    "ic": "🌸",
+    "ready": false,
+    "event": "2027-03-20",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "pesach",
+    "name": "פסח",
+    "ic": "🍷",
+    "ready": false,
+    "event": "2027-04-21",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "lagbaomer",
+    "name": "ל\"ג בעומר",
+    "ic": "🔥",
+    "ready": false,
+    "event": "2027-05-25",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "atzmaut",
+    "name": "יום העצמאות",
+    "ic": "🇮🇱",
+    "ready": false,
+    "event": "2027-05-12",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "shavuot",
+    "name": "שבועות",
+    "ic": "🌾",
+    "ready": false,
+    "event": "2027-06-11",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "summer",
+    "name": "קיץ",
+    "ic": "☀️",
+    "ready": false,
+    "event": "2027-06-21",
+    "season": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "last-minute",
+    "name": "הגעתי לא מוכנה! 10 פעילויות",
+    "ic": "🆘",
+    "ready": true,
+    "aud": "t"
+   },
+   {
+    "id": "morning-circle",
+    "name": "מפגש בוקר: 30 רעיונות",
+    "ic": "☀️",
+    "ready": true,
+    "aud": "tp"
+   },
+   {
+    "id": "birthday-party",
+    "name": "יום הולדת בגן",
+    "ic": "🎂",
+    "ready": true,
+    "aud": "tp"
+   },
+   {
+    "id": "stories",
+    "name": "סיפורים וקריאה",
+    "ic": "📖",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "feelings",
+    "name": "עולם הרגשות",
+    "ic": "😊",
+    "ready": true,
+    "aud": "tpks"
+   },
+   {
+    "id": "colors",
+    "name": "עולם הצבעים",
+    "ic": "🎨",
+    "ready": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "math",
+    "name": "חשבון לגיל הרך",
+    "ic": "🔢",
+    "ready": true,
+    "aud": "tpks"
+   },
+   {
+    "id": "safety",
+    "name": "אזעקות ומרחב מוגן",
+    "ic": "🛡️",
+    "ready": false,
+    "aud": "tp"
+   },
+   {
+    "id": "calendar",
+    "name": "לוח חופשות תשפ\"ז",
+    "ic": "📅",
+    "ready": true,
+    "aud": "tp"
+   },
+   {
+    "id": "earthquake",
+    "name": "רעידת אדמה: מה עושים?",
+    "ic": "🌍",
+    "ready": true,
+    "aud": "tpk"
+   },
+   {
+    "id": "lost",
+    "name": "הלכתי לאיבוד: מה עושים?",
+    "ic": "🧭",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "first-grade",
+    "name": "הכנה לכיתה א׳",
+    "ic": "🎒",
+    "ready": false,
+    "aud": "ps"
+   },
+   {
+    "id": "healthy-eating",
+    "name": "אוכל בריא: פירות וירקות",
+    "ic": "🥕",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "movement",
+    "name": "תנועה ויוגה",
+    "ic": "🤸",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "sleep",
+    "name": "שינה",
+    "ic": "😴",
+    "ready": false,
+    "aud": "tp"
+   },
+   {
+    "id": "honor-parents",
+    "name": "כיבוד הורים",
+    "ic": "💐",
+    "ready": false,
+    "aud": "tp"
+   },
+   {
+    "id": "tidy",
+    "name": "סדר וארגון",
+    "ic": "🧺",
+    "ready": false,
+    "aud": "tp"
+   },
+   {
+    "id": "hygiene",
+    "name": "צחצוח שיניים ומקלחת",
+    "ic": "🪥",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "morning-prayer",
+    "name": "תפילת בוקר",
+    "ic": "🌅",
+    "ready": false,
+    "aud": "t"
+   },
+   {
+    "id": "body",
+    "name": "גוף האדם",
+    "ic": "🧒",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "english",
+    "name": "אנגלית לקטנטנים",
+    "ic": "🔤",
+    "ready": false,
+    "aud": "tpk"
+   },
+   {
+    "id": "suppliers",
+    "name": "מתנות וספקיות לפי עונות",
+    "ic": "🎁",
+    "ready": true,
+    "href": "gifts/",
+    "aud": "t"
+   },
+   {
+    "id": "school-reading",
+    "name": "קריאה וכתיבה",
+    "ic": "✏️",
+    "ready": false,
+    "aud": "ps"
+   },
+   {
+    "id": "school-comprehension",
+    "name": "הבנת הנקרא",
+    "ic": "📚",
+    "ready": false,
+    "aud": "ps"
+   },
+   {
+    "id": "school-science",
+    "name": "מדע וטבע לכיתות",
+    "ic": "🔬",
+    "ready": false,
+    "aud": "ps"
+   },
+   {
+    "id": "school-english",
+    "name": "אנגלית לכיתות",
+    "ic": "🇬🇧",
+    "ready": false,
+    "aud": "ps"
+   },
+   {
+    "id": "play",
+    "name": "חדר המשחקים: 20 משחקים",
+    "ic": "🎲",
+    "ready": true,
+    "href": "kids/play/",
+    "aud": "pk"
+   },
+   {
+    "id": "superhero",
+    "name": "גיבור/ת על",
+    "ready": true,
+    "href": "games/superhero/",
+    "aud": "pk"
+   },
+   {
+    "id": "birthday",
+    "name": "ילד/ת יום הולדת",
+    "ready": true,
+    "href": "games/birthday/",
+    "aud": "pk"
+   },
+   {
+    "id": "bye-bye-diaper",
+    "name": "ביי ביי חיתול!",
+    "ready": true,
+    "href": "games/bye-bye-diaper/",
+    "aud": "pk"
+   },
+   {
+    "id": "savanna",
+    "name": "בסוואנה",
+    "ready": true,
+    "href": "games/savanna/",
+    "aud": "pk"
+   }
+  ],
+  "opens": {
+   "morning-circle": "2026-11-04",
+   "feelings": "2026-11-08",
+   "calendar": "2026-11-11",
+   "math": "2026-11-15",
+   "earthquake": "2026-11-18",
+   "winter": "2026-11-25",
+   "colors": "2026-11-01T08:30",
+   "purim": "2027-02-21"
+  },
+  "closes": {
+   "hanukkah": "2026-12-12T23:59:00+02:00",
+   "winter": "2027-03-19T23:59:00+02:00",
+   "purim": "2027-03-24T23:59:00+02:00",
+   "autumn": "2026-12-20T23:59:00+02:00"
+  },
+  "kids": {
+   "play": 20,
+   "autumn": 4,
+   "hanukkah": 7,
+   "winter": 4,
+   "purim": 7,
+   "birthday-party": 4,
+   "feelings": 4,
+   "colors": 2,
+   "math": 16,
+   "earthquake": 4,
+   "bye-bye-diaper": 1,
+   "superhero": 1,
+   "birthday": 1,
+   "savanna": 1
+  },
+  "openTopics": []
+ },
  "site": "https://games.booqli.ai/",
  "group": "https://chat.whatsapp.com/I00ZXog0R88HDDMolWYKbx",
  "topics": [

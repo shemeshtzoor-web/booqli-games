@@ -2,7 +2,7 @@
 # מייצר את kit.json (לאתר) ואת data.js (מוטמע בתוסף) ממקור אחד.
 import json, sys, datetime
 OUT = sys.argv[1]
-VERSION = "2026-11-01.2"
+VERSION = "2026-11-01.3"
 SITE = "https://games.booqli.ai/"
 GROUP = "https://chat.whatsapp.com/I00ZXog0R88HDDMolWYKbx"
 FOOT_FB = "בחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕"
@@ -268,6 +268,44 @@ day("2026-12-03","calendar",["WA1","WA2"],[6],fbKind="fbp",note="'מחר יום 
 day("2026-12-04","kinder-book",["WA3"],[7],note="חנוכה שמח 🕎 – ברכה חמה + 'ספר לכל ילד – למתנת סוף שנה, מזמינים מוקדם'.",camp="")
 day("2026-12-05","kids",[],[8,9],note="מוצאי שבת: משחקים לחופשה.",camp="")
 
+
+# ===================== צילום מצב האתר (גיבוי – התוסף קורא את האתר החי) =====================
+import os, re
+def site_snapshot():
+    root=os.path.join(os.path.dirname(os.path.abspath(__file__)),"..")
+    try:
+        cat=open(os.path.join(root,"catalog.js"),encoding="utf-8").read(); com=open(os.path.join(root,"common.js"),encoding="utf-8").read()
+    except Exception: return None
+    return parse_site(cat,com)
+def parse_site(cat,com):
+    items=[]
+    for line in cat.split("\n"):
+        m=re.match(r'^\s*(\{"id".*\})\s*,?\s*$',line)
+        if m:
+            o=json.loads(m.group(1)); items.append({k:o[k] for k in ("id","name","ic","ready","event","opens","season","href","aud") if k in o})
+    kg=cat[cat.find("window.KIDS_GAMES"):]
+    kids={}
+    for t in re.findall(r'topic:\s*"([\w-]+)"',kg): kids[t]=kids.get(t,0)+1
+    def block(name):
+        m=re.search(r'window\.SITE\.'+name+r'\s*=\s*\{([\s\S]*?)\};',com); d={}
+        if m:
+            for k,v in re.findall(r'"?([\w-]+)"?\s*:\s*"([^"]+)"',m.group(1)): d[k]=v
+        return d
+    return {"items":items,"opens":block("opens"),"closes":block("closes"),"kids":kids,"openTopics":re.findall(r'"([\w-]+)"',(re.search(r'SITE\.openTopics\s*=\s*\[([^\]]*)\]',com) or re.match("()",""  )).group(1))}
+
+IDEAS_SEED = [
+ {"id":"s1","title":"הרשמה מרצון לאתר","cat":"אתר","notes":"מי שנרשמת – הכל פתוח לה, גם עונות שנסגרו. מתוכנן להפעיל ב-20.12 (כשהסתיו נסגר), כשיש 150–200 חברות בקבוצה.","status":"בתכנון"},
+ {"id":"s2","title":"ט\"ו בשבט","cat":"נושא לאתר","notes":"אמור להיפתח בערך ב-24.12. עדיין אין תוכן.","status":"רעיון"},
+ {"id":"s3","title":"הלכתי לאיבוד: מה עושים?","cat":"נושא לאתר","notes":"יש ריבוע \"בהכנה\" באתר.","status":"רעיון"},
+ {"id":"s4","title":"הכנה לכיתה א׳","cat":"נושא לאתר","notes":"גילאי 5–6. יש ריבוע \"בהכנה\".","status":"רעיון"},
+ {"id":"s5","title":"מוגנות: אזעקות ומרחב מוגן","cat":"נושא לאתר","notes":"מחכה לחומרים ממך. רק לפי פיקוד העורף.","status":"מחכה לי"},
+ {"id":"s6","title":"פינת הסיפור – הקראות של ספרי BOOQLI","cat":"נושא לאתר","notes":"לבחור: ספר מדבר / סרטון / הקלטה.","status":"רעיון"},
+ {"id":"s7","title":"דירוג בכוכבים אמיתי","cat":"אתר","notes":"שכולם רואים.","status":"רעיון"},
+ {"id":"s8","title":"אפליקציה בגוגל פליי","cat":"אתר","notes":"25$ + 12 בודקים ל-14 יום. בינתיים יש התקנה מהדפדפן.","status":"רעיון"},
+ {"id":"s9","title":"הביקורת של אלונה מכפר נטר","cat":"שיווק","notes":"לחכות לנוסח ממנה.","status":"מחכה לי"},
+ {"id":"s10","title":"מילוי ספקיות במתנות","cat":"שיווק","notes":"30 הראשונות חודשיים בחינם; כל ספקית מצרפת 3 לקבוצה.","status":"בתכנון"},
+]
+
 GUIDE = [
  {"h":"🧭 המטרה במשפט אחד","p":"שגננת תגיד \"בוקלי? כן, משם אני מדפיסה את המערכים\" – ושאמא תגיד \"בוקלי? הגננת שלנו עובדת איתם\". כשהן צריכות ספר, הן כבר סומכות עלייך."},
  {"h":"🔁 המסלול (מה כל פוסט ומודעה אמורים לעשות)","items":[
@@ -299,7 +337,7 @@ GUIDE = [
    "לא לכתוב \"בלי הרשמה\" / \"בלי פרסומות\" – רק \"אתר בטוח להורים ולילדים\"."]},
 ]
 
-data = {"version":VERSION,"guide":GUIDE,"site":SITE,"group":GROUP,"topics":T,"campaigns":CAMPAIGNS,"plan":P,
+data = {"version":VERSION,"guide":GUIDE,"ideasSeed":IDEAS_SEED,"siteSnapshot":site_snapshot(),"site":SITE,"group":GROUP,"topics":T,"campaigns":CAMPAIGNS,"plan":P,
         "groups":{"wa":{"WA1":"קבוצת העדכונים (שלי)","WA2":"קבוצת וואטסאפ 2","WA3":"קבוצת וואטסאפ 3"},
                   "fb":{str(i):"קבוצת פייסבוק %d"%i for i in range(1,11)}}}
 ids={t["id"] for t in T}

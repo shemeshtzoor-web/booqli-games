@@ -192,7 +192,7 @@
     }).join("");
     const arts = KIT.plan.filter(p => p.article && topic(p.topic) && topic(p.topic).article.status === "חסר").map(p => `<li><b>${nice(p.date)}</b> – ${esc(topic(p.topic).article.title)}</li>`).join("");
     return `<h1>לוח החודש</h1><p class="mute">לוחצים על יום כדי לראות את הטקסטים ולסמן מה בוצע. פייסבוק = מספרי הקבוצות (השמות בהגדרות).</p>
-      <table><thead><tr><th>יום</th><th>נושא</th><th>איפה</th><th>שימו לב</th><th>בוצע</th></tr></thead><tbody>${rows}</tbody></table>
+      <div style="overflow-x:auto"><table><thead><tr><th>יום</th><th>נושא</th><th>איפה</th><th>שימו לב</th><th>בוצע</th></tr></thead><tbody>${rows}</tbody></table></div>
       <h2>📝 מאמרים שצריך להוסיף ל-booqli.ai (לפי תאריך)</h2><div class="card"><ul>${arts}</ul><p class="small mute">רק לדעת – לא נכתבו. מאמר בעמוד ההוא מאפשר לפייסבוק למדוד צפיות, ומביא תנועה מגוגל לאורך זמן.</p></div>`;
   }
   async function vTopics() {
@@ -248,19 +248,120 @@
       <button class="btn s" id="exp">⬇️ שמירת גיבוי</button> <label class="btn o">⬆️ פתיחת גיבוי<input type="file" hidden accept=".json" id="imp"></label></div>`;
   }
 
+
+  // ---------- מה פתוח באתר (קורא את האתר החי; גיבוי: צילום מצב ב-kit.json) ----------
+  let SITEDATA = null, SITESRC = "", siteFilter = "all";
+  function parseSite(cat, com) {
+    const items = [];
+    cat.split("\n").forEach(l => { const m = l.match(/^\s*(\{"id".*\})\s*,?\s*$/); if (m) { try { items.push(JSON.parse(m[1])); } catch (e) {} } });
+    const kids = {}, kg = cat.slice(cat.indexOf("window.KIDS_GAMES"));
+    (kg.match(/topic:\s*"([\w-]+)"/g) || []).forEach(x => { const t = x.match(/"([\w-]+)"/)[1]; kids[t] = (kids[t] || 0) + 1; });
+    const block = n => { const m = com.match(new RegExp("window\\.SITE\\." + n + "\\s*=\\s*\\{([\\s\\S]*?)\\};")), o = {}; if (m) { const re = /"?([\w-]+)"?\s*:\s*"([^"]+)"/g; let r; while ((r = re.exec(m[1]))) o[r[1]] = r[2]; } return o; };
+    const ot = com.match(/SITE\.openTopics\s*=\s*\[([^\]]*)\]/);
+    return { items, kids, opens: block("opens"), closes: block("closes"), openTopics: ot ? (ot[1].match(/"([\w-]+)"/g) || []).map(x => x.replace(/"/g, "")) : [] };
+  }
+  async function loadSite(force) {
+    if (SITEDATA && !force) return;
+    try {
+      const [a, b] = await Promise.all(["catalog.js", "common.js"].map(f => fetch(KIT.site + f + "?t=" + Date.now(), { cache: "no-store" }).then(r => { if (!r.ok) throw 0; return r.text(); })));
+      const d = parseSite(a, b); if (!d.items.length) throw 0;
+      SITEDATA = d; SITESRC = "live";
+    } catch (e) { SITEDATA = KIT.siteSnapshot || { items: [] }; SITESRC = "snap"; }
+  }
+  const pd = s => !s ? null : new Date(s.length > 10 ? (s.length === 16 ? s + ":00+02:00" : s) : s + "T00:00:00+02:00");
+  const fmt = s => { const x = pd(s); if (!x) return ""; return x.getDate() + "." + (x.getMonth() + 1) + "." + String(x.getFullYear()).slice(2) + (s.length > 10 && !/23:59/.test(s) ? " " + s.slice(11, 16) : ""); };
+  function siteRows() {
+    const D = SITEDATA, now = new Date();
+    return D.items.map(t => {
+      let opens = (D.opens || {})[t.id] || t.opens || "";
+      if (!opens && t.event) { const x = pd(t.event); x.setDate(x.getDate() - 30); opens = x.toISOString().slice(0, 10); }
+      const closes = (D.closes || {})[t.id] || "";
+      let st = t.ready ? "open" : "soon";
+      if (closes && pd(closes) < now) st = "closed";
+      else if (opens && t.ready && pd(opens) > now) st = "locked";
+      const code = !t.href && (D.openTopics || []).indexOf(t.id) < 0;
+      const days = closes && st === "open" ? Math.ceil((pd(closes) - now) / 864e5) : null;
+      return { t, st, opens, closes, code, kids: (D.kids || {})[t.id] || 0, days };
+    });
+  }
+  async function vSite() {
+    await loadSite();
+    const rows = siteRows(), order = { open: 0, locked: 1, soon: 2, closed: 3 };
+    rows.sort((a, b) => order[a.st] - order[b.st] || (a.opens || "9").localeCompare(b.opens || "9"));
+    const cnt = s => rows.filter(r => r.st === s).length;
+    const LBL = { open: '<span class="pill g">✅ פתוח</span>', locked: '<span class="pill w">⏳ נפתח בקרוב</span>', soon: '<span class="pill">🛠️ בהכנה (אין תוכן)</span>', closed: '<span class="pill p">🔒 נסגר לעונה</span>' };
+    const fl = [["all", "הכל (" + rows.length + ")"], ["open", "✅ פתוח (" + cnt("open") + ")"], ["locked", "⏳ נפתח בקרוב (" + cnt("locked") + ")"], ["soon", "🛠️ בהכנה (" + cnt("soon") + ")"], ["closed", "🔒 נסגר (" + cnt("closed") + ")"]];
+    const body = rows.filter(r => siteFilter === "all" || r.st === siteFilter).map(r => {
+      const u = KIT.site + (r.t.href || "topics/" + r.t.id + "/");
+      return `<tr><td><b>${esc(r.t.ic || "")} ${esc(r.t.name)}</b></td><td>${LBL[r.st]}</td>
+        <td>${r.st === "soon" ? '<span class="mute">—</span>' : esc(fmt(r.opens)) || '<span class="mute">כבר פתוח</span>'}</td>
+        <td>${r.st === "soon" ? '<span class="mute">—</span>' : r.closes ? esc(fmt(r.closes)) + (r.days != null && r.days <= 14 ? ` <span class="pill p">עוד ${r.days} ימים</span>` : "") : '<span class="mute">כל השנה</span>'}</td>
+        <td>${r.st === "soon" ? "" : r.code ? "🔑 כן" : "פתוח לכולם"}</td>
+        <td>${r.kids ? "🎮 " + r.kids : ""}</td>
+        <td>${r.st === "soon" ? "" : `<a href="${esc(u)}" target="_blank" class="btn sm o">לפתוח</a>`}</td></tr>`;
+    }).join("");
+    return `<h1>מה פתוח באתר</h1>
+      <p class="mute">${SITESRC === "live" ? "✔️ נקרא עכשיו מהאתר החי – תמיד מעודכן." : "⚠️ אין חיבור לאתר כרגע – מוצג צילום מצב מגרסה " + esc(KIT.version) + "."} <button class="btn sm s" id="siteRefresh">🔄 רענון</button></p>
+      <div class="chan">${fl.map(([k, n]) => `<button class="btn sm ${siteFilter === k ? "" : "o"}" data-sitef="${k}">${n}</button>`).join("")}</div>
+      <div style="overflow-x:auto"><table><thead><tr><th>נושא</th><th>מצב</th><th>נפתח</th><th>נסגר</th><th>מספר סודי</th><th>משחקי ילדים</th><th></th></tr></thead><tbody>${body}</tbody></table></div>
+      <p class="small mute">🔑 = לגננות העמוד המלא נפתח במספר הסודי. 🎮 = משחקי הילדים של הנושא פתוחים לכולם באזור הילדים, גם לפני הפתיחה (עד שהעונה נסגרת). "נפתח בקרוב" לפי התאריכים שנקבעו באתר.</p>`;
+  }
+
+  // ---------- רעיונות ----------
+  const ICATS = ["נושא לאתר", "משחק", "שיווק", "ספר BOOQLI", "אתר", "אחר"], ISTAT = ["רעיון", "בתכנון", "מחכה לי", "נעשה"];
+  let ideaFilter = "all", ideaEdit = null;
+  function ideas() {
+    let L = LS.get("ideas", null);
+    const seeded = LS.get("ideas_seeded", []);
+    if (!L) L = [];
+    (KIT.ideasSeed || []).forEach(x => { if (seeded.indexOf(x.id) < 0) { L.push(Object.assign({ date: todayISO() }, x)); seeded.push(x.id); } });
+    LS.set("ideas_seeded", seeded); LS.set("ideas", L);
+    return L;
+  }
+  function vIdeas() {
+    const L = ideas(), ed = ideaEdit ? L.find(x => x.id === ideaEdit) : null;
+    const opt = (arr, v) => arr.map(o => `<option ${o === v ? "selected" : ""}>${esc(o)}</option>`).join("");
+    const shown = L.filter(x => ideaFilter === "all" ? x.status !== "נעשה" : ideaFilter === "done" ? x.status === "נעשה" : x.cat === ideaFilter);
+    const allTxt = "רעיונות ל-BOOQLI (" + todayISO() + "):\n" + L.filter(x => x.status !== "נעשה").map((x, i) => (i + 1) + ". [" + x.cat + " · " + x.status + "] " + x.title + (x.notes ? " – " + x.notes : "")).join("\n");
+    return `<h1>💡 רעיונות לעתיד</h1><p class="mute">כל רעיון שעולה לך – לכאן, ולא לראש. כשבא לך לבנות, מעתיקים רעיון ומדביקים בשיחה עם Claude.</p>
+      <div class="card" id="ideaForm"><h3>${ed ? "✏️ עריכת רעיון" : "➕ רעיון חדש"}</h3>
+        <label class="inp">מה הרעיון?<input id="iTitle" value="${esc(ed ? ed.title : "")}" placeholder="למשל: נושא שבועות עם משחק עוגת גבינה"></label>
+        <div class="row"><label class="inp" style="flex:1">סוג<select id="iCat">${opt(ICATS, ed ? ed.cat : "נושא לאתר")}</select></label>
+        <label class="inp" style="flex:1">מצב<select id="iStat">${opt(ISTAT, ed ? ed.status : "רעיון")}</select></label></div>
+        <label class="inp">פרטים (לא חובה)<textarea id="iNotes" rows="3" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px">${esc(ed ? ed.notes || "" : "")}</textarea></label>
+        <button class="btn" id="iSave">${ed ? "💾 שמירה" : "➕ להוסיף"}</button> ${ed ? '<button class="btn o" id="iCancel">ביטול</button>' : ""}</div>
+      <div class="chan"><button class="btn sm ${ideaFilter === "all" ? "" : "o"}" data-ideaf="all">פתוחים (${L.filter(x => x.status !== "נעשה").length})</button>${ICATS.map(c => `<button class="btn sm ${ideaFilter === c ? "" : "o"}" data-ideaf="${esc(c)}">${esc(c)} (${L.filter(x => x.cat === c).length})</button>`).join("")}<button class="btn sm ${ideaFilter === "done" ? "" : "o"}" data-ideaf="done">✔️ נעשו (${L.filter(x => x.status === "נעשה").length})</button> ${cbtn(allTxt, "📋 להעתיק את כל הרעיונות", "s")}</div>
+      ${shown.length ? shown.slice().reverse().map(x => `<div class="card"><div class="row"><h3 style="margin:0;flex:1">${esc(x.title)}</h3><span class="pill">${esc(x.cat)}</span>
+        <select data-istat="${x.id}">${opt(ISTAT, x.status)}</select></div>
+        ${x.notes ? `<p style="margin:6px 0;white-space:pre-wrap">${esc(x.notes)}</p>` : ""}
+        <div class="row"><span class="small mute">${esc(x.date ? nice(x.date) : "")}</span>${cbtn(x.title + (x.notes ? "\n" + x.notes : ""), "📋 להעתיק", "o")}<button class="btn sm o" data-iedit="${x.id}">✏️</button><button class="btn sm o" data-idel="${x.id}">🗑️</button></div></div>`).join("") : '<div class="card mute">אין כאן רעיונות עדיין.</div>'}`;
+  }
+
   async function render() {
     copyN = 0; for (const k in COPY) delete COPY[k];
     document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "day" ? "month" : view)));
     const m = $("#main");
-    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
+    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
     m.innerHTML = html;
     $("#sub").textContent = "booqli Games · " + nice(todayISO());
   }
 
   // ---------- אירועים ----------
   document.addEventListener("click", e => {
-    const b = e.target.closest("[data-copy],[data-v],[data-topic],[data-gotopic],[data-day],[data-copyimg],[data-delmedia],#checkUpd,#exp");
+    const b = e.target.closest("[data-copy],[data-v],[data-topic],[data-gotopic],[data-day],[data-copyimg],[data-delmedia],#checkUpd,#exp,[data-sitef],#siteRefresh,[data-ideaf],[data-iedit],[data-idel],#iSave,#iCancel");
     if (!b) return;
+    if (b.dataset.sitef) { siteFilter = b.dataset.sitef; return render(); }
+    if (b.id === "siteRefresh") { SITEDATA = null; return render().then(() => toast("רוענן ✔️")); }
+    if (b.dataset.ideaf) { ideaFilter = b.dataset.ideaf; return render(); }
+    if (b.dataset.iedit) { ideaEdit = b.dataset.iedit; return render().then(() => $("#ideaForm").scrollIntoView({ behavior: "smooth" })); }
+    if (b.id === "iCancel") { ideaEdit = null; return render(); }
+    if (b.dataset.idel) { if (confirm("למחוק את הרעיון?")) { LS.set("ideas", ideas().filter(x => x.id !== b.dataset.idel)); render(); } return; }
+    if (b.id === "iSave") {
+      const title = $("#iTitle").value.trim(); if (!title) { toast("כתבי מה הרעיון 🙂"); return; }
+      const L = ideas(), o = { title, cat: $("#iCat").value, status: $("#iStat").value, notes: $("#iNotes").value.trim() };
+      if (ideaEdit) Object.assign(L.find(x => x.id === ideaEdit), o); else L.push(Object.assign({ id: "i" + Date.now(), date: todayISO() }, o));
+      LS.set("ideas", L); ideaEdit = null; toast("נשמר ✔️"); return render();
+    }
     if (b.dataset.copy) return copy(COPY[b.dataset.copy]);
     if (b.dataset.copyimg) return copyImage(b.dataset.copyimg);
     if (b.dataset.delmedia) { if (confirm("למחוק את הקובץ?")) mdel(b.dataset.delmedia).then(render); return; }
@@ -282,6 +383,7 @@
     if (el.dataset.upload) { const [tid, kind] = el.dataset.upload.split(":"); if (el.files[0]) saveMedia(tid, kind, el.files[0]); return; }
     if (el.dataset.group) { const [k, key] = el.dataset.group.split(":"), o = LS.get("groups", {}); (o[k] = o[k] || {})[key] = el.value.trim(); LS.set("groups", o); toast("נשמר ✔️"); return; }
     if (el.dataset.art) { const o = LS.get("articles", {}); o[el.dataset.art] = el.value.trim(); LS.set("articles", o); toast("נשמר ✔️"); return; }
+    if (el.dataset.istat) { const L = ideas(), x = L.find(i => i.id === el.dataset.istat); x.status = el.value; LS.set("ideas", L); toast("נשמר ✔️"); return render(); }
     if (el.dataset.camp) { const o = LS.get("camps", {}); o[el.dataset.camp] = el.value; LS.set("camps", o); toast("נשמר ✔️"); render(); return; }
     if (el.id === "imp" && el.files[0]) {
       el.files[0].text().then(s => { const o = JSON.parse(s); Object.keys(o).forEach(k => k.startsWith("bq_") && localStorage.setItem(k, o[k])); toast("הגיבוי נטען ✔️"); render(); }).catch(() => alert("הקובץ לא תקין"));

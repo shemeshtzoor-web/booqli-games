@@ -3,7 +3,7 @@
   "name": "בוקלי – מרכז הפרסום",
   "short_name": "בוקלי פרסום",
   "description": "מה מפרסמים היום, טקסטים מוכנים להעתקה, קמפיינים, ותמונות וסרטונים לכל נושא של booqli Games.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "action": { "default_title": "בוקלי – מה מפרסמים היום?", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" } },
   "background": { "service_worker": "background.js" },
   "permissions": ["storage", "unlimitedStorage"],
