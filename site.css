@@ -86,3 +86,11 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 footer.foot{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
 footer.foot p{margin:4px 0}footer.foot .logo{height:40px;margin:0 auto 10px;display:block}footer.foot a{color:#fff;font-weight:700}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* באנר אזעקות ("מה אתה עושה כאן, פחד?") – דף הבית, מ-1.11.2026 */
+.calm-ban{margin-top:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#FFE6E8,#EFE8FF);border:2px solid #F6D3D7;border-radius:22px;padding:12px 16px;text-decoration:none;color:#2B1526;box-shadow:0 4px 0 #EBD3E0}
+.calm-ban .i{font-size:34px;flex-shrink:0}
+.calm-ban b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:19px;color:#8E1F2C;line-height:1.2}
+.calm-ban small{display:block;font-size:14px;color:#6b5a66;font-weight:700}
+.calm-ban .go{margin-inline-start:auto;background:#D4384A;color:#fff;border-radius:999px;padding:8px 14px;font-weight:800;white-space:nowrap;flex-shrink:0}
+@media (max-width:520px){.calm-ban .go{display:none}.calm-ban b{font-size:17px}}

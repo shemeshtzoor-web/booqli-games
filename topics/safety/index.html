@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מה אתה עושה כאן, פחד? הספר, נשימת פרח ונר ומה עושים באזעקה · booqli Games</title>
+<meta name="description" content="הספר 'מה אתה עושה כאן, פחד?' מאת שמש צור – כולו באתר עם הקראה, נשימת 'פרח ונר', כרטיס 'מה עוזר לי', מה עושים באזעקה (לפי פיקוד העורף) ואיך שומרים את העמוד בטלפון שיהיה זמין גם בלי אינטרנט. פתוח תמיד לכולם, בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/safety/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="💛 מה אתה עושה כאן, פחד? – הספר, נשימה ומה עושים באזעקה">
+<meta property="og:description" content="ספר קטן שעוזר לילדים להבין את הפחד ולהירגע. עם הקראה, נשימת פרח ונר וכרטיס 'מה עוזר לי'. פתוח תמיד לכולם, בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/topics/safety/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66;
+  --lav:#8E6FD8; --lav-soft:#EFE8FF; --red:#D4384A; --red-soft:#FFE6E8; --ok:#22A55B;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, var(--lav-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}.btn-wa{margin-inline-start:auto}}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn-red{background:var(--red);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #8E1F2C;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+
+/* ===== פתיח ===== */
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--lav),var(--pink),var(--sage))}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.hero small{font-weight:800;color:var(--lav)}
+.hero h1{font-family:"Frank Ruhl Libre",Fredoka,serif;font-size:clamp(34px,7vw,58px);line-height:1.1;margin-top:4px;color:var(--magenta)}
+.hero .by{margin:6px 0 0;font-weight:700;color:var(--sage-deep)}
+.hero p.lead{font-size:18px;max-width:640px;margin:10px 0 0}
+.hero-art{width:230px;max-width:100%}
+.hero-art svg{width:100%;height:auto;display:block}
+@media (max-width:700px){.hero .grid{grid-template-columns:minmax(0,1fr)}.hero-art{order:-1;width:180px;margin:0 auto}}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pills span{background:var(--mint);border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:var(--sage-deep)}
+.pills span.open{background:var(--lav-soft);color:#5B3FB0}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.sped{display:inline-flex;align-items:center;gap:6px;background:#F1E3FF;color:#6B2FA3;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px}
+.menu{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:16px}
+@media (max-width:760px){.menu{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}}
+.menu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 0 #d9e9e1;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
+.menu a span{font-size:26px}
+.menu a.red{background:var(--red-soft);color:#8E1F2C}
+
+/* ===== קופסאות ===== */
+.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
+.act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
+.act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
+.act-h h2{font-size:26px;line-height:1.15}
+.act .intro{margin:2px 0 12px;color:var(--muted)}
+.why{background:#F7FBF9;border-radius:14px;padding:8px 12px;font-size:15px;margin:16px 0 0}
+.why b{color:var(--sage-deep)}
+.say-btn{border:0;background:#fff;border-radius:999px;width:40px;height:40px;cursor:pointer;font-size:20px;box-shadow:0 2px 0 var(--mint-2);vertical-align:middle;flex-shrink:0}
+
+/* ===== יש אזעקה עכשיו ===== */
+.now{border-top-color:var(--red);background:linear-gradient(180deg,#FFF5F6,#fff 40%)}
+.now .act-h h2{color:#8E1F2C}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid #F6D3D7;border-radius:18px;padding:12px 14px;font-size:18px;line-height:1.4}
+.steps li .n{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--red-soft);display:grid;place-items:center;font-size:24px}
+.steps li b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:21px;color:#8E1F2C;line-height:1.2}
+.steps li .s{color:var(--muted);font-size:16px}
+.steps li .row-btns{justify-content:flex-start;margin-top:8px}
+.mycard-now{margin-top:8px;background:var(--lav-soft);border-radius:14px;padding:8px 12px;font-weight:700}
+.calm-note{margin-top:14px;background:#FFF6CF;border-radius:16px;padding:10px 14px;font-size:16px}
+.small-src{font-size:13px;color:var(--muted);margin:10px 0 0}
+.small-src a{color:var(--magenta);font-weight:700}
+
+/* ===== הספר ===== */
+.reader{background:#2B1526;border-radius:22px;padding:10px;color:#fff}
+.reader:fullscreen{display:flex;flex-direction:column;justify-content:center;border-radius:0;padding:2vh 3vw;overflow:auto}
+.reader:fullscreen .pg{max-width:1200px;margin:0 auto;width:100%}
+.reader:fullscreen .art{max-height:52vh;width:auto;margin:0 auto}
+.reader:fullscreen .txt{font-size:clamp(24px,3.2vw,40px)}
+.pg{background:#FFFDF8;color:var(--ink);border-radius:16px;overflow:hidden}
+.art{aspect-ratio:16/9;width:100%;display:block;background:#F4EEFF}
+.art svg{width:100%;height:100%;display:block}
+.txt{font-family:"Frank Ruhl Libre",Assistant,serif;font-weight:500;font-size:clamp(20px,3.6vw,28px);line-height:1.55;padding:14px 18px 16px;text-align:center;min-height:6em}
+.txt p{margin:0}
+.txt p.sp{margin-top:.5em}
+.txt .pn{display:block;font-family:Assistant,sans-serif;font-size:14px;color:var(--muted);font-weight:700;margin-top:10px}
+.txt.cover h3{font-family:"Frank Ruhl Libre",serif;font-size:clamp(28px,5vw,44px);color:var(--magenta);line-height:1.15}
+.txt.cover p{font-family:Assistant,sans-serif;font-size:17px;color:var(--sage-deep);font-weight:700}
+.txt .now-word{background:#FFE7A3;border-radius:6px}
+.ctrls{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ctrls button{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:999px;min-width:46px;height:46px;font-size:20px;cursor:pointer;padding:0 12px;font-weight:800}
+.ctrls button.play{background:var(--pink-btn);min-width:64px;font-size:17px}
+.ctrls button[aria-pressed="false"]{opacity:.5}
+.pbar{display:flex;gap:3px;justify-content:center;margin:10px 0 2px}
+.pbar i{flex:1;max-width:30px;height:6px;border-radius:3px;background:rgba(255,255,255,.22);cursor:pointer}
+.pbar i.on{background:var(--pink)}
+.note{font-size:14px;color:var(--muted);margin:10px 0 0;text-align:center}
+
+/* ===== סרטון ===== */
+.yt{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#2B1526}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt button{position:absolute;inset:0;border:0;padding:0;cursor:pointer;background:none;width:100%;height:100%}
+.yt button svg{width:100%;height:100%;display:block}
+
+/* ===== פרח ונר ===== */
+.breath{background:linear-gradient(160deg,#FFF0F8,#F4EEFF 60%,#fff);border-radius:22px;padding:14px 10px 16px;text-align:center}
+.breath svg{width:min(560px,100%);height:auto;display:block;margin:0 auto}
+.b-say{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(24px,5.4vw,36px);line-height:1.2;min-height:2.6em;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--magenta)}
+.b-count{font-family:Fredoka,sans-serif;font-size:22px;color:var(--lav);min-height:30px}
+.dots{display:flex;justify-content:center;gap:8px;margin:6px 0}
+.dots i{width:18px;height:18px;border-radius:50%;background:#EEE;border:2px solid #ddd}
+.dots i.ok{background:var(--lav);border-color:var(--lav)}
+.flower{transform-box:fill-box;transform-origin:50% 100%;transition:transform 4s ease-in-out}
+.flower.in{transform:scale(1.18)}
+.scent{opacity:0;transition:opacity 1s}
+.scent.in{opacity:1}
+.flame{transform-box:fill-box;transform-origin:50% 100%;transition:transform 1.2s ease-out,opacity 1.2s}
+.flame.out{transform:scale(.25,.2) skewX(-25deg);opacity:.15}
+.flame.flick{animation:flick .5s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scale(1.05,.95) skewX(4deg)}}
+.puff{opacity:0;transition:opacity .6s}
+.puff.on{opacity:1}
+.b-done{font-size:20px;font-weight:800;color:var(--sage-deep);margin-top:6px}
+
+/* ===== מה עוזר לי ===== */
+.helps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.helps{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}}
+.hb{background:#fff;border:3px solid var(--mint-2);border-radius:20px;padding:10px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:800;font-size:15px;line-height:1.2;box-shadow:0 3px 0 var(--mint-2);touch-action:manipulation;text-align:center}
+.hb .e{font-size:34px;line-height:1.1}
+.hb[aria-pressed="true"]{border-color:var(--lav);background:var(--lav-soft);box-shadow:0 3px 0 var(--lav)}
+.hform{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:0 0 12px}
+.hform input{border:3px solid var(--mint-2);border-radius:14px;padding:8px 12px;font-size:17px;width:min(260px,100%)}
+.hform input:focus{outline:none;border-color:var(--lav)}
+.mycard{margin:16px auto 0;max-width:480px;background:linear-gradient(160deg,var(--lav-soft),#fff);border:3px solid var(--lav);border-radius:24px;padding:16px 18px;text-align:center}
+.mycard h3{font-family:"Frank Ruhl Libre",serif;color:#5B3FB0;font-size:24px}
+.mycard ul{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;font-size:19px;font-weight:700}
+.mycard .empty{color:var(--muted);font-weight:600}
+
+/* ===== שיהיה זמין ===== */
+.ready{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:700px){.ready{grid-template-columns:minmax(0,1fr)}}
+.rd{background:#F7FBF9;border-radius:20px;padding:14px;display:flex;gap:12px;align-items:flex-start}
+.rd .e{font-size:30px;width:52px;height:52px;border-radius:16px;background:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:0 2px 0 var(--mint-2)}
+.rd b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:19px;color:var(--sage-deep);line-height:1.2}
+.rd p{margin:4px 0 0;font-size:16px}
+.rd .row-btns{justify-content:flex-start;margin-top:8px}
+.rd.hot{background:var(--lav-soft);border:2px solid var(--lav)}
+.saved{font-weight:800;color:var(--ok);margin-top:6px;min-height:1.4em;font-size:15px}
+
+/* ===== טקסט ===== */
+.textbox{background:#fff;border-radius:24px;padding:18px 20px;margin-top:24px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c,#6F988B)}
+.textbox h2{font-size:24px;color:var(--sage-deep);margin-bottom:6px}
+.textbox ul,.textbox ol{margin:6px 0 0;padding-inline-start:22px;display:grid;gap:6px;font-size:17px}
+.textbox .tip{background:#FFF6CF;border-radius:14px;padding:8px 12px;margin-top:12px;font-size:15px}
+.textbox.purple{border-top-color:#9B5DE5}.textbox.purple h2{color:#6B2FA3}
+.quote{margin:10px 0 0;background:var(--lav-soft);border-radius:20px;padding:16px 18px;font-size:18px;line-height:1.6;position:relative}
+.quote::before{content:"”";position:absolute;top:-14px;right:14px;font-family:"Frank Ruhl Libre",serif;font-size:80px;color:var(--lav);line-height:1}
+.quote p{margin:0 0 8px}
+.quote footer,.quote .who{margin-top:10px;font-size:16px;font-weight:800;color:#5B3FB0;background:none;padding:0;text-align:right}
+.srcs{font-size:14px;color:var(--muted)}
+.srcs a{color:var(--magenta);font-weight:700;word-break:break-word}
+
+/* ===== שליחה ושיתוף ===== */
+.share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
+.share h3{color:var(--wa);font-size:22px}
+.share p{color:var(--muted);margin:6px 0 4px}
+.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 4px 0 #d9e9e1}
+.peek .e{font-size:40px}
+.peek b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
+.peek span{display:block;color:var(--muted);font-size:15px}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#7B5BD0,#C13671);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block;margin:4px 0 0 6px}
+@media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
+body>footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+body>footer p{margin:4px 0}body>footer .logo{height:40px;margin:0 auto 10px}body>footer a{color:#fff;font-weight:700}
+
+/* ===== דפי הדפסה ===== */
+.sheets3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.sheets3{grid-template-columns:minmax(0,1fr)}}
+.sheets3>div{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.sheets3 h3{font-size:19px;color:var(--sage-deep)}
+.pv-box{width:238px;height:337px;overflow:hidden;border-radius:10px;box-shadow:0 0 0 2px var(--mint),0 6px 18px rgba(0,0,0,.08);margin:0 auto;background:#fff;position:relative}
+.pv-box>.sheet{transform:scale(.3);transform-origin:top right;position:absolute;top:0;right:0}
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:3mm}
+.s-head h1{font-size:20pt;color:#C13671;line-height:1.1;font-family:"Frank Ruhl Libre",Fredoka,serif}
+.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#8E6FD8,#FF56C2,#6F988B);margin-bottom:4mm}
+.s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:3.5mm}
+.bk-grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4mm}
+.bk-c{border:2px solid #E6DDFB;border-radius:4mm;padding:2.5mm;display:flex;flex-direction:column;gap:2mm;overflow:hidden;min-height:0}
+.bk-c svg{width:auto;height:34mm;max-width:100%;margin:0 auto;display:block;border-radius:2.5mm;flex-shrink:0}
+.bk-c .t{font-family:"Frank Ruhl Libre",serif;font-size:10.6pt;line-height:1.38;text-align:center;flex:1;min-height:0}
+.bk-c .t p{margin:0}.bk-c .t p.sp{margin-top:1mm}
+.bk-c .n{font-size:8.5pt;color:#6b5a66;text-align:center;font-weight:700}
+.bk-c.cv{justify-content:center;text-align:center;background:#F7F3FF}
+.bk-c.cv h2{font-family:"Frank Ruhl Libre",serif;font-size:21pt;color:#C13671}
+.p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:2.5mm 5mm}
+.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:.5mm}
+.p-box p{margin:0}
+.p-box ul{margin:1mm 0 0;padding-inline-start:5mm}
+.s-tip{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700;margin:0}
+.hp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm}
+.hp-grid div{border:2px solid #E6DDFB;border-radius:4mm;padding:2.5mm;text-align:center;font-weight:700;font-size:12pt}
+.hp-grid div span{display:block;font-size:24pt;line-height:1.2}
+.hp-grid div i{display:inline-block;width:5mm;height:5mm;border:1.5px solid #6b5a66;border-radius:1mm;vertical-align:middle;margin-inline-start:2mm}
+.drawbox{flex:1;min-height:40mm;border:2.5px dashed #CDE7DC;border-radius:5mm;display:flex;align-items:flex-start;justify-content:center;padding:3mm;color:#9BB8AE;font-weight:700}
+.calm-steps{display:grid;gap:3mm}
+.calm-steps div{display:flex;gap:4mm;align-items:center;border:2.5px solid #F6D3D7;border-radius:5mm;padding:2mm 4mm}
+.calm-steps p{margin:0}
+.calm-steps span{font-size:26pt;line-height:1}
+.calm-steps b{display:block;font-family:Fredoka,sans-serif;font-size:16pt;color:#8E1F2C}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+}
+
+/* אנימציות עדינות */
+.bob{animation:bob 2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.twinkle{animation:tw 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes tw{50%{transform:scale(1.3) rotate(15deg);opacity:.6}}
+.beat{animation:beat .8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes beat{30%{transform:scale(1.12)}60%{transform:scale(.98)}}
+.shiver{animation:shiver .35s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+@keyframes shiver{25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.sway{animation:sway 3s ease-in-out infinite;transform-box:fill-box;transform-origin:top center}
+@keyframes sway{50%{transform:skewX(3deg)}}
+.wave{animation:wave 1s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
+@keyframes wave{50%{transform:rotate(-24deg)}}
+.goaway{animation:goaway 6s ease-in-out infinite alternate}
+@keyframes goaway{to{transform:translateX(-60px);opacity:.55}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <small>🛡️ מוגנות · אזעקות ומרחב מוגן · רגשות</small>
+        <h1>מָה אַתָּה עוֹשֶׂה כָּאן, פַּחַד?</h1>
+        <p class="by">ספר קטן להבנת הפחד ולהתמודדות בריאה · מאת שמש צור · עריכה: גילת עירון בהר</p>
+        <p class="lead">הפחד מספר לילדים את הסיפור שלו: הוא בכלל לא אויב – הוא חבר קצת לחוץ שבא לשמור עלינו. כאן תמצאו את הספר כולו עם הקראה, נשימת "פרח ונר", כרטיס "מה עוזר לי", ומה עושים כשיש אזעקה.</p>
+        <div class="pills">
+          <span class="open">🔓 פתוח תמיד לכולם</span><span>📖 הספר המלא + הקראה</span><span>🎬 סרטון</span><span>🌸 פרח ונר</span><span>📲 עובד גם בלי אינטרנט</span><span>👧 גילאי 3–8</span>
+        </div>
+        <div class="acts">
+          <a class="btn-red" href="#now">🚨 יש אזעקה עכשיו?</a>
+          <a class="btn-main" href="#book">📖 לקרוא את הספר</a>
+          <span class="sped">💜 מתאים גם לחינוך מיוחד</span>
+          <span id="heroLike"></span>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+    </div>
+    <nav class="menu" aria-label="מה יש בעמוד">
+      <a class="red" href="#now"><span>🚨</span>באזעקה</a>
+      <a href="#book"><span>📖</span>הספר</a>
+      <a href="#video"><span>🎬</span>סרטון</a>
+      <a href="#breathe"><span>🌸</span>פרח ונר</a>
+      <a href="#helps"><span>💛</span>מה עוזר לי</a>
+      <a href="#ready"><span>📲</span>שיהיה זמין</a>
+    </nav>
+  </section>
+
+  <section class="act now" id="now" style="--c:#D4384A;--b:#FFE6E8">
+    <div class="act-h"><span class="e" aria-hidden="true">🚨</span><div><small>להורים, לגננות ולכל מבוגר</small><h2>יש אזעקה עכשיו? ככה עושים</h2></div></div>
+    <ol class="steps">
+      <li><span class="n" aria-hidden="true">🏃</span><div><b>נכנסים מיד למרחב המוגן</b><span class="s">ממ"ד, מקלט או חדר מדרגות פנימי – בזמן ההתגוננות של האזור שלכם. בחוץ ואין מבנה קרוב? שוכבים על הקרקע ומגינים על הראש בידיים.</span></div></li>
+      <li><span class="n" aria-hidden="true">🚪</span><div><b>נשארים בפנים עד שמודיעים שאפשר לצאת</b><span class="s">לפי ההנחיות העדכניות של פיקוד העורף (באפליקציה, באתר, ברדיו ובטלוויזיה).</span></div></li>
+      <li><span class="n" aria-hidden="true">🤗</span><div><b>קרוב, בגובה העיניים, בקול שקט</b><span class="s">"אני כאן איתך. אנחנו במקום מוגן. המבוגרים שומרים עליך." חיבוק, יד ביד – מה שהילד צריך. מותר לו לפחד, לבכות, לרעוד.</span></div></li>
+      <li><span class="n" aria-hidden="true">🌸</span><div><b>נושמים יחד: פרח… נר…</b><span class="s">מריחים פרח באף – לאט, ומכבים נר בפה – בעדינות. שוב ושוב.</span><div class="row-btns"><a class="btn-main" href="#breathe">🌸 לנשום יחד עכשיו</a></div></div></li>
+      <li><span class="n" aria-hidden="true">💛</span><div><b>עושים את מה שעוזר לילד</b><span class="s">חיבוק, שמיכה, בובה, לספור עד 10, לשיר…</span><div class="mycard-now" id="nowCard" hidden></div><div class="row-btns"><a class="btn-sec" href="#helps">💛 מה עוזר לי?</a></div></div></li>
+    </ol>
+    <p class="calm-note">📖 <b>את הספר קוראים ברגע רגוע</b> – לא בזמן אזעקה ולא מייד אחריה. ברוגע המסר נקלט, ומכין את הילדים לפעם הבאה.</p>
+    <p class="small-src">במצב אמת פועלים תמיד לפי ההנחיות העדכניות של <a href="https://www.oref.org.il/" target="_blank" rel="noopener">פיקוד העורף</a>. העמוד הזה מכין ומרגיע, ולא מחליף את ההנחיות.</p>
+  </section>
+
+  <section class="act" id="book" style="--c:#8E6FD8;--b:#EFE8FF">
+    <div class="act-h"><span class="e" aria-hidden="true">📖</span><div><small>הספר המלא · 16 עמודים · עם הקראה</small><h2>מָה אַתָּה עוֹשֶׂה כָּאן, פַּחַד?</h2></div></div>
+    <p class="intro">מדפדפים בחצים, או לוחצים ▶️ והספר מוקרא כמו סרטון. אפשר להקרין בגן במסך מלא ⛶.</p>
+    <div class="reader" id="reader">
+      <div class="pg">
+        <div class="art" id="art"></div>
+        <div class="txt" id="txt" aria-live="polite"></div>
+      </div>
+      <div class="pbar" id="pbar"></div>
+      <div class="ctrls">
+        <button type="button" id="bPrev" aria-label="העמוד הקודם">⏭</button>
+        <button type="button" class="play" id="bPlay" aria-label="הקראה אוטומטית">▶️ הקראה</button>
+        <button type="button" id="bNext" aria-label="העמוד הבא">⏮</button>
+        <button type="button" id="bSay" aria-label="להקריא את העמוד">🔊</button>
+        <button type="button" id="bSound" aria-pressed="true" aria-label="קול">🔈</button>
+        <button type="button" id="bFull" aria-label="מסך מלא">⛶</button>
+      </div>
+    </div>
+    <p class="note">ההקראה בקול ממוחשב של הטלפון או המחשב. אם לא שומעים – בודקים שהקול פתוח, או מקריאים בעצמכם 💛</p>
+  </section>
+
+  <section class="act" id="video" style="--c:#FF56C2;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">🎬</span><div><small>כ-5 דקות · צריך אינטרנט</small><h2>הספר בסרטון</h2></div></div>
+    <p class="intro">אחרי שהספר הופץ בחינם, הוא הגיע לסרטון מוקרא ששותף איתנו – תודה למי שיצר אותו 💛 בלי אינטרנט? לחצו ▶️ הקראה בספר שלמעלה.</p>
+    <div class="yt" id="yt"><button type="button" id="ytBtn" aria-label="לצפייה בסרטון"></button></div>
+  </section>
+
+  <section class="act" id="breathe" style="--c:#FF56C2;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">🌸</span><div><small>לילדים · אפשר בכל מקום, גם לבד · מהספר, עמוד 14</small><h2>פרח ונר – נושמים יחד</h2></div></div>
+    <p class="intro">מריחים את הפרח באף – לאט־לאט. מכבים את הנר ברוח מהפה – בעדינות. 5 פעמים, ואז הפחד נרגע קצת.</p>
+    <div class="breath">
+      <div id="bArt"></div>
+      <div class="b-say" id="bSayTxt">מוכנים? 🌸</div>
+      <div class="b-count" id="bCount"></div>
+      <div class="dots" id="bDots"></div>
+      <div class="row-btns">
+        <button class="btn-main" type="button" id="brGo">▶️ מתחילים לנשום</button>
+        <button class="btn-sec" type="button" id="brVoice" aria-pressed="true">🔊 עם קול</button>
+      </div>
+      <div class="b-done" id="bDone" aria-live="polite"></div>
+    </div>
+    <p class="why"><b>למה זה עוזר?</b> נשיפה ארוכה ואיטית מאטה את הלב ומרגיעה את הגוף. כשמתרגלים בימים רגילים – בזמן אמת זה כבר מוכר וקל יותר.</p>
+  </section>
+
+  <section class="act" id="helps" style="--c:#8E6FD8;--b:#EFE8FF">
+    <div class="act-h"><span class="e" aria-hidden="true">💛</span><div><small>לילדים ולהורים · מהספר, עמודים 13 ו-15</small><h2>מה עוזר לי כשהפחד בא?</h2></div></div>
+    <p class="intro">"תְּסַפְּרוּ לַהוֹרִים מָה עוֹזֵר כְּשֶׁאֲנִי מַגִּיעַ." בוחרים מה עוזר לכם, ומקבלים כרטיס לשמור, להדפיס ולתלות בממ"ד.</p>
+    <div class="hform"><label for="hName" style="font-weight:800">השם שלי:</label><input id="hName" maxlength="20" autocomplete="off" placeholder="למשל: נועה"></div>
+    <div class="helps" id="helpsGrid"></div>
+    <div class="hform" style="margin-top:12px"><label for="hOther" style="font-weight:800">עוד משהו שעוזר לי:</label><input id="hOther" maxlength="40" autocomplete="off" placeholder="למשל: לחבק את הכלב"></div>
+    <div class="mycard" id="myCard"></div>
+    <div class="row-btns">
+      <button class="btn-main" type="button" id="hPng">💾 לשמור כתמונה</button>
+      <button class="btn-sec" type="button" id="hPrint">🖨️ להדפיס</button>
+      <button class="btn-wa-big" type="button" id="hSend">📲 לשלוח לאמא / לאבא</button>
+    </div>
+    <p class="note">הבחירות נשמרות בטלפון, ומופיעות גם למעלה ב"יש אזעקה עכשיו?".</p>
+  </section>
+
+  <section class="act" id="ready" style="--c:#6F988B;--b:#E1F0EA">
+    <div class="act-h"><span class="e" aria-hidden="true">📲</span><div><small>עושים עכשיו, ברגע רגוע – לפני שצריך</small><h2>שיהיה זמין גם באזעקה פתאומית</h2></div></div>
+    <div class="ready">
+      <div class="rd hot"><span class="e" aria-hidden="true">💾</span><div><b>שומרים את העמוד בטלפון</b><p>לחיצה אחת, והעמוד (עם הספר, ההקראה ופרח ונר) נפתח גם כשאין אינטרנט או כשהרשת עמוסה.</p><div class="row-btns"><button class="btn-main" type="button" id="saveOff">💾 לשמור לשימוש בלי אינטרנט</button></div><div class="saved" id="saveMsg" aria-live="polite"></div></div></div>
+      <div class="rd hot"><span class="e" aria-hidden="true">📲</span><div><b>מתקינים כאפליקציה במסך הבית</b><p>אייקון בטלפון שנפתח בלחיצה – בלי לחפש באמצע אזעקה. באייפון: ספארי ← שיתוף ← "הוספה למסך הבית".</p><div class="row-btns"><a class="btn-sec" href="../../app/">📲 איך מתקינים</a></div></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">🖨️</span><div><b>מדפיסים ושמים בממ"ד</b><p>את הספר, את כרטיס "מה עוזר לי" ואת דף "בממ"ד נושמים". נייר עובד תמיד, גם כשהטלפון נגמר.</p><div class="row-btns"><a class="btn-sec" href="#print-sheets">🖨️ לדפי ההדפסה</a></div></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">🧸</span><div><b>מכינים פינה רגועה בממ"ד</b><p>הבובה או השמיכה האהובה, הספר המודפס, פנס, מים וחטיף, מטען לטלפון ומשחק קטן. ממ"ד פנוי ומוכן.</p></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">📖</span><div><b>קוראים את הספר מראש</b><p>ברגע רגוע, כמה פעמים. כשהפחד מגיע – הילדים כבר מכירים אותו, ויודעים מה עוזר להם.</p></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">🌸</span><div><b>מתרגלים פרח ונר בימים רגילים</b><p>לפני השינה, בגן, באוטו. מה שמתרגלים ברוגע – זוכרים גם בלחץ.</p></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">🔔</span><div><b>אפליקציית פיקוד העורף</b><p>להתקין, ולבדוק מה זמן ההתגוננות באזור שלכם ושל הגן.</p></div></div>
+      <div class="rd"><span class="e" aria-hidden="true">🗣️</span><div><b>מספרים לגננת ולסבתא</b><p>שולחים להם את כרטיס "מה עוזר לי" – שגם הם ידעו מה מרגיע את הילד.</p></div></div>
+    </div>
+  </section>
+
+  <section class="textbox" id="orit" style="--c:#8E6FD8">
+    <h2>💜 מה אומרת אורית מיכאלי</h2>
+    <div class="quote">
+      <p>סיפור עדין, חכם ונוגע ללב, המזמין ילדים וילדות להביט בפחד מזווית אחרת – לא כמשהו מבהיל שיש להימנע ממנו, אלא כרגש שאפשר להכיר, להבין ואפילו לחיות לצידו. הספר מוביל את הילדים ואת הוריהם למסע רגשי עדין שבו הם חוקרים יחד מה מעורר פחד, איך הוא מורגש בגוף ואילו דרכים עשויות לעזור בהתמודדות עימו ובהרגעתו.</p>
+      <p>מחקרים מראים שכאשר מתמללים עבור ילדים את רגשותיהם – אלה נעשים ברורים וממוקדים יותר, ויכולת הוויסות שלהם משתפרת.</p>
+      <p>בעזרת שפה רגישה ונגישה לילדים הכותבת מצליחה ליצור למענם ולמען ההורים מרחב בטוח לפגוש את הפחד ולמצוא את המילים שיסייעו להם להבין, לארגן ולתת משמעות לחווייתם הרגשית.</p>
+      <div class="who">אורית מיכאלי · קלינאית תקשורת ומטפלת רגשית באמצעות משחק, דוקטורנטית החוקרת את הקשר בין שפה לרגש בקרב ילדים</div>
+    </div>
+    <p class="tip">💛 תודה לאורית מיכאלי. בספר המודפס יש גם דף מידע להורים ורקע תיאורטי שכתבה.</p>
+  </section>
+
+  <section class="textbox" style="--c:#FF9A2E">
+    <h2>✍️ איך נולד הספר</h2>
+    <p style="margin:0;font-size:17px">שמש צור כתבה את הספר בלילה שלפני מבצע "עם כלביא" (יוני 2025). הפחד לא נתן לה לישון, אז היא לקחה עט ומחברת וכתבה – עד שנרדמה. כמה דקות אחר כך התעוררה לאזעקה. יומיים אחר כך איירה את הספר, שלחה לעריכה אצל גילת עירון בהר, והפיצה אותו בחינם לכל מי שרצה. מאות הורים וגננות כתבו שהוא עוזר – ועכשיו הוא כאן, פתוח לכולם.</p>
+    <p style="margin:10px 0 0"><a id="articleLink" target="_blank" rel="noopener" style="color:var(--magenta);font-weight:800">למאמר המלא באתר BOOQLI ←</a></p>
+  </section>
+
+  <section class="textbox" style="--c:#3AA7F0">
+    <h2>👩‍🏫 לגננות ולהורים: איך קוראים את הספר (כ-20 דקות)</h2>
+    <ol>
+      <li><b>פתיחה (3 דק'):</b> "מי יודע מה זה פחד? מתי הרגשתם אותו?" – כל תשובה בסדר.</li>
+      <li><b>קריאה (8 דק'):</b> לאט, עם הפסקות. בעמודים 6–7 שואלים: "איפה אתם מרגישים את הפחד בגוף?" (בטן, לב, רגליים…).</li>
+      <li><b>מה עוזר לי (4 דק'):</b> בעמוד 13 כל ילד אומר מה עוזר לו. אפשר להכין את כרטיס "מה עוזר לי" ולשלוח להורים.</li>
+      <li><b>פרח ונר (3 דק'):</b> בעמוד 14 נושמים יחד 5 פעמים.</li>
+      <li><b>סיום (2 דק'):</b> "הפחד הוא לא אויב – הוא חבר קצת לחוץ שבא לשמור עלינו." מסיימים בחיבוק או בשיר רגוע.</li>
+    </ol>
+    <ul style="margin-top:10px">
+      <li><b>רק ברגע רגוע.</b> לא בזמן אזעקה ולא מייד אחריה – זו הכנה לפעם הבאה.</li>
+      <li><b>כל רגש מותר.</b> לא אומרים "אין ממה לפחד". אומרים "אני רואה שאתה מפחד, אני פה איתך".</li>
+      <li><b>שומרים מהחדשות.</b> מצמצמים צפייה ושיחות מבוגרים מפחידות ליד הילדים.</li>
+      <li><b>אנחנו רגועים – הם רגועים.</b> ילדים לומדים מאיתנו איך להגיב. גם המבוגרים יכולים לנשום פרח ונר.</li>
+      <li><b>אם הפחד לא עובר</b> (קשיי שינה, הרטבה, היצמדות, בכי רב לאורך זמן) – מדברים עם הגננת, רופא הילדים או איש מקצוע.</li>
+    </ul>
+  </section>
+
+  <section class="textbox purple">
+    <h2>💜 התאמות לחינוך המיוחד</h2>
+    <ul>
+      <li><b>משפטים קצרים וקבועים:</b> "נכנסים · נשארים · נושמים · מחבקים" – אותן מילים בכל פעם.</li>
+      <li><b>כרטיסי תמונה:</b> מדפיסים את "מה עוזר לי" ואת "בממ"ד נושמים". ילד שלא מדבר מצביע על מה שעוזר לו.</li>
+      <li><b>פרח ונר אמיתיים:</b> פרח מנייר ונר מנייר (בלי אש!) – מריחים ונושפים בידיים.</li>
+      <li><b>רגישות לרעש:</b> אוזניות מוכנות בממ"ד, ומספרים מראש שהאזעקה רועשת.</li>
+      <li><b>הספר לאט:</b> עמוד או שניים בכל פעם, כמה ימים ברצף. חזרה מרגיעה.</li>
+    </ul>
+  </section>
+
+  <section class="act" id="print-sheets" style="--c:#C13671;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">🖨️</span><div><small>A4 · לבית, לגן ולממ"ד</small><h2>דפים להדפסה</h2></div></div>
+    <div class="sheets3">
+      <div><h3>📖 הספר (5 דפים)</h3><div class="pv-box" id="pv1"></div><button class="btn-main" type="button" id="print1">🖨️ להדפיס</button></div>
+      <div><h3>💛 מה עוזר לי כשהפחד בא</h3><div class="pv-box" id="pv2"></div><button class="btn-main" type="button" id="print2">🖨️ להדפיס</button></div>
+      <div><h3>🚨 לתלות בממ"ד</h3><div class="pv-box" id="pv3"></div><button class="btn-main" type="button" id="print3">🖨️ להדפיס</button></div>
+    </div>
+  </section>
+
+  <section class="textbox" style="--c:#6F988B">
+    <h2>📚 מקורות</h2>
+    <p class="srcs">הנחיות ההתגוננות: <a href="https://www.oref.org.il/" target="_blank" rel="noopener">פיקוד העורף</a> · <a href="https://meyda.education.gov.il/files/Bitachon/emergency/Highlights-for-daycare-shaagat-ari.pdf" target="_blank" rel="noopener">משרד החינוך – דגשים לגיל הרך בשעת חירום (מרץ 2026)</a>. הספר: <a id="articleLink2" target="_blank" rel="noopener">"מה אתה עושה כאן, פחד?" – המאמר באתר BOOQLI</a>. במצב אמת – פועלים תמיד לפי הנחיות פיקוד העורף העדכניות.</p>
+  </section>
+
+  <section class="share">
+    <h3>💌 לשלוח למי שצריך</h3>
+    <p>הספר, הנשימה ומה עושים באזעקה – פתוח לכולם. אפשר לשלוח ישר לקבוצת ההורים של הגן.</p>
+    <div class="row-btns">
+      <button class="btn-wa-big" type="button" id="parentsBtn">📲 הודעה להורים בוואטסאפ</button>
+      <button class="btn-sec" type="button" id="shareBtn">💬 לשלוח לחברה</button>
+    </div>
+  </section>
+
+  <a class="peek" href="../feelings/">
+    <span class="e" aria-hidden="true">🌈</span>
+    <div><b>עוד באתר: עולם הרגשות ←</b><span>גם פחד הוא רגש. משחק פרצופים ו-6 פעילויות שעוזרות לילדים לדבר על מה שהם מרגישים.</span></div>
+  </a>
+
+  <section class="bookbox">
+    <div style="font-size:56px">📕</div>
+    <div>
+      <h2>הספר המודפס</h2>
+      <p>עקב פניות רבות, "מה אתה עושה כאן, פחד?" יצא גם בהדפסה – לבית, לממ"ד ולגן. בספר המודפס יש גם דף מידע להורים ורקע תיאורטי מאת אורית מיכאלי.</p>
+      <a id="orderBtn" target="_blank" rel="noopener">📲 להזמנה בוואטסאפ</a>
+      <a id="booksBtn" target="_blank" rel="noopener">ספרים אישיים של BOOQLI ←</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>"מה אתה עושה כאן, פחד?" © שמש צור · האיורים בעמוד מקוריים של האתר · אתר בטוח להורים ולילדים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+<div id="print" aria-hidden="true"></div>
+
+<script src="../../common.js"></script>
+<script src="../../catalog.js"></script>
+<script>
+/* ======================== הגדרות ======================== */
+const CONFIG = {
+  id: "safety",
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=fear-book",
+  books: "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=book_box&utm_campaign=fear-book",
+  article: "https://www.booqli.ai/he/articles/%D7%9E%D7%94-%D7%90%D7%AA%D7%94-%D7%A2%D7%95%D7%A9%D7%94-%D7%9B%D7%90%D7%9F-%D7%A4%D7%97%D7%93?utm_source=booqli_games&utm_medium=site&utm_campaign=fear-book",
+  order: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אשמח להזמין את הספר המודפס \"מה אתה עושה כאן, פחד?\" 📕"),
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫"),
+  youtube: "A50Kj2yn_N4"
+};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = { get(k, d){ try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4500); }
+
+/* ======================== הקראה ======================== */
+const spoken = t => String(t).replace(/<[^>]+>/g, " ").replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu, "").replace(/\s+/g, " ").trim();
+let SPEAK_ON = true, speakFailShown = false;
+function speak(t, onEnd, rate = .82){
+  let done = false; const fin = ok => { if (done) return; done = true; if (onEnd) onEnd(ok); };
+  if (!SPEAK_ON){ fin(false); return; }
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(spoken(t)); u.lang = "he-IL"; u.rate = rate;
+    const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v;
+    let started = false; u.onstart = () => started = true; u.onend = () => fin(true); u.onerror = () => fin(false);
+    speechSynthesis.speak(u);
+    setTimeout(() => { if (!started){ fin(false); if (!speakFailShown){ speakFailShown = true; toast("🔈 לא שומעים? בדקו שהקול פתוח, או פתחו בכרום / ספארי. אפשר גם להקריא בעצמכם 💛"); } } }, 2500);
+  } catch(e){ fin(false); if (!speakFailShown){ speakFailShown = true; toast("🔈 ההקראה לא נתמכת בדפדפן הזה. אפשר להקריא בעצמכם 💛"); } }
+}
+function hush(){ try { speechSynthesis.cancel(); } catch(e){} }
+
+/* ======================== צלילים רכים ======================== */
+let AC = null;
+function audio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); } catch(e){ AC = null; } return AC; }
+function tone(f, t, d, type = "sine", v = .18){ const C = audio(); if (!C) return; const t0 = C.currentTime + .02 + t, o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(v, t0 + .05); g.gain.exponentialRampToValueAtTime(.001, t0 + d); o.connect(g); g.connect(C.destination); o.start(t0); o.stop(t0 + d + .05); }
+const softWin = () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .18, 1.4, "sine", .14));
+
+/* ======================== ציורים מקוריים (SVG) ======================== */
+const INK = "#3B2416";
+const svg = (inner, vb = "0 0 640 360") => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
+const em = (x, y, s, ch, cls = "") => `<text class="${cls}" x="${x}" y="${y}" font-size="${s}" text-anchor="middle" dominant-baseline="central" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">${ch}</text>`;
+const label = (x, y, s, t, c = INK) => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="middle" font-family="Fredoka,Assistant,Arial" font-weight="700" fill="${c}">${t}</text>`;
+// פחד: יצור סגול רך עם גלימה "בלתי נראית" (שקופה). o: cape, mood (smile/worry/oh/sad), arms (down/wave/open/up/write), baby
+function fear(x, y, s = 1, o = {}){
+  const mood = o.mood || "smile", arms = o.arms || "down";
+  const cape = o.cape ? `<path class="sway" d="M-30 -96 Q-92 -30 -70 4 Q0 18 70 4 Q92 -30 30 -96Z" fill="#E9E1FF" fill-opacity=".55" stroke="#A58BEA" stroke-width="3.5" stroke-dasharray="9 7"/>` : "";
+  const body = `<path d="M-44 -2 Q-56 -60 -36 -100 Q0 -134 36 -100 Q56 -60 44 -2 Q0 8 -44 -2Z" fill="#9B7BE0" stroke="${INK}" stroke-width="4"/><path d="M-26 -14 Q0 -6 26 -14" stroke="#B9A1EE" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  const feet = `<ellipse cx="-18" cy="0" rx="13" ry="7" fill="#7E5FCC" stroke="${INK}" stroke-width="3.5"/><ellipse cx="18" cy="0" rx="13" ry="7" fill="#7E5FCC" stroke="${INK}" stroke-width="3.5"/>`;
+  const eyeY = -78;
+  const eyes = mood === "sad"
+    ? `<path d="M-24 ${eyeY} Q-15 ${eyeY + 7} -6 ${eyeY}" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M6 ${eyeY} Q15 ${eyeY + 7} 24 ${eyeY}" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`
+    : `<circle cx="-15" cy="${eyeY}" r="11" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="15" cy="${eyeY}" r="11" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="-13" cy="${eyeY + 1}" r="5.5" fill="${INK}"/><circle cx="17" cy="${eyeY + 1}" r="5.5" fill="${INK}"/><circle cx="-11" cy="${eyeY - 2}" r="1.8" fill="#fff"/><circle cx="19" cy="${eyeY - 2}" r="1.8" fill="#fff"/>`;
+  const brows = mood === "worry" || mood === "oh" || mood === "sad" ? `<path d="M-26 ${eyeY - 18} L-8 ${eyeY - 24} M26 ${eyeY - 18} L8 ${eyeY - 24}" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>` : `<path d="M-24 ${eyeY - 20} Q-15 ${eyeY - 26} -6 ${eyeY - 20} M6 ${eyeY - 20} Q15 ${eyeY - 26} 24 ${eyeY - 20}" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`;
+  const mouth = mood === "oh" ? `<ellipse cx="0" cy="-54" rx="7" ry="9" fill="${INK}"/>`
+    : mood === "worry" ? `<path d="M-12 -52 Q-6 -58 0 -52 Q6 -46 12 -52" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`
+    : mood === "sad" ? `<path d="M-11 -48 Q0 -58 11 -48" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`
+    : `<path d="M-13 -56 Q0 -42 13 -56" fill="#FF8FB8" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`;
+  const cheeks = `<circle cx="-30" cy="-60" r="6" fill="#FF9EC9" opacity=".8"/><circle cx="30" cy="-60" r="6" fill="#FF9EC9" opacity=".8"/>`;
+  const arm = (cx, cy, r, c = "") => `<ellipse class="${c}" cx="${cx}" cy="${cy}" rx="8" ry="19" fill="#9B7BE0" stroke="${INK}" stroke-width="3.5" transform="rotate(${r} ${cx} ${cy})"/>`;
+  let A;
+  if (arms === "wave") A = arm(-50, -44, 25) + `<g class="wave">${arm(52, -78, 150)}</g>`;
+  else if (arms === "open") A = arm(-56, -56, 55) + arm(56, -56, -55);
+  else if (arms === "up") A = arm(-50, -92, -30) + arm(50, -92, 30);
+  else if (arms === "write") A = arm(-48, -44, 25) + arm(40, -34, -60);
+  else A = arm(-50, -44, 25) + arm(50, -44, -25);
+  const baby = o.baby ? `<circle cx="0" cy="-48" r="7" fill="#FFD23F" stroke="${INK}" stroke-width="2.5"/>` : "";
+  return `<g class="${o.cls || ""}"><g transform="translate(${x} ${y}) scale(${s})">${cape}${feet}${body}${A}${eyes}${brows}${o.baby ? baby : mouth}${cheeks}</g></g>`;
+}
+// ילד/ה פשוט/ה
+function kid(x, y, s = 1, o = {}){
+  const sh = o.shirt || "#3AA7F0", hair = o.hair || "#7A4A2A", mood = o.mood || "smile";
+  const girl = o.girl ? `<path d="M-26 -118 Q-36 -86 -30 -72 M26 -118 Q36 -86 30 -72" stroke="${hair}" stroke-width="9" stroke-linecap="round" fill="none"/>` : "";
+  const mouth = mood === "sad" ? `<path d="M-7 -96 Q0 -102 7 -96" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` : mood === "oh" ? `<ellipse cx="0" cy="-97" rx="4" ry="5" fill="${INK}"/>` : `<path d="M-8 -100 Q0 -92 8 -100" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`;
+  const arms = o.arms === "belly" ? `<path d="M-20 -66 Q-30 -46 -6 -44 M20 -66 Q30 -46 6 -44" stroke="#F6C9A8" stroke-width="9" stroke-linecap="round" fill="none"/>`
+    : o.arms === "hug" ? `<path d="M-20 -66 Q-34 -50 -2 -52 M20 -66 Q34 -50 2 -52" stroke="#F6C9A8" stroke-width="9" stroke-linecap="round" fill="none"/>`
+    : o.arms === "up" ? `<path d="M-20 -68 L-36 -98 M20 -68 L36 -98" stroke="#F6C9A8" stroke-width="9" stroke-linecap="round"/>`
+    : `<path d="M-20 -68 L-30 -36 M20 -68 L30 -36" stroke="#F6C9A8" stroke-width="9" stroke-linecap="round"/>`;
+  return `<g class="${o.cls || ""}"><g transform="translate(${x} ${y}) scale(${s})">
+    <rect x="-14" y="-34" width="10" height="34" rx="4" fill="#5B6C8F" stroke="${INK}" stroke-width="3"/><rect x="4" y="-34" width="10" height="34" rx="4" fill="#5B6C8F" stroke="${INK}" stroke-width="3"/>
+    <path d="M-22 -76 Q0 -84 22 -76 L24 -30 L-24 -30Z" fill="${sh}" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>${arms}
+    ${girl}<circle cx="0" cy="-106" r="22" fill="#F6C9A8" stroke="${INK}" stroke-width="3.5"/><path d="M-22 -110 Q-18 -132 0 -130 Q18 -132 22 -110 Q10 -120 -22 -110Z" fill="${hair}" stroke="${INK}" stroke-width="2.5"/>
+    <circle cx="-7" cy="-106" r="2.8" fill="${INK}"/><circle cx="7" cy="-106" r="2.8" fill="${INK}"/>${mouth}<circle cx="-14" cy="-98" r="3.5" fill="#FF9EC9" opacity=".7"/><circle cx="14" cy="-98" r="3.5" fill="#FF9EC9" opacity=".7"/>
+  </g></g>`;
+}
+const bg = (c1, c2 = "#fff") => `<defs><linearGradient id="g${c1.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="640" height="360" fill="url(#g${c1.slice(1)})"/>`;
+const floor = (c = "#E8DDFB") => `<rect y="300" width="640" height="60" fill="${c}"/><path d="M0 300 H640" stroke="${INK}" stroke-width="3" opacity=".25"/>`;
+const star = (x, y, r = 14, d = 0) => `<path class="twinkle" style="animation-delay:${d}s" d="M${x} ${y - r} L${x + r*.3} ${y - r*.3} L${x + r} ${y} L${x + r*.3} ${y + r*.3} L${x} ${y + r} L${x - r*.3} ${y + r*.3} L${x - r} ${y} L${x - r*.3} ${y - r*.3}Z" fill="#FFD23F" stroke="${INK}" stroke-width="2"/>`;
+const stars = () => [[70,60],[580,70],[110,190],[540,200],[320,36]].map(([x, y], i) => star(x, y, 13, i * .3)).join("");
+const panel = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${c}" stroke="${INK}" stroke-width="3"/>`;
+function flowerSVG(x, y, s = 1, cls = ""){
+  const pet = [0,60,120,180,240,300].map(a => `<ellipse cx="0" cy="-22" rx="13" ry="22" fill="#FF7CC8" stroke="${INK}" stroke-width="3" transform="rotate(${a})"/>`).join("");
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0 Q-6 -60 0 -110" stroke="#46A66E" stroke-width="8" fill="none"/><ellipse cx="-18" cy="-50" rx="18" ry="8" fill="#6CC28C" stroke="${INK}" stroke-width="3" transform="rotate(-30 -18 -50)"/><g class="${cls}"><g transform="translate(0 -130)">${pet}<circle r="15" fill="#FFD23F" stroke="${INK}" stroke-width="3"/></g></g></g>`;
+}
+function candleSVG(x, y, s = 1, flameCls = "flame flick"){
+  return `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="46" ry="10" fill="#E6D3F5" stroke="${INK}" stroke-width="3"/><rect x="-24" y="-110" width="48" height="110" rx="8" fill="#FFF3D6" stroke="${INK}" stroke-width="3.5"/><path d="M-24 -96 Q-10 -88 0 -98 Q12 -88 24 -96" fill="none" stroke="#F3D9A0" stroke-width="5"/><path d="M0 -110 V-122" stroke="${INK}" stroke-width="3"/><g class="${flameCls}"><path d="M0 -168 Q22 -140 12 -126 Q0 -116 -12 -126 Q-22 -140 0 -168Z" fill="#FFB020" stroke="${INK}" stroke-width="3"/><path d="M0 -150 Q8 -136 4 -130 Q0 -126 -4 -130 Q-8 -136 0 -150Z" fill="#FFE27A"/></g></g>`;
+}
+const blanket = (x, y) => `<g transform="translate(${x} ${y})"><path d="M-40 -30 Q0 -40 40 -30 L44 26 Q0 36 -44 26Z" fill="#9EDBFF" stroke="${INK}" stroke-width="3"/><path d="M-26 -32 L-30 28 M0 -36 L0 32 M26 -32 L30 28 M-42 -2 Q0 -10 42 -2" stroke="#fff" stroke-width="3" opacity=".8"/></g>`;
+function mamadDoor(x, y){
+  return `<g><rect x="${x}" y="${y - 170}" width="110" height="170" rx="6" fill="#D8E2EA" stroke="${INK}" stroke-width="4"/><rect x="${x + 14}" y="${y - 150}" width="82" height="130" rx="4" fill="#C3D0DC" stroke="${INK}" stroke-width="3"/><circle cx="${x + 84}" cy="${y - 84}" r="7" fill="${INK}"/><rect x="${x + 22}" y="${y - 206}" width="66" height="28" rx="6" fill="#fff" stroke="${INK}" stroke-width="3"/><text x="${x + 55}" y="${y - 186}" text-anchor="middle" font-family="Fredoka,Assistant,Arial" font-weight="700" font-size="18" fill="${INK}">ממ"ד</text></g>`;
+}
+const bubble = (x, y, w, t) => `<g><rect x="${x - w/2}" y="${y - 28}" width="${w}" height="56" rx="20" fill="#fff" stroke="${INK}" stroke-width="3"/><path d="M${x + w/2 - 30} ${y + 28} L${x + w/2 - 14} ${y + 46} L${x + w/2 - 46} ${y + 28}" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M${x + w/2 - 44} ${y + 27} H${x + w/2 - 32}" stroke="#fff" stroke-width="5"/>${label(x, y + 9, 26, t)}</g>`;
+
+const ART = [
+  /* 0 כריכה */ () => bg("#EFE8FF", "#FFF0F8") + stars() + fear(320, 320, 1.6, {cape:true, arms:"wave", cls:"bob"}),
+  /* 1 שלום */ () => bg("#FFF0F8") + floor("#F7E4F0") + fear(320, 316, 1.35, {arms:"wave", cls:"bob"}) + em(150, 120, 46, "💜", "twinkle") + em(500, 110, 40, "💗", "twinkle") + em(540, 230, 30, "✨"),
+  /* 2 נולד */ () => bg("#FFF8E6") + floor("#F3E6C4") + fear(130, 310, .62, {baby:true}) + em(130, 196, 30, "🍼") + `<path d="M190 260 h50 m-14 -12 l14 12 l-14 12" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>` + fear(310, 312, .9, {}) + `<path d="M380 250 h50 m-14 -12 l14 12 l-14 12" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>` + fear(520, 314, 1.2, {arms:"up"}) + em(520, 80, 40, "💖", "twinkle"),
+  /* 3 מאוחר מדי */ () => bg("#EAF4FF") + panel(30, 40, 170, 150, "#fff") + em(115, 115, 70, "🛝") + panel(235, 40, 170, 150, "#fff") + em(320, 115, 70, "🍲") + panel(440, 40, 170, 150, "#fff") + em(525, 115, 70, "🌲") + fear(320, 350, .95, {mood:"worry", arms:"down"}) + em(420, 270, 40, "⏰") + em(220, 270, 40, "🤔"),
+  /* 4 אילו פחדו */ () => bg("#EAF4FF") + panel(30, 40, 170, 150, "#fff") + em(115, 105, 60, "🛝") + em(165, 160, 40, "✋") + panel(235, 40, 170, 150, "#fff") + em(320, 105, 60, "🔥") + em(370, 160, 40, "✋") + panel(440, 40, 170, 150, "#fff") + em(525, 105, 60, "🌙") + em(575, 160, 40, "✋") + fear(320, 350, .95, {mood:"oh", arms:"open"}) + em(420, 260, 40, "💡", "twinkle"),
+  /* 5 גלימה */ () => bg("#2E2552", "#5B4A99") + stars() + fear(320, 330, 1.5, {cape:true, arms:"up", cls:"bob"}) + em(150, 250, 34, "✨", "twinkle") + em(490, 250, 34, "✨", "twinkle"),
+  /* 6 בבטן */ () => bg("#FFF0F8") + floor("#F7E4F0") + kid(320, 318, 1.5, {arms:"belly", mood:"sad", shirt:"#FFB020"}) + `<path d="M310 222 q10 -10 18 0 t-8 14 t-14 -8" fill="none" stroke="#9B7BE0" stroke-width="4" stroke-linecap="round" class="twinkle"/>` + fear(520, 300, .55, {cape:true, mood:"worry"}),
+  /* 7 רועדים, מתחבאים */ () => bg("#EEF7F2") + floor("#DDEFE5") + kid(130, 316, 1.05, {mood:"oh", cls:"shiver", shirt:"#46C46E"}) + kid(325, 330, .85, {mood:"oh", shirt:"#FF7CC8", girl:true}) + `<rect x="250" y="240" width="150" height="66" rx="10" fill="#D79A5B" stroke="${INK}" stroke-width="3.5"/><path d="M262 272 H388" stroke="#B57638" stroke-width="4"/>` + em(325, 196, 26, "🙈") + kid(510, 316, 1.05, {mood:"sad", shirt:"#3AA7F0", girl:true}) + em(486, 182, 22, "💧") + em(534, 182, 22, "💧"),
+  /* 8 רק רציתי לעזור */ () => bg("#FFF8E6") + floor("#F3E6C4") + fear(320, 318, 1.4, {mood:"worry", arms:"open"}) + em(410, 120, 34, "💦") + em(200, 120, 40, "🤝", "twinkle"),
+  /* 9 קופץ בלב */ () => bg("#FFE3EC") + `<g class="beat"><path d="M320 320 C150 210 180 70 320 140 C460 70 490 210 320 320Z" fill="#FF5C8A" stroke="${INK}" stroke-width="5"/></g>` + fear(320, 168, .55, {mood:"oh", arms:"up", cls:"bob"}) + `<g stroke="#C13671" stroke-width="4" stroke-linecap="round"><path d="M120 120 l-20 -10 M110 170 l-24 0 M520 120 l20 -10 M530 170 l24 0"/></g>`,
+  /* 10 כותב מכתב */ () => bg("#F4EEFF") + floor("#E8DDFB") + `<rect x="230" y="210" width="270" height="18" rx="6" fill="#C98A4B" stroke="${INK}" stroke-width="4"/><rect x="250" y="226" width="14" height="76" fill="#B57638" stroke="${INK}" stroke-width="3"/><rect x="466" y="226" width="14" height="76" fill="#B57638" stroke="${INK}" stroke-width="3"/><rect x="340" y="186" width="90" height="26" rx="3" fill="#fff" stroke="${INK}" stroke-width="3" transform="rotate(-6 385 199)"/>` + fear(220, 318, 1, {mood:"sad", arms:"write"}) + em(430, 170, 34, "✏️") + `<rect x="480" y="60" width="110" height="90" rx="6" fill="#CFEFFF" stroke="${INK}" stroke-width="4"/><path d="M535 60 V150 M480 105 H590" stroke="${INK}" stroke-width="3"/>` + em(560, 82, 22, "🌙"),
+  /* 11 מכתב */ () => bg("#FFF0F8") + `<g transform="rotate(-4 320 180)"><rect x="170" y="40" width="300" height="270" rx="12" fill="#fff" stroke="${INK}" stroke-width="4"/>${[100,140,180,220,260].map(y => `<path d="M200 ${y} H440" stroke="#E6DDFB" stroke-width="5" stroke-linecap="round"/>`).join("")}${label(320, 82, 24, "בְּנֵי אָדָם יְקָרִים", "#5B3FB0")}</g>` + em(430, 270, 50, "💜", "beat") + fear(560, 330, .7, {arms:"wave"}),
+  /* 12 אזעקה – ממ"ד */ () => bg("#EAF4FF") + floor("#DCE7F2") + mamadDoor(60, 300) + kid(230, 312, .95, {shirt:"#FF7CC8", girl:true, cls:"bob"}) + `<path d="M290 230 h-30 m10 -10 l-10 10 l10 10" stroke="#22A55B" stroke-width="5" fill="none" stroke-linecap="round"/>` + fear(400, 312, .85, {mood:"oh", arms:"up"}) + em(560, 270, 66, "🚗") + bubble(470, 110, 150, "זוּזוּ!"),
+  /* 13 מה עוזר */ () => bg("#FFF8E6") + [["🤗","יַרְדֵּן",88],["🤝","נוֹעַם",248],["😘","דַּרְיָה",400],["","כְּפִירִי",556]].map(([e, n, x], i) => panel(x - 70, 50, 140, 210, "#fff") + (e ? em(x, 140, 70, e) : blanket(x, 140)) + (i === 1 ? label(x, 210, 20, "סוֹפְרִים עַד 10", "#5B3FB0") : "") + label(x, 245, 26, n, "#C13671")).join("") + fear(320, 352, .5, {arms:"wave"}),
+  /* 14 פרח ונר */ () => bg("#FFF0F8", "#F4EEFF") + flowerSVG(200, 320, 1.15, "bob") + candleSVG(450, 320, 1.15) + label(200, 50, 30, "מְרִיחִים 👃", "#C13671") + label(450, 50, 30, "מְכַבִּים 🌬️", "#5B3FB0"),
+  /* 15 ומה עוזר לכם */ () => bg("#EEF7F2") + [["🤗",90,80],["😘",230,60],["👨‍👩‍👧",410,60],["🌬️",550,80],["🎵",90,230],["🎨",230,260],["💬",410,260],["💛",550,230]].map(([e, x, y]) => `<circle cx="${x}" cy="${y}" r="46" fill="#fff" stroke="#CDE7DC" stroke-width="4"/>` + em(x, y + 2, 46, e)).join("") + fear(320, 300, .95, {arms:"open"}),
+  /* 16 חיבוק בלב */ () => bg("#FFF0F8") + floor("#F7E4F0") + kid(250, 318, 1.4, {arms:"hug", shirt:"#46C46E"}) + em(250, 230, 44, "❤️", "beat") + fear(470, 312, .8, {arms:"wave", cls:"goaway"}),
+  /* 17 סוף */ () => bg("#EFE8FF", "#FFF0F8") + stars() + kid(250, 318, 1.3, {arms:"up", shirt:"#FF7CC8", girl:true, cls:"bob"}) + fear(410, 316, 1.05, {arms:"up", cls:"bob"}) + em(330, 90, 44, "💜", "twinkle")
+];
+
+/* ======================== הספר ======================== */
+const BOOK = {"title": "מָה אַתָּה עוֹשֶׂה כָּאן, פַּחַד?", "pages": [["שָׁלוֹם לָכֶם, יְלָדִים מְתוּקִים,", "הַיּוֹם אֲסַפֵּר לָכֶם אֶת הַסִיפּוּר שֶׁלִּי", "שֶׁאוֹתוֹ אַף אֶחָד לֹא מַכִּיר."], ["נוֹלַדְתִּי לִפְנֵי מִילְיוֹנֵי טְרִילְיוֹנֵי שָׁנִים,", "בְּאֶמְצַע שׁוּם־מָקוֹם.", "הָיִיתִי תִּינוֹק קָטָן, מַמָּשׁ רָגִיל.", "כְּשֶׁגָּדַלְתִּי, הָפַכְתִּי לְנַעַר טוֹב לֵב,", "וּכְשֶׁהָפַכְתִּי לְאִישׁ – יָדַעְתִּי בְּדִיּוּק מָה אֲנִי רוֹצֶה:", "לְהַצִּיל אֲנָשִׁים."], ["אֲבָל כָּל פַּעַם שֶׁקָּרְאוּ לִי לְעֶזְרָה,", "זֶה הָיָה כְּבָר מְאוּחָר מִדַּי:", "הַיַּלְדָּה נָפְלָה מֵהַמַּגְלֵשָׁה,", "אִמָּא נִכְוְותָה מֵהַסִּיר,", "וְיֶלֶד אֶחָד הָלַךְ לְאִיבּוּד בַּיַּעַר.", "אָז הִתְיַישַּׁבְתִּי לַחְשׁוֹב...", "מָה חָסֵר לַאֲנָשִׁים?", "וְאָז הֵבַנְתִּי:", "הֵם לֹא פָּחֲדוּ."], ["אִילּוּ הַיַּלְדָּה הָיְתָה מְפַחֶדֶת מִגּוֹבַהּ –", "אוּלַי לֹא הָיְתָה מְטַפֶּסֶת,", "אִילּוּ אִימָּא הָיְתָה מְפַחֶדֶת מֵהָאֵשׁ –", "אוּלַי לֹא הָיְתָה נוֹגַעַת,", "וְאִילּוּ הַיֶּלֶד הָיָה מְפַחֵד מֵהַחוֹשֶׁךְ –", "אוּלַי לֹא הָיָה יוֹצֵא לְבַד."], ["אָז בְּאוֹתוֹ רֶגַע, לָבַשְׁתִּי גְּלִימָה בִּלְתִּי נִרְאֵית", "וְהָפַכְתִּי אֶת עַצְמִי לְ... פַּחַד.", "מֵאָז וְעַד הַיּוֹם אֲנִי מִסְתּוֹבֵב בְּכָל מָקוֹם.", "לֹא רוֹאִים אוֹתִי. אֲבָל מַרְגִּישִׁים.", "מְאוֹד."], ["גַּם אַתֶּם הִרְגַּשְׁתֶּם אוֹתִי פַּעַם, נָכוֹן?", "יֵשׁ יְלָדִים שֶׁמַּרְגִּישִׁים אוֹתִי בַּבֶּטֶן –", "פִּתְאוֹם נִהְיֶה לָהֶם כְּאֵב אוֹ אֲפִילּוּ בְּחִילָה..."], ["יֵשׁ כָּאֵלֶּה שֶׁמַּתְחִילִים לִרְעוֹד,", "יֵשׁ שֶׁמִּתְחַבְּאִים,", "יֵשׁ שֶׁבּוֹכִים אוֹ צוֹעֲקִים,", "וְיֵשׁ... שֶׁעוֹשִׂים בַּתַּחְתּוֹנִים –", "אֲנִי יוֹדֵעַ, זֶה בִּכְלָל לֹא נָעִים.", "כְּשֶׁאֲנִי בָּא – קָשֶׁה לְדַבֵּר,", "לֹא בָּא לֶאֱכוֹל,", "רַק מְחַכִּים שֶׁכְּבָר אֵלֵךְ."], ["אֲבָל אֲנִי?", "אֲנִי רַק רָצִיתִי לַעֲזוֹר.", "אֲנִי כְּמוֹ חָבֵר,", "חָבֵר קְצָת לָחוּץ,", "שֶׁבָּא בְּלִי לִשְׁאוֹל."], ["אֲנִי קוֹפֵץ לָכֶם בַּלֵּב,", "אֶת הַגּוּף מְצַמְרֵר –", "וְשׁוֹתֵק.", "פָּשׁוּט שׁוֹתֵק."], ["כְּשֶׁהֵבַנְתִּי שֶׁיְּלָדִים מְפַחֲדִים מִמֶּנִּי כָּל־כָּךְ –", "נִבְהַלְתִּי.", "לֹא לְזֶה הִתְכַּוַּנְתִּי...", "אָז חָזַרְתִּי לְחַדְרִי הַקָּטָן,", "וְהִתְיַישַּׁבְתִּי לִכְתּוֹב לָכֶם מִכְתָּב."], ["בְּנֵי אָדָם יְקָרִים,", "אֲנִי אוֹהֵב אֶתְכֶם", "הַרְבֵּה יוֹתֵר מִמָּה שֶׁאַתֶּם חוֹשְׁבִים.", "אֲנִי כָּאן כְּדֵי לְהָגֵן,", "לְהַזְהִיר אֶתְכֶם כְּשֶׁמַּשֶּׁהוּ מְסוּכָּן מִתְקָרֵב."], ["אִם יֵשׁ אַזְעָקָה –", "אֲנִי זֶה שֶׁגּוֹרֵם לָכֶם לָרוּץ לַמַּמָּ\"ד.", "אִם מְכוֹנִית דּוֹהֶרֶת –", "אֲנִי זֶה שֶׁצּוֹרֵחַ לָכֶם בַּלֵּב: \"זוּזוּ!\"", "אֲנִי רַק רוֹצֶה לִשְׁמוֹר עֲלֵיכֶם,", "אֲבָל אֲנִי מוֹדֶה... לִפְעָמִים אֲנִי מַגְזִים.", "מֵרוֹב אַהֲבָה –", "אֲנִי קְצָת מִשְׁתַּגֵּעַ."], ["אָז תַּעַזְרוּ לִי לַעֲזוֹר לָכֶם,", "תְּסַפְּרוּ לַהוֹרִים מָה עוֹזֵר כְּשֶׁאֲנִי מַגִּיעַ.", "יַרְדֵּן לְמָשָׁל אוֹמֵר שֶׁהוּא רַק צָרִיךְ חִבּוּק,", "נוֹעַם מְבַקֵּשׁ יָד וְרוֹצֶה לִסְפּוֹר עַד עֶשֶׂר,", "דַּרְיָה רוֹצָה נְשִׁיקָה,", "וּכְּפִירִי? רַק אֶת הַשְּׂמִיכִי שֶׁלָּהּ."], ["וַאֲנִי רוֹצֶה לְלַמֵּד אֶתְכֶם עוֹד שִׁיטָה,", "כָּזוֹ שֶׁאֶפְשָׁר לַעֲשׂוֹת בְּכָל מָקוֹם, גַּם לְבַד:", "דַּמְיְנוּ שֶׁיֵּשׁ לָכֶם פֶּרַח וְנֵר.", "מְרִיחִים אֶת הַפֶּרַח בָּאַף – לְאַט־לְאַט,", "וְאָז מְכַבִּים אֶת הַנֵּר עִם רוּחַ מֵהַפֶּה – בַּעֲדִינוּת,", "וְשׁוּב – פֶּרַח... נֵר... פֶּרַח... נֵר...", "וַאֲנִי – לְאַט־לְאַט... נִרְגָּע."], ["וְאַתְּ? וְאַתָּה?", "מָה עוֹזֵר לָכֶם כְּשֶׁאֲנִי בָּא?", "חִיבּוּק?", "נְשִׁיקָה?", "לָשֶׁבֶת לְיַד מִישֶׁהוּ אָהוּב?", "לִנְשׁוֹם יַחַד?", "אוּלַי לָשִׁיר?", "לְצַיֵּיר?", "לְדַבֵּר?", "זִכְרוּ – אֲנִי לֹא אוֹיֵב.", "אֲנִי רַק פַּחַד,", "פַּחַד שֶׁהוּא גַּם חָבֵר."], ["וּכְשֶׁאַתֶּם מְבִינִים מִי אֲנִי וּמָה בָּאתִי לַעֲשׂוֹת כָּאן,", "מַקְשִׁיבִים לִי בֶּאֱמֶת,", "וּמְחַבְּקִים אוֹתִי בַּלֵּב –", "אַתֶּם נִרְגָּעִים", "וְאָז אֲנִי לְאַט־לְאַט הוֹלֵךְ."]], "end": "עַכְשָׁו הֵבַנְתִּי מָה אַתָּה עוֹשֶׂה כָּאן, פַּחַד"};
+// עמוד 0 = כריכה, 1–16 = עמודי הספר, 17 = סוף
+const N = BOOK.pages.length + 2;
+const pageText = i => i === 0 ? BOOK.title + " ספר מאת שמש צור" : i === N - 1 ? BOOK.end : BOOK.pages[i - 1].join(" ");
+function pageHTML(i){
+  if (i === 0) return `<div class="txt cover"><h3>${BOOK.title}</h3><p>מאת שמש צור · עריכה: גילת עירון בהר</p></div>`;
+  if (i === N - 1) return `<p style="font-size:1.15em;color:#5B3FB0;font-weight:700">${BOOK.end}</p><span class="pn">סוף 💜</span>`;
+  return BOOK.pages[i - 1].map((l, k) => `<p${k && /[.?!:…]$/.test(BOOK.pages[i - 1][k - 1]) ? ' class="sp"' : ""}>${l}</p>`).join("") + `<span class="pn">עמוד ${i} מתוך ${BOOK.pages.length}</span>`;
+}
+const R = {i: 0, playing: false, timer: null, token: 0};
+function rDraw(){
+  $("art").innerHTML = svg(ART[R.i]());
+  const t = $("txt"); t.className = "txt" + (R.i === 0 ? " cover" : "");
+  t.innerHTML = R.i === 0 ? `<h3>${BOOK.title}</h3><p>מאת שמש צור · עריכה: גילת עירון בהר</p>` : pageHTML(R.i);
+  $("pbar").innerHTML = Array.from({length: N}, (_, k) => `<i class="${k <= R.i ? "on" : ""}" data-k="${k}" title="עמוד ${k}"></i>`).join("");
+  $("pbar").querySelectorAll("i").forEach(x => x.onclick = () => { rStop(); R.i = +x.dataset.k; rDraw(); });
+  $("bPlay").textContent = R.playing ? "⏸ עצירה" : "▶️ הקראה";
+  $("bPrev").disabled = R.i === 0; $("bNext").disabled = R.i === N - 1;
+  store.set("booqli_fear_page", R.i);
+}
+function rStop(){ R.playing = false; R.token++; clearTimeout(R.timer); hush(); }
+function rRun(){
+  const my = ++R.token; rDraw();
+  if (!R.playing) return;
+  const txt = pageText(R.i), wait = Math.max(3500, txt.length * 75);
+  let moved = false;
+  const next = () => { if (moved || my !== R.token || !R.playing) return; moved = true; if (R.i < N - 1){ R.timer = setTimeout(() => { if (my !== R.token) return; R.i++; rRun(); }, 1100); } else { R.playing = false; rDraw(); siteEvent && siteEvent("fear-book-end", "safety"); } };
+  speak(txt, ok => { if (ok) next(); else R.timer = setTimeout(next, wait); });
+}
+$("bPlay").onclick = () => { audio(); if (R.playing){ rStop(); rDraw(); } else { if (R.i === N - 1) R.i = 0; R.playing = true; rRun(); } };
+$("bNext").onclick = () => { const p = R.playing; rStop(); R.i = Math.min(N - 1, R.i + 1); R.playing = p; p ? rRun() : rDraw(); };
+$("bPrev").onclick = () => { const p = R.playing; rStop(); R.i = Math.max(0, R.i - 1); R.playing = p; p ? rRun() : rDraw(); };
+$("bSay").onclick = () => { rStop(); rDraw(); speak(pageText(R.i)); };
+$("bSound").onclick = () => { SPEAK_ON = !SPEAK_ON; $("bSound").setAttribute("aria-pressed", SPEAK_ON); $("bSound").textContent = SPEAK_ON ? "🔈" : "🔇"; if (!SPEAK_ON) hush(); };
+$("bFull").onclick = () => { const r = $("reader"); try { document.fullscreenElement ? document.exitFullscreen() : (r.requestFullscreen || r.webkitRequestFullscreen).call(r); } catch(e){ toast("מסך מלא לא נתמך כאן"); } };
+document.addEventListener("keydown", e => { if (e.target.closest("input")) return; const rd = $("reader").getBoundingClientRect(); if (rd.bottom < 0 || rd.top > innerHeight) return; if (e.key === "ArrowLeft") $("bNext").click(); if (e.key === "ArrowRight") $("bPrev").click(); });
+let touchX = null;
+$("art").addEventListener("touchstart", e => touchX = e.touches[0].clientX, {passive:true});
+$("art").addEventListener("touchend", e => { if (touchX === null) return; const d = e.changedTouches[0].clientX - touchX; touchX = null; if (Math.abs(d) > 50) (d > 0 ? $("bNext") : $("bPrev")).click(); }, {passive:true});
+
+/* ======================== סרטון (נטען רק בלחיצה) ======================== */
+$("ytBtn").innerHTML = svg(bg("#2E2552", "#5B4A99") + stars() + fear(170, 320, 1.15, {cape:true, arms:"wave"}) + `<circle cx="420" cy="180" r="58" fill="#E0399F" stroke="#fff" stroke-width="5"/><path d="M405 150 L405 210 L455 180Z" fill="#fff"/>` + label(420, 290, 26, "מָה אַתָּה עוֹשֶׂה כָּאן, פַּחַד?", "#fff") + label(420, 322, 18, "▶️ לצפייה (צריך אינטרנט)", "#E9E1FF"));
+$("ytBtn").onclick = () => {
+  if (!navigator.onLine){ toast("📶 אין אינטרנט כרגע. לחצו ▶️ הקראה בספר שלמעלה – זה עובד גם בלי אינטרנט."); $("book").scrollIntoView({behavior:"smooth"}); return; }
+  rStop(); rDraw();
+  $("yt").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${CONFIG.youtube}?autoplay=1&rel=0" title="מה אתה עושה כאן, פחד? – הסרטון" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  siteEvent && siteEvent("fear-video", "safety");
+};
+
+/* ======================== פרח ונר ======================== */
+const B = {round: 0, on: false, token: 0, voice: true, total: 5};
+function brDraw(phase){
+  $("bArt").innerHTML = svg(`<rect width="640" height="300" rx="24" fill="none"/>` +
+    `<g class="scent ${phase === "in" ? "in" : ""}">${[0,1,2].map(k => `<path d="M${180 + k * 22} ${120 - k * 8} q-14 -16 0 -32 t0 -32" fill="none" stroke="#FF9EC9" stroke-width="5" stroke-linecap="round"/>`).join("")}</g>` +
+    flowerSVG(200, 290, 1.1, "flower " + (phase === "in" ? "in" : "")) +
+    candleSVG(450, 290, 1.1, "flame " + (phase === "out" ? "out" : "flick")) +
+    `<g class="puff ${phase === "out" ? "on" : ""}">${[0,1,2].map(k => `<path d="M${380 - k * 14} ${100 + k * 12} q-30 -6 -54 6" fill="none" stroke="#9EDBFF" stroke-width="6" stroke-linecap="round"/>`).join("")}</g>`, "0 0 640 300");
+}
+function brDots(){ $("bDots").innerHTML = Array.from({length: B.total}, (_, k) => `<i class="${k < B.round ? "ok" : ""}"></i>`).join(""); }
+function wait(ms, my){ return new Promise((res, rej) => setTimeout(() => my === B.token ? res() : rej(), ms)); }
+async function count(n, my){ for (let k = 1; k <= n; k++){ $("bCount").textContent = "•".repeat(k); await wait(1000, my); } $("bCount").textContent = ""; }
+const bSpeak = t => { if (B.voice) speak(t, null, .78); };
+async function brRun(){
+  const my = ++B.token; B.on = true; B.round = 0; brDots(); $("bDone").textContent = ""; $("brGo").textContent = "⏸ עצירה";
+  try {
+    $("bSayTxt").textContent = "מדמיינים פרח ונר… 🌸🕯️"; bSpeak("דַּמְיְנוּ שֶׁיֵּשׁ לָכֶם פֶּרַח וְנֵר."); brDraw(""); await wait(3200, my);
+    for (; B.round < B.total; ){
+      $("bSayTxt").innerHTML = "👃 מריחים את הפרח… לאט־לאט"; bSpeak("פֶּרַח"); brDraw("in"); await count(4, my);
+      $("bSayTxt").innerHTML = "🌬️ מכבים את הנר… בעדינות"; bSpeak("נֵר"); brDraw("out"); await count(5, my);
+      B.round++; brDots(); brDraw("");
+      await wait(700, my);
+    }
+    $("bSayTxt").textContent = "כל הכבוד! 💜"; $("bDone").textContent = "וַאֲנִי – לְאַט־לְאַט… נִרְגָּע. אפשר לעשות שוב מתי שרוצים.";
+    bSpeak("כָּל הַכָּבוֹד. וַאֲנִי, לְאַט לְאַט, נִרְגָּע."); softWin();
+    siteEvent && siteEvent("fear-breathe-done", "safety");
+  } catch(e){ /* נעצר */ }
+  if (my === B.token){ B.on = false; $("brGo").textContent = "🔁 עוד פעם"; }
+}
+$("brGo").onclick = () => { audio(); if (B.on){ B.token++; B.on = false; hush(); $("brGo").textContent = "▶️ ממשיכים לנשום"; $("bSayTxt").textContent = "עצרנו. נושמים רגיל 🙂"; $("bCount").textContent = ""; brDraw(""); } else brRun(); };
+$("brVoice").onclick = () => { B.voice = !B.voice; $("brVoice").setAttribute("aria-pressed", B.voice); $("brVoice").textContent = B.voice ? "🔊 עם קול" : "🔇 בלי קול"; if (!B.voice) hush(); };
+
+/* ======================== מה עוזר לי ======================== */
+const HELPS = [
+  {e:"🤗", t:"חיבוק"}, {e:"🤝", t:"יד ביד"}, {e:"🔟", t:"לספור עד עשר"}, {e:"😘", t:"נשיקה"},
+  {e:"🧸", t:"הבובה שלי"}, {e:"🛏️", t:"השמיכה שלי"}, {e:"👨‍👩‍👧", t:"לשבת ליד מישהו אהוב"}, {e:"🌸", t:"פרח ונר – לנשום יחד"},
+  {e:"🎵", t:"לשיר"}, {e:"🎨", t:"לצייר"}, {e:"💬", t:"לדבר"}, {e:"💧", t:"לשתות מים"}
+];
+const H = Object.assign({name: "", sel: [], other: ""}, store.get("booqli_fear_helps", {}));
+function hList(){ const a = H.sel.filter(k => HELPS[k]).map(k => HELPS[k].e + " " + HELPS[k].t); if (H.other.trim()) a.push("💛 " + H.other.trim()); return a; }
+const hTitle = () => "כשהפחד בא, מה שעוזר ל" + (H.name.trim() ? H.name.trim() : "י") + ":";
+function hDraw(){
+  $("helpsGrid").innerHTML = HELPS.map((h, k) => `<button type="button" class="hb" data-k="${k}" aria-pressed="${H.sel.includes(k)}"><span class="e" aria-hidden="true">${h.e}</span>${h.t}</button>`).join("");
+  $("helpsGrid").querySelectorAll(".hb").forEach(b => b.onclick = () => { const k = +b.dataset.k; H.sel = H.sel.includes(k) ? H.sel.filter(x => x !== k) : H.sel.concat(k); if (H.sel.includes(k)) speak(HELPS[k].t); hSave(); hDraw(); });
+  hCard();
+}
+function hCard(){
+  const L = hList();
+  $("myCard").innerHTML = `<h3>${esc(hTitle())}</h3>` + (L.length ? `<ul>${L.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="empty">בוחרים למעלה מה עוזר לכם 👆</p>`);
+  const nc = $("nowCard"); if (L.length){ nc.hidden = false; nc.textContent = hTitle() + " " + L.join(" · "); } else nc.hidden = true;
+  $("pv2").innerHTML = sheetHelps();
+}
+function hSave(){ store.set("booqli_fear_helps", H); }
+$("hName").value = H.name; $("hOther").value = H.other;
+$("hName").oninput = () => { H.name = $("hName").value; hSave(); hCard(); };
+$("hOther").oninput = () => { H.other = $("hOther").value; hSave(); hCard(); };
+$("hSend").onclick = () => { const L = hList(); if (!L.length){ toast("בוחרים קודם מה עוזר לכם 💛"); return; } waSend(`💛 ${hTitle()}\n${L.join("\n")}\n\n(מהספר "מה אתה עושה כאן, פחד?" – לנשום יחד, לקרוא ולהתכונן:)\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=kid_card&utm_campaign=fear-book`); };
+$("hPrint").onclick = () => doPrint(sheetHelps());
+$("hPng").onclick = () => {
+  const L = hList(); if (!L.length){ toast("בוחרים קודם מה עוזר לכם 💛"); return; }
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const x = c.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 0, 1350); g.addColorStop(0, "#EFE8FF"); g.addColorStop(1, "#FFF0F8"); x.fillStyle = g; x.fillRect(0, 0, 1080, 1350);
+  x.fillStyle = "#fff"; x.strokeStyle = "#8E6FD8"; x.lineWidth = 8; const rr = (X, Y, W, Hh, r) => { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + W, Y, X + W, Y + Hh, r); x.arcTo(X + W, Y + Hh, X, Y + Hh, r); x.arcTo(X, Y + Hh, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); };
+  rr(70, 90, 940, 1080, 60); x.fill(); x.stroke();
+  x.direction = "rtl"; x.textAlign = "center"; x.fillStyle = "#5B3FB0"; x.font = "700 64px 'Frank Ruhl Libre', Assistant, serif";
+  const t = hTitle(); x.fillText(t.length > 26 ? "כשהפחד בא, מה שעוזר" : t, 540, 220); if (t.length > 26) x.fillText("ל" + H.name.trim() + ":", 540, 300);
+  x.font = "700 56px Assistant, Arial, sans-serif"; x.fillStyle = "#2B1526";
+  const top = t.length > 26 ? 420 : 360, step = Math.min(90, 700 / Math.max(L.length, 1));
+  L.slice(0, 9).forEach((s, i) => x.fillText(s, 540, top + i * step));
+  x.font = "800 34px Assistant, Arial, sans-serif"; x.fillStyle = "#C13671"; x.fillText("💜 הפחד הוא לא אויב – הוא חבר קצת לחוץ", 540, 1110);
+  x.fillStyle = "#4E8576"; x.fillRect(0, 1220, 1080, 130); x.fillStyle = "#fff"; x.font = "700 32px Assistant, Arial, sans-serif";
+  x.fillText("booqli Games · games.booqli.ai · בחינם, בחסות BOOQLI", 540, 1295);
+  c.toBlob(blob => {
+    if (!blob) return; const f = new File([blob], "מה-עוזר-לי.png", {type: "image/png"});
+    if (navigator.canShare && navigator.canShare({files: [f]})) { navigator.share({files: [f], title: "מה עוזר לי"}).catch(() => {}); return; }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "מה-עוזר-לי.png"; document.body.appendChild(a); a.click(); a.remove(); toast("💾 נשמר בהורדות");
+  }, "image/png");
+  siteEvent && siteEvent("fear-card-png", "safety");
+};
+
+/* ======================== שיהיה זמין: שמירה בטלפון ======================== */
+const ROOT = new URL("../../", location.href).href;
+const OFFLINE_URLS = [location.href.split(/[?#]/)[0], ROOT + "common.js", ROOT + "catalog.js", ROOT + "img/logo.png", ROOT + "img/logo-dark.png", ROOT + "offline.html",
+  ...[...document.querySelectorAll('link[rel="stylesheet"]')].map(l => l.href)];
+async function saveOffline(silent){
+  const m = $("saveMsg");
+  if (!("serviceWorker" in navigator) || !("caches" in window)){ if (!silent) m.textContent = "⚠️ הדפדפן הזה לא שומר עמודים. פתחו בכרום או בספארי (לא מתוך פייסבוק/וואטסאפ) ונסו שוב."; return; }
+  if (!silent) m.textContent = "⏳ שומרים…";
+  try {
+    if (!navigator.serviceWorker.controller) { try { await navigator.serviceWorker.register(ROOT + "sw.js"); } catch(e){} }
+    await Promise.race([navigator.serviceWorker.ready, new Promise((_, r) => setTimeout(r, 8000))]);
+    // עוברים דרך המנוע של האתר (sw.js), שמכניס כל קובץ לזיכרון של הטלפון
+    await Promise.all(OFFLINE_URLS.map(u => fetch(u, {cache: "reload", mode: u.startsWith(location.origin) ? "same-origin" : "cors"}).catch(() => null)));
+    // גם ישירות לזיכרון, למקרה שהמנוע עוד לא שולט בעמוד
+    const keys = await caches.keys(); const name = keys.find(k => /^booqli-v/.test(k));
+    if (name){ const c = await caches.open(name); await Promise.all(OFFLINE_URLS.filter(u => u.startsWith(location.origin)).map(u => c.add(u).catch(() => null))); }
+    store.set("booqli_fear_saved", Date.now());
+    if (!silent){ m.textContent = "✔️ נשמר! העמוד ייפתח גם בלי אינטרנט. כדי למצוא אותו מהר – התקינו את האפליקציה 📲"; siteEvent && siteEvent("fear-save-offline", "safety"); }
+  } catch(e){ if (!silent) m.textContent = "⚠️ לא הצלחנו לשמור הפעם. נסו שוב כשיש אינטרנט."; }
+}
+$("saveOff").onclick = () => saveOffline(false);
+if (store.get("booqli_fear_saved", 0)) $("saveMsg").textContent = "✔️ העמוד כבר שמור בטלפון הזה.";
+// שומרים לבד ברקע אחרי ביקור – שיהיה זמין גם למי שלא לחץ
+addEventListener("load", () => setTimeout(() => { if (navigator.onLine) saveOffline(true); }, 4000));
+
+/* ======================== דפי הדפסה ======================== */
+const foot = () => sitePrintFooter("safety", "", "../../img/logo.png");
+const sHead = (t, nm = true) => `<div class="s-head"><h1>${t}</h1>${nm ? `<span class="nm">השם שלי: ____________</span>` : ""}</div><div class="s-strip"></div>`;
+function bookCell(i){
+  if (i === 0) return `<div class="bk-c cv">${svg(ART[0]())}<h2>${BOOK.title}</h2><div class="n">מאת שמש צור · עריכה: גילת עירון בהר</div></div>`;
+  if (i === N - 1) return `<div class="bk-c">${svg(ART[N - 1]())}<div class="t"><p style="font-weight:700;color:#5B3FB0">${BOOK.end}</p></div><div class="n">סוף 💜</div></div>`;
+  if (i >= N) return i === N ? `<div class="bk-c"><div class="t" style="text-align:right;font-family:Assistant,sans-serif;font-size:10.5pt"><p><b>להורים ולגננות</b></p><p>📖 קוראים ברגע רגוע – לא בזמן אזעקה ולא מייד אחריה.</p><p>🗣️ בעמודים 6–7 שואלים: איפה מרגישים את הפחד בגוף?</p><p>💛 בעמוד 13 – כל ילד מספר מה עוזר לו.</p><p>🌸 בעמוד 14 – נושמים יחד פרח ונר.</p><p style="margin-top:2mm">"סיפור עדין, חכם ונוגע ללב, המזמין ילדים וילדות להביט בפחד מזווית אחרת…" – <b>אורית מיכאלי</b>, קלינאית תקשורת ומטפלת רגשית באמצעות משחק</p></div></div>` : `<div class="bk-c"><div class="drawbox">✏️ ככה הפחד שלי נראה:</div></div>`;
+  return `<div class="bk-c">${svg(ART[i]())}<div class="t">${BOOK.pages[i - 1].map((l, k) => `<p${k && /[.?!:…]$/.test(BOOK.pages[i - 1][k - 1]) ? ' class="sp"' : ""}>${l}</p>`).join("")}</div><div class="n">${i}</div></div>`;
+}
+function sheetBook(){
+  let out = ""; const total = N + 2; // + דף להורים + "ככה הפחד שלי נראה"
+  for (let s = 0; s * 4 < total; s++){
+    const cells = [0,1,2,3].map(k => s * 4 + k).filter(i => i < total).map(bookCell).join("");
+    out += `<div class="sheet">${sHead(s === 0 ? "📖 " + BOOK.title : "📖 מה אתה עושה כאן, פחד? · " + (s + 1), false)}<div class="s-body"><div class="bk-grid">${cells}</div></div>${foot()}</div>`;
+  }
+  return out;
+}
+function sheetHelps(){
+  const L = hList();
+  const mine = L.length ? `<div class="p-box"><h2>${esc(hTitle())}</h2><p style="font-size:14pt;font-weight:700">${L.map(esc).join(" · ")}</p></div>` : "";
+  return `<div class="sheet">${sHead("💛 מה עוזר לי כשהפחד בא?")}<div class="s-body"><p class="s-tip">מסמנים ✔️ מה עוזר לכם, ותולים בממ"ד או על המקרר. "תְּסַפְּרוּ לַהוֹרִים מָה עוֹזֵר כְּשֶׁאֲנִי מַגִּיעַ."</p>${mine}
+    <div class="hp-grid">${HELPS.map(h => `<div><span>${h.e}</span>${h.t}<i></i></div>`).join("")}</div>
+    <div class="p-box"><h2>🌸 פרח ונר</h2><p>מריחים את הפרח באף – לאט־לאט 👃 · מכבים את הנר ברוח מהפה – בעדינות 🌬️ · שוב ושוב, 5 פעמים.</p></div>
+    <div class="drawbox">✏️ עוד משהו שעוזר לי (מציירים או כותבים):</div></div>${foot()}</div>`;
+}
+function sheetCalm(){
+  return `<div class="sheet">${sHead("🚨 בממ\"ד: ככה עושים", false)}<div class="s-body">
+    <div class="calm-steps">
+      <div><span>🏃</span><p><b>1. נכנסים מיד למרחב המוגן</b>ממ"ד, מקלט או חדר מדרגות פנימי – בזמן ההתגוננות של האזור.</p></div>
+      <div><span>🚪</span><p><b>2. נשארים בפנים עד שמודיעים שאפשר לצאת</b>לפי ההנחיות העדכניות של פיקוד העורף.</p></div>
+      <div><span>🤗</span><p><b>3. קרוב, בקול שקט</b>"אני כאן איתך. אנחנו במקום מוגן."</p></div>
+      <div><span>🌸</span><p><b>4. נושמים יחד: פרח… נר…</b>מריחים את הפרח באף – לאט. מכבים את הנר בפה – בעדינות.</p></div>
+      <div><span>💛</span><p><b>5. עושים את מה שעוזר לילד</b>חיבוק, שמיכה, בובה, לספור עד 10, לשיר…</p></div>
+    </div>
+    <div style="display:flex;justify-content:center">${svg(flowerSVG(200, 290, 1.1) + candleSVG(450, 290, 1.1, "flame"), "0 0 640 300").replace("<svg", '<svg style="width:auto;height:52mm"')}</div>
+    <div class="p-box"><h2>🧸 מה יש אצלנו בממ"ד</h2><p>☐ הבובה / השמיכה האהובה &nbsp; ☐ הספר "מה אתה עושה כאן, פחד?" &nbsp; ☐ פנס וסוללות &nbsp; ☐ מים וחטיף &nbsp; ☐ מטען לטלפון &nbsp; ☐ משחק קטן &nbsp; ☐ אוזניות</p></div>
+    <p class="s-tip">במצב אמת פועלים תמיד לפי הנחיות פיקוד העורף העדכניות · את הספר קוראים ברגע רגוע, לא בזמן אזעקה</p>
+  </div>${foot()}</div>`;
+}
+let printed = false; addEventListener("beforeprint", () => printed = true);
+function doPrint(html){
+  $("print").innerHTML = html;
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+}
+$("print1").onclick = () => doPrint(sheetBook());
+$("print2").onclick = () => doPrint(sheetHelps());
+$("print3").onclick = () => doPrint(sheetCalm());
+
+/* ======================== וואטסאפ ======================== */
+const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+$("parentsBtn").onclick = () => waSend(`💛 הורים יקרים,\nמצרפת ספר קטן ומרגיע: "מה אתה עושה כאן, פחד?" מאת שמש צור.\nהפחד מספר לילדים את הסיפור שלו – הוא לא אויב, הוא חבר קצת לחוץ שבא לשמור עלינו.\n\n📖 הספר כולו עם הקראה\n🌸 נשימת "פרח ונר" – אפשר לתרגל בכל מקום\n💛 כרטיס "מה עוזר לי כשהפחד בא"\n🚨 מה עושים כשיש אזעקה\n\nכדאי לקרוא עם הילדים ברגע רגוע, ולשמור את העמוד בטלפון – הוא נפתח גם בלי אינטרנט.\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=fear-book\n\nפתוח לכולם, בחינם, בחסות BOOQLI ❤️`);
+$("shareBtn").onclick = () => waSend(`💛 מצאתי משהו שעוזר לילדים עם פחד ואזעקות: הספר "מה אתה עושה כאן, פחד?" – כולו באתר עם הקראה, נשימת "פרח ונר" וכרטיס "מה עוזר לי". נפתח גם בלי אינטרנט.\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=fear-book\nבחינם, בחסות BOOQLI ❤️`);
+
+/* ======================== הפעלה ======================== */
+$("heroArt").innerHTML = svg(`<rect width="240" height="220" rx="30" fill="#EFE8FF"/>${star(36, 40, 11)}${star(206, 52, 9, .4)}${fear(120, 200, .95, {cape:true, arms:"wave", cls:"bob"})}`, "0 0 240 220");
+R.i = Math.min(N - 1, Math.max(0, +store.get("booqli_fear_page", 0) || 0)); rDraw();
+brDraw(""); brDots();
+hDraw();
+$("pv1").innerHTML = sheetBook().split('<div class="sheet">').slice(0, 2).join('<div class="sheet">');
+$("pv3").innerHTML = sheetCalm();
+const sheetParam = new URLSearchParams(location.search).get("sheet");
+if (sheetParam === "book") $("print").innerHTML = sheetBook();
+if (sheetParam === "helps") $("print").innerHTML = sheetHelps();
+if (sheetParam === "calm") $("print").innerHTML = sheetCalm();
+
+siteJoinLinks(); siteDevBar(); siteBackBar("../../");
+$("heroLike").appendChild(siteLikeButton("safety", "אהבתי"));
+$("ganLink").href = CONFIG.gan; $("orderBtn").href = CONFIG.order; $("booksBtn").href = CONFIG.books; $("siteLink").href = CONFIG.site;
+$("articleLink").href = CONFIG.article; $("articleLink2").href = CONFIG.article;
+</script>
+</body>
+</html>

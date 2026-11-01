@@ -243,8 +243,8 @@ function siteJoinLinks(){
 // lockAllTopics: true = כל עמודי הנושאים (topics/) נעולים, גם נושאים חדשים, חוץ ממה שב-openTopics.
 // משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
 window.SITE.lockAllTopics = true;
-window.SITE.openTopics = ["calendar"];  // לוח החופשות פתוח לכולם (בקשת שמש 1.11.2026)
-window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", winter: "החורף", colors: "עולם הצבעים", purim: "פורים" };
+window.SITE.openTopics = ["calendar", "safety"];  // לוח החופשות + "מה אתה עושה כאן, פחד?" (אזעקות) – פתוחים תמיד לכולם (בקשת שמש 1.11.2026)
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", safety: "מה אתה עושה כאן, פחד?", winter: "החורף", colors: "עולם הצבעים", purim: "פורים" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
 function siteUnlocked(){ if (siteOwner()) return true; try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
@@ -309,7 +309,7 @@ function siteSoonGate(id, main){
 var SITE_PLAY = /[?&]play=1(&|$)/.test(location.search) && /\/topics\//.test(location.pathname);
 function sitePlayMode(){ return SITE_PLAY; }
 function siteKidsGames(id){ return (window.KIDS_GAMES || []).filter(function(g){ return g.topic === id; }); }
-var SITE_PLAY_KEEP = { "birthday-party": ["games"], math: ["pick", "agePick", "ageArea"] };
+var SITE_PLAY_KEEP = { "birthday-party": ["games"], math: ["pick", "agePick", "ageArea"], safety: ["now", "video"] };
 function sitePlay(id){
   var main = document.querySelector("main"); if (!main) return;
   var keep = siteKidsGames(id).map(function(g){ return (g.href.match(/#(.+)$/) || [])[1]; }).filter(Boolean).concat(SITE_PLAY_KEEP[id] || []);
@@ -341,7 +341,8 @@ function sitePlay(id){
   bar.innerHTML = '<span>🎮 משחקים לילדים · בחינם</span><a href="' + root + 'kids/' + (age ? "?age=" + age : "") + '">← לכל המשחקים' + (age ? " לגיל " + age.replace("-", "–") : "") + '</a>';
   var hero = main.querySelector(".hero"); if (hero) hero.insertAdjacentElement("afterend", bar); else main.insertBefore(bar, main.firstChild);
   var t = document.createElement("div"); t.className = "bq-teach";
-  t.innerHTML = '👩‍🏫 <b>גננות?</b> המערך המלא, דפי ההדפסה והחומרים לגן נמצאים בעמוד המלא, ונפתחים במספר הסודי מקבוצת העדכונים.<br><a href="' + SITE_DIR + '">לעמוד המלא לגננות ←</a>';
+  t.innerHTML = SITE.openTopics.indexOf(id) > -1 ? '👩‍🏫 <b>להורים ולגננות:</b> בעמוד המלא יש גם דפים להדפסה והסבר למבוגרים.<br><a href="' + SITE_DIR + '">לעמוד המלא ←</a>' :
+    '👩‍🏫 <b>גננות?</b> המערך המלא, דפי ההדפסה והחומרים לגן נמצאים בעמוד המלא, ונפתחים במספר הסודי מקבוצת העדכונים.<br><a href="' + SITE_DIR + '">לעמוד המלא לגננות ←</a>';
   var book = main.querySelector(".bookbox"); main.insertBefore(t, book || null);
   siteEvent("play", id);
 }
@@ -424,8 +425,10 @@ function siteCodeGate(){
    לא חוסם את האתר. "אולי אחר כך" = יופיע שוב אחרי againDays ימים. "הצטרפתי" / לחיצה על ההצטרפות = לא יופיע יותר.
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
+/* עמודים רגועים (אזעקות): בלי חלונות קופצים – מי שנכנס באזעקה צריך את התוכן מיד */
+function siteCalmPage(){ return /\/topics\/safety\//.test(location.pathname); }
 function siteJoinPopup(){
-  if (siteKidLock()) return;
+  if (siteKidLock() || siteCalmPage()) return;
   var qs = location.search || "";
   if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
@@ -931,7 +934,7 @@ function siteInstall(where){
    פעם אחת בכל ביקור (לא בכל עמוד). לא באזור הילדים, לא בדפי הדפסה, לא בתוך האפליקציה, לא במכשיר של שמש.
    במחשב – רק כשהדפדפן מאפשר התקנה. לא קופץ יחד עם חלון הוואטסאפ או המספר הסודי. בדיקה: ?appbar=1 */
 function siteAppBar(){
-  if (siteKidLock()) return;
+  if (siteKidLock() || siteCalmPage()) return;
   var force = /[?&]appbar=1/.test(location.search);
   if (siteIsStandalone() || (siteOwnerDevice() && !force) || /[?&]sheet=/.test(location.search) || /^\/(kids|app)\/|\/offline\.html$/.test(location.pathname)) return;
   var st = {};
