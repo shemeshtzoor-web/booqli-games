@@ -3,9 +3,27 @@
   "name": "בוקלי – מרכז הפרסום",
   "short_name": "בוקלי פרסום",
   "description": "מה מפרסמים היום, טקסטים מוכנים להעתקה, קמפיינים, ותמונות וסרטונים לכל נושא של booqli Games.",
-  "version": "1.1.1",
-  "action": { "default_title": "בוקלי – מה מפרסמים היום?", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" } },
-  "background": { "service_worker": "background.js" },
-  "permissions": ["storage", "unlimitedStorage"],
-  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+  "version": "1.1.2",
+  "action": {
+    "default_title": "בוקלי – מה מפרסמים היום?",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAirdYnwbccwGT8zJbCgiIiEAfLp0KMC9pod/Qg6RSGRszeIp+QqtbPy6tS2ny3r9dfSQWvfVQp19OoPwXy9lWW2glbbHYFaqnK48wKdV4h1rHZBA8z5+vmOReG4yB03Wpn5QMzQ2JKE4Iistwks9PQtLLM0DdVX2oBpboNC7aDs1lYFU22pDJcZi46M35Hj7xJJAOYjvl+Yg/mNtj3XmIrwPKuQAjdhxvCAoDetP4j/EQzcl2ZRo3BB6pTcL0EvS2qaJ0VUhMndUROTA6fhy34Kvg4gYiaFXr9gNvqlD9MewkAZl7VSSc93LcMj/IpE9qxGLk7RBMQq05Wa4WV3ECLwIDAQAB"
 }
