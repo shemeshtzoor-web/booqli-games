@@ -160,7 +160,7 @@
 <script>
 
 // כתובות ישנות: חיפוש מדף הבית עובר לספרייה
-(function(){ const q = new URLSearchParams(location.search); if (q.get("q") || q.get("sped") === "1") { const p = new URLSearchParams(); if (q.get("q")) p.set("q", q.get("q")); if (q.get("sped") === "1") p.set("sped", "1"); location.replace("library/?" + p); } })();
+(function(){ const q = new URLSearchParams(location.search); if (q.get("q") || q.get("sped") === "1") { const p = new URLSearchParams(); if (q.get("q")) p.set("q", q.get("q")); if (q.get("sped") === "1") p.set("sped", "1"); location.replace("library/?" + p); return; } const h = {"#gifts":"gifts/","#year":"teachers/","#always":"teachers/","#special":"library/","#results":"library/"}[location.hash]; if (h) location.replace(h + location.search); })();
 const LIST = CATALOG.filter(t => !t.zone && !t.book);
 const render = () => {
   const open = LIST.filter(t => CAT.state(t) === "open").sort(CAT.sorters.open);
