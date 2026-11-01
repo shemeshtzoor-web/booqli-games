@@ -337,21 +337,58 @@
         <div class="row"><span class="small mute">${esc(x.date ? nice(x.date) : "")}</span>${cbtn(x.title + (x.notes ? "\n" + x.notes : ""), "📋 להעתיק", "o")}<button class="btn sm o" data-iedit="${x.id}">✏️</button><button class="btn sm o" data-idel="${x.id}">🗑️</button></div></div>`).join("") : '<div class="card mute">אין כאן רעיונות עדיין.</div>'}`;
   }
 
+
+  // ---------- הודעות קבועות (פרטי! נשמר רק בתוסף במחשב, לא באתר) ----------
+  const MCATS = ["מתעניינות", "לקוחות", "גנים וועדים", "ספקיות", "אחר"];
+  let msgFilter = "all", msgEdit = null, msgQ = "";
+  function msgs() { return LS.get("msgs", []); }
+  function vMsgs() {
+    const L = msgs(), ed = msgEdit ? L.find(x => x.id === msgEdit) : null;
+    const opt = (arr, v) => arr.map(o => `<option ${o === v ? "selected" : ""}>${esc(o)}</option>`).join("");
+    const q = msgQ.trim();
+    const shown = L.filter(x => (msgFilter === "all" || x.cat === msgFilter) && (!q || (x.title + " " + x.text).includes(q))).sort((a, b) => (a.order || 99) - (b.order || 99));
+    return `<h1>✉️ ההודעות הקבועות שלי</h1>
+      <p class="mute">ההודעות שאת שולחת שוב ושוב: מחירים, אפשרויות העלאת תמונות, כתובת לאיסוף, אישור לפני הדפסה... 🔒 נשמרות רק כאן, בתוסף במחשב שלך – לא באתר ולא בשום מקום ציבורי.</p>
+      <div class="row" style="margin:8px 0"><input id="mQ" value="${esc(msgQ)}" placeholder="🔎 חיפוש הודעה..." style="flex:1;min-width:180px;padding:8px 12px;border:1.5px solid var(--line);border-radius:10px">
+        <label class="btn o sm">⬆️ ייבוא קובץ הודעות<input type="file" hidden accept=".json" id="mImp"></label></div>
+      <div class="chan"><button class="btn sm ${msgFilter === "all" ? "" : "o"}" data-msgf="all">הכל (${L.length})</button>${MCATS.map(c => `<button class="btn sm ${msgFilter === c ? "" : "o"}" data-msgf="${esc(c)}">${esc(c)} (${L.filter(x => x.cat === c).length})</button>`).join("")}</div>
+      ${shown.length ? shown.map(x => `<div class="card"><div class="row"><h3 style="margin:0;flex:1">${x.order ? `<span class="pill">${x.order}</span> ` : ""}${esc(x.title)}</h3><span class="pill">${esc(x.cat)}</span></div>
+        <div class="txt">${esc(x.text)}</div>
+        <div class="row">${cbtn(x.text, "📋 העתקה", "wa")}<a class="btn sm s" target="_blank" href="https://wa.me/?text=${encodeURIComponent(x.text)}">💬 פתיחה בוואטסאפ</a><button class="btn sm o" data-medit="${x.id}">✏️ עריכה</button><button class="btn sm o" data-mdel="${x.id}">🗑️</button></div></div>`).join("")
+        : `<div class="card mute">${L.length ? "לא נמצאו הודעות." : "אין עדיין הודעות. הוסיפי למטה, או ייבאי קובץ הודעות."}</div>`}
+      <div class="card" id="msgForm"><h3>${ed ? "✏️ עריכת הודעה" : "➕ הודעה חדשה"}</h3>
+        <div class="row"><label class="inp" style="flex:3">שם ההודעה<input id="mTitle" value="${esc(ed ? ed.title : "")}" placeholder="למשל: הודעה 1 – מחירים"></label>
+        <label class="inp" style="flex:1">סוג<select id="mCat">${opt(MCATS, ed ? ed.cat : "מתעניינות")}</select></label>
+        <label class="inp" style="width:90px">מספר<input id="mOrder" type="number" min="1" value="${esc(ed ? ed.order || "" : "")}" placeholder="סדר"></label></div>
+        <label class="inp">הטקסט<textarea id="mText" rows="7" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px">${esc(ed ? ed.text : "")}</textarea></label>
+        <button class="btn" id="mSave">${ed ? "💾 שמירה" : "➕ להוסיף"}</button> ${ed ? '<button class="btn o" id="mCancel">ביטול</button>' : ""}</div>`;
+  }
+
   async function render() {
     copyN = 0; for (const k in COPY) delete COPY[k];
     document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "day" ? "month" : view)));
     const m = $("#main");
-    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
+    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
     m.innerHTML = html;
     $("#sub").textContent = "booqli Games · " + nice(todayISO());
   }
 
   // ---------- אירועים ----------
   document.addEventListener("click", e => {
-    const b = e.target.closest("[data-copy],[data-v],[data-topic],[data-gotopic],[data-day],[data-copyimg],[data-delmedia],#checkUpd,#exp,[data-sitef],#siteRefresh,[data-ideaf],[data-iedit],[data-idel],#iSave,#iCancel");
+    const b = e.target.closest("[data-copy],[data-v],[data-topic],[data-gotopic],[data-day],[data-copyimg],[data-delmedia],#checkUpd,#exp,[data-sitef],#siteRefresh,[data-ideaf],[data-iedit],[data-idel],#iSave,#iCancel,[data-msgf],[data-medit],[data-mdel],#mSave,#mCancel");
     if (!b) return;
     if (b.dataset.sitef) { siteFilter = b.dataset.sitef; return render(); }
     if (b.id === "siteRefresh") { SITEDATA = null; return render().then(() => toast("רוענן ✔️")); }
+    if (b.dataset.msgf) { msgFilter = b.dataset.msgf; return render(); }
+    if (b.dataset.medit) { msgEdit = b.dataset.medit; return render().then(() => $("#msgForm").scrollIntoView({ behavior: "smooth" })); }
+    if (b.id === "mCancel") { msgEdit = null; return render(); }
+    if (b.dataset.mdel) { if (confirm("למחוק את ההודעה?")) { LS.set("msgs", msgs().filter(x => x.id !== b.dataset.mdel)); render(); } return; }
+    if (b.id === "mSave") {
+      const title = $("#mTitle").value.trim(), text = $("#mText").value.trim(); if (!title || !text) { toast("צריך שם וטקסט 🙂"); return; }
+      const L = msgs(), o = { title, text, cat: $("#mCat").value, order: parseInt($("#mOrder").value, 10) || null };
+      if (msgEdit) Object.assign(L.find(x => x.id === msgEdit), o); else L.push(Object.assign({ id: "m" + Date.now() }, o));
+      LS.set("msgs", L); msgEdit = null; toast("נשמר ✔️"); return render();
+    }
     if (b.dataset.ideaf) { ideaFilter = b.dataset.ideaf; return render(); }
     if (b.dataset.iedit) { ideaEdit = b.dataset.iedit; return render().then(() => $("#ideaForm").scrollIntoView({ behavior: "smooth" })); }
     if (b.id === "iCancel") { ideaEdit = null; return render(); }
@@ -385,11 +422,20 @@
     if (el.dataset.art) { const o = LS.get("articles", {}); o[el.dataset.art] = el.value.trim(); LS.set("articles", o); toast("נשמר ✔️"); return; }
     if (el.dataset.istat) { const L = ideas(), x = L.find(i => i.id === el.dataset.istat); x.status = el.value; LS.set("ideas", L); toast("נשמר ✔️"); return render(); }
     if (el.dataset.camp) { const o = LS.get("camps", {}); o[el.dataset.camp] = el.value; LS.set("camps", o); toast("נשמר ✔️"); render(); return; }
+    if (el.id === "mImp" && el.files[0]) {
+      el.files[0].text().then(t => {
+        const d = JSON.parse(t), arr = Array.isArray(d) ? d : d.messages || []; const L = msgs(); let n = 0;
+        arr.forEach(x => { if (!x.title || !x.text) return; const ex = L.find(y => y.title === x.title); if (ex) Object.assign(ex, x, { id: ex.id }); else { L.push({ id: "m" + Date.now() + n, title: x.title, text: x.text, cat: MCATS.includes(x.cat) ? x.cat : "אחר", order: x.order || null }); } n++; });
+        LS.set("msgs", L); toast("יובאו " + n + " הודעות ✔️"); render();
+      }).catch(() => alert("הקובץ לא תקין"));
+      return;
+    }
     if (el.id === "imp" && el.files[0]) {
       el.files[0].text().then(s => { const o = JSON.parse(s); Object.keys(o).forEach(k => k.startsWith("bq_") && localStorage.setItem(k, o[k])); toast("הגיבוי נטען ✔️"); render(); }).catch(() => alert("הקובץ לא תקין"));
     }
   });
 
+  document.addEventListener("input", e => { if (e.target.id === "mQ") { msgQ = e.target.value; const pos = e.target.selectionStart; render().then(() => { const i = $("#mQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }); } });
   async function update(manual) {
     try {
       const r = await fetch(UPDATE_URL + "?t=" + Date.now(), { cache: "no-store" });
