@@ -8,12 +8,22 @@ window.SITE = {
   // מספר הוואטסאפ של BOOQLI (לדיווח טעויות). בפורמט בינלאומי, בלי + ובלי 0 בהתחלה
   phone: "972555549331",
   // קוד המדידה מ-Cloudflare Web Analytics. להדביק כאן בין המירכאות כשיתקבל
-  analyticsToken: "cd51ae95df984ed1b317d05f080dc9a3"
+  analyticsToken: "cd51ae95df984ed1b317d05f080dc9a3",
+  // מצב בעלת האתר (שמש): רק "טביעת אצבע" של הקוד, הקוד עצמו לא נכתב כאן. ראו "מצב בעלת האתר" למטה
+  ownerHash: "66cbc49d397a041a14b33b3cdd4b2f62f574765543510d613bcec7d9b170840c"
 };
+
+/* ======================== מצב בעלת האתר (מ-1.11.2026) ========================
+   במכשיר של שמש הכל פתוח: בלי מספר סודי, לפני תאריך הפתיחה, אחרי הסגירה, ועמודים בהכנה.
+   הפעלה: פותחים פעם אחת בכל מכשיר/דפדפן את הקישור הסודי games.booqli.ai/?owner=<הקוד> (נשמר בדפדפן).
+   כיבוי זמני ("לראות כמו גננת"): הכפתור 👑 בפינה. ניתוק המכשיר: ?owner=off.
+   במצב בעלת האתר הכניסות לא נספרות במדידה. זו נעילה פשוטה בדפדפן (לא כספת). */
+function siteOwnerDevice(){ try { return localStorage.getItem("booqli_owner") === SITE.ownerHash; } catch (e) { return false; } }
+function siteOwner(){ try { return siteOwnerDevice() && localStorage.getItem("booqli_owner_off") !== "1"; } catch (e) { return false; } }
 
 /* ======================== מדידת כניסות ======================== */
 (function loadAnalytics(){
-  if (!SITE.analyticsToken) return;
+  if (!SITE.analyticsToken || siteOwnerDevice()) return;
   var s = document.createElement("script");
   s.defer = true;
   s.src = "https://static.cloudflareinsights.com/beacon.min.js";
@@ -25,7 +35,7 @@ window.SITE = {
    הכתובת מתחלפת לרגע וחוזרת מיד, הדף עצמו לא נטען מחדש. */
 var SITE_DIR = location.pathname.replace(/[^/]*$/, ""), siteVirtual = null, siteTimer = null;
 function siteTrack(name, kind){
-  if (!SITE.analyticsToken) return;
+  if (!SITE.analyticsToken || siteOwnerDevice()) return;
   try {
     // הכתובת האמיתית נשמרת פעם אחת, כך שגם כמה לחיצות מהירות נספרות כל אחת בנפרד
     var back = siteVirtual || (location.pathname + location.search + location.hash);
@@ -110,7 +120,7 @@ window.SITE.openTopics = [];
 window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", winter: "החורף", colors: "עולם הצבעים" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
-function siteUnlocked(){ try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
+function siteUnlocked(){ if (siteOwner()) return true; try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
 function siteCheckCode(code){
   var txt = "booqli:" + String(code || "").replace(/\D/g, "");
   if (!window.crypto || !crypto.subtle || !window.TextEncoder) return Promise.resolve(false);
@@ -137,7 +147,8 @@ window.SITE.opens = {
 };
 // תאריך בלבד ("2026-11-29") = נפתח בחצות. תאריך + שעה ("2026-11-01T12:00") = נפתח בשעה הזאת (שעון ישראל).
 function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o.length > 10 ? o + ":00+02:00" : o + "T00:00:00+02:00") : null; }
-function siteIsSoon(id){ var d = siteOpenDate(id); return !!d && siteNow() < d; }
+function siteIsSoon(id){ return !siteOwner() && siteIsSoonRaw(id); }
+function siteIsSoonRaw(id){ var d = siteOpenDate(id); return !!d && siteNow() < d; }
 function siteSoonGate(id, main){
   var d = siteOpenDate(id), nm = SITE.locked[id] || "התוכן הזה";
   var wd = SITE_DAYS[new Date(SITE.opens[id].slice(0, 10) + "T12:00:00+02:00").getUTCDay()], hm = SITE.opens[id].length > 10 ? " בשעה " + SITE.opens[id].slice(11, 16) : "";
@@ -390,7 +401,8 @@ function siteNow(){
   if (q) { var d = new Date(q.indexOf("T") > 0 ? q : q + "T00:00:00"); if (!isNaN(d)) return d; }
   return new Date();
 }
-function siteIsClosed(id){ var c = SITE.closes[id]; return !!c && siteNow() >= new Date(c); }
+function siteIsClosed(id){ return !siteOwner() && siteIsClosedRaw(id); }
+function siteIsClosedRaw(id){ var c = SITE.closes[id]; return !!c && siteNow() >= new Date(c); }
 var SITE_DAYS = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
 function siteCloseText(id){
   var c = new Date(SITE.closes[id]);
@@ -424,6 +436,13 @@ function siteCloseBar(id, name, homeHref){
     ".closed-box .g{background:#1FA855;color:#fff}.closed-box .h{background:#E0399F;color:#fff}.closed-box .w{border:2px solid #4E8576;color:#4E8576}";
   document.head.appendChild(css);
   var main = document.querySelector("main");
+  if (siteOwner() && siteIsClosedRaw(id)) {
+    var ob = document.createElement("div"); ob.className = "closebar";
+    ob.innerHTML = '<div class="in"><div>👑 <b>' + name + ' נסגר לגננות</b> ב' + siteCloseText(id) + '. פתוח רק לך.</div></div>';
+    var af = document.querySelector(".backbar") || document.querySelector(".devbar") || document.querySelector(".sponsor") || document.querySelector("header");
+    if (af) af.insertAdjacentElement("afterend", ob);
+    return;
+  }
   if (siteIsClosed(id)) {
     if (main) main.hidden = true;
     var box = document.createElement("div"); box.className = "closed-box";
@@ -603,7 +622,7 @@ function siteInstall(where){
 })();
 /* פס קטן בתחתית דף הבית, רק בטלפון, רק בדפדפן (לא בתוך האפליקציה) */
 function siteAppBar(){
-  if (siteIsStandalone() || /[?&]sheet=/.test(location.search)) return;
+  if (siteIsStandalone() || siteOwnerDevice() || /[?&]sheet=/.test(location.search)) return;
   var home = location.pathname === "/" || /\/index\.html$/.test(location.pathname);
   var force = /[?&]appbar=1/.test(location.search);
   if (!home && !force) return;
@@ -643,4 +662,45 @@ function siteAppBar(){
 }
 (function(){
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteAppBar); else siteAppBar();
+})();
+
+/* ======================== מצב בעלת האתר: הפעלה וכפתור 👑 ======================== */
+(function siteOwnerMode(){
+  var qs = new URLSearchParams(location.search), k = qs.get("owner");
+  var clean = function(){ qs.delete("owner"); var q = qs.toString(); try { history.replaceState(null, "", location.pathname + (q ? "?" + q : "") + location.hash); } catch (e) {} };
+  if (k === "off") {
+    try { localStorage.removeItem("booqli_owner"); localStorage.removeItem("booqli_owner_off"); } catch (e) {}
+    clean(); location.reload(); return;
+  }
+  if (k && window.crypto && crypto.subtle && window.TextEncoder) {
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode("booqli-owner:" + k)).then(function(b){
+      var h = Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+      clean();
+      if (h !== SITE.ownerHash) return;
+      try { localStorage.setItem("booqli_owner", h); localStorage.removeItem("booqli_owner_off"); localStorage.setItem("booqli_join", JSON.stringify({ joined: Date.now() })); } catch (e) {}
+      try { sessionStorage.setItem("booqli_owner_hi", "1"); } catch (e) {}
+      location.reload();
+    });
+    return;
+  }
+  if (!siteOwnerDevice() || /[?&]sheet=/.test(location.search)) return;
+  var add = function(){
+    var on = siteOwner();
+    var css = document.createElement("style");
+    css.textContent = ".bq-owner{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:160;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 14px;font:800 14px Assistant,Arial,sans-serif;cursor:pointer;direction:rtl;box-shadow:0 6px 18px rgba(43,21,38,.25)}" +
+      ".bq-owner.on{background:#FFB020;color:#2B1526}.bq-owner.off{background:#fff;color:#6b5a66;border:2px dashed #FFB020}" +
+      ".bq-owner-hi{position:fixed;left:50%;top:20px;transform:translateX(-50%);z-index:210;background:#2B1526;color:#fff;border-radius:16px;padding:12px 18px;font:700 16px Assistant,Arial,sans-serif;text-align:center;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.3)}" +
+      "@media print{.bq-owner,.bq-owner-hi{display:none!important}}";
+    document.head.appendChild(css);
+    var b = document.createElement("button"); b.type = "button"; b.className = "bq-owner " + (on ? "on" : "off");
+    b.textContent = on ? "👑 מצב בעלת האתר" : "👀 רואה כמו גננת · לחזור 👑";
+    b.title = on ? "לחיצה: לראות את האתר כמו גננת רגילה" : "לחיצה: לחזור למצב בעלת האתר (הכל פתוח)";
+    b.setAttribute("aria-label", b.title);
+    b.onclick = function(){ try { if (on) localStorage.setItem("booqli_owner_off", "1"); else localStorage.removeItem("booqli_owner_off"); } catch (e) {} location.reload(); };
+    document.body.appendChild(b);
+    var bar = document.querySelector(".bq-appbar"); if (bar) bar.remove();
+    var hi = false; try { hi = sessionStorage.getItem("booqli_owner_hi") === "1"; sessionStorage.removeItem("booqli_owner_hi"); } catch (e) {}
+    if (hi) { var t = document.createElement("div"); t.className = "bq-owner-hi"; t.setAttribute("role", "status"); t.textContent = "👑 שלום שמש! המכשיר הזה זוכר אותך – כל התכנים פתוחים לך."; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 4500); }
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
 })();

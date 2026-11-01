@@ -98,6 +98,7 @@ section{padding:26px 0}
 .card.rainbow h3{background:linear-gradient(90deg,#E0384A,#E2741B,#C99400,#2E9A55,#2C86C9,#4B57D6,#8A45C9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.locked::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
 .card.open .st{background:var(--pink);color:#fff}
+.own-b{display:inline-block;margin-top:4px;background:#FFF3CF;color:#8a5a00;border-radius:999px;padding:2px 9px;font-size:12.5px;font-weight:800}
 .card.soon .st{background:var(--pink-soft);color:var(--magenta)}
 .card.closed .ic{filter:grayscale(.6);opacity:.7}
 .card.closed::after{content:"🔒";position:absolute;top:10px;inset-inline-start:12px;font-size:18px}
@@ -530,8 +531,13 @@ const iso = x => x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2,"0") 
 YEAR.forEach(t => { if (t.opens) return; const x = d(t.event); x.setDate(x.getDate() - OPEN_DAYS_BEFORE); t.opens = iso(x); });
 const fmt = s => { const x = d(s); return x.getDate() + "." + (x.getMonth()+1) + "." + x.getFullYear() + (s.length > 10 ? " בשעה " + s.slice(11, 16) : ""); };
 
+/* מצב בעלת האתר: כל מה שיש לו עמוד (ready או ב-SITE.locked) פתוח לשמש, עם תווית 👑 */
 function state(t){
-  if (window.SITE && SITE.closes && SITE.closes[t.id] && siteIsClosed(t.id)) return "closed";
+  const s = stateReal(t);
+  return s !== "open" && siteOwner() && (t.ready || (SITE.locked && SITE.locked[t.id])) ? "open" : s;
+}
+function stateReal(t){
+  if (window.SITE && SITE.closes && SITE.closes[t.id] && siteIsClosedRaw(t.id)) return "closed";
   if (t.opens && d(t.opens) > TODAY) return "locked";
   return t.ready ? "open" : "soon";
 }
@@ -542,7 +548,7 @@ function card(t){
   b.className = "card " + s + (t.rainbow ? " rainbow" : ""); b.type = "button";
   const st = s === "locked" ? "נפתח ב-" + fmt(t.opens) : LABEL[s];
   const ag = t.ages || DEFAULT_AGES;
-  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${t.sped ? `<span class="sped-b">💜 גם לחינוך מיוחד</span>` : ""}${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
+  b.innerHTML = `<div class="ic" style="background:${t.bg}">${t.ic}</div><h3>${t.name}</h3><span class="ages">גילאי <span dir="ltr">${ag[0]}–${ag[1]}</span></span><span class="st">${st}</span>${t.sped ? `<span class="sped-b">💜 גם לחינוך מיוחד</span>` : ""}${s === "open" && stateReal(t) !== "open" ? `<span class="own-b">👑 פתוח רק לך</span>` : ""}${s === "open" && !(t.href||"").startsWith("games/") && siteIsLocked(t.id) && !siteUnlocked() ? `<span class="key">🔑 במספר הסודי</span>` : ""}${s === "open" && SITE.closes && SITE.closes[t.id] ? `<span class="closes" data-close="${t.id}">⏳ פתוח עד ${siteCloseText(t.id).replace(/^יום \S+ /,"").replace(" בשעה "," · ")}</span>` : ""}`;
   b.setAttribute("aria-label", t.name + ", " + st);
   b.onclick = () => s === "open" ? location.href = (t.href || "topics/" + t.id + "/") : showLocked(t, s);
   if (s !== "open" || t.noGift) return b;
