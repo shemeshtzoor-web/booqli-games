@@ -18,7 +18,7 @@ window.VACATIONS = {
     {id:"hanukkah", name:"חנוכה", ic:"🕎", from:"2026-12-06", to:"2026-12-12", back:"2026-12-13",
      practice:{name:"חנוכה", href:"topics/hanukkah/", what:"סיפור המכבים, פאזל, משחק זיכרון ודפי צביעה"}},
     {id:"purim", name:"פורים", ic:"🎭", from:"2027-03-23", to:"2027-03-24", back:"2027-03-25",
-     practice:{name:"עולם הרגשות", href:"topics/feelings/", what:"משחק הפרצופים ו\"בונים פרצוף\" – כמו מסכה לפורים"}},
+     practice:{name:"פורים", href:"topics/purim/", what:"סיפור המגילה עם הקראה, משחק הזיכרון של מיצי וכרטיס ברכה לפורים"}},
     {id:"pesach", name:"פסח", ic:"🍷", from:"2027-04-13", to:"2027-04-28", back:"2027-04-29",
      practice:{name:"גיבור/ת על", href:"games/superhero/", what:"אותיות, קריאה ומשחק טוב לב"}},
     {id:"atzmaut", name:"יום העצמאות", ic:"🇮🇱", from:"2027-05-12", to:"2027-05-12", back:"2027-05-13",
