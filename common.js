@@ -426,7 +426,7 @@ function siteCodeGate(){
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 /* עמודים רגועים (אזעקות): בלי חלונות קופצים – מי שנכנס באזעקה צריך את התוכן מיד */
-function siteCalmPage(){ return /\/topics\/safety\//.test(location.pathname); }
+function siteCalmPage(){ return /\/(topics\/safety|course)\//.test(location.pathname); }
 function siteJoinPopup(){
   if (siteKidLock() || siteCalmPage()) return;
   var qs = location.search || "";

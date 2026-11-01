@@ -56,6 +56,11 @@
 .mb-promo img{width:100%;height:auto;display:block;border-radius:16px}
 .mb-promo h2{font-size:26px}.mb-promo p{margin:8px 0 12px}
 .mb-promo a{background:#fff;color:#C13671;border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+.course-promo{margin-top:14px;display:flex;align-items:center;gap:14px;background:#fff;border:3px solid #FF56C2;border-radius:22px;padding:14px 18px;text-decoration:none;color:#2B1526;box-shadow:0 6px 20px rgba(193,54,113,.12)}
+.course-promo b{font-family:Fredoka,Assistant,sans-serif;font-size:21px;color:#C13671}
+.course-promo .cp-ic{font-size:34px;flex-shrink:0}
+.course-promo .cp-go{margin-inline-start:auto;background:#E0399F;color:#fff;border-radius:999px;padding:8px 16px;font-weight:800;white-space:nowrap;flex-shrink:0}
+@media (max-width:520px){.course-promo{flex-wrap:wrap}.course-promo .cp-go{margin-inline-start:0}}
 @media (max-width:700px){.mb-promo{grid-template-columns:minmax(0,1fr)}}
 .revs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .rev{margin:0;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 #d9e9e1}
@@ -152,6 +157,12 @@
     <a href="book-maker/">בואו לעצב את הספר שלכם ←</a>
   </div>
 </section>
+
+<a class="course-promo" href="course/?utm_source=games_home&utm_medium=banner&utm_campaign=course">
+  <span class="cp-ic">✍️</span>
+  <span><b>כל אחד יכול להיות סופר</b><br>קורס בזום למבוגרים: כותבים, מאיירים עם AI ומדפיסים ספר ילדים משלכם</span>
+  <span class="cp-go">לפרטים ←</span>
+</a>
 
 <section class="c-sec" id="reviews">
   <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2></div>

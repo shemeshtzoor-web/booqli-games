@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כל אחד יכול להיות סופר – קורס בזום: לכתוב, לאייר ולהדפיס ספר ילדים · BOOQLI</title>
+<meta name="description" content="קורס בזום למבוגרים: כותבים ספר ילדים, מאיירים עם בינה מלאכותית, מעמדים, מדפיסים בכריכה ומפיצים – בלי לשכור עורכת, מאיירת, מעמדת ומנקדת. 6 מפגשים בקבוצה קטנה עם שמש צור, מייסדת BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/course/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="BOOQLI">
+<meta property="og:title" content="✍️ כל אחד יכול להיות סופר – קורס לכתיבת ספר ילדים עם AI">
+<meta property="og:description" content="6 מפגשים בזום: מהרעיון ועד ספר מודפס בכריכה – כתיבה, איורים עם AI, ניקוד, עימוד, הדפסה והפצה.">
+<meta property="og:url" content="https://games.booqli.ai/course/">
+<meta property="og:image" content="https://games.booqli.ai/course/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.55;
+  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+img{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.brand .sp{flex:1}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center;padding:30px 0 6px}
+.tag{display:inline-block;background:var(--pink-soft);color:var(--magenta);font-weight:800;border-radius:999px;padding:5px 14px;font-size:15px}
+.hero h1{font-size:clamp(32px,6.4vw,54px);color:var(--magenta);line-height:1.1;margin-top:10px}
+.hero h1 span{color:var(--sage-deep);display:block;font-size:.58em;margin-top:6px}
+.hero p.lead{font-size:clamp(17px,2.4vw,20px);color:var(--muted);margin:14px 0 0}
+.hero img{width:100%;height:auto;display:block;border-radius:24px;box-shadow:0 12px 34px rgba(78,133,118,.22)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding:0;list-style:none}
+.facts li{background:#fff;border-radius:999px;padding:6px 13px;font-weight:700;font-size:15px;box-shadow:0 2px 8px rgba(78,133,118,.12)}
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:15px 26px;font-weight:800;font-size:19px;cursor:pointer;box-shadow:0 4px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:18px}
+.btn-main:active{transform:translateY(2px);box-shadow:0 2px 0 var(--pink-shadow)}
+.small{font-size:14.5px;color:var(--muted);margin:8px 0 0}
+
+section{margin-top:34px}
+.sec-h{text-align:center;margin-bottom:14px}
+.sec-h h2{font-size:clamp(25px,4.6vw,34px);color:var(--ink)}
+.sec-h p{color:var(--muted);margin:6px auto 0;max-width:640px;font-size:17px}
+.card{background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(78,133,118,.14);padding:22px 20px}
+
+.save{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.save div{background:#fff;border-radius:20px;padding:16px 10px;text-align:center;box-shadow:0 4px 16px rgba(78,133,118,.12)}
+.save b{display:block;font-size:30px}
+.save span{font-weight:700}
+.save s{color:var(--muted);font-size:14px;display:block}
+.save-note{text-align:center;font-weight:800;color:var(--sage-deep);font-size:19px;margin:14px 0 0}
+
+.meets{display:grid;gap:12px;counter-reset:m}
+.meet{background:#fff;border-radius:22px;padding:18px 18px 16px;box-shadow:0 4px 18px rgba(78,133,118,.12);display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;align-items:start}
+.meet .n{width:56px;height:56px;border-radius:18px;background:var(--mint);color:var(--sage-deep);display:grid;place-items:center;font-family:Fredoka,sans-serif;font-weight:700;font-size:26px}
+.meet:nth-child(even) .n{background:var(--pink-soft);color:var(--magenta)}
+.meet h3{font-size:21px}
+.meet ul{margin:8px 0 0;padding-inline-start:20px}
+.meet li{margin:3px 0}
+.meet .hw{margin:10px 0 0;background:#F6FAF8;border-radius:12px;padding:8px 12px;font-size:15.5px}
+.meet .hw b{color:var(--sage-deep)}
+
+.gets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;list-style:none;margin:0}
+.gets li{background:#fff;border-radius:18px;padding:14px 16px;font-weight:600;box-shadow:0 3px 12px rgba(78,133,118,.1)}
+
+.me{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px;align-items:center}
+.me img{border-radius:20px;width:100%;height:auto;display:block}
+.me h2{font-size:28px;color:var(--magenta)}
+.me p{margin:8px 0 0}
+
+.price{text-align:center;border:3px solid var(--pink)}
+.price .old{color:var(--muted);text-decoration:line-through;font-size:20px}
+.price .now{font-family:Fredoka,sans-serif;font-size:clamp(48px,10vw,70px);color:var(--magenta);line-height:1.05}
+.price .now small{font-size:.4em;color:var(--ink)}
+.price ul{list-style:none;padding:0;margin:14px auto 0;max-width:520px;text-align:right}
+.price li{padding:7px 0;border-bottom:1px dashed #e6d6e0}
+.price li:last-child{border:0}
+
+.faq details{background:#fff;border-radius:16px;margin-top:10px;box-shadow:0 3px 12px rgba(78,133,118,.1)}
+.faq summary{cursor:pointer;font-weight:800;padding:14px 16px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"＋";color:var(--pink-btn);margin-inline-end:8px}
+.faq details[open] summary::before{content:"－"}
+.faq details p{margin:0;padding:0 16px 14px;color:var(--muted)}
+
+.end{background:linear-gradient(135deg,var(--sage-deep),var(--sage));color:#fff;border-radius:26px;padding:26px 20px;text-align:center}
+.end h2{font-size:clamp(25px,5vw,34px)}
+.end p{margin:8px 0 0;font-size:17px}
+.end .btn-main{background:#fff;color:var(--magenta);box-shadow:0 4px 0 #b9cfc6}
+
+.sticky{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);box-shadow:0 -4px 16px rgba(0,0,0,.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:10px;justify-content:center}
+.sticky.on{display:flex}
+.sticky span{font-weight:800}
+.sticky a{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:10px 18px;white-space:nowrap}
+.foot{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 90px}
+
+@media (max-width:760px){
+  .hero,.me{grid-template-columns:minmax(0,1fr)}
+  .hero img{order:-1}
+  .save{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gets{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:420px){.brand .btn-wa span{display:none}.meet{grid-template-columns:minmax(0,1fr)}.meet .n{width:46px;height:46px;font-size:22px}.sticky span{font-size:14px}}
+</style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../common.js" as="script">
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <span class="sp"></span>
+    <a class="btn-wa js-reg" target="_blank" rel="noopener" data-where="header">💬 <span>הרשמה בוואטסאפ</span></a>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="hero">
+  <div>
+    <span class="tag">✍️ קורס בזום למבוגרים · מחזור ראשון</span>
+    <h1>כל אחד יכול להיות סופר<span>כותבים, מאיירים עם AI ומדפיסים ספר ילדים משלכם</span></h1>
+    <p class="lead">חלמתם לכתוב ספר לילדים, לנכדים או לגן? ב-6 מפגשים בזום תעברו את כל הדרך: מהרעיון הראשון ועד קבצים מוכנים להדפסה בכריכה, ותדעו בדיוק איך להפיץ ולמכור את הספר.</p>
+    <ul class="facts">
+      <li>💻 6 מפגשים בזום</li>
+      <li>⏱️ שעה כל מפגש</li>
+      <li>👥 קבוצה קטנה</li>
+      <li>🎨 כולל איורים עם AI</li>
+    </ul>
+    <a class="btn-main js-reg" target="_blank" rel="noopener" data-where="hero">💬 שומרים לי מקום בוואטסאפ</a>
+    <p class="small">משלמים רק כשהקורס נפתח · הקורס נפתח ב-4 משתתפים</p>
+  </div>
+  <img src="../book-maker/img/books-fan.webp" alt="ספרי ילדים בכריכה קשה שעוצבו בעורך של BOOQLI" width="1100" height="520">
+</div>
+
+<section>
+  <div class="sec-h">
+    <h2>חוסכים כמעט את כל בעלי המקצוע</h2>
+    <p>כדי להוציא ספר ילדים צריך בדרך כלל עורכת, מאיירת, מנקדת ומעמדת. בקורס לומדים לעשות את כל אלה בעצמכם, עם כלי בינה מלאכותית ועם העורך של BOOQLI.</p>
+  </div>
+  <div class="save">
+    <div><b>✏️</b><span>עריכה</span><s>עורכת</s></div>
+    <div><b>🎨</b><span>איורים</span><s>מאיירת</s></div>
+    <div><b>אָ</b><span>ניקוד</span><s>מנקדת</s></div>
+    <div><b>📐</b><span>עימוד</span><s>מעמדת</s></div>
+  </div>
+  <p class="save-note">את כל זה תעשו לבד, וידעו גם מה לבדוק לפני שמדפיסים.</p>
+</section>
+
+<section id="program">
+  <div class="sec-h">
+    <h2>מה לומדים בכל מפגש</h2>
+    <p>בין מפגש למפגש יש משימה קטנה, ככה שבסוף הקורס הספר שלכם כבר מוכן.</p>
+  </div>
+  <div class="meets">
+    <article class="meet"><div class="n">1</div><div>
+      <h3>מרעיון לסיפור</h3>
+      <ul>
+        <li>למי הספר: גיל 2–4, 4–6 או 6–8, ומה זה משנה בכתיבה</li>
+        <li>גיבור, בעיה ופתרון: המבנה שעובד בספרי ילדים</li>
+        <li>מסר בלי להטיף, וכמה מילים מתאימות לכל עמוד</li>
+        <li>בינה מלאכותית כשותפה לרעיונות, בלי לאבד את הקול שלכם</li>
+      </ul>
+      <p class="hw"><b>משימה:</b> טיוטה ראשונה של הסיפור</p>
+    </div></article>
+    <article class="meet"><div class="n">2</div><div>
+      <h3>מטיוטה לטקסט מוכן</h3>
+      <ul>
+        <li>עריכה עצמית: מה מוחקים, מה מקצרים ואיך שומרים על קצב</li>
+        <li>חרוז או פרוזה, ואיך כותבים חרוז שלא נשמע מאולץ</li>
+        <li>חלוקה לעמודים וכפולות (לוח סיפור)</li>
+        <li>ניקוד עם כלים דיגיטליים, ומה חובה לבדוק בעין</li>
+      </ul>
+      <p class="hw"><b>משימה:</b> טקסט סופי מחולק לעמודים</p>
+    </div></article>
+    <article class="meet"><div class="n">3</div><div>
+      <h3>איורים עם בינה מלאכותית</h3>
+      <ul>
+        <li>בוחרים סגנון אחד לכל הספר</li>
+        <li>דמות שנשארת אותה דמות בכל העמודים</li>
+        <li>איך מנסחים בקשה לכלי איור, ואיך מתקנים איור שלא יצא טוב</li>
+        <li>איור מתמונה או מציור שלכם, ומה מותר לעשות עם האיורים</li>
+      </ul>
+      <p class="hw"><b>משימה:</b> הכריכה ו-3 איורים ראשונים</p>
+    </div></article>
+    <article class="meet"><div class="n">4</div><div>
+      <h3>עימוד בעורך של BOOQLI</h3>
+      <ul>
+        <li>מידות, שוליים לחיתוך ואזור בטוח לטקסט</li>
+        <li>גופנים בעברית וטקסט שקריא גם על איור</li>
+        <li>כריכה קדמית, שדרה וכריכה אחורית</li>
+        <li>קבצי PDF באיכות דפוס, ובדיקה לפני שליחה</li>
+      </ul>
+      <p class="hw"><b>משימה:</b> הספר כולו בעורך</p>
+    </div></article>
+    <article class="meet"><div class="n">5</div><div>
+      <h3>הדפסה וכריכה</h3>
+      <ul>
+        <li>כריכה קשה או רכה, סוגי נייר, הדפסה דיגיטלית או אופסט</li>
+        <li>כמה עותקים להדפיס בהתחלה, ואיך לא להיתקע עם מלאי</li>
+        <li>איך מבקשים הצעת מחיר ומה בודקים בעותק לדוגמה</li>
+        <li>מספר ISBN, ואמזון: מתי זה מתאים ואיך מעלים</li>
+      </ul>
+      <p class="hw"><b>משימה:</b> קבצים סופיים מוכנים לבית הדפוס</p>
+    </div></article>
+    <article class="meet"><div class="n">6</div><div>
+      <h3>הפצה ושיווק</h3>
+      <ul>
+        <li>דף לספר ותמונות שמוכרות אותו</li>
+        <li>קמפיין בפייסבוק בתקציב קטן, צעד אחר צעד</li>
+        <li>גנים, ספריות, חנויות ואירועי השקה</li>
+        <li>מה הלאה: אפליקציה לספר, סדרה, ספר שני</li>
+      </ul>
+      <p class="hw"><b>בסוף:</b> ספר מוכן להדפסה ותוכנית הפצה משלכם</p>
+    </div></article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>מה מקבלים</h2></div>
+  <ul class="gets">
+    <li>🎥 6 מפגשים חיים בזום, בערבים</li>
+    <li>👥 קבוצה קטנה, עד 10 משתתפים, עם זמן לשאלות</li>
+    <li>📝 משוב אישי על הסיפור והאיורים שלכם</li>
+    <li>📖 עבודה בעורך הספרים של BOOQLI, בכריכה קשה ובמידות דפוס</li>
+    <li>✅ רשימת בדיקה לפני הדפסה</li>
+    <li>🚀 ספר מוכן להדפסה ותוכנית הפצה</li>
+  </ul>
+</section>
+
+<section>
+  <div class="card me">
+    <img src="../book-maker/img/book2.webp" alt="ספר ילדים בכריכה קשה" width="600" height="600" loading="lazy">
+    <div>
+      <h2>מי מלמדת?</h2>
+      <p><b>שמש צור</b>, מהנדסת, כותבת ספרי ילדים ומייסדת BOOQLI.</p>
+      <p>את ספרי BOOQLI כתבתי, איירתי עם בינה מלאכותית, עימדתי והוצאתי לדפוס בעצמי, ואני מדפיסה ספרים אישיים בכריכה קשה לגנים ולמשפחות. בקורס אני מלמדת בדיוק את הדרך שעשיתי, כולל הטעויות שכדאי לחסוך.</p>
+    </div>
+  </div>
+</section>
+
+<section id="price">
+  <div class="card price">
+    <h2>מחיר מחזור ראשון</h2>
+    <div class="old" id="oldPrice"></div>
+    <div class="now" id="nowPrice"></div>
+    <p class="small">לכל 6 המפגשים</p>
+    <ul>
+      <li>🔒 נרשמים בוואטסאפ ומשלמים רק כשהקורס נפתח</li>
+      <li>👥 הקורס נפתח ב-4 משתתפים לפחות, ועד 10</li>
+      <li>📅 את הימים והשעות קובעים יחד עם הנרשמים הראשונים</li>
+    </ul>
+    <a class="btn-main js-reg" target="_blank" rel="noopener" data-where="price">💬 שומרים לי מקום</a>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="sec-h"><h2>שאלות</h2></div>
+  <details><summary>אני לא כותבת ואין לי ניסיון. זה מתאים לי?</summary><p>כן. הקורס בנוי בדיוק בשביל מי שיש לו רעיון ולא יודע מאיפה מתחילים. עוברים שלב אחרי שלב.</p></details>
+  <details><summary>אני לא יודע לצייר. איך יהיו איורים?</summary><p>בונים אותם עם כלי בינה מלאכותית, ובמפגש 3 לומדים איך לקבל דמות אחידה וסגנון אחד לכל הספר. מי שרוצה יכול להתחיל גם מציור או מתמונה שלו.</p></details>
+  <details><summary>מה צריך כדי להשתתף?</summary><p>מחשב עם חיבור לאינטרנט וזום. העורך של BOOQLI עובד במחשב.</p></details>
+  <details><summary>יש עלויות נוספות?</summary><p>ההדפסה עצמה על חשבונכם, ואתם בוחרים כמה עותקים להדפיס. יש כלי בינה מלאכותית חינמיים, ונדבר גם על כלים בתשלום למי שרוצה.</p></details>
+  <details><summary>מה קורה אם לא נרשמים 4?</summary><p>הקורס לא נפתח ולא משלמים כלום. אתם הראשונים לשמוע כשנפתח מחזור חדש.</p></details>
+  <details><summary>אפשר לכתוב ספר למבוגרים?</summary><p>הקורס מתמקד בספרי ילדים, כי שם האיורים, הניקוד והעימוד הכי חשובים. הרבה מהשלבים מתאימים גם לספרים אחרים.</p></details>
+</section>
+
+<section>
+  <div class="end">
+    <h2>הספר שלכם יכול להיות מודפס עוד חודשיים</h2>
+    <p>שולחים הודעה בוואטסאפ ושומרים מקום. משלמים רק כשהקורס נפתח.</p>
+    <a class="btn-main js-reg" target="_blank" rel="noopener" data-where="end">💬 אני רוצה להצטרף</a>
+  </div>
+</section>
+
+</main>
+
+<div class="sticky" id="sticky"><span>✍️ כל אחד יכול להיות סופר</span><a class="js-reg" target="_blank" rel="noopener" data-where="sticky">💬 הרשמה</a></div>
+
+<footer class="foot wrap">
+  <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40" style="margin:0 auto 8px">
+  <p>BOOQLI · ספרי ילדים בהתאמה אישית</p>
+</footer>
+
+<script src="../common.js"></script>
+<script>
+/* מחירים – משנים רק כאן */
+const PRICE_NOW = 690, PRICE_REGULAR = 900;
+document.getElementById("nowPrice").innerHTML = PRICE_NOW + " ₪";
+document.getElementById("oldPrice").textContent = "המחיר הרגיל: " + PRICE_REGULAR + " ₪";
+
+const src = (new URLSearchParams(location.search).get("utm_source")) || "site";
+document.querySelectorAll(".js-reg").forEach(a => {
+  const where = a.dataset.where || "page";
+  const t = "היי שמש, אני רוצה לשמור מקום בקורס \"כל אחד יכול להיות סופר\" ✍️\nשם: \nהספר שאני חולמת/חולם לכתוב (בכמה מילים): \n\n(הגעתי מ: " + src + ")";
+  a.href = "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent(t);
+  a.addEventListener("click", () => siteEvent("course-reg", where + "-" + src));
+});
+
+const sticky = document.getElementById("sticky"), hero = document.querySelector(".hero .btn-main"), endBox = document.querySelector(".end");
+function upd(){
+  const h = hero.getBoundingClientRect().bottom < 0;
+  const e = endBox.getBoundingClientRect().top < innerHeight;
+  sticky.classList.toggle("on", h && !e);
+}
+addEventListener("scroll", upd, {passive:true}); upd();
+
+siteEvent("course", "view-" + src);
+siteBackBar("../");
+</script>
+</body>
+</html>
