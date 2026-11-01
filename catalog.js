@@ -190,6 +190,11 @@ C.stateReal = function(t){
   if (o && !t.ready && t.season && d(o) > C.today()) return "soon";
   return t.ready ? "open" : "soon";
 };
+/* באזור הילדים: נושא שיש לו משחקים ב-KIDS_GAMES פתוח מיד, גם לפני תאריך הפתיחה (רק "locked"; בהכנה/נסגר – לא) */
+C.kidState = function(t){
+  var s = C.state(t);
+  return s === "locked" && (window.KIDS_GAMES || []).some(function(g){ return g.topic === t.id; }) ? "open" : s;
+};
 C.state = function(t){
   var s = C.stateReal(t);
   return s !== "open" && C.owner() && (t.ready || (window.SITE && SITE.locked && SITE.locked[t.id])) ? "open" : s;
@@ -266,7 +271,7 @@ C.statusText = function(t, s){
 };
 C.card = function(t, opt){
   opt = opt || {};
-  var s = C.state(t), wrap = document.createElement("div");
+  var s = opt.kids ? C.kidState(t) : C.state(t), wrap = document.createElement("div");
   wrap.className = "c-tile st-" + s + (t.rainbow ? " rainbow" : "");
   var icon = t.book ? '<img src="' + C.root + t.img + '" alt="" loading="lazy">' : t.ic;
   var meta = [];

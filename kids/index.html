@@ -104,7 +104,7 @@ const renderAge = () => {
   LIST = AGE ? ALL.filter(t => hitT(t, AGE)) : ALL;
   if (!AGE) { box.hidden = true; return; }
   const all = KIDS_GAMES.filter(g => hitG(g, AGE));
-  const open = all.filter(g => { const t = TOPIC(g.topic); return t && CAT.state(t) === "open"; });
+  const open = all.filter(g => { const t = TOPIC(g.topic); return t && CAT.kidState(t) === "open"; });
   const soon = all.length - open.length;
   const o = AGE_OPTS.find(x => x.k === AGE);
   document.getElementById("agT").textContent = "🎮 " + open.length + " משחקים לגיל " + o.t;
@@ -133,7 +133,7 @@ const OPT = {host: false, kids: true};
 const say = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch(e){} };
 document.getElementById("sayHi").onclick = () => say("שלום! אני בּוּקְלִי. בוחרים חבר מהמשפחה שלי, ומשחקים!");
 const SECTIONS = CAT.HOST_ORDER.map(k => ({id:"h-" + k, title:'<img src="../' + CAT.HOSTS[k].img + '" alt="" width="54" height="56" style="vertical-align:middle;margin-inline-end:8px">' + CAT.HOSTS[k].name + ' <span style="font-size:.7em;color:#6b5a66">· ' + CAT.HOSTS[k].role + '</span> <button type="button" class="say" data-k="' + k + '" aria-label="להקריא" style="border:0;background:#fff;border-radius:999px;width:40px;height:40px;font-size:20px;cursor:pointer;box-shadow:0 2px 0 #CDE7DC">🔊</button>',
-  filter: t => t.host === k && CAT.state(t) !== "soon" && !t.book, sort:"open"}));
+  filter: t => t.host === k && CAT.kidState(t) !== "soon" && !t.book, sort:"open"}));
 SECTIONS.push({id:"books", title:"📚 המשחקים של ספרי BOOQLI", filter: t => t.book, sort:"year"});
 SECTIONS.push({id:"coming", title:"🛠️ בקרוב", filter: t => true, sort:"abc", collapsed:true});
 document.getElementById("hosts").innerHTML = CAT.HOST_ORDER.map(k => '<a href="#h-' + k + '"><img src="../' + CAT.HOSTS[k].img + '" alt="" width="34" height="35">' + CAT.HOSTS[k].name + '</a>').join("");
@@ -146,7 +146,7 @@ const render = () => {
   renderAge();
   const secs = SECTIONS.map(s => Object.assign({}, s, SORT ? {sort: SORT} : {}));
   CAT.sections(document.getElementById("zone"), LIST, secs, OPT);
-  const n = LIST.filter(t => CAT.state(t) === "open").length;
+  const n = LIST.filter(t => CAT.kidState(t) === "open").length;
   document.getElementById("zcount").textContent = n + " תכנים פתוחים · " + LIST.length + " בסך הכל";
 };
 CAT.refresh = render;

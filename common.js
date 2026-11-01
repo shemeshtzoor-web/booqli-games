@@ -179,7 +179,7 @@ function siteSoonGate(id, main){
 /* ======================== מצב משחקים לילדים – בלי מספר סודי (מ-1.11.2026) ========================
    מאזור הילדים (kids/) כל משחק נפתח עם ?play=1. בעמוד הנושא מוצגים אז רק המשחקים שב-KIDS_GAMES (catalog.js),
    בלי מספר סודי. המערכים, דפי ההדפסה והחומרים לגננת מוסתרים ונשארים במספר הסודי.
-   עמוד נושא עם משחקים טוען גם את catalog.js (אחרי common.js). תאריכי פתיחה וסגירה עדיין חלים. */
+   עמוד נושא עם משחקים טוען גם את catalog.js (אחרי common.js). המשחקים פתוחים גם לפני תאריך הפתיחה; סגירת עונה עדיין חלה. */
 // נקבע פעם אחת בטעינה: siteEvent מחליף את הכתובת לרגע (מדידה), ואז location.search ריק
 var SITE_PLAY = /[?&]play=1(&|$)/.test(location.search) && /\/topics\//.test(location.pathname);
 function sitePlayMode(){ return SITE_PLAY; }
@@ -222,8 +222,9 @@ function sitePlay(id){
 }
 function siteCodeGate(){
   var m = location.pathname.match(/\/topics\/([^/]+)/), id = m && m[1];
-  if (siteIsSoon(id)) { var mm = document.querySelector("main"); if (mm && !document.querySelector(".soon-gate")) siteSoonGate(id, mm); return; }
+  // משחקי ילדים: פתוחים מיד, גם לפני תאריך הפתיחה של הנושא (בקשת שמש 1.11.2026). סגירת עונה עדיין חלה.
   if (sitePlayMode() && siteKidsGames(id).length && !document.querySelector(".closed-box")) { sitePlay(id); return; }
+  if (siteIsSoon(id)) { var mm = document.querySelector("main"); if (mm && !document.querySelector(".soon-gate")) siteSoonGate(id, mm); return; }
   if (!siteIsLocked(id) || siteUnlocked() || document.querySelector(".closed-box")) return;
   var nm = SITE.locked[id] || "התוכן הזה";
   var main = document.querySelector("main"); if (!main) return;
