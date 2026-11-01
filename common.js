@@ -408,7 +408,7 @@ window.SITE.more = [
   { ic: "🏠", t: "דף הבית", href: "/" },
   { ic: "🔍", t: "כל התכנים", href: "/library/" },
   { ic: "❤️", t: "המועדפים שלי", href: "/my/" },
-  { ic: "🎁", t: "מתנות לגן", href: "/gifts/" },
+  { ic: "🎁", t: "מתנות וספקיות", href: "/gifts/" },
   { ic: "🤝", t: "ספקים", href: "/suppliers/" },
   { ic: "📖", t: "הספר שלכם", href: "/book-maker/" },
   { ic: "📲", t: "האפליקציה", href: "/app/" }
