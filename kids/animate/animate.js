@@ -86,22 +86,32 @@ function extract(img, crop, level, maxSide){
     for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { const i = y * w + x; if (lum[i] >= thr) { const j = i * 4; r += d[j]; g += d[j + 1]; b += d[j + 2]; m++; } }
     const k = (by * bw + bx) * 4; bc[k] = r / m; bc[k + 1] = g / m; bc[k + 2] = b / m; bc[k + 3] = thr;
   }
-  /* הדף הכללי = חציון הבלוקים הבהירים */
-  const lums = []; for (let k = 0; k < bw * bh; k++) lums.push(bc[k * 4 + 3]);
-  lums.sort((a, b) => a - b); const paperL = lums[Math.floor(lums.length * .75)] || 230;
-  const bg = new Float32Array(bw * bh * 3);
-  const R = 2;
-  for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) {
-    let best = -1, bk = 0;
-    for (let yy = Math.max(0, by - R); yy <= Math.min(bh - 1, by + R); yy++) for (let xx = Math.max(0, bx - R); xx <= Math.min(bw - 1, bx + R); xx++) {
-      const k = (yy * bw + xx) * 4; if (bc[k + 3] > best) { best = bc[k + 3]; bk = k; }
-    }
-    const o = (by * bw + bx) * 3;
-    let r = bc[bk], g = bc[bk + 1], b = bc[bk + 2];
-    /* בלוק כהה מדי = כנראה ציור צבוע כולו, לא דף */
-    if (best < paperL * .72) { const f = paperL / Math.max(1, best); r *= f; g *= f; b *= f; }
-    bg[o] = Math.max(40, r); bg[o + 1] = Math.max(40, g); bg[o + 2] = Math.max(40, b);
+  /* תאורת הדף: משטח חלק (ריבועי) שמותאם רק לבלוקים של דף – כך צל של טלפון והדרגת אור נעלמים */
+  const nb = bw * bh, wt = new Float32Array(nb).fill(1);
+  const feat = (bx, by) => { const x = (bx + .5) / bw - .5, y = (by + .5) / bh - .5; return [1, x, y, x * x, y * y, x * y]; };
+  const solve = (A, v) => { const n = v.length; A = A.map((r, i) => r.concat([v[i]]));
+    for (let i = 0; i < n; i++) { let m = i; for (let k = i + 1; k < n; k++) if (Math.abs(A[k][i]) > Math.abs(A[m][i])) m = k; [A[i], A[m]] = [A[m], A[i]];
+      const pv = A[i][i] || 1e-9; for (let k = i; k <= n; k++) A[i][k] /= pv;
+      for (let r = 0; r < n; r++) if (r !== i) { const f = A[r][i]; for (let k = i; k <= n; k++) A[r][k] -= f * A[i][k]; } }
+    return A.map(r => r[n]); };
+  const fit = ch => { const M = Array.from({length: 6}, () => new Array(6).fill(0)), v = new Array(6).fill(0);
+    for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) { const k = by * bw + bx, w0 = wt[k]; if (!w0) continue; const f = feat(bx, by), val = bc[k * 4 + ch];
+      for (let i = 0; i < 6; i++) { v[i] += w0 * f[i] * val; for (let j = 0; j < 6; j++) M[i][j] += w0 * f[i] * f[j]; } }
+    for (let i = 0; i < 6; i++) M[i][i] += 1e-3; return solve(M, v); };
+  const evalF = (c, x, y) => c[0] + c[1] * x + c[2] * y + c[3] * x * x + c[4] * y * y + c[5] * x * y;
+  /* מתחילים מהבלוקים הבהירים, ובכל סיבוב זורקים בלוקים שכהים מהמשטח (ציור צבוע) */
+  { const ls = []; for (let k = 0; k < nb; k++) ls.push(bc[k * 4 + 3]); ls.sort((x, y) => x - y); const q = ls[Math.floor(nb * .35)];
+    for (let k = 0; k < nb; k++) wt[k] = bc[k * 4 + 3] >= q ? 1 : 0; }
+  let cL = fit(3);
+  for (let it = 0; it < 4; it++) {
+    for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) { const k = by * bw + bx, f = feat(bx, by), e = evalF(cL, f[1], f[2]);
+      wt[k] = bc[k * 4 + 3] >= e * .9 ? 1 : 0; }
+    cL = fit(3);
   }
+  const cR = fit(0), cG = fit(1), cB = fit(2);
+  const bg = new Float32Array(nb * 3);
+  for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) { const k = by * bw + bx, f = feat(bx, by), o = k * 3;
+    bg[o] = Math.max(40, evalF(cR, f[1], f[2])); bg[o + 1] = Math.max(40, evalF(cG, f[1], f[2])); bg[o + 2] = Math.max(40, evalF(cB, f[1], f[2])); }
   /* צבע מנורמל לכל פיקסל (אינטרפולציה בין מרכזי הבלוקים) */
   const nrm = new Uint8ClampedArray(N * 4);
   const ink = new Uint8Array(N);
