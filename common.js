@@ -1032,3 +1032,58 @@ function siteAppBar(){
   function show(){ document.documentElement.classList.add("bq-ready"); }
   if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", show); else show();
 })();
+
+/* ======================== כפתור "שתפו עם חברים" (מ-2.11.2026, בקשת שמש) ========================
+   כפתור ירוק קטן בצד ימין למטה בכל עמוד. לחיצה פותחת וואטסאפ לבחירת חבר/ה, עם הודעה מוכנה + קישור לעמוד הזה
+   (utm_source=whatsapp&utm_medium=share). לא מפריע: נעלם בזמן גלילה וחוזר כשעוצרים, נעלם כשחלון אחר פתוח,
+   ואפשר לסגור אותו ב-✕ (חוזר רק בביקור הבא). בפעם הראשונה בביקור מוצג עם הכיתוב "שתפו עם חברים" ואז מתכווץ לאייקון.
+   לא מופיע: באזור הילדים, במצב ילדים, בדפי הדפסה, בהדפסה. הודעה מיוחדת לעמוד: <meta name="bq-share" content="...">. */
+function siteShareButton(){
+  if (siteKidLock() || sitePlayMode() || /[?&]sheet=/.test(location.search) || /^\/(kids)\/|\/offline\.html$/.test(location.pathname)) return;
+  if (document.querySelector(".bq-share")) return;
+  try { if (sessionStorage.getItem("booqli_share_off") === "1") return; } catch (e) {}
+  var css = document.createElement("style");
+  css.textContent =
+    ".bq-share{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:120;display:flex;align-items:center;gap:6px;direction:rtl;font-family:Assistant,Arial,sans-serif;transition:opacity .25s,transform .25s}" +
+    ".bq-share.hide{opacity:0;transform:translateX(30px);pointer-events:none}" +
+    ".bq-share a{display:flex;align-items:center;gap:8px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;font-size:16px;border-radius:999px;height:50px;padding:0 13px;box-shadow:0 6px 18px rgba(0,0,0,.22);white-space:nowrap;overflow:hidden;max-width:220px;transition:max-width .35s,padding .35s}" +
+    ".bq-share a svg{width:24px;height:24px;flex-shrink:0}" +
+    ".bq-share.mini a{max-width:50px;padding:0 13px}" +
+    ".bq-share.mini a span{opacity:0}" +
+    ".bq-share a span{transition:opacity .2s}" +
+    ".bq-share button{width:24px;height:24px;border-radius:50%;border:0;background:rgba(43,21,38,.75);color:#fff;font:700 12px Arial,sans-serif;cursor:pointer;padding:0;line-height:24px;order:-1}" +
+    ".bq-share.mini button{display:none}.bq-share.mini:hover button,.bq-share.mini:focus-within button{display:block}" +
+    "@media print{.bq-share{display:none!important}}";
+  document.head.appendChild(css);
+  var meta = document.querySelector('meta[name="bq-share"]');
+  var name = (document.title || "").split(/ [·|] /)[0].trim();
+  var url = location.origin + location.pathname;
+  url += (url.indexOf("?") > -1 ? "&" : "?") + "utm_source=whatsapp&utm_medium=share";
+  var text = meta ? meta.content :
+    "מצאתי אתר מקסים לגיל הרך 💜 משחקים, דפי עבודה ופעילויות לגננות ולהורים, בחינם, ואתר בטוח להורים ולילדים" + (name && !/^booqli Games/i.test(name) ? ":\n" + name : "");
+  var box = document.createElement("div");
+  box.className = "bq-share";
+  box.innerHTML =
+    '<a href="https://wa.me/?text=' + encodeURIComponent(text + "\n" + url) + '" target="_blank" rel="noopener" aria-label="שתפו עם חברים בוואטסאפ">' +
+    '<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.3z"/></svg>' +
+    '<span>שתפו עם חברים</span></a><button type="button" aria-label="סגירת כפתור השיתוף">✕</button>';
+  document.body.appendChild(box);
+  box.querySelector("a").addEventListener("click", function(){ siteEvent("click", "share_wa"); });
+  box.querySelector("button").addEventListener("click", function(){
+    try { sessionStorage.setItem("booqli_share_off", "1"); } catch (e) {}
+    box.remove();
+  });
+  // בפעם הראשונה בביקור – עם כיתוב, אחרי 5 שניות מתכווץ. אחר כך – אייקון בלבד (מעבר עכבר / לחיצה ארוכה מראים את ה-✕)
+  var seen = false; try { seen = sessionStorage.getItem("booqli_share_seen") === "1"; sessionStorage.setItem("booqli_share_seen", "1"); } catch (e) {}
+  if (seen) box.classList.add("mini"); else setTimeout(function(){ box.classList.add("mini"); }, 5000);
+  // נעלם כשמגלגלים או כשחלון אחר פתוח
+  var t, scrolling = false;
+  function busy(){ return !!document.querySelector(".bq-join,.code-gate,.bq-appbar,.c-modal,.soon-gate,.bq-klm,.bq-owner-hi,dialog[open]"); }
+  function upd(){ box.classList.toggle("hide", scrolling || busy()); }
+  addEventListener("scroll", function(){ scrolling = true; upd(); clearTimeout(t); t = setTimeout(function(){ scrolling = false; upd(); }, 900); }, { passive: true });
+  setInterval(upd, 1000); upd();
+}
+(function(){
+  function go(){ setTimeout(siteShareButton, 1200); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go); else go();
+})();
