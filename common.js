@@ -174,12 +174,18 @@ function siteTrack(name, kind){
     if (!base && !document.querySelector("base")) { base = document.createElement("base"); base.id = "siteBaseFix"; base.href = location.origin + back.split("#")[0]; document.head.insertBefore(base, document.head.firstChild); }
     history.pushState(null, "", path);
     clearTimeout(siteTimer);
-    siteTimer = setTimeout(function(){ history.replaceState(null, "", back); siteVirtual = null; var bf = document.getElementById("siteBaseFix"); if (bf) bf.remove(); }, 400);
+    siteTimer = setTimeout(function(){ history.replaceState(siteVirtualState, "", siteVirtual || back); siteVirtual = null; siteVirtualState = null; var bf = document.getElementById("siteBaseFix"); if (bf) bf.remove(); }, 400);
   } catch (e) {}
 }
 /* ספירת פעולות (בלי לדעת מי): הצטרפות לוואטסאפ, מתנה להורים, הזמנת ספר, הצעת מחיר לגן, הדפסה.
    מופיעות בלוח של Cloudflare כעמודים שהכתובת שלהם מכילה event/<סוג>/<מקום> */
 function siteEvent(kind, name){ siteTrack(name || "page", kind); }
+/* (2.11.2026) שינוי כתובת מתוך עמוד (למשל אזור הילדים) בלי להתנגש במדידה: אם הכתובת כרגע וירטואלית – מעדכנים את מה שיחזור */
+var siteVirtualState = null;
+function siteSetUrl(url, push, state){
+  if (siteVirtual) { siteVirtual = String(url).replace(location.origin, ""); siteVirtualState = state || null; var bf = document.getElementById("siteBaseFix"); if (bf) bf.href = location.origin + siteVirtual.split("#")[0]; return; }
+  try { history[push ? "pushState" : "replaceState"](state || null, "", url); } catch (e) {}
+}
 document.addEventListener("click", function(e){
   var el = e.target.closest && e.target.closest("a,button");
   if (!el) return;
@@ -629,14 +635,42 @@ window.SITE.doors = [
   { ic: "🧒", t: "לילדים", href: "/kids/" },
   { ic: "🎒", t: "כיתות א'–ג'", s: "כיתות", href: "/school/" }
 ];
-window.SITE.more = [
-  { ic: "🏠", t: "דף הבית", href: "/" },
-  { ic: "🔍", t: "כל התכנים", href: "/library/" },
-  { ic: "❤️", t: "המועדפים שלי", href: "/my/" },
-  { ic: "🎁", t: "מתנות וספקיות", href: "/gifts/" },
-  { ic: "📖", t: "הספר שלכם", href: "/book-maker/" },
-  { ic: "📲", t: "האפליקציה", href: "/app/" }
+/* התפריט המלא (☰ תפריט, 2.11.2026): כל הנושאים המרכזיים בקבוצות. נושא עם id מקבל לבד "נפתח ב-..." / "נסגר" לפי SITE.opens / SITE.closes. */
+window.SITE.menu = [
+  { h: "🧭 ראשי", items: [
+    { ic: "🏠", t: "דף הבית", href: "/" },
+    { ic: "🔍", t: "חיפוש בכל התכנים", href: "/library/" },
+    { ic: "❤️", t: "המועדפים שלי", href: "/my/" } ] },
+  { h: "📅 חגים ועונות", items: [
+    { ic: "🍂", t: "סתיו", href: "/topics/autumn/", id: "autumn" },
+    { ic: "🕎", t: "חנוכה", href: "/topics/hanukkah/", id: "hanukkah" },
+    { ic: "🌧️", t: "חורף", href: "/topics/winter/", id: "winter" },
+    { ic: "🎭", t: "פורים", href: "/topics/purim/", id: "purim" },
+    { ic: "🍷", t: "פסח", href: "/topics/pesach/", id: "pesach" },
+    { ic: "🗓️", t: "לוח חופשות תשפ\"ז", href: "/topics/calendar/", id: "calendar" } ] },
+  { h: "🧩 פינות קבועות", items: [
+    { ic: "🎨", t: "עולם הצבעים", href: "/topics/colors/", id: "colors" },
+    { ic: "🔢", t: "חשבון לגיל הרך", href: "/topics/math/", id: "math" },
+    { ic: "😊", t: "עולם הרגשות", href: "/topics/feelings/", id: "feelings" },
+    { ic: "☀️", t: "מפגש בוקר: 30 רעיונות", href: "/topics/morning-circle/", id: "morning-circle" },
+    { ic: "🎂", t: "יום הולדת בגן", href: "/topics/birthday-party/", id: "birthday-party" },
+    { ic: "🆘", t: "הגעתי לא מוכנה!", href: "/topics/last-minute/", id: "last-minute" } ] },
+  { h: "🛡️ מוגנות ובטיחות", items: [
+    { ic: "🚨", t: "אזעקות ומרחב מוגן", href: "/topics/safety/", id: "safety" },
+    { ic: "🌍", t: "רעידת אדמה", href: "/topics/earthquake/", id: "earthquake" } ] },
+  { h: "🧒 לילדים", items: [
+    { ic: "🎮", t: "כל המשחקים לפי נושא וגיל", href: "/kids/" },
+    { ic: "🎲", t: "חדר המשחקים", href: "/kids/play/" },
+    { ic: "🪄", t: "מנפישים את הציור", href: "/kids/animate/" },
+    { ic: "📚", t: "משחקי ספרי BOOQLI", href: "/kids/?g=books" } ] },
+  { h: "🎁 מ-BOOQLI", items: [
+    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
+    { ic: "🎁", t: "מתנות וספקיות לגן", href: "/gifts/" },
+    { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" },
+    { ic: "✍️", t: "קורס: כותבים ספר ילדים", href: "/course/" },
+    { ic: "📲", t: "האפליקציה", href: "/app/" } ] }
 ];
+window.SITE.more = SITE.menu.reduce(function(a, g){ return a.concat(g.items); }, []);
 function siteDoorsNav(){
   if (document.querySelector(".bq-doors") || /[?&]sheet=/.test(location.search) || /\/offline\.html$/.test(location.pathname)) return;
   var path = location.pathname;
@@ -648,14 +682,19 @@ function siteDoorsNav(){
     ".bq-doors a.d:hover,.bq-doors .mb:hover{border-color:#CDE7DC}" +
     ".bq-doors a.d[aria-current=page]{background:#4E8576;color:#fff}" +
     ".bq-doors .mb{margin-inline-start:auto;background:#fff;border-color:#CDE7DC}" +
-    ".bq-doors .menu{position:absolute;top:100%;left:max(16px,calc((100% - 1100px) / 2 + 16px));background:#fff;border-radius:18px;box-shadow:0 12px 30px rgba(43,21,38,.18);padding:8px;display:grid;gap:2px;min-width:220px;z-index:60}" +
-    ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;text-decoration:none;color:#2B1526;font-weight:700}" +
-    ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#F4FAF7}" +
+    ".bq-doors .menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(1068px,calc(100% - 32px));max-height:min(78vh,640px);overflow:auto;overscroll-behavior:contain;background:#fff;border-radius:22px;box-shadow:0 16px 40px rgba(43,21,38,.22);padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;z-index:60}" +
+    ".bq-doors .menu[hidden]{display:none}" +
+    ".bq-doors .mg{background:#F7FBF9;border-radius:16px;padding:8px}" +
+    ".bq-doors .mg h4{margin:2px 6px 4px;font-family:Fredoka,Assistant,sans-serif;font-size:16px;color:#4E8576}" +
+    ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;text-decoration:none;color:#2B1526;font-weight:700;font-size:15.5px}" +
+    ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#fff;box-shadow:0 2px 0 #CDE7DC}" +
+    ".bq-doors .menu a .when{margin-inline-start:auto;font-size:12px;font-weight:800;color:#6B2FA3;background:#F1E3FF;border-radius:999px;padding:1px 8px;white-space:nowrap}" +
+    ".bq-doors .menu a .when.cl{color:#6b5a66;background:#F2EEF1}" +
     ".bq-doors .s{display:none}" +
     "@media (max-width:600px){.bq-doors .in{padding:6px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));gap:4px}" +
     ".bq-doors a.d,.bq-doors .mb{flex:1;flex-direction:column;gap:0;padding:4px 2px;border-radius:12px;font-size:12.5px;min-height:46px;justify-content:center}" +
     ".bq-doors .i{font-size:18px;line-height:1.1}.bq-doors .f{display:none}.bq-doors .s{display:inline}.bq-doors .mb{flex:0 0 auto;padding:4px 10px}" +
-    ".bq-doors .menu{left:8px;right:8px}}" +
+    ".bq-doors .menu{width:calc(100% - 16px);grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}}" +
     "@media print{.bq-doors{display:none!important}}";
   document.head.appendChild(css);
   var nav = document.createElement("nav");
@@ -664,8 +703,13 @@ function siteDoorsNav(){
   nav.innerHTML = '<div class="in">' + SITE.doors.map(function(x){
       return '<a class="d" href="' + x.href + '"' + cur(x.href) + '><span class="i" aria-hidden="true">' + x.ic + '</span><span class="f">' + x.t + '</span><span class="s">' + (x.s || x.t) + '</span></a>';
     }).join("") +
-    '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>עוד</span></button></div>' +
-    '<div class="menu" id="bqMore" hidden>' + SITE.more.map(function(x){ return '<a href="' + x.href + '"' + cur(x.href) + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + '</a>'; }).join("") + '</div>';
+    '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>תפריט</span></button></div>' +
+    '<div class="menu" id="bqMore" hidden>' + SITE.menu.map(function(g){
+      return '<div class="mg"><h4>' + g.h + '</h4>' + g.items.map(function(x){
+        var w = "";
+        try { if (x.id && siteIsClosed(x.id)) w = '<span class="when cl">נסגר</span>'; else if (x.id && siteIsSoon(x.id)) { var d = siteOpenDate(x.id); w = '<span class="when">נפתח ' + d.getDate() + "." + (d.getMonth() + 1) + '</span>'; } } catch (e) {}
+        return '<a href="' + x.href + '"' + cur(x.href) + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
+      }).join("") + '</div>'; }).join("") + '</div>';
   var top = document.querySelector(".bq-nav");
   if (top) top.insertAdjacentElement("afterend", nav); else document.body.insertBefore(nav, document.body.firstChild);
   var mb = nav.querySelector(".mb"), menu = nav.querySelector(".menu");
@@ -1135,4 +1179,68 @@ function siteShareMenu(){
   };
   document.body.appendChild(box);
   box.querySelector(".wa").focus();
+}
+
+/* ======================== כרטיסיות רצות (קרוסלה, 2.11.2026) ========================
+   siteCarousel(box, {every: 5000, label: "תגובות"}) – כל ילד ישיר של box הופך לכרטיס. מוצג כרטיס אחד בכל פעם,
+   רץ לבד מימין לשמאל, עם חיצים, כפתור עצירה, נקודות והחלקה באצבע. עוצר כשהעכבר/האצבע על הכרטיס,
+   כשהוא לא על המסך, ובמכשירים שביקשו "פחות תנועה". */
+function siteCarousel(box, opt){
+  if (!box || box.dataset.car) return; opt = opt || {};
+  var slides = Array.prototype.slice.call(box.children); if (slides.length < 2) return;
+  box.dataset.car = "1";
+  if (!document.getElementById("siteCarCss")) {
+    var css = document.createElement("style"); css.id = "siteCarCss";
+    css.textContent = ".s-car{position:relative;direction:rtl}.s-car .vp{overflow:hidden;border-radius:22px;touch-action:pan-y}" +
+      ".s-car .tr{display:flex;direction:ltr;transition:transform .55s cubic-bezier(.4,.1,.2,1);align-items:stretch}" +
+      ".s-car .sl{flex:0 0 100%;min-width:0;direction:rtl;display:flex;justify-content:center;align-items:center}.s-car .sl>*{margin:0;width:100%}" +
+      ".s-car .ctl{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}" +
+      ".s-car .ctl button{border:0;cursor:pointer;font:inherit;font-weight:800;border-radius:999px;background:#fff;color:#4E8576;box-shadow:0 2px 0 #CDE7DC;min-width:44px;height:44px;font-size:20px;padding:0 12px}" +
+      ".s-car .ctl button:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}" +
+      ".s-car .dots{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:60%}.s-car .dots button{min-width:0;width:10px;height:10px;padding:0;box-shadow:none;background:#CDE7DC}" +
+      ".s-car .dots button[aria-current=true]{background:#FF56C2;width:22px}.s-car .num{font-size:14px;font-weight:800;color:#6b5a66;min-width:44px;text-align:center}" +
+      "@media (prefers-reduced-motion:reduce){.s-car .tr{transition:none}}@media print{.s-car .ctl{display:none}.s-car .tr{transform:none!important;flex-direction:column}}";
+    document.head.appendChild(css);
+  }
+  var wrap = document.createElement("div"); wrap.className = "s-car"; wrap.setAttribute("role", "region"); wrap.setAttribute("aria-roledescription", "קרוסלה"); wrap.setAttribute("aria-label", opt.label || "כרטיסיות");
+  var vp = document.createElement("div"); vp.className = "vp"; vp.setAttribute("aria-live", "off");
+  var tr = document.createElement("div"); tr.className = "tr";
+  slides.forEach(function(s, i){ var d = document.createElement("div"); d.className = "sl"; d.setAttribute("role", "group"); d.setAttribute("aria-label", (i + 1) + " מתוך " + slides.length); d.appendChild(s); tr.appendChild(d); });
+  vp.appendChild(tr); wrap.appendChild(vp);
+  var many = slides.length > 12;
+  var ctl = document.createElement("div"); ctl.className = "ctl";
+  ctl.innerHTML = '<button type="button" class="nx" aria-label="הקודם">→</button><button type="button" class="pp" aria-label="עצירה">⏸</button>' +
+    (many ? '<span class="num"></span>' : '<span class="dots">' + slides.map(function(_, i){ return '<button type="button" aria-label="כרטיס ' + (i + 1) + '"></button>'; }).join("") + '</span>') +
+    '<button type="button" class="pv" aria-label="הבא">←</button>';
+  wrap.appendChild(ctl);
+  box.innerHTML = ""; box.appendChild(wrap);
+  var i = 0, n = slides.length, user = false, hover = false, seen = true, tm = null;
+  var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calm) user = true;
+  var pp = ctl.querySelector(".pp");
+  var go = function(k){
+    i = (k + n) % n; tr.style.transform = "translateX(" + (-100 * i) + "%)";
+    tr.querySelectorAll(".sl").forEach(function(s, j){ s.setAttribute("aria-hidden", j === i ? "false" : "true"); s.querySelectorAll("a,button,video").forEach(function(x){ if (j === i) x.removeAttribute("tabindex"); else x.setAttribute("tabindex", "-1"); }); });
+    var ds = ctl.querySelectorAll(".dots button"); ds.forEach(function(d, j){ d.setAttribute("aria-current", j === i ? "true" : "false"); });
+    var nm = ctl.querySelector(".num"); if (nm) nm.textContent = (i + 1) + " / " + n;
+  };
+  var paint = function(){ pp.textContent = user ? "▶" : "⏸"; pp.setAttribute("aria-label", user ? "להפעיל שוב" : "עצירה"); };
+  var tick = function(){ clearInterval(tm); tm = setInterval(function(){ if (!user && !hover && seen && !document.hidden) go(i + 1); }, opt.every || 5000); };
+  ctl.querySelector(".pv").onclick = function(){ go(i + 1); tick(); };
+  ctl.querySelector(".nx").onclick = function(){ go(i - 1); tick(); };
+  pp.onclick = function(){ user = !user; paint(); if (!user) go(i + 1); tick(); };
+  ctl.querySelectorAll(".dots button").forEach(function(d, j){ d.onclick = function(){ go(j); tick(); }; });
+  vp.addEventListener("mouseenter", function(){ hover = true; }); vp.addEventListener("mouseleave", function(){ hover = false; });
+  wrap.addEventListener("focusin", function(){ hover = true; }); wrap.addEventListener("focusout", function(){ hover = false; });
+  /* החלקה באצבע: שמאלה = הבא (כמו כיוון הריצה) */
+  var x0 = null, y0 = 0;
+  vp.addEventListener("touchstart", function(e){ x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; hover = true; }, {passive: true});
+  vp.addEventListener("touchend", function(e){ hover = false; if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { go(dx < 0 ? i + 1 : i - 1); tick(); } }, {passive: true});
+  vp.addEventListener("keydown", function(e){ if (e.key === "ArrowLeft") { go(i + 1); tick(); } else if (e.key === "ArrowRight") { go(i - 1); tick(); } });
+  /* וידאו שמתנגן – עוצרים את הריצה */
+  wrap.querySelectorAll("video").forEach(function(v){ v.addEventListener("play", function(){ user = true; paint(); }); });
+  if ("IntersectionObserver" in window) new IntersectionObserver(function(es){ seen = es[0].isIntersecting; }, {threshold: .4}).observe(vp);
+  go(0); paint(); tick();
+  return {go: go};
 }

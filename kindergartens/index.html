@@ -435,6 +435,38 @@ section{margin-top:64px}
 @media (max-width:420px){.brand .btn-wa span{display:none}}
 @media (min-width:781px){.sticky{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* כרטיסיות רצות + מלבנים נפתחים (2.11.2026) */
+.vgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;align-items:start}
+.vh{font-size:19px;color:var(--sage-deep);margin:0 0 10px;text-align:center}
+.voices[data-car]{columns:auto}
+.voices .voice{margin:0;min-height:230px;justify-content:center}
+.vphotos[data-car]{display:block}
+.vphotos figure{margin:0;background:#fff;border-radius:20px;padding:8px 8px 10px;box-shadow:0 6px 20px rgba(78,133,118,.13);text-align:center}
+.vphotos figure img{width:100%;height:360px;object-fit:contain;border-radius:14px;background:var(--mint);display:block;aspect-ratio:auto}
+.vphotos figcaption{margin-top:6px;font-weight:800;color:var(--sage-deep)}
+.orders[data-car],.prices[data-car]{display:block;max-width:520px;margin:0 auto}
+.gan-run{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.gan-run .ganlist{flex-wrap:nowrap;justify-content:flex-start;width:max-content;animation:ganRun 60s linear infinite;padding:4px 0}
+.gan-run:hover .ganlist,.gan-run.paused .ganlist{animation-play-state:paused}
+.gan-run .ganlist li{white-space:nowrap}
+@keyframes ganRun{to{transform:translateX(50%)}}
+@media (prefers-reduced-motion:reduce){.gan-run{mask-image:none;-webkit-mask-image:none}.gan-run .ganlist{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.gan-run .ganlist li.dup{display:none}}
+.kfold{background:#fff;border-radius:26px;box-shadow:0 6px 22px rgba(78,133,118,.12);border:2px solid var(--mint-2)}
+.kfold>summary{list-style:none;cursor:pointer;padding:18px 20px;display:flex;align-items:center;gap:12px}
+.kfold>summary::-webkit-details-marker{display:none}
+.kfold>summary .sec-h{margin:0;text-align:start;flex:1}
+.kfold>summary .sec-h p{display:none}
+.kfold>summary h2{font-size:clamp(20px,3.6vw,26px);margin:2px 0 0}
+.kfold>summary .tg{flex-shrink:0;background:var(--pink-soft);color:var(--magenta);font-weight:800;border-radius:999px;padding:6px 14px;font-size:15px;white-space:nowrap}
+.kfold[open]>summary .tg::after{content:" ▴"}.kfold:not([open])>summary .tg::after{content:" ▾"}
+.kfold[open]>summary{border-bottom:2px dashed var(--mint-2)}
+.kfold .kbody{padding:16px 18px 20px}
+.kfold[open]>summary .sec-h p{display:block}
+.more-fold{margin-top:16px}
+.more-fold>summary{list-style:none;cursor:pointer;text-align:center}.more-fold>summary::-webkit-details-marker{display:none}
+.more-fold>summary span{display:inline-block;background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:10px 20px;font-weight:800;color:var(--sage-deep)}
+@media (max-width:780px){.vgrid{grid-template-columns:minmax(0,1fr)}.vphotos figure img{height:300px}.kfold>summary{padding:14px;flex-wrap:wrap}.kfold>summary .tg{font-size:14px;padding:5px 12px}.kfold .kbody{padding:12px 12px 16px}}
 </style>
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
@@ -558,7 +590,7 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section>
+<section data-fold="📖 מהו ספר ילדים אישי?" id="what">
   <div class="split rev">
     <div class="art"><img src="https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_600,h_600,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kinder%20he%20boys.png" alt="ספר אישי: הולך לגן" width="600" height="600" loading="lazy" style="max-width:420px;margin:0 auto"></div>
     <div>
@@ -605,8 +637,8 @@ section{margin-top:64px}
       <div class="t"><span class="tag">🎓 סוף שנה</span><h3>הולך/ת לגן</h3><p>ספר שמתאר את היום הראשון בגן, ובו חיות נחמדות שמלוות את הילד ונותנות לו טיפים בדרך. פופולרי למתנות סוף שנה.</p><div class="reads"></div></div>
     </div>
   </div>
-  <h3 class="more-h">📚 ועוד ספרים שאפשר להזמין לגן</h3>
-  <div class="books more-books" id="moreBooks"></div>
+  <details class="more-fold" id="moreFold"><summary><span>📚 ועוד ספרים שאפשר להזמין לגן ▾</span></summary>
+  <div class="books more-books" id="moreBooks" style="margin-top:14px"></div></details>
   <div class="more"><a class="btn btn-main" href="../order/#s-books" data-ev="more_books">🚀 בוחרים ומתחילים להזמין</a>
   </div>
 </section>
@@ -642,11 +674,18 @@ section{margin-top:64px}
 <section id="voices" hidden>
   <div class="sec-h">
     <span class="eyebrow">💬 מה גננות כותבות לנו</span>
-    <h2>מה כותבים לנו אחרי שהספרים מגיעים</h2>
+    <h2>מה כותבים לנו – ותמונות מהשטח</h2>
     <p>ציטוטים אמיתיים מוואטסאפ, מפייסבוק ומאינסטגרם – בעילום שם, באישור הכותבות. בתמונות טשטשנו את הפנים של הילדים.</p>
   </div>
-  <div class="voices" id="voiceList"></div>
-  <div class="vphotos" id="vPhotos"></div>
+  <div class="vgrid">
+    <div><h3 class="vh">💬 מה כתבו לנו</h3><div class="voices" id="voiceList"></div></div>
+    <div><h3 class="vh">📸 תמונות מההורים</h3><div class="vphotos" id="vPhotos">
+    <figure><img src="https://static.wixstatic.com/media/a56db3_d417d3bccda04c4ca55e36a23fb9faf3~mv2.jpg/v1/crop/x_0,y_0,w_2252,h_2638/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/20251212_142628.jpg" alt="ספר בוקלי בידי ילד" width="429" height="502" loading="lazy"><figcaption>נושא לכל אירוע</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_981d8775c0174d8a90cd73de3bcf02b4~mv2.jpg/v1/crop/x_219,y_0,w_778,h_911/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG-20250114-WA0066.jpg" alt="ספר בוקלי אישי" width="429" height="502" loading="lazy"><figcaption>שם. תמונה. הקדשה.</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_192b215d6b35480f99942a0cfb0840f4~mv2.png/v1/crop/x_75,y_0,w_1360,h_1592/fill/w_429,h_502,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a.png" alt="ספר ביי ביי חיתול" width="429" height="502" loading="lazy"><figcaption>נוצר במיוחד עבורם</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_652a45ec149843f1a53252d2dc2888b4~mv2.jpeg/v1/crop/x_0,y_245,w_3024,h_3542/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9120.jpeg" alt="ילד קורא בספר בוקלי" width="429" height="502" loading="lazy"><figcaption>מזכרת לכל החיים</figcaption></figure>
+    </div></div>
+  </div>
 </section>
 
 <section id="ganim">
@@ -655,21 +694,9 @@ section{margin-top:64px}
     <h2>חלק מהגנים שהזמינו באוקטובר 2026</h2>
     <p>רשימה חלקית, באישור הגנים.</p>
   </div>
-  <ul class="ganlist" id="ganList"></ul>
+  <div class="gan-run" id="ganRun"><ul class="ganlist" id="ganList"></ul></div>
 </section>
 
-<section>
-  <div class="sec-h">
-    <span class="eyebrow">💌 מהשטח</span>
-    <h2>ממש קצת מהתמונות שקיבלנו מההורים</h2>
-  </div>
-  <div class="real">
-    <figure><img src="https://static.wixstatic.com/media/a56db3_d417d3bccda04c4ca55e36a23fb9faf3~mv2.jpg/v1/crop/x_0,y_0,w_2252,h_2638/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/20251212_142628.jpg" alt="ספר בוקלי בידי ילד" width="429" height="502" loading="lazy"><figcaption>נושא לכל אירוע</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_981d8775c0174d8a90cd73de3bcf02b4~mv2.jpg/v1/crop/x_219,y_0,w_778,h_911/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG-20250114-WA0066.jpg" alt="ספר בוקלי אישי" width="429" height="502" loading="lazy"><figcaption>שם. תמונה. הקדשה.</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_192b215d6b35480f99942a0cfb0840f4~mv2.png/v1/crop/x_75,y_0,w_1360,h_1592/fill/w_429,h_502,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a.png" alt="ספר ביי ביי חיתול" width="429" height="502" loading="lazy"><figcaption>נוצר במיוחד עבורם</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_652a45ec149843f1a53252d2dc2888b4~mv2.jpeg/v1/crop/x_0,y_245,w_3024,h_3542/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9120.jpeg" alt="ילד קורא בספר בוקלי" width="429" height="502" loading="lazy"><figcaption>מזכרת לכל החיים</figcaption></figure>
-  </div>
-</section>
 
 <section id="prices">
   <div class="sec-h">
@@ -702,6 +729,7 @@ section{margin-top:64px}
     <p>💜 כריכה רכה סיכות: 50 ₪ לספר, בהזמנות של 20 ספרים ומעלה.</p>
   </details>
 
+  <details class="more-fold" style="margin-bottom:16px"><summary><span>🎥 איזו כריכה מתאימה לגן? סרטון קצר ▾</span></summary>
   <div class="covers">
     <div>
       <h3>איזו כריכה מתאימה לגן שלכם?</h3>
@@ -714,6 +742,7 @@ section{margin-top:64px}
     </div>
     <div class="vid"><video src="video/covers.mp4" poster="video/covers.jpg" controls preload="none" playsinline width="854" height="480" data-ev="video_covers"></video></div>
   </div>
+  </details>
 
   <div class="calc" id="calc">
     <h3>🧮 מחשבון לגן</h3>
@@ -783,7 +812,7 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="guide">
+<section id="guide" data-fold>
   <div class="sec-h">
     <span class="eyebrow">🎥 לפני שמזמינים ספר ילדים אישי</span>
     <h2>מה חשוב לדעת?</h2>
@@ -811,7 +840,7 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="photos">
+<section id="photos" data-fold>
   <div class="sec-h">
     <span class="eyebrow">📸 התחילו עכשיו באיסוף התמונות</span>
     <h2>זכרו! תמונה טובה – ספר טוב!</h2>
@@ -865,7 +894,7 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="why">
+<section id="why" data-fold>
   <div class="sec-h">
     <span class="eyebrow">מחפשים סיבות נוספות, למה בוקלי?</span>
     <h2>המומחים המובילים בישראל לספרי ילדים מותאמים אישית באמצעות AI</h2>
@@ -880,7 +909,7 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="checklist">
+<section id="checklist" data-fold>
   <div class="sec-h">
     <span class="eyebrow">✅ 18 נקודות לבדיקה</span>
     <h2>המדריך לבחירת ספר אישי עם שם ותמונה AI לילדי הגן</h2>
@@ -1240,7 +1269,7 @@ const VOICES = [
 const VPHOTOS = ["1498c1d9","5712c386","f39f0d3d","9999c2e1","c3768b1d","279640a4","86623af2","e9954eb7","bea95695","e715024b"];
 if (VOICES.length) {
   document.getElementById("voiceList").innerHTML = VOICES.map(v => `<figure class="voice"><q>${v.q}</q><figcaption class="by">${v.by} <span class="src">· ${v.src}</span></figcaption></figure>`).join("");
-  document.getElementById("vPhotos").innerHTML = VPHOTOS.map(id => `<img src="voices/${id}.webp" alt="ילד/ה עם ספר BOOQLI (הפנים מטושטשים)" loading="lazy" width="675" height="900">`).join("");
+  document.getElementById("vPhotos").insertAdjacentHTML("afterbegin", VPHOTOS.map(id => `<figure><img src="voices/${id}.webp" alt="ילד/ה עם ספר BOOQLI (הפנים מטושטשים)" loading="lazy" width="675" height="900"></figure>`).join(""));
   document.getElementById("voices").hidden = false;
 }
 /* ===== גנים שהזמינו (באישור הגנים: שם + עיר בלבד, בלי כתובות) ===== */
@@ -1250,7 +1279,10 @@ const GANIM = [
   ["גן אגוז","אור יהודה"],["גן אדווה","בת ים"],["חרצית","אור יהודה"],["גן ללי, כיתת דקל",""],["גן פורח","תל אביב"],
   ["הר שיפון",""],["גן שורשים",""],["גן דוריס",""]
 ];
-document.getElementById("ganList").innerHTML = GANIM.map(g => `<li>🏫 ${g[0]}${g[1] ? ` <span>· ${g[1]}</span>` : ""}</li>`).join("");
+{ const li = GANIM.map(g => `<li>🏫 ${g[0]}${g[1] ? ` <span>· ${g[1]}</span>` : ""}</li>`).join("");
+  /* רצועה רצה: הרשימה פעמיים ברצף כדי שהריצה תהיה בלי קפיצה; לחיצה עוצרת וממשיכה */
+  document.getElementById("ganList").innerHTML = li + li.replace(/<li>/g, '<li class="dup" aria-hidden="true">');
+  const gr = document.getElementById("ganRun"); gr.onclick = () => gr.classList.toggle("paused"); }
 
 /* ===== קישורים לאתר הראשי: חלון חדש + סימון מקור (כדי לראות כמה הגיעו מכאן) ===== */
 const UTM = "utm_source=games&utm_medium=kindergartens_page&utm_campaign=gan";
@@ -1283,6 +1315,30 @@ function onScroll(){
   links.forEach((a, i) => a.classList.toggle("on", i === cur));
 }
 addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+/* ===== מלבנים נפתחים + כרטיסיות רצות (2.11.2026) ===== */
+document.querySelectorAll("section[data-fold]").forEach(sec => {
+  const d = document.createElement("details"); d.className = "kfold";
+  const sm = document.createElement("summary"), body = document.createElement("div"); body.className = "kbody";
+  const head = sec.querySelector(":scope > .sec-h");
+  if (head) sm.appendChild(head); else sm.innerHTML = '<div class="sec-h"><h2>' + sec.dataset.fold + '</h2></div>';
+  sm.insertAdjacentHTML("beforeend", '<span class="tg">לפתוח</span>');
+  while (sec.firstChild) body.appendChild(sec.firstChild);
+  d.append(sm, body); sec.appendChild(d);
+  d.addEventListener("toggle", () => { sm.querySelector(".tg").textContent = d.open ? "לסגור" : "לפתוח"; if (d.open) siteEvent("gan-fold", sec.id || "what"); });
+});
+const openFold = id => { const sec = id && document.getElementById(id); if (!sec) return; const d = sec.querySelector(":scope > .kfold"); if (d && !d.open) d.open = true; const mf = sec.closest("#moreFold"); if (mf) mf.open = true; };
+document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (a) openFold(a.getAttribute("href").slice(1)); });
+window.addEventListener("hashchange", () => openFold(location.hash.slice(1)));
+openFold(location.hash.slice(1));
+if (typeof siteCarousel === "function") {
+  siteCarousel(document.getElementById("voiceList"), {every: 6500, label: "מה כתבו לנו"});
+  siteCarousel(document.getElementById("vPhotos"), {every: 4000, label: "תמונות מההורים"});
+  if (matchMedia("(max-width:780px)").matches) {
+    siteCarousel(document.querySelector("#examples .orders"), {every: 6000, label: "דוגמאות להזמנות"});
+    siteCarousel(document.querySelector("#prices .prices"), {every: 7000, label: "סוגי הכריכות והמחירים"});
+  }
+}
 </script>
 </body>
 </html>

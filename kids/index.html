@@ -21,34 +21,6 @@
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
 <link rel="preload" href="../common.js" as="script">
-<style>
-/* בחירת גיל + משחקים לפי גיל (1.11.2026) */
-.agepick{margin-top:16px;background:#fff;border-radius:28px;padding:18px 18px 20px;box-shadow:0 6px 0 #F3DFA6;border-top:10px solid #FFC93C;text-align:center}
-.agepick h2{font-family:Fredoka,Assistant,sans-serif;color:#9A5800;font-size:clamp(24px,5vw,32px);line-height:1.2;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.agepick p{color:#6b5a66;margin-top:4px}
-.ages{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px}
-.ages button{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:26px;min-width:68px;min-height:68px;padding:6px 12px;border-radius:22px;border:3px solid #FFD98A;background:#FFF8E6;color:#7A4600;cursor:pointer;box-shadow:0 4px 0 #F3DFA6;line-height:1}
-.ages button small{display:block;font-family:Assistant,sans-serif;font-size:13px;font-weight:800;margin-top:3px}
-.ages button[aria-pressed=true]{background:#FF56C2;border-color:#E0399F;color:#fff;box-shadow:0 4px 0 #A3216F}
-.ages button.all{font-size:17px}
-.ages button:focus-visible{outline:3px solid #4E8576;outline-offset:2px}
-.say-btn{border:0;background:#FFF1C9;border-radius:999px;width:44px;height:44px;font-size:21px;cursor:pointer;box-shadow:0 2px 0 #F3DFA6}
-.agegames{margin-top:18px}
-.agegames h2{font-family:Fredoka,Assistant,sans-serif;color:#2B1526;font-size:clamp(22px,4.5vw,28px);margin-bottom:10px}
-.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.g-card{position:relative;display:flex;gap:12px;align-items:center;background:#fff;border-radius:22px;padding:12px 14px;padding-inline-end:34px;text-decoration:none;color:#2B1526;box-shadow:0 4px 0 #d9e9e1;border:2px solid transparent;min-height:84px}
-.g-card:hover{border-color:#FFC8EA}
-.g-card:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
-.g-card .ic{flex-shrink:0;width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:var(--gb,#FFF1C9)}
-.g-card b{display:block;font-size:17px;line-height:1.25}
-.g-card small{display:block;color:#6b5a66;font-size:13.5px;margin-top:2px}
-/* חדר המשחקים – באנר גדול ומהבהב (1.11.2026) */
-.room-link{position:relative;display:block;margin-top:18px;border-radius:30px;padding:22px 20px 20px;text-decoration:none;color:#fff;text-align:center;overflow:hidden;background:linear-gradient(120deg,#FF56C2,#FF8A1F,#FFC93C,#46C46E,#3AA7F0,#9B5DE5,#FF56C2);background-size:300% 300%;box-shadow:0 8px 0 #A3216F,0 14px 34px rgba(224,57,159,.45);animation:roomBg 6s linear infinite,roomPulse 1.6s ease-in-out infinite;border:4px solid #fff}.room-link::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-160%) skewX(-20deg);animation:roomShine 2.4s ease-in-out infinite;pointer-events:none}.room-link .new{display:inline-block;margin-bottom:8px;background:#fff;color:#E0399F;font-weight:800;font-size:15px;border-radius:999px;padding:3px 12px;box-shadow:0 3px 0 rgba(0,0,0,.12);animation:roomBlink 1s steps(2,start) infinite}.room-link .big{display:block;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:clamp(34px,8vw,52px);line-height:1.05;text-shadow:0 3px 0 rgba(0,0,0,.18)}.room-link .sub{display:block;font-weight:800;font-size:clamp(16px,3.6vw,20px);margin-top:6px;text-shadow:0 2px 0 rgba(0,0,0,.15)}.room-link .icons{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:14px 0 4px;font-size:clamp(20px,5.6vw,40px)}.room-link .icons span{background:rgba(255,255,255,.9);border-radius:14px;width:1.45em;height:1.45em;display:grid;place-items:center;animation:roomHop 1.8s ease-in-out infinite}.room-link .icons span:nth-child(2n){animation-delay:.3s}.room-link .icons span:nth-child(3n){animation-delay:.6s}.room-link .go{display:inline-block;margin-top:12px;background:#fff;color:#E0399F;font-weight:800;font-size:clamp(18px,4.2vw,22px);border-radius:999px;padding:10px 26px;box-shadow:0 4px 0 rgba(0,0,0,.15)}.room-link:focus-visible{outline:4px solid #2B1526;outline-offset:3px}@keyframes roomBg{to{background-position:300% 0}}@keyframes roomPulse{50%{transform:scale(1.025)}}@keyframes roomShine{0%{transform:translateX(-160%) skewX(-20deg)}60%,100%{transform:translateX(330%) skewX(-20deg)}}@keyframes roomBlink{50%{opacity:.25}}@keyframes roomHop{50%{transform:translateY(-6px)}}@media (prefers-reduced-motion:reduce){.room-link,.room-link::after,.room-link .new,.room-link .icons span{animation:none}}
-.room-link.anim{background:linear-gradient(120deg,#9B5DE5,#FF56C2,#3AA7F0,#46C46E,#9B5DE5);background-size:300% 300%;box-shadow:0 8px 0 #5B2E8A,0 14px 34px rgba(155,93,229,.45)}
-.g-soon{margin-top:10px;color:#6b5a66;font-size:15px;text-align:center}
-@media (max-width:600px){.g-grid{grid-template-columns:minmax(0,1fr)}.ages button{min-width:56px;min-height:60px;font-size:23px}.ages{gap:8px}}
-</style>
-</head>
 <body>
 <header class="top">
   <div class="wrap brand">
@@ -60,23 +32,104 @@
 <div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
 <main class="wrap">
 <nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>🧒 לילדים</span></nav>
-<section class="zone-hero" style="--zc:#9A5800;--zb:#FFF1C9">
+<style>
+/* אזור הילדים v2 (2.11.2026): מלבנים לפי נושא / גיל, חיפוש בכתב או בקול, כל מלבן נפתח לקבוצה שלו */
+.kz-hero{display:flex;gap:14px;align-items:center;margin-top:14px;background:#FFF1C9;border-radius:28px;padding:14px 16px}
+.kz-hero img{width:84px;height:auto;flex-shrink:0}
+.kz-hero h1{font-family:Fredoka,Assistant,sans-serif;color:#9A5800;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0}
+.kz-hero p{margin:4px 0 0;color:#6b5a66}
+.kz-hero .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.kz-hero .row button{font:inherit;font-weight:800;font-size:15px;border-radius:999px;padding:7px 14px;cursor:pointer;border:2px solid #E0399F;background:#FF56C2;color:#fff}
+.kz-hero .row .room-lock{background:#fff;color:#4E8576;border-color:#CDE7DC}
+/* חיפוש */
+.kz-ask{margin-top:14px;background:#fff;border-radius:26px;padding:14px;box-shadow:0 5px 0 #F3DFA6}
+.kz-ask label{display:block;font-family:Fredoka,Assistant,sans-serif;font-weight:700;color:#9A5800;font-size:21px;margin-bottom:8px}
+.kz-ask .f{display:flex;gap:8px}
+.kz-ask input{flex:1;min-width:0;font:inherit;font-size:19px;border:3px solid #FFD98A;border-radius:999px;padding:10px 16px;background:#FFFBF0}
+.kz-ask input:focus{outline:none;border-color:#FF56C2}
+.kz-ask .mic,.kz-ask .clr{flex-shrink:0;width:52px;height:52px;border-radius:50%;border:0;font-size:24px;cursor:pointer;background:#FF56C2;color:#fff;box-shadow:0 3px 0 #A3216F}
+.kz-ask .clr{background:#F2EEF1;color:#6b5a66;box-shadow:none;font-size:20px}
+.kz-ask .mic.on{animation:kzPulse 1s ease-in-out infinite;background:#E0399F}
+@keyframes kzPulse{50%{transform:scale(1.12)}}
+.kz-ask .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.kz-ask .chips button{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:999px;padding:5px 12px;background:#FFF1C9;color:#7A4600;cursor:pointer}
+/* לשוניות */
+.kz-tabs{display:flex;gap:8px;margin-top:16px}
+.kz-tabs button{flex:1;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:19px;border-radius:18px;padding:10px;border:3px solid #FFD98A;background:#FFF8E6;color:#7A4600;cursor:pointer}
+.kz-tabs button[aria-selected=true]{background:#FF56C2;border-color:#E0399F;color:#fff}
+.kz-agenote{margin:10px 0 0;text-align:center;font-weight:800;color:#9A5800}
+.kz-agenote button{font:inherit;font-weight:800;border:0;background:#FFE3F4;color:#C13671;border-radius:999px;padding:3px 12px;cursor:pointer;margin-inline-start:6px}
+/* המלבנים */
+.kz-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:14px}
+.kz-tile{position:relative;display:flex;align-items:center;gap:12px;min-height:104px;border-radius:24px;padding:12px 14px;background:var(--tb,#fff);border:3px solid var(--tc,#FFD98A);box-shadow:0 5px 0 var(--tc,#FFD98A);text-align:start;font:inherit;color:#2B1526;cursor:pointer;text-decoration:none;width:100%}
+.kz-tile:hover{transform:translateY(-2px)}
+.kz-tile:focus-visible{outline:4px solid #2B1526;outline-offset:3px}
+.kz-tile .pic{flex-shrink:0;width:70px;height:70px;border-radius:20px;background:#fff;display:grid;place-items:center;font-size:40px;overflow:hidden}
+.kz-tile .pic img{width:100%;height:100%;object-fit:contain}
+.kz-tile b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:22px;line-height:1.15}
+.kz-tile small{display:block;font-weight:800;color:#6b5a66;font-size:14px;margin-top:3px}
+.kz-tile .n{position:absolute;top:8px;inset-inline-end:10px;background:#fff;border-radius:999px;padding:1px 10px;font-weight:800;font-size:14px;color:#C13671}
+.kz-tile.big{grid-column:span 2;background:linear-gradient(120deg,#FF56C2,#FF8A1F,#FFC93C,#46C46E,#3AA7F0,#9B5DE5);background-size:300% 300%;animation:kzBg 8s linear infinite;color:#fff;border-color:#fff;box-shadow:0 6px 0 #A3216F}
+.kz-tile.big.anim{background:linear-gradient(120deg,#9B5DE5,#FF56C2,#3AA7F0,#46C46E,#9B5DE5);background-size:300% 300%;box-shadow:0 6px 0 #5B2E8A}
+.kz-tile.big small{color:#fff}.kz-tile.big .pic{background:rgba(255,255,255,.92)}
+@keyframes kzBg{to{background-position:300% 0}}
+.kz-tile.age{justify-content:center;flex-direction:column;gap:2px;text-align:center;min-height:96px}
+.kz-tile.age b{font-size:40px}
+@media (prefers-reduced-motion:reduce){.kz-tile.big,.kz-ask .mic.on{animation:none}}
+@media (max-width:600px){.kz-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kz-tile{flex-direction:column;text-align:center;gap:6px;padding:12px 8px;min-height:150px}.kz-tile .pic{width:62px;height:62px;font-size:34px}.kz-tile b{font-size:18px}.kz-tile small{font-size:13px}.kz-tile.age{min-height:100px}.kz-tile.big{flex-direction:row;text-align:start;min-height:0}.kz-hero img{width:64px}}
+/* קבוצה פתוחה */
+.kz-panel{margin-top:14px;background:#fff;border-radius:28px;padding:14px 14px 18px;box-shadow:0 6px 0 var(--tc,#FFD98A)}
+.kz-panel .ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kz-panel .back{font:inherit;font-weight:800;font-size:16px;border:0;border-radius:999px;padding:8px 14px;background:#FFF1C9;color:#7A4600;cursor:pointer}
+.kz-panel h2{font-family:Fredoka,Assistant,sans-serif;color:#2B1526;font-size:clamp(23px,5vw,30px);margin:0;display:flex;align-items:center;gap:8px}
+.kz-panel h2 img{width:46px;height:auto}
+.kz-panel .say-btn{border:0;background:#FFF1C9;border-radius:999px;width:42px;height:42px;font-size:20px;cursor:pointer}
+.kz-panel h3{font-family:Fredoka,Assistant,sans-serif;color:#4E8576;font-size:21px;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.kz-panel h3 .now{font-family:Assistant,sans-serif;font-size:13px;font-weight:800;background:#DDF3E5;color:#1E7F45;border-radius:999px;padding:2px 10px}
+.kz-panel h3.hit{background:#FFF1C9;border-radius:14px;padding:4px 10px}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.g-card{position:relative;display:flex;gap:12px;align-items:center;background:#FFFBF5;border-radius:20px;padding:10px 12px;text-decoration:none;color:#2B1526;box-shadow:0 3px 0 #EADFCB;border:2px solid transparent;min-height:78px}
+.g-card:hover{border-color:#FFC8EA}
+.g-card.hit{border-color:#FF56C2;background:#FFF0F9}
+.g-card:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
+.g-card .ic{flex-shrink:0;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:29px;background:var(--gb,#FFF1C9)}
+.g-card b{display:block;font-size:17px;line-height:1.25}
+.g-card small{display:block;color:#6b5a66;font-size:13.5px;margin-top:2px}
+.kz-part{margin-top:12px;border-radius:22px;background:#FFF8EE;border:3px solid #FFD9A8;padding:0 12px}
+.kz-part summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;line-height:1.2;padding:14px 4px;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:24px;color:#9A5800}
+.kz-part summary::-webkit-details-marker{display:none}
+.kz-part summary::after{content:"▾";flex-shrink:0;margin-inline-start:auto;color:#FF56C2;transition:transform .2s}
+.kz-part:not([open]) summary::after{transform:rotate(90deg)}
+.kz-part summary small{white-space:nowrap;font-family:Assistant,sans-serif;font-size:14px;font-weight:800;color:#6b5a66}
+.kz-part summary .now{font-family:Assistant,sans-serif;font-size:13px;font-weight:800;background:#DDF3E5;color:#1E7F45;border-radius:999px;padding:2px 10px}
+.kz-part[open]{padding-bottom:12px}.kz-part h3:first-child{margin-top:0}
+.g-soon{margin-top:12px;color:#6b5a66;font-size:15px;text-align:center}
+.kz-empty{text-align:center;padding:10px 0}
+.kz-empty p{font-size:18px;font-weight:700;color:#6b5a66}
+@media (max-width:600px){.g-grid{grid-template-columns:minmax(0,1fr)}}
+</style>
+<section class="kz-hero">
   <img src="../img/family/booqli.webp" alt="" width="120" height="124">
-  <div><small>booqli Games · לילדים</small><h1>בּוֹאוּ נְשַׂחֵק!</h1>
-  <p>בוחרים חבר מהמשפחה של בּוּקְלִי, ומשחקים. לוחצים על 🔊 כדי לשמוע.</p>
-  <button type="button" class="btn-main" id="sayHi" style="margin-top:10px">🔊 שָׁלוֹם!</button> <button type="button" class="btn-sec room-lock" id="lockBtn" style="margin-top:10px">🔒 מצב ילדים (להורים)</button><br><p data-offline-note hidden style="display:inline-block;margin:10px 0 0;background:#E1F0EA;color:#2F6B5C;border-radius:999px;padding:6px 14px;font:700 15px Assistant,Arial,sans-serif"></p></div>
+  <div><h1>בּוֹאוּ נְשַׂחֵק!</h1>
+  <p>בוחרים מלבן, ומשחקים. לוחצים על 🔊 כדי לשמוע.</p>
+  <div class="row"><button type="button" id="sayHi">🔊 שָׁלוֹם!</button><button type="button" class="room-lock" id="lockBtn">🔒 מצב ילדים (להורים)</button></div>
+  <p data-offline-note hidden style="display:inline-block;margin:10px 0 0;background:#E1F0EA;color:#2F6B5C;border-radius:999px;padding:6px 14px;font:700 15px Assistant,Arial,sans-serif"></p></div>
 </section>
-<section class="agepick" aria-labelledby="apT">
-  <h2 id="apT">בֶּן אוֹ בַּת כַּמָּה? <button type="button" class="say-btn" id="sayAge" aria-label="להקריא">🔊</button></h2>
-  <p>בוחרים את הגיל, ומקבלים את המשחקים שמתאימים בדיוק.</p>
-  <div class="ages" id="ages" role="group" aria-label="גיל הילד"></div>
-</section>
-<a class="room-link" href="play/"><span class="new">✨ חדש!</span><span class="big">🎲 חֶדֶר הַמִּשְׂחָקִים</span><span class="sub">20 משחקים שמלמדים – לגילאי 2–8</span><span class="icons" aria-hidden="true"><span>❌</span><span>🔴</span><span>🎵</span><span>🎹</span><span>🫧</span><span>🐄</span><span>🐍</span><span>🎳</span></span><span class="go">בואו נשחק! ←</span></a>
-<a class="room-link anim" href="animate/"><span class="new">✨ חדש! בחינם</span><span class="big">🪄 מַנְפִּישִׁים אֶת הַצִּיּוּר שֶׁלִּי</span><span class="sub">מצלמים ציור – והוא קופץ, רוקד ועף! + סרטון לשלוח לסבא וסבתא</span><span class="icons" aria-hidden="true"><span>🖍️</span><span>📷</span><span>🦘</span><span>💃</span><span>🕊️</span><span>🎤</span><span>🎬</span><span>💬</span></span><span class="go">מנפישים! ←</span></a>
-<section class="agegames" id="agegames" hidden aria-live="polite"><h2 id="agT"></h2><div class="g-grid" id="ggrid"></div><p class="g-soon" id="gsoon"></p></section>
-<nav class="quick" id="hosts" aria-label="הדמויות"></nav>
-<div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
-<div id="zone"></div>
+<form class="kz-ask" id="ask" role="search" onsubmit="return false">
+  <label for="q">🔎 מָה בָּא לְךָ לְשַׂחֵק?</label>
+  <div class="f"><input id="q" type="search" autocomplete="off" placeholder="למשל: פסח, צבעים, חיות, סיפור…" enterkeyhint="search">
+  <button type="button" class="clr" id="clr" aria-label="ניקוי" hidden>✕</button>
+  <button type="button" class="mic" id="mic" aria-label="להגיד בקול" hidden>🎤</button></div>
+  <div class="chips" id="chips"></div>
+</form>
+<div class="kz-tabs" role="tablist" aria-label="איך לסדר">
+  <button type="button" role="tab" id="tabT" data-tab="t">📂 לפי נושא</button>
+  <button type="button" role="tab" id="tabA" data-tab="a">🎂 לפי גיל</button>
+</div>
+<p class="kz-agenote" id="ageNote" hidden></p>
+<div class="kz-tiles" id="tiles"></div>
+<section class="kz-panel" id="panel" hidden aria-live="polite"></section>
+<p class="g-soon" id="soonAll"></p>
 <p class="note" style="margin-top:18px;text-align:center">המשחקים מתאימים לגיל הרך. השימוש של ילדים באתר באחריות מבוגר.</p>
 </main>
 <footer class="foot">
@@ -88,77 +141,203 @@
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
 <script>
-const ALL = CATALOG.filter(t => t.aud.includes("k") && !t.zone);
-let LIST = ALL;
-/* ---------- בחירת גיל: המשחקים מ-KIDS_GAMES (גיל לכל משחק) ---------- */
-const AGE_OPTS = [{k:"2", t:"2", s:"שנתיים", say:"שנתיים"}, {k:"3", t:"3", s:"", say:"שלוש"}, {k:"4", t:"4", s:"", say:"ארבע"}, {k:"5", t:"5", s:"", say:"חמש"}, {k:"6", t:"6", s:"", say:"שש"}, {k:"7-8", t:"7–8", s:"כיתות א'–ב'", say:"שבע ושמונה"}];
+/* ===== אזור הילדים v2 =====
+   המשחקים מ-KIDS_GAMES (catalog.js). כל נושא שייך לקבוצה (GROUPS). נושא חדש שלא שויך – נכנס לבד ל"עוד משחקים".
+   כתובות: kids/?g=<קבוצה> · kids/?age=4 · kids/?q=פסח · kids/?tab=a */
+const say = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch(e){} };
+const $ = id => document.getElementById(id);
 const KIND = {game:"🎮 משחק", story:"📖 סיפור", draw:"🎨 ציור", learn:"💡 לומדים", craft:"✂️ יצירה"};
+const KIND_WORDS = {game:["משחק","משחקים","לשחק"], story:["סיפור","סיפורים","ספר","להקשיב"], draw:["ציור","לצייר","צביעה","לצבוע"], learn:["ללמוד","לומדים"], craft:["יצירה","ליצור","גזירה"]};
 const TOPIC = id => CATALOG.find(t => t.id === id);
-/* משחק בעמוד נושא נפתח במצב ילדים (?play=1) – בלי מספר סודי */
+const HOST = k => CAT.HOSTS[k] || CAT.HOSTS.booqli;
 const playHref = h => /^topics\//.test(h) ? h.replace(/^([^?#]*)(\?[^#]*)?(#.*)?$/, (m, a, q, hs) => a + (q ? q + "&" : "?") + "play=1" + (hs || "")) : h;
 const range = k => { const a = String(k).split("-").map(Number); return [a[0], a[1] || a[0]]; };
-const hitG = (g, k) => { const [lo, hi] = range(k); return !(g.ages[1] < lo || g.ages[0] > hi); };
-const hitT = (t, k) => { const gs = KIDS_GAMES.filter(g => g.topic === t.id); if (gs.length) return gs.some(g => hitG(g, k)); const [lo, hi] = range(k); return !(t.ages[1] < lo || t.ages[0] > hi); };
-let AGE = new URLSearchParams(location.search).get("age") || (() => { try { return localStorage.getItem("booqli_kid_age") || ""; } catch(e) { return ""; } })();
-if (!AGE_OPTS.some(o => o.k === AGE)) AGE = "";
-const agesBox = document.getElementById("ages");
-agesBox.innerHTML = AGE_OPTS.map(o => '<button type="button" data-k="' + o.k + '">' + o.t + (o.s ? '<small>' + o.s + '</small>' : '') + '</button>').join("") + '<button type="button" class="all" data-k="">כל<br>הגילאים</button>';
-const renderAge = () => {
-  agesBox.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === AGE)));
-  const box = document.getElementById("agegames");
-  LIST = AGE ? ALL.filter(t => hitT(t, AGE)) : ALL;
-  if (!AGE) { box.hidden = true; return; }
-  const all = KIDS_GAMES.filter(g => hitG(g, AGE));
-  const open = all.filter(g => { const t = TOPIC(g.topic); return t && CAT.kidState(t) === "open"; });
-  const soon = all.length - open.length;
-  const o = AGE_OPTS.find(x => x.k === AGE);
-  document.getElementById("agT").textContent = "🎮 " + open.length + " משחקים לגיל " + o.t;
-  document.getElementById("ggrid").innerHTML = open.map(g => {
-    const t = TOPIC(g.topic), h = CAT.HOSTS[t.host] || CAT.HOSTS.booqli;
-    return '<a class="g-card" href="' + CAT.root + playHref(g.href) + '" data-g="' + g.id + '" style="--gb:' + (/^#/.test(t.bg) ? t.bg : "#FFF1C9") + '">' +
-      '<span class="ic" aria-hidden="true">' + g.ic + '</span><span><b>' + g.name + '</b><small>' + KIND[g.kind] + ' · ' + (t.book ? "ספרי BOOQLI" : t.name) + '</small></span></a>';
-  }).join("") || '<p class="g-soon">עוד אין משחקים פתוחים לגיל הזה. הם בדרך!</p>';
-  document.getElementById("gsoon").textContent = soon ? "⏳ ועוד " + soon + " משחקים לגיל הזה נפתחים בקרוב" : "";
-  box.hidden = false;
-};
-agesBox.addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  AGE = b.dataset.k;
-  try { if (AGE) localStorage.setItem("booqli_kid_age", AGE); else localStorage.removeItem("booqli_kid_age"); } catch(e) {}
-  try { const u = new URL(location.href); if (AGE) u.searchParams.set("age", AGE); else u.searchParams.delete("age"); history.replaceState(null, "", u); } catch(e) {}
-  const o = AGE_OPTS.find(x => x.k === AGE);
-  say(o ? "משחקים לגיל " + o.say : "כל המשחקים");
-  siteEvent("kid-age", AGE || "all");
-  render();
-  if (AGE) document.getElementById("agegames").scrollIntoView({behavior: "smooth", block: "start"});
-});
-document.getElementById("ggrid").addEventListener("click", e => { const a = e.target.closest(".g-card"); if (a) siteEvent("kid-game", a.dataset.g + (AGE ? "-age" + AGE : "")); });
-document.getElementById("sayAge").onclick = () => say("בן או בת כמה? בוחרים את הגיל, ומשחקים!");
-const OPT = {host: false, kids: true};
-const say = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "he-IL"; u.rate = .85; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch(e){} };
-document.getElementById("lockBtn").onclick = () => siteKidLockStart();
-document.getElementById("sayHi").onclick = () => say("שלום! אני בּוּקְלִי. בוחרים חבר מהמשפחה שלי, ומשחקים!");
-const SECTIONS = CAT.HOST_ORDER.map(k => ({id:"h-" + k, title:'<img src="../' + CAT.HOSTS[k].img + '" alt="" width="54" height="56" style="vertical-align:middle;margin-inline-end:8px">' + CAT.HOSTS[k].name + ' <span style="font-size:.7em;color:#6b5a66">· ' + CAT.HOSTS[k].role + '</span> <button type="button" class="say" data-k="' + k + '" aria-label="להקריא" style="border:0;background:#fff;border-radius:999px;width:40px;height:40px;font-size:20px;cursor:pointer;box-shadow:0 2px 0 #CDE7DC">🔊</button>',
-  filter: t => t.host === k && CAT.kidState(t) !== "soon" && !t.book, sort:"open"}));
-SECTIONS.push({id:"books", title:"📚 המשחקים של ספרי BOOQLI", filter: t => t.book, sort:"year"});
-SECTIONS.push({id:"coming", title:"🛠️ בקרוב", filter: t => true, sort:"abc", collapsed:true});
-document.getElementById("hosts").innerHTML = CAT.HOST_ORDER.map(k => '<a href="#h-' + k + '"><img src="../' + CAT.HOSTS[k].img + '" alt="" width="34" height="35">' + CAT.HOSTS[k].name + '</a>').join("");
-document.addEventListener("click", e => { const b = e.target.closest(".say"); if (b) { const h = CAT.HOSTS[b.dataset.k]; say(h.name + ". " + h.role); } });
-const sel = document.getElementById("zsort");
-[{k:"", t:"מומלץ"}].concat(CAT.SORTS).forEach(o => { const op = document.createElement("option"); op.value = o.k; op.textContent = o.t; sel.appendChild(op); });
-let SORT = new URLSearchParams(location.search).get("sort") || "";
-sel.value = SORT;
-const render = () => {
-  renderAge();
-  const secs = SECTIONS.map(s => Object.assign({}, s, SORT ? {sort: SORT} : {}));
-  CAT.sections(document.getElementById("zone"), LIST, secs, OPT);
-  const n = LIST.filter(t => CAT.kidState(t) === "open").length;
-  document.getElementById("zcount").textContent = n + " תכנים פתוחים · " + LIST.length + " בסך הכל";
-};
-CAT.refresh = render;
-sel.onchange = () => { SORT = sel.value; siteEvent("sort", SORT); render(); };
-render();
+const hitAge = (g, k) => { if (!k) return true; const [lo, hi] = range(k); return !(g.ages[1] < lo || g.ages[0] > hi); };
+const isOpen = g => { const t = TOPIC(g.topic); return !!t && CAT.kidState(t) === "open"; };
 
+/* העונה עכשיו – כדי לפתוח קודם את מה שרלוונטי */
+const M = (CAT.today ? CAT.today() : new Date()).getMonth() + 1;
+const NOW_SEASON = M >= 9 && M <= 11 ? "autumn" : (M === 12 || M <= 2) ? "winter" : M <= 5 ? "spring" : "summer";
+
+const GROUPS = [
+  {id:"play",     name:"חֶדֶר הַמִּשְׂחָקִים", plain:"חדר המשחקים", ic:"🎲", big:true, topics:["play"], sub:"משחקים שמלמדים", words:["איקס עיגול","ארבע בשורה","בועות","נחש","באולינג","פאזל","מבוך","מוזיקה","תווים","קסילופון","אותיות"]},
+  {id:"animate",  name:"מַנְפִּישִׁים אֶת הַצִּיּוּר", plain:"מנפישים את הציור", ic:"🪄", big:true, anim:true, topics:["animate"], sub:"מצלמים ציור – והוא קופץ ורוקד!", words:["הנפשה","ציור","מצלמה","סרטון","מצייר"]},
+  {id:"seasons",  name:"עוֹנוֹת וְחַגִּים", plain:"עונות וחגים", host:"ona", tb:"#FFF3E3", tc:"#FFC48A", topics:["autumn","hanukkah","winter","purim","pesach"],
+    parts:[{k:"autumn", t:"🍂 סְתָו", ids:["autumn"]}, {k:"winter", t:"❄️ חֹרֶף", ids:["winter","hanukkah"]}, {k:"spring", t:"🌸 אָבִיב", ids:["purim","pesach"]}],
+    words:["עונות","חגים","חג","עונה","סתיו","חורף","אביב","קיץ","גשם","עלים"]},
+  {id:"colors",   name:"צְבָעִים", plain:"צבעים", host:"garb", tb:"#FFF9DB", tc:"#FFD84D", topics:["colors"], words:["צבע","צבעים","גרביים","מפלצת"]},
+  {id:"math",     name:"מִסְפָּרִים וְחֶשְׁבּוֹן", plain:"מספרים וחשבון", host:"hesh", tb:"#E9F2FF", tc:"#9CC3F5", topics:["math"], words:["מספרים","מספר","חשבון","לספור","ספירה","צורות","שעון","כפל","חיבור"]},
+  {id:"feelings", name:"רְגָשׁוֹת", plain:"רגשות", host:"lev", tb:"#FFEAF0", tc:"#FF9DB8", topics:["feelings"], words:["רגש","רגשות","שמח","עצוב","כועס","פרצוף","פרצופים"]},
+  {id:"safety",   name:"בְּטִיחוּת וּמוּגָנוּת", plain:"בטיחות ומוגנות", host:"shomer", tb:"#F1ECFF", tc:"#BFA8F5", topics:["safety","earthquake"], words:["בטיחות","פחד","אזעקה","מרחב מוגן","רעידת אדמה","צב","נשימה"]},
+  {id:"party",    name:"יוֹם הֻלֶּדֶת", plain:"יום הולדת", host:"booqli", tb:"#FFE9F6", tc:"#FFA8DC", topics:["birthday-party"], words:["יום הולדת","מסיבה","עוגה","נרות"]},
+  {id:"books",    name:"סִפְרֵי BOOQLI", plain:"ספרי בוקלי", ic:"📚", tb:"#E9F6F0", tc:"#9FD1BC", topics:["superhero","birthday","bye-bye-diaper","savanna"], words:["ספר","ספרים","בוקלי","גיבור","חיתול","סוואנה"]}
+];
+/* נושא עם משחקים שלא שויך לאף קבוצה – נכנס ל"עוד" (כדי שלא ייעלם) */
+(() => { const known = new Set(GROUPS.flatMap(g => g.topics)); const extra = [...new Set(KIDS_GAMES.map(g => g.topic))].filter(id => !known.has(id));
+  if (extra.length) GROUPS.push({id:"more", name:"עוֹד מִשְׂחָקִים", plain:"עוד משחקים", ic:"✨", tb:"#F4FAF7", tc:"#CDE7DC", topics:extra, words:[]}); })();
+const groupOf = topic => GROUPS.find(g => g.topics.includes(topic));
+
+const AGE_OPTS = [{k:"2", t:"2", s:"שנתיים", say:"שנתיים"}, {k:"3", t:"3", s:"שלוש", say:"שלוש"}, {k:"4", t:"4", s:"ארבע", say:"ארבע"}, {k:"5", t:"5", s:"חמש", say:"חמש"}, {k:"6", t:"6", s:"שש", say:"שש"}, {k:"7-8", t:"7–8", s:"כיתות א'–ב'", say:"שבע ושמונה"}];
+
+/* מצב העמוד (נשמר בכתובת, כדי שכפתור "חזרה" של הטלפון יעבוד) */
+const P = new URLSearchParams(location.search);
+let AGE = P.get("age") || (() => { try { return localStorage.getItem("booqli_kid_age") || ""; } catch(e) { return ""; } })();
+if (!AGE_OPTS.some(o => o.k === AGE)) AGE = "";
+let TAB = P.get("tab") === "a" ? "a" : "t", OPEN = P.get("g") || "", Q = P.get("q") || "";
+if (P.get("age") && !OPEN && !Q) { TAB = "a"; OPEN = "age"; }
+const sync = push => { try { const u = new URL(window.siteVirtual ? location.origin + siteVirtual : location.href); ["g","q","tab","age"].forEach(k => u.searchParams.delete(k));
+  if (TAB === "a") u.searchParams.set("tab", "a"); if (AGE) u.searchParams.set("age", AGE); if (OPEN) u.searchParams.set("g", OPEN); if (Q) u.searchParams.set("q", Q);
+  siteSetUrl(u.href, push, {k:1}); } catch(e) {} };
+const setAge = k => { AGE = k; try { if (AGE) localStorage.setItem("booqli_kid_age", AGE); else localStorage.removeItem("booqli_kid_age"); } catch(e) {} };
+
+const OPEN_GAMES = () => KIDS_GAMES.filter(isOpen);
+const gamesFor = grp => OPEN_GAMES().filter(g => grp.topics.includes(g.topic) && hitAge(g, AGE));
+
+/* ---------- כרטיס משחק ---------- */
+const card = (g, hit) => { const t = TOPIC(g.topic);
+  return '<a class="g-card' + (hit ? ' hit' : '') + '" href="' + CAT.root + playHref(g.href) + '" data-g="' + g.id + '" style="--gb:' + (/^#/.test(t.bg) ? t.bg : "#FFF1C9") + '">' +
+    '<span class="ic" aria-hidden="true">' + g.ic + '</span><span><b>' + g.name + '</b><small>' + KIND[g.kind] + ' · ' + (t.book ? "ספרי BOOQLI" : t.name) + ' · גיל <span dir="ltr">' + g.ages[0] + (g.ages[1] > g.ages[0] ? "–" + g.ages[1] : "") + '</span></small></span></a>'; };
+const grid = (list, hits) => '<div class="g-grid">' + list.map(g => card(g, hits && hits.has(g.id))).join("") + '</div>';
+
+/* ---------- המלבנים ---------- */
+const pic = grp => grp.host ? '<img src="../' + HOST(grp.host).img + '" alt="" width="70" height="72">' : '<span aria-hidden="true">' + grp.ic + '</span>';
+const renderTiles = () => {
+  $("tabT").setAttribute("aria-selected", TAB === "t"); $("tabA").setAttribute("aria-selected", TAB === "a");
+  const note = $("ageNote");
+  if (AGE && TAB === "t") { note.hidden = false; note.innerHTML = '🎂 מראים משחקים לגיל ' + AGE_OPTS.find(o => o.k === AGE).t + '<button type="button" id="ageAll">כל הגילאים ✕</button>'; }
+  else note.hidden = true;
+  if (TAB === "a") {
+    $("tiles").innerHTML = AGE_OPTS.map(o => { const n = OPEN_GAMES().filter(g => hitAge(g, o.k)).length;
+      return '<button type="button" class="kz-tile age" data-age="' + o.k + '" style="--tb:' + (AGE === o.k ? "#FFE3F4" : "#FFF8E6") + ';--tc:' + (AGE === o.k ? "#FF56C2" : "#FFD98A") + '"><b>' + o.t + '</b><small>' + (o.k === "2" ? "שנתיים" : o.k === "7-8" ? "כיתות א'–ב'" : "בן/בת " + o.s) + ' · ' + n + ' משחקים</small></button>'; }).join("");
+  } else {
+    $("tiles").innerHTML = GROUPS.map(grp => { const n = gamesFor(grp).length; if (!n) return "";
+      return '<button type="button" class="kz-tile' + (grp.big ? ' big' : '') + (grp.anim ? ' anim' : '') + '" data-grp="' + grp.id + '" style="--tb:' + (grp.tb || "#fff") + ';--tc:' + (grp.tc || "#FFD98A") + '">' +
+        '<span class="pic">' + pic(grp) + '</span><span><b>' + grp.name + '</b><small>' + (grp.sub || (grp.host ? HOST(grp.host).name : "")) + '</small></span>' +
+        (n > 1 ? '<span class="n">' + n + '</span>' : '') + '</button>'; }).join("");
+  }
+  const soon = KIDS_GAMES.filter(g => !isOpen(g) && hitAge(g, AGE)).length;
+  $("soonAll").textContent = soon ? "⏳ ועוד " + soon + " משחקים נפתחים בקרוב" : "";
+};
+
+/* ---------- קבוצה פתוחה ---------- */
+const back = '<button type="button" class="back" data-back>→ חזרה למלבנים</button>';
+const showPanel = (html, tc) => { const p = $("panel"); p.style.setProperty("--tc", tc || "#FFD98A"); p.innerHTML = html; p.hidden = false; $("tiles").hidden = true; };
+const hidePanel = () => { $("panel").hidden = true; $("tiles").hidden = false; };
+const renderGroup = (grp, hits, focusTopic) => {
+  const list = gamesFor(grp);
+  let body = "";
+  if (grp.parts) {
+    const parts = grp.parts.slice().sort((a, b) => (b.k === NOW_SEASON) - (a.k === NOW_SEASON));
+    const openK = focusTopic ? (parts.find(p => p.ids.includes(focusTopic)) || {}).k : hits ? null : NOW_SEASON;
+    body = parts.map(p => { const gs = list.filter(g => p.ids.includes(g.topic)); if (!gs.length) return "";
+      const hitHere = hits && gs.some(g => hits.has(g.id));
+      const byTopic = p.ids.map(id => { const x = gs.filter(g => g.topic === id); if (!x.length) return "";
+        const head = p.ids.length > 1 ? '<h3' + (focusTopic === id ? ' class="hit" id="hitTopic"' : '') + '>' + TOPIC(id).ic + ' ' + TOPIC(id).name + '</h3>' : (focusTopic === id ? '<span id="hitTopic"></span>' : '');
+        return head + grid(x, hits); }).join("");
+      return '<details class="kz-part"' + (p.k === openK || hitHere ? ' open' : '') + '><summary>' + p.t + ' <small>' + gs.length + ' משחקים</small>' + (p.k === NOW_SEASON ? ' <span class="now">העונה עכשיו</span>' : '') + '</summary>' + byTopic + '</details>'; }).join("");
+  } else if (grp.topics.length > 1) {
+    body = grp.topics.map(id => { const x = list.filter(g => g.topic === id); return x.length ? '<h3' + (focusTopic === id ? ' class="hit" id="hitTopic"' : '') + '>' + (TOPIC(id).book ? "📖" : TOPIC(id).ic) + ' ' + TOPIC(id).name + '</h3>' + grid(x, hits) : ""; }).join("");
+  } else body = '<div style="margin-top:12px">' + grid(list, hits) + '</div>';
+  const soon = KIDS_GAMES.filter(g => grp.topics.includes(g.topic) && !isOpen(g) && hitAge(g, AGE)).length;
+  showPanel('<div class="ph">' + back + '<h2>' + (grp.host ? '<img src="../' + HOST(grp.host).img + '" alt="">' : grp.ic) + ' ' + grp.name + '</h2><button type="button" class="say-btn" data-say="' + grp.plain + '" aria-label="להקריא">🔊</button></div>' +
+    (AGE ? '<p class="kz-agenote">לגיל ' + AGE_OPTS.find(o => o.k === AGE).t + '<button type="button" id="ageAll">כל הגילאים ✕</button></p>' : '') +
+    (body || '<div class="kz-empty"><p>אין כאן עוד משחקים לגיל הזה. הם בדרך!</p></div>') + (soon ? '<p class="g-soon">⏳ ועוד ' + soon + ' משחקים כאן נפתחים בקרוב</p>' : ''), grp.tc);
+};
+const renderAgePanel = () => {
+  const o = AGE_OPTS.find(x => x.k === AGE); if (!o) { OPEN = ""; return hidePanel(); }
+  const body = GROUPS.map(grp => { const x = gamesFor(grp); return x.length ? '<details class="kz-part" style="background:' + (grp.tb || "#FFF8EE") + ';border-color:' + (grp.tc || "#FFD9A8") + '"><summary>' + (grp.host ? '<img src="../' + HOST(grp.host).img + '" alt="" width="40" height="41">' : grp.ic) + ' ' + grp.name + ' <small>' + x.length + ' משחקים</small></summary>' + grid(x) + '</details>' : ""; }).join("");
+  const n = GROUPS.reduce((s, grp) => s + gamesFor(grp).length, 0);
+  showPanel('<div class="ph">' + back + '<h2>🎂 ' + n + ' משחקים לגיל ' + o.t + '</h2><button type="button" class="say-btn" data-say="משחקים לגיל ' + o.say + '" aria-label="להקריא">🔊</button></div>' + (body || '<div class="kz-empty"><p>עוד אין משחקים פתוחים לגיל הזה. הם בדרך!</p></div>'), "#FFA8DC");
+};
+
+/* ---------- חיפוש: בכתב או בקול ---------- */
+const norm = s => String(s || "").replace(/[֑-ׇ]/g, "").replace(/["'׳״]/g, "").toLowerCase().trim();
+/* מילים נוספות למשחקים מסוימים (כדי ש"חיות", "מוזיקה" וכו' ימצאו בדיוק אותם) */
+const EXTRA = {"play-animals":"חיות פרה חווה","play-shadows":"חיות צל צללים","play-holes":"חיות ארנב","play-snake":"חיות נחש","play-maze":"חיות צב","eq-turtle":"חיות צב","book-savanna":"חיות אריה גירפה פיל קוף","pur-tracks":"חיות חתול","pur-memory":"חיות חתול","pur-basket":"חיות עכבר","pes-matza":"חיות חתול","autumn-bird":"חיות ציפור","play-notes":"מוזיקה שיר","play-xylo":"מוזיקה שיר","play-repeat":"מוזיקה זיכרון","han-memory":"זיכרון","play-letters":"אותיות אלף בית","play-words":"אותיות מילים"};
+const searchText = g => { const t = TOPIC(g.topic), grp = groupOf(g.topic) || {words:[]};
+  return norm([g.name, EXTRA[g.id] || "", t.name, (KIDS_GAMES.filter(x => x.topic === g.topic).length > 12 ? "" : (t.tags || []).join(" ")), grp.plain, grp.words.join(" "), (KIND_WORDS[g.kind] || []).join(" ")].join(" ")); };
+const renderSearch = () => {
+  const words = norm(Q).split(/\s+/).filter(w => w.length > 1 && !["אני","רוצה","משהו","של","על","בא","לי","את","עם","שלי"].includes(w));
+  const open = OPEN_GAMES().filter(g => hitAge(g, AGE));
+  const score = g => { const s = searchText(g), nm = norm(g.name + " " + TOPIC(g.topic).name); return words.reduce((n, w) => n + (nm.includes(w) ? 3 : s.includes(w) ? 1 : 0), 0); };
+  const found = words.length ? open.map(g => [g, score(g)]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]).map(x => x[0]) : [];
+  siteEvent("kid-search", Q.slice(0, 40));
+  if (!found.length) {
+    const soon = words.length ? KIDS_GAMES.filter(g => !isOpen(g) && words.some(w => searchText(g).includes(w))) : [];
+    showPanel('<div class="ph">' + back + '<h2>🔎 ' + Q + '</h2></div><div class="kz-empty"><p>' + (soon.length ? "⏳ זה נפתח בקרוב! בינתיים, בוחרים משהו אחר:" : "לא מצאתי. נסו מילה אחרת, או בחרו מלבן:") + '</p></div>', "#FFD98A");
+    $("panel").insertAdjacentHTML("beforeend", '<div class="kz-tiles">' + $("tiles").innerHTML + '</div>');
+    say(soon.length ? "זה נפתח בקרוב!" : "לא מצאתי. נסו מילה אחרת");
+    return;
+  }
+  /* אם כל התוצאות מקבוצה אחת (למשל פסח) – פותחים את הקבוצה כולה ומדגישים את מה שנמצא */
+  const grps = [...new Set(found.map(g => groupOf(g.topic)))];
+  const topics = [...new Set(found.map(g => g.topic))];
+  if (grps.length === 1) {
+    renderGroup(grps[0], new Set(found.map(g => g.id)), topics.length === 1 ? topics[0] : "");
+    $("panel").querySelector(".ph").insertAdjacentHTML("afterend", '<p class="kz-agenote">🔎 מצאתי ' + found.length + ' בשבילך: "' + Q.replace(/</g, "") + '"</p>');
+  } else {
+    showPanel('<div class="ph">' + back + '<h2>🔎 מצאתי ' + found.length + '</h2></div>' + grps.map(grp => '<h3>' + (grp.host ? '<img src="../' + HOST(grp.host).img + '" alt="" width="36" height="37">' : grp.ic) + ' ' + grp.name + '</h3>' + grid(found.filter(g => groupOf(g.topic) === grp))).join(""), "#FFA8DC");
+  }
+  say("מצאתי " + found.length + " משחקים");
+};
+
+/* ---------- ציור הכל ---------- */
+const render = scroll => {
+  renderTiles();
+  $("clr").hidden = !Q; $("q").value = Q;
+  if (Q) renderSearch();
+  else if (OPEN === "age") renderAgePanel();
+  else if (OPEN) { const grp = GROUPS.find(g => g.id === OPEN); if (grp) renderGroup(grp); else { OPEN = ""; hidePanel(); } }
+  else hidePanel();
+  if (scroll) { const el = $("hitTopic") || ($("panel").hidden ? $("tiles") : $("panel")); el.scrollIntoView({behavior: "smooth", block: "start"}); }
+};
+CAT.refresh = () => render(false);
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".kz-tile"); if (!b) return;
+  if (b.dataset.age) { setAge(b.dataset.age); OPEN = "age"; const o = AGE_OPTS.find(x => x.k === AGE); say("משחקים לגיל " + o.say); siteEvent("kid-age", AGE); }
+  else { const grp = GROUPS.find(g => g.id === b.dataset.grp), list = gamesFor(grp);
+    siteEvent("kid-group", grp.id);
+    /* מלבן עם משחק אחד בלבד (למשל מנפישים) – נכנסים ישר למשחק */
+    if (list.length === 1) { siteEvent("kid-game", list[0].id + (AGE ? "-age" + AGE : "")); location.href = CAT.root + playHref(list[0].href); return; }
+    OPEN = grp.id; say(grp.plain); }
+  Q = ""; sync(true); render(true);
+});
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-back]")) { if (history.state && history.state.k) history.back(); else { OPEN = ""; Q = ""; sync(false); render(true); } return; }
+  if (e.target.id === "ageAll") { setAge(""); if (OPEN === "age") OPEN = ""; sync(false); render(false); return; }
+  const s = e.target.closest("[data-say]"); if (s) { say(s.dataset.say); return; }
+  const a = e.target.closest(".g-card"); if (a) siteEvent("kid-game", a.dataset.g + (AGE ? "-age" + AGE : ""));
+});
+window.addEventListener("popstate", () => { const p = new URLSearchParams(location.search); OPEN = p.get("g") || ""; Q = p.get("q") || ""; TAB = p.get("tab") === "a" ? "a" : "t"; render(false); });
+document.querySelectorAll(".kz-tabs button").forEach(b => b.onclick = () => { TAB = b.dataset.tab; OPEN = ""; Q = ""; sync(false); render(false); say(TAB === "a" ? "בוחרים גיל" : "בוחרים נושא"); });
+
+/* חיפוש בכתב */
+let tmr;
+$("q").addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { Q = $("q").value.trim(); OPEN = ""; sync(false); render(false); }, 450); });
+$("q").addEventListener("keydown", e => { if (e.key === "Enter") { clearTimeout(tmr); Q = $("q").value.trim(); OPEN = ""; sync(true); render(true); $("q").blur(); } });
+$("clr").onclick = () => { Q = ""; OPEN = ""; sync(false); render(false); $("q").focus(); };
+/* הצעות מהירות */
+$("chips").innerHTML = ["🍷 פסח","🕎 חנוכה","🎨 צבעים","🔢 מספרים","🦁 חיות","📖 סיפור","😊 רגשות"].map(c => '<button type="button" data-q="' + c.split(" ")[1] + '">' + c + '</button>').join("");
+$("chips").onclick = e => { const b = e.target.closest("button"); if (!b) return; Q = b.dataset.q; OPEN = ""; sync(true); render(true); };
+/* חיפוש בקול (רק בדפדפנים שתומכים, בעיקר כרום ואנדרואיד) */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SR) {
+  const mic = $("mic"); mic.hidden = false;
+  mic.onclick = () => {
+    try { const r = new SR(); r.lang = "he-IL"; r.interimResults = false; r.maxAlternatives = 1;
+      mic.classList.add("on"); mic.setAttribute("aria-label", "מקשיב…");
+      r.onresult = ev => { Q = ev.results[0][0].transcript; OPEN = ""; sync(true); render(true); siteEvent("kid-voice", "ok"); };
+      r.onerror = () => say("לא שמעתי. נסו שוב");
+      r.onend = () => { mic.classList.remove("on"); mic.setAttribute("aria-label", "להגיד בקול"); };
+      speechSynthesis && speechSynthesis.cancel(); r.start();
+    } catch(e) { mic.classList.remove("on"); }
+  };
+}
+
+$("lockBtn").onclick = () => siteKidLockStart();
+$("sayHi").onclick = () => say("שלום! אני בּוּקְלִי. מה בא לך לשחק? בוחרים מלבן, או אומרים לי.");
+render(!!(Q || OPEN));
 siteJoinLinks();
 </script>
 </body>

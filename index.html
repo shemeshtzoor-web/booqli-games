@@ -67,6 +67,9 @@
 .rev blockquote{margin:0;font-size:16px}.rev figcaption{margin-top:6px;font-weight:800;color:var(--sage-deep);font-size:14px}
 .season{margin-top:10px;font-size:14.5px;color:var(--muted);text-align:center}
 .season a{color:var(--magenta);font-weight:800}
+.show-more{display:block;margin:14px auto 0;font:inherit;font-weight:800;font-size:16px;border:2px solid #CDE7DC;background:#fff;color:#4E8576;border-radius:999px;padding:10px 22px;cursor:pointer}
+.c-tile[hidden]{display:none}
+#revs[data-car]{display:block;max-width:720px;margin:0 auto}#revs[data-car] .rev{margin:0;min-height:150px;display:flex;flex-direction:column;justify-content:center}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "booqli Games", "url": "https://games.booqli.ai/", "inLanguage": "he", "description": "משחקים, דפי עבודה, מערכים ופעילויות חינוכיים לגיל הרך, לגן ולבית. בחינם, בחסות BOOQLI.", "publisher": {"@type": "Organization", "name": "BOOQLI", "url": "https://www.booqli.ai/he"}}</script>
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
@@ -146,7 +149,7 @@
 <section class="c-sec" id="soon">
   <div class="c-sec-h"><h2>⏳ נפתח בקרוב</h2><p>התכנים באתר נפתחים לפי עונות השנה. לוחצים על "ספרו לי" ונציג לך כשזה נפתח.</p></div>
   <div class="next" id="next" hidden></div>
-  <div id="soonGrid" style="margin-top:14px"></div>
+  <details class="c-more" id="soonMore" style="margin-top:14px"><summary><h2 id="soonSum">כל מה שבדרך</h2></summary><div id="soonGrid"></div></details>
   <p class="season">רוצים שנפתח לכם תוכן מסוים? <a id="askLink" target="_blank" rel="noopener">כתבו לנו ←</a></p>
 </section>
 
@@ -189,10 +192,16 @@
 (function(){ const q = new URLSearchParams(location.search); if (q.get("q") || q.get("sped") === "1") { const p = new URLSearchParams(); if (q.get("q")) p.set("q", q.get("q")); if (q.get("sped") === "1") p.set("sped", "1"); location.replace("library/?" + p); return; } const h = {"#gifts":"gifts/","#year":"teachers/","#always":"teachers/","#special":"library/","#results":"library/"}[location.hash]; if (h) location.replace(h + location.search); })();
 const LIST = CATALOG.filter(t => !t.zone && !t.book);
 const render = () => {
-  const open = LIST.filter(t => CAT.state(t) === "open").sort(CAT.sorters.open);
-  const og = document.getElementById("openGrid"); og.innerHTML = ""; og.appendChild(CAT.grid(open, {}));
+  /* מה שיש לו באנר למעלה (מוגנות, מנפישים) לא מופיע שוב ברשת – בלי כפילויות */
+  const open = LIST.filter(t => CAT.state(t) === "open" && !["safety","animate"].includes(t.id)).sort(CAT.sorters.open);
+  const og = document.getElementById("openGrid"); og.innerHTML = ""; const ogg = CAT.grid(open, {}); og.appendChild(ogg);
+  /* מציגים 6 ראשונים, והשאר בלחיצה */
+  if (open.length > 8 && !window.__openAll) { [...ogg.children].slice(6).forEach(c => c.hidden = true);
+    const b = document.createElement("button"); b.type = "button"; b.className = "show-more"; b.textContent = "להציג עוד " + (open.length - 6) + " תכנים פתוחים ▾";
+    b.onclick = () => { window.__openAll = true; [...ogg.children].forEach(c => c.hidden = false); b.remove(); siteEvent("home-more", "open"); }; og.appendChild(b); }
   const soon = LIST.filter(t => CAT.state(t) === "locked").sort(CAT.sorters.date);
   const sg = document.getElementById("soonGrid"); sg.innerHTML = ""; if (soon.length) sg.appendChild(CAT.grid(soon, {}));
+  document.getElementById("soonSum").innerHTML = "📅 כל מה שבדרך <small>(" + soon.length + ")</small>"; document.getElementById("soonMore").hidden = !soon.length;
   const bg = document.getElementById("booksGrid"); bg.innerHTML = ""; bg.appendChild(CAT.grid(CATALOG.filter(t => t.book), {}));
   // נפתח בשבילך: נושאים שביקשו "ספרו לי" ונפתחו
   const ready = CAT.readyNotifies(), rd = document.getElementById("ready"); rd.innerHTML = "";
@@ -213,6 +222,7 @@ render();
 // ביקורות – רק מילים אמיתיות של גננות, באישורן
 const rv = document.getElementById("revs");
 REVIEWS.forEach(r => { const f = document.createElement("figure"); f.className = "rev"; const bq = document.createElement("blockquote"); bq.textContent = r.text; const c = document.createElement("figcaption"); c.textContent = "— " + r.name; f.append(bq, c); rv.appendChild(f); });
+if (typeof siteCarousel === "function") siteCarousel(rv, {every: 6000, label: "מה גננות אומרות"});
 document.getElementById("askLink").href = siteAskLink("");
 // מספר סודי
 if (!siteUnlocked()) {

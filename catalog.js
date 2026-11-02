@@ -61,7 +61,7 @@ window.CATALOG = [
   {"id":"play","name":"חדר המשחקים: 20 משחקים","ic":"🎲","bg":"#FFF1C9","ready":true,"ages":[2,8],"aud":"pk","subj":["תנועה ומוזיקה","שפה ואוריינות"],"type":["game"],"host":"booqli","href":"kids/play/","noGift":true,"p":"איקס עיגול, ארבע בשורה, הנחש הרעב, באולינג, מה התו?, קסילופון, מאזניים ועוד","tags":["משחקים לילדים","איקס עיגול","ארבע בשורה","נחש","באולינג","פאזל הזזה","מאזניים","חיפוש מילים","מוזיקה","תווים","קסילופון","זיכרון","צבעים","חיות","מבוך","מיון","אותיות","מספרים","חשיבה","משחקי חשיבה"]},
   {"id":"animate","name":"מנפישים את הציור שלי","ic":"🪄","bg":"linear-gradient(135deg,#FF56C2,#B05BE8,#3AA7F0)","ready":true,"ages":[3,8],"aud":"tpk","subj":["אמנות ויצירה","שפה ואוריינות"],"type":["game","craft","video"],"sped":true,"host":"garb","href":"kids/animate/","noGift":true,"p":"מצלמים ציור של הילד – והוא מתעורר לחיים: קופץ, רוקד, עף ושר. ציור מגניב + סרטון לשמור ולשלוח בוואטסאפ","tags":["הנפשה","אנימציה","ציור","ציור של ילדים","ציור מתעורר","ציור זז","מצלמים ציור","סרטון","סרטון מהציור","דמות מצוירת","יצירה","אמנות","דמיון","שפה","דיבור","וואטסאפ","מתנה לסבא וסבתא","מתנה להורים","GIF"]},
   {"id":"superhero","name":"גיבור/ת על","book":true,"p":"משחק טוב לב מהיר, אותיות וקריאה, מיון והבדלים","img":"games/superhero/img/m-book.png","href":"games/superhero/","ready":true,"ages":[3,6],"aud":"pk","subj":[],"type":["game","story"],"host":"booqli","noGift":true,"tags":["BOOQLI","ספר אישי","גיבור על","טוב לב","אמפתיה","אותיות","קריאה","מיון","מצא את ההבדלים"]},
-  {"id":"birthday","name":"ילד/ת יום הולדת","book":true,"p":"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון","img":"games/birthday/img/m-book.png","href":"games/birthday/","ready":true,"ages":[3,6],"aud":"pk","subj":[],"type":["game","story"],"host":"booqli","noGift":true,"tags":["BOOQLI","ספר אישי","יום הולדת","חשבון","ספירה","עוגה","נרות","זיכרון"]},
+  {"id":"birthday","name":"ילד/ת יום הולדת","book":true,"p":"משחקי חשבון ליום ההולדת, עוגת נרות וזיכרון","img":"games/birthday/img/m-book.jpg","href":"games/birthday/","ready":true,"ages":[3,6],"aud":"pk","subj":[],"type":["game","story"],"host":"booqli","noGift":true,"tags":["BOOQLI","ספר אישי","יום הולדת","חשבון","ספירה","עוגה","נרות","זיכרון"]},
   {"id":"bye-bye-diaper","name":"ביי ביי חיתול!","book":true,"p":"הסיפור, משחק סימני הגוף ולוח מדבקות להדפסה","img":"games/bye-bye-diaper/img/m-book.png","href":"games/bye-bye-diaper/","ready":true,"ages":[3,6],"aud":"pk","subj":[],"type":["game","story"],"sped":true,"host":"booqli","noGift":true,"tags":["BOOQLI","ספר אישי","גמילה מחיתול","סיר","עצמאות","לוח מדבקות","הדפסה"]},
   {"id":"savanna","name":"בסוואנה","book":true,"p":"מכירים את חיות הסוואנה בסיפור ובמשחקים","img":"games/savanna/img/demo-book.png","href":"games/savanna/","ready":true,"ages":[3,6],"aud":"pk","subj":[],"type":["game","story"],"host":"booqli","noGift":true,"tags":["BOOQLI","ספר אישי","סוואנה","חיות","בעלי חיים","טבע","אפריקה"]}
 ];
@@ -393,7 +393,17 @@ C.sections = function(host, list, sections, opt){
     var head = '<h2>' + sec.title + (sec.collapsed ? ' <small>(' + items.length + ')</small>' : '') + '</h2>' + (sec.sub ? '<p>' + sec.sub + '</p>' : '');
     el.innerHTML = sec.collapsed ? '<summary>' + head + '</summary>' : '<div class="c-sec-h">' + head + '</div>';
     if (sec.before) el.appendChild(sec.before());
-    if (items.length) el.appendChild(C.grid(items, Object.assign({}, opt, sec.opt || {})));
+    if (items.length) {
+      var g = C.grid(items, Object.assign({}, opt, sec.opt || {})); el.appendChild(g);
+      /* (2.11.2026) קבוצה ארוכה: 6 ראשונים, והשאר בלחיצה – כדי שהעמוד לא יהיה רשימה אינסופית */
+      var max = sec.max || 6;
+      if (!sec.collapsed && !sec.all && items.length > max + 2 && !(C.openSecs || {})[sec.id]) {
+        Array.prototype.slice.call(g.children, max).forEach(function(c){ c.hidden = true; });
+        var b = document.createElement("button"); b.type = "button"; b.className = "c-showmore"; b.textContent = "להציג עוד " + (items.length - max) + " ▾";
+        b.onclick = function(){ (C.openSecs = C.openSecs || {})[sec.id] = 1; Array.prototype.forEach.call(g.children, function(c){ c.hidden = false; }); b.remove(); };
+        el.appendChild(b);
+      }
+    }
     host.appendChild(el);
   });
 };
@@ -423,6 +433,7 @@ css.textContent =
 ".c-act button:focus-visible{outline:3px solid #FF56C2;outline-offset:-3px}" +
 ".c-sec{margin-top:30px}.c-sec-h h2,.c-more summary h2{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,3.4vw,28px);color:#4E8576;margin:0}" +
 ".c-sec-h p,.c-more summary p{margin:4px 0 12px;color:#6b5a66}" +
+".c-tile[hidden]{display:none}.c-showmore{display:block;margin:12px auto 0;font:inherit;font-weight:800;font-size:15.5px;border:2px solid #CDE7DC;background:#fff;color:#4E8576;border-radius:999px;padding:9px 20px;cursor:pointer}" +
 ".c-more{background:#F7FBF9;border-radius:22px;padding:12px 16px}.c-more summary{cursor:pointer;list-style:none}.c-more summary::-webkit-details-marker{display:none}" +
 ".c-more summary h2{font-size:20px}.c-more summary h2::before{content:'▸ ';color:#FF56C2}.c-more[open] summary h2::before{content:'▾ '}.c-more small{color:#6b5a66;font-size:15px}.c-more .c-grid{margin-top:10px}" +
 ".c-modal{position:fixed;inset:0;z-index:180;background:rgba(43,21,38,.5);display:grid;place-items:center;padding:16px;direction:rtl;font-family:Assistant,Arial,sans-serif}" +
