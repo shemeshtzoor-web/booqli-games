@@ -171,6 +171,41 @@ section{margin-top:64px}
 .anyq h3{font-size:24px}
 .anyq p{color:var(--muted);margin-top:4px}
 
+/* מחשבון */
+.calc{margin-top:26px;background:linear-gradient(135deg,#fff,#FFF5FB);border:3px solid var(--pink-soft);border-radius:28px;padding:24px 22px;box-shadow:0 10px 30px rgba(193,54,113,.10)}
+.calc h3{font-size:clamp(24px,3.6vw,30px);color:var(--magenta);text-align:center}
+.calc .sub{text-align:center;color:var(--muted);margin-top:4px}
+.calc-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;margin-top:18px;align-items:start}
+.fld{margin-bottom:16px}
+.fld>label,.fld>.lb{display:block;font-weight:800;margin-bottom:6px}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:46px;height:46px;border-radius:14px;border:0;background:var(--mint);color:var(--sage-deep);font:800 24px Fredoka,sans-serif;cursor:pointer;flex-shrink:0}
+.stepper input{width:90px;height:46px;border:2px solid var(--mint-2);border-radius:14px;text-align:center;font:700 22px Fredoka,Assistant,sans-serif;color:var(--ink);background:#fff}
+.stepper input:focus{outline:none;border-color:var(--sage)}
+.stepper span{color:var(--muted);font-weight:700}
+.opts{display:grid;gap:8px}
+.opts label{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--mint-2);border-radius:16px;padding:10px 12px;cursor:pointer;font-weight:700}
+.opts label:has(input:checked){border-color:var(--pink-btn);background:var(--pink-soft)}
+.opts input{accent-color:var(--pink-btn);width:20px;height:20px;flex-shrink:0}
+.opts label b{margin-inline-start:auto;color:var(--magenta);white-space:nowrap}
+.opts.row{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opts.row label{justify-content:center}
+.chk{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--mint-2);border-radius:16px;padding:10px 12px;cursor:pointer;font-weight:700}
+.chk input{accent-color:var(--pink-btn);width:20px;height:20px;flex-shrink:0;margin-top:3px}
+.chk small{display:block;font-weight:600;color:var(--muted)}
+.res{background:linear-gradient(160deg,var(--sage-deep),var(--sage));color:#fff;border-radius:24px;padding:22px 20px;text-align:center;position:sticky;top:70px}
+.res .lbl{font-weight:700;opacity:.9}
+.res .tot{font-family:Fredoka,sans-serif;font-size:clamp(44px,8vw,58px);line-height:1.05;margin-top:2px}
+.res .per{font-weight:700;margin-top:2px}
+.res .lines{margin:14px 0 0;padding:12px 0 0;border-top:1px dashed rgba(255,255,255,.4);list-style:none;text-align:right;font-size:16px;display:grid;gap:4px}
+.res .lines li{display:flex;justify-content:space-between;gap:10px}
+.res .note{font-size:14.5px;margin-top:10px;opacity:.92}
+.res .msg{background:rgba(255,255,255,.16);border-radius:14px;padding:10px 12px;margin-top:12px;font-weight:700}
+.res .btn-green{width:100%;margin-top:14px;font-size:18px;background:#fff;color:#168a45;box-shadow:0 4px 0 #b9cfc6}
+.res .coupon{display:inline-block;margin-top:10px;background:var(--gold);color:#4a2c00;font-weight:800;border-radius:999px;padding:4px 12px;font-size:15px}
+@media (max-width:780px){.calc-grid{grid-template-columns:minmax(0,1fr)}.res{position:static}}
+@media (max-width:350px){.opts.row{grid-template-columns:minmax(0,1fr)}}
+
 /* צילום */
 .photo-intro{text-align:center;max-width:720px;margin:0 auto 18px;color:var(--muted)}
 .photo-intro b{color:var(--ink)}
@@ -340,6 +375,7 @@ section{margin-top:64px}
     <a href="#books">הספרים</a>
     <a href="#guide">מה לבדוק</a>
     <a href="#prices">מחירים</a>
+    <a href="#calc">מחשבון</a>
     <a href="#photos">איך מצלמים</a>
     <a href="#examples">דוגמאות</a>
     <a href="#why">למה בוקלי</a>
@@ -528,6 +564,46 @@ section{margin-top:64px}
       </ul>
     </div>
     <div class="vid"><video src="video/covers.mp4" poster="video/covers.jpg" controls preload="none" playsinline width="854" height="480" data-ev="video_covers"></video></div>
+  </div>
+
+  <div class="calc" id="calc">
+    <h3>🧮 מחשבון לגן</h3>
+    <p class="sub">כמה ילדים, כמה ספרים לכל ילד ואיזו כריכה – והמחיר מתעדכן לבד.</p>
+    <div class="calc-grid">
+      <div>
+        <div class="fld">
+          <label for="cKids">כמה ילדים בגן?</label>
+          <div class="stepper"><button type="button" data-step="-1" aria-label="פחות ילדים">−</button><input id="cKids" type="number" inputmode="numeric" min="1" max="999" value="25"><button type="button" data-step="1" aria-label="יותר ילדים">+</button><span>ילדים</span></div>
+        </div>
+        <div class="fld">
+          <span class="lb">כמה ספרים לכל ילד?</span>
+          <div class="opts row">
+            <label><input type="radio" name="cPer" value="1" checked> ספר אחד</label>
+            <label><input type="radio" name="cPer" value="2"> 2 ספרים</label>
+            <label><input type="radio" name="cPer" value="3"> 3 ספרים</label>
+          </div>
+        </div>
+        <div class="fld">
+          <span class="lb">איזו כריכה?</span>
+          <div class="opts">
+            <label><input type="radio" name="cCover" value="staple" checked> 💜 כריכה רכה סיכות <b>50 ₪</b></label>
+            <label><input type="radio" name="cCover" value="soft"> 💛 כריכה רכה בהדבקה <b>60 ₪</b></label>
+            <label><input type="radio" name="cCover" value="hard"> 💗 כריכה קשה <b>77 ₪</b></label>
+          </div>
+        </div>
+        <label class="chk"><input type="checkbox" id="cUpload"><span>אנחנו נעלה את התמונות בשבילכם<small>שולחים לנו תיקייה עם התמונות והשמות, בתיאום מראש (2–5 ₪ לספר)</small></span></label>
+      </div>
+      <div class="res" aria-live="polite">
+        <div class="lbl" id="rLbl">סה״כ משוער</div>
+        <div class="tot" id="rTot">—</div>
+        <div class="per" id="rPer"></div>
+        <ul class="lines" id="rLines"></ul>
+        <div class="msg" id="rMsg" hidden></div>
+        <p class="note" id="rNote">המחיר הסופי נקבע בעגלת הקניות. משלוח לפי הכתובת.</p>
+        <a class="btn btn-green" id="rWa" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 להתקדמות + קבלת קופון הנחה</a>
+        <span class="coupon">🎁 שולחים הודעה – מקבלים קופון</span>
+      </div>
+    </div>
   </div>
 
   <div class="anyq">
@@ -882,6 +958,56 @@ document.addEventListener("click", e => {
   if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done); else done();
 });
 if (/^#q\d+$/.test(location.hash)) { const d = document.querySelector(location.hash); if (d) d.open = true; }
+
+
+/* ===== מחשבון לגן =====
+   מחירים לספר בהזמנה של 20–50 ספרים (שמש אישרה 2.11.2026). פחות מ-20 או יותר מ-50 – המחיר שונה, מבקשים הצעה. */
+const CALC = { staple:{n:"כריכה רכה סיכות",p:50}, soft:{n:"כריכה רכה בהדבקה",p:60}, hard:{n:"כריכה קשה",p:77} };
+const MIN_Q = 20, MAX_Q = 50, UP_MIN = 2, UP_MAX = 5;
+const ils = n => n.toLocaleString("he-IL") + " ₪";
+const cKids = document.getElementById("cKids");
+function calc(){
+  let kids = Math.max(1, Math.min(999, parseInt(cKids.value, 10) || 0));
+  const per = +document.querySelector('input[name="cPer"]:checked').value;
+  const cov = CALC[document.querySelector('input[name="cCover"]:checked').value];
+  const up = document.getElementById("cUpload").checked;
+  const books = kids * per;
+  const inRange = books >= MIN_Q && books <= MAX_Q;
+  const base = books * cov.p;
+  const tot = document.getElementById("rTot"), perEl = document.getElementById("rPer"), msg = document.getElementById("rMsg");
+  const lines = [["ילדים", kids], ["ספרים לכל ילד", per], ["סה״כ ספרים", books], [cov.n, cov.p + " ₪ לספר"]];
+  let sum;
+  if (up) lines.push(["העלאת תמונות על ידינו", UP_MIN + "–" + UP_MAX + " ₪ לספר"]);
+  if (inRange) {
+    sum = up ? ils(base + books * UP_MIN) + "–" + ils(base + books * UP_MAX) : ils(base);
+    tot.textContent = up ? ils(base + books * UP_MIN) : ils(base);
+    perEl.textContent = up ? "עד " + ils(base + books * UP_MAX) + " · " + books + " ספרים" : cov.p + " ₪ לספר · " + books + " ספרים";
+    document.getElementById("rLbl").textContent = "סה״כ משוער";
+    msg.hidden = true;
+  } else {
+    sum = "הצעת מחיר מיוחדת";
+    document.getElementById("rLbl").textContent = books + " ספרים";
+    tot.textContent = books > MAX_Q ? "מחיר מיוחד" : "הצעת מחיר";
+    perEl.textContent = "";
+    msg.hidden = false;
+    msg.textContent = books > MAX_Q
+      ? "מעל 50 ספרים? המחיר לספר יכול לרדת עוד. שלחו הודעה ונחזור עם הצעה משתלמת."
+      : "המחירים כאן הם להזמנות של 20–50 ספרים. בפחות מ-20 ספרים המחיר לספר שונה – שלחו הודעה ונחזור עם הצעה.";
+  }
+  document.getElementById("rLines").innerHTML = lines.map(l => `<li><span>${l[0]}</span><b>${l[1]}</b></li>`).join("");
+  const text = "היי BOOQLI 👋 חישבתי במחשבון לגן באתר:\n" +
+    "👧👦 " + kids + " ילדים × " + per + " " + (per === 1 ? "ספר" : "ספרים") + " = " + books + " ספרים\n" +
+    "📕 " + cov.n + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
+    "💰 " + sum + "\n\nאשמח להתקדם ולקבל קופון הנחה 🙂";
+  document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text);
+}
+document.getElementById("calc").addEventListener("input", calc);
+document.getElementById("calc").addEventListener("change", calc);
+document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
+  cKids.value = Math.max(1, Math.min(999, (parseInt(cKids.value, 10) || 0) + +b.dataset.step)); calc();
+}));
+document.getElementById("rWa").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_calc_wa"); });
+calc();
 
 /* ===== קישורים לאתר הראשי: חלון חדש + סימון מקור (כדי לראות כמה הגיעו מכאן) ===== */
 const UTM = "utm_source=games&utm_medium=kindergartens_page&utm_campaign=gan";
