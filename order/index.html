@@ -211,6 +211,17 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 .dprev.boy{background:linear-gradient(135deg,#DDEEFF,#EAF7F2)}
 .dprev .card{background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:12px 14px;text-align:center;font-size:14px;line-height:1.55;color:#24406b;white-space:pre-line;min-height:120px}
 .dprev .card b{display:block;font-size:15.5px;margin-bottom:6px}
+.gen{margin-top:10px;background:#FFF7FC;border:2px dashed var(--pink);border-radius:18px;padding:12px 14px}
+.genrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr);gap:10px}
+.genrow label{min-width:0;display:flex;flex-direction:column;gap:3px;font-weight:800;font-size:14px;color:var(--magenta)}
+.genrow select,.genrow input{width:100%;min-width:0;height:42px;border:2px solid var(--pink-soft);border-radius:12px;padding:0 10px;font:700 16px Assistant,sans-serif;background:#fff;color:var(--ink)}
+.gen .btn{padding:10px 16px;font-size:16px}
+.aihelp{font-size:13.5px;color:var(--muted);margin-top:6px}
+.sitegen{margin-top:14px;background:#fff;border:2px solid var(--pink-soft);border-radius:18px;padding:10px 14px}
+.sitegen summary{cursor:pointer;font-weight:800;color:var(--magenta);font-size:17px}
+.cpy{align-self:flex-start;border:0;background:var(--sage-deep);color:#fff;font:800 14.5px Assistant,sans-serif;border-radius:999px;padding:6px 14px;cursor:pointer}
+@media (max-width:620px){.genrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.genrow .w{grid-column:1/-1}}
+@media (max-width:360px){.genrow{grid-template-columns:minmax(0,1fr)}.sitegen{padding:10px 8px}.gen{padding:10px 8px}}
 .cnt.long{color:#A86A00;font-weight:800}
 @media (max-width:520px){.addr{grid-template-columns:minmax(0,1fr)}.summ dl{grid-template-columns:minmax(0,1fr)}.summ dt{margin-top:4px}}
 </style>
@@ -304,11 +315,17 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <div class="coupon" id="couponBox" hidden>🎁 קוד הקופון שלכם: <code id="couponCode"></code><button type="button" id="couponCopy">העתקה</button></div>
     <div class="coupon" id="couponMissing" hidden>🎁 קוד הקופון ל-5% הנחה נשלח אליכם בוואטסאפ <a class="btn btn-green" id="askCoupon" href="#" target="_blank" rel="noopener" style="padding:8px 16px;font-size:16px">💬 לקבלת הקוד</a></div>
     <p class="warn" style="text-align:center;font-size:17.5px">✂️ <b>ללא צורך בעריכה!</b> לא עורכים ולא בודקים איור־איור. רק מעלים תמונה, רושמים שם ומוסיפים הקדשה – את כל השאר אנחנו עושים.</p>
+    <details class="sitegen"><summary>💌 צריכים הקדשה? מחולל הקדשות (בחינם) – להעתקה לאתר</summary>
+      <p class="lead" style="margin-top:6px">באתר כותבים הקדשה לכל ילד. כאן מכינים פעם אחת הקדשה לבנים והקדשה לבנות, ומעתיקים. אין צורך לרשום את שם הילד – הכותרת "הקדשה מכל הלב ל..." מודפסת לבד.</p>
+      <div class="gen" id="genSite"></div>
+      <div class="ded"><div class="dedcol"><label for="sB">לבנים 👦</label><textarea id="sB" maxlength="600"></textarea><button type="button" class="cpy" data-cp="sB">📋 העתקה</button></div>
+      <div class="dedcol"><label for="sG">לבנות 👧</label><textarea id="sG" maxlength="600"></textarea><button type="button" class="cpy" data-cp="sG">📋 העתקה</button></div></div>
+    </details>
     <h3 style="margin-top:16px;font-size:20px">איך מזמינים באתר?</h3>
     <ol class="how">
       <li>בוחרים את הספר באתר.</li>
       <li>מעלים תמונה של הילד/ה (<a href="#photoTips">איזו תמונה מתאימה?</a>).</li>
-      <li>רושמים את שם הילד ומוסיפים הקדשה (<a href="#d-ded">איך כותבים הקדשה?</a>).</li>
+      <li>רושמים את שם הילד ומוסיפים הקדשה (אפשר להכין במחולל למעלה).</li>
       <li>בוחרים את סוג הכריכה ומוסיפים לסל.</li>
       <li>המחיר מתעדכן אוטומטית עם כל ספר שמוסיפים לסל.</li>
       <li>מזינים את קוד הקופון, משלמים ושולחים את ההזמנה.</li>
@@ -397,7 +414,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <div class="sub" id="d-ded">
     <h3><span class="ck">5</span>הקדשות 💌</h3>
     <p>בעמוד השער מודפסת הקדשה אישית מטעם הגן או הוועד. כותבים <b>הקדשה לבנים והקדשה לבנות</b> – אותה הקדשה לכל הבנים ולכל הבנות.<br><b>אין צורך לרשום את שם הילד/ה:</b> הכותרת מודפסת לבד – "הקדשה מכל הלב ל<i>שם הילד/ה</i>".</p>
-    <p class="ex">צריכים רעיון? <button type="button" id="exFill">✨ למלא בהקדשה לדוגמה</button> ואז לשנות כרצונכם.</p>
+    <div class="gen" id="genDrive"></div>
     <div class="ded">
       <div class="dedcol"><label for="tB">הקדשה לבנים 👦</label><textarea id="tB" maxlength="600" placeholder="ילד אהוב ומתוק 💙 ..."></textarea><div class="cnt" id="cB">0 תווים</div>
         <div class="dprev boy" aria-hidden="true"><div class="card"><b>הקדשה מכל הלב ל[שם הילד]</b><span id="pvB">…</span></div></div></div>
@@ -481,17 +498,34 @@ const BOOKS = [
   { id:"class1", name:"עולה לכיתה א'", d:"השאלות והחששות לקראת העלייה לכיתה א׳.", img:"https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/c.png", pdf:[] },
   { id:"kinder", name:"הולך/ת לגן", d:"היום הראשון בגן, עם חיות נחמדות שנותנות טיפים.", img:"https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/k.png", pdf:[] }
 ];
-/* הקדשות לדוגמה (שמש, 2.11.2026). "גן XXX" מתחלף בשם הגן. */
-const DED = {
+/* מחולל הקדשות – בלי AI ובלי עלות. {sig} = החתימה (למשל "גן רימון"). יום הולדת בחרוזים = הנוסח של שמש (2.11.2026).
+   כל נוסח בשתי גרסאות: b לבנים, g לבנות. בלי שם הילד – הכותרת "הקדשה מכל הלב ל..." מודפסת לבד. */
+const OCC = { birthday:"יום הולדת", year:"סוף שנה", class1:"עולים לכיתה א'", general:"מתנה מהגן (כללי)" };
+const DEDS = {
   birthday: {
-    b: "ילד אהוב ומתוק 💙\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלום חלומות ותכבוש כל פסגה,\nשתגלה דברים חדשים בכל יום ובהנאה.\nשתמיד תחייך ותאיר את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\nגן XXX",
-    g: "ילדה אהובה ומתוקה 💗\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלמי חלומות ותכבשי כל פסגה,\nשתגלי דברים חדשים בכל יום ובהנאה.\nשתמיד תחייכי ותאירי את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\nגן XXX"
+    rhyme: { b: "ילד אהוב ומתוק 💙\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלום חלומות ותכבוש כל פסגה,\nשתגלה דברים חדשים בכל יום ובהנאה.\nשתמיד תחייך ותאיר את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\n{sig}",
+             g: "ילדה אהובה ומתוקה 💗\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלמי חלומות ותכבשי כל פסגה,\nשתגלי דברים חדשים בכל יום ובהנאה.\nשתמיד תחייכי ותאירי את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\n{sig}" },
+    warm:  { b: "ילד אהוב ומתוק 💙\nביום ההולדת שלך אנחנו מאחלים לך שנה מלאה בצחוק, בחברים טובים ובהרפתקאות.\nשתמשיך לגדול באהבה, לחלום בגדול ולהאיר את הגן בחיוך שלך.\nמזל טוב!\nבאהבה,\n{sig}",
+             g: "ילדה אהובה ומתוקה 💗\nביום ההולדת שלך אנחנו מאחלים לך שנה מלאה בצחוק, בחברים טובים ובהרפתקאות.\nשתמשיכי לגדול באהבה, לחלום בגדול ולהאיר את הגן בחיוך שלך.\nמזל טוב!\nבאהבה,\n{sig}" }
   },
   year: {
-    b: "ילד אהוב שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\nגן XXX ❤️",
-    g: "ילדה אהובה שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\nגן XXX ❤️"
+    warm:  { b: "ילד אהוב שלנו 💙\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\n{sig}",
+             g: "ילדה אהובה שלנו 💗\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\n{sig}" },
+    rhyme: { b: "ילד אהוב שלנו 💙\nשנה שלמה עברה עלינו יחד,\nשל משחק, של צחוק ושל לב פתוח ונחמד.\nראינו אותך גדל, לומד ומתפתח,\nוכל בוקר איתך היה לנו שמח.\nעכשיו אתה ממשיך לדרך חדשה ומרגשת,\nונאחל לך שתמיד תמצא בה שמחה מתחדשת.\nבאהבה גדולה,\n{sig}",
+             g: "ילדה אהובה שלנו 💗\nשנה שלמה עברה עלינו יחד,\nשל משחק, של צחוק ושל לב פתוח ונחמד.\nראינו אותך גדלה, לומדת ומתפתחת,\nוכל בוקר איתך היה לנו שמחה פורחת.\nעכשיו את ממשיכה לדרך חדשה ומרגשת,\nונאחל לך שתמיד תמצאי בה שמחה מתחדשת.\nבאהבה גדולה,\n{sig}" }
+  },
+  class1: {
+    warm:  { b: "ילד אהוב שלנו 💙\nאתה עולה לכיתה א' – איזה צעד גדול ומרגש!\nאנחנו גאים בך ובטוחים שתלמד, תגלה ותכיר חברים חדשים.\nזכור שהגן תמיד יהיה בית חם בשבילך.\nבהצלחה גדולה!\nבאהבה,\n{sig}",
+             g: "ילדה אהובה שלנו 💗\nאת עולה לכיתה א' – איזה צעד גדול ומרגש!\nאנחנו גאים בך ובטוחים שתלמדי, תגלי ותכירי חברים חדשים.\nזכרי שהגן תמיד יהיה בית חם בשבילך.\nבהצלחה גדולה!\nבאהבה,\n{sig}" },
+    rhyme: { b: "ילד אהוב שלנו 💙\nתיק חדש על הגב וחיוך גדול בפנים,\nאתה עולה לכיתה א' – מתחילים פרק של שנים.\nתלמד לקרוא, לכתוב ולספור,\nותגלה עולם שלם מלא אור.\nאנחנו גאים בך ושולחים לך חיבוק חם,\nבהצלחה בכיתה א' – אתה הכי מוכן בעולם!\nבאהבה,\n{sig}",
+             g: "ילדה אהובה שלנו 💗\nתיק חדש על הגב וחיוך גדול בפנים,\nאת עולה לכיתה א' – מתחילים פרק של שנים.\nתלמדי לקרוא, לכתוב ולספור,\nותגלי עולם שלם מלא אור.\nאנחנו גאים בך ושולחים לך חיבוק חם,\nבהצלחה בכיתה א' – את הכי מוכנה בעולם!\nבאהבה,\n{sig}" }
+  },
+  general: {
+    warm:  { b: "ילד אהוב ומתוק 💙\nהספר הזה נוצר במיוחד בשבילך,\nכי אתה הגיבור של הסיפור – ושל הגן שלנו.\nשתמיד תמשיך לחלום, לשאול ולגלות,\nותדע כמה אתה אהוב.\nבאהבה,\n{sig}",
+             g: "ילדה אהובה ומתוקה 💗\nהספר הזה נוצר במיוחד בשבילך,\nכי את הגיבורה של הסיפור – ושל הגן שלנו.\nשתמיד תמשיכי לחלום, לשאול ולגלות,\nותדעי כמה את אהובה.\nבאהבה,\n{sig}" }
   }
 };
+const BOOK_OCC = { birthday:"birthday", class1:"class1", hugs:"year", superhero:"year", kinder:"year", first:"general" };
 const STEPS = [["books","1 · הספרים"],["route","2 · מסלול"],["drive","3 · דרייב"],["approve","4 · אישור הדפסה"]];
 const DRIVE_SUBS = [["what","d-what"],["terms","d-terms"],["photos","d-photos"],["folder","d-folder"],["ded","d-ded"],["pay","d-pay"]];
 
@@ -524,7 +558,8 @@ function mark(k){ if (!S.done[k]) { S.done[k] = today(); save(); } refresh(); }
 
 if (!D.g) {
   $("whoBox").hidden = false; $("fGan").value = S.gan; $("fName").value = S.name;
-  ["fGan","fName"].forEach(id => $(id).addEventListener("input", () => { S.gan = $("fGan").value.trim(); S.name = $("fName").value.trim(); save(); refresh(); }));
+  ["fGan","fName"].forEach(id => $(id).addEventListener("input", () => { const old = sigText(); S.gan = $("fGan").value.trim(); S.name = $("fName").value.trim(); save(); refresh();
+    document.querySelectorAll(".gSig").forEach(i => { if (!i.value.trim() || i.value === old || i.value === "גן ___") i.value = sigText(); }); }));
 }
 
 function priceFor(cover, books){
@@ -618,13 +653,42 @@ function dedUi(){
   });
 }
 ["tB","tG"].forEach(id => $(id).addEventListener("input", dedUi));
-$("exFill").addEventListener("click", () => {
-  const kind = S.topics.includes("birthday") || !S.topics.length ? "birthday" : "year";
-  const g = gan() ? (/^גן\s/.test(gan()) ? gan() : "גן " + gan()) : "גן XXX";
-  if (!$("tB").value) $("tB").value = DED[kind].b.replace("גן XXX", g);
-  if (!$("tG").value) $("tG").value = DED[kind].g.replace("גן XXX", g);
-  dedUi();
-});
+/* מחולל הקדשות: אותו רכיב למסלול הדרייב (ממלא את ההקדשות לשליחה) ולמסלול האתר (להעתקה) */
+function sigText(){ const g = gan(); return g ? (/^(גן|ועד)\s/.test(g) ? g : "גן " + g) : "גן ___"; }
+function makeGen(box, tb, tg, after){
+  const occ0 = BOOK_OCC[S.topics[0]] || "birthday";
+  box.innerHTML = `<div class="genrow">
+    <label>אירוע<select class="gOcc">${Object.keys(OCC).map(k => `<option value="${k}"${k === occ0 ? " selected" : ""}>${OCC[k]}</option>`).join("")}</select></label>
+    <label>סגנון<select class="gSty"><option value="rhyme">בחרוזים</option><option value="warm">חם וקצר</option></select></label>
+    <label class="w">חתימה<input class="gSig" value="${esc(sigText())}"></label></div>
+    <div class="row" style="margin-top:8px"><button type="button" class="btn btn-main gGo">✨ ליצור הקדשה</button>
+    <a class="btn btn-soft gAi" href="#" target="_blank" rel="noopener">🤖 לכתוב עם AI (Claude)</a><a class="btn btn-soft gGpt" href="#" target="_blank" rel="noopener">🤖 ChatGPT</a></div>
+    <p class="aihelp">ה-AI נפתח עם בקשה מוכנה. מעתיקים משם את שתי ההקדשות לכאן.</p>`;
+  const q = c => box.querySelector(c);
+  const sync = () => { const o = DEDS[q(".gOcc").value]; q(".gSty").querySelector('[value="rhyme"]').disabled = !o.rhyme; if (!o[q(".gSty").value]) q(".gSty").value = o.rhyme ? "rhyme" : "warm"; };
+  q(".gOcc").addEventListener("change", sync); sync();
+  q(".gGo").addEventListener("click", () => {
+    const v = q(".gSig").value.trim(); if (!v || v === "גן ___") q(".gSig").value = sigText();
+    const o = DEDS[q(".gOcc").value][q(".gSty").value], sig = q(".gSig").value.trim();
+    $(tb).value = o.b.replace("{sig}", sig); $(tg).value = o.g.replace("{sig}", sig);
+    if (after) after(); if (window.siteEvent) siteEvent("click", "order_ded_gen");
+  });
+  const prompt = () => "כתבו לי הקדשה לספר ילדים אישי שכל ילד בגן מקבל במתנה, לרגל: " + OCC[q(".gOcc").value] + ".\n" +
+    "ההקדשה מטעם: " + ((q(".gSig").value.trim() !== "גן ___" && q(".gSig").value.trim()) || sigText()) + ".\n" +
+    "צריך שתי גרסאות: אחת לבנים (לשון זכר) ואחת לבנות (לשון נקבה), אותו תוכן.\n" +
+    "בלי שם הילד – הכותרת \"הקדשה מכל הלב ל[שם]\" כבר מודפסת מעליה. לא לכתוב את הכותרת.\n" +
+    "עד 350 תווים לכל גרסה, חמה ומרגשת, מתאימה לגיל הגן" + (q(".gSty").value === "rhyme" ? ", בחרוזים" : "") + ", עם אימוג'י אחד בשורה הראשונה, ולסיים ב\"באהבה,\" ואז החתימה.";
+  q(".gAi").addEventListener("click", e => { e.currentTarget.href = "https://claude.ai/new?q=" + encodeURIComponent(prompt()); if (window.siteEvent) siteEvent("click", "order_ded_ai"); });
+  q(".gGpt").addEventListener("click", e => { e.currentTarget.href = "https://chatgpt.com/?q=" + encodeURIComponent(prompt()); if (window.siteEvent) siteEvent("click", "order_ded_gpt"); });
+}
+makeGen($("genDrive"), "tB", "tG", dedUi);
+makeGen($("genSite"), "sB", "sG", () => { S.siteB = $("sB").value; S.siteG = $("sG").value; save(); });
+$("sB").value = S.siteB || ""; $("sG").value = S.siteG || "";
+["sB","sG"].forEach(id => $(id).addEventListener("input", () => { S.siteB = $("sB").value; S.siteG = $("sG").value; save(); }));
+document.querySelectorAll(".cpy").forEach(b => b.addEventListener("click", () => {
+  const t = $(b.dataset.cp).value; const ok = () => { b.textContent = "✔️ הועתק"; setTimeout(() => b.textContent = "📋 העתקה", 2000); };
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, ok); else ok();
+}));
 $("sendDed").addEventListener("click", e => {
   const b = $("tB").value.trim(), g = $("tG").value.trim();
   if (!b || !g) { e.preventDefault(); toast("כתבו הקדשה לבנים והקדשה לבנות ואז שלחו 🙂"); return; }
