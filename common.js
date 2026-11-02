@@ -858,14 +858,14 @@ function siteMainNav(){
       '<span class="i" aria-hidden="true">' + l.icon + '</span><span class="f">' + l.label + '</span><span class="s">' + l.short + '</span></a></li>';
   }).join("");
   var share = siteShareOk();
-  if (share) items += '<li class="sh"><a href="#" target="_blank" rel="noopener" title="שתפו את העמוד עם חברים בוואטסאפ">' +
+  if (share) items += '<li class="sh"><a href="#" target="_blank" rel="noopener" title="שתפו את העמוד: וואטסאפ או העתקת קישור">' +
     '<span class="i" aria-hidden="true">📤</span><span class="f">שתפו עם חברים</span><span class="s">שתפו</span></a></li>';
   nav.innerHTML = '<div class="in"><a class="home" href="' + SITE.main.home + '" target="_blank" rel="noopener" title="לאתר הראשי של BOOQLI (נפתח בחלון חדש)">' +
     '📚 <span>לאתר <b>BOOQLI</b></span><span class="t">· ספרים אישיים שהילד הוא הגיבור ↖</span></a><ul' + (share ? ' class="w6"' : '') + '>' + items + '</ul></div>';
   var sh = nav.querySelector(".sh a");
   if (sh) {
     sh.href = siteShareHref();
-    sh.addEventListener("click", function(){ sh.href = siteShareHref(); siteEvent("click", "share_wa"); });
+    sh.addEventListener("click", function(e){ e.preventDefault(); siteShareMenu(); siteEvent("click", "share_open"); });
   }
   document.body.insertBefore(nav, document.body.firstChild);
 }
@@ -1077,15 +1077,62 @@ function siteAppBar(){
 })();
 
 /* ======================== "שתפו" בפס העליון (מ-2.11.2026, בקשת שמש) ========================
-   כפתור ירוק קבוע בפס הוורוד־מנטה שבראש כל עמוד (siteMainNav). פותח וואטסאפ לבחירת חבר/ה,
+   כפתור ירוק קבוע בפס הוורוד־מנטה שבראש כל עמוד (siteMainNav). פותח חלונית: וואטסאפ / העתקת ההודעה + הקישור / שיתוף לאפליקציה אחרת,
    עם הודעה מוכנה + קישור לעמוד הזה (utm_source=whatsapp&utm_medium=share). מדידה: share_wa.
    לא באזור הילדים ובמצב ילדים. הודעה מיוחדת לעמוד: <meta name="bq-share" content="..."> */
 function siteShareOk(){ return !siteKidLock() && !sitePlayMode() && !/^\/(kids|order)\//.test(location.pathname); }
-function siteShareHref(){
+function siteShareText(src){
   var meta = document.querySelector('meta[name="bq-share"]');
   var name = (document.title || "").split(/ [·|] /)[0].trim();
-  var url = location.origin + location.pathname + "?utm_source=whatsapp&utm_medium=share";
+  var url = location.origin + location.pathname + "?utm_source=" + (src || "whatsapp") + "&utm_medium=share";
   var text = meta ? meta.content :
     "מצאתי אתר מקסים לגיל הרך 💜 משחקים, דפי עבודה ופעילויות לגננות ולהורים, בחינם, ואתר בטוח להורים ולילדים" + (name && !/^booqli Games/i.test(name) ? ":\n" + name : "");
-  return "https://wa.me/?text=" + encodeURIComponent(text + "\n" + url);
+  return text + "\n" + url;
+}
+function siteShareHref(){ return "https://wa.me/?text=" + encodeURIComponent(siteShareText("whatsapp")); }
+/* חלונית "שתפו" (מ-2.11.2026, בקשת שמש): וואטסאפ · העתקת ההודעה + הקישור (לפייסבוק, למייל, לכל מקום) · שיתוף לאפליקציה אחרת (בטלפון) */
+function siteShareMenu(){
+  var old = document.querySelector(".bq-sharebox"); if (old) { old.remove(); return; }
+  if (!document.getElementById("bqShareCss")) {
+    var css = document.createElement("style"); css.id = "bqShareCss";
+    css.textContent =
+      ".bq-sharebox{position:fixed;inset:0;z-index:300;background:rgba(43,21,38,.45);display:flex;align-items:center;justify-content:center;padding:16px;direction:rtl;font-family:Assistant,Arial,sans-serif}" +
+      ".bq-sharebox .c{background:#fff;border-radius:24px;padding:20px 18px 16px;width:100%;max-width:380px;box-shadow:0 14px 40px rgba(0,0,0,.3);text-align:center;color:#2B1526}" +
+      ".bq-sharebox h3{margin:0 0 4px;font:700 21px Fredoka,Assistant,sans-serif;color:#C13671}" +
+      ".bq-sharebox p{margin:0 0 12px;color:#6b5a66;font-size:15px}" +
+      ".bq-sharebox .o{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:999px;padding:13px 16px;margin:8px 0 0;font:800 17px Assistant,Arial,sans-serif;cursor:pointer;text-decoration:none;box-sizing:border-box}" +
+      ".bq-sharebox .wa{background:#1FA855;color:#fff}.bq-sharebox .cp{background:#E1F0EA;color:#2F6B5C}.bq-sharebox .ot{background:#FCE4F1;color:#C13671}" +
+      ".bq-sharebox .cp.ok{background:#2F6B5C;color:#fff}" +
+      ".bq-sharebox .x{margin-top:10px;background:none;border:0;color:#6b5a66;font:700 15px Assistant,sans-serif;cursor:pointer;text-decoration:underline}" +
+      ".bq-sharebox pre{white-space:pre-wrap;text-align:right;background:#F7F4F6;border-radius:14px;padding:10px 12px;margin:0;font:14px/1.45 Assistant,Arial,sans-serif;color:#2B1526;max-height:120px;overflow:auto;word-break:break-word}";
+    document.head.appendChild(css);
+  }
+  var copyText = siteShareText("copy");
+  var box = document.createElement("div"); box.className = "bq-sharebox";
+  box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "שיתוף העמוד");
+  box.innerHTML = '<div class="c"><h3>📤 שתפו עם חברים</h3><p>ההודעה שתישלח:</p><pre></pre>' +
+    '<a class="o wa" href="' + siteShareHref() + '" target="_blank" rel="noopener">💬 שליחה בוואטסאפ</a>' +
+    '<button class="o cp" type="button">📋 העתקת ההודעה והקישור</button>' +
+    (navigator.share ? '<button class="o ot" type="button">📲 שיתוף באפליקציה אחרת</button>' : "") +
+    '<button class="x" type="button">סגירה</button></div>';
+  box.querySelector("pre").textContent = copyText;
+  var close = function(){ box.remove(); document.removeEventListener("keydown", esc); };
+  var esc = function(e){ if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", esc);
+  box.addEventListener("click", function(e){ if (e.target === box) close(); });
+  box.querySelector(".x").onclick = close;
+  box.querySelector(".wa").addEventListener("click", function(){ siteEvent("click", "share_wa"); setTimeout(close, 300); });
+  var cp = box.querySelector(".cp");
+  cp.onclick = function(){
+    var done = function(){ cp.classList.add("ok"); cp.textContent = "✅ הועתק! אפשר להדביק בפייסבוק, במייל או בכל מקום"; siteEvent("click", "share_copy"); };
+    var fallback = function(){ var t = document.createElement("textarea"); t.value = copyText; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch (e) {} t.remove(); done(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(copyText).then(done, fallback); else fallback();
+  };
+  var ot = box.querySelector(".ot");
+  if (ot) ot.onclick = function(){
+    var t = siteShareText("share"), i = t.lastIndexOf("\n");
+    navigator.share({ text: t.slice(0, i), url: t.slice(i + 1) }).then(function(){ siteEvent("click", "share_native"); close(); }).catch(function(){});
+  };
+  document.body.appendChild(box);
+  box.querySelector(".wa").focus();
 }
