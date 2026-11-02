@@ -168,9 +168,13 @@ function siteTrack(name, kind){
     var back = siteVirtual || (location.pathname + location.search + location.hash);
     siteVirtual = back;
     var path = kind ? SITE_DIR + "event/" + kind + "/" + encodeURIComponent(name) : SITE_DIR + "like/" + encodeURIComponent(name);
+    // (2.11.2026) בזמן שהכתובת מתחלפת לרגע, תמונות וקישורים יחסיים ("../../games/...") היו נטענים מכתובת שגויה (404).
+    // לכן בדיוק לחלון הזה מקבעים <base> לכתובת האמיתית, ומסירים אותו כשהכתובת חוזרת.
+    var base = document.getElementById("siteBaseFix");
+    if (!base && !document.querySelector("base")) { base = document.createElement("base"); base.id = "siteBaseFix"; base.href = location.origin + back.split("#")[0]; document.head.insertBefore(base, document.head.firstChild); }
     history.pushState(null, "", path);
     clearTimeout(siteTimer);
-    siteTimer = setTimeout(function(){ history.replaceState(null, "", back); siteVirtual = null; }, 400);
+    siteTimer = setTimeout(function(){ history.replaceState(null, "", back); siteVirtual = null; var bf = document.getElementById("siteBaseFix"); if (bf) bf.remove(); }, 400);
   } catch (e) {}
 }
 /* ספירת פעולות (בלי לדעת מי): הצטרפות לוואטסאפ, מתנה להורים, הזמנת ספר, הצעת מחיר לגן, הדפסה.

@@ -218,6 +218,27 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .next .e{font-size:40px}
 .next b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--sage-deep);display:block}
 
+
+/* הספר המלא להקראה */
+.bookread{margin-top:16px;display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#FFF6DD,#FFE3F4);border:3px solid #FFC2E6;border-radius:26px;padding:18px 20px}
+.bookread img{width:150px;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(163,33,111,.25))}
+.bookread h2{font-size:26px;color:var(--magenta)}
+.bookread p{margin:4px 0 12px}
+.bookread .row-btns{justify-content:flex-start;margin-top:0}
+@media (max-width:560px){.bookread{flex-direction:column;text-align:center}.bookread .row-btns{justify-content:center}}
+.rd-spread{background:#fff;border-radius:26px;box-shadow:0 5px 0 var(--mint-2);overflow:hidden;max-width:820px;margin:0 auto}
+.rd-spread img.pg{width:100%;max-height:52vh;object-fit:contain;background:#FFF6DD;display:block}
+.rd-txt{padding:18px 16px 20px}
+.rd-txt .verse{background:none;font-size:clamp(19px,3.2vw,30px);line-height:1.6;white-space:nowrap;padding:0;margin:0 auto 10px;max-width:100%;overflow:hidden}
+.rd-txt h2{font-family:"Frank Ruhl Libre",serif;color:var(--magenta);font-size:clamp(28px,5vw,44px);margin:8px 0}
+.rd-cover{width:min(300px,70%);margin:12px auto 0;display:block}
+.pager{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.pager .count{font-weight:800;background:#fff;border-radius:999px;padding:4px 14px}
+.ttsnote{color:var(--muted);font-size:14px;margin-top:8px}
+.games{grid-template-columns:repeat(3,1fr)!important}
+@media (max-width:760px){.games{grid-template-columns:repeat(2,1fr)!important}}
+a.gcard{text-decoration:none;color:inherit}
+.gcard .tag.out{background:var(--mint);color:var(--sage-deep)}
 #print{display:none}
 .sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;page-break-after:always;break-after:page}
 .sheet:last-child{page-break-after:auto;break-after:auto}
@@ -262,7 +283,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
       <small>booqli Games · לגננות ולהורים · לפי הספר "ילד/ת יום הולדת"</small>
       <h1>🎂 יום הולדת בגן<br><span>שעת יום הולדת מוכנה</span></h1>
       <p>מה עושים בכל שלב, מה אומרים, ואיזה חרוז מקריאים. ועוד משחקים להקרנה, כתר ודפי ברכה להדפסה, וכרטיס ברכה עם התמונה של החוגג/ת – מתנה להורים להדפיס בבית.</p>
-      <div class="pills"><span>⏱️ 45 דקות</span><span>👑 7 שלבים</span><span>🎮 4 משחקים</span><span>🖨️ 3 דפי הדפסה</span><span>📸 כרטיס עם תמונה</span></div>
+      <div class="pills"><span>⏱️ 45 דקות</span><span>👑 7 שלבים</span><span>📖 הספר המלא להקראה</span><span>🎮 6 משחקים</span><span>🖨️ 4 דפי הדפסה</span><span>📸 כרטיס עם תמונה</span></div>
       <div class="acts">
         <a class="btn-main" href="#plan">👇 למערך</a>
         <a class="btn-sec" href="#card-maker">📸 כרטיס ברכה עם תמונה</a>
@@ -279,14 +300,25 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <p class="kid-note">השם והגיל נכנסים לבד למערך, למשחקים, לכתר ולכרטיס.</p>
   </section>
 
+
+  <section class="bookread" id="book">
+    <img id="readCover" src="../../games/birthday/img/f-book.png" alt="הספר ילד/ת יום הולדת">
+    <div>
+      <h2>📖 קוראים יחד את הספר המלא</h2>
+      <p>הסיפור המחורז "ילד/ת יום הולדת", עמוד אחרי עמוד עם כל האיורים – והשם של החוגג/ת בתוך העלילה. גרסה לבן ולבת, להקרנה בגן, עם הקראה בקול.</p>
+      <div class="row-btns"><button class="btn-main" type="button" data-play="book">📖 לפתוח את הספר</button></div>
+    </div>
+  </section>
+
   <div class="sec-title" id="plan"><h2>⏰ שעת יום הולדת, שלב אחרי שלב</h2><p>7 שלבים לפי הסיפור "ילד/ת יום הולדת". בכל שלב: החרוז מהספר להקראה, מה עושים, ומה אומרים.</p></div>
   <div class="timeline" id="timeline"></div>
 
   <div class="sec-title"><h2>📝 לפני יום ההולדת</h2></div>
-  <div class="prep">
+  <div class="prep" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
     <div class="box"><h3>💌 שבוע לפני – להורים</h3><ul><li>תמונה של הילד/ה מכל שנה (לשלב 3)</li><li>לשאול על אלרגיות לפני כל כיבוד</li><li>זר או כתר (או הכתר להדפסה כאן למטה)</li></ul></div>
     <div class="box"><h3>🖨️ יום לפני – בגן</h3><ul><li>להדפיס דף ברכה לכל ילד</li><li>להכין כיסא מקושט ("כיסא המלוכה")</li><li>לבחור עוגה ונרות: כמו הגיל, ועוד אחד</li></ul></div>
     <div class="box"><h3>🙈 ילד/ה ביישן/ית?</h3><p>לתת לחוגג/ת לבחור: לעבור במנהרה או לשבת ולהסתכל, כמה הרמות, ומי יחזיק את העוגה. בחירה נותנת ביטחון.</p></div>
+    <div class="box"><h3>💡 טיפים להורים</h3><p>חשבון בגובה העיניים: איך ממשיכים לתרגל ספירה וכמויות בבית, דרך יום ההולדת. <a data-game="parents" href="../../games/birthday/#parents" style="color:var(--magenta);font-weight:800">לטיפים ←</a></p></div>
     <div class="box"><h3>🦺 בטיחות</h3><p>רק מבוגרים מרימים את הכיסא, נמוך ולאט, ארבעה מבוגרים, אחד בכל רגל. נרות מדליק ומכבה רק מבוגר, הרחק מהשיער ומהזר.</p></div>
   </div>
 
@@ -296,6 +328,8 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <button class="gcard" type="button" data-play="cake" style="--b:#FFF3CF"><span class="e">🕯️</span><h3>נרות על העוגה</h3><p>שמים על העוגה בדיוק את מספר הנרות, ונושפים</p><span class="tag">חשבון</span></button>
     <button class="gcard" type="button" data-play="sort" style="--b:#E1F0EA"><span class="e">🎈</span><h3>מה מביאים למסיבה?</h3><p>מה שייך ליום הולדת, ומה ממש לא?</p><span class="tag">מיון</span></button>
     <button class="gcard" type="button" data-play="quiz" style="--b:#DCEBFF"><span class="e">📖</span><h3>מי זוכר את הסיפור?</h3><p>7 שאלות על הספר "ילד/ת יום הולדת", עם האיורים</p><span class="tag">חידון</span></button>
+    <a class="gcard" data-game="math" href="../../games/birthday/#math" style="--b:#FFEBD2"><span class="e">⏱️</span><h3>חשבון של יום הולדת</h3><p>משחק מהירות עם שעון, בשתי רמות</p><span class="tag out">חשבון · נפתח במשחק של הספר</span></a>
+    <a class="gcard" data-game="memory" href="../../games/birthday/#memory" style="--b:#F1E3FF"><span class="e">🧠</span><h3>זיכרון המסיבה</h3><p>מוצאים זוגות מתוך איורי הספר</p><span class="tag out">זיכרון · נפתח במשחק של הספר</span></a>
   </div>
 
   <div class="sec-title" id="card-maker"><h2>📸 כרטיס ברכה עם תמונה – מתנה להורים</h2><p>מעלים תמונה של החוגג/ת, בוחרים ברכה, מוסיפים מדבקות, ושומרים או מדפיסים. ההורים מקבלים מזכרת מהגן.</p></div>
@@ -344,6 +378,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
   <div class="sheets">
     <div class="sh-card"><span class="e">👑</span><h3>כתר יום הולדת לגזירה</h3><p>צובעים, גוזרים ומחברים פס נייר מאחור. השם והגיל במרכז.</p><button class="btn-main" type="button" data-print="crown">🖨️ הדפסה</button></div>
     <div class="sh-card"><span class="e">💌</span><h3>דף ברכה מחבר</h3><p>כל ילד מצייר ומברך, והגננת כורכת חוברת – בדיוק כמו בספר.</p><button class="btn-main" type="button" data-print="wish">🖨️ הדפסה</button></div>
+    <div class="sh-card"><span class="e">🔢</span><h3>דף חשבון של יום הולדת</h3><p>צובעים נר לכל שנה, סופרים בלונים, הגובה והמשאלה – עם השם והתמונה (PDF).</p><a class="btn-main" data-game="sheet" href="../../games/birthday/#sheet">📄 לדף (PDF)</a></div>
     <div class="sh-card"><span class="e">🎂</span><h3>צובעים וסופרים</h3><p>עוגה עם נרות כמספר הגיל ובלונים לספירה. לצבוע ולכתוב כמה.</p><button class="btn-main" type="button" data-print="count">🖨️ הדפסה</button></div>
   </div>
 
@@ -437,7 +472,7 @@ function stages(){
     {c:"#C13671", img:"05", min:"5 דק׳", title:"👑 הכתרה",
      verse:["נָעַלְתִּי אֶת הַנַּעֲלַיִם הַחֲדָשׁוֹת,","זֵר פְּרָחִים הֵנַחְתִּי עַל הָרֹאשׁ,",`לָבַשְׁתִּי אֶת ${g("הַשִּׂמְלָה","הַחֻלְצָה")} הַלְּבָנָה –`,"כַּמָּה נִפְלָא לִגְדֹּל בְּשָׁנָה!"],
      steps:[`${n} ${g("יושבת","יושב")} על כיסא מקושט מול כל הילדים`, `מניחים על הראש זר פרחים או את הכתר (להדפסה למטה)`, `כולם קוראים יחד בקול: "מזל טוב, ${n}!" ומוחאים כפיים`],
-     say:`"היום ${n} ${g("חוגגת","חוגג")} יום הולדת ${a}! מי רוצה לספר מה הכי אוהבים ב${g("ה","ו")}?"`},
+     say:`"היום ${n} ${g("חוגגת","חוגג")} יום הולדת ${a}! מי רוצה לספר מה הכי אוהבים ב${g("ה","ו")}?"`, link:["book","📖 להקרנה: הספר המלא עם השם"]},
     {c:"#4E8576", img:"07", min:"5 דק׳", title:"🌉 מנהרת החברים",
      verse:[`לַגַּן מִהַרְתִּי, ${g("מִתְרַגֶּשֶׁת","מִתְרַגֵּשׁ")} עַד הַגַּג,`,"כִּי הַיּוֹם בִּשְׁבִילִי הוּא יוֹם שֶׁל חַג!","הַיְּלָדִים וְהַיְּלָדוֹת כְּבָר חִכּוּ לִי בַּדֶּלֶת –",`כֵּיף לִהְיוֹת ${k} יוֹם הֻלֶּדֶת!`],
      steps:["הילדים עומדים בזוגות, פנים אל פנים, ומרימים ידיים מחוברות – כמו גשר", `${n} ${g("עוברת","עובר")} לאט בתוך המנהרה, וכולם מוחאים כפיים בקצב`, `בסוף המנהרה ${n} ${g("מקבלת","מקבל")} חיבוק קבוצתי (רק מי שרוצה)`],
@@ -477,15 +512,118 @@ function renderTimeline(){
   bindPlay();
 }
 
+function bookStory(){
+  const n=esc(BN()),k=KID();
+  return [
+    {cover:true},
+    {img:IMG("03"),stanzas:[[
+      "הַבֹּקֶר הִתְעוֹרַרְתִּי עִם חִיּוּךְ עֲנָק:",
+      `אֲנִי ${g("מִתְרַגֶּשֶׁת","מִתְרַגֵּשׁ")} כָּל־כָּךְ,`,
+      "כִּי יֵשׁ לִי סִבָּה מְיֻחֶדֶת –",
+      `הַיּוֹם אֲנִי, <em>${n}</em> - ${k} יוֹם הֻלֶּדֶת!`]]},
+    {img:IMG("05"),stanzas:[[
+      "נָעַלְתִּי אֶת הַנַּעֲלַיִם הַחֲדָשׁוֹת,",
+      "זֵר פְּרָחִים הֵנַחְתִּי עַל הָרֹאשׁ,",
+      `לָבַשְׁתִּי אֶת ${g("הַשִּׂמְלָה","הַחֻלְצָה")} הַלְּבָנָה –`,
+      "כַּמָּה נִפְלָא לִגְדֹּל בְּשָׁנָה!"]]},
+    {img:IMG("07"),stanzas:[[
+      `לַגַּן מִהַרְתִּי, ${g("מִתְרַגֶּשֶׁת","מִתְרַגֵּשׁ")} עַד הַגַּג,`,
+      "כִּי הַיּוֹם בִּשְׁבִילִי הוּא יוֹם שֶׁל חַג!",
+      "הַיְּלָדִים וְהַיְּלָדוֹת כְּבָר חִכּוּ לִי בַּדֶּלֶת –",
+      `כֵּיף לִהְיוֹת ${k} יוֹם הֻלֶּדֶת!`]]},
+    {img:IMG("09"),stanzas:[[
+      "הַגַּן הָיָה כֻּלּוֹ צִבְעוֹנִי וַחֲגִיגִי,",
+      "עַל הַקִּירוֹת נִתְלוּ בָּלוֹנִים לִכְבוֹדִי,",
+      "וְאִמָּא הִגִּיעָה עִם הַפְתָּעוֹת טְעִימוֹת:",
+      "חֲבִיתוֹת רֵיחָנִיּוֹת וְלַחְמָנִיּוֹת טְרִיּוֹת."]]},
+    {img:IMG("11"),stanzas:[[
+      "חֲבֵרַי לַגַּן צִיְּרוּ לִי בְּרָכוֹת צִבְעוֹנִיּוֹת",
+      "בִּצְבָעִים זוֹרְחִים עִם מַדְבֵּקוֹת,",
+      "וְהַגַּנֶּנֶת כָּרְכָה אֶת כֻּלָּן לְחוֹבֶרֶת –",
+      `כַּמּוּבָן, לִכְבוֹד <em>${n}</em> - ${k} יוֹם הַהֻלֶּדֶת!`]]},
+    {img:IMG("13"),stanzas:[[
+      "הִגִּיעַ הָרֶגַע, הִגִּיעָה הַשָּׁעָה,",
+      "שֶׁאֵשֵׁב עַל כִּסֵּא הַמְּלוּכָה,",
+      "וְשֶׁיָּרִימוּ אוֹתִי כִּמְעַט עַד הַתִּקְרָה –",
+      "וְעוֹד אֶחָד לַשָּׁנָה הַבָּאָה."]]},
+    {img:IMG("15"),stanzas:[[
+      "וְעַכְשָׁו הִגִּיעַ הַתּוֹר שֶׁל הָעוּגָה.",
+      "עָצַמְתִּי אֶת הָעֵינַיִם בִּשְׁתִיקָה,",
+      "כִּבִּיתִי הַנֵּרוֹת וְהִבַּעְתִּי מִשְׁאָלָה:",
+      `"הַלְוַאי וּלְכָל הַיְּלָדִים תִּהְיֶה כָּזֹאת חֲגִיגָה".`]]},
+    {img:IMG("17"),stanzas:[[
+      "קִבַּלְתִּי הַיּוֹם מַתָּנָה מְיֻחֶדֶת –",
+      `סֵפֶר יְפֵהפֶה בְּשֵׁם "${k} יוֹם הֻלֶּדֶת".`,
+      "אֶשְׁמֹר עָלָיו מִכָּל מִשְׁמָר וְאוּלַי",
+      "אַרְאֶה אוֹתוֹ יוֹם אֶחָד לִנְכָדַי."]]},
+    {img:IMG("19"),stanzas:[[
+      "הַמְּסִבָּה בַּגַּן הִסְתַּיְּמָה,",
+      "אֲבָל הַחֲגִיגָה נִמְשְׁכָה:",
+      "נָסַעְנוּ לַחֲנוּת הַצַּעֲצוּעִים הַגְּדוֹלָה",
+      "וּבָחַרְתִּי לְמַתָּנָה – הַפְתָּעָה בְּקֻפְסָה."]]},
+    {img:IMG("21"),stanzas:[[
+      "בְּסוֹף הַיּוֹם, כְּשֶׁהַשֶּׁמֶשׁ שָׁקְעָה,",
+      "הִתְקַלַּחְתִּי, צִחְצַחְתִּי שִׁנַּיִם,",
+      `${g("מְאֻשֶּׁרֶת וּשְׁלֵוָה","מְאֻשָּׁר וְשָׁלֵו")} עָצַמְתִּי עֵינַיִם,`,
+      `${g("מְחַכָּה","מְחַכֶּה")} בְּקֹצֶר רוּחַ לְשָׁנָה הַבָּאָה.`]]},
+    {end:true,stanzas:[["מַזָּל טוֹב! 🎂",`<em>${n}</em> - ${k} יוֹם הֻלֶּדֶת`,"עַד מֵאָה וְעֶשְׂרִים!"]]}
+  ];
+}
+const BN = () => S.name.trim() || g("הַגִּבּוֹרָה","הַגִּבּוֹר");
+
+/* ---------- הספר המלא להקראה ---------- */
+const TTS = {voice:null, ok:"speechSynthesis" in window, t:null}; let talkId = 0, RD = {page:0, auto:false};
+function pickVoice(){ if (!TTS.ok) return; const v = speechSynthesis.getVoices(); TTS.voice = v.find(x => /^he|^iw/i.test(x.lang)) || null; const n = document.getElementById("ttsnote"); if (n) n.hidden = !!TTS.voice; }
+if (TTS.ok){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function stopTalk(){ talkId++; clearTimeout(TTS.t); if (TTS.ok) speechSynthesis.cancel(); }
+const cleanTxt = t => t.replace(/<[^>]+>/g,"").replace(/[־]/g," ").replace(/\p{Extended_Pictographic}/gu,"").replace(/-/g," ");
+function speakSeq(lines, onDone){
+  stopTalk(); if (!TTS.ok){ if (onDone) onDone(); return; }
+  const id = talkId; let k = 0;
+  const next = () => { if (id !== talkId) return; if (k >= lines.length){ if (onDone) onDone(); return; }
+    const u = new SpeechSynthesisUtterance(cleanTxt(lines[k++])); u.lang = "he-IL"; if (TTS.voice) u.voice = TTS.voice; u.rate = .8;
+    let f = false; const after = () => { if (f || id !== talkId) return; f = true; TTS.t = setTimeout(next, k >= lines.length ? 900 : 550); };
+    u.onend = after; u.onerror = after; speechSynthesis.speak(u); };
+  next();
+}
+function pageLines(p){ return p.cover ? [`${BN()} ${KID()} יוֹם הֻלֶּדֶת`] : p.stanzas.flat(); }
+function fitV(){ document.querySelectorAll(".rd-txt .verse").forEach(v => { v.style.fontSize = ""; let fs = parseFloat(getComputedStyle(v).fontSize), gd = 0; while (v.scrollWidth > v.clientWidth + 1 && fs > 12 && gd++ < 40){ fs -= .5; v.style.fontSize = fs + "px"; } }); }
+function gBook(){
+  const P = bookStory(); RD.page = Math.min(RD.page, P.length - 1); const p = P[RD.page];
+  let body;
+  if (p.cover) body = `<img class="rd-cover" src="${IMGDIR}${S.g === "f" ? "f" : "m"}-book.png" alt=""><div class="rd-txt"><h2>${esc(BN())} ${KID()} יוֹם הֻלֶּדֶת</h2><p class="verse">סִפּוּר מְחֹרָז עַל יוֹם הֻלֶּדֶת בַּגַּן</p></div>`;
+  else body = (p.img ? `<img class="pg" src="${p.img}" alt="">` : "") + `<div class="rd-txt">${p.stanzas.map(st => st.map(l => `<p class="verse">${l}</p>`).join("")).join("")}${p.end ? '<p class="ttsnote">כתיבה: שמש צור · עריכה לשונית: גילת עירון-בהר · BOOQLI</p>' : ""}</div>`;
+  $("playBody").innerHTML = `<div class="levels"><button class="lv ${S.g==="f"?"on":""}" data-g="f" type="button">👧 גרסת הבת</button><button class="lv ${S.g==="m"?"on":""}" data-g="m" type="button">👦 גרסת הבן</button></div>
+    <article class="rd-spread">${body}</article>
+    <div class="pager"><button class="btn-sec" type="button" id="rdPrev" ${RD.page === 0 ? "disabled" : ""}>→ הקודם</button><span class="count">${RD.page + 1} / ${P.length}</span><button class="btn-sec" type="button" id="rdNext" ${RD.page >= P.length - 1 ? "disabled" : ""}>הבא ←</button></div>
+    <div class="row-btns"><button class="btn-main" type="button" id="rdSay">🔊 הקראת העמוד</button><button class="btn-sec" type="button" id="rdAuto">${RD.auto ? "⏸️ עצירה" : "▶️ הקראת כל הספר"}</button></div>
+    <p class="ttsnote" id="ttsnote" ${TTS.voice ? "hidden" : ""}>לא שומעים הקראה? במכשיר הזה אין קול בעברית – פתחו בכרום או בספארי, או קראו יחד בקול 💛</p>
+    ${p.end ? `<div class="win" style="position:static;background:none;padding:0;margin-top:14px"><div class="in" style="max-width:640px;margin:0 auto"><div class="offer">📖 <b>ספר אמיתי ש${esc(NAME())} ${g("היא הגיבורה","הוא הגיבור")} שלו</b> – השם לאורך כל העלילה, איורים אישיים בכל עמוד, מודפס באיכות גבוהה.<br><a href="${CONFIG.orderWin}" target="_blank" rel="noopener">להזמנת ספר יום הולדת ←</a></div></div></div>` : ""}`;
+  const goP = d => { RD.auto = false; stopTalk(); RD.page += d; gBook(); $("play").scrollTo({top:0, behavior:"smooth"}); };
+  $("rdPrev").onclick = () => goP(-1); $("rdNext").onclick = () => goP(1);
+  $("rdSay").onclick = () => { RD.auto = false; speakSeq(pageLines(bookStory()[RD.page])); };
+  $("rdAuto").onclick = () => { RD.auto = !RD.auto; stopTalk(); gBook(); if (RD.auto) autoRead(); };
+  $("playBody").querySelectorAll(".lv[data-g]").forEach(b => b.onclick = () => { S.g = b.dataset.g; saveKid(); document.querySelectorAll(".kid .seg button").forEach(x => x.classList.toggle("on", x.dataset.g === S.g)); renderAll(); stopTalk(); RD.auto = false; gBook(); });
+  fitV();
+}
+function autoRead(){ const P = bookStory(); speakSeq(pageLines(P[RD.page]), () => { if (!RD.auto) return; if (RD.page < P.length - 1){ TTS.t = setTimeout(() => { if (!RD.auto) return; RD.page++; gBook(); $("play").scrollTo({top:0}); autoRead(); }, 1800); } else { RD.auto = false; gBook(); } }); }
+addEventListener("resize", () => { if (!$("play").hidden) fitV(); });
+
+/* ---------- קישורים למשחק של הספר: השם, הגיל והמגדר עוברים איתם ---------- */
+document.querySelectorAll("[data-game]").forEach(a => a.addEventListener("click", () => {
+  try { const o = JSON.parse(localStorage.getItem("booqli-bday") || "{}"); localStorage.setItem("booqli-bday", JSON.stringify({...o, name:S.name.trim() || o.name || "", g:S.g, age:S.age})); } catch(e){}
+  if (window.siteEvent) siteEvent("game", TOPIC + "_book_" + a.dataset.game);
+}));
+
 /* ---------- משחקים ---------- */
 let cleanup = null;
 function openPlay(id){
   $("play").hidden = false; document.body.style.overflow = "hidden";
-  $("playTitle").textContent = {chair:"🪑 מרימים את הכיסא!", cake:"🕯️ נרות על העוגה", sort:"🎈 מה מביאים למסיבה?", quiz:"📖 מי זוכר את הסיפור?"}[id];
-  ({chair:gChair, cake:gCake, sort:gSort, quiz:gQuiz})[id]();
+  $("playTitle").textContent = {book:"📖 הספר המלא: ילד/ת יום הולדת", chair:"🪑 מרימים את הכיסא!", cake:"🕯️ נרות על העוגה", sort:"🎈 מה מביאים למסיבה?", quiz:"📖 מי זוכר את הסיפור?"}[id];
+  if (id === "book"){ RD.page = 0; RD.auto = false; } ({book:gBook, chair:gChair, cake:gCake, sort:gSort, quiz:gQuiz})[id]();
   if (window.siteEvent) siteEvent("game", TOPIC + "_" + id);
 }
-function closePlay(){ if (cleanup) { cleanup(); cleanup = null; } $("play").hidden = true; $("win").hidden = true; document.body.style.overflow = ""; }
+function closePlay(){ stopTalk(); RD.auto = false; if (cleanup) { cleanup(); cleanup = null; } $("play").hidden = true; $("win").hidden = true; document.body.style.overflow = ""; }
 $("playClose").onclick = closePlay;
 function bindPlay(){ document.querySelectorAll("[data-play]").forEach(b => b.onclick = () => openPlay(b.dataset.play)); }
 
@@ -833,6 +971,7 @@ $("shareBtn").onclick = () => waSend(`🎂 יש יום הולדת בגן? מצא
 function renderAll(){
   renderTimeline(); fillGreets(); drawCard();
   $("heroImg").src = IMG("13");
+  $("readCover").src = IMGDIR + (S.g === "f" ? "f" : "m") + "-book.png";
   $("bookImg").src = IMGDIR + (S.g === "f" ? "f" : "m") + "-book.png";
   $("bookImg").alt = "הספר " + (S.g === "f" ? "ילדת" : "ילד") + " יום הולדת של BOOQLI";
   $("bookTitle").textContent = S.name.trim() ? `המתנה הכי מיוחדת: ספר ש${S.name.trim()} ${g("היא הגיבורה","הוא הגיבור")} שלו` : "המתנה הכי מיוחדת: ספר שהחוגג/ת הוא הגיבור שלו";
