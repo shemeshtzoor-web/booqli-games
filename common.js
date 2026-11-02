@@ -248,7 +248,7 @@ function siteJoinLinks(){
 // משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
 window.SITE.lockAllTopics = true;
 window.SITE.openTopics = ["calendar", "safety"];  // לוח החופשות + "מה אתה עושה כאן, פחד?" (אזעקות) – פתוחים תמיד לכולם (בקשת שמש 1.11.2026)
-window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", safety: "מה אתה עושה כאן, פחד?", winter: "החורף", colors: "עולם הצבעים", purim: "פורים" };
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", safety: "מה אתה עושה כאן, פחד?", winter: "החורף", colors: "עולם הצבעים", purim: "פורים", pesach: "פסח" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
 function siteUnlocked(){ if (siteOwner()) return true; try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
@@ -273,7 +273,8 @@ window.SITE.opens = {
   earthquake:       "2026-11-18",  // רביעי
   winter:           "2026-11-25",  // רביעי (בלי התאריך הזה היה נפתח בשבת 21.11)
   colors:           "2026-11-01T08:30",  // ראשון 1.11 בשעה 08:30 (בקשת שמש)
-  purim:            "2027-02-21"         // ראשון, כחודש לפני פורים (23.3.2027). שמש יכולה לבקש תאריך אחר
+  purim:            "2027-02-21",        // ראשון, כחודש לפני פורים (23.3.2027). שמש יכולה לבקש תאריך אחר
+  pesach:           "2027-03-25"         // חמישי, יום אחרי שפורים נסגר. ליל הסדר 21.4.2027
 };
 // תאריך בלבד ("2026-11-29") = נפתח בחצות. תאריך + שעה ("2026-11-01T12:00") = נפתח בשעה הזאת (שעון ישראל).
 function siteOpenDate(id){ var o = SITE.opens[id]; return o ? new Date(o.length > 10 ? o + ":00+02:00" : o + "T00:00:00+02:00") : null; }
@@ -708,6 +709,7 @@ window.SITE.closes = {
   hanukkah: "2026-12-12T23:59:00+02:00",  // סוף חנוכה: היום השמיני, שבת 12.12.2026
   winter:   "2027-03-19T23:59:00+02:00",  // סוף החורף: יום לפני האביב (20.3.2027). בשנה הבאה – לעדכן
   purim:    "2027-03-24T23:59:00+02:00",  // סוף פורים: שושן פורים, רביעי 24.3.2027. בשנה הבאה – לעדכן
+  pesach:   "2027-04-28T23:59:00+03:00",  // סוף חופשת פסח בגנים (חוזרים 29.4.2027). שעון קיץ = +03:00. בשנה הבאה – לעדכן
   autumn:   "2026-12-20T23:59:00+02:00"   // סוף הסתיו: יום לפני תחילת החורף (21.12.2026). בשנה הבאה – לעדכן את התאריך
 };
 function siteNow(){

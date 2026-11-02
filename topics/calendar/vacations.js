@@ -20,7 +20,7 @@ window.VACATIONS = {
     {id:"purim", name:"פורים", ic:"🎭", from:"2027-03-23", to:"2027-03-24", back:"2027-03-25",
      practice:{name:"פורים", href:"topics/purim/", what:"סיפור המגילה עם הקראה, משחק הזיכרון של מיצי וכרטיס ברכה לפורים"}},
     {id:"pesach", name:"פסח", ic:"🍷", from:"2027-04-13", to:"2027-04-28", back:"2027-04-29",
-     practice:{name:"גיבור/ת על", href:"games/superhero/", what:"אותיות, קריאה ומשחק טוב לב"}},
+     practice:{name:"פסח", href:"topics/pesach/", what:"הסיפור האמיתי של מצה החתול, סיפור יציאת מצרים והגדה להדפסה עם תמונת הילד"}},
     {id:"atzmaut", name:"יום העצמאות", ic:"🇮🇱", from:"2027-05-12", to:"2027-05-12", back:"2027-05-13",
      practice:{name:"ילד/ת יום הולדת", href:"games/birthday/", what:"ספירה ועוגת נרות – יום הולדת למדינה"}},
     {id:"shavuot", name:"שבועות", ic:"🌾", from:"2027-06-10", to:"2027-06-11", back:"2027-06-13",
