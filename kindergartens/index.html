@@ -214,6 +214,15 @@ section{margin-top:64px}
 .res .note{font-size:14.5px;margin-top:10px;opacity:.92}
 .res .msg{background:rgba(255,255,255,.16);border-radius:14px;padding:10px 12px;margin-top:12px;font-weight:700}
 .res .btn-green{width:100%;margin-top:14px;font-size:18px;background:#fff;color:#168a45;box-shadow:0 4px 0 #b9cfc6}
+.go2{margin-top:16px;display:grid;gap:10px}
+.go2h{font-weight:800;font-size:17px}
+.gobtn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;font:800 20px Assistant,sans-serif;border-radius:20px;padding:13px 12px;transition:transform .12s}
+.gobtn:hover{transform:translateY(-2px)}
+.gobtn small{font-size:14px;font-weight:700;opacity:.92}
+.gobtn.site{background:#fff;color:var(--magenta);box-shadow:0 5px 0 #b9cfc6}
+.gobtn.drive{background:var(--pink-btn);color:#fff;box-shadow:0 5px 0 var(--pink-shadow)}
+.gobtn.off{opacity:.55;pointer-events:none}
+.wa-small{display:inline-block;margin-top:12px;color:#fff;font-weight:800;text-decoration:underline;font-size:15.5px}
 .res .coupon{display:inline-block;margin-top:10px;background:var(--gold);color:#4a2c00;font-weight:800;border-radius:999px;padding:4px 12px;font-size:15px}
 @media (max-width:780px){.calc-grid{grid-template-columns:minmax(0,1fr)}.res{position:static}}
 @media (max-width:350px){.opts.row{grid-template-columns:minmax(0,1fr)}}
@@ -691,7 +700,6 @@ section{margin-top:64px}
             <label><input type="radio" name="cCover" value="hard"> 💗 כריכה קשה <b data-p="hard">77 ₪</b></label>
           </div>
         </div>
-        <label class="chk"><input type="checkbox" id="cUpload"><span>אנחנו נעלה את התמונות בשבילכם<small>שולחים לנו תיקייה עם התמונות והשמות, בתיאום מראש · להזמנות מעל 20 ספרים</small></span></label>
       </div>
       <div class="res" aria-live="polite">
         <div class="lbl" id="rLbl">סה״כ משוער</div>
@@ -700,8 +708,12 @@ section{margin-top:64px}
         <ul class="lines" id="rLines"></ul>
         <div class="msg" id="rMsg" hidden></div>
         <p class="note" id="rNote">המחיר הסופי נקבע בעגלת הקניות. משלוח לפי הכתובת.</p>
-        <a class="btn btn-green" id="rWa" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 להתקדמות + קבלת קופון הנחה</a>
-        <span class="coupon">🎁 את קופון ההנחה מקבלים בשיחה איתנו</span>
+        <div class="go2">
+          <p class="go2h">מוכנים? מתחילים עכשיו 👇</p>
+          <a class="gobtn site" id="goSiteBtn" href="../order/">🛒 מעלים לבד באתר<small id="goSiteSm">5% הנחה · מתאים לכל כמות</small></a>
+          <a class="gobtn drive" id="goDriveBtn" href="../order/">📁 שולחים במרוכז לדרייב<small id="goDriveSm">אנחנו עושים הכל בשבילכם · מעל 20 ספרים</small></a>
+        </div>
+        <a class="wa-small" id="rWa" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 שאלה? וואטסאפ 055-5549331</a>
       </div>
     </div>
   </div>
@@ -1093,10 +1105,7 @@ function calc(){
   const per = +document.querySelector('input[name="cPer"]:checked').value;
   const cover = document.querySelector('input[name="cCover"]:checked').value;
   const books = kids * per;
-  const upBox = document.getElementById("cUpload");
-  upBox.disabled = books < UP_FROM; if (upBox.disabled) upBox.checked = false;
-  upBox.closest("label").classList.toggle("off", upBox.disabled);
-  const up = upBox.checked;
+  const up = false;
   ["staple","soft","hard"].forEach(c => { const pr = priceFor(c, books); document.querySelector('[data-p="' + c + '"]').textContent = pr ? pr + " ₪" : "מ-20 ספרים"; });
   const p = priceFor(cover, books);
   const tot = document.getElementById("rTot"), perEl = document.getElementById("rPer"), msg = document.getElementById("rMsg");
@@ -1124,7 +1133,15 @@ function calc(){
     "👧👦 " + kids + " ילדים × " + per + " " + (per === 1 ? "ספר" : "ספרים") + " = " + books + " ספרים\n" +
     "📕 " + NAMES[cover] + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
     "💰 " + sum + "\n\nאשמח להתקדם ולקבל קופון הנחה 🙂";
-  document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text);
+  document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text.replace("אשמח להתקדם ולקבל קופון הנחה 🙂", "יש לי שאלה:"));
+  /* שני הכפתורים: מתחילים את התהליך בעמוד ההזמנה, עם מה שחישבו כאן */
+  const link = r => "../order/#d=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({ n: kids, p: per, v: cover, r, s: "route" })))));
+  const gs = document.getElementById("goSiteBtn"), gd = document.getElementById("goDriveBtn");
+  gs.href = link("site"); gd.href = link("drive");
+  document.getElementById("goSiteSm").textContent = p ? "5% הנחה: " + ils(books * p * 0.95) + " במקום " + ils(books * p) : "5% הנחה · מתאים לכל כמות";
+  const dOk = books >= UP_FROM;
+  gd.classList.toggle("off", !dOk); gd.setAttribute("aria-disabled", String(!dOk));
+  document.getElementById("goDriveSm").textContent = dOk ? "אנחנו עושים הכל בשבילכם · עד 2 נושאים" : "להזמנות של מעל 20 ספרים";
 }
 /* המחירון המלא – נבנה מאותו TIERS */
 document.getElementById("ptBody").innerHTML = TIERS.map((r, i) => {
@@ -1139,6 +1156,8 @@ document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click"
   cKids.value = Math.max(1, Math.min(999, (parseInt(cKids.value, 10) || 0) + +b.dataset.step)); calc();
 }));
 document.getElementById("rWa").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_calc_wa"); });
+document.getElementById("goSiteBtn").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_start_site"); });
+document.getElementById("goDriveBtn").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_start_drive"); });
 calc();
 
 /* ===== קישורים לאתר הראשי: חלון חדש + סימון מקור (כדי לראות כמה הגיעו מכאן) ===== */

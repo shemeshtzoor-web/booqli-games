@@ -145,7 +145,14 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 .mode button{border:2px solid var(--mint-2);background:#fff;border-radius:999px;padding:6px 14px;font:800 15px Assistant,sans-serif;cursor:pointer;color:var(--sage-deep)}
 .mode button.on{background:var(--sage-deep);border-color:var(--sage-deep);color:#fff}
 
+.who{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#FFF7FC;border:2px dashed var(--pink);border-radius:20px;padding:14px 16px}
+.who label{display:block;font-weight:800;font-size:14.5px;color:var(--magenta);margin-bottom:4px}
+.who input{width:100%;height:44px;border:2px solid var(--pink-soft);border-radius:12px;padding:0 12px;font:700 17px Assistant,sans-serif;background:#fff}
+.help{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:90;display:flex;align-items:center;gap:8px;background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:10px 16px 10px 12px;box-shadow:0 8px 22px rgba(0,0,0,.22)}
+.help .ic{font-size:22px;line-height:1}
+@media print{.help{display:none}}
 .foot{text-align:center;color:var(--muted);font-size:15px;padding:30px 0 60px}
+@media (max-width:520px){.who{grid-template-columns:1fr}.help .tx{display:none}.help{padding:12px}}
 @media (max-width:760px){.books{grid-template-columns:repeat(2,minmax(0,1fr))}.routes,.ded,.info{grid-template-columns:minmax(0,1fr)}.sum{grid-template-columns:repeat(2,minmax(0,1fr))}.pay{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:420px){.calc5 b{font-size:21px}.btn{width:100%}.row .btn{width:100%}.brand .btn-wa-s span{display:none}}
 </style>
@@ -170,6 +177,10 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <p>כאן תמצאו את כל השלבים, אחד אחרי השני. ההתקדמות נשמרת במכשיר שלכם, אפשר לחזור לעמוד בכל רגע.</p>
 </div>
 
+<div class="who" id="whoBox" hidden>
+  <div><label for="fGan">שם הגן</label><input id="fGan" placeholder="למשל: גן רימון, רחובות"></div>
+  <div><label for="fName">השם שלך</label><input id="fName" placeholder="גננת / ועד – שם פרטי"></div>
+</div>
 <div class="sum" aria-label="פרטי ההזמנה">
   <div><label for="fKids">כמה ילדים?</label><input id="fKids" type="number" min="1" max="999" inputmode="numeric"></div>
   <div><label for="fPer">ספרים לילד</label><select id="fPer"><option value="1">ספר אחד</option><option value="2">2 ספרים</option><option value="3">3 ספרים</option></select></div>
@@ -210,7 +221,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
       <div><span>לתשלום באתר</span><b id="c5c">—</b></div>
     </div>
     <div class="coupon" id="couponBox" hidden>🎁 קוד הקופון שלכם: <code id="couponCode"></code><button type="button" id="couponCopy">העתקה</button></div>
-    <p class="note" id="couponMissing" hidden>🎁 את קוד הקופון ל-5% הנחה שמש שולחת לכם בוואטסאפ.</p>
+    <div class="coupon" id="couponMissing" hidden>🎁 קוד הקופון ל-5% הנחה נשלח אליכם בוואטסאפ <a class="btn btn-green" id="askCoupon" href="#" target="_blank" rel="noopener" style="padding:8px 16px;font-size:16px">💬 לקבלת הקוד</a></div>
     <h3 style="margin-top:16px;font-size:20px">איך מזמינים באתר?</h3>
     <ol class="how">
       <li>בוחרים את הספר באתר.</li>
@@ -227,6 +238,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
       <a class="btn" id="goSite" href="https://www.booqli.ai/he" target="_blank" rel="noopener">לבחירת הספר באתר ←</a>
     </div>
   </div>
+  <p class="warn" id="pickFirst" hidden>📚 עוד לא בחרתם ספר – <a href="#s-topic">בחרו עד שני ספרים בשלב 1</a>, ואז ממשיכים.</p>
   <div class="next" id="routeNext" hidden><button class="btn btn-main" type="button" data-go="drive">המשך לשלבי הדרייב ←</button></div>
 </section>
 
@@ -256,7 +268,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
       <li>👕 אם מצלמים במיוחד – עדיף רקע לבן וחולצה לבנה.</li>
       <li>😀 והכי חשוב – <b>חיוך!</b></li>
     </ul>
-    <div class="row"><a class="btn btn-soft" href="https://youtu.be/Fk42FO0TDmg" target="_blank" rel="noopener">🎥 סרטון: איך לבחור תמונה טובה</a><button class="btn btn-soft" type="button" id="photosDone">✅ הבנו</button></div>
+    <p class="note">📣 <b>אוספים תמונות מההורים?</b> אפשר להתחיל כבר עכשיו – שלחו לקבוצת ההורים הודעה מוכנה עם כל ההנחיות.</p>
+    <div class="row"><a class="btn btn-green" id="parentsMsg" href="#" target="_blank" rel="noopener">📸 הודעה מוכנה להורים</a><a class="btn btn-soft" href="https://youtu.be/Fk42FO0TDmg" target="_blank" rel="noopener">🎥 סרטון: איך לבחור תמונה טובה</a><button class="btn btn-soft" type="button" id="photosDone">✅ הבנו</button></div>
   </div>
 
   <div class="sub" id="d-folder">
@@ -325,6 +338,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 
 </main>
 
+<a class="help" id="helpBtn" href="#" target="_blank" rel="noopener" aria-label="שאלה לשמש בוואטסאפ"><span class="ic">💬</span><span class="tx">שאלה? שמש כאן</span></a>
+
 <footer class="foot wrap">
   <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40" style="margin:0 auto 8px">
   <p>BOOQLI · ספרי ילדים בהתאמה אישית · <a href="../kindergartens/">על ספרי BOOQLI לגנים</a></p>
@@ -361,15 +376,19 @@ let S = {};
 try { S = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) {}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 /* קישור חדש משמש (כמות/כריכה השתנו) גובר על מה שנשמר במכשיר */
-const sig = JSON.stringify([D.n, D.p, D.v]);
-if (D.n && S.sig !== sig) { S.kids = D.n; S.per = D.p || 1; S.cover = D.v || "staple"; S.sig = sig; }
+const sig = JSON.stringify([D.n, D.p, D.v, D.r]);
+if (D.n && S.sig !== sig) { S.kids = D.n; S.per = D.p || 1; S.cover = D.v || "staple"; if (D.r) S.route = D.r; S.sig = sig; }
 S.kids = S.kids || 25; S.per = S.per || 1; S.cover = S.cover || "staple";
 S.topics = S.topics || []; S.route = S.route || D.r || ""; S.done = S.done || {};
 const $ = id => document.getElementById(id);
 const ils = n => Math.round(n).toLocaleString("he-IL") + " ₪";
-const gan = D.g ? D.g : "";
+let gan = D.g || S.gan || "";
+if (!D.g) {
+  $("whoBox").hidden = false; $("fGan").value = S.gan || ""; $("fName").value = S.name || "";
+  ["fGan","fName"].forEach(id => $(id).addEventListener("input", () => { S.gan = $("fGan").value.trim(); S.name = $("fName").value.trim(); gan = S.gan; save(); }));
+}
 const wa = t => "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(t);
-const who = () => (gan ? gan : "הגן שלנו") + (D.c ? " (" + D.c + ")" : "");
+const who = () => (gan ? gan : "הגן שלנו") + ((D.c || S.name) ? " (" + (D.c || S.name) + ")" : "");
 
 if (gan) { $("hi").textContent = "שלום " + gan + "! איזה כיף שבחרתם בבוקלי ❤️"; document.title = "ההזמנה של " + gan + " · BOOQLI"; }
 
@@ -407,7 +426,7 @@ function topicUi(){
   const names = S.topics.map(id => BOOKS.find(b => b.id === id).name);
   $("picked").textContent = names.length ? "✔️ בחרתם: " + names.join(" · ") : "";
   $("topicNext").disabled = !names.length;
-  S.done.topic = !!names.length; save(); progUi();
+  S.done.topic = !!names.length || S.route === "site"; save(); progUi();
 }
 
 /* ---- מסלול ---- */
@@ -426,7 +445,9 @@ function routeUi(){
   $("s-drive").hidden = S.route !== "drive";
   const t = total();
   $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
-  S.done.route = !!S.route; save(); progUi();
+  S.done.route = !!S.route; if (S.route === "site") S.done.topic = true; else if (!S.topics.length) S.done.topic = false;
+  $("pickFirst").hidden = !(S.route === "drive" && !S.topics.length);
+  save(); progUi();
 }
 document.querySelectorAll('input[name="route"]').forEach(i => i.addEventListener("change", () => {
   if (i.value === "drive" && driveBlock()) { i.checked = false; return; }
@@ -434,6 +455,7 @@ document.querySelectorAll('input[name="route"]').forEach(i => i.addEventListener
   if (window.siteEvent) siteEvent("click", "order_route_" + i.value);
 }));
 if (D.k) { $("couponCode").textContent = D.k; $("couponBox").hidden = false; } else $("couponMissing").hidden = false;
+$("askCoupon").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאנחנו מזמינים לבד באתר 🛒 ואשמח לקוד הקופון ל-5% הנחה:\n" + orderLine()); if (window.siteEvent) siteEvent("click", "order_ask_coupon"); });
 $("couponCopy").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(D.k); $("couponCopy").textContent = "✔️ הועתק"; });
 $("goSite").href += "?utm_source=games&utm_medium=order_page&utm_campaign=gan";
 $("goSite").addEventListener("click", () => { S.done.siteGo = true; save(); if (window.siteEvent) siteEvent("click", "order_go_site"); });
@@ -472,6 +494,16 @@ $("sendDed").addEventListener("click", e => {
 });
 $("paidMsg").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 💳 כאן " + who() + ". שילמנו על ההזמנה:\n" + orderLine() + "\nמצרפים אישור תשלום 🙏"); mark("pay"); });
 $("referLink").addEventListener("click", e => { e.preventDefault(); window.open("https://wa.me/?text=" + encodeURIComponent("מצאנו מתנה מהממת לכל ילד בגן 📚 ספר אישי עם השם, איורים של הילד והקדשה. שווה לבדוק:\nhttps://games.booqli.ai/kindergartens/?utm_source=whatsapp&utm_medium=referral\n(תגידו שהגעתם דרך " + (gan || "הגן שלנו") + " 🌱)"), "_blank", "noopener"); });
+
+$("parentsMsg").addEventListener("click", e => {
+  e.currentTarget.href = "https://wa.me/?text=" + encodeURIComponent("הורים יקרים 💛\nאנחנו מכינים לכל ילד וילדה בגן מתנה מרגשת – ספר אישי שבו הילד/ה הם גיבורי הסיפור! 📚\nכדי שהאיורים ייצאו מדויקים, נשמח שתשלחו תמונה אחת של הילד/ה:\n⚪ רקע לבן (אם אפשר)\n🔵 רק הילד/ה בתמונה – בלי אנשים או חיות\n🔴 מבט ישיר למצלמה\n🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים או כתרים\n🟢 בנים עם כיפה – שהכיפה תיראה\n🟣 בנות – שהתסרוקת תיראה היטב\n😀 והכי חשוב – חיוך!\n\n🎥 סרטון קצר: https://youtu.be/Fk42FO0TDmg\nתודה! ❤️");
+  if (window.siteEvent) siteEvent("click", "order_parents_msg");
+});
+$("helpBtn").addEventListener("click", e => {
+  const curStep = (STEPS.find(s => !S.done[s[0]] && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3])[1].replace(/^\d+ · /, "");
+  e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאני בעמוד ההזמנה, בשלב: " + curStep + (S.route ? " (" + (S.route === "drive" ? "דרייב" : "הזמנה באתר") + ")" : "") + "\n" + orderLine() + "\n\nיש לי שאלה:");
+  if (window.siteEvent) siteEvent("click", "order_help");
+});
 
 /* ---- אישור הדפסה ---- */
 S.apMode = S.apMode || (S.route === "drive" ? "drive" : "site");
