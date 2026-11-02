@@ -156,7 +156,13 @@ https://www.booqli.ai/he/my-books
 🌱 גן מביא גן: כל גן שיגיע דרככם ויסגור הזמנה יזכה אתכם ב-50 ₪ הנחה או זיכוי מיידי – גם אם יסגור אפילו בעוד שנה.
 יש לכם גן בראש? שלחו להם: {עמוד_גנים}
 
-🎁 צריכים ספרים נוספים במהלך השנה? אפשר להזמין באתר במחיר האתר לפי הכמות, עם הקוד {גנים50} – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה.` }
+🎁 צריכים ספרים נוספים במהלך השנה? אפשר להזמין באתר במחיר האתר לפי הכמות, עם הקוד {גנים50} – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה.
+
+📲 מתנה לגננת ולהורים – האפליקציה של booqli Games: משחקים, דפי עבודה ומערכים לפי לוח השנה של הגן, בחינם. מתקינים בלחיצה:
+https://games.booqli.ai/app/?utm_source=whatsapp&utm_medium=orders_thanks
+
+💬 הודעה מוכנה להעביר להורים:
+"הורים יקרים 💛 מצאנו אתר בטוח להורים ולילדים עם משחקים ופעילויות לגיל הרך, בחינם 📚 https://games.booqli.ai/?utm_source=whatsapp&utm_medium=gan_parents"` }
 ];
 
 let GANS = [], TPL = [], SET = {}, cur = null;
@@ -170,6 +176,9 @@ async function load() {
   GANS = await store.get("gans", []);
   TPL = await store.get("tpl", null) || JSON.parse(JSON.stringify(TPL_DEFAULT));
   TPL_DEFAULT.forEach(d => { if (!TPL.find(t => t.id === d.id)) TPL.push(JSON.parse(JSON.stringify(d))); });
+  /* 1.0.2: אפליקציה + הודעה להורים בהודעת התודה */
+  const thx = TPL.find(t => t.id === "thanks");
+  if (thx && !thx.text.includes("games.booqli.ai/app")) thx.text += TPL_DEFAULT.find(t => t.id === "thanks").text.split("בתוקף לשנה.")[1] || "";
   /* 1.0.1: משלוח בהודעת התשלום */
   const pay = TPL.find(t => t.id === "pay");
   if (pay && !pay.text.includes("{לתשלום}")) pay.text = pay.text.replace('{ספרים} ספרים · {כריכה} · סה"כ {סה"כ}', '{ספרים} ספרים · {כריכה} · {סה"כ}\n{משלוח}\n💰 לתשלום: {לתשלום}');

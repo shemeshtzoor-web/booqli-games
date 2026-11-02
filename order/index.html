@@ -221,7 +221,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <label class="rt" id="rtSite"><input type="radio" name="route" value="site"><span class="tag">🎁 5% הנחה</span>
       <h3>1️⃣ הזמנה עצמאית באתר 🛒</h3>
       <p class="noedit">✂️ <b>ללא צורך בעריכה!</b> רק מעלים תמונה, רושמים שם והקדשה – וזהו.</p>
-      <ul><li>5% הנחה על כל ההזמנה</li><li>עריכה מהירה יותר – עד יום עסקים אחד ⚡</li><li>מתאים לכל כמות, החל מספר אחד</li><li>כ-2 דקות לכל ילד</li><li>תצוגה מקדימה של הכריכה</li><li>אפשר לשלב נושאים ללא הגבלה</li></ul>
+      <ul><li><b>עוד 5% הנחה</b> – בנוסף להנחת הכמות של האתר (גן ממוצע חוסך כ-100 ₪)</li><li>עריכה מהירה יותר – עד יום עסקים אחד ⚡</li><li>מתאים לכל כמות, החל מספר אחד</li><li>כ-2 דקות לכל ילד</li><li>תצוגה מקדימה של הכריכה</li><li>אפשר לשלב נושאים ללא הגבלה</li></ul>
     </label>
     <label class="rt" id="rtDrive"><input type="radio" name="route" value="drive">
       <h3>2️⃣ הזמנה מרוכזת בדרייב 📁</h3>
@@ -234,7 +234,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <div id="siteBox" hidden>
     <div class="calc5">
       <div><span>מחיר לפני הנחה</span><b id="c5a">—</b></div>
-      <div><span>5% הנחה</span><b id="c5b">—</b></div>
+      <div><span>עוד 5% הנחה</span><b id="c5b">—</b></div>
       <div><span>לתשלום באתר</span><b id="c5c">—</b></div>
     </div>
     <div class="coupon" id="couponBox" hidden>🎁 קוד הקופון שלכם: <code id="couponCode"></code><button type="button" id="couponCopy">העתקה</button></div>
@@ -312,8 +312,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 
   <div class="sub" id="d-ded">
     <h3><span class="ck">4</span>הקדשות 💌</h3>
-    <p>ההקדשה <b>זהה לכל ילדי הגן</b> ו<b>אינה כוללת את שם הילד</b> (עמוד ההקדשה נפתח לבד ב"הקדשה מכל הלב ל..." ואחריו השם). אפשר הקדשה אחת לבנים ואחת לבנות, עד 350 תווים.</p>
-    <label class="one"><input type="checkbox" id="oneDed"> הקדשה אחת לכולם</label>
+    <p>ההקדשה <b>זהה לכל ילדי הגן</b> ו<b>אינה כוללת את שם הילד</b> (עמוד ההקדשה נפתח לבד ב"הקדשה מכל הלב ל..." ואחריו השם). שולחים <b>הקדשה אחת לבנים והקדשה אחת לבנות</b>, עד 350 תווים כל אחת.</p>
     <div class="ded">
       <div id="dedB"><label for="tB">הקדשה לבנים 👦</label><textarea id="tB" maxlength="400" placeholder="ילד אהוב שלנו, ..."></textarea><div class="cnt" id="cB">0 / 350</div></div>
       <div id="dedG"><label for="tG">הקדשה לבנות 👧</label><textarea id="tG" maxlength="400" placeholder="ילדה אהובה שלנו, ..."></textarea><div class="cnt" id="cG">0 / 350</div></div>
@@ -347,7 +346,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <p class="lead">איזה כיף! כשנעדכן אתכם שהספרים מוכנים, הם יחכו לכם לצפייה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
   <div class="mode" id="apMode"><button type="button" data-m="site">הזמנתי באתר</button><button type="button" data-m="drive">הזמנה בדרייב</button></div>
   <div class="row" id="apSite"><a class="btn btn-soft" href="https://www.booqli.ai/he/my-books" target="_blank" rel="noopener">📚 לספרים שלי באתר</a></div>
-  <p class="note" id="apDrive" hidden>📁 הספרים מחכים לכם בתיקייה שלכם בדרייב.</p>
+  <p class="note" id="apDrive" hidden>📁 הספרים מחכים לכם בתיקייה שלכם בדרייב – אותה תיקייה שאליה העליתם את התמונות.</p>
   <div class="checks">
     <label><input type="checkbox" class="apc"> כל הילדים נמצאים</label>
     <label><input type="checkbox" class="apc"> השמות תואמים לילדים ולתמונות הנכונות</label>
@@ -356,8 +355,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   </div>
   <p class="note">👌 <b>אין צורך לבדוק את הסיפור או את האיורים.</b></p>
   <p class="warn">💡 שלב הבדיקה נועד לוודא שהפרטים האישיים נכונים. אין אפשרות לקבל בקשות להחלפת תמונות או לשינויים באיורים על בסיס העדפה אישית. כמובן, אם יש תקלה טכנית או טעות מצידנו – נטפל בה מיד.</p>
-  <div class="row"><a class="btn btn-green" id="approveBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">✅ מאשרים להדפסה</a></div>
-  <p class="note" id="fixNote">מצאתם משהו לתקן? <a href="#" id="fixLink" target="_blank" rel="noopener">כתבו לשמש מה לתקן</a>.</p>
+  <div class="row"><a class="btn btn-green" id="approveBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">✅ מאשרים להדפסה</a><a class="btn btn-soft" id="askBefore" href="#" target="_blank" rel="noopener">💬 יש לי שאלה לפני ההדפסה</a></div>
+  
 </section>
 
 </main>
@@ -509,18 +508,17 @@ $("askFolder").addEventListener("click", e => {
 /* הקדשות */
 const DED_B = "ילד אהוב שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
 const DED_G = "ילדה אהובה שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
-$("tB").value = S.dedB || ""; $("tG").value = S.dedG || ""; $("oneDed").checked = !!S.one;
+$("tB").value = S.dedB || ""; $("tG").value = S.dedG || ""; S.one = false;
 function dedUi(){
-  S.dedB = $("tB").value; S.dedG = $("tG").value; S.one = $("oneDed").checked; save();
-  $("dedG").hidden = S.one; document.querySelector('label[for="tB"]').textContent = S.one ? "הקדשה לכל הילדים 💌" : "הקדשה לבנים 👦";
+  S.dedB = $("tB").value; S.dedG = $("tG").value; save();
   [["tB","cB"],["tG","cG"]].forEach(a => { const n = $(a[0]).value.length; $(a[1]).textContent = n + " / 350"; $(a[1]).classList.toggle("over", n > 350); });
 }
-["tB","tG","oneDed"].forEach(id => $(id).addEventListener("input", dedUi));
-$("exFill").addEventListener("click", () => { if (!$("tB").value) $("tB").value = S.one ? DED_B.replace("ילד אהוב שלנו", "אהוב/ה שלנו") : DED_B; if (!$("tG").value) $("tG").value = DED_G; dedUi(); });
+["tB","tG"].forEach(id => $(id).addEventListener("input", dedUi));
+$("exFill").addEventListener("click", () => { if (!$("tB").value) $("tB").value = DED_B; if (!$("tG").value) $("tG").value = DED_G; dedUi(); });
 $("sendDed").addEventListener("click", e => {
   const b = $("tB").value.trim(), g = $("tG").value.trim();
-  if (!b || (!S.one && !g) || b.length > 350 || g.length > 350) { e.preventDefault(); alertBox("כתבו את ההקדשה (עד 350 תווים) ואז שלחו 🙂"); return; }
-  e.currentTarget.href = wa("היי שמש 💌 ההקדשות של " + who() + ":\n\n" + (S.one ? "לכל הילדים:\n" + b : "👦 לבנים:\n" + b + "\n\n👧 לבנות:\n" + g));
+  if (!b || !g || b.length > 350 || g.length > 350) { e.preventDefault(); alertBox("כתבו הקדשה לבנים והקדשה לבנות (עד 350 תווים) ואז שלחו 🙂"); return; }
+  e.currentTarget.href = wa("היי שמש 💌 ההקדשות של " + who() + ":\n\n" + "👦 לבנים:\n" + b + "\n\n👧 לבנות:\n" + g);
   mark("ded");
 });
 $("paidMsg").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 💳 כאן " + who() + ". שילמנו על ההזמנה:\n" + orderLine() + "\nמצרפים אישור תשלום 🙏"); mark("pay"); });
@@ -552,7 +550,7 @@ $("approveBtn").addEventListener("click", e => {
   e.currentTarget.href = wa("היי שמש ✅ כאן " + who() + ".\nבדקנו את הספרים: כל הילדים נמצאים, השמות נכונים ותואמים לתמונות, וההקדשה נכונה.\n*מאשרים להדפסה!* 🎉");
   S.done.approve = true; save(); progUi(); if (window.siteEvent) siteEvent("click", "order_approve");
 });
-$("fixLink").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש, כאן " + who() + ". בדקנו את הספרים ומצאנו משהו לתקן:\n(שם הילד/ה ומה לתקן)"); });
+$("askBefore").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש, כאן " + who() + ".\nיש לי שאלה לפני ההדפסה:\n(שם הילד/ה ומה השאלה)"); if (window.siteEvent) siteEvent("click", "order_ask_before_print"); });
 $("waTop").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ", יש לי שאלה על ההזמנה:"); });
 
 /* ---- התקדמות ---- */
