@@ -570,7 +570,8 @@ function alertBox(t){
 }
 
 sum(); topicUi(); routeUi(); subUi(); dedUi(); apUi();
-if (D.s) setTimeout(() => { const t = $("s-" + D.s); if (t && !t.hidden) t.scrollIntoView(); }, 600);
+const jump = D.s || (location.hash.match(/^#s-(\w+)$/) || [])[1];
+if (jump) setTimeout(() => { const t = $("s-" + jump); if (t && !t.hidden) t.scrollIntoView(); }, 600);
 </script>
 </body>
 </html>
