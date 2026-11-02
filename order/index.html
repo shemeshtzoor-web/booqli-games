@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ההזמנה של הגן · BOOQLI</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="כל שלבי ההזמנה של ספרי BOOQLI לגן במקום אחד: בחירת ספר, מסלול, תמונות, הקדשות ואישור הדפסה.">
+<meta property="og:title" content="📚 ההזמנה של הגן שלכם – הכל במקום אחד">
+<meta property="og:description" content="בחירת ספר, מסלול הזמנה, תמונות, הקדשות ואישור הדפסה – צעד אחרי צעד.">
+<meta property="og:image" content="https://static.wixstatic.com/media/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png/v1/fit/w_2500,h_1330,al_c/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#FF56C2;--pink-btn:#E0399F;--pink-shadow:#A3216F;--pink-soft:#FFE3F4;--mint:#E1F0EA;--mint-2:#CDE7DC;--sage:#6F988B;--sage-2:#7FA89B;--sage-deep:#4E8576;--magenta:#C13671;--wa:#1FA855;--ink:#2B1526;--muted:#5d4c58;--gold:#F5B93B}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.6;font-size:18px;background:radial-gradient(800px 420px at 100% 0,var(--pink-soft),transparent 60%),linear-gradient(#F7FBF9,#EEF7F2);min-height:100vh;overflow-x:hidden}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;line-height:1.2;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px}
+.logo{height:44px;width:auto;display:block}
+.brand .sp{flex:1}
+.btn-wa-s{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;font-size:15px;white-space:nowrap}
+
+.hello{padding:28px 0 6px;text-align:center}
+.hello .k{display:inline-block;background:#fff;color:var(--magenta);font-weight:800;border-radius:999px;padding:5px 14px;font-size:15.5px;box-shadow:0 3px 12px rgba(193,54,113,.12)}
+.hello h1{font-size:clamp(30px,5.6vw,46px);color:var(--magenta);margin-top:12px}
+.hello p{color:var(--muted);margin-top:8px;font-size:18.5px}
+
+.sum{margin-top:18px;background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(78,133,118,.13);padding:16px 18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}
+.sum label{display:block;font-weight:800;font-size:14.5px;color:var(--sage-deep);margin-bottom:4px}
+.sum input,.sum select{width:100%;height:44px;border:2px solid var(--mint-2);border-radius:12px;padding:0 10px;font:700 17px Assistant,sans-serif;background:#fff;color:var(--ink)}
+.sum .tot{text-align:center;background:var(--mint);border-radius:14px;padding:6px 8px}
+.sum .tot b{display:block;font-family:Fredoka,sans-serif;font-size:26px;color:var(--magenta);line-height:1.1}
+.sum .tot span{font-size:13.5px;font-weight:700;color:var(--sage-deep)}
+
+.prog{display:flex;gap:6px;margin:22px 0 4px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.prog::-webkit-scrollbar{display:none}
+.prog a{flex:1 0 auto;text-decoration:none;text-align:center;font-weight:800;font-size:14px;background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 12px;color:var(--muted);white-space:nowrap}
+.prog a.done{background:var(--mint);border-color:var(--sage);color:var(--sage-deep)}
+.prog a.done::before{content:"✓ "}
+.prog a.cur{background:var(--pink-btn);border-color:var(--pink-btn);color:#fff}
+
+.step{margin-top:22px;background:#fff;border-radius:26px;box-shadow:0 8px 28px rgba(78,133,118,.12);padding:22px 20px;border:3px solid transparent}
+.step.cur{border-color:var(--pink-soft)}
+.step>.h{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.step>.h .n{width:46px;height:46px;flex-shrink:0;border-radius:15px;background:var(--pink-soft);color:var(--magenta);display:grid;place-items:center;font:700 22px Fredoka,sans-serif}
+.step.ok>.h .n{background:var(--mint);color:var(--sage-deep)}
+.step>.h h2{font-size:clamp(22px,3.6vw,28px)}
+.step>.h small{display:block;font:700 14.5px Assistant,sans-serif;color:var(--muted)}
+.lead{color:var(--muted)}
+.lead b{color:var(--ink)}
+.note{margin-top:12px;background:#F6FAF8;border-radius:14px;padding:10px 14px;font-size:16px}
+.warn{margin-top:12px;background:#FFF8E6;border:2px solid #FBE3A6;border-radius:14px;padding:10px 14px;font-size:16px}
+.btn{border:0;border-radius:999px;padding:13px 22px;font:800 18px Assistant,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-main{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}
+.btn-green{background:var(--wa);color:#fff;box-shadow:0 4px 0 #157a3d}
+.btn-soft{background:#fff;color:var(--sage-deep);box-shadow:0 0 0 2px var(--sage) inset}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.next{margin-top:18px;display:flex;justify-content:flex-start}
+
+/* ספרים */
+.books{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.bk{border:2px solid var(--mint-2);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:border-color .15s,box-shadow .15s}
+.bk.sel{border-color:var(--pink-btn);box-shadow:0 0 0 3px var(--pink-soft)}
+.bk .im{aspect-ratio:1;background:var(--mint)}
+.bk img{width:100%;height:100%;object-fit:cover;display:block}
+.bk .t{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.bk h3{font-size:18.5px}
+.bk p{font-size:14.5px;color:var(--muted);flex:1}
+.bk .acts{display:flex;gap:6px;flex-wrap:wrap}
+.bk .rd{flex:1;text-align:center;text-decoration:none;font-weight:800;font-size:14.5px;border-radius:999px;padding:7px 8px;background:var(--mint);color:var(--sage-deep)}
+.bk .rd.soon{opacity:.6;pointer-events:none}
+.bk label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:14.5px;border-radius:999px;padding:7px 8px;background:var(--pink-soft);color:var(--magenta);cursor:pointer}
+.bk input{accent-color:var(--pink-btn);width:18px;height:18px}
+.picked{margin-top:12px;font-weight:800;color:var(--sage-deep)}
+
+/* מסלולים */
+.routes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.rt{border:3px solid var(--mint-2);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fff;position:relative}
+.rt.sel{border-color:var(--pink-btn);background:#FFF7FC}
+.rt.off{opacity:.55;cursor:not-allowed}
+.rt h3{font-size:22px}
+.rt .tag{position:absolute;top:12px;left:12px;background:var(--gold);color:#4a2c00;font-weight:800;font-size:13px;border-radius:999px;padding:3px 10px}
+.rt ul{list-style:none;padding:0;margin:0;display:grid;gap:4px;font-size:16px}
+.rt li::before{content:"✓ ";color:#23784A;font-weight:800}
+.rt .why{font-size:14.5px;color:#B3264F;font-weight:700}
+.rt input{position:absolute;opacity:0;pointer-events:none}
+
+.calc5{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:center}
+.calc5 div{background:var(--mint);border-radius:16px;padding:10px 6px}
+.calc5 div:nth-child(2){background:var(--pink-soft)}
+.calc5 div:last-child{background:var(--sage-deep);color:#fff}
+.calc5 b{display:block;font:700 26px Fredoka,sans-serif;line-height:1.15}
+.calc5 span{font-size:14px;font-weight:700}
+.coupon{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:#FFF8E6;border:2px dashed var(--gold);border-radius:16px;padding:10px 14px;font-weight:800}
+.coupon code{font:700 20px Fredoka,monospace;background:#fff;border-radius:10px;padding:2px 12px;direction:ltr}
+.coupon button{border:0;background:var(--sage-deep);color:#fff;font:800 15px Assistant,sans-serif;border-radius:999px;padding:6px 14px;cursor:pointer}
+ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
+.done-box{margin-top:16px;text-align:center;background:linear-gradient(135deg,var(--sage-deep),var(--sage));color:#fff;border-radius:22px;padding:20px 16px}
+.done-box h3{font-size:24px}
+.done-box p{margin-top:6px;opacity:.95}
+.done-box .btn{margin-top:14px;background:#fff;color:var(--magenta);box-shadow:0 4px 0 #b9cfc6}
+
+/* תת־שלבים בדרייב */
+.sub{border-top:2px dashed var(--mint-2);padding-top:16px;margin-top:16px}
+.sub h3{font-size:20px;display:flex;align-items:center;gap:8px}
+.sub h3 .ck{width:28px;height:28px;border-radius:50%;background:var(--mint-2);display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.sub.ok h3 .ck{background:#23784A;color:#fff}
+.sub>p{margin-top:6px;color:var(--muted)}
+.rules{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px}
+.rules li{background:#F6FAF8;border-radius:12px;padding:7px 12px;font-size:16px}
+.rules li b{color:var(--ink)}
+.ded{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:10px}
+.ded label{font-weight:800;font-size:16px}
+.ded textarea{width:100%;min-height:150px;border:2px solid var(--mint-2);border-radius:14px;padding:10px 12px;font:600 16.5px Assistant,sans-serif;resize:vertical;background:#fff;color:var(--ink)}
+.ded textarea:focus{outline:none;border-color:var(--sage)}
+.ded .cnt{font-size:13.5px;color:var(--muted);text-align:left}
+.ded .cnt.over{color:#B3264F;font-weight:800}
+.one{display:flex;gap:8px;align-items:center;margin-top:8px;font-weight:700;font-size:16px}
+.one input{accent-color:var(--pink-btn);width:18px;height:18px}
+.ex{margin-top:8px;font-size:15.5px}
+.ex button{border:0;background:var(--pink-soft);color:var(--magenta);font:800 14.5px Assistant,sans-serif;border-radius:999px;padding:5px 12px;cursor:pointer;margin:2px}
+.pay{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.pay div{background:#F6FAF8;border-radius:14px;padding:10px;text-align:center;font-weight:700;font-size:15.5px}
+.pay div span{display:block;font-size:26px}
+.info{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:10px}
+.info div{background:#F6FAF8;border-radius:16px;padding:12px 14px;font-size:15.5px}
+.info b{display:block;font-size:16.5px;color:var(--sage-deep);margin-bottom:2px}
+
+/* אישור הדפסה */
+.checks{display:grid;gap:8px;margin-top:12px}
+.checks label{display:flex;gap:10px;align-items:center;background:#F6FAF8;border:2px solid transparent;border-radius:14px;padding:10px 12px;font-weight:700;cursor:pointer}
+.checks label:has(input:checked){border-color:#BFE3CC;background:#EAF7EF}
+.checks input{accent-color:#23784A;width:22px;height:22px;flex-shrink:0}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.mode button{border:2px solid var(--mint-2);background:#fff;border-radius:999px;padding:6px 14px;font:800 15px Assistant,sans-serif;cursor:pointer;color:var(--sage-deep)}
+.mode button.on{background:var(--sage-deep);border-color:var(--sage-deep);color:#fff}
+
+.foot{text-align:center;color:var(--muted);font-size:15px;padding:30px 0 60px}
+@media (max-width:760px){.books{grid-template-columns:repeat(2,minmax(0,1fr))}.routes,.ded,.info{grid-template-columns:minmax(0,1fr)}.sum{grid-template-columns:repeat(2,minmax(0,1fr))}.pay{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.calc5 b{font-size:21px}.btn{width:100%}.row .btn{width:100%}.brand .btn-wa-s span{display:none}}
+</style>
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../common.js" as="script">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap brand">
+    <img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44">
+    <span class="sp"></span>
+    <a class="btn-wa-s" id="waTop" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 <span>שאלה לשמש</span></a>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="hello">
+  <span class="k">📚 ההזמנה של הגן – הכל במקום אחד</span>
+  <h1 id="hi">שלום! איזה כיף שבחרתם בבוקלי ❤️</h1>
+  <p>כאן תמצאו את כל השלבים, אחד אחרי השני. ההתקדמות נשמרת במכשיר שלכם, אפשר לחזור לעמוד בכל רגע.</p>
+</div>
+
+<div class="sum" aria-label="פרטי ההזמנה">
+  <div><label for="fKids">כמה ילדים?</label><input id="fKids" type="number" min="1" max="999" inputmode="numeric"></div>
+  <div><label for="fPer">ספרים לילד</label><select id="fPer"><option value="1">ספר אחד</option><option value="2">2 ספרים</option><option value="3">3 ספרים</option></select></div>
+  <div><label for="fCover">כריכה</label><select id="fCover"><option value="staple">💜 רכה סיכות</option><option value="soft">💛 רכה (פיג'מה)</option><option value="hard">💗 קשה פרימיום</option></select></div>
+  <div class="tot"><b id="sTot">—</b><span id="sPer"></span></div>
+</div>
+
+<nav class="prog" id="prog" aria-label="שלבים"></nav>
+
+<!-- 1. ספר -->
+<section class="step" id="s-topic" data-step="topic">
+  <div class="h"><span class="n">1</span><h2>בוחרים את הספר<small>אפשר לקרוא כל ספר במלואו לפני שבוחרים</small></h2></div>
+  <p class="lead">סמנו את הספר (או הספרים) שתרצו לגן. <b>בהזמנה עצמאית באתר</b> אפשר לשלב נושאים שונים ללא הגבלה. <b>בהזמנה מרוכזת בדרייב</b> – עד שני נושאים לגן.</p>
+  <div class="books" id="books"></div>
+  <p class="picked" id="picked"></p>
+  <div class="next"><button class="btn btn-main" type="button" data-go="route" id="topicNext" disabled>המשך לבחירת מסלול ←</button></div>
+</section>
+
+<!-- 2. מסלול -->
+<section class="step" id="s-route" data-step="route">
+  <div class="h"><span class="n">2</span><h2>בוחרים מסלול<small>שתי דרכים פשוטות – בחרו מה שהכי נוח לכם</small></h2></div>
+  <div class="routes">
+    <label class="rt" id="rtSite"><input type="radio" name="route" value="site"><span class="tag">🎁 5% הנחה</span>
+      <h3>1️⃣ הזמנה עצמאית באתר 🛒</h3>
+      <ul><li>5% הנחה על כל ההזמנה</li><li>עריכה מהירה יותר – עד יום עסקים אחד ⚡</li><li>מתאים לכל כמות, החל מספר אחד</li><li>כ-2 דקות לכל ילד</li><li>תצוגה מקדימה של הכריכה</li><li>אפשר לשלב נושאים ללא הגבלה</li></ul>
+    </label>
+    <label class="rt" id="rtDrive"><input type="radio" name="route" value="drive">
+      <h3>2️⃣ הזמנה מרוכזת בדרייב 📁</h3>
+      <ul><li>מעלים את כל התמונות יחד לתיקייה מסודרת</li><li>אנחנו מבצעים עבורכם את ההזמנה מא׳ ועד ת׳</li><li>זמן עריכה – עד 3 ימי עסקים</li><li>להזמנות מעל 20 ספרים, עד שני נושאים</li></ul>
+      <p class="why" id="driveWhy" hidden></p>
+    </label>
+  </div>
+
+  <div id="siteBox" hidden>
+    <div class="calc5">
+      <div><span>מחיר לפני הנחה</span><b id="c5a">—</b></div>
+      <div><span>5% הנחה</span><b id="c5b">—</b></div>
+      <div><span>לתשלום באתר</span><b id="c5c">—</b></div>
+    </div>
+    <div class="coupon" id="couponBox" hidden>🎁 קוד הקופון שלכם: <code id="couponCode"></code><button type="button" id="couponCopy">העתקה</button></div>
+    <p class="note" id="couponMissing" hidden>🎁 את קוד הקופון ל-5% הנחה שמש שולחת לכם בוואטסאפ.</p>
+    <h3 style="margin-top:16px;font-size:20px">איך מזמינים באתר?</h3>
+    <ol class="how">
+      <li>בוחרים את הספר באתר.</li>
+      <li>מעלים תמונה של הילד/ה (<a href="#photoTips">איזו תמונה מתאימה?</a>).</li>
+      <li>רושמים את שם הילד ומוסיפים הקדשה.</li>
+      <li>בוחרים את סוג הכריכה ומוסיפים לסל.</li>
+      <li>המחיר מתעדכן אוטומטית עם כל ספר שמוסיפים לסל.</li>
+      <li>מזינים את קוד הקופון, משלמים ושולחים את ההזמנה.</li>
+    </ol>
+    <p class="note">💳 תשלום באתר: אשראי, Bit, PayPal או Google Pay. ✨ אין צורך לערוך או לבדוק איור־איור – כל העבודה עלינו! לאחר שליחת ההזמנה תקבלו את הספרים המלאים לאישורכם לפני ההדפסה.</p>
+    <div class="done-box">
+      <h3>זהו, ממשיכים באתר 🛒</h3>
+      <p>מכאן ההזמנה נמשכת באתר של BOOQLI. כשהספרים יהיו מוכנים לאישור – נשלח לכם הודעה.</p>
+      <a class="btn" id="goSite" href="https://www.booqli.ai/he" target="_blank" rel="noopener">לבחירת הספר באתר ←</a>
+    </div>
+  </div>
+  <div class="next" id="routeNext" hidden><button class="btn btn-main" type="button" data-go="drive">המשך לשלבי הדרייב ←</button></div>
+</section>
+
+<!-- 3. דרייב -->
+<section class="step" id="s-drive" data-step="drive" hidden>
+  <div class="h"><span class="n">3</span><h2>הזמנה מרוכזת בדרייב 📁<small>חמישה צעדים קצרים, לפי הסדר</small></h2></div>
+
+  <div class="sub" id="d-terms">
+    <h3><span class="ck">1</span>אישור מדיניות ותקנון 🔒</h3>
+    <p>לפני העלאת התמונות יש לאשר את מדיניות הפרטיות ותקנון האתר בטופס קצר. אחרי החתימה – חוזרים לכאן.</p>
+    <div class="row">
+      <a class="btn btn-main" id="termsLink" href="https://forms.gle/UinyXV37w2yMYvJd7" target="_blank" rel="noopener">✍️ לחתימה על הטופס</a>
+      <button class="btn btn-soft" type="button" id="termsDone">✅ חתמתי</button>
+    </div>
+  </div>
+
+  <div class="sub" id="d-photos">
+    <h3 id="photoTips"><span class="ck">2</span>בחירת התמונות 📸</h3>
+    <p><b>איכות האיור מתחילה בתמונה – תמונה טובה → תוצאה טובה!</b> 💛 התמונה היא הבסיס ליצירת הדמות בספר.</p>
+    <ul class="rules">
+      <li>⚪ <b>רקע לבן</b> – יעזור לנו מאוד לשמור על עקביות, ואנחנו מעריכים את המאמץ!</li>
+      <li>🔵 <b>ילד אחד בלבד</b> – ללא אנשים או בעלי חיים נוספים, גם לא ברקע.</li>
+      <li>🔴 <b>מבט ישיר למצלמה</b> – לא למעלה, למטה, הצידה או בפרופיל.</li>
+      <li>🟠 <b>פנים גלויות ונקיות</b> – ללא כובע, משקפי שמש, סרטים, זרים, כתרים, פלסטרים או קעקועים.</li>
+      <li>🟢 <b>בנים עם כיפה</b> – חשוב שהכיפה תופיע בתמונה.</li>
+      <li>🟣 <b>בנות</b> – התסרוקת באיור תתבסס על התסרוקת שבתמונה, לכן חשוב שתיראה היטב.</li>
+      <li>👕 אם מצלמים במיוחד – עדיף רקע לבן וחולצה לבנה.</li>
+      <li>😀 והכי חשוב – <b>חיוך!</b></li>
+    </ul>
+    <div class="row"><a class="btn btn-soft" href="https://youtu.be/Fk42FO0TDmg" target="_blank" rel="noopener">🎥 סרטון: איך לבחור תמונה טובה</a><button class="btn btn-soft" type="button" id="photosDone">✅ הבנו</button></div>
+  </div>
+
+  <div class="sub" id="d-folder">
+    <h3><span class="ck">3</span>תיקייה בדרייב והעלאת התמונות 📁</h3>
+    <p>שלחו לשמש הודעה, והיא תפתח לכם תיקייה אישית ותשלח את הקישור <b>בוואטסאפ</b>.</p>
+    <div class="row"><a class="btn btn-green" id="askFolder" href="#" target="_blank" rel="noopener">💬 חתמנו – אשמח לתיקייה בדרייב</a></div>
+    <ul class="rules">
+      <li>📂 התיקייה מחולקת לשתי תיקיות: <b>בנים</b> ו<b>בנות</b>. כל תמונה – לתיקייה המתאימה.</li>
+      <li>🏷️ שם הקובץ = <b>השם הפרטי של הילד בלבד</b>. אותו שם לכמה ילדים? מוסיפים מספר: <b>יוסי 1, יוסי 2</b>.</li>
+      <li>🖼️ פורמט <b>PNG / JPG</b> בלבד.</li>
+      <li>✅ אחרי שכל התמונות עלו – נבדוק שהן תקינות ונמשיך.</li>
+    </ul>
+    <p class="warn">⚠️ <b>חשוב:</b> לאחר סגירת התיקייה <b>לא ניתן להחליף תמונות או להוסיף ספרים</b>. כל שינוי או הוספה אחר כך ייחשבו כהזמנה חדשה.</p>
+    <div class="row"><button class="btn btn-soft" type="button" id="folderDone">✅ העלינו את כל התמונות</button></div>
+  </div>
+
+  <div class="sub" id="d-ded">
+    <h3><span class="ck">4</span>הקדשות 💌</h3>
+    <p>ההקדשה <b>זהה לכל ילדי הגן</b> ו<b>אינה כוללת את שם הילד</b> (עמוד ההקדשה נפתח לבד ב"הקדשה מכל הלב ל..." ואחריו השם). אפשר הקדשה אחת לבנים ואחת לבנות, עד 350 תווים.</p>
+    <label class="one"><input type="checkbox" id="oneDed"> הקדשה אחת לכולם</label>
+    <div class="ded">
+      <div id="dedB"><label for="tB">הקדשה לבנים 👦</label><textarea id="tB" maxlength="400" placeholder="ילד אהוב שלנו, ..."></textarea><div class="cnt" id="cB">0 / 350</div></div>
+      <div id="dedG"><label for="tG">הקדשה לבנות 👧</label><textarea id="tG" maxlength="400" placeholder="ילדה אהובה שלנו, ..."></textarea><div class="cnt" id="cG">0 / 350</div></div>
+    </div>
+    <p class="ex">צריכים רעיון? <button type="button" id="exFill">✨ למלא בדוגמה</button> ואז לשנות את שם הגן והחתימה.</p>
+    <div class="row"><a class="btn btn-green" id="sendDed" href="#" target="_blank" rel="noopener">💬 שליחת ההקדשות לשמש</a></div>
+  </div>
+
+  <div class="sub" id="d-pay">
+    <h3><span class="ck">5</span>תשלום 💳</h3>
+    <p><b>התשלום מתבצע מראש, לפני תחילת עריכת הספרים.</b> פרטי התשלום נשלחים אליכם בוואטסאפ.</p>
+    <div class="pay"><div><span>🏦</span>העברה בנקאית</div><div><span>📱</span>Bit</div><div><span>📱</span>PayBox</div><div><span>💳</span>אשראי בתיאום</div></div>
+    <div class="row"><a class="btn btn-green" id="paidMsg" href="#" target="_blank" rel="noopener">💬 שילמנו – שליחת אישור</a></div>
+  </div>
+
+  <div class="sub" id="d-next">
+    <h3><span class="ck">✨</span>מה קורה עכשיו?</h3>
+    <p>לאחר קבלת התמונות, ההקדשות והתשלום – מתחילים בעריכה (עד 3 ימי עסקים). כל הספרים נשלחים אליכם לאישור לפני ההדפסה.</p>
+    <div class="info">
+      <div><b>🤖 על בינה מלאכותית</b>בינה מלאכותית אינה מצלמה. גם כשהדמיון גבוה מאוד, ייתכנו הבדלים קלים במראה הדמות או בפרופורציות. אנחנו מגיעים לדיוק של עד 99% בדמיון, וכל ספר עובר בדיקה אנושית – איור אחר איור.</div>
+      <div><b>📦 גודל ואריזה</b>כריכה רכה, כרומו – 20×20 ס"מ · כריכה קשה – 21×21 ס"מ. הספרים מגיעים ללא אריזה אישית. הכי יפה לארוז בצלופן שקוף ובסרט 🎀</div>
+      <div><b>⏱️ זמני אספקה</b>🚚 משלוח: עד 14 ימי עסקים מאישור ההדפסה. 🚗 איסוף עצמי: בתיאום מראש, עד 7 ימי עסקים מאישור ההדפסה.</div>
+      <div><b>🌱 גן מביא גן</b>כל גן שיגיע דרככם ויסגור הזמנה יזכה אתכם ב-50 ₪ הנחה או זיכוי מיידי – גם אם יסגור אפילו בעוד שנה. <a href="#" id="referLink">שלחו לגן חבר ←</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. אישור הדפסה -->
+<section class="step" id="s-approve" data-step="approve">
+  <div class="h"><span class="n">4</span><h2>אישור הדפסה ✅<small>כשהספרים מוכנים – בודקים בקצרה ומאשרים</small></h2></div>
+  <p class="lead">איזה כיף! כשנעדכן אתכם שהספרים מוכנים, הם יחכו לכם לצפייה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
+  <div class="mode" id="apMode"><button type="button" data-m="site">הזמנתי באתר</button><button type="button" data-m="drive">הזמנה בדרייב</button></div>
+  <div class="row" id="apSite"><a class="btn btn-soft" href="https://www.booqli.ai/he/my-books" target="_blank" rel="noopener">📚 לספרים שלי באתר</a></div>
+  <p class="note" id="apDrive" hidden>📁 הספרים מחכים לכם בתיקייה שלכם בדרייב.</p>
+  <div class="checks">
+    <label><input type="checkbox" class="apc"> כל הילדים נמצאים</label>
+    <label><input type="checkbox" class="apc"> השמות תואמים לילדים ולתמונות הנכונות</label>
+    <label><input type="checkbox" class="apc"> השמות עצמם כתובים נכון</label>
+    <label><input type="checkbox" class="apc"> ההקדשה היא ההקדשה שביקשנו, בלי שגיאות</label>
+  </div>
+  <p class="note">👌 <b>אין צורך לבדוק את הסיפור או את האיורים.</b></p>
+  <p class="warn">💡 שלב הבדיקה נועד לוודא שהפרטים האישיים נכונים. אין אפשרות לקבל בקשות להחלפת תמונות או לשינויים באיורים על בסיס העדפה אישית. כמובן, אם יש תקלה טכנית או טעות מצידנו – נטפל בה מיד.</p>
+  <div class="row"><a class="btn btn-green" id="approveBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">✅ מאשרים להדפסה</a></div>
+  <p class="note" id="fixNote">מצאתם משהו לתקן? <a href="#" id="fixLink" target="_blank" rel="noopener">כתבו לשמש מה לתקן</a>.</p>
+</section>
+
+</main>
+
+<footer class="foot wrap">
+  <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40" style="margin:0 auto 8px">
+  <p>BOOQLI · ספרי ילדים בהתאמה אישית · <a href="../kindergartens/">על ספרי BOOQLI לגנים</a></p>
+</footer>
+
+<script src="../common.js"></script>
+<script>
+/* ===================== ההזמנה של הגן (order/) =====================
+   קישור אישי שנוצר בתוסף "בוקלי – הזמנות גנים": order/#d=<base64 של JSON>
+   {g: שם הגן, c: איש קשר, n: ילדים, p: ספרים לילד, v: כריכה staple/soft/hard, k: קופון 5%, s: שלב פתיחה, r: מסלול}
+   כל מה שבקישור נשאר בדפדפן (אחרי ה-#, לא נשלח לשרת). אין כאן פרטי בנק או טלפונים פרטיים – אלה נשלחים בוואטסאפ מהתוסף.
+   המחירים: אותו מחירון כמו בעמוד הגנים (TIERS). משנים מחיר – גם כאן וגם ב-kindergartens/ וגם בתוסף. */
+const PHONE = "972555549331";
+const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83],[20,60,77],[50,59,76],[100,57,74]];
+const STAPLE = { p:50, from:20 };
+const COVER = { staple:"כריכה רכה סיכות", soft:"כריכה רכה (פיג'מה)", hard:"כריכה קשה פרימיום" };
+const DRIVE_FROM = 21, DRIVE_MAX_TOPICS = 2, DISCOUNT = 0.05;
+/* הספרים. pdf: הקובץ בתיקייה order/books/ (כששמש מעלה – ממלאים כאן). */
+const BOOKS = [
+  { id:"birthday", name:"ילד/ת יום הולדת", d:"היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה.", img:"https://static.wixstatic.com/media/a56db3_4d9c35abdbff4706bb722205187e5621~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/b.png", pdf:"" },
+  { id:"hugs", name:"חיבוקים", d:"המעשים הטובים וכל החיבוקים האוהבים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_6adc566e4dd145d3b58a28f4a66417d0~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/h.png", pdf:"" },
+  { id:"superhero", name:"גיבור/ת על!", d:"גיבור/ה שבוחר/ת במעשים טובים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/s.png", pdf:"" },
+  { id:"first", name:"הספר הראשון שלי", d:"לקטנטנים בגילאי 6 חודשים עד שנתיים.", img:"https://static.wixstatic.com/media/a56db3_8cd8bb318ff74385b4052169c6a9748f~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/f.png", pdf:"" },
+  { id:"class1", name:"עולה לכיתה א'", d:"השאלות והחששות לקראת העלייה לכיתה א׳.", img:"https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/c.png", pdf:"" },
+  { id:"kinder", name:"הולך/ת לגן", d:"היום הראשון בגן, עם חיות נחמדות שנותנות טיפים.", img:"https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/k.png", pdf:"" }
+];
+const STEPS = [["topic","1 · ספר"],["route","2 · מסלול"],["drive","3 · דרייב"],["approve","4 · אישור הדפסה"]];
+
+/* ---- נתונים מהקישור + מה שנשמר במכשיר ---- */
+let D = {};
+try { const m = location.hash.match(/d=([^&]+)/); if (m) D = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1]))))); } catch (e) {}
+const KEY = "booqli_order_" + (D.g || "general");
+let S = {};
+try { S = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+/* קישור חדש משמש (כמות/כריכה השתנו) גובר על מה שנשמר במכשיר */
+const sig = JSON.stringify([D.n, D.p, D.v]);
+if (D.n && S.sig !== sig) { S.kids = D.n; S.per = D.p || 1; S.cover = D.v || "staple"; S.sig = sig; }
+S.kids = S.kids || 25; S.per = S.per || 1; S.cover = S.cover || "staple";
+S.topics = S.topics || []; S.route = S.route || D.r || ""; S.done = S.done || {};
+const $ = id => document.getElementById(id);
+const ils = n => Math.round(n).toLocaleString("he-IL") + " ₪";
+const gan = D.g ? D.g : "";
+const wa = t => "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(t);
+const who = () => (gan ? gan : "הגן שלנו") + (D.c ? " (" + D.c + ")" : "");
+
+if (gan) { $("hi").textContent = "שלום " + gan + "! איזה כיף שבחרתם בבוקלי ❤️"; document.title = "ההזמנה של " + gan + " · BOOQLI"; }
+
+function priceFor(cover, books){
+  if (cover === "staple") return books >= STAPLE.from ? STAPLE.p : 0;
+  let t = TIERS[0]; TIERS.forEach(r => { if (books >= r[0]) t = r; });
+  return cover === "soft" ? t[1] : t[2];
+}
+function books(){ return S.kids * S.per; }
+function total(){ const p = priceFor(S.cover, books()); return p ? p * books() : 0; }
+
+/* ---- סיכום עליון ---- */
+$("fKids").value = S.kids; $("fPer").value = S.per; $("fCover").value = S.cover;
+function sum(){
+  S.kids = Math.max(1, Math.min(999, parseInt($("fKids").value, 10) || 1));
+  S.per = +$("fPer").value; S.cover = $("fCover").value; save();
+  const b = books(), p = priceFor(S.cover, b);
+  $("sTot").textContent = p ? ils(p * b) : "—";
+  $("sPer").textContent = p ? b + " ספרים · " + p + " ₪ לספר" : "סיכות – מ-20 ספרים";
+  routeUi();
+}
+["fKids","fPer","fCover"].forEach(id => $(id).addEventListener("input", sum));
+
+/* ---- ספרים ---- */
+$("books").innerHTML = BOOKS.map(b => `<div class="bk" data-id="${b.id}"><div class="im"><img src="${b.img}" alt="${b.name}" width="375" height="375" loading="lazy"></div>
+  <div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="acts">
+  <a class="rd${b.pdf ? "" : " soon"}" href="${b.pdf ? "books/" + b.pdf : "#"}" target="_blank" rel="noopener">${b.pdf ? "📖 לקרוא" : "📖 בקרוב"}</a>
+  <label><input type="checkbox" value="${b.id}"> בחירה</label></div></div></div>`).join("");
+document.querySelectorAll("#books input").forEach(i => { i.checked = S.topics.includes(i.value); });
+$("books").addEventListener("change", () => {
+  S.topics = [...document.querySelectorAll("#books input:checked")].map(i => i.value); save(); topicUi(); routeUi();
+});
+function topicUi(){
+  document.querySelectorAll(".bk").forEach(b => b.classList.toggle("sel", S.topics.includes(b.dataset.id)));
+  const names = S.topics.map(id => BOOKS.find(b => b.id === id).name);
+  $("picked").textContent = names.length ? "✔️ בחרתם: " + names.join(" · ") : "";
+  $("topicNext").disabled = !names.length;
+  S.done.topic = !!names.length; save(); progUi();
+}
+
+/* ---- מסלול ---- */
+function driveBlock(){
+  if (books() < DRIVE_FROM) return "מסלול הדרייב מתאים להזמנות של מעל 20 ספרים.";
+  if (S.topics.length > DRIVE_MAX_TOPICS) return "בדרייב אפשר עד שני נושאים לגן. בחרתם " + S.topics.length + " – אפשר להזמין באתר, או לבחור עד שניים.";
+  return "";
+}
+function routeUi(){
+  const why = driveBlock();
+  $("rtDrive").classList.toggle("off", !!why); $("driveWhy").hidden = !why; $("driveWhy").textContent = why;
+  if (why && S.route === "drive") S.route = "";
+  document.querySelectorAll('input[name="route"]').forEach(i => i.checked = i.value === S.route);
+  $("rtSite").classList.toggle("sel", S.route === "site"); $("rtDrive").classList.toggle("sel", S.route === "drive");
+  $("siteBox").hidden = S.route !== "site"; $("routeNext").hidden = S.route !== "drive";
+  $("s-drive").hidden = S.route !== "drive";
+  const t = total();
+  $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
+  S.done.route = !!S.route; save(); progUi();
+}
+document.querySelectorAll('input[name="route"]').forEach(i => i.addEventListener("change", () => {
+  if (i.value === "drive" && driveBlock()) { i.checked = false; return; }
+  S.route = i.value; save(); routeUi();
+  if (window.siteEvent) siteEvent("click", "order_route_" + i.value);
+}));
+if (D.k) { $("couponCode").textContent = D.k; $("couponBox").hidden = false; } else $("couponMissing").hidden = false;
+$("couponCopy").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(D.k); $("couponCopy").textContent = "✔️ הועתק"; });
+$("goSite").href += "?utm_source=games&utm_medium=order_page&utm_campaign=gan";
+$("goSite").addEventListener("click", () => { S.done.siteGo = true; save(); if (window.siteEvent) siteEvent("click", "order_go_site"); });
+
+/* ---- דרייב ---- */
+function subUi(){
+  [["d-terms","terms"],["d-photos","photos"],["d-folder","folder"],["d-ded","ded"],["d-pay","pay"]].forEach(a => $(a[0]).classList.toggle("ok", !!S.done[a[1]]));
+  S.done.drive = ["terms","photos","folder","ded","pay"].every(k => S.done[k]); save(); progUi();
+}
+function mark(k){ S.done[k] = true; save(); subUi(); }
+$("termsLink").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "order_terms"); });
+$("termsDone").addEventListener("click", () => mark("terms"));
+$("photosDone").addEventListener("click", () => mark("photos"));
+$("folderDone").addEventListener("click", () => mark("folder"));
+function topicNames(){ return S.topics.map(id => BOOKS.find(b => b.id === id).name).join(" + ") || "עוד לא בחרנו"; }
+function orderLine(){ return "📚 " + topicNames() + "\n👧👦 " + S.kids + " ילדים × " + S.per + " = " + books() + " ספרים · " + COVER[S.cover]; }
+$("askFolder").addEventListener("click", e => {
+  e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nחתמנו על התקנון ✍️ ונשמח לתיקייה בדרייב להעלאת התמונות 📁\n" + orderLine());
+});
+/* הקדשות */
+const DED_B = "ילד אהוב שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
+const DED_G = "ילדה אהובה שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
+$("tB").value = S.dedB || ""; $("tG").value = S.dedG || ""; $("oneDed").checked = !!S.one;
+function dedUi(){
+  S.dedB = $("tB").value; S.dedG = $("tG").value; S.one = $("oneDed").checked; save();
+  $("dedG").hidden = S.one; document.querySelector('label[for="tB"]').textContent = S.one ? "הקדשה לכל הילדים 💌" : "הקדשה לבנים 👦";
+  [["tB","cB"],["tG","cG"]].forEach(a => { const n = $(a[0]).value.length; $(a[1]).textContent = n + " / 350"; $(a[1]).classList.toggle("over", n > 350); });
+}
+["tB","tG","oneDed"].forEach(id => $(id).addEventListener("input", dedUi));
+$("exFill").addEventListener("click", () => { if (!$("tB").value) $("tB").value = S.one ? DED_B.replace("ילד אהוב שלנו", "אהוב/ה שלנו") : DED_B; if (!$("tG").value) $("tG").value = DED_G; dedUi(); });
+$("sendDed").addEventListener("click", e => {
+  const b = $("tB").value.trim(), g = $("tG").value.trim();
+  if (!b || (!S.one && !g) || b.length > 350 || g.length > 350) { e.preventDefault(); alertBox("כתבו את ההקדשה (עד 350 תווים) ואז שלחו 🙂"); return; }
+  e.currentTarget.href = wa("היי שמש 💌 ההקדשות של " + who() + ":\n\n" + (S.one ? "לכל הילדים:\n" + b : "👦 לבנים:\n" + b + "\n\n👧 לבנות:\n" + g));
+  mark("ded");
+});
+$("paidMsg").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 💳 כאן " + who() + ". שילמנו על ההזמנה:\n" + orderLine() + "\nמצרפים אישור תשלום 🙏"); mark("pay"); });
+$("referLink").addEventListener("click", e => { e.preventDefault(); window.open("https://wa.me/?text=" + encodeURIComponent("מצאנו מתנה מהממת לכל ילד בגן 📚 ספר אישי עם השם, איורים של הילד והקדשה. שווה לבדוק:\nhttps://games.booqli.ai/kindergartens/?utm_source=whatsapp&utm_medium=referral\n(תגידו שהגעתם דרך " + (gan || "הגן שלנו") + " 🌱)"), "_blank", "noopener"); });
+
+/* ---- אישור הדפסה ---- */
+S.apMode = S.apMode || (S.route === "drive" ? "drive" : "site");
+function apUi(){
+  document.querySelectorAll("#apMode button").forEach(b => b.classList.toggle("on", b.dataset.m === S.apMode));
+  $("apSite").hidden = S.apMode !== "site"; $("apDrive").hidden = S.apMode !== "drive";
+  const all = [...document.querySelectorAll(".apc")].every(c => c.checked);
+  $("approveBtn").classList.toggle("btn-green", all); $("approveBtn").classList.toggle("btn-soft", !all);
+  $("approveBtn").setAttribute("aria-disabled", String(!all));
+}
+$("apMode").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.apMode = b.dataset.m; save(); apUi(); });
+document.querySelectorAll(".apc").forEach(c => c.addEventListener("change", apUi));
+$("approveBtn").addEventListener("click", e => {
+  if ($("approveBtn").getAttribute("aria-disabled") === "true") { e.preventDefault(); alertBox("סמנו את ארבע הבדיקות ואז אשרו 🙂"); return; }
+  e.currentTarget.href = wa("היי שמש ✅ כאן " + who() + ".\nבדקנו את הספרים: כל הילדים נמצאים, השמות נכונים ותואמים לתמונות, וההקדשה נכונה.\n*מאשרים להדפסה!* 🎉");
+  S.done.approve = true; save(); progUi(); if (window.siteEvent) siteEvent("click", "order_approve");
+});
+$("fixLink").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש, כאן " + who() + ". בדקנו את הספרים ומצאנו משהו לתקן:\n(שם הילד/ה ומה לתקן)"); });
+$("waTop").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ", יש לי שאלה על ההזמנה:"); });
+
+/* ---- התקדמות ---- */
+function progUi(){
+  const cur = STEPS.find(s => !S.done[s[0]] && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3];
+  $("prog").innerHTML = STEPS.filter(s => s[0] !== "drive" || S.route === "drive").map(s =>
+    `<a href="#s-${s[0]}" class="${S.done[s[0]] ? "done" : s === cur ? "cur" : ""}">${s[1]}</a>`).join("");
+  document.querySelectorAll(".step").forEach(el => { el.classList.toggle("cur", el.dataset.step === cur[0]); el.classList.toggle("ok", !!S.done[el.dataset.step]); });
+}
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { const t = $("s-" + b.dataset.go); if (t) t.scrollIntoView(); }));
+function alertBox(t){
+  let el = document.getElementById("toast");
+  if (!el) { el = document.createElement("div"); el.id = "toast"; el.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:300;background:#2B1526;color:#fff;font-weight:800;border-radius:999px;padding:10px 18px;max-width:90vw;text-align:center"; document.body.appendChild(el); }
+  el.textContent = t; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, 3200);
+}
+
+sum(); topicUi(); routeUi(); subUi(); dedUi(); apUi();
+if (D.s) setTimeout(() => { const t = $("s-" + D.s); if (t && !t.hidden) t.scrollIntoView(); }, 600);
+</script>
+</body>
+</html>

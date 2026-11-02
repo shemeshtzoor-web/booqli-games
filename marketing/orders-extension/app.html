@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>בוקלי – הזמנות גנים</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header>
+  <img src="icons/logo.png" alt="BOOQLI">
+  <h1>הזמנות גנים</h1>
+  <span class="priv">🔒 פרטי – נשמר רק במחשב הזה</span>
+  <nav id="tabs">
+    <button data-t="gans" class="on">🏫 גנים</button>
+    <button data-t="tpl">✉️ נוסחי הודעות</button>
+    <button data-t="set">⚙️ פרטים פרטיים</button>
+    <button data-t="bak">💾 גיבוי</button>
+  </nav>
+</header>
+<main>
+  <section id="t-gans">
+    <div class="bar">
+      <button class="pri" id="addGan">➕ גן חדש</button>
+      <input id="q" type="search" placeholder="🔍 חיפוש גן, טלפון…">
+      <select id="fStage"><option value="">כל השלבים</option></select>
+      <label class="chk"><input type="checkbox" id="fClosed"> להציג גם סגורים</label>
+    </div>
+    <div class="cols">
+      <div id="list" class="list"></div>
+      <div id="detail" class="detail"><p class="empty">בחרי גן מהרשימה, או "➕ גן חדש".</p></div>
+    </div>
+  </section>
+  <section id="t-tpl" hidden>
+    <p class="help">אלה הנוסחים של ההודעות. אפשר לערוך – זה נשמר אצלך. המילים בסוגריים מסולסלים מתמלאות לבד לכל גן: <span id="phList"></span></p>
+    <div id="tplList"></div>
+    <button id="tplReset" class="ghost">↩️ להחזיר את כל הנוסחים למקור</button>
+  </section>
+  <section id="t-set" hidden>
+    <p class="help">הפרטים האלה <b>לא נמצאים באתר ולא במאגר</b> – רק בתוסף, במחשב הזה. הם נכנסים להודעות שאת שולחת.</p>
+    <div class="form" id="setForm"></div>
+    <button class="pri" id="setSave">💾 שמירה</button> <span id="setOk" class="ok" hidden>נשמר ✔️</span>
+  </section>
+  <section id="t-bak" hidden>
+    <p class="help">⚠️ הכל נשמר רק בכרום הזה. אם מחליפים מחשב או מוחקים את התוסף – הנתונים נמחקים. <b>מומלץ לגבות פעם בשבוע</b> (קובץ אחד עם הגנים, הנוסחים והפרטים).</p>
+    <p id="bakLast" class="help"></p>
+    <button class="pri" id="bakOut">⬇️ הורדת גיבוי</button>
+    <label class="ghost file">⬆️ שחזור מגיבוי<input type="file" id="bakIn" accept=".json" hidden></label>
+  </section>
+</main>
+<div id="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

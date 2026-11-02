@@ -430,7 +430,7 @@ function siteCodeGate(){
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 /* עמודים רגועים (אזעקות): בלי חלונות קופצים – מי שנכנס באזעקה צריך את התוכן מיד */
-function siteCalmPage(){ return /\/(topics\/safety|course|kindergartens)\//.test(location.pathname); }
+function siteCalmPage(){ return /\/(topics\/safety|course|kindergartens|order)\//.test(location.pathname); }
 function siteJoinPopup(){
   if (siteKidLock() || siteCalmPage()) return;
   var qs = location.search || "";
@@ -1047,7 +1047,7 @@ function siteAppBar(){
    כפתור ירוק קבוע בפס הוורוד־מנטה שבראש כל עמוד (siteMainNav). פותח וואטסאפ לבחירת חבר/ה,
    עם הודעה מוכנה + קישור לעמוד הזה (utm_source=whatsapp&utm_medium=share). מדידה: share_wa.
    לא באזור הילדים ובמצב ילדים. הודעה מיוחדת לעמוד: <meta name="bq-share" content="..."> */
-function siteShareOk(){ return !siteKidLock() && !sitePlayMode() && !/^\/kids\//.test(location.pathname); }
+function siteShareOk(){ return !siteKidLock() && !sitePlayMode() && !/^\/(kids|order)\//.test(location.pathname); }
 function siteShareHref(){
   var meta = document.querySelector('meta[name="bq-share"]');
   var name = (document.title || "").split(/ [·|] /)[0].trim();
