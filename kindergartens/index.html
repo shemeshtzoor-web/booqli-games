@@ -218,6 +218,42 @@ section{margin-top:64px}
 @media (max-width:780px){.calc-grid{grid-template-columns:minmax(0,1fr)}.res{position:static}}
 @media (max-width:350px){.opts.row{grid-template-columns:minmax(0,1fr)}}
 
+/* שכנוע: מתנה, ביטחון, דחיפות */
+.gift-line{display:flex;gap:10px;align-items:center;margin-top:16px;background:#fff;border:2px dashed var(--pink);border-radius:18px;padding:10px 14px;text-decoration:none;font-size:16.5px;max-width:560px;box-shadow:0 4px 14px rgba(193,54,113,.1)}
+.gift-line>span:first-child{font-size:28px;animation:gwig 2.4s ease-in-out infinite}
+.gift-line b{color:var(--magenta)}
+@keyframes gwig{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
+.trust{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px;font-weight:700;color:var(--sage-deep)}
+.trust li::before{content:"✓ ";color:#23784A;font-weight:800}
+.bundle{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.bi{position:relative;background:#fff;border-radius:24px;padding:22px 18px 18px;box-shadow:0 6px 22px rgba(78,133,118,.13);display:flex;flex-direction:column;gap:6px;border:2px solid transparent}
+.bi.main{background:linear-gradient(160deg,var(--sage-deep),var(--sage));color:#fff}
+.bi.main p{color:#fff;opacity:.95}
+.bi:not(.main){border-color:var(--pink-soft)}
+.bi .ic{font-size:40px;line-height:1}
+.bi h3{font-size:20px}
+.bi p{color:var(--muted);font-size:16px;flex:1}
+.bi a{font-weight:800;color:var(--pink-btn);font-size:15.5px;text-decoration:none}
+.bi .free{position:absolute;top:14px;left:14px;background:var(--gold);color:#4a2c00;font-weight:800;font-size:13px;border-radius:999px;padding:3px 10px}
+.bundle-sum{margin-top:16px;text-align:center;font-weight:800;font-size:18px;background:var(--pink-soft);border-radius:18px;padding:12px 14px;color:var(--ink)}
+.bundle-sum b{color:var(--pink-btn);margin:0 4px}
+.anchor{margin-top:16px;text-align:center;font-weight:700;background:#FFF8E6;border:2px solid #FBE3A6;border-radius:16px;padding:10px 14px;max-width:720px;margin-inline:auto}
+.anchor b{color:var(--magenta)}
+.safe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.safe div{background:#fff;border-radius:22px;padding:18px;box-shadow:0 4px 16px rgba(78,133,118,.11)}
+.safe span{font-size:32px;display:block;line-height:1.1}
+.safe h3{font-size:19px;margin-top:8px;color:var(--sage-deep)}
+.safe p{color:var(--muted);font-size:16px;margin-top:4px}
+.urgent{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:center;background:#FFF8E6;border:3px solid #FBE3A6;border-radius:26px;padding:20px 22px}
+.urgent .ic{font-size:46px;text-align:center}
+.urgent h3{font-size:clamp(21px,3vw,26px);color:#8A5A00}
+.urgent p{color:var(--ink);margin-top:4px;font-size:16.5px}
+.end .recap{font-weight:800;background:rgba(255,255,255,.18);display:inline-block;border-radius:999px;padding:6px 16px;margin-top:14px;font-size:16px}
+@media (max-width:900px){.bundle{grid-template-columns:repeat(2,minmax(0,1fr))}.safe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.urgent{grid-template-columns:minmax(0,1fr);text-align:center}.urgent .btn{width:100%}}
+@media (max-width:560px){.bundle,.safe{grid-template-columns:minmax(0,1fr)}.bundle-sum{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.gift-line>span:first-child{animation:none}}
+
 /* צילום */
 .photo-intro{text-align:center;max-width:720px;margin:0 auto 18px;color:var(--muted)}
 .photo-intro b{color:var(--ink)}
@@ -383,17 +419,20 @@ section{margin-top:64px}
 
 <nav class="jump" aria-label="ניווט בעמוד">
   <div class="wrap">
+    <a href="#gift">🎁 המתנה לגן</a>
     <a href="#how">איך מזמינים</a>
     <a href="#books">הספרים</a>
-    <a href="#guide">מה לבדוק</a>
     <a href="#prices">מחירים</a>
     <a href="#calc">מחשבון</a>
+    <a href="#safe">בראש שקט</a>
+    <a href="#guide">מה לבדוק</a>
     <a href="#photos">איך מצלמים</a>
-    <a href="#examples">דוגמאות</a>
     <a href="#why">למה בוקלי</a>
     <a href="#faq">שאלות נפוצות</a>
   </div>
 </nav>
+
+
 
 <div class="hero">
   <div class="wrap">
@@ -401,6 +440,7 @@ section{margin-top:64px}
       <span class="kicker">🏫 לגננות, לוועדי הורים ולמעונות</span>
       <h1>ספר בוקלי אישי מודפס <em>לכל ילד בגן</em></h1>
       <p class="lead">מתנה אישית ומיוחדת לכל ילד ולכל ילדה בגן <b>ליום הולדת ולסוף שנה</b>. ספר אישי עם שם, תמונות AI והקדשות אישיות מודפסות!</p>
+      <a class="gift-line" href="#gift"><span>🎁</span><span><b>ובמתנה לגן:</b> משחקי הספר באתר + מערך שיעור לגננת + האפליקציה לגננת ולהורים</span></a>
       <ul class="chips">
         <li>✂️ ללא צורך בעריכה</li>
         <li class="price">החל מ-50 ₪ לילד</li>
@@ -409,6 +449,11 @@ section{margin-top:64px}
         <a class="btn btn-main" href="https://www.booqli.ai/he/create-a-book" data-ev="hero_start">🚀 התחילו עכשיו</a>
         <a class="btn btn-soft" href="https://www.booqli.ai/he/contact-us" data-ev="hero_sample">📖 בקשו דוגמה דיגיטלית</a>
       </div>
+      <ul class="trust">
+        <li>ספר דיגיטלי ראשון בחינם, ללא התחייבות</li>
+        <li>תצוגה מקדימה לאישור לפני הדפסה</li>
+        <li>בדיקה אנושית לכל ספר</li>
+      </ul>
     </div>
     <div class="hero-art">
       <img class="main" src="https://static.wixstatic.com/media/a56db3_8c0205c7847a4999ba239dfe2567f043~mv2.png/v1/crop/x_462,y_6,w_972,h_1181/fill/w_811,h_983,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/a56db3_8c0205c7847a4999ba239dfe2567f043~mv2.png" alt="ספרי בוקלי אישיים של ילדי גן" width="811" height="983" fetchpriority="high">
@@ -418,6 +463,8 @@ section{margin-top:64px}
   </div>
 </div>
 
+
+
 <main class="wrap">
 
 <div class="stats">
@@ -426,30 +473,19 @@ section{margin-top:64px}
   <div class="stat"><b>100%</b><span>בדיקה אנושית לפני הדפסה</span></div>
 </div>
 
-<section>
-  <div class="split">
-    <div>
-      <h2>דיוק ועקביות יוצאי דופן <small>באחריות מלאה!</small></h2>
-      <p><b>הילד נשאר זהה לעצמו, מהעמוד הראשון ועד העמוד האחרון.</b></p>
-      <p>הטכנולוגיה המתקדמת של BOOQLI יוצרת איורים בהתאמה אישית מתמונה אחת, תוך שמירה על המראה, תווי הפנים והזהות של הילד לאורך כל הספר.</p>
-    </div>
-    <div class="art"><img src="https://static.wixstatic.com/media/a56db3_aa537b6f2c66473cb024233d96f47a88~mv2.png/v1/fill/w_1132,h_708,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Photo%20to%20book.png" alt="מתמונה אחת של הילד לאיורים בכל הספר" width="1132" height="708" loading="lazy"></div>
+<section id="gift">
+  <div class="sec-h">
+    <span class="eyebrow">🎁 כל גן שמזמין מקבל</span>
+    <h2>הגן מקבל הרבה יותר מספרים</h2>
+    <p>הספר הוא רק ההתחלה. יחד איתו הגן מקבל במתנה ערכה שלמה – כדי שהסיפור ימשיך לחיות בגן ובבית.</p>
   </div>
-</section>
-
-<section>
-  <div class="split rev">
-    <div class="art"><img src="https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_600,h_600,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kinder%20he%20boys.png" alt="ספר אישי: הולך לגן" width="600" height="600" loading="lazy" style="max-width:420px;margin:0 auto"></div>
-    <div>
-      <h2>מהו ספר ילדים אישי?</h2>
-      <p>ספר ילדים אישי הוא ספר שבו <b>כל ילד וכל ילדה הופכים לגיבורים של הסיפור שלהם.</b> כל ילד וכל ילדה מקבלים ספר אישי שנכתב עליהם: השם שלהם והאיורים שנוצרו עבורם לאורך כל העלילה.</p>
-      <ul class="ticks">
-        <li>כל הספרים של בוקלי נכתבו מראש, עברו עריכה וניקוד מקצועי והותאמו לגיל, חלקם אפילו בחרוזים</li>
-        <li>ההתאמה האישית: שם הילד, איורים אישיים מדויקים והקדשה אישית מודפסת מטעם הגן או הוועד</li>
-        <li>מעלים תמונה – מקבלים ספר!</li>
-      </ul>
-    </div>
+  <div class="bundle">
+    <div class="bi main"><span class="ic">📚</span><h3>ספר אישי מודפס לכל ילד</h3><p>עם השם, איורים מדויקים של הילד והקדשה אישית מטעם הגן או הוועד. מזכרת לכל החיים.</p></div>
+    <div class="bi"><span class="free">מתנה</span><span class="ic">🎮</span><h3>משחקי הספר באתר</h3><p>הילדים ממשיכים לשחק עם הסיפור שלהם: משחקים ופעילויות בעקבות הספר, בגן ובבית.</p><a href="../games/birthday/" data-ev="gift_game">לדוגמה: המשחק של "ילד/ת יום הולדת" ←</a></div>
+    <div class="bi"><span class="free">מתנה</span><span class="ic">📝</span><h3>מערך שיעור לגננת</h3><p>פעילות מוכנה סביב הספר, להעביר בגן בלי הכנות. הגננת מקבלת הכל מסודר.</p></div>
+    <div class="bi"><span class="free">מתנה</span><span class="ic">📲</span><h3>האפליקציה לגננת ולהורים</h3><p>booqli Games בטלפון: משחקים, דפי עבודה, מערכים ופעילויות לפי לוח השנה של הגן – באייקון אחד.</p><a href="../app/" data-ev="gift_app">איך מתקינים ←</a></div>
   </div>
+  <p class="bundle-sum">📚 ספר לכל ילד <b>+</b> 🎮 משחקים <b>+</b> 📝 מערך לגננת <b>+</b> 📲 אפליקציה <b>=</b> מתנה שהילדים לא שוכחים</p>
 </section>
 
 <section id="how">
@@ -474,6 +510,32 @@ section{margin-top:64px}
     <div class="pics">
       <img src="https://static.wixstatic.com/media/a56db3_0582fe048ff5482c861c692cfaa01feb~mv2.png/v1/crop/x_0,y_7,w_650,h_643/fill/w_279,h_276,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Druki%20he%20girls.png" alt="ספר אישי לבנות" width="279" height="276" loading="lazy">
       <img src="https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_308,h_305,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Super%20he%20boys.png" alt="ספר אישי: גיבור על" width="308" height="305" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="split">
+    <div>
+      <h2>דיוק ועקביות יוצאי דופן <small>באחריות מלאה!</small></h2>
+      <p><b>הילד נשאר זהה לעצמו, מהעמוד הראשון ועד העמוד האחרון.</b></p>
+      <p>הטכנולוגיה המתקדמת של BOOQLI יוצרת איורים בהתאמה אישית מתמונה אחת, תוך שמירה על המראה, תווי הפנים והזהות של הילד לאורך כל הספר.</p>
+    </div>
+    <div class="art"><img src="https://static.wixstatic.com/media/a56db3_aa537b6f2c66473cb024233d96f47a88~mv2.png/v1/fill/w_1132,h_708,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Photo%20to%20book.png" alt="מתמונה אחת של הילד לאיורים בכל הספר" width="1132" height="708" loading="lazy"></div>
+  </div>
+</section>
+
+<section>
+  <div class="split rev">
+    <div class="art"><img src="https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_600,h_600,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kinder%20he%20boys.png" alt="ספר אישי: הולך לגן" width="600" height="600" loading="lazy" style="max-width:420px;margin:0 auto"></div>
+    <div>
+      <h2>מהו ספר ילדים אישי?</h2>
+      <p>ספר ילדים אישי הוא ספר שבו <b>כל ילד וכל ילדה הופכים לגיבורים של הסיפור שלהם.</b> כל ילד וכל ילדה מקבלים ספר אישי שנכתב עליהם: השם שלהם והאיורים שנוצרו עבורם לאורך כל העלילה.</p>
+      <ul class="ticks">
+        <li>כל הספרים של בוקלי נכתבו מראש, עברו עריכה וניקוד מקצועי והותאמו לגיל, חלקם אפילו בחרוזים</li>
+        <li>ההתאמה האישית: שם הילד, איורים אישיים מדויקים והקדשה אישית מודפסת מטעם הגן או הוועד</li>
+        <li>מעלים תמונה – מקבלים ספר!</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -516,31 +578,44 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="guide">
+<section id="examples">
   <div class="sec-h">
-    <span class="eyebrow">🎥 לפני שמזמינים ספר ילדים אישי</span>
-    <h2>מה חשוב לדעת?</h2>
-    <p>מדריך בן 10 דקות לדברים החשובים ביותר שכדאי לבדוק לפני שמזמינים ספרי ילדים אישיים, במיוחד עבור גן שלם.</p>
+    <span class="eyebrow">🧾 הזמנות אמיתיות</span>
+    <h2>דוגמאות להזמנות ולמחירים של גני ילדים</h2>
+    <p>הנה כמה דוגמאות של מחירים שהוזמנו על ידי גני ילדים מ־BOOQLI.</p>
   </div>
-  <div class="guide">
-    <div>
-      <div class="vid"><video src="video/guide.mp4" poster="video/guide.jpg?v=2" controls preload="none" playsinline width="480" height="640" data-ev="video_guide"></video></div>
+  <div class="orders">
+    <div class="order">
+      <div class="hd"><h3>גן קשת בענן</h3><div class="kids"><b>24</b><span>ילדים</span></div></div>
+      <dl><dt>הספר</dt><dd>ילד יום הולדת</dd><dt>מטרה</dt><dd>מתנות יום הולדת</dd><dt>כריכה</dt><dd>כריכה רכה סיכות</dd><dt>מחיר לספר</dt><dd>50 ₪</dd><dt>משלוח</dt><dd>40 ₪</dd></dl>
+      <div class="total"><span>סה״כ ההזמנה</span><b>1,240 ₪</b></div>
+      <p class="date">תאריך ההזמנה: 7.9.2026</p>
     </div>
-    <div>
-      <div class="guide-pts">
-        <div><b>📖 הסיפור עצמו</b><span>איך לבדוק את הכתיבה, העריכה, האיות וההתאמה של הסיפור לגיל הילדים.</span></div>
-        <div><b>🎨 האיורים</b><span>עד כמה הילד נראה מדויק לאורך הספר?</span></div>
-        <div><b>🧩 אחידות האיורים</b><span>מדוע חשוב שהדמות, הבגדים, הסגנון והפרטים החזותיים יישארו עקביים לאורך כל הסיפור.</span></div>
-        <div><b>📏 אורך הספר ואיכותו</b><span>כמה עמודים ואיורים צריכים להיות בספר ילדים, ועל מה כדאי להסתכל בעיצוב הכללי?</span></div>
-        <div><b>📕 הכריכה</b><span>מה חשוב לבדוק בעיצוב הכריכה, בתמונת הילד, בשם, בטיפוגרפיה ובפריסה?</span></div>
-        <div><b>🙋‍♀️ מי אחראי על התהליך?</b><span>מי כותב, עורך, מגיה, בודק את האיורים ומטפל בטעויות לפני ההדפסה?</span></div>
-      </div>
-      <div class="author">
-        <p>בסרטון בן 10 דקות אני מסבירה מה חשוב לבדוק כשמזמינים ספרי ילדים אישיים לגן – מאיכות הסיפור ודמיון הדמות לילד, דרך אחידות האיורים ואפשרויות ההדפסה, ועד עיצוב הכריכה ותהליך ההזמנה.</p>
-        <p>במיוחד כשמזמינים ספרים לגן שלם, בחירה בספק הנכון יכולה לחסוך לכם שעות של עבודה ועוגמת נפש.</p>
-        <p class="sig">שמש צור · סופרת ילדים ומייסדת־שותפה של BOOQLI</p>
-      </div>
+    <div class="order">
+      <div class="hd"><h3>גן גפן</h3><div class="kids"><b>21</b><span>ילדים</span></div></div>
+      <dl><dt>הספר</dt><dd>הולך/ת לגן</dd><dt>מטרה</dt><dd>מתנת סוף שנה</dd><dt>כריכה</dt><dd>כריכה רכה</dd><dt>מחיר לספר</dt><dd>60 ₪</dd></dl>
+      <div class="total"><span>סה״כ ההזמנה</span><b>1,260 ₪</b></div>
+      <p class="date">תאריך ההזמנה: 4.5.2026</p>
     </div>
+    <div class="order">
+      <div class="hd"><h3>גן חורש</h3><div class="kids"><b>27</b><span>ילדים</span></div></div>
+      <dl><dt>הספר</dt><dd>עולה לכיתה א׳</dd><dt>מטרה</dt><dd>מתנת גן</dd><dt>כריכה</dt><dd>כריכה קשה</dd><dt>מחיר לספר</dt><dd>77 ₪</dd></dl>
+      <div class="total"><span>סה״כ ההזמנה</span><b>2,079 ₪</b></div>
+      <p class="date">תאריך ההזמנה: 12.5.2026</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h">
+    <span class="eyebrow">💌 מהשטח</span>
+    <h2>ממש קצת מהתמונות שקיבלנו מההורים</h2>
+  </div>
+  <div class="real">
+    <figure><img src="https://static.wixstatic.com/media/a56db3_d417d3bccda04c4ca55e36a23fb9faf3~mv2.jpg/v1/crop/x_0,y_0,w_2252,h_2638/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/20251212_142628.jpg" alt="ספר בוקלי בידי ילד" width="429" height="502" loading="lazy"><figcaption>נושא לכל אירוע</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_981d8775c0174d8a90cd73de3bcf02b4~mv2.jpg/v1/crop/x_219,y_0,w_778,h_911/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG-20250114-WA0066.jpg" alt="ספר בוקלי אישי" width="429" height="502" loading="lazy"><figcaption>שם. תמונה. הקדשה.</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_192b215d6b35480f99942a0cfb0840f4~mv2.png/v1/crop/x_75,y_0,w_1360,h_1592/fill/w_429,h_502,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a.png" alt="ספר ביי ביי חיתול" width="429" height="502" loading="lazy"><figcaption>נוצר במיוחד עבורם</figcaption></figure>
+    <figure><img src="https://static.wixstatic.com/media/a56db3_652a45ec149843f1a53252d2dc2888b4~mv2.jpeg/v1/crop/x_0,y_245,w_3024,h_3542/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9120.jpeg" alt="ילד קורא בספר בוקלי" width="429" height="502" loading="lazy"><figcaption>מזכרת לכל החיים</figcaption></figure>
   </div>
 </section>
 
@@ -563,6 +638,7 @@ section{margin-top:64px}
       <div class="body"><h3>💗 כריכה קשה</h3><div class="amt">77 ₪ <small>לספר</small></div><p>כריכה קשה. דפים 170 ג' כרומו.</p><span class="qty">להזמנות של <span dir="ltr">20–49</span> ספרים</span></div>
     </div>
   </div>
+  <p class="anchor">💡 ספר בודד עולה 132–149 ₪. בהזמנה לגן משלמים <b>החל מ-50 ₪ לספר</b> – והמתנה לגן כלולה.</p>
   <p class="price-note">מחירי ספרי BOOQLI לגנים: ספרי ילדים אישיים עולים 50–77 ₪ לספר בהזמנות של <span dir="ltr">20–49</span> ספרים, בהתאם לסוג הספר והכריכה.</p>
   <details class="ptable">
     <summary>📋 המחירון המלא לפי כמות (מספר בודד ועד 100+)</summary>
@@ -637,6 +713,50 @@ section{margin-top:64px}
   </div>
 </section>
 
+<section id="safe">
+  <div class="sec-h">
+    <span class="eyebrow">🤝 מזמינים בראש שקט</span>
+    <h2>אתם לא לוקחים שום סיכון</h2>
+    <p>מזמינים לגן שלם? הכל נבדק ומאושר על ידכם לפני שמשהו יוצא לדפוס.</p>
+  </div>
+  <div class="safe">
+    <div><span>🎁</span><h3>ספר דיגיטלי ראשון בחינם</h3><p>רואים ספר אישי אמיתי לפני ההזמנה הגדולה, ללא התחייבות.</p></div>
+    <div><span>👀</span><h3>תצוגה מקדימה לכל ספר</h3><p>מקבלים תצוגה מקדימה של כל ספר. ההדפסה מתחילה רק אחרי האישור שלכם.</p></div>
+    <div><span>✅</span><h3>100% בדיקה אנושית</h3><p>כל ספר נבדק לפני ההדפסה, כך שאין צורך לעבור על כל עמוד בעצמכם.</p></div>
+    <div><span>🛠️</span><h3>טעות? אנחנו מטפלים</h3><p>במקרה של טעות בהדפסה, BOOQLI מטפלת בתיקון ובהחלפה בהתאם למדיניות החברה.</p></div>
+    <div><span>💬</span><h3>אדם אמיתי איתכם</h3><p>שירות אישי בטלפון ובוואטסאפ – לפני, במהלך ואחרי ההזמנה.</p></div>
+    <div><span>🧾</span><h3>חשבונית לגן או לוועד</h3><p>חשבוניות לגנים, בתי ספר, צהרונים, ארגונים ועמותות.</p></div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="sec-h">
+    <span class="eyebrow">🎥 לפני שמזמינים ספר ילדים אישי</span>
+    <h2>מה חשוב לדעת?</h2>
+    <p>מדריך בן 10 דקות לדברים החשובים ביותר שכדאי לבדוק לפני שמזמינים ספרי ילדים אישיים, במיוחד עבור גן שלם.</p>
+  </div>
+  <div class="guide">
+    <div>
+      <div class="vid"><video src="video/guide.mp4" poster="video/guide.jpg?v=2" controls preload="none" playsinline width="480" height="640" data-ev="video_guide"></video></div>
+    </div>
+    <div>
+      <div class="guide-pts">
+        <div><b>📖 הסיפור עצמו</b><span>איך לבדוק את הכתיבה, העריכה, האיות וההתאמה של הסיפור לגיל הילדים.</span></div>
+        <div><b>🎨 האיורים</b><span>עד כמה הילד נראה מדויק לאורך הספר?</span></div>
+        <div><b>🧩 אחידות האיורים</b><span>מדוע חשוב שהדמות, הבגדים, הסגנון והפרטים החזותיים יישארו עקביים לאורך כל הסיפור.</span></div>
+        <div><b>📏 אורך הספר ואיכותו</b><span>כמה עמודים ואיורים צריכים להיות בספר ילדים, ועל מה כדאי להסתכל בעיצוב הכללי?</span></div>
+        <div><b>📕 הכריכה</b><span>מה חשוב לבדוק בעיצוב הכריכה, בתמונת הילד, בשם, בטיפוגרפיה ובפריסה?</span></div>
+        <div><b>🙋‍♀️ מי אחראי על התהליך?</b><span>מי כותב, עורך, מגיה, בודק את האיורים ומטפל בטעויות לפני ההדפסה?</span></div>
+      </div>
+      <div class="author">
+        <p>בסרטון בן 10 דקות אני מסבירה מה חשוב לבדוק כשמזמינים ספרי ילדים אישיים לגן – מאיכות הסיפור ודמיון הדמות לילד, דרך אחידות האיורים ואפשרויות ההדפסה, ועד עיצוב הכריכה ותהליך ההזמנה.</p>
+        <p>במיוחד כשמזמינים ספרים לגן שלם, בחירה בספק הנכון יכולה לחסוך לכם שעות של עבודה ועוגמת נפש.</p>
+        <p class="sig">שמש צור · סופרת ילדים ומייסדת־שותפה של BOOQLI</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="photos">
   <div class="sec-h">
     <span class="eyebrow">📸 התחילו עכשיו באיסוף התמונות</span>
@@ -691,47 +811,6 @@ section{margin-top:64px}
   </div>
 </section>
 
-<section id="examples">
-  <div class="sec-h">
-    <span class="eyebrow">🧾 הזמנות אמיתיות</span>
-    <h2>דוגמאות להזמנות ולמחירים של גני ילדים</h2>
-    <p>הנה כמה דוגמאות של מחירים שהוזמנו על ידי גני ילדים מ־BOOQLI.</p>
-  </div>
-  <div class="orders">
-    <div class="order">
-      <div class="hd"><h3>גן קשת בענן</h3><div class="kids"><b>24</b><span>ילדים</span></div></div>
-      <dl><dt>הספר</dt><dd>ילד יום הולדת</dd><dt>מטרה</dt><dd>מתנות יום הולדת</dd><dt>כריכה</dt><dd>כריכה רכה סיכות</dd><dt>מחיר לספר</dt><dd>50 ₪</dd><dt>משלוח</dt><dd>40 ₪</dd></dl>
-      <div class="total"><span>סה״כ ההזמנה</span><b>1,240 ₪</b></div>
-      <p class="date">תאריך ההזמנה: 7.9.2026</p>
-    </div>
-    <div class="order">
-      <div class="hd"><h3>גן גפן</h3><div class="kids"><b>21</b><span>ילדים</span></div></div>
-      <dl><dt>הספר</dt><dd>הולך/ת לגן</dd><dt>מטרה</dt><dd>מתנת סוף שנה</dd><dt>כריכה</dt><dd>כריכה רכה</dd><dt>מחיר לספר</dt><dd>60 ₪</dd></dl>
-      <div class="total"><span>סה״כ ההזמנה</span><b>1,260 ₪</b></div>
-      <p class="date">תאריך ההזמנה: 4.5.2026</p>
-    </div>
-    <div class="order">
-      <div class="hd"><h3>גן חורש</h3><div class="kids"><b>27</b><span>ילדים</span></div></div>
-      <dl><dt>הספר</dt><dd>עולה לכיתה א׳</dd><dt>מטרה</dt><dd>מתנת גן</dd><dt>כריכה</dt><dd>כריכה קשה</dd><dt>מחיר לספר</dt><dd>77 ₪</dd></dl>
-      <div class="total"><span>סה״כ ההזמנה</span><b>2,079 ₪</b></div>
-      <p class="date">תאריך ההזמנה: 12.5.2026</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="sec-h">
-    <span class="eyebrow">💌 מהשטח</span>
-    <h2>ממש קצת מהתמונות שקיבלנו מההורים</h2>
-  </div>
-  <div class="real">
-    <figure><img src="https://static.wixstatic.com/media/a56db3_d417d3bccda04c4ca55e36a23fb9faf3~mv2.jpg/v1/crop/x_0,y_0,w_2252,h_2638/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/20251212_142628.jpg" alt="ספר בוקלי בידי ילד" width="429" height="502" loading="lazy"><figcaption>נושא לכל אירוע</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_981d8775c0174d8a90cd73de3bcf02b4~mv2.jpg/v1/crop/x_219,y_0,w_778,h_911/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG-20250114-WA0066.jpg" alt="ספר בוקלי אישי" width="429" height="502" loading="lazy"><figcaption>שם. תמונה. הקדשה.</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_192b215d6b35480f99942a0cfb0840f4~mv2.png/v1/crop/x_75,y_0,w_1360,h_1592/fill/w_429,h_502,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a.png" alt="ספר ביי ביי חיתול" width="429" height="502" loading="lazy"><figcaption>נוצר במיוחד עבורם</figcaption></figure>
-    <figure><img src="https://static.wixstatic.com/media/a56db3_652a45ec149843f1a53252d2dc2888b4~mv2.jpeg/v1/crop/x_0,y_245,w_3024,h_3542/fill/w_429,h_502,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9120.jpeg" alt="ילד קורא בספר בוקלי" width="429" height="502" loading="lazy"><figcaption>מזכרת לכל החיים</figcaption></figure>
-  </div>
-</section>
-
 <section id="why">
   <div class="sec-h">
     <span class="eyebrow">מחפשים סיבות נוספות, למה בוקלי?</span>
@@ -757,9 +836,21 @@ section{margin-top:64px}
 </section>
 
 <section>
+  <div class="urgent">
+    <span class="ic">📅</span>
+    <div>
+      <h3>כדאי לשריין מקום מוקדם</h3>
+      <p>בחודשים ספטמבר–דצמבר ואפריל–יולי יש עומס גדול על הייצור וההדפסה. מומלץ לקחת בחשבון לפחות 14 ימי עסקים מאישור ההדפסה ועד שהספרים אצלכם.</p>
+    </div>
+    <a class="btn btn-green js-wa" href="https://wa.me/972555549331" data-where="reserve">💬 לשריון מקום לגן</a>
+  </div>
+</section>
+
+<section>
   <div class="end">
     <h2>מוכנים להזמין את המתנה המרגשת ביותר?</h2>
     <p>בחרו את הספרים המושלמים לילדים שלכם, ותנו לנו לעזור לכם ליצור מתנה משמעותית שהם יזכרו לשנים רבות.</p>
+    <p class="recap">📚 ספר אישי לכל ילד · 🎁 משחקי הספר · 📝 מערך לגננת · 📲 אפליקציה לגננת ולהורים</p>
     <div class="ctas">
       <a class="btn btn-main" href="https://www.booqli.ai/he/contact-us" data-ev="end_quote">קבלו הצעת מחיר משתלמת</a>
       <a class="btn btn-green js-wa" href="https://wa.me/972555549331" data-where="end">💬 וואטסאפ 055-5549331</a>
@@ -777,6 +868,7 @@ section{margin-top:64px}
   <div class="faq" id="faqList"></div>
   <p class="no-res" id="noRes" hidden>לא מצאנו שאלה כזו. <a class="js-wa" href="https://wa.me/972555549331" data-where="faq_none">שאלו אותנו בוואטסאפ</a> ונשמח לעזור.</p>
 </section>
+
 
 </main>
 
@@ -810,7 +902,7 @@ section{margin-top:64px}
 </footer>
 
 <div class="sticky" id="sticky">
-  <a class="s1" href="https://www.booqli.ai/he/create-a-book" data-ev="sticky_start">🚀 התחילו עכשיו</a>
+  <a class="s1" href="#calc" data-ev="sticky_calc">🧮 כמה זה יעלה?</a>
   <a class="s2 js-wa" href="https://wa.me/972555549331" data-where="sticky">💬 וואטסאפ</a>
 </div>
 
