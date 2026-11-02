@@ -90,7 +90,7 @@ const TPL_DEFAULT = [
 🖼️ PNG / JPG בלבד
 ⚠️ אחרי סגירת התיקייה לא ניתן להחליף תמונות או להוסיף ספרים – כל שינוי ייחשב הזמנה חדשה.
 
-כל ההנחיות, ההקדשות והתשלום – בעמוד שלכם: {קישור}
+הקישור לתיקייה נשמר גם בעמוד האישי שלכם, עם כל ההנחיות, ההקדשות והתשלום: {קישור}
 כשמסיימים להעלות – כתבו לי ❤️` },
   { id: "pay", name: "4 · פרטי תשלום (דרייב)", stage: 5, text:
 `💳 פרטי התשלום להזמנה של {גן}:
@@ -176,6 +176,9 @@ async function load() {
   GANS = await store.get("gans", []);
   TPL = await store.get("tpl", null) || JSON.parse(JSON.stringify(TPL_DEFAULT));
   TPL_DEFAULT.forEach(d => { if (!TPL.find(t => t.id === d.id)) TPL.push(JSON.parse(JSON.stringify(d))); });
+  /* 1.0.3: הקישור לתיקייה נשמר בעמוד האישי */
+  const fol = TPL.find(t => t.id === "folder");
+  if (fol) fol.text = fol.text.replace("כל ההנחיות, ההקדשות והתשלום – בעמוד שלכם: {קישור}", "הקישור לתיקייה נשמר גם בעמוד האישי שלכם, עם כל ההנחיות, ההקדשות והתשלום: {קישור}");
   /* 1.0.2: אפליקציה + הודעה להורים בהודעת התודה */
   const thx = TPL.find(t => t.id === "thanks");
   if (thx && !thx.text.includes("games.booqli.ai/app")) thx.text += TPL_DEFAULT.find(t => t.id === "thanks").text.split("בתוקף לשנה.")[1] || "";
@@ -193,7 +196,8 @@ function calc(g) {
   return { n, p, t, d5: t * 0.05, a5: t * 0.95, sh, all: t + sh };
 }
 function personalLink(g, stage) {
-  const d = { g: g.name, c: g.contact || "", n: +g.kids || 0, p: +g.per || 1, v: g.cover, k: SET.coupon5 || "", r: g.route || "" };
+  const d = { g: g.name, c: g.contact || "", n: +g.kids || 0, p: +g.per || 1, v: g.cover, k: SET.coupon5 || "", r: g.route || "", sh: g.ship === "pickup" ? "pickup" : "home" };
+  if (g.drive) d.f = g.drive;
   if (stage) d.s = stage;
   const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(d))));
   return (SET.base || "https://games.booqli.ai").replace(/\/$/, "") + "/order/#d=" + encodeURIComponent(b64);

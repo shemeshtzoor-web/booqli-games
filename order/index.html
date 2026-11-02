@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ההזמנה של הגן · BOOQLI</title>
 <meta name="robots" content="noindex">
-<meta name="description" content="כל שלבי ההזמנה של ספרי BOOQLI לגן במקום אחד: בחירת ספר, מסלול, תמונות, הקדשות ואישור הדפסה.">
+<meta name="description" content="כל שלבי ההזמנה של ספרי BOOQLI לגן במקום אחד: הספרים, המסלול, תמונות, הקדשות, תשלום ואישור הדפסה.">
 <meta property="og:title" content="📚 ההזמנה של הגן שלכם – הכל במקום אחד">
-<meta property="og:description" content="בחירת ספר, מסלול הזמנה, תמונות, הקדשות ואישור הדפסה – צעד אחרי צעד.">
+<meta property="og:description" content="הספרים, המסלול, התמונות, ההקדשות והסיכום – צעד אחרי צעד.">
 <meta property="og:image" content="https://static.wixstatic.com/media/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png/v1/fit/w_2500,h_1330,al_c/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,6 +170,49 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 @media (max-width:520px){.who{grid-template-columns:1fr}.help .tx{display:none}.help{padding:12px}}
 @media (max-width:760px){.books{grid-template-columns:repeat(2,minmax(0,1fr))}.routes,.ded,.info{grid-template-columns:minmax(0,1fr)}.sum{grid-template-columns:repeat(2,minmax(0,1fr))}.pay{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:420px){.calc5 b{font-size:21px}.btn{width:100%}.row .btn{width:100%}.brand .btn-wa-s span{display:none}}
+
+/* איך זה עובד + שמירת הקישור */
+.howbox{margin-top:16px;background:#fff;border-radius:22px;box-shadow:0 6px 22px rgba(78,133,118,.12);padding:16px 18px}
+.howbox h2{font-size:21px;color:var(--sage-deep)}
+.howbox ol{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.howbox li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;font-size:16.5px}
+.howbox li span{width:34px;height:34px;border-radius:11px;background:var(--mint);display:grid;place-items:center;font-size:18px}
+.savebar{margin-top:12px;background:linear-gradient(135deg,#FFF7FC,#fff);border:2px dashed var(--pink);border-radius:20px;padding:12px 14px}
+.savebar b{display:block;color:var(--magenta);font-size:17px}
+.savebar small{color:var(--muted);font-size:14.5px}
+.savebar .row{margin-top:10px;gap:8px}
+.savebar .btn{padding:10px 16px;font-size:16px}
+/* סיכום */
+.summ{margin-top:18px;background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(78,133,118,.13);padding:16px 18px;border-top:6px solid var(--sage)}
+.summ h2{font-size:22px;color:var(--sage-deep);display:flex;align-items:center;gap:8px}
+.summ dl{margin:10px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:16px}
+.summ dt{font-weight:800;color:var(--muted);white-space:nowrap}
+.summ dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.summ .ok{color:#23784A}
+.summ .wait{color:var(--muted);font-weight:600}
+.summ dd a{color:var(--magenta)}
+/* ספרים – קריאה בלבד */
+.bk .acts .rd{flex:1 1 40%}
+.bk.has{cursor:default}
+.bk .soonl{font-size:13.5px;color:var(--muted);text-align:center;font-weight:700}
+/* מה מזמינים */
+.tpick{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tpick label{display:flex;align-items:center;gap:6px;border:2px solid var(--mint-2);border-radius:999px;padding:6px 12px;font-weight:700;font-size:15.5px;cursor:pointer;background:#fff}
+.tpick label:has(input:checked){border-color:var(--pink-btn);background:var(--pink-soft)}
+.tpick input{accent-color:var(--pink-btn);width:17px;height:17px}
+.addr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:10px}
+.addr label{display:block;font-weight:800;font-size:14.5px;color:var(--sage-deep);margin-bottom:3px}
+.addr input{width:100%;height:42px;border:2px solid var(--mint-2);border-radius:12px;padding:0 10px;font:700 16px Assistant,sans-serif;background:#fff;color:var(--ink)}
+.addr .w2{grid-column:1/-1}
+.saved{margin-top:8px;font-weight:800;color:#23784A;font-size:15.5px}
+/* הקדשה – תצוגה */
+.dedcol{display:flex;flex-direction:column;gap:6px}
+.dprev{background:linear-gradient(135deg,#FFE3F4,#E8F4FF);border-radius:16px;padding:12px}
+.dprev.boy{background:linear-gradient(135deg,#DDEEFF,#EAF7F2)}
+.dprev .card{background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:12px 14px;text-align:center;font-size:14px;line-height:1.55;color:#24406b;white-space:pre-line;min-height:120px}
+.dprev .card b{display:block;font-size:15.5px;margin-bottom:6px}
+.cnt.long{color:#A86A00;font-weight:800}
+@media (max-width:520px){.addr{grid-template-columns:minmax(0,1fr)}.summ dl{grid-template-columns:minmax(0,1fr)}.summ dt{margin-top:4px}}
 </style>
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
 <link rel="preload" href="../common.js" as="script">
@@ -189,36 +232,57 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <div class="hello">
   <span class="k">📚 ההזמנה של הגן – הכל במקום אחד</span>
   <h1 id="hi">שלום! איזה כיף שבחרתם בבוקלי ❤️</h1>
-  <p>כאן תמצאו את כל השלבים, אחד אחרי השני. ההתקדמות נשמרת במכשיר שלכם, אפשר לחזור לעמוד בכל רגע.</p>
+</div>
+
+<div class="howbox">
+  <h2>איך זה עובד?</h2>
+  <ol>
+    <li><span>🗺️</span><div><b>העמוד הזה הוא המפה שלכם.</b> כל השלבים לפי הסדר, וסיכום ההזמנה שמתעדכן לבד.</div></li>
+    <li><span>💬</span><div><b>כל שלב נגמר בלחיצה אחת</b> ששולחת לשמש הודעה מוכנה בוואטסאפ. שם היא עונה, ושם אפשר תמיד לשאול.</div></li>
+    <li><span>📌</span><div><b>שמרו את הקישור</b> כדי לחזור לכאן בכל רגע – גם מהטלפון של חברה בוועד.</div></li>
+  </ol>
+</div>
+
+<div class="savebar" id="saveBar">
+  <b>📌 שמרו את העמוד האישי שלכם</b>
+  <small>הקישור שומר את כל מה שמילאתם כאן: הגן, הכמות, המסלול, הכתובת ומה כבר נעשה.</small>
+  <div class="row">
+    <a class="btn btn-green" id="saveMe" href="#" target="_blank" rel="noopener">💬 לשלוח לעצמי בוואטסאפ</a>
+    <a class="btn btn-soft" id="saveFriend" href="#" target="_blank" rel="noopener">👭 לשלוח לחברה בוועד</a>
+    <button class="btn btn-soft" type="button" id="saveCopy">🔗 העתקת הקישור</button>
+  </div>
 </div>
 
 <div class="who" id="whoBox" hidden>
   <div><label for="fGan">שם הגן</label><input id="fGan" placeholder="למשל: גן רימון, רחובות"></div>
   <div><label for="fName">השם שלך</label><input id="fName" placeholder="גננת / ועד – שם פרטי"></div>
 </div>
-<div class="sum" aria-label="פרטי ההזמנה">
+<div class="sum" aria-label="כמות וכריכה">
   <div><label for="fKids">כמה ילדים?</label><input id="fKids" type="number" min="1" max="999" inputmode="numeric"></div>
   <div><label for="fPer">ספרים לילד</label><select id="fPer"><option value="1">ספר אחד</option><option value="2">2 ספרים</option><option value="3">3 ספרים</option></select></div>
   <div><label for="fCover">כריכה</label><select id="fCover"><option value="staple">💜 רכה סיכות</option><option value="soft">💛 רכה (פיג'מה)</option><option value="hard">💗 קשה פרימיום</option></select></div>
   <div class="tot"><b id="sTot">—</b><span id="sPer"></span></div>
 </div>
 
+<section class="summ" id="summary" aria-live="polite">
+  <h2>📋 סיכום ההזמנה שלנו</h2>
+  <dl id="summList"></dl>
+</section>
+
 <nav class="prog" id="prog" aria-label="שלבים"></nav>
 
-<!-- 1. ספר -->
-<section class="step" id="s-topic" data-step="topic">
-  <div class="h"><span class="n">1</span><h2>בוחרים את הספר<small>אפשר לקרוא כל ספר במלואו לפני שבוחרים</small></h2></div>
-  <p class="lead">סמנו את הספר (או הספרים) שתרצו לגן. <b>בהזמנה עצמאית באתר</b> אפשר לשלב נושאים שונים ללא הגבלה. <b>בהזמנה מרוכזת בדרייב</b> – עד שני נושאים לגן.</p>
+<!-- 1. הספרים -->
+<section class="step" id="s-books" data-step="books">
+  <div class="h"><span class="n">1</span><h2>מציצים בספרים 📖<small>לוחצים על ספר כדי לקרוא אותו במלואו</small></h2></div>
+  <p class="lead">כל ספר נכתב, נערך ונוקד מראש. בספר שלכם יופיעו השם והאיורים של כל ילד וילדה, וההקדשה מטעם הגן.</p>
   <div class="books" id="books"></div>
-  <p class="picked" id="picked"></p>
-  <div class="next"><button class="btn btn-main" type="button" data-go="route" id="topicNext" disabled>המשך לבחירת מסלול ←</button></div>
 </section>
 
 <!-- 2. מסלול -->
 <section class="step" id="s-route" data-step="route">
   <div class="h"><span class="n">2</span><h2>בוחרים מסלול<small>שתי דרכים פשוטות – בחרו מה שהכי נוח לכם</small></h2></div>
   <div class="routes">
-    <label class="rt" id="rtSite"><input type="radio" name="route" value="site"><span class="tag">🎁 5% הנחה</span>
+    <label class="rt" id="rtSite"><input type="radio" name="route" value="site"><span class="tag">🎁 עוד 5% הנחה</span>
       <h3>1️⃣ הזמנה עצמאית באתר 🛒</h3>
       <p class="noedit">✂️ <b>ללא צורך בעריכה!</b> רק מעלים תמונה, רושמים שם והקדשה – וזהו.</p>
       <ul><li><b>עוד 5% הנחה</b> – בנוסף להנחת הכמות של האתר (גן ממוצע חוסך כ-100 ₪)</li><li>עריכה מהירה יותר – עד יום עסקים אחד ⚡</li><li>מתאים לכל כמות, החל מספר אחד</li><li>כ-2 דקות לכל ילד</li><li>תצוגה מקדימה של הכריכה</li><li>אפשר לשלב נושאים ללא הגבלה</li></ul>
@@ -244,43 +308,57 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <ol class="how">
       <li>בוחרים את הספר באתר.</li>
       <li>מעלים תמונה של הילד/ה (<a href="#photoTips">איזו תמונה מתאימה?</a>).</li>
-      <li>רושמים את שם הילד ומוסיפים הקדשה.</li>
+      <li>רושמים את שם הילד ומוסיפים הקדשה (<a href="#d-ded">איך כותבים הקדשה?</a>).</li>
       <li>בוחרים את סוג הכריכה ומוסיפים לסל.</li>
       <li>המחיר מתעדכן אוטומטית עם כל ספר שמוסיפים לסל.</li>
       <li>מזינים את קוד הקופון, משלמים ושולחים את ההזמנה.</li>
     </ol>
-    <p class="note">💳 תשלום באתר: אשראי, Bit, PayPal או Google Pay. ✨ אין צורך לערוך או לבדוק איור־איור – כל העבודה עלינו! לאחר שליחת ההזמנה תקבלו את הספרים המלאים לאישורכם לפני ההדפסה.</p>
+    <p class="note">💳 תשלום באתר: אשראי, Bit, PayPal או Google Pay. לאחר שליחת ההזמנה תקבלו את הספרים המלאים לאישורכם לפני ההדפסה.</p>
     <div class="done-box">
       <h3>זהו, ממשיכים באתר 🛒</h3>
-      <p>מכאן ההזמנה נמשכת באתר של BOOQLI. כשהספרים יהיו מוכנים לאישור – נשלח לכם הודעה.</p>
+      <p>מכאן ההזמנה נמשכת באתר של BOOQLI. כשהספרים יהיו מוכנים לאישור – נשלח לכם הודעה, ותחזרו לכאן לשלב 4.</p>
       <a class="btn" id="goSite" href="https://www.booqli.ai/he" target="_blank" rel="noopener">לבחירת הספר באתר ←</a>
     </div>
   </div>
-  <p class="warn" id="pickFirst" hidden>📚 עוד לא בחרתם ספר – <a href="#s-topic">בחרו עד שני ספרים בשלב 1</a>, ואז ממשיכים.</p>
   <div class="next" id="routeNext" hidden><button class="btn btn-main" type="button" data-go="drive">המשך לשלבי הדרייב ←</button></div>
 </section>
 
 <!-- 3. דרייב -->
 <section class="step" id="s-drive" data-step="drive" hidden>
-  <div class="h"><span class="n">3</span><h2>הזמנה מרוכזת בדרייב 📁<small>חמישה צעדים קצרים, לפי הסדר</small></h2></div>
-  <div class="dsum"><span>💰 המחיר להזמנה בדרייב</span><b id="dTot">—</b><small id="dPer"></small>
-    <div class="ship" role="radiogroup" aria-label="משלוח">
-      <label><input type="radio" name="ship" value="home"> 🚚 משלוח עד הבית – <b>40 ₪</b><em>עד 14 ימי עסקים מאישור ההדפסה</em></label>
-      <label><input type="radio" name="ship" value="pickup"> 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – <b>ללא עלות</b><em>כשבוע מאישור ההדפסה, בתיאום</em></label>
+  <div class="h"><span class="n">3</span><h2>הזמנה מרוכזת בדרייב 📁<small>שישה צעדים קצרים, לפי הסדר</small></h2></div>
+
+  <div class="sub" id="d-what">
+    <h3><span class="ck">1</span>מה מזמינים ולאן שולחים 📦</h3>
+    <p>בחרו עד שני ספרים, ואיך לקבל את הספרים.</p>
+    <div class="tpick" id="tpick"></div>
+    <div class="dsum" style="margin-top:12px"><span>💰 המחיר להזמנה בדרייב</span><b id="dTot">—</b><small id="dPer"></small>
+      <div class="ship" role="radiogroup" aria-label="משלוח">
+        <label><input type="radio" name="ship" value="home"> 🚚 משלוח עד הבית – <b>40 ₪</b><em>עד 14 ימי עסקים מאישור ההדפסה</em></label>
+        <label><input type="radio" name="ship" value="pickup"> 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – <b>ללא עלות</b><em>כשבוע מאישור ההדפסה, בתיאום</em></label>
+      </div>
     </div>
+    <div class="addr" id="addrBox">
+      <div><label for="aName">שם המקבל/ת</label><input id="aName" autocomplete="name"></div>
+      <div><label for="aPhone">טלפון</label><input id="aPhone" type="tel" inputmode="tel" autocomplete="tel"></div>
+      <div><label for="aStreet">רחוב ומספר</label><input id="aStreet" autocomplete="street-address"></div>
+      <div><label for="aCity">עיר</label><input id="aCity" autocomplete="address-level2"></div>
+    </div>
+    <div class="row"><a class="btn btn-green" id="sendWhat" href="#" target="_blank" rel="noopener">💬 שליחת הפרטים לשמש</a></div>
+    <p class="saved" id="whatSaved" hidden></p>
   </div>
 
   <div class="sub" id="d-terms">
-    <h3><span class="ck">1</span>אישור מדיניות ותקנון 🔒</h3>
-    <p>לפני העלאת התמונות יש לאשר את מדיניות הפרטיות ותקנון האתר בטופס קצר. אחרי החתימה – חוזרים לכאן.</p>
+    <h3><span class="ck">2</span>אישור מדיניות ותקנון 🔒</h3>
+    <p>לפני העלאת התמונות יש לאשר את מדיניות הפרטיות ותקנון האתר בטופס קצר. הטופס נפתח בלשונית חדשה – אחרי החתימה חוזרים לכאן ולוחצים "חתמתי".</p>
     <div class="row">
       <a class="btn btn-main" id="termsLink" href="https://forms.gle/UinyXV37w2yMYvJd7" target="_blank" rel="noopener">✍️ לחתימה על הטופס</a>
       <button class="btn btn-soft" type="button" id="termsDone">✅ חתמתי</button>
     </div>
+    <p class="saved" id="termsSaved" hidden></p>
   </div>
 
   <div class="sub" id="d-photos">
-    <h3 id="photoTips"><span class="ck">2</span>בחירת התמונות 📸</h3>
+    <h3 id="photoTips"><span class="ck">3</span>בחירת התמונות 📸</h3>
     <p><b>איכות האיור מתחילה בתמונה – תמונה טובה → תוצאה טובה!</b> 💛 התמונה היא הבסיס ליצירת הדמות בספר.</p>
     <ul class="rules">
       <li>⚪ <b>רקע לבן</b> – יעזור לנו מאוד לשמור על עקביות, ואנחנו מעריכים את המאמץ!</li>
@@ -297,40 +375,49 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   </div>
 
   <div class="sub" id="d-folder">
-    <h3><span class="ck">3</span>תיקייה בדרייב והעלאת התמונות 📁</h3>
-    <p>שלחו לשמש הודעה, והיא תפתח לכם תיקייה אישית ותשלח את הקישור <b>בוואטסאפ</b>.</p>
-    <div class="row"><a class="btn btn-green" id="askFolder" href="#" target="_blank" rel="noopener">💬 חתמנו – אשמח לתיקייה בדרייב</a></div>
+    <h3><span class="ck">4</span>התיקייה בדרייב והעלאת התמונות 📁</h3>
+    <div id="folderHave" hidden>
+      <p><b>התיקייה שלכם מוכנה!</b> מעלים לשם את כל התמונות.</p>
+      <div class="row"><a class="btn btn-main" id="folderLink" href="#" target="_blank" rel="noopener">📁 לתיקייה שלנו בדרייב</a></div>
+    </div>
+    <div id="folderAsk">
+      <p>שלחו לשמש הודעה, והיא תפתח לכם תיקייה אישית ותשלח את הקישור <b>בוואטסאפ</b>. הקישור יישמר גם כאן.</p>
+      <div class="row"><a class="btn btn-green" id="askFolder" href="#" target="_blank" rel="noopener">💬 חתמנו – אשמח לתיקייה בדרייב</a></div>
+    </div>
     <ul class="rules">
-      <li>📂 התיקייה מחולקת לשתי תיקיות: <b>בנים</b> ו<b>בנות</b>. כל תמונה – לתיקייה המתאימה.</li>
+      <li>📂 בתיקייה שתי תיקיות: <b>בנים</b> ו<b>בנות</b>. כל תמונה – לתיקייה המתאימה.</li>
       <li>🏷️ שם הקובץ = <b>השם הפרטי של הילד בלבד</b>. אותו שם לכמה ילדים? מוסיפים מספר: <b>יוסי 1, יוסי 2</b>.</li>
       <li>🖼️ פורמט <b>PNG / JPG</b> בלבד.</li>
       <li>✅ אחרי שכל התמונות עלו – נבדוק שהן תקינות ונמשיך.</li>
     </ul>
     <p class="warn">⚠️ <b>חשוב:</b> לאחר סגירת התיקייה <b>לא ניתן להחליף תמונות או להוסיף ספרים</b>. כל שינוי או הוספה אחר כך ייחשבו כהזמנה חדשה.</p>
-    <div class="row"><button class="btn btn-soft" type="button" id="folderDone">✅ העלינו את כל התמונות</button></div>
+    <div class="row"><a class="btn btn-green" id="folderDone" href="#" target="_blank" rel="noopener">💬 העלינו את כל התמונות</a></div>
   </div>
 
   <div class="sub" id="d-ded">
-    <h3><span class="ck">4</span>הקדשות 💌</h3>
-    <p>ההקדשה <b>זהה לכל ילדי הגן</b> ו<b>אינה כוללת את שם הילד</b> (עמוד ההקדשה נפתח לבד ב"הקדשה מכל הלב ל..." ואחריו השם). שולחים <b>הקדשה אחת לבנים והקדשה אחת לבנות</b>, עד 350 תווים כל אחת.</p>
+    <h3><span class="ck">5</span>הקדשות 💌</h3>
+    <p>בעמוד השער מודפסת הקדשה אישית מטעם הגן או הוועד. כותבים <b>הקדשה לבנים והקדשה לבנות</b> – אותה הקדשה לכל הבנים ולכל הבנות.<br><b>אין צורך לרשום את שם הילד/ה:</b> הכותרת מודפסת לבד – "הקדשה מכל הלב ל<i>שם הילד/ה</i>".</p>
+    <p class="ex">צריכים רעיון? <button type="button" id="exFill">✨ למלא בהקדשה לדוגמה</button> ואז לשנות כרצונכם.</p>
     <div class="ded">
-      <div id="dedB"><label for="tB">הקדשה לבנים 👦</label><textarea id="tB" maxlength="400" placeholder="ילד אהוב שלנו, ..."></textarea><div class="cnt" id="cB">0 / 350</div></div>
-      <div id="dedG"><label for="tG">הקדשה לבנות 👧</label><textarea id="tG" maxlength="400" placeholder="ילדה אהובה שלנו, ..."></textarea><div class="cnt" id="cG">0 / 350</div></div>
+      <div class="dedcol"><label for="tB">הקדשה לבנים 👦</label><textarea id="tB" maxlength="600" placeholder="ילד אהוב ומתוק 💙 ..."></textarea><div class="cnt" id="cB">0 תווים</div>
+        <div class="dprev boy" aria-hidden="true"><div class="card"><b>הקדשה מכל הלב ל[שם הילד]</b><span id="pvB">…</span></div></div></div>
+      <div class="dedcol"><label for="tG">הקדשה לבנות 👧</label><textarea id="tG" maxlength="600" placeholder="ילדה אהובה ומתוקה 💗 ..."></textarea><div class="cnt" id="cG">0 תווים</div>
+        <div class="dprev" aria-hidden="true"><div class="card"><b>הקדשה מכל הלב ל[שם הילדה]</b><span id="pvG">…</span></div></div></div>
     </div>
-    <p class="ex">צריכים רעיון? <button type="button" id="exFill">✨ למלא בדוגמה</button> ואז לשנות את שם הגן והחתימה.</p>
     <div class="row"><a class="btn btn-green" id="sendDed" href="#" target="_blank" rel="noopener">💬 שליחת ההקדשות לשמש</a></div>
+    <p class="saved" id="dedSaved" hidden></p>
   </div>
 
   <div class="sub" id="d-pay">
-    <h3><span class="ck">5</span>תשלום 💳</h3>
-    <p><b>התשלום מתבצע מראש, לפני תחילת עריכת הספרים.</b> פרטי התשלום נשלחים אליכם בוואטסאפ.</p>
+    <h3><span class="ck">6</span>תשלום 💳</h3>
+    <p><b>התשלום מתבצע מראש, לפני תחילת עריכת הספרים.</b> לתשלום: <b id="payAmt">—</b>. פרטי התשלום נשלחים אליכם בוואטסאפ.</p>
     <div class="pay"><div><span>🏦</span>העברה בנקאית</div><div><span>📱</span>Bit</div><div><span>📱</span>PayBox</div><div><span>💳</span>אשראי בתיאום</div></div>
     <div class="row"><a class="btn btn-green" id="paidMsg" href="#" target="_blank" rel="noopener">💬 שילמנו – שליחת אישור</a></div>
   </div>
 
   <div class="sub" id="d-next">
     <h3><span class="ck">✨</span>מה קורה עכשיו?</h3>
-    <p>לאחר קבלת התמונות, ההקדשות והתשלום – מתחילים בעריכה (עד 3 ימי עסקים). כל הספרים נשלחים אליכם לאישור לפני ההדפסה.</p>
+    <p>לאחר קבלת התמונות, ההקדשות והתשלום – מתחילים בעריכה (עד 3 ימי עסקים). כשהספרים מוכנים הם מחכים לכם בתיקייה, ושמש שולחת הודעה – ואז עוברים לשלב 4.</p>
     <div class="info">
       <div><b>🤖 על בינה מלאכותית</b>בינה מלאכותית אינה מצלמה. גם כשהדמיון גבוה מאוד, ייתכנו הבדלים קלים במראה הדמות או בפרופורציות. אנחנו מגיעים לדיוק של עד 99% בדמיון, וכל ספר עובר בדיקה אנושית – איור אחר איור.</div>
       <div><b>📦 גודל ואריזה</b>כריכה רכה, כרומו – 20×20 ס"מ · כריכה קשה – 21×21 ס"מ. הספרים מגיעים ללא אריזה אישית. הכי יפה לארוז בצלופן שקוף ובסרט 🎀</div>
@@ -343,10 +430,13 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <!-- 4. אישור הדפסה -->
 <section class="step" id="s-approve" data-step="approve">
   <div class="h"><span class="n">4</span><h2>אישור הדפסה ✅<small>כשהספרים מוכנים – בודקים בקצרה ומאשרים</small></h2></div>
-  <p class="lead">איזה כיף! כשנעדכן אתכם שהספרים מוכנים, הם יחכו לכם לצפייה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
+  <p class="lead">כשהספרים מוכנים, שמש שולחת לכם הודעה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
   <div class="mode" id="apMode"><button type="button" data-m="site">הזמנתי באתר</button><button type="button" data-m="drive">הזמנה בדרייב</button></div>
   <div class="row" id="apSite"><a class="btn btn-soft" href="https://www.booqli.ai/he/my-books" target="_blank" rel="noopener">📚 לספרים שלי באתר</a></div>
-  <p class="note" id="apDrive" hidden>📁 הספרים מחכים לכם בתיקייה שלכם בדרייב – אותה תיקייה שאליה העליתם את התמונות.</p>
+  <div id="apDrive" hidden>
+    <p class="note">📁 הספרים מחכים לכם בתיקייה שלכם בדרייב – אותה תיקייה שאליה העליתם את התמונות.</p>
+    <div class="row" id="apFolderRow" hidden><a class="btn btn-soft" id="apFolder" href="#" target="_blank" rel="noopener">📁 לתיקייה שלנו</a></div>
+  </div>
   <div class="checks">
     <label><input type="checkbox" class="apc"> כל הילדים נמצאים</label>
     <label><input type="checkbox" class="apc"> השמות תואמים לילדים ולתמונות הנכונות</label>
@@ -356,7 +446,6 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <p class="note">👌 <b>אין צורך לבדוק את הסיפור או את האיורים.</b></p>
   <p class="warn">💡 שלב הבדיקה נועד לוודא שהפרטים האישיים נכונים. אין אפשרות לקבל בקשות להחלפת תמונות או לשינויים באיורים על בסיס העדפה אישית. כמובן, אם יש תקלה טכנית או טעות מצידנו – נטפל בה מיד.</p>
   <div class="row"><a class="btn btn-green" id="approveBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">✅ מאשרים להדפסה</a><a class="btn btn-soft" id="askBefore" href="#" target="_blank" rel="noopener">💬 יש לי שאלה לפני ההדפסה</a></div>
-  
 </section>
 
 </main>
@@ -371,203 +460,265 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <script src="../common.js"></script>
 <script>
 /* ===================== ההזמנה של הגן (order/) =====================
-   קישור אישי שנוצר בתוסף "בוקלי – הזמנות גנים": order/#d=<base64 של JSON>
-   {g: שם הגן, c: איש קשר, n: ילדים, p: ספרים לילד, v: כריכה staple/soft/hard, k: קופון 5%, s: שלב פתיחה, r: מסלול}
-   כל מה שבקישור נשאר בדפדפן (אחרי ה-#, לא נשלח לשרת). אין כאן פרטי בנק או טלפונים פרטיים – אלה נשלחים בוואטסאפ מהתוסף.
-   המחירים: אותו מחירון כמו בעמוד הגנים (TIERS). משנים מחיר – גם כאן וגם ב-kindergartens/ וגם בתוסף. */
+   ההיגיון: העמוד = המפה והסיכום של הגן. כל שלב נגמר בלחיצה ששולחת לשמש וואטסאפ מוכן (השיחה עצמה – בוואטסאפ),
+   והעמוד מסמן שהשלב בוצע ושומר את התאריך.
+   הקישור: order/#d=<base64 של JSON>. נוצר בתוסף של שמש (פרטי הגן, קופון 5%, קישור לתיקייה f),
+   או בכפתורי "שמרו את העמוד" (אז הוא כולל גם את ההתקדמות, הכתובת והספרים – כדי לחזור מכל טלפון).
+   שדות: g גן, c איש קשר, n ילדים, p ספרים לילד, v כריכה, k קופון 5%, f תיקייה, r מסלול, sh משלוח, t ספרים, a כתובת, dn שלבים שבוצעו, s שלב פתיחה.
+   כל מה שאחרי # נשאר בדפדפן ולא נשלח לשרת. אין כאן פרטי בנק או קודים קבועים.
+   המחירים זהים ל-kindergartens/ ולתוסף (TIERS). */
 const PHONE = "972555549331";
 const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83],[20,60,77],[50,59,76],[100,57,74]];
 const STAPLE = { p:50, from:20 };
 const COVER = { staple:"כריכה רכה סיכות", soft:"כריכה רכה (פיג'מה)", hard:"כריכה קשה פרימיום" };
-const SHIP = 40;
-const DRIVE_FROM = 21, DRIVE_MAX_TOPICS = 2, DISCOUNT = 0.05;
-/* הספרים. pdf: הקובץ בתיקייה order/books/ (כששמש מעלה – ממלאים כאן). */
+const SHIP = 40, DRIVE_FROM = 21, DRIVE_MAX_TOPICS = 2, DISCOUNT = 0.05, DED_MAX = 350;
+/* הספרים. pdf: קבצים בתיקייה order/books/ – [תווית, קובץ]. ספר בלי pdf מופיע עם "בקרוב". */
 const BOOKS = [
-  { id:"birthday", name:"ילד/ת יום הולדת", d:"היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה.", img:"https://static.wixstatic.com/media/a56db3_4d9c35abdbff4706bb722205187e5621~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/b.png", pdf:"" },
-  { id:"hugs", name:"חיבוקים", d:"המעשים הטובים וכל החיבוקים האוהבים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_6adc566e4dd145d3b58a28f4a66417d0~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/h.png", pdf:"" },
-  { id:"superhero", name:"גיבור/ת על!", d:"גיבור/ה שבוחר/ת במעשים טובים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/s.png", pdf:"" },
-  { id:"first", name:"הספר הראשון שלי", d:"לקטנטנים בגילאי 6 חודשים עד שנתיים.", img:"https://static.wixstatic.com/media/a56db3_8cd8bb318ff74385b4052169c6a9748f~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/f.png", pdf:"" },
-  { id:"class1", name:"עולה לכיתה א'", d:"השאלות והחששות לקראת העלייה לכיתה א׳.", img:"https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/c.png", pdf:"" },
-  { id:"kinder", name:"הולך/ת לגן", d:"היום הראשון בגן, עם חיות נחמדות שנותנות טיפים.", img:"https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/k.png", pdf:"" }
+  { id:"birthday", name:"ילד/ת יום הולדת", d:"היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה.", img:"https://static.wixstatic.com/media/a56db3_4d9c35abdbff4706bb722205187e5621~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/b.png", pdf:[["📖 גרסת בת","birthday-girl.pdf"],["📖 גרסת בן","birthday-boy.pdf"]], ded:"birthday" },
+  { id:"hugs", name:"חיבוקים", d:"המעשים הטובים וכל החיבוקים האוהבים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_6adc566e4dd145d3b58a28f4a66417d0~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/h.png", pdf:[] },
+  { id:"superhero", name:"גיבור/ת על!", d:"גיבור/ה שבוחר/ת במעשים טובים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/s.png", pdf:[] },
+  { id:"first", name:"הספר הראשון שלי", d:"לקטנטנים בגילאי 6 חודשים עד שנתיים.", img:"https://static.wixstatic.com/media/a56db3_8cd8bb318ff74385b4052169c6a9748f~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/f.png", pdf:[] },
+  { id:"class1", name:"עולה לכיתה א'", d:"השאלות והחששות לקראת העלייה לכיתה א׳.", img:"https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/c.png", pdf:[] },
+  { id:"kinder", name:"הולך/ת לגן", d:"היום הראשון בגן, עם חיות נחמדות שנותנות טיפים.", img:"https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/k.png", pdf:[] }
 ];
-const STEPS = [["topic","1 · ספר"],["route","2 · מסלול"],["drive","3 · דרייב"],["approve","4 · אישור הדפסה"]];
+/* הקדשות לדוגמה (שמש, 2.11.2026). "גן XXX" מתחלף בשם הגן. */
+const DED = {
+  birthday: {
+    b: "ילד אהוב ומתוק 💙\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלום חלומות ותכבוש כל פסגה,\nשתגלה דברים חדשים בכל יום ובהנאה.\nשתמיד תחייך ותאיר את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\nגן XXX",
+    g: "ילדה אהובה ומתוקה 💗\nהיום הוא יום מיוחד וחגיגי,\nכי יום ההולדת שלך הגיע – איזה כיף אמיתי!\nנאחל לך שנה מלאה בשמחה וצחוק,\nבהמון הרפתקאות, משחקים וחיבוק.\nשתחלמי חלומות ותכבשי כל פסגה,\nשתגלי דברים חדשים בכל יום ובהנאה.\nשתמיד תחייכי ותאירי את הסביבה,\nעם הקסם שלך, השמחה והאהבה.\nנאחל לך בריאות, אושר והמון מזל טוב,\nושכל יום יהיה בשבילך שמח, מתוק ואהוב.\nבאהבה,\nגן XXX"
+  },
+  year: {
+    b: "ילד אהוב שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\nגן XXX ❤️",
+    g: "ילדה אהובה שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה,\nגן XXX ❤️"
+  }
+};
+const STEPS = [["books","1 · הספרים"],["route","2 · מסלול"],["drive","3 · דרייב"],["approve","4 · אישור הדפסה"]];
+const DRIVE_SUBS = [["what","d-what"],["terms","d-terms"],["photos","d-photos"],["folder","d-folder"],["ded","d-ded"],["pay","d-pay"]];
 
-/* ---- נתונים מהקישור + מה שנשמר במכשיר ---- */
+/* ---- קריאת הקישור + מה שנשמר במכשיר ---- */
 let D = {};
 try { const m = location.hash.match(/d=([^&]+)/); if (m) D = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1]))))); } catch (e) {}
 const KEY = "booqli_order_" + (D.g || "general");
 let S = {};
 try { S = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) {}
+const $ = id => document.getElementById(id);
+const esc = x => String(x == null ? "" : x).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
-/* קישור חדש משמש (כמות/כריכה השתנו) גובר על מה שנשמר במכשיר */
+/* מיזוג: קישור חדש משמש (כמות/כריכה/מסלול) גובר; מה שכבר נעשה – מתאחד */
 const sig = JSON.stringify([D.n, D.p, D.v, D.r]);
 if (D.n && S.sig !== sig) { S.kids = D.n; S.per = D.p || 1; S.cover = D.v || "staple"; if (D.r) S.route = D.r; S.sig = sig; }
 S.kids = S.kids || 25; S.per = S.per || 1; S.cover = S.cover || "staple";
-S.ship = S.ship || "home"; S.topics = S.topics || []; S.route = S.route || D.r || ""; S.done = S.done || {};
-const $ = id => document.getElementById(id);
+S.route = S.route || ""; S.ship = S.ship || D.sh || "home";
+S.topics = (S.topics && S.topics.length ? S.topics : D.t) || [];
+S.addr = Object.assign({}, D.a || {}, S.addr || {});
+S.done = Object.assign({}, D.dn || {}, S.done || {});
+if (D.f) S.folder = D.f;
+S.gan = S.gan || D.g || ""; S.name = S.name || D.c || "";
+save();
+const today = () => new Date().toLocaleDateString("he-IL");
 const ils = n => Math.round(n).toLocaleString("he-IL") + " ₪";
-let gan = D.g || S.gan || "";
-if (!D.g) {
-  $("whoBox").hidden = false; $("fGan").value = S.gan || ""; $("fName").value = S.name || "";
-  ["fGan","fName"].forEach(id => $(id).addEventListener("input", () => { S.gan = $("fGan").value.trim(); S.name = $("fName").value.trim(); gan = S.gan; save(); }));
-}
 const wa = t => "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(t);
-const who = () => (gan ? gan : "הגן שלנו") + ((D.c || S.name) ? " (" + (D.c || S.name) + ")" : "");
+const gan = () => S.gan || "";
+const who = () => (gan() || "הגן שלנו") + (S.name ? " (" + S.name + ")" : "");
+function mark(k){ if (!S.done[k]) { S.done[k] = today(); save(); } refresh(); }
 
-if (gan) { $("hi").textContent = "שלום " + gan + "! איזה כיף שבחרתם בבוקלי ❤️"; document.title = "ההזמנה של " + gan + " · BOOQLI"; }
+if (!D.g) {
+  $("whoBox").hidden = false; $("fGan").value = S.gan; $("fName").value = S.name;
+  ["fGan","fName"].forEach(id => $(id).addEventListener("input", () => { S.gan = $("fGan").value.trim(); S.name = $("fName").value.trim(); save(); refresh(); }));
+}
 
 function priceFor(cover, books){
   if (cover === "staple") return books >= STAPLE.from ? STAPLE.p : 0;
   let t = TIERS[0]; TIERS.forEach(r => { if (books >= r[0]) t = r; });
   return cover === "soft" ? t[1] : t[2];
 }
-function books(){ return S.kids * S.per; }
-function total(){ const p = priceFor(S.cover, books()); return p ? p * books() : 0; }
+const books = () => S.kids * S.per;
+const total = () => { const p = priceFor(S.cover, books()); return p ? p * books() : 0; };
+const shipCost = () => S.route === "drive" && S.ship === "home" ? SHIP : 0;
+const topicNames = () => S.topics.map(id => (BOOKS.find(b => b.id === id) || {}).name).filter(Boolean).join(" + ");
+function addrText(){ const a = S.addr; return [a.name, a.phone, a.street, a.city].filter(Boolean).join(", "); }
+function orderLine(){
+  let t = "👧👦 " + S.kids + " ילדים × " + S.per + " = " + books() + " ספרים · " + COVER[S.cover];
+  if (S.route === "drive") t = "📚 " + (topicNames() || "עוד לא בחרנו ספר") + "\n" + t + "\n" + (S.ship === "home" ? "🚚 משלוח עד הבית (40 ₪)" + (addrText() ? ": " + addrText() : "") : "🚗 איסוף עצמי") + (total() ? "\n💰 סה\"כ " + ils(total() + shipCost()) : "");
+  return t;
+}
 
-/* ---- סיכום עליון ---- */
+/* ---- קישור לשמירה (כולל ההתקדמות) ---- */
+function saveLink(){
+  const d = { g: S.gan, c: S.name, n: S.kids, p: S.per, v: S.cover, r: S.route, sh: S.ship, t: S.topics, a: S.addr, dn: S.done };
+  if (D.k) d.k = D.k; if (S.folder) d.f = S.folder;
+  return location.origin + location.pathname + "#d=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(d)))));
+}
+$("saveMe").addEventListener("click", e => { e.currentTarget.href = "https://wa.me/?text=" + encodeURIComponent("📚 העמוד האישי של ההזמנה שלנו ב-BOOQLI" + (gan() ? " – " + gan() : "") + ":\n" + saveLink()); if (window.siteEvent) siteEvent("click", "order_save_me"); });
+$("saveFriend").addEventListener("click", e => { e.currentTarget.href = "https://wa.me/?text=" + encodeURIComponent("היי 💛 זה העמוד של הזמנת הספרים האישיים לילדי " + (gan() || "הגן") + " – כל השלבים והסיכום במקום אחד:\n" + saveLink()); if (window.siteEvent) siteEvent("click", "order_save_friend"); });
+$("saveCopy").addEventListener("click", () => { const l = saveLink(); const ok = () => { $("saveCopy").textContent = "✔️ הועתק"; setTimeout(() => $("saveCopy").textContent = "🔗 העתקת הקישור", 2000); }; if (navigator.clipboard) navigator.clipboard.writeText(l).then(ok, () => prompt("העתיקו את הקישור:", l)); else prompt("העתיקו את הקישור:", l); });
+
+/* ---- כמות וכריכה ---- */
 $("fKids").value = S.kids; $("fPer").value = S.per; $("fCover").value = S.cover;
-function sum(){
-  S.kids = Math.max(1, Math.min(999, parseInt($("fKids").value, 10) || 1));
-  S.per = +$("fPer").value; S.cover = $("fCover").value; save();
-  const b = books(), p = priceFor(S.cover, b);
-  $("sTot").textContent = p ? ils(p * b) : "—";
-  $("sPer").textContent = p ? b + " ספרים · " + p + " ₪ לספר" : "סיכות – מ-20 ספרים";
-  routeUi();
-}
-["fKids","fPer","fCover"].forEach(id => $(id).addEventListener("input", sum));
+["fKids","fPer","fCover"].forEach(id => $(id).addEventListener("input", () => {
+  S.kids = Math.max(1, Math.min(999, parseInt($("fKids").value, 10) || 1)); S.per = +$("fPer").value; S.cover = $("fCover").value; save(); refresh();
+}));
 
-/* ---- ספרים ---- */
-$("books").innerHTML = BOOKS.map(b => `<div class="bk" data-id="${b.id}"><div class="im"><img src="${b.img}" alt="${b.name}" width="375" height="375" loading="lazy"></div>
-  <div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="acts">
-  <a class="rd${b.pdf ? "" : " soon"}" href="${b.pdf ? "books/" + b.pdf : "#"}" target="_blank" rel="noopener">${b.pdf ? "📖 לקרוא" : "📖 בקרוב"}</a>
-  <label><input type="checkbox" value="${b.id}"> בחירה</label></div></div></div>`).join("");
-document.querySelectorAll("#books input").forEach(i => { i.checked = S.topics.includes(i.value); });
-$("books").addEventListener("change", () => {
-  S.topics = [...document.querySelectorAll("#books input:checked")].map(i => i.value); save(); topicUi(); routeUi();
-});
-function topicUi(){
-  document.querySelectorAll(".bk").forEach(b => b.classList.toggle("sel", S.topics.includes(b.dataset.id)));
-  const names = S.topics.map(id => BOOKS.find(b => b.id === id).name);
-  $("picked").textContent = names.length ? "✔️ בחרתם: " + names.join(" · ") : "";
-  $("topicNext").disabled = !names.length;
-  S.done.topic = !!names.length || S.route === "site"; save(); progUi();
-}
+/* ---- ספרים (קריאה) ---- */
+$("books").innerHTML = BOOKS.map(b => `<div class="bk${b.pdf.length ? " has" : ""}"><div class="im"><img src="${b.img}" alt="${b.name}" width="375" height="375" loading="lazy"></div>
+  <div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="acts">${b.pdf.length
+    ? b.pdf.map(f => `<a class="rd" href="books/${f[1]}" target="_blank" rel="noopener" data-book="${b.id}">${f[0]}</a>`).join("")
+    : `<span class="rd soon">📖 בקרוב</span>`}</div></div></div>`).join("");
+$("books").addEventListener("click", e => { const a = e.target.closest("a[data-book]"); if (!a) return; mark("books"); if (window.siteEvent) siteEvent("click", "order_read_" + a.dataset.book); });
 
 /* ---- מסלול ---- */
 function driveBlock(){
   if (books() < DRIVE_FROM) return "מסלול הדרייב מתאים להזמנות של מעל 20 ספרים.";
-  if (S.topics.length > DRIVE_MAX_TOPICS) return "בדרייב אפשר עד שני נושאים לגן. בחרתם " + S.topics.length + " – אפשר להזמין באתר, או לבחור עד שניים.";
   return "";
-}
-function routeUi(){
-  const why = driveBlock();
-  $("rtDrive").classList.toggle("off", !!why); $("driveWhy").hidden = !why; $("driveWhy").textContent = why;
-  if (why && S.route === "drive") S.route = "";
-  document.querySelectorAll('input[name="route"]').forEach(i => i.checked = i.value === S.route);
-  $("rtSite").classList.toggle("sel", S.route === "site"); $("rtDrive").classList.toggle("sel", S.route === "drive");
-  $("siteBox").hidden = S.route !== "site"; $("routeNext").hidden = S.route !== "drive";
-  $("s-drive").hidden = S.route !== "drive";
-  const t = total();
-  const sh = S.ship === "home" ? SHIP : 0;
-  $("dPrice").innerHTML = t ? `<span>💰 ${books()} ספרים × ${priceFor(S.cover, books())} ₪ = <b>${ils(t)}</b></span><span>🚚 + משלוח ${SHIP} ₪ (או איסוף עצמי ללא עלות)</span>` : "";
-  $("dTot").textContent = t ? ils(t + sh) : "—";
-  $("dPer").textContent = t ? books() + " ספרים × " + priceFor(S.cover, books()) + " ₪ = " + ils(t) + (sh ? " + משלוח " + SHIP + " ₪" : " · איסוף עצמי") + " · " + COVER[S.cover] + " · ללא הנחת 5% (ההנחה רק בהזמנה עצמאית באתר)" : "";
-  document.querySelectorAll('input[name="ship"]').forEach(i => i.checked = i.value === S.ship);
-  $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
-  S.done.route = !!S.route; if (S.route === "site") S.done.topic = true; else if (!S.topics.length) S.done.topic = false;
-  $("pickFirst").hidden = !(S.route === "drive" && !S.topics.length);
-  save(); progUi();
 }
 document.querySelectorAll('input[name="route"]').forEach(i => i.addEventListener("change", () => {
   if (i.value === "drive" && driveBlock()) { i.checked = false; return; }
-  S.route = i.value; save(); routeUi();
+  S.route = i.value; save(); refresh();
   if (window.siteEvent) siteEvent("click", "order_route_" + i.value);
 }));
 if (D.k) { $("couponCode").textContent = D.k; $("couponBox").hidden = false; } else $("couponMissing").hidden = false;
-$("askCoupon").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאנחנו מזמינים לבד באתר 🛒 ואשמח לקוד הקופון ל-5% הנחה:\n" + orderLine()); if (window.siteEvent) siteEvent("click", "order_ask_coupon"); });
 $("couponCopy").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(D.k); $("couponCopy").textContent = "✔️ הועתק"; });
+$("askCoupon").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאנחנו מזמינים לבד באתר 🛒 ואשמח לקוד הקופון ל-5% הנחה:\n" + orderLine()); if (window.siteEvent) siteEvent("click", "order_ask_coupon"); });
 $("goSite").href += "?utm_source=games&utm_medium=order_page&utm_campaign=gan";
-$("goSite").addEventListener("click", () => { S.done.siteGo = true; save(); if (window.siteEvent) siteEvent("click", "order_go_site"); });
+$("goSite").addEventListener("click", () => { mark("site"); if (window.siteEvent) siteEvent("click", "order_go_site"); });
 
-/* ---- דרייב ---- */
-function subUi(){
-  [["d-terms","terms"],["d-photos","photos"],["d-folder","folder"],["d-ded","ded"],["d-pay","pay"]].forEach(a => $(a[0]).classList.toggle("ok", !!S.done[a[1]]));
-  S.done.drive = ["terms","photos","folder","ded","pay"].every(k => S.done[k]); save(); progUi();
-}
-function mark(k){ S.done[k] = true; save(); subUi(); }
+/* ---- דרייב 1: מה מזמינים ולאן ---- */
+$("tpick").innerHTML = BOOKS.map(b => `<label><input type="checkbox" value="${b.id}"${S.topics.includes(b.id) ? " checked" : ""}> ${b.name}</label>`).join("");
+$("tpick").addEventListener("change", e => {
+  const picked = [...document.querySelectorAll("#tpick input:checked")].map(i => i.value);
+  if (picked.length > DRIVE_MAX_TOPICS) { e.target.checked = false; toast("בדרייב אפשר עד שני ספרים לגן 🙂"); return; }
+  S.topics = picked; save(); refresh();
+});
+document.querySelectorAll('input[name="ship"]').forEach(i => i.addEventListener("change", () => { S.ship = i.value; save(); refresh(); }));
+[["aName","name"],["aPhone","phone"],["aStreet","street"],["aCity","city"]].forEach(([id, k]) => { $(id).value = S.addr[k] || ""; $(id).addEventListener("input", () => { S.addr[k] = $(id).value.trim(); save(); refresh(); }); });
+$("sendWhat").addEventListener("click", e => {
+  if (!S.topics.length) { e.preventDefault(); toast("בחרו ספר (עד שניים) 🙂"); return; }
+  if (S.ship === "home" && !(S.addr.name && S.addr.phone && S.addr.street && S.addr.city)) { e.preventDefault(); toast("מלאו את פרטי המשלוח 🙂"); return; }
+  e.currentTarget.href = wa("היי שמש 📦 כאן " + who() + ". מה מזמינים:\n" + orderLine());
+  mark("what");
+});
+
+/* ---- דרייב 2–6 ---- */
 $("termsLink").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "order_terms"); });
 $("termsDone").addEventListener("click", () => mark("terms"));
 $("photosDone").addEventListener("click", () => mark("photos"));
-$("folderDone").addEventListener("click", () => mark("folder"));
-document.querySelectorAll('input[name="ship"]').forEach(i => i.addEventListener("change", () => { S.ship = i.value; save(); routeUi(); }));
-function topicNames(){ return S.topics.map(id => BOOKS.find(b => b.id === id).name).join(" + ") || "עוד לא בחרנו"; }
-function orderLine(){ return "📚 " + topicNames() + "\n👧👦 " + S.kids + " ילדים × " + S.per + " = " + books() + " ספרים · " + COVER[S.cover] + (S.route === "drive" ? "\n" + (S.ship === "home" ? "🚚 משלוח עד הבית (40 ₪)" : "🚗 איסוף עצמי") + (total() ? " · סה\"כ " + ils(total() + (S.ship === "home" ? SHIP : 0)) : "") : ""); }
-$("askFolder").addEventListener("click", e => {
-  e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nחתמנו על התקנון ✍️ ונשמח לתיקייה בדרייב להעלאת התמונות 📁\n" + orderLine());
-});
-/* הקדשות */
-const DED_B = "ילד אהוב שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדל, לומד, צוחק, חולם וממלא את הגן בשמחה.\nמאחלים לך שתמשיך להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחר.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
-const DED_G = "ילדה אהובה שלנו,\nתודה שהיית חלק ממשפחת הגן. זכינו לראות אותך גדלה, לומדת, צוחקת, חולמת וממלאת את הגן בשמחה.\nמאחלים לך שתמשיכי להאמין בעצמך, לגלות, לצמוח ולהצליח בכל דרך שתבחרי.\nתמיד נזכור אותך באהבה גדולה.\nבאהבה, הורי הגן ❤️";
-$("tB").value = S.dedB || ""; $("tG").value = S.dedG || ""; S.one = false;
-function dedUi(){
-  S.dedB = $("tB").value; S.dedG = $("tG").value; save();
-  [["tB","cB"],["tG","cG"]].forEach(a => { const n = $(a[0]).value.length; $(a[1]).textContent = n + " / 350"; $(a[1]).classList.toggle("over", n > 350); });
-}
-["tB","tG"].forEach(id => $(id).addEventListener("input", dedUi));
-$("exFill").addEventListener("click", () => { if (!$("tB").value) $("tB").value = DED_B; if (!$("tG").value) $("tG").value = DED_G; dedUi(); });
-$("sendDed").addEventListener("click", e => {
-  const b = $("tB").value.trim(), g = $("tG").value.trim();
-  if (!b || !g || b.length > 350 || g.length > 350) { e.preventDefault(); alertBox("כתבו הקדשה לבנים והקדשה לבנות (עד 350 תווים) ואז שלחו 🙂"); return; }
-  e.currentTarget.href = wa("היי שמש 💌 ההקדשות של " + who() + ":\n\n" + "👦 לבנים:\n" + b + "\n\n👧 לבנות:\n" + g);
-  mark("ded");
-});
-$("paidMsg").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 💳 כאן " + who() + ". שילמנו על ההזמנה:\n" + orderLine() + "\nמצרפים אישור תשלום 🙏"); mark("pay"); });
-$("referLink").addEventListener("click", e => { e.preventDefault(); window.open("https://wa.me/?text=" + encodeURIComponent("מצאנו מתנה מהממת לכל ילד בגן 📚 ספר אישי עם השם, איורים של הילד והקדשה. שווה לבדוק:\nhttps://games.booqli.ai/kindergartens/?utm_source=whatsapp&utm_medium=referral\n(תגידו שהגעתם דרך " + (gan || "הגן שלנו") + " 🌱)"), "_blank", "noopener"); });
-
 $("parentsMsg").addEventListener("click", e => {
   e.currentTarget.href = "https://wa.me/?text=" + encodeURIComponent("הורים יקרים 💛\nאנחנו מכינים לכל ילד וילדה בגן מתנה מרגשת – ספר אישי שבו הילד/ה הם גיבורי הסיפור! 📚\nכדי שהאיורים ייצאו מדויקים, נשמח שתשלחו תמונה אחת של הילד/ה:\n⚪ רקע לבן (אם אפשר)\n🔵 רק הילד/ה בתמונה – בלי אנשים או חיות\n🔴 מבט ישיר למצלמה\n🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים או כתרים\n🟢 בנים עם כיפה – שהכיפה תיראה\n🟣 בנות – שהתסרוקת תיראה היטב\n😀 והכי חשוב – חיוך!\n\n🎥 סרטון קצר: https://youtu.be/Fk42FO0TDmg\nתודה! ❤️");
   if (window.siteEvent) siteEvent("click", "order_parents_msg");
 });
-$("helpBtn").addEventListener("click", e => {
-  const curStep = (STEPS.find(s => !S.done[s[0]] && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3])[1].replace(/^\d+ · /, "");
-  e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאני בעמוד ההזמנה, בשלב: " + curStep + (S.route ? " (" + (S.route === "drive" ? "דרייב" : "הזמנה באתר") + ")" : "") + "\n" + orderLine() + "\n\nיש לי שאלה:");
-  if (window.siteEvent) siteEvent("click", "order_help");
+$("askFolder").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nחתמנו על התקנון ✍️ ונשמח לתיקייה בדרייב להעלאת התמונות 📁\n" + orderLine()); mark("folderAsk"); });
+$("folderDone").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 📁 כאן " + who() + ".\nהעלינו את כל התמונות לתיקייה ✅"); mark("folder"); });
+/* הקדשות */
+$("tB").value = S.dedB || ""; $("tG").value = S.dedG || "";
+function dedUi(){
+  S.dedB = $("tB").value; S.dedG = $("tG").value; save();
+  [["tB","cB","pvB"],["tG","cG","pvG"]].forEach(([t, c, pv]) => {
+    const n = $(t).value.length; $(c).textContent = n + " תווים" + (n > DED_MAX ? " · ארוך מהמומלץ (" + DED_MAX + ") – שמש תוודא שזה נכנס יפה" : "");
+    $(c).classList.toggle("long", n > DED_MAX); $(pv).textContent = $(t).value || "…";
+  });
+}
+["tB","tG"].forEach(id => $(id).addEventListener("input", dedUi));
+$("exFill").addEventListener("click", () => {
+  const kind = S.topics.includes("birthday") || !S.topics.length ? "birthday" : "year";
+  const g = gan() ? (/^גן\s/.test(gan()) ? gan() : "גן " + gan()) : "גן XXX";
+  if (!$("tB").value) $("tB").value = DED[kind].b.replace("גן XXX", g);
+  if (!$("tG").value) $("tG").value = DED[kind].g.replace("גן XXX", g);
+  dedUi();
 });
+$("sendDed").addEventListener("click", e => {
+  const b = $("tB").value.trim(), g = $("tG").value.trim();
+  if (!b || !g) { e.preventDefault(); toast("כתבו הקדשה לבנים והקדשה לבנות ואז שלחו 🙂"); return; }
+  e.currentTarget.href = wa("היי שמש 💌 ההקדשות של " + who() + ":\n\n👦 לבנים:\n" + b + "\n\n👧 לבנות:\n" + g);
+  mark("ded");
+});
+$("paidMsg").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 💳 כאן " + who() + ". שילמנו על ההזמנה:\n" + orderLine() + "\nמצרפים אישור תשלום 🙏"); mark("pay"); });
+$("referLink").addEventListener("click", e => { e.preventDefault(); window.open("https://wa.me/?text=" + encodeURIComponent("מצאנו מתנה מהממת לכל ילד בגן 📚 ספר אישי עם השם, איורים של הילד והקדשה. שווה לבדוק:\nhttps://games.booqli.ai/kindergartens/?utm_source=whatsapp&utm_medium=referral\n(תגידו שהגעתם דרך " + (gan() || "הגן שלנו") + " 🌱)"), "_blank", "noopener"); });
 
 /* ---- אישור הדפסה ---- */
-S.apMode = S.apMode || (S.route === "drive" ? "drive" : "site");
-function apUi(){
-  document.querySelectorAll("#apMode button").forEach(b => b.classList.toggle("on", b.dataset.m === S.apMode));
-  $("apSite").hidden = S.apMode !== "site"; $("apDrive").hidden = S.apMode !== "drive";
-  const all = [...document.querySelectorAll(".apc")].every(c => c.checked);
-  $("approveBtn").classList.toggle("btn-green", all); $("approveBtn").classList.toggle("btn-soft", !all);
-  $("approveBtn").setAttribute("aria-disabled", String(!all));
-}
-$("apMode").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.apMode = b.dataset.m; save(); apUi(); });
-document.querySelectorAll(".apc").forEach(c => c.addEventListener("change", apUi));
+$("apMode").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.apMode = b.dataset.m; save(); refresh(); });
+document.querySelectorAll(".apc").forEach(c => c.addEventListener("change", refresh));
 $("approveBtn").addEventListener("click", e => {
-  if ($("approveBtn").getAttribute("aria-disabled") === "true") { e.preventDefault(); alertBox("סמנו את ארבע הבדיקות ואז אשרו 🙂"); return; }
+  if ($("approveBtn").getAttribute("aria-disabled") === "true") { e.preventDefault(); toast("סמנו את ארבע הבדיקות ואז אשרו 🙂"); return; }
   e.currentTarget.href = wa("היי שמש ✅ כאן " + who() + ".\nבדקנו את הספרים: כל הילדים נמצאים, השמות נכונים ותואמים לתמונות, וההקדשה נכונה.\n*מאשרים להדפסה!* 🎉");
-  S.done.approve = true; save(); progUi(); if (window.siteEvent) siteEvent("click", "order_approve");
+  mark("approve"); if (window.siteEvent) siteEvent("click", "order_approve");
 });
 $("askBefore").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש, כאן " + who() + ".\nיש לי שאלה לפני ההדפסה:\n(שם הילד/ה ומה השאלה)"); if (window.siteEvent) siteEvent("click", "order_ask_before_print"); });
 $("waTop").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ", יש לי שאלה על ההזמנה:"); });
+$("helpBtn").addEventListener("click", e => {
+  e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאני בעמוד ההזמנה, בשלב: " + curStep()[1].replace(/^\d+ · /, "") + "\n" + orderLine() + "\n\nיש לי שאלה:");
+  if (window.siteEvent) siteEvent("click", "order_help");
+});
 
-/* ---- התקדמות ---- */
-function progUi(){
-  const cur = STEPS.find(s => !S.done[s[0]] && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3];
-  $("prog").innerHTML = STEPS.filter(s => s[0] !== "drive" || S.route === "drive").map(s =>
-    `<a href="#s-${s[0]}" class="${S.done[s[0]] ? "done" : s === cur ? "cur" : ""}">${s[1]}</a>`).join("");
-  document.querySelectorAll(".step").forEach(el => { el.classList.toggle("cur", el.dataset.step === cur[0]); el.classList.toggle("ok", !!S.done[el.dataset.step]); });
+/* ---- רענון כללי: מחירים, מסלול, סיכום, התקדמות ---- */
+function stepDone(k){
+  if (k === "books") return !!(S.done.books || S.route);
+  if (k === "route") return !!S.route;
+  if (k === "drive") return DRIVE_SUBS.every(s => S.done[s[0]]);
+  return !!S.done[k];
+}
+function curStep(){ return STEPS.find(s => !stepDone(s[0]) && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3]; }
+function refresh(){
+  const b = books(), p = priceFor(S.cover, b), t = total(), sh = shipCost();
+  $("sTot").textContent = p ? ils(t) : "—"; $("sPer").textContent = p ? b + " ספרים · " + p + " ₪ לספר" : "סיכות – מ-20 ספרים";
+  if (gan()) { $("hi").textContent = "שלום " + gan() + "! איזה כיף שבחרתם בבוקלי ❤️"; document.title = "ההזמנה של " + gan() + " · BOOQLI"; }
+  /* מסלול */
+  const why = driveBlock();
+  if (why && S.route === "drive") S.route = "";
+  $("rtDrive").classList.toggle("off", !!why); $("driveWhy").hidden = !why; $("driveWhy").textContent = why;
+  document.querySelectorAll('input[name="route"]').forEach(i => i.checked = i.value === S.route);
+  $("rtSite").classList.toggle("sel", S.route === "site"); $("rtDrive").classList.toggle("sel", S.route === "drive");
+  $("siteBox").hidden = S.route !== "site"; $("routeNext").hidden = S.route !== "drive"; $("s-drive").hidden = S.route !== "drive";
+  $("dPrice").innerHTML = t ? `<span>💰 ${b} ספרים × ${p} ₪ = <b>${ils(t)}</b></span><span>🚚 + משלוח ${SHIP} ₪ (או איסוף עצמי ללא עלות)</span>` : "";
+  $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
+  /* דרייב */
+  $("dTot").textContent = t ? ils(t + (S.ship === "home" ? SHIP : 0)) : "—";
+  $("dPer").textContent = t ? b + " ספרים × " + p + " ₪ = " + ils(t) + (S.ship === "home" ? " + משלוח " + SHIP + " ₪" : " · איסוף עצמי") + " · " + COVER[S.cover] + " · ללא הנחת 5% (ההנחה רק בהזמנה עצמאית באתר)" : "";
+  document.querySelectorAll('input[name="ship"]').forEach(i => i.checked = i.value === S.ship);
+  $("addrBox").hidden = S.ship !== "home"; $("payAmt").textContent = t ? ils(t + (S.ship === "home" ? SHIP : 0)) : "—";
+  DRIVE_SUBS.forEach(([k, id]) => $(id).classList.toggle("ok", !!S.done[k]));
+  const sv = (id, k, txt) => { $(id).hidden = !S.done[k]; if (S.done[k]) $(id).textContent = txt + " " + S.done[k]; };
+  sv("whatSaved", "what", "✔️ נשלח לשמש ב-"); sv("termsSaved", "terms", "✔️ חתמתם על התקנון ב-"); sv("dedSaved", "ded", "✔️ ההקדשות נשלחו ב-");
+  $("folderHave").hidden = !S.folder; $("folderAsk").hidden = !!S.folder;
+  if (S.folder) { $("folderLink").href = S.folder; $("apFolder").href = S.folder; }
+  /* אישור הדפסה */
+  S.apMode = S.route === "drive" ? "drive" : (S.apMode || "site");
+  document.querySelectorAll("#apMode button").forEach(x => x.classList.toggle("on", x.dataset.m === S.apMode));
+  $("apSite").hidden = S.apMode !== "site"; $("apDrive").hidden = S.apMode !== "drive"; $("apFolderRow").hidden = !S.folder;
+  const all = [...document.querySelectorAll(".apc")].every(c => c.checked);
+  $("approveBtn").classList.toggle("btn-green", all); $("approveBtn").classList.toggle("btn-soft", !all); $("approveBtn").setAttribute("aria-disabled", String(!all));
+  /* סיכום */
+  const ok = (k, label) => S.done[k] ? `<span class="ok">✔️ ${label} ${S.done[k]}</span>` : `<span class="wait">○ עוד לא</span>`;
+  const rows = [
+    ["הגן", (esc(gan()) || "<span class='wait'>מלאו למעלה</span>") + (S.name ? " · " + esc(S.name) : "")],
+    ["הזמנה", b + " ספרים · " + COVER[S.cover] + (t ? " · " + ils(t) : "")],
+    ["מסלול", S.route === "site" ? "🛒 לבד באתר · עוד 5% הנחה" + (t ? " → " + ils(t * (1 - DISCOUNT)) : "") : S.route === "drive" ? "📁 במרוכז בדרייב" : "<span class='wait'>עוד לא נבחר (שלב 2)</span>"]
+  ];
+  if (S.route === "drive") rows.push(
+    ["ספר/ים", esc(topicNames()) || "<span class='wait'>עוד לא נבחר</span>"],
+    ["משלוח", S.ship === "home" ? "🚚 עד הבית (40 ₪)" + (addrText() ? " – " + esc(addrText()) : " – <span class='wait'>חסרה כתובת</span>") : "🚗 איסוף עצמי"],
+    ["לתשלום", t ? "<b>" + ils(t + sh) + "</b>" : "—"],
+    ["תקנון", S.done.terms ? `<span class="ok">✔️ נחתם ב-${S.done.terms}</span> · <a href="https://forms.gle/UinyXV37w2yMYvJd7" target="_blank" rel="noopener">הטופס</a>` : "<span class='wait'>○ עוד לא</span>"],
+    ["תיקייה", S.folder ? `<a href="${esc(S.folder)}" target="_blank" rel="noopener">📁 לתיקייה שלנו</a>` + (S.done.folder ? ` <span class="ok">· ✔️ הועלו ב-${S.done.folder}</span>` : "") : (S.done.folderAsk ? "<span class='wait'>ביקשנו – הקישור יגיע בוואטסאפ</span>" : "<span class='wait'>○ עוד לא</span>")],
+    ["הקדשות", ok("ded", "נשלחו ב-")],
+    ["תשלום", ok("pay", "שולם ב-")]
+  );
+  if (S.route === "site") rows.push(["באתר", S.done.site ? `<span class="ok">✔️ עברנו לאתר ב-${S.done.site}</span>` : "<span class='wait'>○ עוד לא</span>"]);
+  rows.push(["אישור הדפסה", ok("approve", "אושר ב-")]);
+  $("summList").innerHTML = rows.map(r => `<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("");
+  /* התקדמות */
+  const cur = curStep();
+  $("prog").innerHTML = STEPS.filter(s => s[0] !== "drive" || S.route === "drive").map(s => `<a href="#s-${s[0]}" class="${stepDone(s[0]) ? "done" : s === cur ? "cur" : ""}">${s[1]}</a>`).join("");
+  document.querySelectorAll(".step").forEach(el => { el.classList.toggle("cur", el.dataset.step === cur[0]); el.classList.toggle("ok", stepDone(el.dataset.step)); });
+  save();
 }
 document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { const t = $("s-" + b.dataset.go); if (t) t.scrollIntoView(); }));
-function alertBox(t){
+function toast(t){
   let el = document.getElementById("toast");
-  if (!el) { el = document.createElement("div"); el.id = "toast"; el.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:300;background:#2B1526;color:#fff;font-weight:800;border-radius:999px;padding:10px 18px;max-width:90vw;text-align:center"; document.body.appendChild(el); }
+  if (!el) { el = document.createElement("div"); el.id = "toast"; el.style.cssText = "position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:300;background:#2B1526;color:#fff;font-weight:800;border-radius:999px;padding:10px 18px;max-width:90vw;text-align:center"; document.body.appendChild(el); }
   el.textContent = t; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, 3200);
 }
 
-sum(); topicUi(); routeUi(); subUi(); dedUi(); apUi();
+dedUi(); refresh();
 const jump = D.s || (location.hash.match(/^#s-(\w+)$/) || [])[1];
 if (jump) setTimeout(() => { const t = $("s-" + jump); if (t && !t.hidden) t.scrollIntoView(); }, 600);
 </script>
