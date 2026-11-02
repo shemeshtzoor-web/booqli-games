@@ -92,6 +92,8 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .rt .tag{position:absolute;top:12px;left:12px;background:var(--gold);color:#4a2c00;font-weight:800;font-size:13px;border-radius:999px;padding:3px 10px}
 .rt ul{list-style:none;padding:0;margin:0;display:grid;gap:4px;font-size:16px}
 .rt li::before{content:"✓ ";color:#23784A;font-weight:800}
+.rt .noedit{background:var(--mint);color:var(--sage-deep);border-radius:12px;padding:6px 10px;font-size:16px}
+.rt .noedit b{color:var(--sage-deep)}
 .rt .why{font-size:14.5px;color:#B3264F;font-weight:700}
 .rt input{position:absolute;opacity:0;pointer-events:none}
 
@@ -205,6 +207,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <div class="routes">
     <label class="rt" id="rtSite"><input type="radio" name="route" value="site"><span class="tag">🎁 5% הנחה</span>
       <h3>1️⃣ הזמנה עצמאית באתר 🛒</h3>
+      <p class="noedit">✂️ <b>ללא צורך בעריכה!</b> רק מעלים תמונה, רושמים שם והקדשה – וזהו.</p>
       <ul><li>5% הנחה על כל ההזמנה</li><li>עריכה מהירה יותר – עד יום עסקים אחד ⚡</li><li>מתאים לכל כמות, החל מספר אחד</li><li>כ-2 דקות לכל ילד</li><li>תצוגה מקדימה של הכריכה</li><li>אפשר לשלב נושאים ללא הגבלה</li></ul>
     </label>
     <label class="rt" id="rtDrive"><input type="radio" name="route" value="drive">
@@ -222,6 +225,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     </div>
     <div class="coupon" id="couponBox" hidden>🎁 קוד הקופון שלכם: <code id="couponCode"></code><button type="button" id="couponCopy">העתקה</button></div>
     <div class="coupon" id="couponMissing" hidden>🎁 קוד הקופון ל-5% הנחה נשלח אליכם בוואטסאפ <a class="btn btn-green" id="askCoupon" href="#" target="_blank" rel="noopener" style="padding:8px 16px;font-size:16px">💬 לקבלת הקוד</a></div>
+    <p class="warn" style="text-align:center;font-size:17.5px">✂️ <b>ללא צורך בעריכה!</b> לא עורכים ולא בודקים איור־איור. רק מעלים תמונה, רושמים שם ומוסיפים הקדשה – את כל השאר אנחנו עושים.</p>
     <h3 style="margin-top:16px;font-size:20px">איך מזמינים באתר?</h3>
     <ol class="how">
       <li>בוחרים את הספר באתר.</li>
