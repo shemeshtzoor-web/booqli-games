@@ -593,7 +593,8 @@ function frame(c, T, dt, mode){
   const neutral = {x: 0, y: 0, rot: 0, sx: 1, sy: 1, lift: 0, warp: null};
   if (phase === "act" && blendIn < 1) P = lerpPose(neutral, P, sstep(0, 1, blendIn));
   let scale = 1;
-  if (phase === "intro") { const k = T / INTRO; scale = k < .55 ? sstep(0, 1, k / .55) * 1.12 : 1.12 - .12 * sstep(.55, 1, k); P = Object.assign({}, neutral, {sy: 1 + .05 * Math.sin(k * TAU)}); }
+  /* הפריים הראשון = תמונה מלאה (הציור כבר שם, בגודל מלא) – זו התמונה הממוזערת בוואטסאפ. בלי "צמיחה מאפס" */
+  if (phase === "intro") { const k = T / INTRO; scale = 1 + .1 * Math.sin(Math.PI * sstep(.15, .85, k)); P = Object.assign({}, neutral, {sy: 1 + .05 * Math.sin(k * TAU)}); }
   if (phase === "outro") { const bob = Math.sin(outK * TAU * 1.5); P = Object.assign({}, neutral, {y: -.06 * Math.abs(bob)}); scale = 1 - .3 * sstep(0, .35, outK); }
   const feetY = phase === "outro" ? G - H * .12 * sstep(0, .35, outK) : G;
   const pos = drawChar(c, P, W / 2, feetY, scale);
