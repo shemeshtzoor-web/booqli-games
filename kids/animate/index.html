@@ -92,6 +92,14 @@
 .busy .in{background:#fff;border-radius:26px;padding:22px 26px;text-align:center;font-weight:800;font-size:19px;color:#C13671;max-width:340px}
 .busy .wand{font-size:54px;display:block;animation:wand 1s ease-in-out infinite}
 @keyframes wand{50%{transform:rotate(-20deg) scale(1.1)}}
+.gan-box{margin-top:20px;background:linear-gradient(135deg,#FFF1F9,#F3ECFF);border:3px solid #F7C4E3;border-radius:24px;padding:14px}
+.gan-box h2{justify-content:center}
+.names.g4{max-width:620px}
+.gan-out{margin-top:12px;text-align:center}
+.gan-out img{max-width:100%;max-height:420px;border-radius:16px;box-shadow:0 4px 0 #E7CBF0;background:#fff}
+.gmsg{display:grid;gap:6px;font-weight:800;font-size:14px;color:#6b5a66;max-width:620px;margin:14px auto 0}
+.gmsg textarea{font:inherit;font-size:16px;font-weight:600;border:2px solid #E8DCE4;border-radius:14px;padding:10px 12px;resize:vertical;color:#2B1526}
+body.gan-mode .kid-only{display:none}
 @media (max-width:600px){
   .pick{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pick button,.pick label{min-height:104px;font-size:16px}
   .acts{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -190,11 +198,36 @@
   <div class="scenes" id="scenes" role="group" aria-label="איפה"></div>
   <div class="plan" id="plan" aria-live="polite"></div>
   <div class="row"><button type="button" class="chip" id="addMode" aria-pressed="false">➕ להוסיף עוד תנועה (עד 3)</button><button type="button" class="chip" id="music" aria-pressed="true">🎵 מוזיקה</button></div>
-  <div class="names">
+  <div class="gan-box" id="ganBox" hidden>
+    <h2>🎁 מַתָּנָה לַהוֹרִים</h2>
+    <div class="names g4">
+      <label>מי צייר/ה? <input id="gKid" maxlength="20" placeholder="שם הילד/ה"></label>
+      <label>מה צייר/ה? <input id="gWhat" maxlength="26" placeholder="למשל: מפלצת שמחה"></label>
+      <label>תאריך <input id="gDate" maxlength="14" inputmode="numeric"></label>
+      <label>שם הגן (נשמר) <input id="gGan" maxlength="26" placeholder="למשל: גן רימון"></label>
+    </div>
+    <div class="row">
+      <button type="button" class="an-btn" id="gCard">🖼️ כרטיס לזיכרון</button>
+      <button type="button" class="an-btn" id="gGif">🎞️ GIF מונפש</button>
+      <button type="button" class="an-btn" id="gVid">🎬 סרטון</button>
+    </div>
+    <div class="gan-out" id="gOut" hidden>
+      <img id="gImg" alt="התוצאה">
+      <div class="row">
+        <button type="button" class="an-btn wa share" id="gShare">💬 לשלוח להורים בוואטסאפ</button>
+        <a class="an-btn alt" id="gDl" download>⬇️ להוריד</a>
+      </div>
+    </div>
+    <label class="gmsg">ההודעה להורים (אפשר לשנות):<textarea id="gMsg" rows="5"></textarea></label>
+    <div class="row"><button type="button" class="an-btn wa share" id="gMsgBtn">💬 לשלוח את ההודעה</button><button type="button" class="an-btn alt" id="gCopy">📋 להעתיק</button></div>
+    <div class="row"><button type="button" class="an-btn big" id="gNext">👧 הילד/ה הבא/ה</button></div>
+    <p class="note2">טיפ: שולחים קודם את הכרטיס או ה-GIF, ואז את ההודעה. ב"הילד/ה הבא/ה" שם הגן והתאריך נשארים.</p>
+  </div>
+  <div class="names kid-only">
     <label>איך קוראים לדמות? <input id="nmChar" maxlength="18" placeholder="למשל: פִּיצִי"></label>
     <label>מי צייר/ה? <input id="nmKid" maxlength="18" placeholder="השם של הילד/ה"></label>
   </div>
-  <div class="row"><button type="button" class="an-btn big" id="makeVid">🎬 לעשות סרטון!</button></div>
+  <div class="row kid-only"><button type="button" class="an-btn big" id="makeVid">🎬 לעשות סרטון!</button></div>
   <div class="row"><button type="button" class="an-btn alt" id="newPic">🖍️ ציור אחר</button></div>
 </section>
 

@@ -502,8 +502,10 @@ const S = {
   t0: performance.now(), recording: false, raf: 0, gl: null, logo: null, vidURL: "", vidBlob: null, vidExt: "mp4"
 };
 const stage = $("stage"), sctx = stage.getContext("2d");
-const charName = () => ($("nmChar").value || "").trim();
-const kidName = () => ($("nmKid").value || "").trim();
+const GAN = /[?&]gan=1/.test(location.search);   /* מצב גננת: מתנה להורים */
+const charName = () => ((GAN ? $("gWhat") : $("nmChar")).value || "").trim();
+const kidName = () => ((GAN ? $("gKid") : $("nmKid")).value || "").trim();
+const ganLine = () => GAN ? [($("gDate").value || "").trim(), ($("gGan").value || "").trim()].filter(Boolean).join(" · ") : "";
 (() => { const im = new Image(); im.src = "../../img/logo.png"; im.onload = () => S.logo = im; })();
 
 /* מגדירים את הדמות על הבמה */
@@ -611,6 +613,7 @@ function frame(c, T, dt, mode){
     c.font = "700 46px Fredoka, Assistant, sans-serif"; c.textAlign = "center"; c.direction = "rtl"; c.fillStyle = "#C13671";
     c.fillText(nm ? nm + " ✨" : "הַצִּיּוּר שֶׁלִּי ✨", W / 2, 84);
     const kn = kidName(); if (kn) { c.font = "700 30px Assistant, sans-serif"; c.fillStyle = "#6F3A60"; c.fillText("צִיֵּר/ה: " + kn, W / 2, 134); }
+    const gl = ganLine(); if (gl) { c.font = "700 26px Assistant, sans-serif"; c.fillStyle = "#6F3A60"; c.fillText(gl, W / 2, kn ? 174 : 134); }
     c.restore();
   }
   if (mode === "video") footer(c, phase === "outro" ? sstep(0, .3, outK) : 0);
@@ -972,34 +975,129 @@ function setupShare(){
 $("shareVid").onclick = async () => {
   if (!S.vidBlob) return;
   const f = new File([S.vidBlob], S.vidName, {type: S.vidBlob.type});
-  try { await navigator.share({files: [f], text: "תראו מה הציור שלי עושה! 🪄 נוצר בחינם ב-games.booqli.ai/kids/animate"}); ev("animate", "share-video"); } catch(e) {}
+  try { await navigator.share({files: [f], text: GAN ? $("gMsg").value : "תראו מה הציור שלי עושה! 🪄 נוצר בחינם ב-games.booqli.ai/kids/animate"}); ev("animate", GAN ? "gan-share-video" : "share-video"); } catch(e) {}
 };
 $("dlVid").addEventListener("click", () => ev("animate", "download-video"));
 $("again").onclick = () => { show("sMain"); step(3); };
 $("newPic").onclick = $("newPic2").onclick = () => { show("s1"); step(1); };
 $("bookL").href = typeof siteOrderLink === "function" ? siteOrderLink("kids-animate", "video") : "https://www.booqli.ai/he";
 
-/* ---------- שמירת הציור המגניב (1080×1350) ---------- */
-$("savePic").onclick = async () => {
-  if (!S.sticker) return;
+/* ---------- הציור המגניב / כרטיס לזיכרון (1080×1350) ---------- */
+async function poster(){
   try { await document.fonts.load("700 40px Fredoka"); } catch(e) {}
   const c = mk(1080, 1350), x = c.getContext("2d");
   x.save(); x.scale(1080 / W, 1350 / H); drawScene(x, sceneFor(S.seq), 2); x.restore();
-  const s = S.sticker, k = Math.min(1080 * .78 / s.width, 1350 * .62 / s.height), w = s.width * k, h = s.height * k;
-  x.drawImage(s, 540 - w / 2, 1350 * .82 - h, w, h);
+  const s = S.sticker, k = Math.min(1080 * .78 / s.width, 1350 * (GAN ? .56 : .62) / s.height), w = s.width * k, h = s.height * k;
+  x.drawImage(s, 540 - w / 2, 1350 * .83 - h, w, h);
   x.font = "700 64px Fredoka, Assistant, sans-serif"; x.textAlign = "center"; x.direction = "rtl";
-  const t = (charName() || "הַצִּיּוּר שֶׁלִּי") + " ✨", tw = x.measureText(t).width + 80;
+  const t = (charName() || "הַצִּיּוּר שֶׁלִּי") + " ✨", tw = Math.min(1040, x.measureText(t).width + 80);
   x.fillStyle = "rgba(255,255,255,.95)"; x.beginPath(); x.roundRect ? x.roundRect(540 - tw / 2, 50, tw, 104, 52) : x.rect(540 - tw / 2, 50, tw, 104); x.fill();
-  x.fillStyle = "#C13671"; x.fillText(t, 540, 126);
-  if (kidName()) { x.font = "700 40px Assistant, sans-serif"; x.fillStyle = "#fff"; x.strokeStyle = "rgba(43,21,38,.6)"; x.lineWidth = 8; x.strokeText("צִיֵּר/ה: " + kidName(), 540, 210); x.fillText("צִיֵּר/ה: " + kidName(), 540, 210); }
+  x.fillStyle = "#C13671"; x.fillText(t, 540, 126, 1000);
+  const lines = []; if (kidName()) lines.push("צִיֵּר/ה: " + kidName()); if (ganLine()) lines.push(ganLine());
+  x.font = "700 42px Assistant, sans-serif"; x.lineWidth = 9; x.strokeStyle = "rgba(43,21,38,.6)"; x.fillStyle = "#fff";
+  lines.forEach((l, i) => { x.strokeText(l, 540, 214 + i * 56, 1000); x.fillText(l, 540, 214 + i * 56, 1000); });
   x.fillStyle = "rgba(78,133,118,.94)"; x.fillRect(0, 1350 - 84, 1080, 84); x.fillStyle = "#fff"; x.font = "700 34px Assistant, sans-serif"; x.fillText("🎁 נוצר בחינם באתר games.booqli.ai", 540, 1350 - 30);
-  c.toBlob(async b => {
-    const name = "booqli-" + (charName() || "drawing").replace(/[^\w֐-׿-]+/g, "-") + ".png", f = new File([b], name, {type: "image/png"});
-    ev("animate", "save-pic");
-    if (canShareFile(f)) { try { await navigator.share({files: [f]}); return; } catch(e) { if (e && e.name === "AbortError") return; } }
-    const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
-  }, "image/png");
+  return c;
+}
+const safeName = (ext) => "booqli-" + ((kidName() ? kidName() + "-" : "") + (charName() || "drawing")).replace(/[^\w֐-׿-]+/g, "-") + "." + ext;
+async function giveFile(blob, name, text){
+  const f = new File([blob], name, {type: blob.type});
+  if (canShareFile(f)) { try { await navigator.share(text ? {files: [f], text} : {files: [f]}); return true; } catch(e) { if (e && e.name === "AbortError") return true; } }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  return false;
+}
+$("savePic").onclick = async () => {
+  if (!S.sticker) return;
+  const c = await poster(); ev("animate", "save-pic");
+  c.toBlob(b => giveFile(b, safeName("png")), "image/png");
 };
+
+/* ---------- GIF מונפש (מקודד בדפדפן, 320×400, 10 תמונות בשנייה, התנועה הראשונה) ---------- */
+function gifEncode(frames, w, h, delay){
+  /* פלטה קבועה 6×7×6 + דיתור מסודר */
+  const pal = new Uint8Array(768); let n = 0;
+  for (let r = 0; r < 6; r++) for (let g = 0; g < 7; g++) for (let b = 0; b < 6; b++) { pal[n * 3] = r * 51; pal[n * 3 + 1] = Math.round(g * 42.5); pal[n * 3 + 2] = b * 51; n++; }
+  const BY = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  const out = []; const B = v => out.push(v & 255); const W16 = v => { B(v); B(v >> 8); };
+  "GIF89a".split("").forEach(ch => B(ch.charCodeAt(0)));
+  W16(w); W16(h); B(0xF7); B(0); B(0); for (let i = 0; i < 768; i++) B(pal[i]);
+  [0x21, 0xFF, 0x0B].forEach(B); "NETSCAPE2.0".split("").forEach(ch => B(ch.charCodeAt(0))); [3, 1, 0, 0, 0].forEach(B);
+  const idx = new Uint8Array(w * h);
+  for (const d of frames) {
+    for (let y = 0, i = 0; y < h; y++) for (let x = 0; x < w; x++, i++) {
+      const t = BY[(y & 3) * 4 + (x & 3)] / 16 - .5, j = i * 4;
+      const r = clamp(Math.round(d[j] / 51 + t), 0, 5), g = clamp(Math.round(d[j + 1] / 42.5 + t), 0, 6), b = clamp(Math.round(d[j + 2] / 51 + t), 0, 5);
+      idx[i] = r * 42 + g * 6 + b;
+    }
+    [0x21, 0xF9, 4, 0].forEach(B); W16(delay); B(0); B(0);
+    B(0x2C); W16(0); W16(0); W16(w); W16(h); B(0);
+    const minSize = 8; B(minSize);
+    /* LZW */
+    const clear = 1 << minSize, eoi = clear + 1; let size = minSize + 1, next = eoi + 1, table = new Map();
+    let acc = 0, bits = 0; const blk = [];
+    const emit = code => { acc |= code << bits; bits += size; while (bits >= 8) { blk.push(acc & 255); acc >>>= 8; bits -= 8; } };
+    emit(clear); let pre = idx[0];
+    for (let i = 1; i < idx.length; i++) {
+      const k = idx[i], key = pre * 256 + k, v = table.get(key);
+      if (v !== undefined) { pre = v; continue; }
+      emit(pre);
+      if (next === 4096) { emit(clear); next = eoi + 1; size = minSize + 1; table = new Map(); }
+      else { if (next >= (1 << size)) size++; table.set(key, next++); }
+      pre = k;
+    }
+    emit(pre); emit(eoi); if (bits > 0) blk.push(acc & 255);
+    for (let i = 0; i < blk.length; i += 255) { const len = Math.min(255, blk.length - i); B(len); for (let j = 0; j < len; j++) out.push(blk[i + j]); }
+    B(0);
+  }
+  B(0x3B);
+  return new Uint8Array(out);
+}
+async function makeGif(){
+  if (!S.sticker || S.recording) return null;
+  try { await document.fonts.load("700 40px Fredoka"); } catch(e) {}
+  S.recording = true; particles.length = 0;
+  const big = mk(W, H), bx = big.getContext("2d"), GW = 320, GH = 400, sm = mk(GW, GH), sx = sm.getContext("2d", {willReadFrequently: true});
+  const frames = [], fps = 10, n = Math.round(ACT_DUR * fps), keep = S.seq;
+  S.seq = [keep[0]];
+  for (let i = 0; i < n; i++) {
+    frame(bx, i / fps, 1 / fps, "live"); footer(bx, 0);
+    sx.drawImage(big, 0, 0, GW, GH); frames.push(sx.getImageData(0, 0, GW, GH).data);
+    if (i % 6 === 5) await wait(0);
+  }
+  S.seq = keep; S.recording = false; S.t0 = performance.now(); particles.length = 0;
+  return new Blob([gifEncode(frames, GW, GH, 10)], {type: "image/gif"});
+}
+
+/* ---------- מצב גננת: מתנה להורים ---------- */
+let gBlob = null, gName = "", msgDirty = false;
+const today = () => { const d = new Date(); return d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear(); };
+const ganMsg = () => { const kid = kidName() || "הילד/ה", what = charName() || "ציור", gan = ($("gGan").value || "").trim();
+  return "הורים יקרים 💕\nהיום " + kid + " צייר/ה " + what + " – והציור קם לחיים! 🪄\nמתנה קטנה " + (gan ? "מ" + gan : "מהגן") + " (" + ($("gDate").value || today()) + ").\n✨ נוצר בחינם ב-games.booqli.ai"; };
+function ganInit(){
+  if (!GAN) return;
+  document.body.classList.add("gan-mode"); $("ganBox").hidden = false;
+  document.querySelector(".an-hero h1").textContent = "מַנְפִּישִׁים אֶת הַצִּיּוּרִים שֶׁל הַיְּלָדִים";
+  document.querySelector(".an-hero p").textContent = "מצלמים את הציור של כל ילד – והוא קופץ, רוקד ועף 🪄 ושולחים להורים מתנה: כרטיס עם השם, התאריך ומה צייר, GIF מונפש או סרטון.";
+  $("gDate").value = today();
+  try { $("gGan").value = localStorage.getItem("booqli_gan_name") || ""; } catch(e) {}
+  const upd = () => { if (!msgDirty) $("gMsg").value = ganMsg(); };
+  ["gKid", "gWhat", "gDate", "gGan"].forEach(id => $(id).addEventListener("input", upd));
+  $("gGan").addEventListener("change", () => { try { localStorage.setItem("booqli_gan_name", $("gGan").value.trim()); } catch(e) {} });
+  $("gMsg").addEventListener("input", () => msgDirty = true);
+  upd();
+  const showOut = (blob, name, url) => { gBlob = blob; gName = name; $("gOut").hidden = false; $("gImg").src = url; $("gDl").href = url; $("gDl").download = name;
+    $("gShare").hidden = !canShareFile(new File([blob], name, {type: blob.type})); try { $("gOut").scrollIntoView({behavior: "smooth", block: "center"}); } catch(e) {} };
+  $("gCard").onclick = async () => { if (!S.sticker) return; const c = await poster(); c.toBlob(b => showOut(b, safeName("png"), URL.createObjectURL(b)), "image/png"); ev("animate", "gan-card"); };
+  $("gGif").onclick = async () => { const done = busy("מכינים GIF…"); await wait(50); let b = null; try { b = await makeGif(); } catch(e) {} done();
+    if (!b) { alert("לא הצלחנו להכין GIF 🙈"); return; } showOut(b, safeName("gif"), URL.createObjectURL(b)); ev("animate", "gan-gif"); };
+  $("gVid").onclick = () => { ev("animate", "gan-video"); makeVideo(); };
+  $("gShare").onclick = async () => { if (gBlob) { await giveFile(gBlob, gName, $("gMsg").value); ev("animate", "gan-share"); } };
+  $("gMsgBtn").onclick = () => { window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent($("gMsg").value), "_blank", "noopener"); ev("animate", "gan-msg"); };
+  $("gCopy").onclick = async () => { try { await navigator.clipboard.writeText($("gMsg").value); $("gCopy").textContent = "✔️ הועתק"; setTimeout(() => $("gCopy").textContent = "📋 להעתיק", 1500); } catch(e) {} };
+  $("gNext").onclick = () => { $("gKid").value = ""; $("gWhat").value = ""; msgDirty = false; upd(); $("gOut").hidden = true; gBlob = null; show("s1"); step(1); ev("animate", "gan-next"); };
+  ev("animate", "gan-open");
+}
+ganInit();
 
 /* ---------- הקראות ---------- */
 document.querySelectorAll("[data-say]").forEach(b => b.onclick = () => say(SAY[b.dataset.say]));
