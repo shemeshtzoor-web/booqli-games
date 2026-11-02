@@ -1180,7 +1180,7 @@ function calc(){
   const link = r => "../order/#d=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({ n: kids, p: per, v: cover, r, s: "route" })))));
   const gs = document.getElementById("goSiteBtn"), gd = document.getElementById("goDriveBtn");
   gs.href = link("site"); gd.href = link("drive");
-  document.getElementById("goSiteSm").textContent = p ? "עוד 5% הנחה: " + ils(Math.round(books * p * 0.95)) + " במקום " + ils(books * p) : "5% הנחה · מתאים לכל כמות";
+  document.getElementById("goSiteSm").textContent = p ? "עוד 5% הנחה: " + ils(Math.round(books * p * 0.95)) + " במקום " + ils(books * p) + " + משלוח 40 ₪" : "5% הנחה · מתאים לכל כמות";
   const dOk = books >= UP_FROM;
   gd.classList.toggle("off", !dOk); gd.setAttribute("aria-disabled", String(!dOk));
   document.getElementById("goDriveSm").textContent = dOk ? (p ? ils(books * p) + " + משלוח 40 ₪ · " : "") + "אנחנו עושים הכל" : "להזמנות של מעל 20 ספרים";
