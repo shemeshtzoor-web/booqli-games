@@ -430,7 +430,7 @@ function siteCodeGate(){
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 /* עמודים רגועים (אזעקות): בלי חלונות קופצים – מי שנכנס באזעקה צריך את התוכן מיד */
-function siteCalmPage(){ return /\/(topics\/safety|course)\//.test(location.pathname); }
+function siteCalmPage(){ return /\/(topics\/safety|course|kindergartens)\//.test(location.pathname); }
 function siteJoinPopup(){
   if (siteKidLock() || siteCalmPage()) return;
   var qs = location.search || "";
@@ -793,7 +793,7 @@ window.SITE.main = {
     { icon: "👧", label: "ספרים לבנות", short: "לבנות",   href: "https://www.booqli.ai/he/choose-book/girls-hebrew" },
     { icon: "🖼️", label: "גלריה",       short: "גלריה",   href: "https://www.booqli.ai/he/gallery" },
     { icon: "📝", label: "מאמרים",      short: "מאמרים",  href: "https://www.booqli.ai/he/articles" },
-    { icon: "🏫", label: "גני ילדים",   short: "גנים",    href: "https://www.booqli.ai/he/kindergartens" }
+    { icon: "🏫", label: "גני ילדים",   short: "גנים",    href: "https://games.booqli.ai/kindergartens/" }
   ]
 };
 function siteIsLogo(img){
