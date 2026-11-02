@@ -27,9 +27,11 @@ a{color:var(--sage-deep);font-weight:700}
   <h1>אופס, אין אינטרנט 📶</h1>
   <p>העמוד הזה עוד לא נשמר בטלפון. עמודים שכבר פתחתם נפתחים גם בלי חיבור.</p>
   <button type="button" onclick="location.reload()">🔄 לנסות שוב</button>
+  <p id="kidsOff" hidden style="background:#FFF1C9;border-radius:16px;padding:10px;margin-top:6px">✈️ משחקי הילדים שמורים בטלפון: <a href="/kids/">🎲 לשחק בלי אינטרנט ←</a></p>
   <p><a href="/">לדף הבית</a></p>
   <p style="background:#FFE6E8;border-radius:16px;padding:10px;margin-top:6px">🚨 יש אזעקה? <a href="/topics/safety/" style="color:#8E1F2C">מה עושים · פרח ונר · הספר "מה אתה עושה כאן, פחד?" ←</a></p>
 </div></div>
 <script src="/common.js"></script>
+<script>try { if (localStorage.getItem("booqli_offline")) document.getElementById("kidsOff").hidden = false; } catch (e) {}</script>
 </body>
 </html>

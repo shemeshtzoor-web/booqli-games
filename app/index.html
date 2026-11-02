@@ -88,6 +88,7 @@ details{background:#fff;border-radius:18px;padding:12px 16px;margin-top:10px;box
 summary{cursor:pointer;font-weight:800;font-size:17px;list-style-position:inside}
 details p{margin:8px 0 2px;color:var(--muted)}
 .share{text-align:center;margin-top:26px}
+.offline-hero{background:#FFF1C9;color:#5a3a00;border-radius:16px;padding:10px 14px;margin:12px auto 0;max-width:520px;font-size:17px}
 .btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 3px 0 #13773A}
 
 footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
@@ -116,6 +117,8 @@ footer p{margin:4px 0}
     <img class="ic" src="../img/app/icon-192.png" alt="" width="108" height="108">
     <h1>booqli Games <span>בטלפון</span> 📲</h1>
     <p>אייקון על המסך, נפתח בלחיצה אחת, במסך מלא. מתקינים ישירות מהאתר, בלי חנות אפליקציות. בחינם.</p>
+    <p class="offline-hero">✈️ <b>משחקים גם בלי אינטרנט!</b> בהתקנה כל משחקי הילדים נשמרים בטלפון – בדרך, בטיסה, במרחב המוגן.</p>
+    <p data-offline-note hidden style="display:inline-block;margin:10px 0 0;background:#E1F0EA;color:#2F6B5C;border-radius:999px;padding:6px 14px;font:700 15px Assistant,Arial,sans-serif"></p>
   </div>
 
   <!-- המצב הנוכחי: כבר באפליקציה / כפתור התקנה / הסבר -->
@@ -192,7 +195,8 @@ footer p{margin:4px 0}
   <div class="why">
     <div><span class="e">👆</span><b>לחיצה אחת</b><span>האייקון במסך הבית, ליד הוואטסאפ. לא מחפשים קישורים.</span></div>
     <div><span class="e">🖥️</span><b>מסך מלא</b><span>בלי שורת כתובת ובלי הסחות – נוח לילדים ולהקרנה בגן.</span></div>
-    <div><span class="e">📶</span><b>גם כשהאינטרנט חלש</b><span>עמודים שכבר פתחתם נשמרים בטלפון ונפתחים מהר.</span></div>
+    <div><span class="e">✈️</span><b>משחקים בלי אינטרנט</b><span>כל משחקי הילדים נשמרים בטלפון פעם אחת (כ-16MB), ואז משחקים גם בלי חיבור ובלי לבזבז גלישה.</span></div>
+    <div><span class="e">🛡️</span><b>בטוח לילדים</b><span>בלי פרסומות ובלי צ'אטים. ב"מצב ילדים" הילד נשאר רק במשחקים, בלי וואטסאפ ובלי קישורים החוצה.</span></div>
     <div><span class="e">🔄</span><b>תמיד מעודכן</b><span>כל נושא חדש שנפתח באתר מופיע מיד גם באפליקציה.</span></div>
     <div><span class="e">🪶</span><b>קלה מאוד</b><span>כמעט לא תופסת מקום בטלפון.</span></div>
     <div><span class="e">🆓</span><b>בחינם</b><span>כמו כל האתר, בחסות BOOQLI. אתר בטוח להורים ולילדים.</span></div>
@@ -264,7 +268,7 @@ $("copyBtn").onclick = () => {
   const u = APP_URL + "?utm_source=app_page&utm_medium=copy&utm_campaign=app";
   (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast("✔️ הקישור הועתק – הדביקו אותו בדפדפן")).catch(() => prompt("העתיקו את הקישור:", u));
 };
-$("shareBtn").onclick = () => { siteEvent("app", "share"); waSend("📲 גילית כבר? יש אפליקציה ל-booqli Games!\nמשחקים, דפי עבודה ומערכים לגן לפי לוח השנה – אייקון על המסך שנפתח בלחיצה אחת.\nמתקינים ישירות מהאתר, בחינם, בחסות BOOQLI 👇\n" + APP_URL + "?utm_source=whatsapp&utm_medium=gan_share&utm_campaign=app"); };
+$("shareBtn").onclick = () => { siteEvent("app", "share"); waSend("📲 גילית כבר? יש אפליקציה ל-booqli Games!\nמשחקים, דפי עבודה ומערכים לגן לפי לוח השנה – אייקון על המסך שנפתח בלחיצה אחת.\n✈️ כל משחקי הילדים עובדים גם בלי אינטרנט!\nמתקינים ישירות מהאתר, בחינם, בחסות BOOQLI 👇\n" + APP_URL + "?utm_source=whatsapp&utm_medium=gan_share&utm_campaign=app"); };
 
 siteJoinLinks(); siteDevBar(); siteBackBar("../");
 document.getElementById("kidBtn").onclick = function(){ siteKidLockStart(); };

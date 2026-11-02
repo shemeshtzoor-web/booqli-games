@@ -4,8 +4,13 @@
    - תמונות וגופנים: מהטלפון מיד (מהיר), ומתעדכנים ברקע.
    - עמוד האזעקות ("מה אתה עושה כאן, פחד?") נשמר בטלפון כבר בהתקנה (CALM), ודפים שמורים נפתחים מהטלפון
      אם הרשת איטית יותר מ-3 שניות (רשת עמוסה באזעקה) – ומתעדכנים ברקע.
+   - משחקי הילדים בלי אינטרנט (מ-2.11.2026, בקשת שמש): כשהאפליקציה מותקנת, common.js שולח "kids-pack"
+     וכאן מורידים ברקע את כל מה שב-/offline-pack.json (כל משחקי הילדים, ~16MB, בלי סרטונים ו-PDF) למטמון KIDS.
+     המטמון הזה לא נמחק כשמעלים VERSION. כל פתיחה של האפליקציה בודקת אם הרשימה השתנתה ומעדכנת רק את מה שצריך.
+     משחק חדש לילדים = להריץ app/tools/make-offline-pack.js (מעדכן את offline-pack.json).
    מעלים את VERSION רק כשמשנים את הקובץ הזה עצמו. */
-var VERSION = "booqli-v4";
+var VERSION = "booqli-v5";
+var KIDS = "booqli-kids";
 var CALM = ["/topics/safety/"];
 var CORE = [
   "/",
@@ -30,7 +35,7 @@ self.addEventListener("install", function (e) {
 self.addEventListener("activate", function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
-      return Promise.all(keys.filter(function (k) { return k !== VERSION; }).map(function (k) { return caches.delete(k); }));
+      return Promise.all(keys.filter(function (k) { return k !== VERSION && k !== KIDS; }).map(function (k) { return caches.delete(k); }));
     }).then(function () { return self.clients.claim(); })
   );
 });
@@ -42,9 +47,58 @@ function isAsset(url) {
 
 function put(req, res) {
   if (!res || (res.status !== 200 && res.type !== "opaque")) return;
-  var copy = res.clone();
+  var copy = res.clone(), copy2 = res.clone();
   caches.open(VERSION).then(function (c) { c.put(req, copy); }).catch(function () {});
+  // אם הקובץ שמור גם בחבילת המשחקים – מעדכנים גם שם, כדי שבלי אינטרנט תיפתח הגרסה החדשה
+  caches.open(KIDS).then(function (c) { return c.match(req).then(function (h) { if (h) return c.put(req, copy2); }); }).catch(function () {});
 }
+
+/* ===== חבילת משחקי הילדים לשימוש בלי אינטרנט ===== */
+var packRun = null;
+function tell(msg) {
+  self.clients.matchAll({ includeUncontrolled: true }).then(function (cs) { cs.forEach(function (c) { c.postMessage(msg); }); });
+}
+function kidsPack() {
+  if (packRun) return packRun;
+  packRun = (async function () {
+    var pack = await (await fetch("/offline-pack.json", { cache: "no-store" })).json();
+    var c = await caches.open(KIDS);
+    var mark = await c.match("/__pack");
+    var had = mark ? await mark.text() : "";
+    var keys = await c.keys(), have = new Set(keys.map(function (k) { return new URL(k.url).pathname + new URL(k.url).search; }));
+    var fresh = had !== pack.version;
+    var todo = pack.files.filter(function (f) { return fresh || !have.has(f); });
+    var total = todo.length, done = 0, failed = 0;
+    tell({ type: "kids-pack", state: total ? "loading" : "ready", done: 0, total: total });
+    var q = todo.slice();
+    async function worker() {
+      while (q.length) {
+        var f = q.shift();
+        try { var r = await fetch(f, { cache: "no-cache" }); if (r.ok) await c.put(f, r); else failed++; } catch (e) { failed++; }
+        done++; if (done % 10 === 0) tell({ type: "kids-pack", state: "loading", done: done, total: total });
+      }
+    }
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    // גופנים: הקובץ של גוגל + קובצי הגופן שבתוכו
+    for (var i = 0; i < (pack.fonts || []).length; i++) {
+      try {
+        var cr = await fetch(pack.fonts[i], { mode: "cors" }); if (!cr.ok) continue;
+        var css = await cr.clone().text(); await c.put(pack.fonts[i], cr);
+        var urls = css.match(/https:\/\/fonts\.gstatic\.com\/[^)'"]+/g) || [];
+        for (var j = 0; j < urls.length; j++) { if (!(await c.match(urls[j]))) { try { var fr = await fetch(urls[j], { mode: "cors" }); if (fr.ok) await c.put(urls[j], fr); } catch (e) {} } }
+      } catch (e) {}
+    }
+    // מה שכבר לא ברשימה – נמחק
+    var want = new Set(pack.files);
+    keys.forEach(function (k) { var u = new URL(k.url); if (u.origin === self.location.origin && u.pathname !== "/__pack" && !want.has(u.pathname + u.search)) c.delete(k); });
+    if (!failed) await c.put("/__pack", new Response(pack.version));
+    tell({ type: "kids-pack", state: failed ? "partial" : "ready", done: done, total: total, failed: failed });
+  })().catch(function () { tell({ type: "kids-pack", state: "error" }); }).finally(function () { packRun = null; });
+  return packRun;
+}
+self.addEventListener("message", function (e) {
+  if (e.data && e.data.type === "kids-pack") e.waitUntil(kidsPack());
+});
 
 self.addEventListener("fetch", function (e) {
   var req = e.request;

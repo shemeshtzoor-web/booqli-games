@@ -940,11 +940,42 @@ function siteInstall(where){
     siteEvent("app", "installed");
     document.dispatchEvent(new Event("site-installed"));
     var b = document.querySelector(".bq-appbar"); if (b) b.remove();
+    siteKidsPack();
   });
+  if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", function(e){
+    var d = e.data; if (!d || d.type !== "kids-pack") return;
+    try { if (d.state === "ready") localStorage.setItem("booqli_offline", String(Date.now())); } catch (er) {}
+    if (d.state === "ready" && d.total) siteEvent("app", "offline-ready");
+    document.dispatchEvent(new CustomEvent("site-offline", { detail: d }));
+  });
+  if (siteIsStandalone() || /[?&]offline=1/.test(location.search)) {
+    window.addEventListener("load", function(){ try { if (sessionStorage.getItem("booqli_pack")) return; sessionStorage.setItem("booqli_pack", "1"); } catch (e) {} siteKidsPack(); });
+  }
   if (siteIsStandalone()) {
     try { if (!sessionStorage.getItem("booqli_app_open")) { sessionStorage.setItem("booqli_app_open", "1"); setTimeout(function(){ siteEvent("app", "open"); }, 800); } } catch (e) {}
     document.documentElement.classList.add("in-app");
   }
+})();
+/* משחקי הילדים בלי אינטרנט (מ-2.11.2026): באפליקציה המותקנת מורידים ברקע את כל משחקי הילדים (sw.js + offline-pack.json).
+   פעם אחת בכל פתיחה של האפליקציה (מעדכן רק מה שהשתנה). בדיקה בדפדפן: ?offline=1.
+   siteOfflineReady() = כבר נשמרו בטלפון. העמודים מקשיבים לאירוע "site-offline" (detail: state/done/total). */
+function siteKidsPack(){
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.ready.then(function(r){ if (r.active) r.active.postMessage({ type: "kids-pack" }); }).catch(function(){});
+}
+function siteOfflineReady(){ try { return !!localStorage.getItem("booqli_offline"); } catch (e) { return false; } }
+/* שורת מצב קטנה: <p data-offline-note hidden></p> בעמוד – מתמלאת לבד (באפליקציה, או כשהמשחקים כבר שמורים) */
+(function(){
+  function paint(d){
+    var els = document.querySelectorAll("[data-offline-note]"); if (!els.length) return;
+    var txt = "";
+    if (d && d.state === "loading" && d.total) txt = "⬇️ שומרים את משחקי הילדים בטלפון… " + Math.round(100 * d.done / d.total) + "%";
+    else if ((d && d.state === "ready") || siteOfflineReady()) txt = "✈️ כל משחקי הילדים שמורים בטלפון – אפשר לשחק גם בלי אינטרנט";
+    else if (siteIsStandalone()) txt = "⬇️ שומרים את משחקי הילדים בטלפון…";
+    els.forEach(function(el){ el.textContent = txt; el.hidden = !txt; });
+  }
+  document.addEventListener("site-offline", function(e){ paint(e.detail); });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ paint(); }); else paint();
 })();
 /* חלון קטן "התקינו את האפליקציה" (מ-1.11.2026, בקשת שמש): בכל ביקור, עד שמתקינים.
    פעם אחת בכל ביקור (לא בכל עמוד). לא באזור הילדים, לא בדפי הדפסה, לא בתוך האפליקציה, לא במכשיר של שמש.
