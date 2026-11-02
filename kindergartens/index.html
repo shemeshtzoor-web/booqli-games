@@ -171,6 +171,17 @@ section{margin-top:64px}
 .anyq h3{font-size:24px}
 .anyq p{color:var(--muted);margin-top:4px}
 
+.ptable{max-width:620px;margin:14px auto 0;background:#fff;border-radius:20px;box-shadow:0 4px 16px rgba(78,133,118,.12)}
+.ptable summary{cursor:pointer;font-weight:800;padding:14px 18px;color:var(--sage-deep);text-align:center;list-style:none}
+.ptable summary::-webkit-details-marker{display:none}
+.ptable p{margin:0;padding:0 18px 12px;color:var(--muted);font-size:15.5px;text-align:center}
+.ptable table{width:calc(100% - 24px);margin:0 12px 12px;border-collapse:collapse;text-align:center;font-size:16.5px}
+.ptable th{background:var(--mint);color:var(--sage-deep);padding:8px 6px}
+.ptable th:first-child{border-radius:0 12px 12px 0}.ptable th:last-child{border-radius:12px 0 0 12px}
+.ptable td{padding:7px 6px;border-bottom:1px dashed var(--mint-2)}
+.ptable td b{color:var(--magenta)}
+.ptable td small{display:block;color:var(--sage-deep);font-weight:700;font-size:12.5px}
+.ptable tr.gan td{background:var(--pink-soft)}
 /* מחשבון */
 .calc{margin-top:26px;background:linear-gradient(135deg,#fff,#FFF5FB);border:3px solid var(--pink-soft);border-radius:28px;padding:24px 22px;box-shadow:0 10px 30px rgba(193,54,113,.10)}
 .calc h3{font-size:clamp(24px,3.6vw,30px);color:var(--magenta);text-align:center}
@@ -552,6 +563,15 @@ section{margin-top:64px}
     </div>
   </div>
   <p class="price-note">מחירי ספרי BOOQLI לגנים: ספרי ילדים אישיים עולים 50–77 ₪ לספר בהזמנות של 20–50 ספרים, בהתאם לסוג הספר והכריכה.</p>
+  <details class="ptable">
+    <summary>📋 המחירון המלא לפי כמות (מספר בודד ועד 100+)</summary>
+    <p>המחירים הם לכל ספר בנפרד. הזמנה אחת יכולה לכלול מספר ספרים שונים.</p>
+    <table>
+      <thead><tr><th>כמות</th><th>כריכה רכה</th><th>כריכה קשה</th></tr></thead>
+      <tbody id="ptBody"></tbody>
+    </table>
+    <p>💜 כריכה רכה סיכות: 50 ₪ לספר, בהזמנות של 20 ספרים ומעלה.</p>
+  </details>
 
   <div class="covers">
     <div>
@@ -568,7 +588,7 @@ section{margin-top:64px}
 
   <div class="calc" id="calc">
     <h3>🧮 מחשבון לגן</h3>
-    <p class="sub">כמה ילדים, כמה ספרים לכל ילד ואיזו כריכה – והמחיר מתעדכן לבד.</p>
+    <p class="sub">כמה ילדים, כמה ספרים לכל ילד ואיזו כריכה – והמחיר מתעדכן לבד. ככל שמזמינים יותר, המחיר לספר יורד.</p>
     <div class="calc-grid">
       <div>
         <div class="fld">
@@ -586,9 +606,9 @@ section{margin-top:64px}
         <div class="fld">
           <span class="lb">איזו כריכה?</span>
           <div class="opts">
-            <label><input type="radio" name="cCover" value="staple" checked> 💜 כריכה רכה סיכות <b>50 ₪</b></label>
-            <label><input type="radio" name="cCover" value="soft"> 💛 כריכה רכה בהדבקה <b>60 ₪</b></label>
-            <label><input type="radio" name="cCover" value="hard"> 💗 כריכה קשה <b>77 ₪</b></label>
+            <label><input type="radio" name="cCover" value="staple" checked> 💜 כריכה רכה סיכות <b data-p="staple">50 ₪</b></label>
+            <label><input type="radio" name="cCover" value="soft"> 💛 כריכה רכה בהדבקה <b data-p="soft">60 ₪</b></label>
+            <label><input type="radio" name="cCover" value="hard"> 💗 כריכה קשה <b data-p="hard">77 ₪</b></label>
           </div>
         </div>
         <label class="chk"><input type="checkbox" id="cUpload"><span>אנחנו נעלה את התמונות בשבילכם<small>שולחים לנו תיקייה עם התמונות והשמות, בתיאום מראש (2–5 ₪ לספר)</small></span></label>
@@ -601,7 +621,7 @@ section{margin-top:64px}
         <div class="msg" id="rMsg" hidden></div>
         <p class="note" id="rNote">המחיר הסופי נקבע בעגלת הקניות. משלוח לפי הכתובת.</p>
         <a class="btn btn-green" id="rWa" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 להתקדמות + קבלת קופון הנחה</a>
-        <span class="coupon">🎁 שולחים הודעה – מקבלים קופון</span>
+        <span class="coupon">🎁 את קופון ההנחה מקבלים בשיחה איתנו</span>
       </div>
     </div>
   </div>
@@ -961,46 +981,61 @@ if (/^#q\d+$/.test(location.hash)) { const d = document.querySelector(location.h
 
 
 /* ===== מחשבון לגן =====
-   מחירים לספר בהזמנה של 20–50 ספרים (שמש אישרה 2.11.2026). פחות מ-20 או יותר מ-50 – המחיר שונה, מבקשים הצעה. */
-const CALC = { staple:{n:"כריכה רכה סיכות",p:50}, soft:{n:"כריכה רכה בהדבקה",p:60}, hard:{n:"כריכה קשה",p:77} };
-const MIN_Q = 20, MAX_Q = 50, UP_MIN = 2, UP_MAX = 5;
+   המחירון המלא לפי כמות (מהאתר הראשי, 2.11.2026). כריכת סיכות – 50 ₪ לספר, רק מ-20 ספרים (מחיר גנים, שמש אישרה).
+   כל שורה: [מכמות, כריכה רכה בהדבקה, כריכה קשה]. משנים מחיר – רק כאן. */
+const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83],[20,60,77],[50,59,76],[100,57,74]];
+const STAPLE = { p:50, from:20 };
+const NAMES = { staple:"כריכה רכה סיכות", soft:"כריכה רכה בהדבקה", hard:"כריכה קשה" };
+const UP_MIN = 2, UP_MAX = 5;
 const ils = n => n.toLocaleString("he-IL") + " ₪";
 const cKids = document.getElementById("cKids");
+function priceFor(cover, books){
+  if (cover === "staple") return books >= STAPLE.from ? STAPLE.p : 0;
+  let t = TIERS[0]; TIERS.forEach(r => { if (books >= r[0]) t = r; });
+  return cover === "soft" ? t[1] : t[2];
+}
 function calc(){
-  let kids = Math.max(1, Math.min(999, parseInt(cKids.value, 10) || 0));
+  const kids = Math.max(1, Math.min(999, parseInt(cKids.value, 10) || 0));
   const per = +document.querySelector('input[name="cPer"]:checked').value;
-  const cov = CALC[document.querySelector('input[name="cCover"]:checked').value];
+  const cover = document.querySelector('input[name="cCover"]:checked').value;
   const up = document.getElementById("cUpload").checked;
   const books = kids * per;
-  const inRange = books >= MIN_Q && books <= MAX_Q;
-  const base = books * cov.p;
+  ["staple","soft","hard"].forEach(c => { const pr = priceFor(c, books); document.querySelector('[data-p="' + c + '"]').textContent = pr ? pr + " ₪" : "מ-20 ספרים"; });
+  const p = priceFor(cover, books);
   const tot = document.getElementById("rTot"), perEl = document.getElementById("rPer"), msg = document.getElementById("rMsg");
-  const lines = [["ילדים", kids], ["ספרים לכל ילד", per], ["סה״כ ספרים", books], [cov.n, cov.p + " ₪ לספר"]];
+  const lines = [["ילדים", kids], ["ספרים לכל ילד", per], ["סה״כ ספרים", books]];
   let sum;
-  if (up) lines.push(["העלאת תמונות על ידינו", UP_MIN + "–" + UP_MAX + " ₪ לספר"]);
-  if (inRange) {
-    sum = up ? ils(base + books * UP_MIN) + "–" + ils(base + books * UP_MAX) : ils(base);
-    tot.textContent = up ? ils(base + books * UP_MIN) : ils(base);
-    perEl.textContent = up ? "עד " + ils(base + books * UP_MAX) + " · " + books + " ספרים" : cov.p + " ₪ לספר · " + books + " ספרים";
-    document.getElementById("rLbl").textContent = "סה״כ משוער";
-    msg.hidden = true;
-  } else {
-    sum = "הצעת מחיר מיוחדת";
+  if (!p) {
+    sum = "כריכת סיכות מ-20 ספרים";
     document.getElementById("rLbl").textContent = books + " ספרים";
-    tot.textContent = books > MAX_Q ? "מחיר מיוחד" : "הצעת מחיר";
-    perEl.textContent = "";
-    msg.hidden = false;
-    msg.textContent = books > MAX_Q
-      ? "מעל 50 ספרים? המחיר לספר יכול לרדת עוד. שלחו הודעה ונחזור עם הצעה משתלמת."
-      : "המחירים כאן הם להזמנות של 20–50 ספרים. בפחות מ-20 ספרים המחיר לספר שונה – שלחו הודעה ונחזור עם הצעה.";
+    tot.textContent = "—"; perEl.textContent = "";
+    msg.hidden = false; msg.textContent = "כריכה רכה סיכות זמינה בהזמנות של 20 ספרים ומעלה. בחרו כריכה אחרת, או שלחו הודעה ונמצא פתרון.";
+  } else {
+    const base = books * p, single = priceFor(cover === "staple" ? "soft" : cover, 1);
+    lines.push([NAMES[cover], p + " ₪ לספר"]);
+    if (up) lines.push(["העלאת תמונות על ידינו", UP_MIN + "–" + UP_MAX + " ₪ לספר"]);
+    sum = up ? ils(base + books * UP_MIN) + "–" + ils(base + books * UP_MAX) : ils(base);
+    document.getElementById("rLbl").textContent = "סה״כ משוער";
+    tot.textContent = up ? ils(base + books * UP_MIN) : ils(base);
+    perEl.textContent = up ? "עד " + ils(base + books * UP_MAX) + " · " + books + " ספרים" : p + " ₪ לספר · " + (books === 1 ? "ספר אחד" : books + " ספרים");
+    const save = Math.round((1 - p / single) * 100);
+    msg.hidden = save < 5;
+    msg.textContent = "🎉 חיסכון של " + save + "% לעומת ספר בודד" + (books >= 50 ? " · בכמות כזו – דברו איתנו, אולי יש עוד הפתעה" : "");
   }
   document.getElementById("rLines").innerHTML = lines.map(l => `<li><span>${l[0]}</span><b>${l[1]}</b></li>`).join("");
   const text = "היי BOOQLI 👋 חישבתי במחשבון לגן באתר:\n" +
     "👧👦 " + kids + " ילדים × " + per + " " + (per === 1 ? "ספר" : "ספרים") + " = " + books + " ספרים\n" +
-    "📕 " + cov.n + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
+    "📕 " + NAMES[cover] + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
     "💰 " + sum + "\n\nאשמח להתקדם ולקבל קופון הנחה 🙂";
   document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text);
 }
+/* המחירון המלא – נבנה מאותו TIERS */
+document.getElementById("ptBody").innerHTML = TIERS.map((r, i) => {
+  const to = TIERS[i + 1] ? TIERS[i + 1][0] - 1 : 0;
+  const q = !to ? r[0] + "+" : to === r[0] ? r[0] : r[0] + "–" + to;
+  const off = (v, s1) => Math.round((1 - v / s1) * 100);
+  return `<tr${r[0] === 20 ? ' class="gan"' : ""}><td>${q === 1 ? "ספר אחד" : `<span dir="ltr">${q}</span> ספרים`}</td><td><b>${r[1]} ₪</b>${i ? `<small>${off(r[1], TIERS[0][1])}% הנחה</small>` : ""}</td><td><b>${r[2]} ₪</b>${i ? `<small>${off(r[2], TIERS[0][2])}% הנחה</small>` : ""}</td></tr>`;
+}).join("");
 document.getElementById("calc").addEventListener("input", calc);
 document.getElementById("calc").addEventListener("change", calc);
 document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
