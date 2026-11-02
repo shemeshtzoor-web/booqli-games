@@ -305,6 +305,16 @@ section{margin-top:64px}
 .order .total b{color:var(--magenta);font-size:19px}
 .order .date{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
 
+.voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.voice{background:#fff;border-radius:22px;padding:20px 18px 16px;box-shadow:0 6px 22px rgba(78,133,118,.12);position:relative;display:flex;flex-direction:column;gap:10px}
+.voice::before{content:"”";position:absolute;top:-6px;right:14px;font:700 64px Fredoka,serif;color:var(--pink-soft);line-height:1}
+.voice q{quotes:none;font-size:17px;line-height:1.6;position:relative}
+.voice .by{margin-top:auto;font-weight:800;color:var(--sage-deep);font-size:15px}
+.voice .by span{color:var(--muted);font-weight:600}
+.ganlist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.ganlist li{background:#fff;border:1.5px solid var(--mint-2);border-radius:999px;padding:7px 14px;font-weight:800;font-size:16px;box-shadow:0 2px 8px rgba(78,133,118,.08)}
+.ganlist li span{font-weight:600;color:var(--muted)}
+@media (max-width:780px){.voices{grid-template-columns:minmax(0,1fr)}}
 /* תמונות מההורים */
 .real{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .real figure{margin:0;background:#fff;border-radius:20px;padding:8px 8px 12px;box-shadow:0 6px 20px rgba(78,133,118,.13);transform:rotate(-1.5deg)}
@@ -616,6 +626,24 @@ section{margin-top:64px}
       <p class="date">תאריך ההזמנה: 12.5.2026</p>
     </div>
   </div>
+</section>
+
+<section id="voices" hidden>
+  <div class="sec-h">
+    <span class="eyebrow">💬 מה גננות כותבות לנו</span>
+    <h2>ציטוטים אמיתיים מהוואטסאפ</h2>
+    <p>מילים של גננות ושל ועדי הורים, באישורן. השמות מקוצרים.</p>
+  </div>
+  <div class="voices" id="voiceList"></div>
+</section>
+
+<section id="ganim">
+  <div class="sec-h">
+    <span class="eyebrow">🌸 הגנים שבחרו בבוקלי</span>
+    <h2>חלק מהגנים שהזמינו באוקטובר 2026</h2>
+    <p>רשימה חלקית, באישור הגנים.</p>
+  </div>
+  <ul class="ganlist" id="ganList"></ul>
 </section>
 
 <section>
@@ -1159,6 +1187,23 @@ document.getElementById("rWa").addEventListener("click", () => { if (window.site
 document.getElementById("goSiteBtn").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_start_site"); });
 document.getElementById("goDriveBtn").addEventListener("click", () => { if (window.siteEvent) siteEvent("click", "gan_start_drive"); });
 calc();
+
+
+/* ===== ציטוטים אמיתיים (רק באישור, שמות מקוצרים) – הקטע מוצג רק כשיש לפחות ציטוט אחד =====
+   {q:"הציטוט", by:"א.ב", role:"גננת / ועד הורים", where:"עיר (לא חובה)"} */
+const VOICES = [];
+if (VOICES.length) {
+  document.getElementById("voiceList").innerHTML = VOICES.map(v => `<figure class="voice"><q>${v.q}</q><figcaption class="by">${v.by}${v.role ? ` <span>· ${v.role}${v.where ? ", " + v.where : ""}</span>` : ""}</figcaption></figure>`).join("");
+  document.getElementById("voices").hidden = false;
+}
+/* ===== גנים שהזמינו (באישור הגנים: שם + עיר בלבד, בלי כתובות) ===== */
+const GANIM = [
+  ["הבית של יעלי","פרדס חנה"],["שיזף","אילת"],["חבצלת","חולון"],["עוץ לי גוץ לי",""],["גן דולב","קרית גת"],["תפוז",""],
+  ["גן חוחית",""],["גן יובל","בת ים"],["גן מפרץ","בת ים"],["גן חביבה","יבנה"],["מעון אנאל","גילת"],["ים","חולון"],
+  ["גן אגוז","אור יהודה"],["גן אדווה","בת ים"],["חרצית","אור יהודה"],["גן ללי, כיתת דקל",""],["גן פורח","תל אביב"],
+  ["הר שיפון",""],["גן שורשים",""],["גן דוריס",""]
+];
+document.getElementById("ganList").innerHTML = GANIM.map(g => `<li>🏫 ${g[0]}${g[1] ? ` <span>· ${g[1]}</span>` : ""}</li>`).join("");
 
 /* ===== קישורים לאתר הראשי: חלון חדש + סימון מקור (כדי לראות כמה הגיעו מכאן) ===== */
 const UTM = "utm_source=games&utm_medium=kindergartens_page&utm_campaign=gan";
