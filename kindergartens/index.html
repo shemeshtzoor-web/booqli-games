@@ -217,11 +217,11 @@ section{margin-top:64px}
 
 /* למה בוקלי */
 .why{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.why div{background:#fff;border-radius:22px;padding:20px;box-shadow:0 4px 18px rgba(78,133,118,.11);display:grid;grid-template-columns:50px minmax(0,1fr);gap:14px}
-.why div>span{font-size:34px;line-height:1}
+.why>div{background:#fff;border-radius:22px;padding:20px;box-shadow:0 4px 18px rgba(78,133,118,.11);display:grid;grid-template-columns:50px minmax(0,1fr);gap:14px}
+.why>div>span{font-size:34px;line-height:1}
 .why h3{font-size:20px}
 .why p{color:var(--muted);font-size:16.5px;margin-top:4px}
-.why div.wide{grid-column:1/-1}
+.why>div.wide{grid-column:1/-1}
 
 /* המדריך – 18 נקודות */
 .check{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -401,7 +401,6 @@ section{margin-top:64px}
       </ul>
     </div>
   </div>
-  <div class="strip"><img src="https://static.wixstatic.com/media/a56db3_e0ffba6858654a95976d00eb712448b8~mv2.png/v1/fill/w_980,h_327,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a56db3_e0ffba6858654a95976d00eb712448b8~mv2.png" alt="דוגמאות לספרי בוקלי" width="980" height="327" loading="lazy"></div>
 </section>
 
 <section id="how">
@@ -476,7 +475,7 @@ section{margin-top:64px}
   </div>
   <div class="guide">
     <div>
-      <div class="vid"><video src="video/guide.mp4" poster="video/guide.jpg" controls preload="none" playsinline width="480" height="640" data-ev="video_guide"></video></div>
+      <div class="vid"><video src="video/guide.mp4" poster="video/guide.jpg?v=2" controls preload="none" playsinline width="480" height="640" data-ev="video_guide"></video></div>
     </div>
     <div>
       <div class="guide-pts">
