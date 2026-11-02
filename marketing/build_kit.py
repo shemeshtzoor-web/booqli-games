@@ -2,7 +2,7 @@
 # מייצר את kit.json (לאתר) ואת data.js (מוטמע בתוסף) ממקור אחד.
 import json, sys, datetime
 OUT = sys.argv[1]
-VERSION = "2026-11-02.1"
+VERSION = "2026-11-02.5"
 SITE = "https://games.booqli.ai/"
 GROUP = "https://chat.whatsapp.com/I00ZXog0R88HDDMolWYKbx"
 FOOT_FB = "בחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕"
@@ -414,6 +414,21 @@ IDEAS_SEED = [
  {"id":"s10","title":"מילוי ספקיות במתנות","cat":"שיווק","notes":"30 הראשונות חודשיים בחינם; כל ספקית מצרפת 3 לקבוצה.","status":"בתכנון"},
 ]
 
+# ===================== הדף שלי: פוסט אחד ביום בדף BOOQLI (פייסבוק + אינסטגרם יחד) =====================
+# m = video / image / shot (צילום מסך של העמוד בטלפון, אין עדיין קובץ). t = שעה. n = הערה.
+PAGE = [
+ ("2026-11-05","kids","video","19:30",""),("2026-11-06","birthday-party","video","10:00",""),("2026-11-07","safety","image","20:00","מוצאי שבת"),
+ ("2026-11-08","animate","video","19:30",""),("2026-11-09","last-minute","video","07:30","בוקר – כשגננות בדרך לגן"),("2026-11-10","colors","video","19:30",""),
+ ("2026-11-11","calendar","image","19:30",""),("2026-11-12","book-savanna","video","19:30",""),("2026-11-13","math","image","10:00",""),
+ ("2026-11-14","safety","video","20:00","מוצאי שבת"),("2026-11-15","kids","image","19:30",""),("2026-11-16","hanukkah","shot","19:30","עוד 18 ימים לחנוכה"),
+ ("2026-11-17","book-diaper","video","19:30",""),("2026-11-18","earthquake","shot","19:30",""),("2026-11-19","animate","image","19:30","לגננות: מתנה להורים"),
+ ("2026-11-20","book-birthday","video","10:00",""),("2026-11-21","colors","image","20:00","מוצאי שבת"),("2026-11-22","gifts","image","19:30","ועדים: מתנה לחנוכה"),
+ ("2026-11-23","feelings","shot","19:30",""),("2026-11-24","kinder-book","shot","19:30",""),("2026-11-25","winter","shot","19:30","החורף נפתח היום"),
+ ("2026-11-26","kids","video","19:30",""),("2026-11-27","app","shot","10:00",""),("2026-11-28","calendar","image","20:00","מוצאי שבת: חנוכה בעוד שבוע"),
+ ("2026-11-29","hanukkah","shot","19:30",""),("2026-11-30","morning-circle","shot","19:30",""),("2026-12-01","book-superhero","video","19:30","אם יש לך סרטון של גיבור/ת על"),
+ ("2026-12-02","animate","video","19:30","חופשת חנוכה מתקרבת"),("2026-12-03","last-minute","video","07:30",""),("2026-12-04","hanukkah","shot","10:00","חנוכה שמח 🕎"),
+]
+
 GUIDE = [
  {"h":"🚨 ביום של אזעקה","items":[
    "פותחים בנושאים את \"🚨 יום של אזעקה – הודעות מוכנות\" ושולחים: קבוצת העדכונים, ואז קבוצות ההורים והגננות.",
@@ -451,12 +466,13 @@ GUIDE = [
    "לא לכתוב \"בלי הרשמה\" / \"בלי פרסומות\" – רק \"אתר בטוח להורים ולילדים\"."]},
 ]
 
-data = {"version":VERSION,"guide":GUIDE,"ideasSeed":IDEAS_SEED,"siteSnapshot":site_snapshot(),"site":SITE,"group":GROUP,"topics":T,"campaigns":CAMPAIGNS,"plan":P,
+data = {"version":VERSION,"page":[{"date":a,"topic":b,"m":c,"t":d,"n":e} for a,b,c,d,e in PAGE],"guide":GUIDE,"ideasSeed":IDEAS_SEED,"siteSnapshot":site_snapshot(),"site":SITE,"group":GROUP,"topics":T,"campaigns":CAMPAIGNS,"plan":P,
         "groups":{"wa":{"WA1":"קבוצת העדכונים (שלי)","WA2":"קבוצת וואטסאפ 2","WA3":"קבוצת וואטסאפ 3"},
                   "fb":{str(i):"קבוצת פייסבוק %d"%i for i in range(1,11)}}}
 ids={t["id"] for t in T}
 for p in P: assert p["topic"]=="" or p["topic"] in ids, p
 for c in CAMPAIGNS: assert c["topic"] in ids, c
+for x in PAGE: assert x[1] in ids, x
 js=json.dumps(data,ensure_ascii=False,indent=1)
 open(OUT+"/kit.json","w",encoding="utf-8").write(js)
 open(OUT+"/data.js","w",encoding="utf-8").write("window.KIT_BUNDLED = "+js+";\n")

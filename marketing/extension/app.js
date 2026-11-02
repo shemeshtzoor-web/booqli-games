@@ -364,11 +364,64 @@
         <button class="btn" id="mSave">${ed ? "💾 שמירה" : "➕ להוסיף"}</button> ${ed ? '<button class="btn o" id="mCancel">ביטול</button>' : ""}</div>`;
   }
 
+
+  // ---------- 📱 הדף שלי: פוסט ביום לפייסבוק + אינסטגרם ----------
+  function igText(t, txt) {
+    const lines = String(txt || "").split("\n").filter(l => !/\{LINK\}|\{GROUP\}|מספר סודי מקבוצת|https?:\/\//.test(l));
+    return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n\n🔗 הקישור בביו" + (t.tags ? "\n\n" + t.tags : "");
+  }
+  function pageLink(t) { return link(t, "fb").replace("utm_source=facebook_group&utm_medium=post", "utm_source=facebook&utm_medium=page"); }
+  async function vPage() {
+    const P = KIT.page || [], today = todayISO();
+    if (!P.length) return `<div class="card">אין עדיין תוכנית לדף.</div>`;
+    const done = P.filter(x => isDone("page:" + x.date)).length;
+    let h = `<h1>📱 הדף שלי – פוסט כל יום</h1>
+      <p class="mute">פוסט אחד ביום בדף BOOQLI. ב-Meta Business Suite מעלים פעם אחת ומסמנים גם פייסבוק וגם אינסטגרם. אפשר לתזמן עד כחודש קדימה. סמני ✔️ כל פוסט שתזמנת.</p>
+      <div class="flag">איך מתזמנים: business.facebook.com ← <b>Planner / מתכנן</b> ← <b>יצירת פוסט</b> ← מסמנים את הדף ואת האינסטגרם ← מעלים את הקובץ ← מדביקים טקסט (יש כפתור נפרד לאינסטגרם, בלי קישור) ← <b>תזמון</b> לתאריך ולשעה שכאן. ${done}/${P.length} תוזמנו.</div>
+      <div class="flag art">🎬 = סרטון 4:5 · 🖼️ = תמונה 1:1 · 📸 = עוד אין קובץ: צלמי מסך של העמוד בטלפון (או בחרי סרטון אחר).</div>`;
+    for (const x of P) {
+      const t = topic(x.topic); if (!t) continue;
+      const key = "page:" + x.date, d = isDone(key);
+      const m = x.m === "shot" ? null : await mget(t.id + ":" + x.m);
+      const ic = x.m === "video" ? "🎬" : x.m === "image" ? "🖼️" : "📸";
+      let media;
+      if (m) { const u = URL.createObjectURL(m.blob); media = `<a class="btn sm s" href="${u}" download="${esc(x.date + "-" + t.id + (x.m === "video" ? "-4x5" : "-1x1") + "-" + m.name)}">⬇️ ${ic} הורדת הקובץ</a>`; }
+      else if (x.m === "shot") media = `<span class="pill w">📸 צילום מסך של העמוד</span> <a class="btn sm o" target="_blank" href="${esc(KIT.site + (t.path || ""))}">לפתוח את העמוד</a>`;
+      else media = `<span class="pill p">${ic} חסר בתוסף</span> <button class="btn sm o" data-gotopic="${t.id}">להעלות</button>`;
+      const fbTxt = fill(t.fbp || t.fb, t, "fb").split(link(t, "fb")).join(pageLink(t)).split(link(t, "fbp")).join(pageLink(t));
+      h += `<div class="card" style="${x.date === today ? "border-color:var(--pinkd)" : ""}"><div class="task ${d ? "done" : ""}" style="border:0;padding:0"><input type="checkbox" data-done="${key}" ${d ? "checked" : ""} aria-label="תוזמן">
+        <div class="body"><div class="row"><b class="what">${nice(x.date)} · ${x.t}</b><span>${t.ic} ${esc(t.name)}</span>${x.n ? `<span class="small mute">${esc(x.n)}</span>` : ""}</div>
+        <div class="row" style="margin:6px 0">${media}${cbtn(fbTxt, "📘 טקסט לפייסבוק")}${cbtn(igText(t, t.fbp || t.fb), "📷 טקסט לאינסטגרם", "o")}${cbtn((t.headlines || [""])[0], "✨ כותרת", "o")}</div></div></div></div>`;
+    }
+    return h;
+  }
+
+  // ---------- 🗂️ מה עשינו: מפת השיחות (פרטי – מיובא מקובץ, נשמר רק כאן) ----------
+  let chatQ = "";
+  async function vChats() {
+    const L = LS.get("chats", []);
+    let h = `<h1>🗂️ מה עשינו – מפת השיחות</h1>
+      <p class="mute">כל שיחה: מה עשינו בה, אילו קבצים יצאו ממנה, וכפתור שפותח אותה. הקבצים עצמם נמצאים בתוך השיחה – פותחים, לוחצים Ctrl+F ומקלידים את שם הקובץ. 🔒 נשמר רק בתוסף במחשב שלך.</p>
+      <div class="row"><input id="cQ" value="${esc(chatQ)}" placeholder="🔎 חיפוש: נושא, קובץ, מילה..." style="flex:1;min-width:180px;padding:8px 12px;border:1.5px solid var(--line);border-radius:10px">
+      <label class="btn sm ${L.length ? "o" : ""}">⬆️ ${L.length ? "לעדכן מקובץ" : "לטעון את קובץ השיחות"}<input type="file" hidden accept=".json" id="cImp"></label></div>`;
+    if (!L.length) return h + `<div class="card">עוד לא נטען קובץ. טעני את הקובץ <b>booqli-chats.json</b> שקיבלת מ-Claude.</div>`;
+    const q = chatQ.trim();
+    const shown = L.filter(c => !q || JSON.stringify(c).includes(q));
+    for (const c of shown) {
+      const t = topic(c.topic);
+      const files = (c.files || []).map((f, i) => { const k = "file:" + c.id + ":" + i, d = isDone(k);
+        return `<label class="row small" style="gap:6px"><input type="checkbox" data-done="${k}" ${d ? "checked" : ""}><span style="${d ? "text-decoration:line-through;color:var(--mute)" : ""}">${esc(f)}</span></label>`; }).join("");
+      h += `<div class="card"><div class="row"><span class="small mute">${esc(c.date)}</span><h3 style="margin:0;flex:1">${esc(c.title)}</h3>${t ? `<button class="btn sm o" data-gotopic="${t.id}">${t.ic} ${esc(t.name)}</button>` : ""}<a class="btn sm" target="_blank" href="${esc(c.url)}">לפתוח את השיחה ↗</a></div>
+        <p style="margin:6px 0">${esc(c.did)}</p>${files ? `<div class="sec"><b class="small">📎 קבצים (סמני ✔️ כשהורדת ושמרת):</b>${files}</div>` : ""}</div>`;
+    }
+    return h;
+  }
+
   async function render() {
     copyN = 0; for (const k in COPY) delete COPY[k];
     document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "day" ? "month" : view)));
     const m = $("#main");
-    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
+    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "page" ? await vPage() : view === "chats" ? await vChats() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
     m.innerHTML = html;
     $("#sub").textContent = "booqli Games · " + nice(todayISO());
   }
@@ -422,6 +475,10 @@
     if (el.dataset.art) { const o = LS.get("articles", {}); o[el.dataset.art] = el.value.trim(); LS.set("articles", o); toast("נשמר ✔️"); return; }
     if (el.dataset.istat) { const L = ideas(), x = L.find(i => i.id === el.dataset.istat); x.status = el.value; LS.set("ideas", L); toast("נשמר ✔️"); return render(); }
     if (el.dataset.camp) { const o = LS.get("camps", {}); o[el.dataset.camp] = el.value; LS.set("camps", o); toast("נשמר ✔️"); render(); return; }
+    if (el.id === "cImp" && el.files[0]) {
+      el.files[0].text().then(t => { const d = JSON.parse(t), arr = Array.isArray(d) ? d : d.chats || []; if (!arr.length) throw 0; LS.set("chats", arr); toast("נטענו " + arr.length + " שיחות ✔️"); render(); }).catch(() => alert("הקובץ לא תקין"));
+      return;
+    }
     if (el.id === "mImp" && el.files[0]) {
       el.files[0].text().then(t => {
         const d = JSON.parse(t), arr = Array.isArray(d) ? d : d.messages || []; const L = msgs(); let n = 0;
@@ -435,6 +492,7 @@
     }
   });
 
+  document.addEventListener("input", e => { if (e.target.id === "cQ") { chatQ = e.target.value; const pos = e.target.selectionStart; render().then(() => { const i = $("#cQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }); } });
   document.addEventListener("input", e => { if (e.target.id === "mQ") { msgQ = e.target.value; const pos = e.target.selectionStart; render().then(() => { const i = $("#mQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }); } });
   async function update(manual) {
     try {
