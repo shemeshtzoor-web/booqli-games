@@ -94,7 +94,15 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .rt li::before{content:"✓ ";color:#23784A;font-weight:800}
 .rt .noedit{background:var(--mint);color:var(--sage-deep);border-radius:12px;padding:6px 10px;font-size:16px}
 .rt .noedit b{color:var(--sage-deep)}
-.rt .dprice{font-weight:800;color:var(--magenta);font-size:16.5px}
+.rt .dprice{display:flex;flex-direction:column;gap:2px;background:var(--pink-soft);border-radius:12px;padding:8px 12px;font-weight:700;font-size:16px}
+.rt .dprice b{color:var(--magenta);font-size:19px}
+.rt .dprice span:last-child{font-size:14.5px;color:var(--muted)}
+.ship{flex-basis:100%;display:grid;gap:6px;margin-top:6px}
+.ship label{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;background:#fff;border:2px solid #fff;border-radius:12px;padding:8px 10px;font-weight:700;font-size:15.5px;cursor:pointer}
+.ship label:has(input:checked){border-color:var(--pink-btn)}
+.ship input{accent-color:var(--pink-btn);width:18px;height:18px}
+.dsum .ship b{color:var(--magenta);font:800 15.5px Assistant,sans-serif}
+.ship em{font-style:normal;flex-basis:100%;font-size:13.5px;color:var(--muted);padding-inline-start:26px}
 .dsum{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;background:var(--pink-soft);border-radius:16px;padding:12px 16px;margin-bottom:4px}
 .dsum span{font-weight:800}
 .dsum b{font:700 28px Fredoka,sans-serif;color:var(--magenta)}
@@ -217,7 +225,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     </label>
     <label class="rt" id="rtDrive"><input type="radio" name="route" value="drive">
       <h3>2️⃣ הזמנה מרוכזת בדרייב 📁</h3>
-      <p class="dprice" id="dPrice"></p>
+      <div class="dprice" id="dPrice"></div>
       <ul><li>מעלים את כל התמונות יחד לתיקייה מסודרת</li><li>אנחנו מבצעים עבורכם את ההזמנה מא׳ ועד ת׳</li><li>זמן עריכה – עד 3 ימי עסקים</li><li>להזמנות מעל 20 ספרים, עד שני נושאים</li></ul>
       <p class="why" id="driveWhy" hidden></p>
     </label>
@@ -255,7 +263,12 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <!-- 3. דרייב -->
 <section class="step" id="s-drive" data-step="drive" hidden>
   <div class="h"><span class="n">3</span><h2>הזמנה מרוכזת בדרייב 📁<small>חמישה צעדים קצרים, לפי הסדר</small></h2></div>
-  <div class="dsum"><span>💰 המחיר להזמנה בדרייב</span><b id="dTot">—</b><small id="dPer"></small></div>
+  <div class="dsum"><span>💰 המחיר להזמנה בדרייב</span><b id="dTot">—</b><small id="dPer"></small>
+    <div class="ship" role="radiogroup" aria-label="משלוח">
+      <label><input type="radio" name="ship" value="home"> 🚚 משלוח עד הבית – <b>40 ₪</b><em>עד 14 ימי עסקים מאישור ההדפסה</em></label>
+      <label><input type="radio" name="ship" value="pickup"> 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – <b>ללא עלות</b><em>כשבוע מאישור ההדפסה, בתיאום</em></label>
+    </div>
+  </div>
 
   <div class="sub" id="d-terms">
     <h3><span class="ck">1</span>אישור מדיניות ותקנון 🔒</h3>
@@ -367,6 +380,7 @@ const PHONE = "972555549331";
 const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83],[20,60,77],[50,59,76],[100,57,74]];
 const STAPLE = { p:50, from:20 };
 const COVER = { staple:"כריכה רכה סיכות", soft:"כריכה רכה (פיג'מה)", hard:"כריכה קשה פרימיום" };
+const SHIP = 40;
 const DRIVE_FROM = 21, DRIVE_MAX_TOPICS = 2, DISCOUNT = 0.05;
 /* הספרים. pdf: הקובץ בתיקייה order/books/ (כששמש מעלה – ממלאים כאן). */
 const BOOKS = [
@@ -390,7 +404,7 @@ function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e)
 const sig = JSON.stringify([D.n, D.p, D.v, D.r]);
 if (D.n && S.sig !== sig) { S.kids = D.n; S.per = D.p || 1; S.cover = D.v || "staple"; if (D.r) S.route = D.r; S.sig = sig; }
 S.kids = S.kids || 25; S.per = S.per || 1; S.cover = S.cover || "staple";
-S.topics = S.topics || []; S.route = S.route || D.r || ""; S.done = S.done || {};
+S.ship = S.ship || "home"; S.topics = S.topics || []; S.route = S.route || D.r || ""; S.done = S.done || {};
 const $ = id => document.getElementById(id);
 const ils = n => Math.round(n).toLocaleString("he-IL") + " ₪";
 let gan = D.g || S.gan || "";
@@ -455,9 +469,11 @@ function routeUi(){
   $("siteBox").hidden = S.route !== "site"; $("routeNext").hidden = S.route !== "drive";
   $("s-drive").hidden = S.route !== "drive";
   const t = total();
-  $("dPrice").textContent = t ? "💰 מחיר: " + ils(t) + " · " + books() + " ספרים × " + priceFor(S.cover, books()) + " ₪" : "";
-  $("dTot").textContent = t ? ils(t) : "—";
-  $("dPer").textContent = t ? books() + " ספרים × " + priceFor(S.cover, books()) + " ₪ · " + COVER[S.cover] + " · ללא הנחת 5% (ההנחה רק בהזמנה עצמאית באתר)" : "";
+  const sh = S.ship === "home" ? SHIP : 0;
+  $("dPrice").innerHTML = t ? `<span>💰 ${books()} ספרים × ${priceFor(S.cover, books())} ₪ = <b>${ils(t)}</b></span><span>🚚 + משלוח ${SHIP} ₪ (או איסוף עצמי ללא עלות)</span>` : "";
+  $("dTot").textContent = t ? ils(t + sh) : "—";
+  $("dPer").textContent = t ? books() + " ספרים × " + priceFor(S.cover, books()) + " ₪ = " + ils(t) + (sh ? " + משלוח " + SHIP + " ₪" : " · איסוף עצמי") + " · " + COVER[S.cover] + " · ללא הנחת 5% (ההנחה רק בהזמנה עצמאית באתר)" : "";
+  document.querySelectorAll('input[name="ship"]').forEach(i => i.checked = i.value === S.ship);
   $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
   S.done.route = !!S.route; if (S.route === "site") S.done.topic = true; else if (!S.topics.length) S.done.topic = false;
   $("pickFirst").hidden = !(S.route === "drive" && !S.topics.length);
@@ -484,8 +500,9 @@ $("termsLink").addEventListener("click", () => { if (window.siteEvent) siteEvent
 $("termsDone").addEventListener("click", () => mark("terms"));
 $("photosDone").addEventListener("click", () => mark("photos"));
 $("folderDone").addEventListener("click", () => mark("folder"));
+document.querySelectorAll('input[name="ship"]').forEach(i => i.addEventListener("change", () => { S.ship = i.value; save(); routeUi(); }));
 function topicNames(){ return S.topics.map(id => BOOKS.find(b => b.id === id).name).join(" + ") || "עוד לא בחרנו"; }
-function orderLine(){ return "📚 " + topicNames() + "\n👧👦 " + S.kids + " ילדים × " + S.per + " = " + books() + " ספרים · " + COVER[S.cover]; }
+function orderLine(){ return "📚 " + topicNames() + "\n👧👦 " + S.kids + " ילדים × " + S.per + " = " + books() + " ספרים · " + COVER[S.cover] + (S.route === "drive" ? "\n" + (S.ship === "home" ? "🚚 משלוח עד הבית (40 ₪)" : "🚗 איסוף עצמי") + (total() ? " · סה\"כ " + ils(total() + (S.ship === "home" ? SHIP : 0)) : "") : ""); }
 $("askFolder").addEventListener("click", e => {
   e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nחתמנו על התקנון ✍️ ונשמח לתיקייה בדרייב להעלאת התמונות 📁\n" + orderLine());
 });

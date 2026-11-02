@@ -94,7 +94,9 @@ const TPL_DEFAULT = [
 כשמסיימים להעלות – כתבו לי ❤️` },
   { id: "pay", name: "4 · פרטי תשלום (דרייב)", stage: 5, text:
 `💳 פרטי התשלום להזמנה של {גן}:
-{ספרים} ספרים · {כריכה} · סה"כ {סה"כ}
+{ספרים} ספרים · {כריכה} · {סה"כ}
+{משלוח}
+💰 לתשלום: {לתשלום}
 
 התשלום מתבצע מראש, לפני תחילת עריכת הספרים.
 
@@ -168,6 +170,9 @@ async function load() {
   GANS = await store.get("gans", []);
   TPL = await store.get("tpl", null) || JSON.parse(JSON.stringify(TPL_DEFAULT));
   TPL_DEFAULT.forEach(d => { if (!TPL.find(t => t.id === d.id)) TPL.push(JSON.parse(JSON.stringify(d))); });
+  /* 1.0.1: משלוח בהודעת התשלום */
+  const pay = TPL.find(t => t.id === "pay");
+  if (pay && !pay.text.includes("{לתשלום}")) pay.text = pay.text.replace('{ספרים} ספרים · {כריכה} · סה"כ {סה"כ}', '{ספרים} ספרים · {כריכה} · {סה"כ}\n{משלוח}\n💰 לתשלום: {לתשלום}');
   SET = await store.get("set", {});
   SET_FIELDS.forEach(f => { if (SET[f[0]] === undefined && f[3]) SET[f[0]] = f[3]; });
 }
@@ -175,8 +180,8 @@ const saveGans = () => store.set("gans", GANS);
 
 /* ---------- חישובים וקישורים לגן ---------- */
 function calc(g) {
-  const n = (+g.kids || 0) * (+g.per || 1), p = priceFor(g.cover, n), t = p * n;
-  return { n, p, t, d5: t * 0.05, a5: t * 0.95 };
+  const n = (+g.kids || 0) * (+g.per || 1), p = priceFor(g.cover, n), t = p * n, sh = g.ship === "pickup" ? 0 : 40;
+  return { n, p, t, d5: t * 0.05, a5: t * 0.95, sh, all: t + sh };
 }
 function personalLink(g, stage) {
   const d = { g: g.name, c: g.contact || "", n: +g.kids || 0, p: +g.per || 1, v: g.cover, k: SET.coupon5 || "", r: g.route || "" };
@@ -188,7 +193,7 @@ function fill(text, g) {
   const c = calc(g);
   const map = {
     "גן": g.name, "איש_קשר": g.contact || "", "ילדים": g.kids, "ספרים": c.n, "כריכה": COVER[g.cover] || "",
-    "מחיר_לספר": c.p ? c.p + " ₪" : "", 'סה"כ': c.t ? ils(c.t) : "", "הנחה5": c.t ? ils(c.d5) : "", "אחרי_הנחה": c.t ? ils(c.a5) : "",
+    "מחיר_לספר": c.p ? c.p + " ₪" : "", 'סה"כ': c.t ? ils(c.t) : "", "משלוח": g.ship === "pickup" ? "🚗 איסוף עצמי מבית הדפוס – ללא עלות" : "🚚 משלוח עד הבית – 40 ₪", "לתשלום": c.t ? ils(c.all) : "", "הנחה5": c.t ? ils(c.d5) : "", "אחרי_הנחה": c.t ? ils(c.a5) : "",
     "נושאים": g.topics || "", "קישור": personalLink(g), "קישור_אישור": personalLink(g, "approve"), "דרייב": g.drive || "",
     "קופון5": SET.coupon5 || "", "גנים50": SET.ganim || "", "בנק": SET.bank || "", "ביט": SET.bit || "",
     "סרטון_כריכות": SET.vCovers || "", "סרטון_תמונה": SET.vPhoto || "",
@@ -198,7 +203,7 @@ function fill(text, g) {
   const out = text.replace(/\{([^{}]+)\}/g, (m, k) => { if (!(k in map)) return m; if (map[k] === "" || map[k] === undefined) missing.push(k); return map[k]; });
   return { out, missing };
 }
-const PH = ["גן","איש_קשר","ילדים","ספרים","כריכה","מחיר_לספר",'סה"כ',"הנחה5","אחרי_הנחה","נושאים","קישור","קישור_אישור","דרייב","קופון5","גנים50","בנק","ביט","סרטון_כריכות","סרטון_תמונה","עמוד_גנים"];
+const PH = ["גן","איש_קשר","ילדים","ספרים","כריכה","מחיר_לספר",'סה"כ',"משלוח","לתשלום","הנחה5","אחרי_הנחה","נושאים","קישור","קישור_אישור","דרייב","קופון5","גנים50","בנק","ביט","סרטון_כריכות","סרטון_תמונה","עמוד_גנים"];
 
 /* ---------- רשימת הגנים ---------- */
 function renderList() {
@@ -235,7 +240,7 @@ function renderDetail() {
     <div class="grid">
       ${f("name", "שם הגן", "text", "w2")}${f("contact", "איש/אשת קשר", "text")}${f("phone", "טלפון (וואטסאפ)", "tel")}
       ${f("kids", "כמה ילדים", "number")}${f("per", "ספרים לילד", "select", "", [[1, "1"], [2, "2"], [3, "3"]])}
-      ${f("cover", "כריכה", "select", "", Object.keys(COVER).map(k => [k, COVER[k]]))}${f("route", "מסלול", "select", "", [["", "עוד לא נבחר"], ["site", "🛒 לבד באתר"], ["drive", "📁 דרייב"]])}
+      ${f("cover", "כריכה", "select", "", Object.keys(COVER).map(k => [k, COVER[k]]))}${f("route", "מסלול", "select", "", [["", "עוד לא נבחר"], ["site", "🛒 לבד באתר"], ["drive", "📁 דרייב"]])}${f("ship", "משלוח", "select", "", [["home", "🚚 עד הבית – 40 ₪"], ["pickup", "🚗 איסוף עצמי"]])}
       ${f("topics", "נושא/ים", "text", "w2")}${f("drive", "קישור לתיקיית הדרייב", "url", "w2")}
       ${f("stage", "שלב", "select", "w2", STAGES.map((s, i) => [i, s]))}${f("notes", "הערות", "textarea", "w2")}
     </div>
@@ -256,7 +261,7 @@ function renderDyn() {
       <div class="acts"><button class="wa" data-a="send">💬 שליחה בוואטסאפ</button><button class="ghost" data-a="copy">📋 העתקה</button></div></div>`;
   }).join("");
   $("dyn").innerHTML = `
-    <div class="calc"><div>${c.n} ספרים</div><div>${c.p ? c.p + " ₪ לספר" : "סיכות רק מ-20 ספרים"}</div><div>סה"כ <b>${c.t ? ils(c.t) : "—"}</b></div><div>באתר עם 5%: <b>${c.t ? ils(c.a5) : "—"}</b> (−${c.t ? ils(c.d5) : "—"})</div></div>
+    <div class="calc"><div>${c.n} ספרים</div><div>${c.p ? c.p + " ₪ לספר" : "סיכות רק מ-20 ספרים"}</div><div>סה"כ <b>${c.t ? ils(c.t) : "—"}</b></div><div>דרייב + ${c.sh ? "משלוח 40 ₪" : "איסוף"}: <b>${c.t ? ils(c.all) : "—"}</b></div><div>באתר עם 5%: <b>${c.t ? ils(c.a5) : "—"}</b> (−${c.t ? ils(c.d5) : "—"})</div></div>
     <div class="link">🔗 <code>${esc(personalLink(g))}</code><button class="ghost" data-a="copyLink">העתקה</button><a class="ghost" href="${esc(personalLink(g))}" target="_blank">פתיחה</a></div>
     ${SET.coupon5 ? "" : '<p class="miss">⚠️ עוד לא הוגדר קוד קופון 5% (⚙️ פרטים פרטיים) – בעמוד של הגן יופיע "שמש שולחת את הקוד בוואטסאפ".</p>'}
     <h3>✉️ הודעות מוכנות</h3>
