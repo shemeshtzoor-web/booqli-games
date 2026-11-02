@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מנפישים את הציור שלי · booqli Games</title>
+<meta name="description" content="הילד מצייר, מצלם את הציור – והציור מתעורר לחיים! קופץ, רוקד, עף, שוחה ושר. יוצא ציור מגניב וסרטון מונפש לשמירה בטלפון ולשליחה בוואטסאפ. בחינם, לגילאי 3–8.">
+<link rel="canonical" href="https://games.booqli.ai/kids/animate/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="מנפישים את הציור שלי 🪄 · booqli Games">
+<meta property="og:description" content="מצלמים ציור של הילד – והוא מתעורר לחיים! סרטון מונפש לשמירה ולשליחה בוואטסאפ. בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/kids/animate/">
+<meta property="og:image" content="https://games.booqli.ai/kids/animate/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<style>
+/* ===== מנפישים את הציור שלי (2.11.2026) ===== */
+.an-hero{--zc:#C13671;--zb:#FFE3F4}
+.an-hero h1{background:linear-gradient(90deg,#E0399F,#9B5DE5,#3AA7F0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.free-tag{display:inline-block;background:#FF56C2;color:#fff;font-weight:800;border-radius:999px;padding:3px 14px;font-size:15px;margin-top:6px;box-shadow:0 3px 0 #A3216F}
+.an-steps{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:16px 0 4px}
+.an-steps span{font-weight:800;font-size:14px;border-radius:999px;padding:5px 12px;background:#fff;color:#6b5a66;border:2px solid #F1E3EC}
+.an-steps span.on{background:#FF56C2;color:#fff;border-color:#E0399F}
+.an-steps span.done{background:#E1F0EA;color:#4E8576;border-color:#CDE7DC}
+.an-box{margin-top:14px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 6px 0 #d9e9e1}
+.an-box h2{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,4.6vw,30px);color:#C13671;display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.2;margin:0 0 6px}
+.an-box > p{color:#6b5a66;margin:0 0 12px}
+.say-b{border:0;background:#FFE3F4;border-radius:999px;width:44px;height:44px;font-size:20px;cursor:pointer;box-shadow:0 2px 0 #F7C4E3;flex-shrink:0}
+.pick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.pick button,.pick label{font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;min-height:120px;border-radius:24px;border:3px solid #F1E3EC;background:#FFF7FC;color:#2B1526;cursor:pointer;padding:10px 6px;font-weight:800;font-size:17px;line-height:1.2}
+.pick .e{font-size:42px;line-height:1}
+.pick small{font-weight:600;color:#6b5a66;font-size:13px}
+.pick .main{background:linear-gradient(140deg,#FF56C2,#B05BE8);color:#fff;border-color:#E0399F;box-shadow:0 5px 0 #A3216F}
+.pick .main small{color:#FFE3F4}
+.pick input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.pick label:focus-within,.pick button:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
+.tips{margin-top:14px;background:#F4FAF7;border-radius:18px;padding:10px 14px;font-size:15px;color:#2B1526}
+.tips b{color:#4E8576}
+.tips ul{margin:6px 0 0;padding-inline-start:20px}
+.an-btn{font:inherit;font-weight:800;font-size:17px;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:#E0399F;color:#fff;box-shadow:0 3px 0 #A3216F;display:inline-flex;align-items:center;gap:6px;justify-content:center;text-decoration:none}
+.an-btn.alt{background:#fff;color:#4E8576;border:2px solid #CDE7DC;box-shadow:none}
+.an-btn.wa{background:#1FA855;box-shadow:0 3px 0 #137A3C}
+.an-btn.big{font-size:21px;padding:15px 28px}
+.an-btn[disabled]{opacity:.5;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:12px}
+/* חיתוך */
+.cropwrap{position:relative;max-width:100%;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.cropwrap canvas{display:block;max-width:100%;border-radius:16px;margin:0 auto}
+/* לוח ציור */
+.pad{display:grid;gap:10px}
+.pad canvas{width:100%;max-width:560px;aspect-ratio:1/1;margin:0 auto;display:block;background:#fff;border-radius:20px;border:3px solid #F1E3EC;touch-action:none;cursor:crosshair}
+.pal{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.pal button{width:42px;height:42px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #E8DCE4;cursor:pointer;font-size:20px;background:#fff}
+.pal button[aria-pressed=true]{box-shadow:0 0 0 4px #FF56C2;transform:scale(1.08)}
+/* הבמה */
+.stagewrap{position:relative;max-width:460px;margin:0 auto}
+.stagewrap canvas{display:block;width:100%;height:auto;aspect-ratio:4/5;border-radius:24px;background:#E1F0EA;box-shadow:0 6px 0 #d9e9e1}
+.stage-msg{position:absolute;inset:auto 10px 10px 10px;background:rgba(255,255,255,.94);border-radius:16px;padding:8px 12px;font-weight:800;text-align:center;color:#C13671;font-size:16px}
+.looks{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.chip{font:inherit;font-weight:800;font-size:15px;border-radius:999px;padding:8px 14px;border:2px solid #F1E3EC;background:#fff;color:#2B1526;cursor:pointer;min-height:44px}
+.chip[aria-pressed=true]{background:#FF56C2;border-color:#E0399F;color:#fff}
+.mic{font:inherit;display:flex;align-items:center;gap:12px;justify-content:center;width:100%;max-width:460px;margin:0 auto;border:0;border-radius:24px;padding:14px 18px;background:linear-gradient(120deg,#FF56C2,#9B5DE5);color:#fff;font-weight:800;font-size:20px;cursor:pointer;box-shadow:0 5px 0 #7C2E9E}
+.mic .e{font-size:38px}
+.mic.on{animation:micP 1s ease-in-out infinite;background:linear-gradient(120deg,#E0399F,#FF8A1F)}
+@keyframes micP{50%{transform:scale(1.04)}}
+.heard{text-align:center;margin:8px 0 0;font-weight:700;color:#4E8576;min-height:24px}
+.typebox{display:flex;gap:8px;max-width:460px;margin:10px auto 0}
+.typebox input{flex:1;min-width:0;font:inherit;font-size:17px;border:2px solid #E8DCE4;border-radius:999px;padding:10px 16px}
+.acts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}
+.acts button{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;border:3px solid #F1E3EC;background:#fff;border-radius:18px;padding:8px 2px;cursor:pointer;font-weight:800;font-size:14px;color:#2B1526;min-height:78px;justify-content:center}
+.acts button .e{font-size:30px;line-height:1}
+.acts button[aria-pressed=true]{border-color:#FF56C2;background:#FFE3F4}
+.scenes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.plan{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px;font-weight:800;color:#2B1526}
+.plan .st{background:#FFF1C9;border-radius:999px;padding:4px 12px}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:460px;margin:14px auto 0}
+.names label{font-weight:800;font-size:14px;color:#6b5a66;display:grid;gap:4px}
+.names input{font:inherit;font-size:17px;border:2px solid #E8DCE4;border-radius:14px;padding:9px 12px;min-width:0}
+.rec{position:absolute;top:10px;right:10px;background:#E0399F;color:#fff;font-weight:800;border-radius:999px;padding:4px 12px;font-size:15px;display:flex;gap:6px;align-items:center}
+.rec i{width:10px;height:10px;border-radius:50%;background:#fff;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+.result video{display:block;width:100%;max-width:400px;margin:0 auto;border-radius:20px;background:#000;aspect-ratio:4/5}
+.note2{font-size:14px;color:#6b5a66;text-align:center;margin:10px auto 0;max-width:520px}
+.bookbox{display:block;margin:16px auto 0;max-width:520px;background:#FFE3F4;border-radius:18px;padding:12px;color:#C13671;font-weight:800;text-decoration:none;text-align:center}
+.for-t{margin-top:14px;background:#FFF8E6;border-radius:20px;padding:12px 16px;color:#7A4600;font-size:15px}
+.busy{position:fixed;inset:0;z-index:170;background:rgba(43,21,38,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+.busy .in{background:#fff;border-radius:26px;padding:22px 26px;text-align:center;font-weight:800;font-size:19px;color:#C13671;max-width:340px}
+.busy .wand{font-size:54px;display:block;animation:wand 1s ease-in-out infinite}
+@keyframes wand{50%{transform:rotate(-20deg) scale(1.1)}}
+@media (max-width:600px){
+  .pick{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pick button,.pick label{min-height:104px;font-size:16px}
+  .acts{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .an-box{padding:14px}
+  .names{grid-template-columns:1fr}
+}
+@media (max-width:340px){.acts{grid-template-columns:repeat(3,minmax(0,1fr))}.chip{font-size:14px;padding:7px 11px}}
+@media (prefers-reduced-motion:reduce){.mic.on,.busy .wand,.rec i{animation:none}}
+</style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
+</head>
+<body>
+<header class="top">
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – דף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap">
+<nav class="crumbs" aria-label="אתם כאן"><a href="../../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <a href="../">🧒 לילדים</a> <span aria-hidden="true">›</span> <span>🪄 מנפישים את הציור שלי</span></nav>
+
+<section class="zone-hero an-hero">
+  <img src="../../img/family/garb.webp" alt="" width="120" height="124">
+  <div><small>booqli Games · לילדים</small><h1>מַנְפִּישִׁים אֶת הַצִּיּוּר שֶׁלִּי</h1>
+  <p>מציירים, מצלמים – והציור מתעורר לחיים! 🪄 אומרים לו מה לעשות: לקפוץ, לרקוד, לעוף, לשחות… ומקבלים ציור מגניב וסרטון לשמור ולשלוח לסבא וסבתא.</p>
+  <span class="free-tag">🎁 בחינם – הכל. תמיד.</span>
+  <button type="button" class="btn-main" id="sayHi" style="margin-top:10px">🔊 לשמוע מה עושים</button></div>
+</section>
+
+<div class="an-steps" id="steps" aria-hidden="true"><span data-s="1" class="on">1. ציור</span><span data-s="2">2. ציור מגניב</span><span data-s="3">3. מה הוא יעשה?</span><span data-s="4">4. סרטון</span></div>
+
+<!-- שלב 1: מביאים ציור -->
+<section class="an-box" id="s1" aria-labelledby="s1T">
+  <h2 id="s1T">🖍️ מָה מְנַפִּישִׁים? <button type="button" class="say-b" data-say="s1" aria-label="להקריא">🔊</button></h2>
+  <p>מצלמים ציור על דף, בוחרים תמונה מהטלפון, או מציירים כאן במסך.</p>
+  <div class="pick">
+    <label class="main" id="camL"><span class="e" aria-hidden="true">📷</span>לצלם ציור<small>על דף</small><input type="file" accept="image/*" capture="environment" id="fCam"></label>
+    <label id="galL"><span class="e" aria-hidden="true">🖼️</span>מהגלריה<small>תמונה ששמרתם</small><input type="file" accept="image/*" id="fGal"></label>
+    <button type="button" id="bPad"><span class="e" aria-hidden="true">✏️</span>לצייר כאן<small>במסך</small></button>
+    <button type="button" id="bSample"><span class="e" aria-hidden="true">⭐</span>לנסות קודם<small>עם ציור לדוגמה</small></button>
+  </div>
+  <div class="tips"><b>📸 איך מצלמים שיצא הכי יפה:</b>
+    <ul><li>מצלמים מלמעלה, באור יום, בלי צל של הטלפון.</li><li>ציור אחד גדול באמצע הדף, עם קו מתאר סגור מסביב.</li><li>טוש או צבע חזק יוצאים הכי טוב (עיפרון חלש פחות).</li></ul></div>
+  <div class="for-t">👩‍🏫 <b>גננות:</b> מצלמים את הציורים של הילדים ושולחים להורים סרטון שהציור של הילד שלהם רוקד – הורים מתים על זה 💕</div>
+</section>
+
+<!-- לוח ציור -->
+<section class="an-box" id="sPad" hidden aria-labelledby="padT">
+  <h2 id="padT">✏️ מְצַיְּרִים כָּאן <button type="button" class="say-b" data-say="pad" aria-label="להקריא">🔊</button></h2>
+  <p>מציירים דמות אחת גדולה – חיה, ילד, מפלצת, רובוט… עם קו מסביב.</p>
+  <div class="pad">
+    <div class="pal" id="pal" role="group" aria-label="צבעים"></div>
+    <canvas id="padC" width="800" height="800" aria-label="לוח ציור"></canvas>
+    <div class="row" style="margin-top:0">
+      <button type="button" class="chip" id="padSize" aria-label="עובי הקו">🖊️ קו עבה</button>
+      <button type="button" class="chip" id="padUndo">↩️ ביטול</button>
+      <button type="button" class="chip" id="padClear">🗑️ דף חדש</button>
+    </div>
+    <div class="row"><button type="button" class="an-btn big" id="padDone">🪄 סיימתי – להנפיש!</button><button type="button" class="an-btn alt" data-back="1">← חזרה</button></div>
+  </div>
+</section>
+
+<!-- חיתוך -->
+<section class="an-box" id="sCrop" hidden aria-labelledby="cropT">
+  <h2 id="cropT">✂️ אֵיפֹה הַצִּיּוּר? <button type="button" class="say-b" data-say="crop" aria-label="להקריא">🔊</button></h2>
+  <p>גוררים את המסגרת הוורודה מסביב לציור (בלי השולחן). אפשר למשוך מהפינות.</p>
+  <div class="cropwrap"><canvas id="cropC" aria-label="סימון הציור בתמונה"></canvas></div>
+  <div class="row"><button type="button" class="an-btn big" id="cropOk">🪄 זה הציור!</button><button type="button" class="an-btn alt" id="cropAll">כל התמונה</button><button type="button" class="an-btn alt" data-back="1">← תמונה אחרת</button></div>
+</section>
+
+<!-- שלב 2 + 3 + 4: הבמה -->
+<section class="an-box" id="sMain" hidden aria-labelledby="mainT">
+  <h2 id="mainT">✨ <span id="mainTxt">הַצִּיּוּר הִתְעוֹרֵר!</span> <button type="button" class="say-b" data-say="main" aria-label="להקריא">🔊</button></h2>
+  <div class="stagewrap"><canvas id="stage" width="720" height="900" aria-label="הציור המונפש"></canvas><div class="rec" id="recTag" hidden><i></i><span id="recTxt">מצלמים…</span></div><div class="stage-msg" id="stageMsg" hidden></div></div>
+
+  <div class="looks" id="looks" role="group" aria-label="איך הציור נראה">
+    <button type="button" class="chip" data-look="sticker" aria-pressed="true">✨ מדבקה</button>
+    <button type="button" class="chip" data-look="comic">🖍️ קומיקס</button>
+    <button type="button" class="chip" data-look="magic">🌈 קסם</button>
+    <button type="button" class="chip" data-look="orig">🎨 בדיוק כמו שצייר</button>
+  </div>
+  <div class="looks" id="clean" role="group" aria-label="ניקוי הרקע"><span style="font-weight:800;color:#6b5a66;align-self:center">ניקוי הדף:</span>
+    <button type="button" class="chip" data-lv="0">עדין</button><button type="button" class="chip" data-lv="1" aria-pressed="true">רגיל</button><button type="button" class="chip" data-lv="2">חזק</button>
+  </div>
+  <div class="row"><button type="button" class="an-btn alt" id="savePic">🖼️ לשמור את הציור המגניב</button></div>
+
+  <h2 style="margin-top:22px">🎤 מָה הוּא יַעֲשֶׂה? <button type="button" class="say-b" data-say="what" aria-label="להקריא">🔊</button></h2>
+  <button type="button" class="mic" id="mic"><span class="e" aria-hidden="true">🎤</span><span id="micTxt">לוחצים ואומרים מה הוא יעשה</span></button>
+  <p class="heard" id="heard" aria-live="polite"></p>
+  <form class="typebox" id="typeF"><input id="typeI" type="text" placeholder="או כותבים: קופץ בחלל ואז רוקד" aria-label="מה הוא יעשה"><button class="an-btn" type="submit">✨</button></form>
+  <div class="acts" id="acts" role="group" aria-label="תנועות"></div>
+  <div class="scenes" id="scenes" role="group" aria-label="איפה"></div>
+  <div class="plan" id="plan" aria-live="polite"></div>
+  <div class="row"><button type="button" class="chip" id="addMode" aria-pressed="false">➕ להוסיף עוד תנועה (עד 3)</button><button type="button" class="chip" id="music" aria-pressed="true">🎵 מוזיקה</button></div>
+  <div class="names">
+    <label>איך קוראים לדמות? <input id="nmChar" maxlength="18" placeholder="למשל: פִּיצִי"></label>
+    <label>מי צייר/ה? <input id="nmKid" maxlength="18" placeholder="השם של הילד/ה"></label>
+  </div>
+  <div class="row"><button type="button" class="an-btn big" id="makeVid">🎬 לעשות סרטון!</button></div>
+  <div class="row"><button type="button" class="an-btn alt" id="newPic">🖍️ ציור אחר</button></div>
+</section>
+
+<!-- תוצאה -->
+<section class="an-box result" id="sRes" hidden aria-labelledby="resT">
+  <h2 id="resT">🎉 הַסֶּרֶט מוּכָן! <button type="button" class="say-b" data-say="res" aria-label="להקריא">🔊</button></h2>
+  <video id="vid" controls playsinline loop></video>
+  <div class="row">
+    <button type="button" class="an-btn wa share" id="shareVid">💬 לשלוח בוואטסאפ / לשמור</button>
+    <a class="an-btn" id="dlVid" download="booqli-animated.mp4">⬇️ להוריד לטלפון</a>
+  </div>
+  <p class="note2" id="shareNote">בחלון שנפתח בוחרים <b>וואטסאפ</b> ושולחים לסבא וסבתא, או <b>"שמירת סרטון"</b> כדי שיישמר בגלריה.</p>
+  <div class="row"><button type="button" class="an-btn alt" id="again">🔁 עוד סרטון עם תנועות אחרות</button><button type="button" class="an-btn alt" id="newPic2">🖍️ ציור חדש</button></div>
+  <a class="bookbox" target="_blank" rel="noopener" id="bookL">📖 רוצים שהילד יהיה הגיבור של ספר אמיתי? ספר אישי מ-BOOQLI ←</a>
+</section>
+
+<p class="note" style="margin-top:18px;text-align:center">מתאים לגילאי 3–8. השימוש של ילדים באתר באחריות מבוגר.</p>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+  </div>
+</footer>
+<script src="../../common.js"></script>
+<script src="../../catalog.js"></script>
+<script src="animate.js"></script>
+</body>
+</html>

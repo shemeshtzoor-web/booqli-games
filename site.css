@@ -93,4 +93,5 @@ footer.foot p{margin:4px 0}footer.foot .logo{height:40px;margin:0 auto 10px;disp
 .calm-ban b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:19px;color:#8E1F2C;line-height:1.2}
 .calm-ban small{display:block;font-size:14px;color:#6b5a66;font-weight:700}
 .calm-ban .go{margin-inline-start:auto;background:#D4384A;color:#fff;border-radius:999px;padding:8px 14px;font-weight:800;white-space:nowrap;flex-shrink:0}
+.anim-ban{background:linear-gradient(90deg,#FFE3F4,#EDE3FF,#DFF1FF);border-color:#F7C4E3;box-shadow:0 4px 0 #E7CBF0}.anim-ban b{color:#A3216F}.anim-ban .go{background:linear-gradient(90deg,#E0399F,#9B5DE5)}
 @media (max-width:520px){.calm-ban .go{display:none}.calm-ban b{font-size:17px}}
