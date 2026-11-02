@@ -94,6 +94,11 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .rt li::before{content:"✓ ";color:#23784A;font-weight:800}
 .rt .noedit{background:var(--mint);color:var(--sage-deep);border-radius:12px;padding:6px 10px;font-size:16px}
 .rt .noedit b{color:var(--sage-deep)}
+.rt .dprice{font-weight:800;color:var(--magenta);font-size:16.5px}
+.dsum{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;background:var(--pink-soft);border-radius:16px;padding:12px 16px;margin-bottom:4px}
+.dsum span{font-weight:800}
+.dsum b{font:700 28px Fredoka,sans-serif;color:var(--magenta)}
+.dsum small{flex-basis:100%;color:var(--muted);font-weight:700;font-size:14.5px}
 .rt .why{font-size:14.5px;color:#B3264F;font-weight:700}
 .rt input{position:absolute;opacity:0;pointer-events:none}
 
@@ -212,6 +217,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     </label>
     <label class="rt" id="rtDrive"><input type="radio" name="route" value="drive">
       <h3>2️⃣ הזמנה מרוכזת בדרייב 📁</h3>
+      <p class="dprice" id="dPrice"></p>
       <ul><li>מעלים את כל התמונות יחד לתיקייה מסודרת</li><li>אנחנו מבצעים עבורכם את ההזמנה מא׳ ועד ת׳</li><li>זמן עריכה – עד 3 ימי עסקים</li><li>להזמנות מעל 20 ספרים, עד שני נושאים</li></ul>
       <p class="why" id="driveWhy" hidden></p>
     </label>
@@ -249,6 +255,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <!-- 3. דרייב -->
 <section class="step" id="s-drive" data-step="drive" hidden>
   <div class="h"><span class="n">3</span><h2>הזמנה מרוכזת בדרייב 📁<small>חמישה צעדים קצרים, לפי הסדר</small></h2></div>
+  <div class="dsum"><span>💰 המחיר להזמנה בדרייב</span><b id="dTot">—</b><small id="dPer"></small></div>
 
   <div class="sub" id="d-terms">
     <h3><span class="ck">1</span>אישור מדיניות ותקנון 🔒</h3>
@@ -448,6 +455,9 @@ function routeUi(){
   $("siteBox").hidden = S.route !== "site"; $("routeNext").hidden = S.route !== "drive";
   $("s-drive").hidden = S.route !== "drive";
   const t = total();
+  $("dPrice").textContent = t ? "💰 מחיר: " + ils(t) + " · " + books() + " ספרים × " + priceFor(S.cover, books()) + " ₪" : "";
+  $("dTot").textContent = t ? ils(t) : "—";
+  $("dPer").textContent = t ? books() + " ספרים × " + priceFor(S.cover, books()) + " ₪ · " + COVER[S.cover] + " · ללא הנחת 5% (ההנחה רק בהזמנה עצמאית באתר)" : "";
   $("c5a").textContent = t ? ils(t) : "—"; $("c5b").textContent = t ? "−" + ils(t * DISCOUNT) : "—"; $("c5c").textContent = t ? ils(t * (1 - DISCOUNT)) : "—";
   S.done.route = !!S.route; if (S.route === "site") S.done.topic = true; else if (!S.topics.length) S.done.topic = false;
   $("pickFirst").hidden = !(S.route === "drive" && !S.topics.length);

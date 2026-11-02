@@ -1142,7 +1142,7 @@ function calc(){
   document.getElementById("goSiteSm").textContent = p ? "5% הנחה: " + ils(Math.round(books * p * 0.95)) + " במקום " + ils(books * p) : "5% הנחה · מתאים לכל כמות";
   const dOk = books >= UP_FROM;
   gd.classList.toggle("off", !dOk); gd.setAttribute("aria-disabled", String(!dOk));
-  document.getElementById("goDriveSm").textContent = dOk ? "אנחנו עושים הכל בשבילכם · עד 2 נושאים" : "להזמנות של מעל 20 ספרים";
+  document.getElementById("goDriveSm").textContent = dOk ? (p ? "מחיר: " + ils(books * p) + " · " : "") + "אנחנו עושים הכל בשבילכם" : "להזמנות של מעל 20 ספרים";
 }
 /* המחירון המלא – נבנה מאותו TIERS */
 document.getElementById("ptBody").innerHTML = TIERS.map((r, i) => {
