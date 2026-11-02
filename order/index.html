@@ -79,6 +79,8 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .bk .acts{display:flex;gap:6px;flex-wrap:wrap}
 .bk .rd{flex:1;text-align:center;text-decoration:none;font-weight:800;font-size:14.5px;border-radius:999px;padding:7px 8px;background:var(--mint);color:var(--sage-deep)}
 .bk .rd.soon{opacity:.6;pointer-events:none}
+.bk button.im{border:0;padding:0;cursor:pointer;display:block;width:100%}
+.bk button.rd{border:0;cursor:pointer;font-family:inherit}
 .bk label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:14.5px;border-radius:999px;padding:7px 8px;background:var(--pink-soft);color:var(--magenta);cursor:pointer}
 .bk input{accent-color:var(--pink-btn);width:18px;height:18px}
 .picked{margin-top:12px;font-weight:800;color:var(--sage-deep)}
@@ -484,6 +486,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 </footer>
 
 <script src="../common.js"></script>
+<script src="books/books.js"></script>
+<script src="books/reader.js"></script>
 <script>
 /* ===================== ההזמנה של הגן (order/) =====================
    ההיגיון: העמוד = המפה והסיכום של הגן. כל שלב נגמר בלחיצה ששולחת לשמש וואטסאפ מוכן (השיחה עצמה – בוואטסאפ),
@@ -498,15 +502,8 @@ const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83]
 const STAPLE = { p:50, from:20 };
 const COVER = { staple:"כריכה רכה סיכות", soft:"כריכה רכה (פיג'מה)", hard:"כריכה קשה פרימיום" };
 const SHIP = 40, DRIVE_FROM = 21, DRIVE_MAX_TOPICS = 2, DISCOUNT = 0.05, DED_MAX = 350;
-/* הספרים. pdf: קבצים בתיקייה order/books/ – [תווית, קובץ]. ספר בלי pdf מופיע עם "בקרוב". */
-const BOOKS = [
-  { id:"birthday", name:"ילד/ת יום הולדת", d:"היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה.", img:"https://static.wixstatic.com/media/a56db3_4d9c35abdbff4706bb722205187e5621~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/b.png", pdf:[["📖 גרסת בת","birthday-girl.pdf"],["📖 גרסת בן","birthday-boy.pdf"]], ded:"birthday" },
-  { id:"hugs", name:"חיבוקים", d:"המעשים הטובים וכל החיבוקים האוהבים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_6adc566e4dd145d3b58a28f4a66417d0~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/h.png", pdf:[] },
-  { id:"superhero", name:"גיבור/ת על!", d:"גיבור/ה שבוחר/ת במעשים טובים. לסוף שנה.", img:"https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/s.png", pdf:[] },
-  { id:"first", name:"הספר הראשון שלי", d:"לקטנטנים בגילאי 6 חודשים עד שנתיים.", img:"https://static.wixstatic.com/media/a56db3_8cd8bb318ff74385b4052169c6a9748f~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/f.png", pdf:[] },
-  { id:"class1", name:"עולה לכיתה א'", d:"השאלות והחששות לקראת העלייה לכיתה א׳.", img:"https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/c.png", pdf:[] },
-  { id:"kinder", name:"הולך/ת לגן", d:"היום הראשון בגן, עם חיות נחמדות שנותנות טיפים.", img:"https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,enc_avif,quality_auto/k.png", pdf:[] }
-];
+/* הספרים – מ-order/books/books.js (משותף לעמוד הגנים). קריאה בתוך העמוד: bqRead (order/books/reader.js) */
+const BOOKS = window.BQ_BOOKS || [];
 /* מחולל הקדשות – בלי AI ובלי עלות. {sig} = החתימה (למשל "גן רימון"). יום הולדת בחרוזים = הנוסח של שמש (2.11.2026).
    כל נוסח בשתי גרסאות: b לבנים, g לבנות. בלי שם הילד – הכותרת "הקדשה מכל הלב ל..." מודפסת לבד. */
 const OCC = { birthday:"יום הולדת", year:"סוף שנה", class1:"עולים לכיתה א'", general:"מתנה מהגן (כללי)" };
@@ -534,7 +531,7 @@ const DEDS = {
              g: "ילדה אהובה ומתוקה 💗\nהספר הזה נוצר במיוחד בשבילך,\nכי את הגיבורה של הסיפור – ושל הגן שלנו.\nשתמיד תמשיכי לחלום, לשאול ולגלות,\nותדעי כמה את אהובה.\nבאהבה,\n{sig}" }
   }
 };
-const BOOK_OCC = { birthday:"birthday", class1:"class1", hugs:"year", superhero:"year", kinder:"year", first:"general" };
+const BOOK_OCC = Object.fromEntries(BOOKS.map(b => [b.id, b.occ || "general"]));
 const STEPS = [["books","1 · הספרים"],["route","2 · מסלול"],["drive","3 · דרייב"],["approve","4 · אישור הדפסה"]];
 const DRIVE_SUBS = [["what","d-what"],["terms","d-terms"],["photos","d-photos"],["folder","d-folder"],["ded","d-ded"],["pay","d-pay"]];
 
@@ -606,11 +603,9 @@ $("fKids").value = S.kids; $("fPer").value = S.per; $("fCover").value = S.cover;
 }));
 
 /* ---- ספרים (קריאה) ---- */
-$("books").innerHTML = BOOKS.map(b => `<div class="bk${b.pdf.length ? " has" : ""}"><div class="im"><img src="${b.img}" alt="${b.name}" width="375" height="375" loading="lazy"></div>
-  <div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="acts">${b.pdf.length
-    ? b.pdf.map(f => `<a class="rd" href="books/${f[1]}" target="_blank" rel="noopener" data-book="${b.id}">${f[0]}</a>`).join("")
-    : `<span class="rd soon">📖 בקרוב</span>`}</div></div></div>`).join("");
-$("books").addEventListener("click", e => { const a = e.target.closest("a[data-book]"); if (!a) return; mark("books"); if (window.siteEvent) siteEvent("click", "order_read_" + a.dataset.book); });
+$("books").innerHTML = BOOKS.map(b => `<div class="bk has"><button type="button" class="im" data-read="${b.id}" data-v="0" aria-label="לקרוא את ${b.name}"><img src="${bqCover(b)}" alt="${b.name}" width="375" height="375" loading="lazy"></button>
+  <div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="acts">${b.v.map((v, i) => `<button type="button" class="rd" data-read="${b.id}" data-v="${i}">📖 ${v[0]}</button>`).join("")}</div></div></div>`).join("");
+$("books").addEventListener("click", e => { const a = e.target.closest("[data-read]"); if (!a) return; bqRead(a.dataset.read, +a.dataset.v); mark("books"); });
 
 /* ---- מסלול ---- */
 function driveBlock(){

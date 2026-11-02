@@ -132,6 +132,13 @@ section{margin-top:64px}
 .book .go{font-weight:800;color:var(--pink-btn);font-size:16px}
 .more{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
 
+.book{cursor:default}
+.book .img{cursor:pointer}
+.book .reads{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.book .reads button{flex:1;border:0;background:var(--pink-soft);color:var(--magenta);font:800 15px Assistant,sans-serif;border-radius:999px;padding:7px 10px;cursor:pointer}
+.book .reads button:hover{background:var(--pink-btn);color:#fff}
+.more-h{text-align:center;font-size:22px;margin:26px 0 12px;color:var(--sage-deep)}
+.more-books .book .img{aspect-ratio:1}
 /* סרטונים */
 .vid{position:relative;border-radius:22px;overflow:hidden;background:#1d2b27;box-shadow:0 10px 30px rgba(43,21,38,.18)}
 .vid video{display:block;width:100%;height:auto;background:#1d2b27}
@@ -305,8 +312,8 @@ section{margin-top:64px}
 .order .total b{color:var(--magenta);font-size:19px}
 .order .date{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
 
-.voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.voice{background:#fff;border-radius:22px;padding:20px 18px 16px;box-shadow:0 6px 22px rgba(78,133,118,.12);position:relative;display:flex;flex-direction:column;gap:10px}
+.voices{columns:3 280px;column-gap:14px}
+.voice{break-inside:avoid;margin:0 0 14px;background:#fff;border-radius:22px;padding:20px 18px 16px;box-shadow:0 6px 22px rgba(78,133,118,.12);position:relative;display:flex;flex-direction:column;gap:10px}
 .voice::before{content:"”";position:absolute;top:-6px;right:14px;font:700 64px Fredoka,serif;color:var(--pink-soft);line-height:1}
 .voice q{quotes:none;font-size:17px;line-height:1.6;position:relative}
 .voice .by{margin-top:auto;font-weight:800;color:var(--sage-deep);font-size:15px}
@@ -314,7 +321,10 @@ section{margin-top:64px}
 .ganlist{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .ganlist li{background:#fff;border:1.5px solid var(--mint-2);border-radius:999px;padding:7px 14px;font-weight:800;font-size:16px;box-shadow:0 2px 8px rgba(78,133,118,.08)}
 .ganlist li span{font-weight:600;color:var(--muted)}
-@media (max-width:780px){.voices{grid-template-columns:minmax(0,1fr)}}
+.voice .src{font-size:13px;color:var(--muted);font-weight:700}
+.vphotos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:10px}
+.vphotos img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:16px;display:block;box-shadow:0 4px 14px rgba(78,133,118,.15);background:var(--mint)}
+@media (max-width:780px){.vphotos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* תמונות מההורים */
 .real{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .real figure{margin:0;background:#fff;border-radius:20px;padding:8px 8px 12px;box-shadow:0 6px 20px rgba(78,133,118,.13);transform:rotate(-1.5deg)}
@@ -570,33 +580,34 @@ section{margin-top:64px}
     <p>ששת הספרים האהובים ביותר לגני ילדים</p>
   </div>
   <div class="books">
-    <a class="book" href="https://www.booqli.ai/he/view-book/%D7%99%D7%9C%D7%93%D7%AA-%D7%99%D7%95%D7%9D-%D7%94%D7%95%D7%9C%D7%93%D7%AA-%D7%91%D7%A0%D7%95%D7%AA?ref=girls-hebrew" data-ev="book_birthday">
+    <div class="book" data-book="birthday" data-ev="book_birthday">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_4d9c35abdbff4706bb722205187e5621~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Birthday%20he%20girls.png" alt="ילד/ת יום הולדת" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">🎂 ימי הולדת</span><span class="gm">🎮 כולל משחק אישי</span><h3>ילד/ה יום הולדת</h3><p>ספר שמתאר את היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה. פופולרי למתנות ימי הולדת.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
-    <a class="book" href="https://www.booqli.ai/he/view-book/%D7%97%D7%99%D7%91%D7%95%D7%A7%D7%99%D7%9D?ref=boys-hebrew" data-ev="book_hugs">
+      <div class="t"><span class="tag">🎂 ימי הולדת</span><span class="gm">🎮 כולל משחק אישי</span><h3>ילד/ה יום הולדת</h3><p>ספר שמתאר את היום המיוחד של ילד/ת יום ההולדת, מהבוקר ועד השינה. פופולרי למתנות ימי הולדת.</p><div class="reads"></div></div>
+    </div>
+    <div class="book" data-book="hugs" data-ev="book_hugs">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_6adc566e4dd145d3b58a28f4a66417d0~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Hugs%20he%20boys.png" alt="חיבוקים" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">🎓 סוף שנה</span><h3>חיבוקים</h3><p>ספר מתוק שמתאר את המעשים הטובים של הילד ואת כל החיבוקים האוהבים שהוא נותן. פופולרי למתנות סוף שנה.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
-    <a class="book" href="https://www.booqli.ai/he/view-book/%D7%92%D7%99%D7%91%D7%95%D7%A8-%D7%A2%D7%9C?ref=boys-hebrew" data-ev="book_super">
+      <div class="t"><span class="tag">🎓 סוף שנה</span><h3>חיבוקים</h3><p>ספר מתוק שמתאר את המעשים הטובים של הילד ואת כל החיבוקים האוהבים שהוא נותן. פופולרי למתנות סוף שנה.</p><div class="reads"></div></div>
+    </div>
+    <div class="book" data-book="superhero" data-ev="book_super">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_34666a03226746a1a2b043ec2f1d582e~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Super%20he%20boys.png" alt="גיבור/ת על" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">🎓 סוף שנה</span><span class="gm">🎮 כולל משחק אישי</span><h3>גיבור/ת על!</h3><p>ספר על גיבור/ה שבוחר/ת במעשים טובים, כדי להפוך את העולם למקום טוב יותר. פופולרי למתנות סוף שנה.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
-    <a class="book" href="https://www.booqli.ai/he/view-book/%D7%94%D7%A1%D7%A4%D7%A8-%D7%94%D7%A8%D7%90%D7%A9%D7%95%D7%9F-%D7%A9%D7%9C%D7%99?ref=girls-hebrew" data-ev="book_first">
+      <div class="t"><span class="tag">🎓 סוף שנה</span><span class="gm">🎮 כולל משחק אישי</span><h3>גיבור/ת על!</h3><p>ספר על גיבור/ה שבוחר/ת במעשים טובים, כדי להפוך את העולם למקום טוב יותר. פופולרי למתנות סוף שנה.</p><div class="reads"></div></div>
+    </div>
+    <div class="book" data-book="first" data-ev="book_first">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_8cd8bb318ff74385b4052169c6a9748f~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/first%20book%20girl.png" alt="הספר הראשון שלי" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">👶 גילאי 6 חודשים–שנתיים</span><h3>הספר הראשון שלי</h3><p>ספר פשוט ועדין לקטנטנים בגילאי 6 חודשים עד שנתיים, עם מילים קלות ופשוטות. פופולרי למתנות ימי הולדת וסוף שנה.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
-    <a class="book" href="https://www.booqli.ai/he/view-book/%D7%A9%D7%9C%D7%95%D7%9D-%D7%9B%D7%99%D7%AA%D7%94-%D7%90?ref=girls-hebrew" data-ev="book_class1">
+      <div class="t"><span class="tag">👶 גילאי 6 חודשים–שנתיים</span><h3>הספר הראשון שלי</h3><p>ספר פשוט ועדין לקטנטנים בגילאי 6 חודשים עד שנתיים, עם מילים קלות ופשוטות. פופולרי למתנות ימי הולדת וסוף שנה.</p><div class="reads"></div></div>
+    </div>
+    <div class="book" data-book="class1" data-ev="book_class1">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_018fa7b1be3245749f46e6e6e189cb89~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/class%20he%20girls.png" alt="עולה לכיתה א'" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">🎒 בוגרי הגן</span><h3>עולה לכיתה א'</h3><p>סיפור מרגש שעוסק בשאלות ובחששות שמעסיקים ילדים לקראת העלייה לכיתה א׳. מתאים במיוחד לילדים העולים לכיתה א׳.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
-    <a class="book" href="https://www.booqli.ai/he/view-book/kindergarten-boys?ref=boys-hebrew" data-ev="book_kinder">
+      <div class="t"><span class="tag">🎒 בוגרי הגן</span><h3>עולה לכיתה א'</h3><p>סיפור מרגש שעוסק בשאלות ובחששות שמעסיקים ילדים לקראת העלייה לכיתה א׳. מתאים במיוחד לילדים העולים לכיתה א׳.</p><div class="reads"></div></div>
+    </div>
+    <div class="book" data-book="kinder" data-ev="book_kinder">
       <div class="img"><img src="https://static.wixstatic.com/media/a56db3_8d2d0533a17c486ab443479022b30a9b~mv2.png/v1/fill/w_375,h_375,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kinder%20he%20boys.png" alt="הולך/ת לגן" width="375" height="375" loading="lazy"></div>
-      <div class="t"><span class="tag">🎓 סוף שנה</span><h3>הולך/ת לגן</h3><p>ספר שמתאר את היום הראשון בגן, ובו חיות נחמדות שמלוות את הילד ונותנות לו טיפים בדרך. פופולרי למתנות סוף שנה.</p><span class="go">לצפייה בספר ←</span></div>
-    </a>
+      <div class="t"><span class="tag">🎓 סוף שנה</span><h3>הולך/ת לגן</h3><p>ספר שמתאר את היום הראשון בגן, ובו חיות נחמדות שמלוות את הילד ונותנות לו טיפים בדרך. פופולרי למתנות סוף שנה.</p><div class="reads"></div></div>
+    </div>
   </div>
-  <div class="more">
-    <a class="btn btn-main" href="../order/#s-topic" data-ev="more_books">📚 לכל הספרים – בוחרים ומתחילים</a>
+  <h3 class="more-h">📚 ועוד ספרים שאפשר להזמין לגן</h3>
+  <div class="books more-books" id="moreBooks"></div>
+  <div class="more"><a class="btn btn-main" href="../order/#s-books" data-ev="more_books">🚀 בוחרים ומתחילים להזמין</a>
   </div>
 </section>
 
@@ -631,10 +642,11 @@ section{margin-top:64px}
 <section id="voices" hidden>
   <div class="sec-h">
     <span class="eyebrow">💬 מה גננות כותבות לנו</span>
-    <h2>ציטוטים אמיתיים מהוואטסאפ</h2>
-    <p>מילים של גננות ושל ועדי הורים, באישורן. השמות מקוצרים.</p>
+    <h2>מה כותבים לנו אחרי שהספרים מגיעים</h2>
+    <p>ציטוטים אמיתיים מוואטסאפ, מפייסבוק ומאינסטגרם – בעילום שם, באישור הכותבות. בתמונות טשטשנו את הפנים של הילדים.</p>
   </div>
   <div class="voices" id="voiceList"></div>
+  <div class="vphotos" id="vPhotos"></div>
 </section>
 
 <section id="ganim">
@@ -948,6 +960,8 @@ section{margin-top:64px}
 </div>
 
 <script src="../common.js"></script>
+<script src="../order/books/books.js"></script>
+<script src="../order/books/reader.js"></script>
 <script>
 /* ===== 18 הנקודות במדריך ===== */
 const CHECK = [
@@ -1189,11 +1203,44 @@ document.getElementById("goDriveBtn").addEventListener("click", () => { if (wind
 calc();
 
 
+
+/* ===== קריאת הספרים בתוך העמוד (order/books/reader.js) ===== */
+document.querySelectorAll(".book[data-book]").forEach(card => {
+  const b = (window.BQ_BOOKS || []).find(x => x.id === card.dataset.book); if (!b) return;
+  card.querySelector(".reads").innerHTML = b.v.map((v, i) => `<button type="button" data-v="${i}">📖 לקרוא · ${v[0]}</button>`).join("");
+});
+document.getElementById("moreBooks").innerHTML = (window.BQ_BOOKS || []).filter(b => !b.gan).map(b =>
+  `<div class="book" data-book="${b.id}"><div class="img"><img src="${bqCover(b)}" alt="${b.name}" width="375" height="375" loading="lazy"></div><div class="t"><h3>${b.name}</h3><p>${b.d}</p><div class="reads">${b.v.map((v, i) => `<button type="button" data-v="${i}">📖 לקרוא · ${v[0]}</button>`).join("")}</div></div></div>`).join("");
+document.addEventListener("click", e => {
+  const card = e.target.closest(".book[data-book]"); if (!card) return;
+  const btn = e.target.closest("button[data-v]"), onImg = e.target.closest(".img");
+  if (btn || onImg) bqRead(card.dataset.book, btn ? +btn.dataset.v : 0);
+});
+
 /* ===== ציטוטים אמיתיים (רק באישור, שמות מקוצרים) – הקטע מוצג רק כשיש לפחות ציטוט אחד =====
    {q:"הציטוט", by:"א.ב", role:"גננת / ועד הורים", where:"עיר (לא חובה)"} */
-const VOICES = [];
+const VOICES = [
+  {q:"לא רק ממליצה, ממליצה מאוד מאוד, בחום!!! קודם כל השירות שהוא מעל ומעבר למושלם! יחס כל כך אישי וחם, שבעיניי זה לא פחות חשוב מההזמנה עצמה. כל התנהלות הקנייה, המשלוח והמענה היו מדהימים!", by:"אמא", src:"פייסבוק"},
+  {q:"תקשיבו, המתנות המהממות ברמות אחרות!!!! אמאלה · הספר נראה מדהים, רעיון מהמם · המתנה מהממת ומיוחדת, תודה על המחשבה היצירתית, הביצוע והמקוריות · ממש מתנה מיוחדת · וואו איזו מתנה מקורית ומהממת", by:"תגובות של הורים בגן", src:"הועבר על ידי הוועד"},
+  {q:"כל הספרים הגיעו וזה מושלם ברמה שאין לי מילים לתאר אפילו מה זה עשה לי בלב! 😍 גם הכריכה הרכה להיט וגם הקשיחה, וואוו!!! והשירות וההתנהלות מולך זה חתיכת בונוס. תודה על הכל.", by:"לקוחה", src:"וואטסאפ"},
+  {q:"הייי, קיבלנו את הספר 🤗 הספר מהממםםם!! והילדה בעננים!! מה שמדהים, שהסיפור ממש נתן לילדה מוטיבציה לעזור לכולם כמו הפיה. כל רגע היא רצה לאחים הקטנים שלה ואומרת: “אני פיה, אני יעזור לך” 🤗❤️", by:"אמא", src:"וואטסאפ"},
+  {q:"הזמנתי לבת שלי ספר ליום הולדת. ההזמנה הייתה מוכנה תוך יומיים, המענה בוואטסאפ היה אדיב וזמין.. והספר? צבעוני, מזמין, מהמם ביותר... הבת שלי התרגשה מאוד... תודה", by:"אמא", src:"פייסבוק"},
+  {q:"אמאלההה, יאאאא שלמות.. אז ככה, כשהספר יגיע הגננת תדאג להקריא אותו לילדי הגן.. ותתעד לנו כמובן 💗 בנוסף יעשו לה גם זמן סבא ואמא, וצילומים יפים בספרייה הציבורית.", by:"אמא", src:"וואטסאפ"},
+  {q:"מה זו ההשקעה הזו?! ממליצה ממש! יחס חם ואישי, הספר הגיע עם שליח עד הבית. כמה כיף ואיזו איכות מדהימה יש לתמונות ולספר. תודה תודה 💖", by:"לקוחה", src:"פייסבוק"},
+  {q:"הורדתי כרגע את הספרים והחיוך לא יורד לי מהפנים ❤️ זה כל כך מרגש לראות את ההשקעה והמחשבה מאחורי היצירות היפות האלה. אני בטוחה שברגע שזה יגיע הבנות שלי יאהבו וישמחו ממש! מודה על השירות המהמם, המהיר והנגיש לכולם ❤️", by:"אמא", src:"וואטסאפ"},
+  {q:"הזמנתי שלושה ספרים והם מהממים! איכות ההדפסה, השירות והמהירות – יוצאי דופן. תודה רבה 🙏", by:"לקוחה", src:"פייסבוק"},
+  {q:"אתמול הגיעו הספרים, יצא מדהיםםם. רציתי להודות לך על הכל – על הסבלנות והיחס המדהים. אחרי החג אצלם סרטון של הנכדים כשהם יקבלו את הספרים ואשלח לך.", by:"סבתא", src:"וואטסאפ"},
+  {q:"הזמנתי לנכדים שלי. הספר של הנכדה יצא לא פחות ממושלם!!! קיבלתי יחס מדהים, ממליצה בחום להזמין ולהתרגש כמוני.", by:"סבתא", src:"פייסבוק"},
+  {q:"ממליצה מאוד!! שירות מעל המצופה! הגיע ספר מהמם ואיכותי ברמות. (לא ממומן)", by:"לקוחה", src:"פייסבוק"},
+  {q:"ואוו! פשוט מדהים. אכתוב פוסט ובקבוצות ❤️ חברה צריכה לשלוח לי תמונה של הבן שלה ואזמין 🙏 זה פשע שלא מכירים אותך.", by:"לקוחה", src:"וואטסאפ"},
+  {q:"תודה רבה 💜 הבנות פה באורות 🤩🤩", by:"אמא", src:"וואטסאפ"},
+  {q:"שזה מושלם ברמות והילדים הולכים לעוף על זה!!!! 😍", by:"אמא", src:"אינסטגרם"}
+];
+/* תמונות מהלקוחות – הפנים של הילדים (והשמות שבספר) מטושטשים. הקבצים: kindergartens/voices/ */
+const VPHOTOS = ["1498c1d9","5712c386","f39f0d3d","9999c2e1","c3768b1d","279640a4","86623af2","e9954eb7","bea95695","e715024b"];
 if (VOICES.length) {
-  document.getElementById("voiceList").innerHTML = VOICES.map(v => `<figure class="voice"><q>${v.q}</q><figcaption class="by">${v.by}${v.role ? ` <span>· ${v.role}${v.where ? ", " + v.where : ""}</span>` : ""}</figcaption></figure>`).join("");
+  document.getElementById("voiceList").innerHTML = VOICES.map(v => `<figure class="voice"><q>${v.q}</q><figcaption class="by">${v.by} <span class="src">· ${v.src}</span></figcaption></figure>`).join("");
+  document.getElementById("vPhotos").innerHTML = VPHOTOS.map(id => `<img src="voices/${id}.webp" alt="ילד/ה עם ספר BOOQLI (הפנים מטושטשים)" loading="lazy" width="675" height="900">`).join("");
   document.getElementById("voices").hidden = false;
 }
 /* ===== גנים שהזמינו (באישור הגנים: שם + עיר בלבד, בלי כתובות) ===== */
