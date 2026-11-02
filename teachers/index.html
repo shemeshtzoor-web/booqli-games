@@ -21,6 +21,23 @@
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
 <link rel="preload" href="../common.js" as="script">
+<style>
+.bday-mega{margin-top:16px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;text-decoration:none;color:#fff;background:linear-gradient(135deg,#C33B79 0%,#E0399F 55%,#FF56C2 100%);border-radius:32px;padding:30px 30px 26px;box-shadow:0 14px 34px rgba(163,33,111,.32);position:relative;overflow:hidden;min-height:360px}
+.bday-mega::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.35) 4px,transparent 5px),radial-gradient(rgba(255,243,207,.5) 3px,transparent 4px);background-size:120px 120px,90px 90px;background-position:10px 20px,50px 60px;pointer-events:none}
+.bday-mega>*{position:relative}
+.bday-mega small{display:inline-block;background:#fff;color:#C13671;font-weight:800;border-radius:999px;padding:4px 14px;font-size:14px}
+.bday-mega h2{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(34px,5.6vw,58px);line-height:1.05;margin:10px 0 6px;color:#fff}
+.bday-mega h2 span{display:block;color:#FFF3CF}
+.bday-mega p{font-size:18px;margin:0 0 12px;line-height:1.45}
+.bday-mega ul{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-wrap:wrap;gap:8px}
+.bday-mega li{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.55);border-radius:999px;padding:5px 12px;font-weight:800;font-size:14.5px}
+.bday-mega .go{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#C13671;font-weight:800;font-size:19px;border-radius:999px;padding:12px 24px;box-shadow:0 5px 0 #A3216F}
+.bday-mega .art{position:relative;height:330px}
+.bday-mega .art img{position:absolute;border-radius:24px;border:8px solid #fff;object-fit:cover;object-position:center 15%;box-shadow:0 12px 26px rgba(0,0,0,.22);width:56%;aspect-ratio:3/4}
+.bday-mega .art .a{right:0;top:0}.bday-mega .art .b{left:0;top:36px}
+.bday-mega .art .cov{border:0;box-shadow:none;object-fit:contain;width:38%;aspect-ratio:auto;left:31%;top:auto;bottom:-26px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.35))}
+@media (max-width:760px){.bday-mega{grid-template-columns:1fr;padding:22px 18px;text-align:center}.bday-mega .art{height:270px;max-width:380px;width:100%;margin:0 auto;order:-1}.bday-mega ul{justify-content:center}}
+</style>
 </head>
 <body>
 <header class="top">
@@ -33,6 +50,16 @@
 <div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
 <main class="wrap">
 <nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>👩‍🏫 לגננות</span></nav>
+<a class="bday-mega" href="../topics/birthday-party/" id="bdayMega">
+  <div>
+    <small>🎂 חדש לגננות · יום הולדת בגן</small>
+    <h2>החוגג הוא גיבור היום!<span>ספר אישי וקיט חגיגה מוכן</span></h2>
+    <p>ספר יום הולדת אישי לכל חוגג בגן – השם שלו לאורך כל העלילה והוא מאויר בכל עמוד. ובמתנה: קיט דיגיטלי שלם לחגיגה.</p>
+    <ul><li>👑 מערך 45 דק' שמכתיר את החוגג</li><li>📖 הספר המלא להקראה</li><li>🎮 6 משחקים להקרנה</li><li>📸 כרטיס ברכה עם תמונה</li><li>🖨️ כתר ודפים להדפסה</li><li>📲 הודעה מוכנה להורים</li></ul>
+    <span class="go">לחבילה המלאה ←</span>
+  </div>
+  <div class="art" aria-hidden="true"><img class="a" src="../games/birthday/img/b13.jpg" alt=""><img class="b" src="../games/birthday/img/g09.jpg" alt=""><img class="cov" src="../games/birthday/img/f-book.png" alt=""></div>
+</a>
 <section class="zone-hero" style="--zc:#C13671;--zb:#FFE3F4">
   <img src="../img/family/booqli.webp" alt="" width="120" height="124">
   <div><small>booqli Games · לגננות ולצוות</small><h1>לגננות</h1><p>מה עושים מחר בגן? לוח השנה של הגן, מערכים מוכנים שלב אחרי שלב, שגרת הגן, דפים להדפסה והודעות מוכנות להורים.</p><div class="bubble">שָׁלוֹם! אני בּוּקְלִי, ואני אראה לך איפה הכל 💗</div></div>
@@ -88,6 +115,7 @@ sel.onchange = () => { SORT = sel.value; siteEvent("sort", SORT); render(); };
 render();
 
 siteJoinLinks();
+document.getElementById("bdayMega").addEventListener("click", () => siteEvent("promo", "teachers-bday"));
 </script>
 </body>
 </html>
