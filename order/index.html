@@ -222,6 +222,11 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 .cpy{align-self:flex-start;border:0;background:var(--sage-deep);color:#fff;font:800 14.5px Assistant,sans-serif;border-radius:999px;padding:6px 14px;cursor:pointer}
 @media (max-width:620px){.genrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.genrow .w{grid-column:1/-1}}
 @media (max-width:360px){.genrow{grid-template-columns:minmax(0,1fr)}.sitegen{padding:10px 8px}.gen{padding:10px 8px}}
+.lockmsg{margin:8px 0 0;background:#F1EEF3;border-radius:12px;padding:8px 12px;font-weight:800;color:var(--muted);font-size:15.5px}
+.sub.locked h3,.step.locked>.h{opacity:.55}
+.sub.locked h3 .ck::after,.step.locked>.h .n::after{content:"🔒";font-size:12px;margin-inline-start:2px}
+[inert]{opacity:.35;filter:grayscale(.6)}
+.wait-note{margin-top:12px;background:#FFF8E6;border:2px dashed var(--gold);border-radius:14px;padding:10px 14px;font-size:16px;font-weight:700}
 .cnt.long{color:#A86A00;font-weight:800}
 @media (max-width:520px){.addr{grid-template-columns:minmax(0,1fr)}.summ dl{grid-template-columns:minmax(0,1fr)}.summ dt{margin-top:4px}}
 </style>
@@ -408,7 +413,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
       <li>✅ אחרי שכל התמונות עלו – נבדוק שהן תקינות ונמשיך.</li>
     </ul>
     <p class="warn">⚠️ <b>חשוב:</b> לאחר סגירת התיקייה <b>לא ניתן להחליף תמונות או להוסיף ספרים</b>. כל שינוי או הוספה אחר כך ייחשבו כהזמנה חדשה.</p>
-    <div class="row"><a class="btn btn-green" id="folderDone" href="#" target="_blank" rel="noopener">💬 העלינו את כל התמונות</a></div>
+    <p class="wait-note" id="folderWait" hidden>⏳ שמש פותחת לכם תיקייה. הקישור יגיע אליכם בוואטסאפ – <b>פותחים אותו, והשלב ממשיך מכאן</b>.</p>
+    <div class="row" id="folderDoneRow"><a class="btn btn-green" id="folderDone" href="#" target="_blank" rel="noopener">💬 העלינו את כל התמונות</a></div>
   </div>
 
   <div class="sub" id="d-ded">
@@ -430,6 +436,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <p><b>התשלום מתבצע מראש, לפני תחילת עריכת הספרים.</b> לתשלום: <b id="payAmt">—</b>. פרטי התשלום נשלחים אליכם בוואטסאפ.</p>
     <div class="pay"><div><span>🏦</span>העברה בנקאית</div><div><span>📱</span>Bit</div><div><span>📱</span>PayBox</div><div><span>💳</span>אשראי בתיאום</div></div>
     <div class="row"><a class="btn btn-green" id="paidMsg" href="#" target="_blank" rel="noopener">💬 שילמנו – שליחת אישור</a></div>
+    <p class="wait-note" id="payWait" hidden>⏳ מחכים שהתשלום יאושר. שמש תשלח לכם הודעה עם קישור מעודכן – ואז מתחילים לערוך.</p>
+    <p class="saved" id="payOk" hidden>✔️ התשלום התקבל – הספרים בעריכה (עד 3 ימי עסקים) ✏️</p>
   </div>
 
   <div class="sub" id="d-next">
@@ -447,6 +455,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <!-- 4. אישור הדפסה -->
 <section class="step" id="s-approve" data-step="approve">
   <div class="h"><span class="n">4</span><h2>אישור הדפסה ✅<small>כשהספרים מוכנים – בודקים בקצרה ומאשרים</small></h2></div>
+  <p class="lockmsg" id="apLock" hidden></p>
   <p class="lead">כשהספרים מוכנים, שמש שולחת לכם הודעה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
   <div class="mode" id="apMode"><button type="button" data-m="site">הזמנתי באתר</button><button type="button" data-m="drive">הזמנה בדרייב</button></div>
   <div class="row" id="apSite"><a class="btn btn-soft" href="https://www.booqli.ai/he/my-books" target="_blank" rel="noopener">📚 לספרים שלי באתר</a></div>
@@ -548,6 +557,8 @@ S.addr = Object.assign({}, D.a || {}, S.addr || {});
 S.done = Object.assign({}, D.dn || {}, S.done || {});
 if (D.f) S.folder = D.f;
 S.gan = S.gan || D.g || ""; S.name = S.name || D.c || "";
+/* L = מה ששמש אישרה (נכנס רק מהקישור ששמש שולחת): 6 = התשלום התקבל, 7 = הספרים מוכנים לאישור, 8 = בהדפסה */
+S.L = Math.max(S.L || 0, +D.L || 0);
 save();
 const today = () => new Date().toLocaleDateString("he-IL");
 const ils = n => Math.round(n).toLocaleString("he-IL") + " ₪";
@@ -580,7 +591,7 @@ function orderLine(){
 
 /* ---- קישור לשמירה (כולל ההתקדמות) ---- */
 function saveLink(){
-  const d = { g: S.gan, c: S.name, n: S.kids, p: S.per, v: S.cover, r: S.route, sh: S.ship, t: S.topics, a: S.addr, dn: S.done };
+  const d = { L: S.L, g: S.gan, c: S.name, n: S.kids, p: S.per, v: S.cover, r: S.route, sh: S.ship, t: S.topics, a: S.addr, dn: S.done };
   if (D.k) d.k = D.k; if (S.folder) d.f = S.folder;
   return location.origin + location.pathname + "#d=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(d)))));
 }
@@ -713,6 +724,54 @@ $("helpBtn").addEventListener("click", e => {
   if (window.siteEvent) siteEvent("click", "order_help");
 });
 
+/* ---- נעילת שלבים: כל שלב נפתח רק אחרי שהקודם הסתיים. מה שתלוי בשמש נפתח מהקישור שהיא שולחת ---- */
+const SUB_GATE = [
+  ["d-what", () => true, ""],
+  ["d-terms", () => !!S.done.what, "🔒 נפתח אחרי צעד 1 – שליחת הפרטים לשמש"],
+  ["d-photos", () => !!S.done.terms, "🔒 נפתח אחרי החתימה על התקנון"],
+  ["d-folder", () => !!S.done.photos, "🔒 נפתח אחרי צעד 3 – בחירת התמונות"],
+  ["d-ded", () => !!S.done.folder, "🔒 נפתח אחרי שמעלים את כל התמונות לתיקייה"],
+  ["d-pay", () => !!S.done.ded, "🔒 נפתח אחרי שליחת ההקדשות"]
+];
+function lockBox(el, locked, msg){
+  el.classList.toggle("locked", locked);
+  let m = el.querySelector(":scope > .lockmsg.auto");
+  if (locked && msg) { if (!m) { m = document.createElement("p"); m.className = "lockmsg auto"; el.querySelector(":scope > h3, :scope > .h").after(m); } m.textContent = msg; }
+  else if (m) m.remove();
+  [...el.children].forEach(c => { if (!c.matches("h3, .h, .lockmsg")) c.inert = locked; });
+}
+function approveOpen(){
+  if (S.L >= 7) return S.route === "drive" ? !!S.done.pay : true;
+  return false;
+}
+function applyLocks(){
+  SUB_GATE.forEach(([id, ok, msg]) => lockBox($(id), !ok(), msg));
+  /* תיקייה: "העלינו" רק כשיש תיקייה מהקישור של שמש */
+  $("folderDoneRow").hidden = !S.folder; $("folderWait").hidden = !!S.folder || !S.done.folderAsk;
+  $("payWait").hidden = !(S.done.pay && S.L < 6); $("payOk").hidden = !(S.L >= 6);
+  const ap = approveOpen();
+  let msg = "";
+  if (!ap) msg = !S.route ? "🔒 בוחרים קודם מסלול (שלב 2)"
+    : S.route === "drive" && !S.done.pay ? "🔒 נפתח אחרי שמסיימים את שלבי הדרייב והתשלום"
+    : "🔒 השלב ייפתח כששמש תשלח לכם בוואטסאפ שהספרים מוכנים – עם קישור. פותחים את הקישור, והשלב נפתח.";
+  lockBox($("s-approve"), !ap, "");
+  $("apLock").hidden = ap; $("apLock").textContent = msg; $("apLock").inert = false;
+}
+function statusText(){
+  if (S.L >= 8) return "🖨️ בהדפסה";
+  if (S.done.approve) return "✅ אישרתם להדפסה – תודה!";
+  if (S.L >= 7) return "📚 הספרים מוכנים – מחכים לאישור שלכם (שלב 4)";
+  if (S.L >= 6) return "✏️ התשלום התקבל – הספרים בעריכה";
+  if (S.route === "drive") {
+    if (S.done.pay) return "⏳ מחכים לאישור התשלום משמש";
+    if (S.done.folderAsk && !S.folder) return "⏳ מחכים לקישור לתיקייה משמש";
+    const nx = SUB_GATE.find(([id]) => !$(id).classList.contains("ok"));
+    return nx ? "👉 הצעד הבא: " + $(nx[0]).querySelector("h3").textContent.replace(/^\s*\d+/, "").trim() : "";
+  }
+  if (S.route === "site") return S.done.site ? "🛒 ממשיכים באתר. כשהספרים מוכנים – שמש תשלח הודעה" : "👉 ממשיכים להזמנה באתר";
+  return "👉 בוחרים מסלול (שלב 2)";
+}
+
 /* ---- רענון כללי: מחירים, מסלול, סיכום, התקדמות ---- */
 function stepDone(k){
   if (k === "books") return !!(S.done.books || S.route);
@@ -750,9 +809,11 @@ function refresh(){
   $("apSite").hidden = S.apMode !== "site"; $("apDrive").hidden = S.apMode !== "drive"; $("apFolderRow").hidden = !S.folder;
   const all = [...document.querySelectorAll(".apc")].every(c => c.checked);
   $("approveBtn").classList.toggle("btn-green", all); $("approveBtn").classList.toggle("btn-soft", !all); $("approveBtn").setAttribute("aria-disabled", String(!all));
+  applyLocks();
   /* סיכום */
   const ok = (k, label) => S.done[k] ? `<span class="ok">✔️ ${label} ${S.done[k]}</span>` : `<span class="wait">○ עוד לא</span>`;
   const rows = [
+    ["איפה אנחנו", "<b>" + esc(statusText()) + "</b>"],
     ["הגן", (esc(gan()) || "<span class='wait'>מלאו למעלה</span>") + (S.name ? " · " + esc(S.name) : "")],
     ["הזמנה", b + " ספרים · " + COVER[S.cover] + (t ? " · " + ils(t) : "")],
     ["מסלול", S.route === "site" ? "🛒 לבד באתר · עוד 5% הנחה" + (t ? " → " + ils(t * (1 - DISCOUNT)) : "") : S.route === "drive" ? "📁 במרוכז בדרייב" : "<span class='wait'>עוד לא נבחר (שלב 2)</span>"]

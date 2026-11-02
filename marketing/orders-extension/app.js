@@ -109,6 +109,12 @@ const TPL_DEFAULT = [
 💳 אשראי – בתיאום מראש.
 
 אחרי התשלום שלחו לי אישור (או לחצו "שילמנו" בעמוד שלכם), ונתחיל לעבוד! ❤️` },
+  { id: "paid", name: "4.5 · התשלום התקבל – מתחילים לערוך", stage: 6, text:
+`קיבלתי את התשלום, תודה! ✅
+מתחילים לערוך את הספרים של {גן} ✏️ – הם יהיו מוכנים תוך עד 3 ימי עסקים.
+כשהם מוכנים אשלח לכם הודעה עם קישור לאישור ההדפסה.
+
+העמוד שלכם מעודכן: {קישור}` },
   { id: "ready-drive", name: "5 · הספרים מוכנים – דרייב", stage: 7, text:
 `איזה כיף! 🩷 הספרים של {גן} מוכנים לצפייה בתיקייה שלכם!
 {דרייב}
@@ -176,6 +182,7 @@ async function load() {
   GANS = await store.get("gans", []);
   TPL = await store.get("tpl", null) || JSON.parse(JSON.stringify(TPL_DEFAULT));
   TPL_DEFAULT.forEach(d => { if (!TPL.find(t => t.id === d.id)) TPL.push(JSON.parse(JSON.stringify(d))); });
+  const ord = id => { const i = TPL_DEFAULT.findIndex(d => d.id === id); return i < 0 ? 99 : i; }; TPL.sort((x, y) => ord(x.id) - ord(y.id));
   /* 1.0.3: הקישור לתיקייה נשמר בעמוד האישי */
   const fol = TPL.find(t => t.id === "folder");
   if (fol) fol.text = fol.text.replace("כל ההנחיות, ההקדשות והתשלום – בעמוד שלכם: {קישור}", "הקישור לתיקייה נשמר גם בעמוד האישי שלכם, עם כל ההנחיות, ההקדשות והתשלום: {קישור}");
@@ -195,19 +202,20 @@ function calc(g) {
   const n = (+g.kids || 0) * (+g.per || 1), p = priceFor(g.cover, n), t = p * n, sh = g.ship === "pickup" ? 0 : 40;
   return { n, p, t, d5: t * 0.05, a5: t * 0.95, sh, all: t + sh };
 }
-function personalLink(g, stage) {
-  const d = { g: g.name, c: g.contact || "", n: +g.kids || 0, p: +g.per || 1, v: g.cover, k: SET.coupon5 || "", r: g.route || "", sh: g.ship === "pickup" ? "pickup" : "home" };
+/* L = השלב שהגן נמצא בו אצל שמש (מספר ב-STAGES). העמוד של הגן פותח לפיו: 6 = התשלום התקבל (בעריכה), 7 = הספרים מוכנים לאישור */
+function personalLink(g, stage, minL) {
+  const d = { L: Math.max(+g.stage || 0, minL || 0), g: g.name, c: g.contact || "", n: +g.kids || 0, p: +g.per || 1, v: g.cover, k: SET.coupon5 || "", r: g.route || "", sh: g.ship === "pickup" ? "pickup" : "home" };
   if (g.drive) d.f = g.drive;
   if (stage) d.s = stage;
   const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(d))));
   return (SET.base || "https://games.booqli.ai").replace(/\/$/, "") + "/order/#d=" + encodeURIComponent(b64);
 }
-function fill(text, g) {
+function fill(text, g, minL) {
   const c = calc(g);
   const map = {
     "גן": g.name, "איש_קשר": g.contact || "", "ילדים": g.kids, "ספרים": c.n, "כריכה": COVER[g.cover] || "",
     "מחיר_לספר": c.p ? c.p + " ₪" : "", 'סה"כ': c.t ? ils(c.t) : "", "משלוח": g.ship === "pickup" ? "🚗 איסוף עצמי מבית הדפוס – ללא עלות" : "🚚 משלוח עד הבית – 40 ₪", "לתשלום": c.t ? ils(c.all) : "", "הנחה5": c.t ? ils(c.d5) : "", "אחרי_הנחה": c.t ? ils(c.a5) : "",
-    "נושאים": g.topics || "", "קישור": personalLink(g), "קישור_אישור": personalLink(g, "approve"), "דרייב": g.drive || "",
+    "נושאים": g.topics || "", "קישור": personalLink(g, "", minL), "קישור_אישור": personalLink(g, "approve", Math.max(minL || 0, 7)), "דרייב": g.drive || "",
     "קופון5": SET.coupon5 || "", "גנים50": SET.ganim || "", "בנק": SET.bank || "", "ביט": SET.bit || "",
     "סרטון_כריכות": SET.vCovers || "", "סרטון_תמונה": SET.vPhoto || "",
     "עמוד_גנים": (SET.base || "https://games.booqli.ai").replace(/\/$/, "") + "/kindergartens/?utm_source=whatsapp&utm_medium=orders"
@@ -268,7 +276,7 @@ function renderDyn() {
   $("dName").textContent = g.name;
   const st = document.querySelector('[data-f="stage"]'); if (st && +st.value !== g.stage) st.value = g.stage;
   const msgs = TPL.map(t => {
-    const r = fill(t.text, g), sent = g.sent && g.sent[t.id];
+    const r = fill(t.text, g, t.stage), sent = g.sent && g.sent[t.id];
     return `<div class="msg${sent ? " sent" : ""}" data-t="${t.id}"><div class="hd"><b>${esc(t.name)}</b>${sent ? `<small>✔️ נשלח ${esc(sent)}</small>` : ""}</div>
       <textarea>${esc(r.out)}</textarea>${r.missing.length ? `<div class="miss">⚠️ חסר: ${r.missing.map(esc).join(", ")}</div>` : ""}
       <div class="acts"><button class="wa" data-a="send">💬 שליחה בוואטסאפ</button><button class="ghost" data-a="copy">📋 העתקה</button></div></div>`;
