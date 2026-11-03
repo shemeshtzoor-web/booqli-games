@@ -639,6 +639,7 @@ window.SITE.doors = [
 window.SITE.menu = [
   { h: "🧭 ראשי", items: [
     { ic: "🏠", t: "דף הבית", href: "/" },
+    { ic: "🗺️", t: "מפת האתר – כל מה שיש", href: "/map/", hot: true },
     { ic: "🔍", t: "חיפוש בכל התכנים", href: "/library/" },
     { ic: "❤️", t: "המועדפים שלי", href: "/my/" } ] },
   { h: "📅 חגים ועונות", items: [
@@ -688,6 +689,7 @@ function siteDoorsNav(){
     ".bq-doors .mg h4{margin:2px 6px 4px;font-family:Fredoka,Assistant,sans-serif;font-size:16px;color:#4E8576}" +
     ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;text-decoration:none;color:#2B1526;font-weight:700;font-size:15.5px}" +
     ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#fff;box-shadow:0 2px 0 #CDE7DC}" +
+    ".bq-doors .menu a.hot{background:linear-gradient(90deg,#FFE3F4,#E1F0EA);color:#C13671;font-weight:800}" +
     ".bq-doors .menu a .when{margin-inline-start:auto;font-size:12px;font-weight:800;color:#6B2FA3;background:#F1E3FF;border-radius:999px;padding:1px 8px;white-space:nowrap}" +
     ".bq-doors .menu a .when.cl{color:#6b5a66;background:#F2EEF1}" +
     ".bq-doors .s{display:none}" +
@@ -708,7 +710,7 @@ function siteDoorsNav(){
       return '<div class="mg"><h4>' + g.h + '</h4>' + g.items.map(function(x){
         var w = "";
         try { if (x.id && siteIsClosed(x.id)) w = '<span class="when cl">נסגר</span>'; else if (x.id && siteIsSoon(x.id)) { var d = siteOpenDate(x.id); w = '<span class="when">נפתח ' + d.getDate() + "." + (d.getMonth() + 1) + '</span>'; } } catch (e) {}
-        return '<a href="' + x.href + '"' + cur(x.href) + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
+        return '<a href="' + x.href + '"' + cur(x.href) + (x.hot ? ' class="hot"' : '') + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
       }).join("") + '</div>'; }).join("") + '</div>';
   var top = document.querySelector(".bq-nav");
   if (top) top.insertAdjacentElement("afterend", nav); else document.body.insertBefore(nav, document.body.firstChild);
@@ -737,7 +739,7 @@ function siteDoorsNav(){
     l.className = "site-legal";
     l.style.cssText = "margin:0 auto;padding:0 16px 18px;max-width:900px;text-align:center;font-size:13.5px;line-height:1.9";
     var lk = "color:inherit;font-weight:800;text-decoration:underline;display:inline-block;margin:0 5px;white-space:nowrap";
-    l.innerHTML = '<a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
+    l.innerHTML = '<a style="' + lk + '" href="/map/">🗺️ מפת האתר</a> · <a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
       '<a style="' + lk + '" href="https://wa.me/' + SITE.phone + '" target="_blank" rel="noopener">יצירת קשר</a><br>' +
       '<span>games.booqli.ai מופעל על ידי BOOQLI (ח.פ 558577037) והוא חלק מ-<a style="color:inherit;font-weight:800" href="https://www.booqli.ai/he" target="_blank" rel="noopener">booqli.ai</a> · בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
     (f || document.body).appendChild(l);
