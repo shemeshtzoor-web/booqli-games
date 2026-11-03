@@ -33,8 +33,9 @@
     "from": ["🚪", "נכנסו מקישור מסומן (מאיפה)"], "fear-breathe-done": ["🛡️", "פחד: סיימו נשימה"], "fear-book-end": ["🛡️", "פחד: קראו את כל הספר"], "like": ["❤️", "לייקים"]
   };
   const FROM_NAME = n => { const m = n.match(/^facebook_group-comment-t(?:_(.+))?$/); if (m) return "💬 תגובות בפייסבוק (games.booqli.ai/t)" + (m[1] ? " · " + m[1] : "");
-    const [src, med, camp] = n.split("-"); const S = { whatsapp: "💬 וואטסאפ", facebook_group: "📘 קבוצת פייסבוק", facebook: "📘 פייסבוק", instagram: "📷 אינסטגרם", games: "🌐 האתר", booqli_games: "🌐 האתר" };
-    return (S[src] || src) + (med ? " · " + med : "") + (camp ? " · " + camp : ""); };
+    const [src, med, camp, ...rest] = n.split("-"), cont = rest.join("-"); const S = { whatsapp: "💬 וואטסאפ", facebook_group: "📘 קבוצת פייסבוק", facebook: "📘 פייסבוק", instagram: "📷 אינסטגרם", games: "🌐 האתר", booqli_games: "🌐 האתר" };
+    const M = { paid: "ממומן", comment: "תגובה", group: "קבוצה", share: "שיתוף", post: "פוסט", page: "הדף" }, C = { gan: "עמוד הגנים", course: "הקורס" };
+    return (S[src] || src) + (med ? " · " + (M[med] || med) : "") + (camp ? " · " + (C[camp] || camp) : "") + (cont ? " · " + cont : ""); };
   const APP_NAMES = { "installed": "✅ התקינו את האפליקציה", "open": "פתחו את האפליקציה מהמסך הראשי", "offline-ready": "הורידו את משחקי הילדים לבלי אינטרנט", "bar-show": "ראו את חלון ההתקנה", "bar-close": "סגרו את חלון ההתקנה", "send-self": "שלחו לעצמם קישור להתקנה", "share": "שיתפו את האפליקציה" };
   const SECTIONS = { "": "🏠 דף הבית", "kids": "🧒 אזור הילדים", "kids/play": "🎲 חדר המשחקים", "kids/animate": "🪄 מנפישים", "teachers": "👩‍🏫 לגננות", "parents": "👨‍👩‍👧 להורים", "school": "🎒 כיתות", "library": "🔍 כל התכנים", "map": "🗺️ מפת האתר", "my": "❤️ מועדפים", "gifts": "🎁 מתנות וספקיות", "kindergartens": "🏫 עמוד הגנים", "order": "🛒 הזמנה של גן", "book-maker": "📖 הספר שלכם", "course": "✍️ הקורס", "app": "📲 האפליקציה", "privacy": "פרטיות", "terms": "תקנון", "accessibility": "נגישות" };
   const pageName = p => {

@@ -186,7 +186,7 @@ function siteEvent(kind, name){ siteTrack(name || "page", kind); }
   try {
     var q = new URLSearchParams(location.search), src = q.get("utm_source");
     if (!src) return;
-    var key = [src, q.get("utm_medium") || "", q.get("utm_campaign") || ""].join("-").replace(/[^\w\u0590-\u05FF-]+/g, "_").slice(0, 80);
+    var key = [src, q.get("utm_medium") || "", q.get("utm_campaign") || ""].concat(q.get("utm_content") ? [q.get("utm_content")] : []).join("-").replace(/[^\w\u0590-\u05FF-]+/g, "_").slice(0, 80);
     if (sessionStorage.getItem("booqli_from_" + key)) return;
     sessionStorage.setItem("booqli_from_" + key, "1");
     setTimeout(function(){ siteEvent("from", key); }, 1200);

@@ -223,13 +223,16 @@
   }
   function vCamps() {
     const st = LS.get("camps", {});
-    const rows = KIT.campaigns.map(c => { const t = topic(c.topic), s = st[c.n] || c.status;
-      return `<div class="card"><div class="row"><span class="pill ${/^רץ/.test(s) ? "g" : "w"}">${c.n}</span><h3 style="margin:0;flex:1">${t.ic} ${esc(c.name)}</h3><span class="pill">${esc(c.aud)}</span><span class="small mute">${esc(c.kind)}</span></div>
+    const card = c => { const t = topic(c.topic) || { ic: "📣", id: "" }, s = st[c.n] || c.status;
+      return `<div class="card"${/^רץ/.test(s) ? ' style="border:2px solid #17733b"' : ""}><div class="row"><span class="pill ${/^רץ/.test(s) ? "g" : "w"}">${c.n}</span><h3 style="margin:0;flex:1">${t.ic} ${esc(c.name)}</h3><span class="pill">${esc(c.aud)}</span><span class="small mute">${esc(c.kind)}</span></div>
       <p class="small" style="margin:6px 0">${esc(c.note)}</p>
-      <div class="row"><label class="small">מצב: <select data-camp="${c.n}">${[c.status, "רץ", "רץ – לבדוק!", "מושהה", "הסתיים", s].filter((v, i, a) => v && a.indexOf(v) === i).map(o => `<option ${o === s ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>
-      <button class="btn sm o" data-gotopic="${t.id}">הטקסטים והתמונה של המודעה ←</button></div></div>`; }).join("");
-    return `<h1>10 הקמפיינים</h1><p class="mute">4 רצים + 6 חדשים, לפי תאריך העלייה. כל קמפיין 10 ₪ ביום ≈ 300 ₪ בחודש. 10 קמפיינים ≈ 3,000 ₪ בחודש.</p>
-      <div class="flag">💡 עצה: 10 ₪ ביום זה מעט, ופייסבוק לומד לאט עם תקציב קטן. אחרי שבוע – משאירים את 5–6 הזולים ביותר לצפייה בדף, ומעבירים אליהם את התקציב של החלשים.</div>${rows}`;
+      ${c.link ? `<div class="txt" style="max-height:none;direction:ltr;text-align:left;font-size:13px">${esc(c.link)}</div><div class="row">${cbtn(c.link, "📋 להעתיק את הקישור למודעה")}${c.measure ? `<span class="small mute">בדוח: 🚪 ${esc(c.measure)}</span>` : ""}</div>` : ""}
+      <div class="row" style="margin-top:6px"><label class="small">מצב: <select data-camp="${c.n}">${[c.status, "רץ", "רץ – לבדוק!", "מושהה", "בהמתנה", "הסתיים", s].filter((v, i, a) => v && a.indexOf(v) === i).map(o => `<option ${o === s ? "selected" : ""}>${o}</option>`).join("")}</select></label>
+      ${t.id ? `<button class="btn sm o" data-gotopic="${t.id}">הטקסטים והתמונה של המודעה ←</button>` : ""}</div></div>`; };
+    const all = KIT.campaigns, run = all.filter(c => /^רץ/.test(st[c.n] || c.status)), rest = all.filter(c => !/^רץ/.test(st[c.n] || c.status));
+    return `<h1>📣 הקמפיינים בממומן</h1><p class="mute"><b>${run.length} רצים עכשיו.</b> מודדים לפי מה שהם מביאים בסוף (פנייה, הרשמה), לא לפי מחיר לכניסה. את הכניסות מכל מודעה רואים ב"📊 מדידה" ← 🚪.</p>
+      <h2>🟢 רץ עכשיו</h2>${run.map(card).join("") || '<div class="card">אין קמפיין פעיל.</div>'}
+      <details class="card"><summary><b>💤 מושהים ורעיונות לעתיד (${rest.length})</b></summary>${rest.map(card).join("")}</details>`;
   }
   function vGuide() {
     return `<div class="guide">` + (KIT.guide || []).map(s => `<div class="card"><h2 style="margin-top:0">${esc(s.h)}</h2>${s.p ? `<p>${esc(s.p)}</p>` : ""}${s.items ? `<ul>${s.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}</div>`).join("") + `</div>`;
