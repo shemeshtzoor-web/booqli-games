@@ -380,7 +380,7 @@
   }
 
   /* ---------- כלים ---------- */
-  function voiceUi(){ var b = $("voiceBtn"); b.classList.toggle("off", !GM.voice()); b.setAttribute("aria-pressed", GM.voice()); b.title = "הקול של סבאבוקלי" + (GM.voiceName() ? ": " + GM.voiceName() : ""); }
+  function voiceUi(){ var b = $("voiceBtn"); b.classList.toggle("off", !GM.voice()); b.setAttribute("aria-pressed", GM.voice()); b.title = "צלילים"; }
   $("voiceBtn").onclick = function(){ GM.setVoice(!GM.voice()); voiceUi(); };
   $("fullBtn").onclick = function(){
     var st = $("studio");

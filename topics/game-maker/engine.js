@@ -45,11 +45,13 @@ window.GM = (function(){
     return VOICE;
   }
   function voiceName(){ if (!VOICE) pickVoice(); return VOICE ? VOICE.name + (VOICE_MALE ? "" : " (מונמך)") : ""; }
+  // (3.11.2026, שמש) בלי קול: הקול של המכשיר נשמע רע. סבאבוקלי "מדבר" רק בכתב (בועה גדולה). להחזרה: SPEAK = true
+  var SPEAK = false;
   function say(text){
     return new Promise(function(done){
       var t = String(text || "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "").replace(/סבאבוקלי/g, SABA.spoken).trim();
-      var fallback = setTimeout(done, Math.min(9000, 900 + t.length * 75));
-      if (!voiceOn || !t || !window.speechSynthesis) return;
+      var fallback = setTimeout(done, SPEAK && voiceOn ? Math.min(9000, 900 + t.length * 75) : Math.min(3500, 700 + t.length * 40));
+      if (!SPEAK || !voiceOn || !t || !window.speechSynthesis) return;
       try {
         speechSynthesis.cancel();
         var u = new SpeechSynthesisUtterance(t);
