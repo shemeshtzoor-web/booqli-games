@@ -208,7 +208,10 @@
     if (a === "copy") { try { await navigator.clipboard.writeText(window.__bqStatsText || ""); window.BQ_TOAST && window.BQ_TOAST("הסיכום הועתק ✔️"); } catch (e) {} return; }
     if (a === "forget") { if (confirm("למחוק את המפתח מהתוסף?")) { await store.set({}); DATA = null; SETUP = true; window.BQ_RENDER(); } return; }
     if (a === "save") {
-      const token = document.getElementById("cfTok").value.trim(); let account = document.getElementById("cfAcc").value.trim();
+      const raw = document.getElementById("cfTok").value;
+      /* אם הודבק טקסט ארוך (למשל פקודת הבדיקה curl של Cloudflare) – שולפים רק את המפתח */
+      const bm = raw.match(/Bearer\s+([A-Za-z0-9_-]{20,})/), runs = (raw.match(/[A-Za-z0-9_-]{30,}/g) || []).sort((a, b) => Math.abs(a.length - 40) - Math.abs(b.length - 40));
+      const token = bm ? bm[1] : (runs[0] || raw.replace(/[^A-Za-z0-9_-]/g, "")); let account = document.getElementById("cfAcc").value.trim();
       const msg = document.getElementById("cfMsg");
       if (!token) { msg.textContent = "צריך להדביק מפתח 🙂"; return; }
       msg.textContent = "⏳ בודקים את המפתח…";
@@ -221,7 +224,7 @@
         }
         await store.set({ token, account }); SETUP = false; DATA = null; ERR = "";
         await load();
-      } catch (e) { msg.textContent = "😕 " + (e.message || e); }
+      } catch (e) { const t = String(e.message || e); msg.textContent = "😕 " + (/Invalid request headers|Invalid API Token|Authentication error|6003|10000/i.test(t) ? "המפתח לא תקין. מעתיקים רק את המפתח עצמו (שורה אחת, כ-40 אותיות ומספרים) עם כפתור Copy, לא את תיבת ה-curl. (" + t + ")" : t); }
     }
   }
   document.addEventListener("click", e => { const b = e.target.closest("[data-st]"); if (b) { e.stopPropagation(); onClick(b); } }, true);
