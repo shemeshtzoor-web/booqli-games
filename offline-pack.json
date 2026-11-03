@@ -1,6 +1,6 @@
 {
- "version": "c041ff682ca0",
- "bytes": 16340580,
+ "version": "08cee3b56fe7",
+ "bytes": 16705364,
  "fonts": [
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap",
@@ -147,6 +147,7 @@
   "/kids/play/",
   "/kids/play/games.js",
   "/kids/play/games2.js",
+  "/lib/jspdf-2.5.1.umd.min.js",
   "/qrcode.min.js",
   "/site.css",
   "/topics/autumn/",
