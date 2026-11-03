@@ -96,7 +96,7 @@
       var v = GM.clean(inp.value, o.max || 60);
       if (!v) { inp.focus(); return; }
       stopWait();
-      guard(v, o.extra).then(function(ok){ if (ok) o.onSubmit(v, inp); else inp.focus(); });
+      (o.noGuard ? Promise.resolve(true) : guard(v, o.extra)).then(function(ok){ if (ok) o.onSubmit(v, inp); else inp.focus(); });
     };
     btn.onclick = go;
     inp.addEventListener("keydown", function(e){ if (e.key === "Enter") { e.preventDefault(); go(); } });
@@ -162,7 +162,7 @@
       own.innerHTML = '<b aria-hidden="true">📚</b>מה שלמדנו<small>נושא משלנו</small>';
       own.onclick = function(){
         $("tOwn").innerHTML = ""; talk("איזה יופי! על מה למדנו? הגננת תכתוב את הנושא.");
-        $("tOwn").appendChild(inputRow({ label: "הנושא שלנו (למשל: חנוכה, גוף האדם, האות ב׳, החרקים)", ph: "על מה המשחק?", max: 30, btn: "✔️ זה הנושא",
+        $("tOwn").appendChild(inputRow({ label: "הנושא שלנו (למשל: חנוכה, גוף האדם, האות ב׳, החרקים)", ph: "על מה המשחק?", max: 30, btn: "✔️ זה הנושא", noGuard: true,
           onSubmit: function(v){ setTopic({ e: GM.guessEmoji(v, "📚"), n: v, i: -1 }, "איזה נושא מעולה! " + v + "!"); } }));
       };
       tiles.appendChild(own);
