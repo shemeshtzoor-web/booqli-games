@@ -180,6 +180,18 @@ function siteTrack(name, kind){
 /* ספירת פעולות (בלי לדעת מי): הצטרפות לוואטסאפ, מתנה להורים, הזמנת ספר, הצעת מחיר לגן, הדפסה.
    מופיעות בלוח של Cloudflare כעמודים שהכתובת שלהם מכילה event/<סוג>/<מקום> */
 function siteEvent(kind, name){ siteTrack(name || "page", kind); }
+/* (3.11.2026) מאיפה הגיעו: Cloudflare לא שומר את מה שאחרי "?" בכתובת, ולכן קישור עם utm_source לא נספר.
+   כשנכנסים מקישור מסומן – רושמים פעולה event/from/<מקור>-<סוג>-<קמפיין>, פעם אחת בכל ביקור. */
+(function siteFrom(){
+  try {
+    var q = new URLSearchParams(location.search), src = q.get("utm_source");
+    if (!src) return;
+    var key = [src, q.get("utm_medium") || "", q.get("utm_campaign") || ""].join("-").replace(/[^\w\u0590-\u05FF-]+/g, "_").slice(0, 80);
+    if (sessionStorage.getItem("booqli_from_" + key)) return;
+    sessionStorage.setItem("booqli_from_" + key, "1");
+    setTimeout(function(){ siteEvent("from", key); }, 1200);
+  } catch (e) {}
+})();
 /* (2.11.2026) שינוי כתובת מתוך עמוד (למשל אזור הילדים) בלי להתנגש במדידה: אם הכתובת כרגע וירטואלית – מעדכנים את מה שיחזור */
 var siteVirtualState = null;
 function siteSetUrl(url, push, state){

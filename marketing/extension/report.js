@@ -30,8 +30,11 @@
     "save": ["💾", "שמירה"], "filter": ["🔍", "סינון בספרייה"], "sort": ["↕️", "מיון"], "report-error": ["🛠️", "דיווחי טעות"],
     "vacation-parents": ["📅", "לוח חופשות להורים"], "calendar-image": ["📅", "תמונת לוח החופשות"], "kids-popup": ["🧒", "חלון הילדים"],
     "fear-pdf": ["🛡️", "פחד: הורדת PDF"], "fear-card-png": ["🛡️", "פחד: הורדת כרטיס"], "fear-save-offline": ["🛡️", "פחד: שמירה בלי אינטרנט"],
-    "fear-breathe-done": ["🛡️", "פחד: סיימו נשימה"], "fear-book-end": ["🛡️", "פחד: קראו את כל הספר"], "like": ["❤️", "לייקים"]
+    "from": ["🚪", "נכנסו מקישור מסומן (מאיפה)"], "fear-breathe-done": ["🛡️", "פחד: סיימו נשימה"], "fear-book-end": ["🛡️", "פחד: קראו את כל הספר"], "like": ["❤️", "לייקים"]
   };
+  const FROM_NAME = n => { const m = n.match(/^facebook_group-comment-t(?:_(.+))?$/); if (m) return "💬 תגובות בפייסבוק (games.booqli.ai/t)" + (m[1] ? " · " + m[1] : "");
+    const [src, med, camp] = n.split("-"); const S = { whatsapp: "💬 וואטסאפ", facebook_group: "📘 קבוצת פייסבוק", facebook: "📘 פייסבוק", instagram: "📷 אינסטגרם", games: "🌐 האתר", booqli_games: "🌐 האתר" };
+    return (S[src] || src) + (med ? " · " + med : "") + (camp ? " · " + camp : ""); };
   const APP_NAMES = { "installed": "✅ התקינו את האפליקציה", "open": "פתחו את האפליקציה מהמסך הראשי", "offline-ready": "הורידו את משחקי הילדים לבלי אינטרנט", "bar-show": "ראו את חלון ההתקנה", "bar-close": "סגרו את חלון ההתקנה", "send-self": "שלחו לעצמם קישור להתקנה", "share": "שיתפו את האפליקציה" };
   const SECTIONS = { "": "🏠 דף הבית", "kids": "🧒 אזור הילדים", "kids/play": "🎲 חדר המשחקים", "kids/animate": "🪄 מנפישים", "teachers": "👩‍🏫 לגננות", "parents": "👨‍👩‍👧 להורים", "school": "🎒 כיתות", "library": "🔍 כל התכנים", "map": "🗺️ מפת האתר", "my": "❤️ מועדפים", "gifts": "🎁 מתנות וספקיות", "kindergartens": "🏫 עמוד הגנים", "order": "🛒 הזמנה של גן", "book-maker": "📖 הספר שלכם", "course": "✍️ הקורס", "app": "📲 האפליקציה", "privacy": "פרטיות", "terms": "תקנון", "accessibility": "נגישות" };
   const pageName = p => {
@@ -206,8 +209,8 @@
     h += `<h2>👆 כל הפעולות באתר (${kinds.length} סוגים)</h2><p class="mute small">לוחצים על שורה כדי לראות את הפירוט.</p>`;
     h += kinds.map(([k, o]) => {
       const [ic, nm] = KINDS[k] || ["•", k];
-      const names = top(o.names, 40).map(([n, v]) => [esc(k === "app" ? (APP_NAMES[n] || n) : n), v]);
-      return `<details class="card st-ev"${k === "kid-search" || k === "app" ? " open" : ""}><summary><span>${ic}</span><b>${esc(nm)}</b><span class="pill">${fmtN(o.total)}</span></summary>${bars(names, names[0] ? names[0][1] : 0)}</details>`;
+      const names = top(o.names, 40).map(([n, v]) => [esc(k === "app" ? (APP_NAMES[n] || n) : k === "from" ? FROM_NAME(n) : n), v]);
+      return `<details class="card st-ev"${k === "kid-search" || k === "app" || k === "from" ? " open" : ""}><summary><span>${ic}</span><b>${esc(nm)}</b><span class="pill">${fmtN(o.total)}</span></summary>${bars(names, names[0] ? names[0][1] : 0)}</details>`;
     }).join("") || `<div class="card">עוד אין פעולות בתקופה הזו.</div>`;
     h += `<p class="small mute">עודכן ${D.at.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" })} · הנתונים מ-Cloudflare Web Analytics. בלי שמות, בלי עוגיות – רק ספירה.</p>`;
     return h;
