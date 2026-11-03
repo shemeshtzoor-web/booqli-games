@@ -198,6 +198,23 @@
 .gma-drawn .gm-idea{font-size:clamp(14px,1.4vw,20px);cursor:default}
 @media (prefers-reduced-motion:reduce){.gma-pop.on{animation:none;opacity:1}.gma-ball.on{animation:none}}
 
+/* החידון של סבאבוקלי */
+.gma-count{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:8px auto;max-width:720px}
+.gma-count i{font-style:normal;font-size:clamp(34px,4.4vw,64px);line-height:1}
+.gma-op{font-family:Fredoka,sans-serif;font-size:clamp(34px,4vw,60px);color:#C13671;margin:0 6px}
+.gma-math{font-family:Fredoka,sans-serif;font-size:clamp(30px,3.6vw,54px);direction:ltr;margin:4px 0}
+.gma-rows{flex-direction:column;gap:10px}
+.gma-rows div{display:flex;align-items:center;gap:6px;background:#F4FAF7;border-radius:16px;padding:6px 14px}
+.gma-rows b{font-family:Fredoka,sans-serif;font-size:24px;color:#4E8576;margin-inline-end:8px}
+.gma-line{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:12px 0}
+.gma-line b{font-size:clamp(34px,4vw,56px)}
+.gma-slot{min-width:3em;min-height:1.6em;border:4px dashed #FF8AD6;border-radius:16px;background:#FFF0F8;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(24px,3vw,44px);padding:0 .35em;display:inline-flex;align-items:center;justify-content:center}
+.gma-slot.on{border-style:solid;border-color:#1FA855;background:#EAF8EF;color:#2B1526}
+.gma-tiles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0}
+.gma-tile{font:inherit;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(22px,2.8vw,40px);background:#FFF6DD;border:4px solid #FFD98A;border-radius:18px;padding:.25em .7em;cursor:pointer;box-shadow:0 5px 0 #FFE7B0}
+.gma-tile.used{opacity:.25}
+.gma-tile.no{animation:gmShake .4s}
+
 /* כרטיסי לוטו להדפסה – 4 בעמוד */
 .s-lotto{display:grid;grid-template-columns:1fr 1fr;gap:6mm;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#2B1526}
 .s-lotto.s-break{break-before:page;page-break-before:always}

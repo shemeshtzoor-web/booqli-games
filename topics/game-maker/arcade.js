@@ -12,12 +12,13 @@ window.GMA = (function(){
   "use strict";
   var EMOJI_FONT = "'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif";
   var GAMES = {
+    quiz:  { ic: "❓", name: "החידון של סבאבוקלי", how: "שאלות על מה שאמרתם: סופרים, מסדרים את המשפט שסבאבוקלי בילגן, ועוד!" },
     run:   { ic: "🏃", name: "המרוץ של סבאבוקלי", how: "לוחצים כדי לקפוץ מעל המכשולים, ואוספים את הרעיונות שלכם!" },
     catch: { ic: "🧺", name: "תופסים בסל", how: "מזיזים את הסל ותופסים רק את מה שאמרנו. לא את הגרב המסריחה!" },
     snake: { ic: "🐍", name: "הנחש הרעב", how: "מכוונים את הנחש עם החצים, והוא אוכל את הרעיונות שלכם!" },
     lotto: { ic: "🎰", name: "לוטו של הגן", how: "סבאבוקלי מגריל רעיון, וכל ילד מחפש אותו בכרטיס שלו!" }
   };
-  var ORDER = ["run", "catch", "snake", "lotto"];
+  var ORDER = ["quiz", "run", "catch", "snake", "lotto"];
   var JUNK = [["🧦", "גרב מסריחה"], ["🪣", "דלי"], ["🧻", "נייר טואלט"], ["🥾", "נעל ישנה"], ["🧽", "ספוג"], ["🪥", "מברשת שיניים"], ["🧹", "מטאטא"], ["🩴", "כפכף"]];
   var ROCKS = ["🪨", "🌵", "🧦", "🪣", "🥾", "🧱"];
   var SABA_IMG = null;
@@ -229,6 +230,90 @@ window.GMA = (function(){
     window.__gma = { kind: "snake", st: function(){ return { got: got, need: need, food: food, head: snake[0], dir: dir }; }, turn: turn };
   }
 
+  /* ---------- ❓ החידון של סבאבוקלי – תמיד מהמילים של הילדים ----------
+     סוגי שאלות: סופרים · חשבון (ועוד) · איפה יותר? · מסדרים משפט שסבאבוקלי בילגן · איזו מילה חסרה? ·
+     מה אמרנו? · מה לא שייך? · ושאלות ידע על הנושא (רק לנושאים המוכנים – FACTS). */
+  var FACTS = {
+    "סתיו": [["מה קורה לעלים בסתיו?", "נושרים מהעצים", ["נהיים כחולים", "שרים שירים"]], ["איזו ציפור מגיעה אלינו בסתיו?", "נחליאלי", ["פינגווין", "תרנגולת"]], ["מה יורד מהשמיים בסתיו?", "גשם ראשון", ["שוקולד", "חול"]]],
+    "חורף": [["מה לובשים כשקר?", "מעיל", ["בגד ים", "כפכפים"]], ["מה רואים בשמיים כשיש גשם ושמש יחד?", "קשת", ["ירח", "כוכב ים"]], ["מה יורד מהענן?", "גשם", ["חלב", "עוגה"]]],
+    "חנוכה": [["כמה נרות מדליקים בלילה האחרון של חנוכה (בלי השמש)?", "8", ["3", "20"]], ["מה אוכלים בחנוכה?", "סופגניות", ["מצות", "פיצה עם שוקולד"]], ["מה מסובבים בחנוכה?", "סביבון", ["מטרייה", "גרב"]]],
+    "חיות": [["מי נובח?", "כלב", ["חתול", "פרה"]], ["למי יש חדק?", "פיל", ["קוף", "דג"]], ["למי יש צוואר ארוך?", "ג'ירפה", ["צב", "ארנב"]]],
+    "צבעים": [["מה יוצא מצהוב וכחול?", "ירוק", ["אדום", "שחור"]], ["באיזה צבע הבננה?", "צהוב", ["כחול", "סגול"]], ["באיזה צבע השמיים ביום בהיר?", "כחול", ["חום", "ורוד"]]],
+    "פירות וירקות": [["מה גדל על עץ?", "תפוח", ["גזר", "תפוח אדמה"]], ["איזה ירק כתום?", "גזר", ["מלפפון", "חסה"]], ["מה עושים לפרי לפני שאוכלים?", "שוטפים", ["צובעים", "זורקים"]]],
+    "המשפחה שלי": [["מי זה אבא של אמא?", "סבא", ["אח", "תינוק"]], ["מי עוד לא יודע לדבר?", "תינוק", ["סבתא", "אבא"]], ["איפה גרה המשפחה?", "בבית", ["בענן", "בים"]]],
+    "מקצועות": [["מי מכבה שריפות?", "כבאי", ["טבח", "דוור"]], ["מי מטפלת בחולים?", "רופאה", ["טייסת", "נגרית"]], ["מי מטיס מטוס?", "טייס", ["חקלאי", "שוטר"]]],
+    "תחבורה": [["מה נוסע על פסים?", "רכבת", ["אופניים", "סירה"]], ["מה טס בשמיים?", "מטוס", ["אוטובוס", "טרקטור"]], ["באיזה צבע ברמזור עוצרים?", "אדום", ["ירוק", "כחול"]]],
+    "הים": [["איפה גר הדג?", "במים", ["על עץ", "במדבר"]], ["כמה זרועות יש לתמנון?", "8", ["2", "4"]], ["מה בונים מחול על החוף?", "ארמון חול", ["איש שלג", "סופגנייה"]]],
+    "החלל": [["מה מאיר לנו ביום?", "השמש", ["הירח", "פנס"]], ["מה רואים בשמיים בלילה?", "ירח וכוכבים", ["קשת", "עננים ורודים"]], ["במה טסים לחלל?", "חללית", ["אופניים", "סירה"]]],
+    "הגוף שלנו": [["במה רואים?", "עיניים", ["אוזניים", "אף"]], ["במה שומעים?", "אוזניים", ["ברכיים", "שיניים"]], ["כמה אצבעות יש ביד אחת?", "5", ["3", "10"]]]
+  };
+  var SILLY_Q = ["פיל ורוד עם משקפיים", "גלידה בטעם מלפפון", "מכונית שעושה מיאו", "דג על אופניים", "סבאבוקלי בפיג'מה", "בננה שרוקדת", "ענן בטעם תות", "חתול שנובח", "מקרר שמנגן בגיטרה", "נעל עם כנפיים"];
+  var NUMW = ["", "אחד", "שניים", "שלושה", "ארבעה", "חמישה", "שישה", "שבעה", "שמונה", "תשעה", "עשרה"];
+  function quizGame(area, game, ctx){
+    var heb = function(w){ return w.replace(/[^֐-׿\w]/g, ""); };
+    var words = function(t){ return t.split(/\s+/).filter(function(w){ return heb(w).length >= 1; }); };
+    var it = game.it, multi = it.filter(function(x){ var w = words(x.x); return w.length >= 2 && w.length <= 6; });
+    var esc = ctx.esc, R = [], pickI = function(){ return it[rnd(it.length)]; };
+    // סופרים
+    R.push(function(){ var x = pickI(), n = 2 + rnd(5); return { e: "🔢", title: "כמה " + x.e + " יש כאן?", sub: '<div class="gma-count">' + new Array(n + 1).join("<i>" + x.e + "</i>") + '</div>', opts: [String(n), String(n + 1 > 7 ? n - 2 : n + 1), String(n - 1)], ok: String(n), okSay: n + " – " + NUMW[n] + "!" }; });
+    // חשבון: ועוד
+    R.push(function(){ var x = pickI(), a = 1 + rnd(4), b = 1 + rnd(3), c = a + b; return { e: "➕", title: "כמה יש ביחד?", sub: '<div class="gma-count">' + new Array(a + 1).join("<i>" + x.e + "</i>") + '<span class="gma-op">+</span>' + new Array(b + 1).join("<i>" + x.e + "</i>") + '</div><p class="gma-math">' + a + " + " + b + " = ?</p>", opts: [String(c), String(c + 1), String(c - 1 || c + 2)], ok: String(c), okSay: a + " ועוד " + b + " זה " + c + "!" }; });
+    // איפה יותר?
+    R.push(function(){ var x = pickI(), y = it.length > 1 ? it.filter(function(z){ return z !== x && z.e !== x.e; })[0] || x : x, a = 2 + rnd(4), b = a + 1 + rnd(2); if (rnd(2)) { var t = a; a = b; b = t; }
+      var A = "שורה " + (a > b ? "ראשונה" : "שנייה");
+      return { e: "⚖️", title: "באיזו שורה יש יותר?", sub: '<div class="gma-count gma-rows"><div><b>1</b>' + new Array(a + 1).join("<i>" + x.e + "</i>") + '</div><div><b>2</b>' + new Array(b + 1).join("<i>" + y.e + "</i>") + '</div></div>', opts: ["שורה ראשונה", "שורה שנייה", "אותו דבר"], ok: A }; });
+    // מסדרים משפט שסבאבוקלי בילגן (עד 2)
+    ctx.shuffle(multi).slice(0, 2).forEach(function(x){ R.push(function(){ return { order: x }; }); });
+    // איזו מילה חסרה?
+    if (multi.length) R.push(function(){ var x = multi[rnd(multi.length)], w = words(x.x), k = w.map(function(_, i){ return i; }).sort(function(a, b){ return heb(w[b]).length - heb(w[a]).length; })[0], right = w[k], others = [];
+      it.forEach(function(y){ if (y !== x) words(y.x).forEach(function(z){ if (z !== right && w.indexOf(z) < 0 && others.indexOf(z) < 0 && heb(z).length > 1) others.push(z); }); });
+      others = ctx.shuffle(others).concat(["בננה", "גרביים", "מקרר"]).slice(0, 2);
+      return { e: x.e, title: "איזו מילה חסרה?", sub: '<p class="gm-sent">' + w.map(function(z, i){ return i === k ? '<span class="gm-blank">?</span>' : esc(z); }).join(" ") + '</p>', opts: [right].concat(others), ok: right, okSay: x.x }; });
+    // מה אמרנו?
+    R.push(function(){ var x = pickI(); return { e: game.te || "💡", title: "מה אמרנו על " + game.tp + "?", opts: [x.x].concat(ctx.shuffle(SILLY_Q).slice(0, 2)), ok: x.x }; });
+    // מה לא שייך?
+    if (it.length >= 2) R.push(function(){ var two = ctx.shuffle(it).slice(0, 2), j = JUNK[rnd(JUNK.length)]; return { e: "🧐", title: "מה לא שייך ל" + (game.tp.charAt(0) === "ה" ? game.tp.slice(1) : game.tp) + "?", opts: [two[0].e + " " + two[0].x, two[1].e + " " + two[1].x, j[0] + " " + j[1]], ok: j[0] + " " + j[1], okSay: j[1] + " לא שייך! 😄" }; });
+    // שאלות ידע על הנושא
+    ctx.shuffle(FACTS[game.tp] || []).slice(0, 2).forEach(function(f){ R.push(function(){ return { e: game.te || "💡", title: f[0], opts: [f[1]].concat(f[2]), ok: f[1] }; }); });
+    var rounds = ctx.shuffle(R).slice(0, 8), ri = 0, box = document.createElement("div"); area.appendChild(box);
+    var hud = function(){ ctx.prog.textContent = "❓ שאלה " + Math.min(ri + 1, rounds.length) + " מתוך " + rounds.length; };
+    var PRAISE = ["כל הכבוד!", "נכון מאוד!", "מצוין!", "יופי!", "אלופים!"];
+    var next = function(){
+      if (ctx.stopped()) return;
+      if (ri >= rounds.length) return ctx.win();
+      hud(); var q = rounds[ri++]();
+      window.__gmaQ = q;
+      if (q.order) return orderRound(q.order);
+      var opts = ctx.shuffle(q.opts);
+      box.innerHTML = '<div class="gm-q"><div class="gm-q-e" aria-hidden="true">' + esc(q.e) + '</div><h3 class="gm-q-t">' + esc(q.title) + '</h3>' + (q.sub || "") +
+        '<div class="gm-opts">' + opts.map(function(o, i){ return '<button type="button" class="gm-opt" data-i="' + i + '"><span class="gm-ol">' + "אבג"[i] + '</span>' + esc(o) + '</button>'; }).join("") + '</div><div class="gm-fb" aria-live="polite"></div></div>';
+      var fin = false, fb = box.querySelector(".gm-fb");
+      box.querySelectorAll(".gm-opt").forEach(function(b){ b.onclick = function(){
+        if (fin) return; var v = opts[+b.getAttribute("data-i")];
+        if (v === q.ok) { fin = true; b.classList.add("ok"); ctx.sound.ding(); fb.textContent = "🎉 " + PRAISE[rnd(PRAISE.length)] + " " + (q.okSay || ""); setTimeout(next, 2100); }
+        else { b.classList.add("no"); b.disabled = true; ctx.sound.soft(); fb.textContent = "כמעט! נסו שוב 🙂"; }
+      }; });
+    };
+    // סבאבוקלי בילגן את המשפט – לוחצים על המילים לפי הסדר
+    var orderRound = function(x){
+      var w = words(x.x), mix = ctx.shuffle(w.map(function(z, i){ return { z: z, i: i }; }));
+      var tries = 0; while (mix.every(function(m, k){ return m.i === k; }) && tries++ < 10) mix = ctx.shuffle(mix);
+      var at = 0;
+      box.innerHTML = '<div class="gm-q"><div class="gm-q-e" aria-hidden="true">🌀</div><h3 class="gm-q-t">אוי! סבאבוקלי בילגן את המשפט</h3><p class="gma-tip" style="font-size:.85em">לוחצים על המילים לפי הסדר הנכון</p>' +
+        '<div class="gma-line">' + w.map(function(){ return '<span class="gma-slot"></span>'; }).join("") + '<b aria-hidden="true">' + esc(x.e) + '</b></div>' +
+        '<div class="gma-tiles">' + mix.map(function(m, k){ return '<button type="button" class="gma-tile" data-k="' + k + '">' + esc(m.z) + '</button>'; }).join("") + '</div><div class="gm-fb" aria-live="polite"></div></div>';
+      var slots = box.querySelectorAll(".gma-slot"), fb = box.querySelector(".gm-fb");
+      box.querySelectorAll(".gma-tile").forEach(function(b){ b.onclick = function(){
+        var m = mix[+b.getAttribute("data-k")];
+        if (m.z === w[at]) { slots[at].textContent = m.z; slots[at].classList.add("on"); b.disabled = true; b.classList.add("used"); ctx.sound.pop(); at++;
+          if (at === w.length) { ctx.sound.ding(); fb.textContent = "🎉 סידרתם! " + x.x; setTimeout(next, 2300); } }
+        else { b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); ctx.sound.soft(); fb.textContent = "כמעט! איזו מילה באה עכשיו? 🙂"; }
+      }; });
+    };
+    window.__gma = { kind: "quiz", st: function(){ return { ri: ri, n: rounds.length }; } };
+    next();
+  }
+
   /* ---------- 🎰 לוטו של הגן ---------- */
   function lottoGame(area, game, ctx){
     var ideas = ctx.shuffle(game.it), drawn = [];
@@ -289,7 +374,7 @@ window.GMA = (function(){
 
   /* ---------- הכניסה: סבאבוקלי מגריל משחק ---------- */
   function hub(area, game, ctx, pickId){
-    var RUN = { run: runGame, "catch": catchGame, snake: snakeGame, lotto: lottoGame };
+    var RUN = { quiz: quizGame, run: runGame, "catch": catchGame, snake: snakeGame, lotto: lottoGame };
     var bar = document.createElement("div"); bar.className = "gma-bar";
     bar.innerHTML = '<span>🎮 משחק אחר:</span>' + ORDER.map(function(k){ return '<button type="button" data-g="' + k + '">' + GAMES[k].ic + " " + GAMES[k].name + '</button>'; }).join("");
     var stage = document.createElement("div");
@@ -307,11 +392,11 @@ window.GMA = (function(){
     var wheel = document.createElement("div"); wheel.className = "gma-wheel";
     wheel.innerHTML = '<div class="gma-wl">🎡 סבאבוקלי מגריל משחק...</div><div class="gma-wi"></div>';
     stage.appendChild(wheel);
-    var three = ["run", "catch", "snake"], target = three[rnd(3)], k = 0, steps = 10 + rnd(3);
+    var three = ["quiz", "run", "catch", "snake"], target = three[rnd(4)], k = 0, steps = 10 + rnd(3);
     ctx.say("סבאבוקלי מגריל משחק!");
     var tick = function(){
       if (ctx.stopped() || !wheel.isConnected) return;
-      var id = k >= steps ? target : three[k % 3];
+      var id = k >= steps ? target : three[k % 4];
       wheel.querySelector(".gma-wi").innerHTML = '<b>' + GAMES[id].ic + '</b>' + GAMES[id].name;
       ctx.sound.pop();
       if (k++ >= steps) { ctx.sound.tada(); return setTimeout(function(){ start(target); }, 900); }
