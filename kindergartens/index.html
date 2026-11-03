@@ -746,20 +746,12 @@ section{margin-top:64px}
 
   <div class="calc" id="calc">
     <h3>🧮 מחשבון לגן</h3>
-    <p class="sub">כמה ילדים, כמה ספרים לכל ילד ואיזו כריכה – והמחיר מתעדכן לבד. ככל שמזמינים יותר, המחיר לספר יורד.</p>
+    <p class="sub">כמה ילדים ואיזו כריכה – והמחיר מתעדכן לבד. ככל שמזמינים יותר, המחיר לספר יורד.</p>
     <div class="calc-grid">
       <div>
         <div class="fld">
           <label for="cKids">כמה ילדים בגן?</label>
           <div class="stepper"><button type="button" data-step="-1" aria-label="פחות ילדים">−</button><input id="cKids" type="number" inputmode="numeric" min="1" max="999" value="25"><button type="button" data-step="1" aria-label="יותר ילדים">+</button><span>ילדים</span></div>
-        </div>
-        <div class="fld">
-          <span class="lb">כמה ספרים לכל ילד?</span>
-          <div class="opts row">
-            <label><input type="radio" name="cPer" value="1" checked> ספר אחד</label>
-            <label><input type="radio" name="cPer" value="2"> 2 ספרים</label>
-            <label><input type="radio" name="cPer" value="3"> 3 ספרים</label>
-          </div>
         </div>
         <div class="fld">
           <span class="lb">איזו כריכה?</span>
@@ -1173,14 +1165,14 @@ function priceFor(cover, books){
 }
 function calc(){
   const kids = Math.max(1, Math.min(999, parseInt(cKids.value, 10) || 0));
-  const per = +document.querySelector('input[name="cPer"]:checked').value;
+  const per = 1; // בגן – ספר אחד לכל ילד
   const cover = document.querySelector('input[name="cCover"]:checked').value;
   const books = kids * per;
   const up = false;
   ["staple","soft","hard"].forEach(c => { const pr = priceFor(c, books); document.querySelector('[data-p="' + c + '"]').textContent = pr ? pr + " ₪" : "מ-20 ספרים"; });
   const p = priceFor(cover, books);
   const tot = document.getElementById("rTot"), perEl = document.getElementById("rPer"), msg = document.getElementById("rMsg");
-  const lines = [["ילדים", kids], ["ספרים לכל ילד", per], ["סה״כ ספרים", books]];
+  const lines = [["ילדים (ספר לכל ילד)", kids]];
   let sum;
   if (!p) {
     sum = "כריכת סיכות מ-20 ספרים";
@@ -1201,7 +1193,7 @@ function calc(){
   }
   document.getElementById("rLines").innerHTML = lines.map(l => `<li><span>${l[0]}</span><b>${l[1]}</b></li>`).join("");
   const text = "היי BOOQLI 👋 חישבתי במחשבון לגן באתר:\n" +
-    "👧👦 " + kids + " ילדים × " + per + " " + (per === 1 ? "ספר" : "ספרים") + " = " + books + " ספרים\n" +
+    "👧👦 " + kids + " ילדים = " + books + " ספרים\n" +
     "📕 " + NAMES[cover] + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
     "💰 " + sum + "\n\nאשמח להתקדם ולקבל קופון הנחה 🙂";
   document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text.replace("אשמח להתקדם ולקבל קופון הנחה 🙂", "יש לי שאלה:"));
