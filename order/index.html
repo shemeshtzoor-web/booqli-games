@@ -336,12 +336,24 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <h3 style="margin-top:16px;font-size:20px">איך מזמינים באתר?</h3>
     <ol class="how">
       <li>בוחרים את הספר באתר.</li>
-      <li>מעלים תמונה של הילד/ה (<a href="#photoTips">איזו תמונה מתאימה?</a>).</li>
+      <li>מעלים תמונה של הילד/ה (<a href="#" id="tipsLink" aria-expanded="false" aria-controls="tipsBox">איזו תמונה מתאימה?</a>).</li>
       <li>רושמים את שם הילד ומוסיפים הקדשה (אפשר להכין במחולל למעלה).</li>
       <li>בוחרים את סוג הכריכה ומוסיפים לסל.</li>
       <li>המחיר מתעדכן אוטומטית עם כל ספר שמוסיפים לסל.</li>
       <li>מזינים את קוד הקופון, משלמים ושולחים את ההזמנה.</li>
     </ol>
+    <div class="note" id="tipsBox" hidden>
+      <b>איכות האיור מתחילה בתמונה – תמונה טובה → תוצאה טובה!</b> 💛
+      <ul class="rules">
+        <li>⚪ <b>רקע לבן</b> – עוזר לשמור על עקביות.</li>
+        <li>🔵 <b>ילד אחד בלבד</b> – בלי אנשים או בעלי חיים נוספים, גם לא ברקע.</li>
+        <li>🔴 <b>מבט ישיר למצלמה</b> – לא למעלה, למטה, הצידה או בפרופיל.</li>
+        <li>🟠 <b>פנים גלויות ונקיות</b> – בלי כובע, משקפי שמש, סרטים, זרים, כתרים, פלסטרים או קעקועים.</li>
+        <li>🟢 <b>בנים עם כיפה</b> – חשוב שהכיפה תופיע בתמונה.</li>
+        <li>🟣 <b>בנות</b> – התסרוקת באיור מבוססת על התסרוקת שבתמונה, לכן חשוב שתיראה היטב.</li>
+        <li>😀 והכי חשוב – <b>חיוך!</b></li>
+      </ul>
+    </div>
     <p class="note">💳 תשלום באתר: אשראי, Bit, PayPal או Google Pay. לאחר שליחת ההזמנה תקבלו את הספרים המלאים לאישורכם לפני ההדפסה.</p>
     <div class="done-box">
       <h3>זהו, ממשיכים באתר 🛒</h3>
@@ -850,6 +862,7 @@ function toast(t){
 dedUi(); refresh();
 const jump = D.s || (location.hash.match(/^#s-(\w+)$/) || [])[1];
 if (jump) setTimeout(() => { const t = $("s-" + jump); if (t && !t.hidden) t.scrollIntoView(); }, 600);
+document.getElementById("tipsLink").addEventListener("click", function(e){ e.preventDefault(); var b = document.getElementById("tipsBox"); b.hidden = !b.hidden; this.setAttribute("aria-expanded", String(!b.hidden)); if (!b.hidden) b.scrollIntoView({block:"nearest",behavior:"smooth"}); });
 </script>
 </body>
 </html>
