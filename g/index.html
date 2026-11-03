@@ -49,6 +49,8 @@ header{background:#6F988B}
 .gal a b{display:block;font-size:40px}
 .gal a small{display:block;color:#4E8576}
 .foot{text-align:center;color:#4E8576;font-size:14px;padding:20px 16px 30px}
+#printArea{display:none}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block}body{background:#fff}@page{size:A4;margin:10mm}}
 </style>
 </head>
 <body>
@@ -60,11 +62,13 @@ header{background:#6F988B}
 </header>
 <div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
 <main class="wrap" id="main"></main>
+<div id="printArea"></div>
 <p class="foot">booqli Games · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · בחסות BOOQLI</p>
 
 <script src="../lib/lz-string-1.5.0.min.js"></script>
 <script src="../common.js"></script>
 <script src="../topics/game-maker/engine.js"></script>
+<script src="../topics/game-maker/arcade.js"></script>
 <script src="../topics/game-maker/gallery.js"></script>
 <script>
 (function(){

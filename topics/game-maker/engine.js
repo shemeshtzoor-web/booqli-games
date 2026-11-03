@@ -7,7 +7,7 @@
      חידון: it = [{q:שאלה, a:תשובה נכונה, w:[תשובות לא נכונות], e}]
      זיכרון: it = [{x:מילה, e}]
      מי אני: it = [{x:התשובה, e, c:[רמזים]}]
-     המשחק של הגן: it = [{x:מה שהילד אמר, e}] – הסבבים נבנים בזמן המשחק (מה אמרנו על...? · איזו מילה חסרה? · זיכרון)
+     המשחק של הגן: it = [{x:מה שהילד אמר, e}] – סבאבוקלי מגריל משחק מ-arcade.js (מרוץ / תופסים בסל / נחש / לוטו)
    ===================================================================== */
 window.GM = (function(){
   "use strict";
@@ -293,64 +293,9 @@ window.GM = (function(){
       };
       showW();
     }
-        /* ---------- המשחק של הגן: נבנה מהמשפטים של הילדים ---------- */
+        /* ---------- המשחק של הגן: סבאבוקלי מגריל משחק אמיתי (מרוץ / תופסים / נחש / לוטו) מהרעיונות של הילדים – arcade.js ---------- */
     if (game.k === "x") {
-      var tp = game.tp || "הנושא שלנו";
-      var SILLY_X = ["פיל ורוד עם משקפיים", "גלידה בטעם מלפפון", "מכונית שעושה מיאו", "דג על אופניים", "סבאבוקלי בפיג'מה", "בננה שרוקדת", "ענן בטעם תות", "תרנגולת עם כובע", "חתול שנובח", "מקרר שמנגן בגיטרה", "נעל עם כנפיים", "עוגה של חול", "מטרייה מגבינה", "גרביים שמדברות"];
-      var SILLY_W = ["בננה", "גרביים", "פיל", "מקרר", "נעל", "פיצה", "מטאטא", "כרית", "סיר", "מברשת"];
-      var heb = function(w){ return w.replace(/[^\u0590-\u05FF\w]/g, ""); };
-      var words = function(t){ return t.split(/\s+/).filter(function(w){ return heb(w).length >= 2; }); };
-      var belong = shuffle(game.it).slice(0, 4).map(function(x){ return { t: "b", it: x }; });
-      var miss = shuffle(game.it.filter(function(x){ return words(x.x).length >= 2; })).slice(0, 3).map(function(x){ return { t: "m", it: x }; });
-      var rounds = [];
-      for (var r = 0; r < 4; r++) { if (belong[r]) rounds.push(belong[r]); if (miss[r]) rounds.push(miss[r]); }
-      rounds = rounds.slice(0, 6);
-      var memItems = shuffle(game.it).slice(0, 6);
-      var total = rounds.length + 1, ri = 0;
-      var stage = function(){ prog.textContent = "שלב " + Math.min(ri + 1, total) + " מתוך " + total; };
-      var ask = function(o, done){
-        var opts = shuffle(o.opts);
-        area.innerHTML = '<div class="gm-q"><div class="gm-q-e" aria-hidden="true">' + esc(o.e) + '</div><h3 class="gm-q-t">' + esc(o.title) + '</h3>' + (o.sub || "") +
-          '<button type="button" class="gm-say" aria-label="להקריא שוב">🔊 להקריא</button>' +
-          '<div class="gm-opts">' + opts.map(function(x, i){ return '<button type="button" class="gm-opt" data-i="' + i + '"><span class="gm-ol">' + "אבג"[i] + '</span>' + esc(x) + '</button>'; }).join("") + '</div>' +
-          '<div class="gm-fb" aria-live="polite"></div></div>';
-        var read = function(){ say(o.speak + " " + opts.map(function(x, i){ return "אבג"[i] + ": " + x; }).join(". ")); };
-        area.querySelector(".gm-say").onclick = read; read();
-        var fin = false, fb = area.querySelector(".gm-fb");
-        area.querySelectorAll(".gm-opt").forEach(function(b){
-          b.onclick = function(){
-            if (fin || stopped) return;
-            var v = opts[+b.getAttribute("data-i")];
-            if (v === o.ok) { fin = true; b.classList.add("ok"); sound.ding(); var p = pick(PRAISE); fb.textContent = "🎉 " + p + " " + (o.okSay || v); say(p + " " + (o.okSay || v)); setTimeout(done, 2300); }
-            else { b.classList.add("no"); b.disabled = true; sound.soft(); fb.textContent = "כמעט! נסו שוב 🙂"; say("כמעט! נסו שוב"); }
-          };
-        });
-      };
-      var next = function(){
-        if (stopped) return;
-        if (ri >= rounds.length) {
-          ri = rounds.length; stage();
-          say("שלב אחרון: משחק זיכרון עם הרעיונות שלכם!");
-          return memory(memItems, win);
-        }
-        stage();
-        var R = rounds[ri++], it = R.it;
-        if (R.t === "b") {
-          var sil = shuffle(SILLY_X.filter(function(x){ return x !== it.x; })).slice(0, 2);
-          ask({ e: game.te || "🎲", title: "מה אמרנו על " + tp + "?", speak: "מה אמרנו על " + tp + "?", opts: [it.x].concat(sil), ok: it.x }, next);
-        } else {
-          var w = words(it.x), cand = w.map(function(x, i){ return i; }).filter(function(i){ return heb(w[i]).length >= 2; });
-          var k = cand.sort(function(a, b){ return heb(w[b]).length - heb(w[a]).length; })[Math.floor(Math.random() * Math.min(2, cand.length))];
-          var right = w[k];
-          var others = [];
-          game.it.forEach(function(y){ if (y !== it) words(y.x).forEach(function(z){ if (z !== right && w.indexOf(z) < 0 && others.indexOf(z) < 0) others.push(z); }); });
-          others = shuffle(others).concat(shuffle(SILLY_W)).filter(function(z){ return z !== right; }).slice(0, 2);
-          var shown = w.map(function(x, i){ return i === k ? '<span class="gm-blank">?</span>' : esc(x); }).join(" ");
-          ask({ e: it.e || "🧩", title: "איזו מילה חסרה?", sub: '<p class="gm-sent">' + shown + '</p>', speak: "איזו מילה חסרה? " + w.map(function(x, i){ return i === k ? "בִּיפּ" : x; }).join(" ") + ".", opts: [right].concat(others), ok: right, okSay: it.x }, next);
-        }
-      };
-      say("המשחק של הגן על " + tp + "! כל מה שאמרתם נמצא כאן.");
-      next();
+      window.GMA.hub(area, game, { say: say, sound: sound, win: win, prog: prog, stopped: function(){ return stopped; }, esc: esc, shuffle: shuffle }, opt.game);
     }
     return api;
   }
@@ -360,7 +305,7 @@ window.GM = (function(){
     var t = TYPES[game.k], body = "";
     if (game.k === "q") body = '<ol class="s-list">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + " " + esc(x.q) + '</b><br>✔️ ' + esc(x.a) + (x.w.length ? ' <span class="s-w">· תשובות מבלבלות: ' + esc(x.w.join(" / ")) + '</span>' : "") + '</li>'; }).join("") + '</ol>';
     if (game.k === "m") body = '<div class="s-cards">' + game.it.map(function(x){ return '<span><b>' + esc(x.e) + '</b>' + esc(x.x) + '</span>'; }).join("") + '</div>';
-    if (game.k === "x") body = '<ol class="s-list s-kids">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + '</b> ' + esc(x.x) + '</li>'; }).join("") + '</ol><p class="s-w">במשחק: "מה אמרנו על ' + esc(game.tp) + '?", "איזו מילה חסרה?" ומשחק זיכרון – כל פעם בסדר אחר.</p>';
+    if (game.k === "x") body = '<ol class="s-list s-kids">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + '</b> ' + esc(x.x) + '</li>'; }).join("") + '</ol><p class="s-w">במשחק: 🏃 המרוץ של סבאבוקלי · 🧺 תופסים בסל · 🐍 הנחש הרעב · 🎰 לוטו של הגן – כל רעיון שנאסף, סבאבוקלי מקריא בקול.</p>';
     if (game.k === "w") body = '<ol class="s-list">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + " " + esc(x.x) + '</b><br>' + x.c.map(esc).join(" · ") + '</li>'; }).join("") + '</ol>';
     var ideas = game.k !== "x" && game.id && game.id.length ? '<h3>💡 הרעיונות שלנו על ' + esc(game.tp) + '</h3><div class="s-ideas">' + game.id.map(function(x){ return '<span>' + esc(x.e) + " " + esc(x.x) + '</span>'; }).join("") + '</div>' : "";
     var d = game.d ? game.d.split("-").reverse().join(".") : "";

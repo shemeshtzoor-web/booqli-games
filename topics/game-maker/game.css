@@ -164,6 +164,51 @@
 @keyframes gmFall{to{transform:translateY(110vh) rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.gm-saba.talk,.gm-saba.joy,.gm-idea,.gm-opt.ok,.gm-opt.no,.gm-win-e,.gm-wait,.gm-clues li{animation:none}.gm-card>span{transition:none}}
 
+/* ===== המשחקים האמיתיים (arcade.js) ===== */
+.gma-title{text-align:center;margin:0 0 8px}
+.gma-title b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(24px,3vw,44px);color:#C13671}
+.gma-title span{font-weight:700;color:#4E8576}
+.gma-wrap{position:relative}
+.gma-cv{display:block;width:100%;height:auto;margin:0 auto;border-radius:22px;border:4px solid #CDE7DC;touch-action:none;background:#fff;outline:none}
+.gma-cv:focus-visible{border-color:#FF56C2}
+.gma-pop{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:2;background:#fff;border:3px solid #FF56C2;border-radius:999px;padding:.2em .9em;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(18px,2.4vw,36px);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none;box-shadow:0 6px 16px rgba(193,54,113,.2)}
+.gma-pop.on{animation:gmaPop 2.6s ease forwards}
+@keyframes gmaPop{0%{opacity:0;transform:translateX(-50%) scale(.6)}10%{opacity:1;transform:translateX(-50%) scale(1.06)}20%{transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0}}
+.gma-ctrl{display:flex;gap:12px;justify-content:center;margin-top:10px}
+.gma-ctrl .gm-btn{min-width:120px;touch-action:manipulation}
+.gma-pad{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px}
+.gma-pad div{display:flex;gap:6px}
+.gma-pad button{font-size:30px;width:64px;height:58px;border-radius:16px;border:3px solid #CDE7DC;background:#fff;cursor:pointer;touch-action:manipulation}
+.gma-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-top:14px;font-weight:800;color:#4E8576;font-size:.8em}
+.gma-bar button{font:inherit;font-weight:800;background:#fff;border:2px solid #CDE7DC;color:#2B1526;border-radius:999px;padding:5px 12px;cursor:pointer}
+.gma-bar button.on{border-color:#FF56C2;background:#FFE3F4}
+.gma-wheel{text-align:center;padding:20px 0}
+.gma-wl{font-weight:800;color:#4E8576;font-size:1.1em}
+.gma-wi{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(28px,3.6vw,54px);margin-top:10px;color:#C13671}
+.gma-wi b{display:block;font-size:2.4em;line-height:1.1}
+.gma-lotto{text-align:center}
+.gma-ball{margin:0 auto 10px;max-width:640px;min-height:170px;background:radial-gradient(circle at 30% 25%,#fff,#FFE3F4);border:5px solid #FF56C2;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px}
+.gma-ball.on{animation:gmJoy .6s ease}
+.gma-q{font-size:clamp(64px,8vw,120px);line-height:1.05}
+.gma-ball b{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(26px,3.4vw,52px)}
+.gma-ball small{font-weight:700;color:#6b5a66}
+.gma-tip{font-size:.75em;color:#6b5a66;max-width:720px;margin:6px auto}
+.gma-drawn{justify-content:center}
+.gma-drawn .gm-idea{font-size:clamp(14px,1.4vw,20px);cursor:default}
+@media (prefers-reduced-motion:reduce){.gma-pop.on{animation:none;opacity:1}.gma-ball.on{animation:none}}
+
+/* כרטיסי לוטו להדפסה – 4 בעמוד */
+.s-lotto{display:grid;grid-template-columns:1fr 1fr;gap:6mm;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#2B1526}
+.s-lotto.s-break{break-before:page;page-break-before:always}
+.s-lcard{border:2.5px solid #FF56C2;border-radius:5mm;padding:3mm;break-inside:avoid;height:128mm;display:flex;flex-direction:column}
+.s-lh{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:12pt;color:#C13671;display:flex;justify-content:space-between;gap:2mm;margin-bottom:2mm}
+.s-lh span{color:#4E8576;font-size:10pt}
+.s-lg{display:grid;gap:2mm;flex:1}
+.s-lg div{border:1.5px solid #CDE7DC;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1mm}
+.s-lg b{font-size:26pt;line-height:1.1}
+.s-lg small{font-weight:700;font-size:10pt;line-height:1.15}
+.s-lf{text-align:center;font-size:8pt;color:#4E8576;margin-top:1.5mm}
+
 /* ===== סיכום להדפסה ===== */
 .s-page{font-family:Assistant,Arial,sans-serif;color:#2B1526;direction:rtl;font-size:12pt}
 .s-top{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #FF56C2;padding-bottom:3mm;font-weight:800;font-size:13pt;color:#4E8576}

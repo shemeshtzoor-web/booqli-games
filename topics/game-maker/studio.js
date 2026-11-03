@@ -217,7 +217,7 @@
 
     play: function(){
       var game = makeGame();
-      talk("המשחק מוכן! בניתי אותו מכל מה שאמרתם על " + S.topic.n + ". בואו נשחק!", true);
+      talk("המשחק מוכן! כל מה שאמרתם על " + S.topic.n + " נמצא בפנים. עכשיו אני מגריל איזה משחק נשחק!", true);
       var wrap = document.createElement("div"); BODY.appendChild(wrap);
       later(function(){
         PLAY = GM.play(wrap, game, { onWin: function(x){
@@ -243,6 +243,7 @@
         '<p class="hint">🔒 רק שם הגן – בלי עיר, בלי רחוב ובלי שמות של ילדים. זה הפרט היחיד שמופיע במשחק.</p></div>' +
         '<div class="gm-acts">' +
           '<div class="gm-act"><h4>📲 לשלוח להורים</h4><p>הודעה מוכנה לקבוצת ההורים עם קישור למשחק. ההורים פותחים ומשחקים עם הילדים בבית.</p><button type="button" class="gm-btn wa" id="aWa">💬 לשלוח בוואטסאפ</button><button type="button" class="gm-btn sec" id="aCopy">🔗 להעתיק קישור</button><div class="gm-copied" id="aCopied" aria-live="polite"></div></div>' +
+          '<div class="gm-act"><h4>🎰 לוטו של הגן</h4><p>כרטיסי לוטו להדפסה מהרעיונות של הילדים – כל כרטיס שונה, 4 בדף. סבאבוקלי מכריז על המסך, והילדים מסמנים.</p><button type="button" class="gm-btn" id="aLotto">🖨️ כרטיסי לוטו</button></div>' +
           '<div class="gm-act"><h4>🖨️ סיכום להדפסה</h4><p>דף A4: כל מה שהילדים אמרו על הנושא, וקוד לסריקה כדי לשחק בבית. מתאים לתיק או ללוח ההורים.</p><button type="button" class="gm-btn" id="aPrint">🖨️ להדפיס</button></div>' +
           '<div class="gm-act"><h4>⭐ לפרסם באפליקציה</h4><p>המשחק יופיע בפינת "משחקים שגנים המציאו". בקשה נשלחת ל-BOOQLI, ונפרסם רק אחרי שנעבור עליו.</p>' +
             '<label class="gm-ok"><input type="checkbox" id="aOk"><span>אני מאשרת שאין במשחק שמות של ילדים, תמונות או פרטים אישיים, ומרשה ל-BOOQLI לפרסם אותו באתר ובאפליקציה. אין לגן זכויות על המשחק, ואפשר לבקש להוריד אותו בכל רגע.</span></label>' +
@@ -263,6 +264,7 @@
         var show = function(){ $("aCopied").textContent = "✔️ הקישור הועתק"; };
         if (navigator.clipboard) navigator.clipboard.writeText(url).then(show, function(){ prompt("הקישור למשחק:", url); }); else prompt("הקישור למשחק:", url); }); };
       $("aPrint").onclick = function(){ remember(); siteEvent("gm-print", S.k); printSummary(); };
+      $("aLotto").onclick = function(){ var g = remember(); if (g) GMA.printLotto(g); };
       $("aOk").onchange = function(){ $("aPub").disabled = !this.checked; };
       $("aPub").onclick = function(){ ready().then(function(ok){ if (!ok) return; var g = remember(); siteEvent("gm-publish", S.k);
         var t = "היי BOOQLI 🎮 אנחנו גן " + g.g + ", המצאנו משחק עם הילדים ונשמח שתפרסמו אותו באפליקציה:\n" + g.n + " (" + g.it.length + " רעיונות על " + g.tp + ")\n" + gameUrl("publish") +
