@@ -144,37 +144,14 @@ section.sv{margin-top:34px}
 .consent.todo{border-color:var(--pink)}
 .more{margin-top:12px;width:100%;background:#FFF8E6;border:2.5px dashed #F5B400;border-radius:18px;padding:12px 14px;font:inherit;font-weight:800;font-size:17px;color:var(--ink);text-align:start;cursor:pointer;line-height:1.45}
 .more u{color:var(--mag);white-space:nowrap}
-/* סַבָּבּוּקְלִי – מדריך קטן שצמוד לתחתית הטופס */
-.guide{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;margin-top:14px;display:flex;gap:10px;align-items:center;background:#fff;border:3px solid var(--pink);border-radius:22px;padding:8px 12px 8px 8px;box-shadow:0 10px 28px rgba(193,54,113,.22);cursor:pointer;text-align:start;width:100%;font:inherit;color:var(--ink)}
-.guide .gc{position:relative;flex:0 0 auto;width:62px;height:62px}
-.guide .gc img{width:62px;height:62px;object-fit:contain;display:block}
-.guide .gc i{position:absolute;font-style:normal;font-size:24px;top:20px;left:50%;transform:translateX(-50%);line-height:1}
-.guide b{display:block;font-family:Fredoka,Assistant,sans-serif;color:var(--mag);font-size:16px}
-.guide span{display:block;font-weight:800;font-size:18px;line-height:1.35}
-.guide.ok{border-color:var(--wa)}.guide.ok b{color:#1E7F45}
-.guide .go{margin-inline-start:auto;flex:0 0 auto;font-size:22px;color:var(--pink)}
-.guide{display:flex!important;padding:6px!important;gap:6px!important;cursor:default!important}
-.gmain{flex:1;display:flex;gap:10px;align-items:center;background:none;border:0;font:inherit;color:inherit;text-align:start;cursor:pointer;padding:2px;min-width:0}
-.gbtns{display:flex;flex-direction:column;gap:6px;flex:0 0 auto}
-.gb{width:46px;height:46px;border-radius:50%;border:2.5px solid var(--pink);background:#FFF0F8;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
-.gb[aria-pressed=true]{background:var(--pink);box-shadow:0 0 0 4px rgba(255,86,194,.25)}
-.gb.on{animation:todoPulse 1s infinite}
-.askBig{width:100%;justify-content:center;margin:10px 0 4px;font-size:18px}
-.ask{position:fixed;inset:0;z-index:90;background:rgba(43,21,38,.45);display:flex;align-items:flex-end;justify-content:center}
-.ask[hidden]{display:none}
-.askIn{background:#fff;width:min(560px,100%);max-height:88vh;overflow:auto;border-radius:26px 26px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top:8px solid var(--pink)}
-.askH{display:flex;align-items:center;gap:10px}.askH img{width:54px;height:54px;object-fit:contain}
-.askH b{font-family:Fredoka,Assistant,sans-serif;font-size:22px;color:var(--mag);flex:1}
-.askH .x{border:0;background:#F3E6EE;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer}
-.askA{margin-top:10px;background:#FFF0F8;border-radius:18px;padding:12px 14px;font-weight:700;font-size:18px;line-height:1.55;min-height:60px}
-.askQ{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.askQ button{border:2px solid var(--mint);background:#F4FAF7;border-radius:999px;padding:7px 12px;font:800 15.5px Assistant,sans-serif;color:var(--saged);cursor:pointer}
-.askF{display:flex;gap:6px;margin-top:10px;align-items:center}
-.askF input{flex:1;min-width:0;font:inherit;font-weight:700;padding:12px;border:2px solid #E6D8E1;border-radius:14px}
-.askF .btn{padding:11px 14px;font-size:17px}
-@media (min-width:761px){.ask{align-items:center}.askIn{border-radius:26px}}
-@media (prefers-reduced-motion:reduce){.todo,.todo.now{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
-@media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.guide{bottom:calc(78px + env(safe-area-inset-bottom,0px))}.guide span{font-size:16.5px}.guide .gc,.guide .gc img{width:52px;height:52px}.guide .gc i{font-size:20px;top:17px}.promise .ar{display:none}.promise div{min-width:100%}}
+/* סַבָּבּוּקְלִי – בועה קטנה שקופצת ליד הדבר הבא שצריך למלא, עם עידוד */
+.hop{display:flex;align-items:center;gap:6px;width:fit-content;max-width:100%;margin:10px 0 6px;background:#fff;border:2.5px solid var(--pink);border-radius:999px;padding:3px 14px 3px 4px;font-weight:800;font-size:16.5px;color:var(--mag);box-shadow:0 6px 16px rgba(193,54,113,.18);position:relative;animation:hopIn .45s cubic-bezier(.3,1.6,.5,1)}
+.hop img{width:38px;height:38px;object-fit:contain;flex:0 0 auto}
+.hop::after{content:"";position:absolute;bottom:-9px;inset-inline-start:26px;border:8px solid transparent;border-top-color:var(--pink);border-bottom:0}
+.hop.ok{border-color:var(--wa);color:#1E7F45}.hop.ok::after{border-top-color:var(--wa)}
+@keyframes hopIn{0%{transform:translateY(8px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.todo,.todo.now,.hop{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
+@media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.promise .ar{display:none}.promise div{min-width:100%}}
 @media print{.float{display:none}}
 </style>
 </head>
@@ -236,7 +213,7 @@ section.sv{margin-top:34px}
       <p class="st" id="sendSt"></p>
     </div>
     <div class="done" id="done" hidden>🎉 קיבלנו! נחזור אליכם בוואטסאפ (א׳–ה׳ 8:00–18:00) עם כל הספר לתצוגה.<br>בינתיים – <a href="#app" style="color:#1E7F45">שלחו להורים את האפליקציה במתנה ↓</a></div>
-    <div class="guide" id="guide"><button type="button" class="gmain" id="gmain" aria-live="polite"><span class="gc" aria-hidden="true"><img src="../img/family/booqli.webp" alt="" width="62" height="62"><i>👓</i></span><span><b>סַבָּבּוּקְלִי כאן לעזור</b><span id="guideTxt">בוחרים ספר 📚</span></span></button><span class="gbtns"><button type="button" class="gb" id="gSay" aria-pressed="false" title="סַבָּבּוּקְלִי מקריא בקול">🔊</button><button type="button" class="gb" id="gAsk" title="לשאול את סַבָּבּוּקְלִי">❓</button></span></div>
+    
   </div>
 </section>
 
@@ -276,7 +253,6 @@ section.sv{margin-top:34px}
 
 <section class="sv faq" id="faq">
   <h2>שאלות ששואלים אותנו</h2>
-  <button type="button" class="btn btn-soft askBig" data-ask="faq">👓 יש לכם שאלה? שאלו את סַבָּבּוּקְלִי – הוא עונה בקול</button>
   <details><summary>אני לא מסתדר/ת עם מחשבים. זה בשבילי?</summary><p>בדיוק בשבילכם. אפשר פשוט ללחוץ על "כתבו לנו" ולשלוח בוואטסאפ תמונה ואת שם הנכד – ואנחנו נעשה את כל השאר. בן אדם אמיתי עונה, א׳–ה׳ 8:00–18:00.</p></details>
   <details><summary>איזו תמונה לשלוח?</summary><p>תמונה עדכנית וברורה, שהנכד מסתכל בה למצלמה, לבד בתמונה, בלי כובע, משקפי שמש או אוכל על הפנים. כשמעלים תמונה בעמוד, נבדוק אותה בשבילכם תוך שנייה – והיא לא יוצאת מהטלפון עד שאתם שולחים.</p></details>
   <details><summary>מה אם לא אאהב את הספר?</summary><p>אתם רואים את כל הספר לפני שמשלמים. לא אהבתם – לא משלמים. רוצים שינוי? טעות שלנו מתוקנת בחינם, ושינוי לפי העדפה אישית עולה 20 ₪ להזמנה.</p></details>
@@ -286,13 +262,6 @@ section.sv{margin-top:34px}
 </section>
 
 </main>
-<div class="ask" id="ask" hidden role="dialog" aria-modal="true" aria-labelledby="askT"><div class="askIn">
-  <div class="askH"><img src="../img/family/booqli.webp" alt="" width="54" height="54"><b id="askT">שאלו את סַבָּבּוּקְלִי</b><button type="button" class="x" id="askX" aria-label="סגירה">✕</button></div>
-  <div class="askA" id="askA" aria-live="polite">שלום! אני סַבָּבּוּקְלִי 👓 שאלו אותי כל שאלה על הספר – בכתב או בקול – ואני אענה.</div>
-  <div class="askQ" id="askQ"></div>
-  <form class="askF" id="askF"><input id="askI" type="text" placeholder="למשל: כמה זה עולה?" autocomplete="off" aria-label="השאלה שלכם"><button type="button" class="gb" id="askMic" title="לשאול בקול" hidden>🎤</button><button type="submit" class="btn btn-main">לשאול</button></form>
-  <a class="btn btn-wa js-wa-sv" href="#" target="_blank" rel="noopener" data-where="ask" style="justify-content:center;margin-top:8px">💬 מעדיפים בן אדם? כתבו לנו בוואטסאפ</a>
-</div></div>
 <div class="float"><a class="btn btn-main" href="#books" data-ev="float_books">📚 לבחור ספר</a><a class="btn btn-wa js-wa-sv" href="#" target="_blank" rel="noopener" data-where="float">💬 וואטסאפ</a></div>
 <footer class="foot">
   <div class="wrap">
@@ -426,14 +395,29 @@ function todos(){
   ITEMS.forEach((it, i) => {
     const el = document.querySelector(`.item[data-k="${it.k}"]`); if (!el) return;
     const b = book(it.book), p = "ספר " + (i + 1) + ": ", g = many ? "ספר " + (i + 1) + " – " : "", who = it.name.trim() || "הנכד/ה";
-    if (!b) t.push([p + "לבחור ספר", el.querySelector("[data-f=book]").closest(".fl"), g + "בוחרים איזה ספר 📚"]);
-    else if (it.ver === "") t.push([p + "נכד או נכדה", el.querySelector("[data-f=ver]").closest(".fl"), g + "נכד או נכדה? לוחצים על אחד 👦👧"]);
-    if (!it.name.trim()) t.push([p + "השם", el.querySelector("[data-f=name]"), g + "כותבים את השם שיופיע בספר ✍️"]);
-    if (!it.file) t.push([p + "תמונה", el.querySelector(".pick"), g + "מעלים תמונה של " + who + " 📷"]);
-    else ["c1", "c2", "c3"].forEach(c => { if (!it[c]) t.push([p + "לסמן את 3 הבדיקות של התמונה", el.querySelector(`[data-f=${c}]`).closest("label"), g + "מסתכלים בתמונה ומסמנים ✔️ מה שנכון"]); });
+    if (!b) t.push([p + "לבחור ספר", el.querySelector("[data-f=book]").closest(".fl"), "בוחרים ספר 📚"]);
+    else if (it.ver === "") t.push([p + "נכד או נכדה", el.querySelector("[data-f=ver]").closest(".fl"), "נכד או נכדה?"]);
+    if (!it.name.trim()) t.push([p + "השם", el.querySelector("[data-f=name]"), "איך קוראים ל" + (it.ver !== "" && verOpts(b).find(v => String(v[0]) === String(it.ver)) && verOpts(b).find(v => String(v[0]) === String(it.ver))[1] === "נכדה" ? "נכדה" : "נכד") + "? ✍️"]);
+    if (!it.file) t.push([p + "תמונה", el.querySelector(".pick"), "עכשיו תמונה של " + who + " 📷"]);
+    else ["c1", "c2", "c3"].forEach(c => { if (!it[c]) t.push([p + "לסמן את 3 הבדיקות של התמונה", el.querySelector(`[data-f=${c}]`).closest("label"), "מסמנים מה שנכון ✔️"]); });
   });
-  if (!$("consent").checked) t.push(["לסמן את האישור", document.querySelector(".consent"), "מסמנים ✔️ את האישור בתיבה הצהובה 💛"]);
+  if (!$("consent").checked) t.push(["לסמן את האישור", document.querySelector(".consent"), "רק לסמן כאן ✔️"]);
   return t;
+}
+/* סַבָּבּוּקְלִי קופץ ליד הדבר הבא, עם מילה טובה ו"עוד כמה נשאר" */
+function sbHop(td){
+  let hop = $("hop");
+  if (!hop) { hop = document.createElement("div"); hop.id = "hop"; hop.className = "hop"; hop.setAttribute("aria-live", "polite"); hop.innerHTML = '<img src="../img/family/booqli.webp" alt="" width="38" height="38"><span id="hopTxt"></span>'; }
+  const left = new Set(td.map(x => x[0])).size; if (left > HOP_START) HOP_START = left;
+  const done = HOP_START - left;
+  const cheer = ["יופי!", "כל הכבוד!", "מצוין!", "איזה יופי!", "עוד קצת!"];
+  const target = td[0] ? td[0][1] : (SENT1 ? $("send2") : $("send1"));
+  let txt;
+  if (td[0]) txt = (done > 0 ? cheer[done % cheer.length] + " " : "") + td[0][2] + (left > 1 ? ` · עוד ${left}` : "");
+  else txt = SENT1 ? "ועכשיו התמונות 📷" : "מעולה! לוחצים כאן 💚";
+  hop.classList.toggle("ok", !td[0]);
+  if (target && target !== HOP_AT) { HOP_AT = target; target.parentNode.insertBefore(hop, target); hop.style.animation = "none"; void hop.offsetWidth; hop.style.animation = ""; }
+  $("hopTxt").textContent = txt;
 }
 /* "כל ספר נוסף – המחיר יורד": המחיר לספר עכשיו, ובכמה ספרים הוא יורד בפעם הבאה */
 function moreTip(n){
@@ -445,7 +429,7 @@ function moreTip(n){
   return `${add === 1 ? "ספר אחד נוסף" : add + " ספרים נוספים"} לנכד/ה נוסף/ת – וכל ספר בהזמנה יורד מ-${ils(now)} ל-${ils(nw)}. כדאי לקנות לכל הנכדים ביחד!`;
 }
 function missing(){ return [...new Set(todos().map(x => x[0]))]; }
-let ORDER = "", SENT1 = false, GUIDE = null, SAY_ON = false, LAST_SAID = "";
+let ORDER = "", SENT1 = false, HOP_AT = null, HOP_START = 0;
 function update(){
   const n = ITEMS.filter(x => x.book).length;
   if (n) { const tot = ITEMS.filter(x => x.book).reduce((s, x) => s + priceOf(n, x.cover), 0);
@@ -455,19 +439,12 @@ function update(){
   const td = todos(), m = [...new Set(td.map(x => x[0]))];
   document.querySelectorAll(".todo").forEach(e => e.classList.remove("todo", "now"));
   td.forEach((x, i) => { if (x[1]) x[1].classList.add("todo"); if (!i && x[1]) x[1].classList.add("now"); });
-  GUIDE = td[0] ? td[0][1] : (SENT1 ? $("send2") : $("send1"));
-  $("guideTxt").textContent = td[0] ? td[0][2] : SENT1 ? "שלב 2: לוחצים על הכפתור הוורוד ושולחים את התמונות 📷" : "הכל מוכן! לוחצים על הכפתור הירוק 💬" + (ITEMS.length < MAX ? " · או עוד ספר לנכד נוסף – והמחיר לכל ספר יורד 💰" : "");
-  $("guide").classList.toggle("ok", !td.length);
-  const gt = $("guideTxt").textContent; if (SAY_ON && gt !== LAST_SAID) { LAST_SAID = gt; say(gt); }
+  sbHop(td);
   $("send1").disabled = !!m.length;
   $("send2").disabled = !SENT1 || !!m.length;
   $("need").textContent = m.length ? "כדי לשלוח חסר: " + m.slice(0, 4).join(" · ") + (m.length > 4 ? " ועוד" : "") : "";
 }
 $("consent").addEventListener("change", update);
-/* לחיצה על סַבָּבּוּקְלִי – קופצים בדיוק למה שצריך עכשיו */
-$("gmain").onclick = () => { const e = GUIDE; if (!e) return; e.scrollIntoView({behavior: "smooth", block: "center"});
-  const f = e.matches("input,select,button") ? e : e.querySelector("select,input:not([type=file]),textarea");
-  setTimeout(() => { if (f && !f.disabled) f.focus({preventScroll: true}); }, 450); ev("savta-guide", ($("guideTxt").textContent || "").slice(0, 30)); };
 
 /* שלב 1: הודעה עם כל הפרטים */
 function message(){
@@ -509,91 +486,6 @@ $("shareApp").onclick = () => {
 };
 document.querySelectorAll("[data-ev]").forEach(a => a.addEventListener("click", () => ev("savta-click", a.dataset.ev)));
 
-
-/* ===== סַבָּבּוּקְלִי מדבר ועונה (3.11.2026) =====
-   קול: הקול בעברית שכבר יש בטלפון/במחשב (speechSynthesis) – חינם, בלי שרת. מעדיפים קול גבר אם יש
-   (למשל Asaf / Avri של מיקרוסופט), ואם אין – מנמיכים קצת את הקול. תשובות: מאגר קבוע (SB_KB) + השאלות
-   הנפוצות שבעמוד; התאמה לפי מילות מפתח, בלי לשלוח את השאלה לשום מקום. */
-const SB_KB = [
-  {k:"מחיר עולה עלות כמה כסף שקל זול יקר תשלום", a:() => `ספר אחד עולה 149 ₪ בכריכה קשה, או 132 ₪ בכריכה רכה. וכאן הסוד של סבא: ככל שמזמינים יותר ספרים – המחיר לכל ספר יורד. כבר בשני ספרים – 123 ₪ לספר, ובשמונה ספרים ומעלה – 83 ₪ לספר בכריכה קשה. משלוח עד הבית 40 ₪, או לנקודת חלוקה 18 ₪.`},
-  {k:"עוד נכד נכדים שני שניים שלושה הנחה יותר ביחד אחים אחיות נכדות", a:() => `כדאי מאוד לקנות לכמה נכדים ביחד! בהזמנה אחת אפשר עד 10 ספרים, לכל נכד ספר משלו, וכל ספר נוסף מוריד את המחיר של כל הספרים בהזמנה. לוחצים על "עוד ספר לנכד נוסף" בטופס.`},
-  {k:"מגיע יגיע מגיעים להגיע זמן משלוח מתי ימים אספקה דואר הביתה", a:() => `הספר מגיע תוך 7 עד 14 ימי עסקים מהתשלום – עד הבית ב-40 ₪, או לנקודת חלוקה ב-18 ₪. יש אירוע? כתבו לנו את התאריך בוואטסאפ, ונעזור לתכנן בזמן.`},
-  {k:"תמונה צילום איזו לצלם פנים כובע משקפיים", a:() => `שולחים תמונה עדכנית וברורה: הנכד מסתכל למצלמה, לבד בתמונה, בלי כובע, בלי משקפי שמש ובלי אוכל על הפנים. כשמעלים תמונה בטופס, אני בודק אותה בשבילכם, והיא לא יוצאת מהטלפון עד שאתם שולחים.`},
-  {k:"כתב כתבה סופרת סופר מחבר שמש צור מנוקד ניקוד חרוזים חרוז ערוך", a:() => `את כל הספרים כתבה שמש צור, הסופרת הראשית של BOOQLI. כל ספר ערוך, מנוקד ואפילו בחרוזים – נעים מאוד להקריא לנכדים.`},
-  {k:"כריכה קשה רכה דפים הדפסה מודפס איכות איכותי", a:() => `יש כריכה קשה איכותית – 149 ₪ לספר אחד – או כריכה רכה – 132 ₪. הספר מודפס ומגיע עד הבית. בוחרים את הכריכה בטופס, לכל ספר בנפרד.`},
-  {k:"לא אוהב אהבתי אוהבים שינוי לתקן טעות החזר", a:() => `אתם רואים את כל הספר לפני שמשלמים. לא אהבתם – לא משלמים. טעות שלנו מתוקנת בחינם, ושינוי לפי העדפה אישית עולה 20 ₪ להזמנה.`},
-  {k:"משלמים איך לשלם אשראי ביט תשלום מתי", a:() => `משלמים רק אחרי שרואים את כל הספר ואוהבים. אז שולחים לכם בוואטסאפ קישור לתשלום באשראי או בביט.`},
-  {k:"עובד שלבים להזמין הזמנה מתחילים מזמינים", a:() => `זה פשוט: בוחרים ספר, כותבים את השם של הנכד והקדשה, ומעלים תמונה. לוחצים על הכפתור הירוק – ונפתחת שיחת וואטסאפ עם בן אדם אמיתי. אנחנו מכינים את הספר, אתם רואים את כולו, ומשלמים רק אם אוהבים.`},
-  {k:"מחשב טכנולוגיה מסתדר קשה לא יודע עזרה וואטסאפ בן אדם", a:() => `בדיוק בשבילכם! אפשר פשוט ללחוץ על הכפתור הירוק "כתבו לנו", ולשלוח בוואטסאפ תמונה ואת שם הנכד. בן אדם אמיתי עונה, ראשון עד חמישי, משמונה בבוקר עד שש בערב.`},
-  {k:"פרטיות תמונה נשמרת נמחקת בטוח פרסום", a:() => `התמונה משמשת רק ליצירת האיורים של הספר. היא לא משמשת לפרסום, ונמחקת אצלנו כשלושה חודשים אחרי סיום ההזמנה.`},
-  {k:"אפליקציה מתנה משחקים אינטרנט טלפון ילדים", a:() => `עם הספר יש גם מתנה: אפליקציה בטוחה לילדים עם המון משחקים ותכנים בחינם, שעובדת גם בלי אינטרנט. אפשר לשלוח אותה להורים כבר עכשיו.`},
-  {k:"הקדשה הקדשות ברכה מילים", a:() => `ההקדשה היא מכם, הסבים – כמה מילים מהלב שיופיעו בספר. אפשר לכתוב אותה בטופס, או לשלוח לנו אחר כך בוואטסאפ.`},
-  {k:"לבחור גיל גילאי מתאים תינוק תינוקת קטן קטנה בחירה", a:() => `לכל גיל יש ספר: "הספר הראשון שלי" לקטנטנים עד גיל שנתיים, "הולך לגן" לפני הגן, "עולה לכיתה א'", "ילד יום הולדת" ליום ההולדת, ועוד הרפתקאות. לוחצים "לקרוא" ליד כל ספר – ואפשר לדפדף בכולו.`},
-  {k:"נכדה בת בן נכד גרסה ילדה ילד", a:() => `לכל ספר יש גרסה לנכד וגרסה לנכדה, ובוחרים את זה בטופס. בספר הנכד או הנכדה הם הגיבורים, עם השם שלהם.`},
-  {k:"עכשיו הבא צעד לעשות עושים", a:() => $("guideTxt").textContent},
-];
-const sbNorm = t => String(t || "").replace(/[֑-ׇ]/g, "").replace(/[^א-תa-z0-9\s]/gi, " ").toLowerCase();
-const SB_STOP = new Set("מה זה זו יש לי לך את אני אתה את הוא היא של על עם אם איך אפשר גם כל או כן רק עוד לנו שלי שלו ספר ספרים הספר הספרים בספר כמה מי מתי איזה איזו למה האם".split(" "));
-const sbToks = t => sbNorm(t).split(/\s+/).filter(w => w.length > 1 && !SB_STOP.has(w)).flatMap(w => { const x = w.length > 3 && /^[והבלמשכ]/.test(w) ? w.slice(1) : ""; return x && !SB_STOP.has(x) ? [w, x] : [w]; });
-function sbScore(qt, k){ let n = 0; k.split(/\s+/).filter(Boolean).forEach(kw => { if (SB_STOP.has(kw)) return;
-  if (qt.includes(kw)) n += 2; else if (kw.length > 2 && qt.some(w => w.length > 2 && w.startsWith(kw))) n += 1; }); return n; }
-function sbAnswer(q){
-  const qt = sbToks(q); if (!qt.length) return null;
-  let best = null, bs = 0;
-  SB_KB.forEach(e => { const sc = sbScore(qt, e.k); if (sc > bs) { bs = sc; best = e; } });
-  document.querySelectorAll("#faq details").forEach(d => { const sc = sbScore(qt, sbNorm(d.querySelector("summary").textContent)); if (sc > bs) { bs = sc; best = {a: () => d.querySelector("p").textContent}; } });
-  return bs >= 1 ? best.a() : null;
-}
-/* קול */
-let SB_VOICE = null;
-function sbPickVoice(){ const vs = (window.speechSynthesis && speechSynthesis.getVoices()) || []; const he = vs.filter(v => /^he|^iw/i.test(v.lang));
-  SB_VOICE = he.find(v => /asaf|avri|male|גבר|zvi|david/i.test(v.name) && !/female/i.test(v.name)) || he[0] || null; return SB_VOICE; }
-if (window.speechSynthesis) { sbPickVoice(); speechSynthesis.onvoiceschanged = sbPickVoice; }
-function say(text){
-  if (!window.speechSynthesis) return false;
-  const t = String(text).replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu, "").replace(/₪/g, " שקלים").replace(/\s+/g, " ").trim(); if (!t) return false;
-  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); const v = SB_VOICE || sbPickVoice();
-  u.lang = "he-IL"; if (v) u.voice = v;
-  const male = v && /asaf|avri|male|zvi|david/i.test(v.name);
-  u.pitch = male ? .9 : .55; u.rate = .9;
-  u.onstart = () => $("gSay").classList.add("on"); u.onend = u.onerror = () => $("gSay").classList.remove("on");
-  speechSynthesis.speak(u); return true;
-}
-try { SAY_ON = localStorage.getItem("sb_say") === "1"; } catch (e) {}
-$("gSay").setAttribute("aria-pressed", String(SAY_ON));
-$("gSay").onclick = () => { SAY_ON = !SAY_ON; $("gSay").setAttribute("aria-pressed", String(SAY_ON)); try { localStorage.setItem("sb_say", SAY_ON ? "1" : "0"); } catch (e) {}
-  if (SAY_ON) { LAST_SAID = $("guideTxt").textContent; if (!say("שלום, אני סבא בּוּקְלִי. " + LAST_SAID)) alert("בדפדפן הזה אין הקראה בקול 🙁 – אפשר לנסות בכרום או בספארי."); }
-  else if (window.speechSynthesis) speechSynthesis.cancel();
-  ev("savta-say", SAY_ON ? "on" : "off"); };
-/* חלון השאלות */
-const SB_CHIPS = ["כמה זה עולה?", "ואם יש לי עוד נכד?", "מתי זה מגיע?", "איזו תמונה לשלוח?", "מי כתב את הספרים?", "איך משלמים?", "ואם לא אאהב?", "מה עושים עכשיו?"];
-$("askQ").innerHTML = SB_CHIPS.map(q => `<button type="button">${q}</button>`).join("");
-function sbOpen(src){ $("ask").hidden = false; document.body.style.overflow = "hidden"; ev("savta-ask-open", src || ""); setTimeout(() => $("askI").focus({preventScroll: true}), 50); }
-function sbClose(){ $("ask").hidden = true; document.body.style.overflow = ""; if (window.speechSynthesis) speechSynthesis.cancel(); }
-function sbAsk(q){
-  q = String(q || "").trim(); if (!q) return;
-  const a = sbAnswer(q);
-  const txt = a || "אוי, את זה סבא עוד לא יודע לענות 🙂 כתבו לנו בוואטסאפ – בן אדם אמיתי יענה לכם, ראשון עד חמישי, משמונה עד שש.";
-  $("askA").innerHTML = `<small style="display:block;color:var(--mute);font-weight:800">שאלתם: ${esc(q)}</small>${esc(txt)}`;
-  say(txt); ev(a ? "savta-ask" : "savta-ask-miss", q.slice(0, 40)); $("askI").value = "";
-}
-$("gAsk").onclick = () => sbOpen("guide");
-document.querySelectorAll("[data-ask]").forEach(b => b.onclick = () => sbOpen(b.dataset.ask));
-$("askX").onclick = sbClose;
-$("ask").addEventListener("click", e => { if (e.target === $("ask")) sbClose(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("ask").hidden) sbClose(); });
-$("askQ").addEventListener("click", e => { const b = e.target.closest("button"); if (b) sbAsk(b.textContent); });
-$("askF").onsubmit = e => { e.preventDefault(); sbAsk($("askI").value); };
-/* לשאול בקול – רק בדפדפנים שיודעים (בעיקר כרום) */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (SR) { $("askMic").hidden = false; $("askMic").onclick = () => {
-  try { const r = new SR(); r.lang = "he-IL"; r.interimResults = false; r.maxAlternatives = 1;
-    $("askMic").classList.add("on"); $("askA").textContent = "🎤 סבא מקשיב… שאלו עכשיו";
-    r.onresult = ev2 => { const q = ev2.results[0][0].transcript; $("askI").value = q; sbAsk(q); };
-    r.onend = () => $("askMic").classList.remove("on");
-    r.onerror = () => { $("askMic").classList.remove("on"); $("askA").textContent = "לא שמעתי טוב 🙂 נסו שוב, או כתבו את השאלה."; };
-    r.start(); ev("savta-ask-mic", "start");
-  } catch (e) { $("askMic").classList.remove("on"); } }; }
 
 /* ?book=<id> – קישור ישר לספר מסוים (למשל מכל סרטון).
    utm_content של מודעה גובר על book (במטא הכתובת ננעלת בשכפול מודעה, אבל utm_content נשמר לכל מודעה) */
