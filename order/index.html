@@ -818,7 +818,7 @@ function refresh(){
     ["איפה אנחנו", "<b>" + esc(statusText()) + "</b>"],
     ["הגן", (esc(gan()) || "<span class='wait'>מלאו למעלה</span>") + (S.name ? " · " + esc(S.name) : "")],
     ["הזמנה", b + " ספרים · " + COVER[S.cover] + (t ? " · " + ils(t) : "") + ' <button type="button" class="chg" data-chg>✏️ לשנות כמות / כריכה</button>'],
-    ["מסלול", S.route === "site" ? "🛒 לבד באתר · עוד 5% הנחה" + (t ? " → " + ils(t * (1 - DISCOUNT)) : "") : S.route === "drive" ? "📁 במרוכז בדרייב" : "<span class='wait'>עוד לא נבחר (שלב 2)</span>"]
+    ["מסלול", S.route === "site" ? "🛒 לבד באתר · עוד 5% הנחה" + (t ? " → " + ils(t * (1 - DISCOUNT)) + " + משלוח " + SHIP + " ₪ (או איסוף עצמי)" : "") : S.route === "drive" ? "📁 במרוכז בדרייב" : "<span class='wait'>עוד לא נבחר (שלב 2)</span>"]
   ];
   if (S.route === "drive") rows.push(
     ["ספר/ים", esc(topicNames()) || "<span class='wait'>עוד לא נבחר</span>"],
