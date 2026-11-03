@@ -140,7 +140,7 @@
       BODY.innerHTML = '<div class="gm-center"><div class="gm-row" style="justify-content:center"><button type="button" class="gm-btn big" id="iGo">🎉 מוכנים! מתחילים</button>' +
         (cont ? '<button type="button" class="gm-btn sec" id="iCont">↩️ להמשיך מאיפה שעצרנו</button>' : "") + '</div>' +
         '<p style="color:#6b5a66;font-size:.8em">טיפ: כפתור "⛶ מסך מלא" למעלה מתאים להקרנה. הגננת מקלידה, הילדים עונים בקול.</p></div>';
-      $("iGo").onclick = function(){ var g = S.g; S = fresh(); S.g = g; GM.sound.pop(); siteEvent("gm-start", "new"); go("topic"); };
+      $("iGo").onclick = function(){ var g = S.g; S = fresh(); S.g = g; GM.pickVoice(); GM.sound.pop(); siteEvent("gm-start", "new"); go("topic"); };
       if (cont) $("iCont").onclick = function(){ S = d; siteEvent("gm-start", "continue"); go(S.step === "build" || S.step === "play" ? "build" : S.step); };
     },
 
@@ -503,7 +503,7 @@
   }
 
   /* ---------- כלים ---------- */
-  function voiceUi(){ var b = $("voiceBtn"); b.classList.toggle("off", !GM.voice()); b.setAttribute("aria-pressed", GM.voice()); }
+  function voiceUi(){ var b = $("voiceBtn"); b.classList.toggle("off", !GM.voice()); b.setAttribute("aria-pressed", GM.voice()); b.title = "הקול של סבאבוקלי" + (GM.voiceName() ? ": " + GM.voiceName() : ""); }
   $("voiceBtn").onclick = function(){ GM.setVoice(!GM.voice()); voiceUi(); };
   $("fullBtn").onclick = function(){
     var st = $("studio");

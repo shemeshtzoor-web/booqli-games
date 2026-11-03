@@ -29,6 +29,20 @@ window.GM = (function(){
   function setVoice(on){ voiceOn = !!on; try { localStorage.setItem("booqli_gm_voice", on ? "1" : "0"); } catch (e) {} if (!on) stop(); }
   function stop(){ try { speechSynthesis.cancel(); } catch (e) {} }
   // מחזיר Promise שנגמר כשסבאבוקלי סיים לדבר (או אחרי זמן סביר, אם אין קול במכשיר)
+  /* (3.11.2026, שמש) סבאבוקלי מדבר בקול של גבר. אם יש במכשיר כמה קולות גבר בעברית – נבחר אחד באקראי
+     בכל משחק חדש (ונשאר אותו קול לאורך המשחק). אם אין במכשיר קול גבר בעברית (למשל אייפון/מק – רק "כרמית"),
+     מורידים את גובה הקול כדי שיישמע עמוק יותר. */
+  var MALE = /asaf|avri|ariel|david|male|\bm\d|גבר/i, FEMALE = /female|carmit|hila|hedva|zohar|woman|\bf\d|אישה/i;
+  var VOICE = null, VOICE_MALE = false;
+  function heVoices(){ try { return speechSynthesis.getVoices().filter(function(v){ return /^(he|iw)/i.test(v.lang); }); } catch (e) { return []; } }
+  function pickVoice(){
+    var all = heVoices(); if (!all.length) { VOICE = null; return null; }
+    var men = all.filter(function(v){ return MALE.test(v.name) && !FEMALE.test(v.name); });
+    VOICE_MALE = men.length > 0;
+    VOICE = VOICE_MALE ? men[Math.floor(Math.random() * men.length)] : all[0];
+    return VOICE;
+  }
+  function voiceName(){ if (!VOICE) pickVoice(); return VOICE ? VOICE.name + (VOICE_MALE ? "" : " (מונמך)") : ""; }
   function say(text){
     return new Promise(function(done){
       var t = String(text || "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "").replace(/סבאבוקלי/g, SABA.spoken).trim();
@@ -37,15 +51,17 @@ window.GM = (function(){
       try {
         speechSynthesis.cancel();
         var u = new SpeechSynthesisUtterance(t);
-        u.lang = "he-IL"; u.rate = 0.92; u.pitch = 0.8;
-        var v = speechSynthesis.getVoices().filter(function(v){ return /^(he|iw)/i.test(v.lang); });
-        if (v.length) u.voice = v.filter(function(x){ return /male|asaf|avri/i.test(x.name) && !/female/i.test(x.name); })[0] || v[0];
+        if (!VOICE) pickVoice();
+        u.lang = "he-IL";
+        if (VOICE) u.voice = VOICE;
+        u.pitch = VOICE_MALE ? 0.9 : 0.5;   // בלי קול גבר – קול עמוק יותר
+        u.rate = VOICE_MALE ? 0.95 : 0.88;
         u.onend = function(){ clearTimeout(fallback); setTimeout(done, 150); };
         speechSynthesis.speak(u);
       } catch (e) {}
     });
   }
-  if (window.speechSynthesis) try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function(){}; } catch (e) {}
+  if (window.speechSynthesis) try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", function(){ if (!VOICE) pickVoice(); }); } catch (e) {}
 
   /* ---------- צלילים קטנים (נבנים בדפדפן, בלי קבצים) ---------- */
   var AC = null;
@@ -292,7 +308,7 @@ window.GM = (function(){
       (typeof sitePrintFooter === "function" ? sitePrintFooter("game-maker", "", logo || "../../img/logo.png") : "") + '</div>';
   }
 
-  return { SABA: SABA, TYPES: TYPES, esc: esc, shuffle: shuffle, pick: pick, say: say, stop: stop, setVoice: setVoice, voice: function(){ return voiceOn; },
+  return { SABA: SABA, TYPES: TYPES, esc: esc, shuffle: shuffle, pick: pick, say: say, stop: stop, pickVoice: pickVoice, voiceName: voiceName, setVoice: setVoice, voice: function(){ return voiceOn; },
     sound: sound, confetti: confetti, guessEmoji: guessEmoji, PICK_EMOJI: PICK_EMOJI, kidName: kidName, clean: clean,
     encode: encode, decode: decode, sanitize: sanitize, play: play, summary: summary };
 })();
