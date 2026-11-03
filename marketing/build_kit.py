@@ -478,6 +478,15 @@ GUIDE = [
    "לא לכתוב \"בלי הרשמה\" / \"בלי פרסומות\" – רק \"אתר בטוח להורים ולילדים\"."]},
 ]
 
+# ===================== כלל קבוע (שמש, 3.11.2026): בכל הודעה לקבוצות וואטסאפ – "עזרו לנו לגדול" =====================
+GROW = "🙏 *עזרו לנו לגדול – הזמינו חברים לקבוצה* 💕"
+def add_grow(txt):
+    if not txt or "עזרו לנו לגדול" in txt: return txt
+    return txt.rstrip() + "\n\n" + GROW + ("" if "{GROUP}" in txt else "\n{GROUP}")
+for _t in T:
+    for _k in ("wa", "share"):
+        if _t.get(_k): _t[_k] = add_grow(_t[_k])
+
 data = {"version":VERSION,"page":[{"date":a,"topic":b,"m":c,"t":d,"n":e} for a,b,c,d,e in PAGE],"guide":GUIDE,"ideasSeed":IDEAS_SEED,"siteSnapshot":site_snapshot(),"site":SITE,"group":GROUP,"topics":T,"campaigns":CAMPAIGNS,"plan":P,
         "groups":{"wa":{"WA1":"קבוצת העדכונים (שלי)","WA2":"קבוצת וואטסאפ 2","WA3":"קבוצת וואטסאפ 3"},
                   "fb":{str(i):"קבוצת פייסבוק %d"%i for i in range(1,11)}}}
