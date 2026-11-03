@@ -136,6 +136,15 @@ section{margin-top:36px}
 .faq details[open] summary::before{content:"－"}
 .faq details p{margin:0;padding:0 16px 14px;color:var(--muted)}
 
+.extra{text-align:center}
+.extra h2{font-size:clamp(25px,4.6vw,32px);color:var(--magenta)}
+.extra p{margin:8px auto 0;max-width:620px}
+.extra .tags{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.extra .tags li{background:var(--mint);border-radius:999px;padding:6px 14px;font-weight:700;font-size:16.5px}
+.extra .price-line{margin-top:16px;font-size:20px}
+.extra .price-line b{font-family:Fredoka,sans-serif;font-size:40px;color:var(--magenta)}
+.tips{background:linear-gradient(135deg,#fff,var(--mint))}
+.btn-wa-big{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:15px 26px;font-size:19px;display:inline-flex;gap:8px;margin-top:16px;box-shadow:0 4px 0 #13773A}
 .end{background:linear-gradient(135deg,var(--sage-deep),var(--sage));color:#fff;border-radius:26px;padding:26px 20px;text-align:center}
 .end h2{font-size:clamp(26px,5vw,35px)}
 .end p{margin:8px 0 0;font-size:18px}
@@ -373,6 +382,27 @@ section{margin-top:36px}
   </div>
 </section>
 
+<section id="consult">
+  <div class="card extra">
+    <h2>🎯 ייעוץ אישי בזום</h2>
+    <p>רוצים עזרה אישית בנושא אחד? שעת ייעוץ בזום, אחד על אחד, בכל אחד מנושאי הקורס:</p>
+    <ul class="tags">
+      <li>📜 מכתב יד לטקסט מוכן</li><li>🎨 איורים עם בינה מלאכותית</li><li>📐 עריכה ועימוד</li>
+      <li>🖨️ הדפסה</li><li>🌐 דף נחיתה</li><li>📣 קמפיין ושיווק</li>
+    </ul>
+    <div class="price-line"><b>450 ₪</b> לשעה, כולל מע"מ</div>
+    <a class="btn-main js-consult" target="_blank" rel="noopener">💬 לתיאום ייעוץ בוואטסאפ</a>
+  </div>
+</section>
+
+<section id="tips">
+  <div class="card extra tips">
+    <h2>💡 טיפים שוטפים לסופרים עצמאיים</h2>
+    <p>רוצים ליהנות מטיפים שוטפים על כתיבה, איורים, הדפסה ושיווק? הצטרפו לקבוצת העדכונים שלנו בוואטסאפ, בחינם.</p>
+    <a class="btn-wa-big js-tips" href="https://chat.whatsapp.com/FIktZ8VpAIy2FTegAndOKE" target="_blank" rel="noopener">💬 להצטרפות לקבוצה</a>
+  </div>
+</section>
+
 <section class="faq">
   <div class="sec-h"><h2>שאלות</h2></div>
   <details><summary>כתב היד שלי כתוב על נייר. זה בסדר?</summary><p>כן. מצלמים או סורקים את הדפים בטלפון, והבינה המלאכותית מקלידה את הטקסט בשבילכם. מראים איך במפגש הראשון.</p></details>
@@ -386,6 +416,7 @@ section{margin-top:36px}
   <details><summary>מתי הספר יוצא לאור?</summary><p>במפגש הרביעי שולחים את הספר לדפוס, ואפשר להדפיס דרכנו במחיר מוזל משמעותית. מפגש 7, הצגת התוצרים, נקבע כשהספרים חוזרים מהדפוס.</p></details>
   <details><summary>איך נרשמים?</summary><p>לוחצים על כפתור הוואטסאפ ושולחים הודעה. מקבלים את כל הפרטים, והמקום נשמר עם התשלום: בביט, בפייבוקס, באשראי או בהעברה בנקאית.</p></details>
   <details><summary>אילו ספרים אפשר להוציא לאור?</summary><p>ספר ילדים, ספר זיכרונות, סיפור משפחתי או חיבור שכתבתם. כל השלבים בקורס מתאימים לכולם, והחלקים של חרוזים ואיורים מיועדים בעיקר לספרי ילדים.</p></details>
+  <details><summary>אפשר לקבל עזרה אישית בלי הקורס?</summary><p>כן. יש שעת ייעוץ אישי בזום, בכל אחד מנושאי הקורס, ב-450 ₪ לשעה כולל מע"מ. מתאמים בוואטסאפ.</p></details>
   <details><summary>יש קורס המשך?</summary><p>ייתכן שיהיה קורס המשך, בתשלום נוסף, למי שירצה להעמיק.</p></details>
   <details><summary>ומה אם אצטרך לבטל?</summary><p>אפשר לבטל בכל שלב, גם במהלך הקורס. מקבלים בחזרה את החלק היחסי של המפגשים שעוד לא התקיימו, פחות דמי ביטול של 5% (49.50 ₪). אם הקורס לא נפתח, נדחה או בוטל על ידינו – החזר מלא.</p></details>
 </section>
@@ -441,6 +472,11 @@ document.querySelectorAll(".js-reg").forEach(a => {
   a.addEventListener("click", () => siteEvent("course-reg", where + "-" + src));
 });
 
+document.querySelectorAll(".js-consult").forEach(a => {
+  a.href = "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent("היי שמש, אשמח לתאם שעת ייעוץ אישי בזום 🎯\nשם: \nבאיזה נושא: \n\n(הגעתי מ: " + src + ")");
+  a.addEventListener("click", () => siteEvent("course-consult", src));
+});
+document.querySelectorAll(".js-tips").forEach(a => a.addEventListener("click", () => siteEvent("course-tips-group", src)));
 const sticky = document.getElementById("sticky"), hero = document.querySelector(".hero .btn-main"), endBox = document.querySelector(".end");
 function upd(){
   const h = hero.getBoundingClientRect().bottom < 0;
