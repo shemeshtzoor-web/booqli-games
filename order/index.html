@@ -34,6 +34,7 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .hello h1{font-size:clamp(30px,5.6vw,46px);color:var(--magenta);margin-top:12px}
 .hello p{color:var(--muted);margin-top:8px;font-size:18.5px}
 
+.sumh{margin:18px 6px -8px;font-size:16px;color:var(--sage-deep)}
 .sum{margin-top:18px;background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(78,133,118,.13);padding:16px 18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}
 .sum label{display:block;font-weight:800;font-size:14.5px;color:var(--sage-deep);margin-bottom:4px}
 .sum input,.sum select{width:100%;height:44px;border:2px solid var(--mint-2);border-radius:12px;padding:0 10px;font:700 17px Assistant,sans-serif;background:#fff;color:var(--ink)}
@@ -193,6 +194,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 .summ .ok{color:#23784A}
 .summ .wait{color:var(--muted);font-weight:600}
 .summ dd a{color:var(--magenta)}
+.summ .chg{background:none;border:0;color:var(--magenta);font:800 15px Assistant,sans-serif;text-decoration:underline;cursor:pointer;padding:0 6px}
 /* ספרים – קריאה בלבד */
 .bk .acts .rd{flex:1 1 40%}
 .bk.has{cursor:default}
@@ -275,7 +277,8 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <div><label for="fGan">שם הגן</label><input id="fGan" placeholder="למשל: גן רימון, רחובות"></div>
   <div><label for="fName">השם שלך</label><input id="fName" placeholder="גננת / ועד – שם פרטי"></div>
 </div>
-<div class="sum" aria-label="כמות וכריכה">
+<p class="sumh">✏️ <b>כמות וכריכה</b> – אפשר לשנות כאן בכל שלב (המחיר מתעדכן מיד)</p>
+<div class="sum" id="sumBox" aria-label="כמות וכריכה">
   <div><label for="fKids">כמה ילדים?</label><input id="fKids" type="number" min="1" max="999" inputmode="numeric"></div>
   <div><label for="fPer">ספרים לילד</label><select id="fPer"><option value="1">ספר אחד</option><option value="2">2 ספרים</option><option value="3">3 ספרים</option></select></div>
   <div><label for="fCover">כריכה</label><select id="fCover"><option value="staple">💜 רכה סיכות</option><option value="soft">💛 רכה (פיג'מה)</option><option value="hard">💗 קשה פרימיום</option></select></div>
@@ -814,7 +817,7 @@ function refresh(){
   const rows = [
     ["איפה אנחנו", "<b>" + esc(statusText()) + "</b>"],
     ["הגן", (esc(gan()) || "<span class='wait'>מלאו למעלה</span>") + (S.name ? " · " + esc(S.name) : "")],
-    ["הזמנה", b + " ספרים · " + COVER[S.cover] + (t ? " · " + ils(t) : "")],
+    ["הזמנה", b + " ספרים · " + COVER[S.cover] + (t ? " · " + ils(t) : "") + ' <button type="button" class="chg" data-chg>✏️ לשנות כמות / כריכה</button>'],
     ["מסלול", S.route === "site" ? "🛒 לבד באתר · עוד 5% הנחה" + (t ? " → " + ils(t * (1 - DISCOUNT)) : "") : S.route === "drive" ? "📁 במרוכז בדרייב" : "<span class='wait'>עוד לא נבחר (שלב 2)</span>"]
   ];
   if (S.route === "drive") rows.push(
@@ -829,6 +832,8 @@ function refresh(){
   if (S.route === "site") rows.push(["באתר", S.done.site ? `<span class="ok">✔️ עברנו לאתר ב-${S.done.site}</span>` : "<span class='wait'>○ עוד לא</span>"]);
   rows.push(["אישור הדפסה", ok("approve", "אושר ב-")]);
   $("summList").innerHTML = rows.map(r => `<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("");
+  const chg = $("summList").querySelector("[data-chg]");
+  if (chg) chg.onclick = () => { $("sumBox").scrollIntoView({ block: "center" }); setTimeout(() => $("fKids").focus(), 300); };
   /* התקדמות */
   const cur = curStep();
   $("prog").innerHTML = STEPS.filter(s => s[0] !== "drive" || S.route === "drive").map(s => `<a href="#s-${s[0]}" class="${stepDone(s[0]) ? "done" : s === cur ? "cur" : ""}">${s[1]}</a>`).join("");
