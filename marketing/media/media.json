@@ -1,6 +1,11 @@
 {
- "version": "2026-11-03 15:00",
+ "version": "2026-11-03 21:12",
  "groups": [
+  {
+   "id": "game-maker",
+   "name": "🎙️ ממציאים משחק עם כל הגן",
+   "note": "סרטון 20 שנ' עם מוזיקה מקורית: בוחרים נושא → כל ילד אומר מילה → סבאבוקלי מגריל משחק → המרוץ. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי."
+  },
   {
    "id": "savta",
    "name": "💛 סבים – ספר אישי לנכדים",
@@ -125,6 +130,33 @@
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\n📖 \"עולה לכיתה א'\" – ספר אישי שהנכדה היא הגיבורה שלו, מתמונה אחת.\nהשאלות והחששות לפני העלייה לכיתה א' – בונה ביטחון לקראת ההתחלה הגדולה.\n\n✍️ כתוב בידי שמש צור, הסופרת הראשית של BOOQLI – ערוך, מנוקד ובחרוזים\n📚 כריכה קשה איכותית, עד הבית\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ, רואים את כל הספר לפני ומשלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציית משחקים חינמית ובטוחה לילדים – עובדת גם בלי אינטרנט\n\n👈 https://games.booqli.ai/savta/?book=class1&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=class1",
    "bytes": 2180570
+  },
+  {
+   "id": "game-maker-4x5",
+   "group": "game-maker",
+   "topic": "game-maker",
+   "title": "ממציאים משחק – 4:5",
+   "kind": "video",
+   "ratio": "4:5",
+   "file": "game-maker/booqli-game-maker-4x5.mp4",
+   "thumb": "game-maker/booqli-game-maker-4x5.jpg",
+   "date": "2026-11-03",
+   "text": "ערב טוב גננות 🌙 יש לכם משהו מקורי למחר? 🤩\n🎙️ ממציאים משחק עם כל הגן: כל ילד אומר מילה, וסבאבוקלי בונה מזה משחק אמיתי – 🏃 מרוץ · 🧺 תופסים · 🐍 נחש · 🎰 לוטו.\n📲 ובסוף שולחים להורים, והילדים ממשיכים לשחק בבית!\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/game-maker/?utm_source=facebook_group&utm_medium=post&utm_campaign=game-maker",
+   "slot": "game-maker:video",
+   "bytes": 2032209
+  },
+  {
+   "id": "game-maker-9x16",
+   "group": "game-maker",
+   "topic": "game-maker",
+   "title": "ממציאים משחק – 9:16 (סטורי)",
+   "kind": "video",
+   "ratio": "9:16",
+   "file": "game-maker/booqli-game-maker-9x16.mp4",
+   "thumb": "game-maker/booqli-game-maker-9x16.jpg",
+   "date": "2026-11-03",
+   "text": "ערב טוב גננות 🌙 יש לכם משהו מקורי למחר? 🤩\n🎙️ ממציאים משחק עם כל הגן: כל ילד אומר מילה, וסבאבוקלי בונה מזה משחק אמיתי – 🏃 מרוץ · 🧺 תופסים · 🐍 נחש · 🎰 לוטו.\n📲 ובסוף שולחים להורים, והילדים ממשיכים לשחק בבית!\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/game-maker/?utm_source=facebook_group&utm_medium=post&utm_campaign=game-maker",
+   "bytes": 2196564
   }
  ]
 }

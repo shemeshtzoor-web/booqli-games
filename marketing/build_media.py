@@ -9,6 +9,7 @@ slot = "<נושא>:video" או "<נושא>:image" – אם המשבצת של ה�
 import json, os, time
 HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.join(HERE, "media")
 GROUPS = [
+  {"id":"game-maker","name":"🎙️ ממציאים משחק עם כל הגן","note":"סרטון 20 שנ' עם מוזיקה מקורית: בוחרים נושא → כל ילד אומר מילה → סבאבוקלי מגריל משחק → המרוץ. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי."},
   {"id":"savta","name":"💛 סבים – ספר אישי לנכדים","note":"9 סרטונים 4:5 עם מוזיקה מקורית. כל סרטון מוביל לעמוד הסבים עם הספר שלו כבר בטופס (?book=), ונמדד בנפרד (utm_content).","link":"https://games.booqli.ai/savta/"},
 ]
 BOOKS = [("first","הספר הראשון שלי","הנכדים","הם הגיבורים"),("birthday","ילד/ת יום הולדת","הנכדה","היא הגיבורה"),("kinder","הולך/ת לגן","הנכדים","הם הגיבורים"),
@@ -36,6 +37,10 @@ def savta_text(bid, name, noun, hero):
     return "\n".join(savta_lines(bid, name, noun, hero)) + f"\n\n👈 {link}"
 ITEMS = [{"id":"savta-"+b, "group":"savta", "topic":"savta", "title":n, "kind":"video", "ratio":"4:5", "file":f"savta/booqli-savta-{b}-4x5.mp4",
           "thumb":f"savta/booqli-savta-{b}-4x5.jpg", "date":"2026-11-03", "text":savta_text(b, n, no, he)} for b, n, no, he in BOOKS]
+GM_TEXT = ("ערב טוב גננות 🌙 יש לכם משהו מקורי למחר? 🤩\n🎙️ ממציאים משחק עם כל הגן: כל ילד אומר מילה, וסבאבוקלי בונה מזה משחק אמיתי – 🏃 מרוץ · 🧺 תופסים · 🐍 נחש · 🎰 לוטו.\n"
+           "📲 ובסוף שולחים להורים, והילדים ממשיכים לשחק בבית!\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/game-maker/?utm_source=facebook_group&utm_medium=post&utm_campaign=game-maker")
+ITEMS += [{"id":"game-maker-4x5","group":"game-maker","topic":"game-maker","title":"ממציאים משחק – 4:5","kind":"video","ratio":"4:5","file":"game-maker/booqli-game-maker-4x5.mp4","thumb":"game-maker/booqli-game-maker-4x5.jpg","date":"2026-11-03","text":GM_TEXT,"slot":"game-maker:video"},
+          {"id":"game-maker-9x16","group":"game-maker","topic":"game-maker","title":"ממציאים משחק – 9:16 (סטורי)","kind":"video","ratio":"9:16","file":"game-maker/booqli-game-maker-9x16.mp4","thumb":"game-maker/booqli-game-maker-9x16.jpg","date":"2026-11-03","text":GM_TEXT}]
 for it in ITEMS:
     p = os.path.join(M, it["file"]); assert os.path.exists(p), p
     it["bytes"] = os.path.getsize(p)
