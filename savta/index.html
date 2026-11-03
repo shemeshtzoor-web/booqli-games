@@ -144,6 +144,9 @@ section.sv{margin-top:34px}
 .consent.todo{border-color:var(--pink)}
 .more{margin-top:12px;width:100%;background:#FFF8E6;border:2.5px dashed #F5B400;border-radius:18px;padding:12px 14px;font:inherit;font-weight:800;font-size:17px;color:var(--ink);text-align:start;cursor:pointer;line-height:1.45}
 .more u{color:var(--mag);white-space:nowrap}
+.dedb{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.dedb button{flex:1;min-width:140px;border:2px solid var(--pink);background:#FFF0F8;color:var(--mag);border-radius:999px;padding:9px 12px;font:800 16px Assistant,sans-serif;cursor:pointer}
+.dedchk{margin-top:6px}.dedchk:empty{display:none}
 /* סַבָּבּוּקְלִי – בועה קטנה שקופצת ליד הדבר הבא שצריך למלא, עם עידוד */
 .hop{display:flex;align-items:center;gap:6px;width:fit-content;max-width:100%;margin:10px 0 6px;background:#fff;border:2.5px solid var(--pink);border-radius:999px;padding:3px 14px 3px 4px;font-weight:800;font-size:16.5px;color:var(--mag);box-shadow:0 6px 16px rgba(193,54,113,.18);position:relative;animation:hopIn .45s cubic-bezier(.3,1.6,.5,1)}
 .hop img{width:38px;height:38px;object-fit:contain;flex:0 0 auto}
@@ -325,7 +328,8 @@ function itemHTML(it, i){
   <label class="fl">איזה ספר?<select data-f="book"><option value="">– בוחרים ספר –</option>${BOOKS.map(x => `<option value="${x.id}" ${x.id === it.book ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
   ${b ? `<div class="fl">למי?<div class="seg">${vs.map(([k, t]) => `<label><input type="radio" name="v${it.k}" data-f="ver" value="${k}" ${String(it.ver) === String(k) ? "checked" : ""}>${t === "נכד" ? "👦 נכד" : "👧 נכדה"}</label>`).join("")}</div></div>` : ""}
   <label class="fl">השם של ${b && vs.length === 1 && vs[0][1] === "נכדה" ? "הנכדה" : "הנכד/ה"} בספר<input type="text" data-f="name" value="${esc(it.name)}" maxlength="30" autocomplete="off" placeholder="למשל: נועה"></label>
-  <label class="fl">ההקדשה <small>(אפשר גם לכתוב לנו אחר כך)</small><textarea data-f="ded" maxlength="400" placeholder="למשל: לנועה האהובה, שתמיד תזכרי כמה סבא וסבתא אוהבים אותך 💛">${esc(it.ded)}</textarea></label>
+  <label class="fl">ההקדשה – מילים מהלב שלכם בתחילת הספר<textarea data-f="ded" maxlength="400" placeholder="למשל: לנועה האהובה, שתמיד תזכרי כמה סבא וסבתא אוהבים אותך 💛">${esc(it.ded)}</textarea></label>
+  <div class="dedb"><button type="button" data-ded="idea">✨ רעיון להקדשה</button><button type="button" data-ded="check">✔️ לבדוק את ההקדשה</button></div><ul class="chk dedchk" data-dedchk></ul>
   <div class="fl">כריכה<div class="seg"><label><input type="radio" name="c${it.k}" data-f="cover" value="hard" ${it.cover === "hard" ? "checked" : ""}>💗 כריכה קשה</label><label><input type="radio" name="c${it.k}" data-f="cover" value="soft" ${it.cover === "soft" ? "checked" : ""}>💛 כריכה רכה</label></div></div>
   <div class="photo"><label class="btn btn-soft pick">📷 ${it.file ? "להחליף תמונה" : "בוחרים תמונה של " + (it.name ? esc(it.name) : "הנכד/ה")}<input type="file" accept="image/*" data-f="file" hidden></label>
   ${it.file ? `<div class="pv"><img src="${it.url}" alt="התמונה שנבחרה"><ul class="chk">${c ? c.map(x => `<li class="${x[0] ? "ok" : "warn"}">${x[0] ? "✓" : "💡"} ${x[1]}</li>`).join("") : "<li>⏳ בודקים את התמונה…</li>"}</ul></div>
@@ -349,6 +353,41 @@ $("items").addEventListener("change", e => {
   if (f === "ver" || f === "cover") { it[f] = e.target.value; update(); return; }
   if (/^c[123]$/.test(f)) { it[f] = e.target.checked; update(); return; }
   if (f === "file" && e.target.files[0]) { const fl = e.target.files[0]; if (it.url) URL.revokeObjectURL(it.url); it.file = fl; it.url = URL.createObjectURL(fl); it.check = null; it.c1 = it.c2 = it.c3 = false; renderItems(); checkPhoto(it); ev("savta-photo", "pick"); }
+});
+/* הקדשה: רעיונות מוכנים (לפי נכד/נכדה והספר) + בדיקה בטלפון – בלי לשלוח לשום מקום */
+function dedGirl(it){ const b = book(it.book), v = b && verOpts(b).find(x => String(x[0]) === String(it.ver)); return v ? v[1] === "נכדה" : null; }
+function dedIdeas(it){
+  const N = it.name.trim() || "___", g = dedGirl(it), f = (m, w) => g ? w : m;
+  const L = [
+    `ל${N} ${f("האהוב", "האהובה")}, שתמיד ${f("תזכור", "תזכרי")} כמה סבא וסבתא אוהבים אותך 💛`,
+    `${N} ${f("היקר", "היקרה")}, הספר הזה כולו שלך – כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. באהבה גדולה, סבא וסבתא`,
+    `ל${N} שלנו, ${f("שתגדל", "שתגדלי")} עם חיוך, סקרנות ולב טוב. אוהבים אותך עד השמיים, סבא וסבתא`,
+    `${N} ${f("מתוק", "מתוקה")}, בכל פעם ${f("שתקרא", "שתקראי")} את הספר – ${f("תדע", "תדעי")} שסבא וסבתא תמיד לידך 💛`
+  ];
+  if (it.book === "birthday") L.unshift(`ל${N}, מזל טוב ליום ההולדת! שכל החלומות שלך יתגשמו. באהבה, סבא וסבתא 🎂`);
+  if (it.book === "class1") L.unshift(`ל${N}, ${f("תלמיד", "תלמידה")} של כיתה א'! ${f("שתלמד", "שתלמדי")} בשמחה ובאומץ. גאים בך, סבא וסבתא`);
+  if (it.book === "kinder") L.unshift(`ל${N}, שהגן יהיה מלא חברים, משחקים וחיוכים. אוהבים, סבא וסבתא`);
+  return L;
+}
+function dedCheck(it){
+  const d = it.ded.trim(), N = it.name.trim(), out = [];
+  if (!d) return [[0, "עוד לא כתבתם הקדשה – אפשר ללחוץ על ✨ ולקבל רעיון"]];
+  out.push(d.length < 12 ? [0, "קצרה מאוד – אולי עוד כמה מילים מהלב?"] : d.length > 300 ? [0, `ארוכה (${d.length} תווים) – עדיף עד 300, כדי שתיכנס יפה בדף`] : [1, "האורך מתאים לדף בספר"]);
+  if (N) out.push(d.replace(/[֑-ׇ]/g, "").includes(N.replace(/[֑-ׇ]/g, "")) ? [1, `השם ${N} מופיע בהקדשה`] : [0, `כדאי לכתוב בהקדשה את השם – ${N}`]);
+  out.push(/סבא|סבתא|סבתא'ל|סבתוש|סבאל|נונה|נונו|באבא|זיידה|סבים/.test(d) ? [1, "יש חתימה מכם"] : [0, "כדאי לחתום בסוף, למשל: סבא וסבתא"]);
+  if (/[a-z]/i.test(d)) out.push([0, "יש אותיות באנגלית – הספר בעברית, כדאי לבדוק"]);
+  if (/(.)\1{3,}|\s{2,}|\.\.\.\.+|!!!+/.test(d)) out.push([0, "יש רווחים או סימנים כפולים – כדאי לסדר"]);
+  if (/[א-ת][,.!?][א-ת]/.test(d)) out.push([0, "חסר רווח אחרי פסיק או נקודה"]);
+  const g = dedGirl(it); if (g !== null && N) { const bad = g ? /(האהוב |היקר |אתה |תזכור |מתוק |שתגדל |תדע )/.test(d + " ") : /(האהובה|היקרה|את הגיבורה|תזכרי|מתוקה|שתגדלי|תדעי)/.test(d); if (bad) out.push([0, `כדאי לבדוק זכר/נקבה – בחרתם ${g ? "נכדה" : "נכד"}`]); }
+  const good = out.every(o => o[0]);
+  out.unshift(good ? [1, "<b>הקדשה יפה! אפשר להמשיך 💛</b>"] : [1, "<b>יפה! כמה הצעות קטנות:</b>"]);
+  return out;
+}
+$("items").addEventListener("click", e => {
+  const b = e.target.closest("[data-ded]"); if (!b) return; const it = itemOf(b), el = b.closest(".item"); if (!it) return;
+  const ta = el.querySelector("[data-f=ded]"), ul = el.querySelector("[data-dedchk]");
+  if (b.dataset.ded === "idea") { const L = dedIdeas(it); it.dedI = ((it.dedI ?? -1) + 1) % L.length; it.ded = L[it.dedI]; ta.value = it.ded; ul.innerHTML = '<li class="ok">✨ רעיון ' + (it.dedI + 1) + " מתוך " + L.length + " – אפשר לשנות כל מילה, או ללחוץ שוב לרעיון אחר</li>"; update(); ev("savta-ded", "idea"); }
+  else { ul.innerHTML = dedCheck(it).map(x => `<li class="${x[0] ? "ok" : "warn"}">${x[0] ? "✓" : "💡"} ${x[1]}</li>`).join(""); ev("savta-ded", "check"); }
 });
 const itemOf = el => { const d = el.closest(".item"); return d && ITEMS.find(x => String(x.k) === d.dataset.k); };
 
@@ -398,6 +437,7 @@ function todos(){
     if (!b) t.push([p + "לבחור ספר", el.querySelector("[data-f=book]").closest(".fl"), "בוחרים ספר 📚"]);
     else if (it.ver === "") t.push([p + "נכד או נכדה", el.querySelector("[data-f=ver]").closest(".fl"), "נכד או נכדה?"]);
     if (!it.name.trim()) t.push([p + "השם", el.querySelector("[data-f=name]"), "איך קוראים ל" + (it.ver !== "" && verOpts(b).find(v => String(v[0]) === String(it.ver)) && verOpts(b).find(v => String(v[0]) === String(it.ver))[1] === "נכדה" ? "נכדה" : "נכד") + "? ✍️"]);
+    if (!it.ded.trim()) t.push([p + "הקדשה", el.querySelector("[data-f=ded]"), "כמה מילים מהלב להקדשה 💛"]);
     if (!it.file) t.push([p + "תמונה", el.querySelector(".pick"), "עכשיו תמונה של " + who + " 📷"]);
     else ["c1", "c2", "c3"].forEach(c => { if (!it[c]) t.push([p + "לסמן את 3 הבדיקות של התמונה", el.querySelector(`[data-f=${c}]`).closest("label"), "מסמנים מה שנכון ✔️"]); });
   });
@@ -451,7 +491,7 @@ function message(){
   if (!ORDER) ORDER = "סב-" + String(Math.floor(1000 + Math.random() * 9000));
   const n = ITEMS.length;
   const lines = ITEMS.map((it, i) => { const b = book(it.book), who = verOpts(b).find(v => String(v[0]) === String(it.ver));
-    return `📖 *ספר ${i + 1}:* ${b.name} (${who ? who[1] : ""}) · שם: *${it.name.trim()}* · ${it.cover === "soft" ? "כריכה רכה" : "כריכה קשה"}\n✍️ הקדשה: ${it.ded.trim() || "(נשלים בשיחה)"}\n📷 תמונה ${i + 1}`; });
+    return `📖 *ספר ${i + 1}:* ${b.name} (${who ? who[1] : ""}) · שם: *${it.name.trim()}* · ${it.cover === "soft" ? "כריכה רכה" : "כריכה קשה"}\n✍️ הקדשה: ${it.ded.trim()}\n📷 תמונה ${i + 1}`; });
   return `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${n} ${n === 1 ? "ספר" : "ספרים"}\n\n${lines.join("\n\n")}\n\n✓ אני ההורה של הילד/ה או שקיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI ליצירת איורים לספר בעזרת בינה מלאכותית, וקראתי ואני מסכים/ה לתקנון האתר (https://www.booqli.ai/he/terms-of-service) ולמדיניות הפרטיות (https://www.booqli.ai/he/privacy-policy).\n\nעכשיו אשלח את התמונות 📷\n(סבים${SRC ? " · " + SRC : ""})`;
 }
 $("send1").onclick = () => {
