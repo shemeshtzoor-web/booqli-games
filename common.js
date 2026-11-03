@@ -449,7 +449,7 @@ function siteCodeGate(){
    לא מופיע בדפי הדפסה (?sheet=). בדיקה: להוסיף לכתובת ?join=1 כדי לראות אותו תמיד. */
 window.SITE.joinPopup = { delayMs: 1500, againDays: 3 };
 /* עמודים רגועים (אזעקות): בלי חלונות קופצים – מי שנכנס באזעקה צריך את התוכן מיד */
-function siteCalmPage(){ return /\/(topics\/safety|course|kindergartens|order)\//.test(location.pathname); }
+function siteCalmPage(){ return /\/(topics\/safety|course|kindergartens|order|savta)\//.test(location.pathname); }
 function siteJoinPopup(){
   if (siteKidLock() || siteCalmPage()) return;
   var qs = location.search || "";
@@ -681,6 +681,7 @@ window.SITE.menu = [
     { ic: "🎒", t: "כל התכנים לכיתות", href: "/school/" } ] },
   { h: "🎁 מ-BOOQLI", items: [
     { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
+    { ic: "💛", t: "ספר אישי לנכדים (לסבים)", href: "/savta/" },
     { ic: "🎁", t: "מתנות וספקיות לגן", href: "/gifts/" },
     { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" },
     { ic: "✍️", t: "קורס: כותבים ספר ילדים", href: "/course/" },
