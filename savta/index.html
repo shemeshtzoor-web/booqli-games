@@ -62,8 +62,9 @@ section.sv{margin-top:34px}
 .steps span{display:block;color:var(--mute);font-size:16.5px;font-weight:700;line-height:1.4;margin-top:4px}
 /* ספרים */
 .books{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:16px}
-.book{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 6px 20px rgba(78,133,118,.13);display:flex;flex-direction:column}
-.book .img{background:#1a1420;aspect-ratio:1;display:block;border:0;padding:0;cursor:pointer}
+.book{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 6px 22px rgba(78,133,118,.12);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.book:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(78,133,118,.2)}
+.book .img{background:var(--mint);aspect-ratio:1;display:block;border:0;padding:0;cursor:pointer;overflow:hidden;width:100%}
 .book .img img{width:100%;height:100%;object-fit:cover;display:block}
 .book .t{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .book h3{font-family:Fredoka,Assistant,sans-serif;font-size:23px;line-height:1.15}
@@ -71,7 +72,9 @@ section.sv{margin-top:34px}
 .book .tag{display:inline-block;background:#FFF1C9;color:#8A5A00;border-radius:999px;padding:1px 10px;font-weight:800;font-size:14px}
 .book .row{display:flex;gap:6px;flex-wrap:wrap}
 .book .row button{flex:1;min-width:110px;border:0;border-radius:14px;padding:10px 8px;font:800 16.5px Assistant,sans-serif;cursor:pointer}
-.book .rd{background:var(--mint);color:#2F5F53}
+.book .reads{display:flex;gap:6px;flex-wrap:wrap}
+.book .reads button{flex:1;border:0;background:#FFE3F4;color:var(--mag);font:800 15px Assistant,sans-serif;border-radius:999px;padding:7px 10px;cursor:pointer}
+.book .reads button:hover{background:var(--pinkd);color:#fff}
 .book .want{background:var(--pinkd);color:#fff}
 /* הטופס */
 .form{margin-top:16px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 8px 30px rgba(78,133,118,.15);border-top:10px solid var(--pink)}
@@ -174,7 +177,7 @@ section.sv{margin-top:34px}
 
 <section class="sv" id="books">
   <h2>בחרו ספר לנכד או לנכדה</h2>
-  <p class="lead">לוחצים על הכריכה כדי לקרוא את כל הספר · "אני רוצה את הספר הזה" מוסיף אותו להזמנה</p>
+  <p class="lead">לוחצים "📖 לקרוא" כדי לדפדף בכל הספר · "אני רוצה את הספר הזה" מוסיף אותו להזמנה</p>
   <div class="books" id="bookList"></div>
 </section>
 
@@ -278,9 +281,9 @@ if (window.siteCarousel) { siteCarousel($("baBox"), {every: 3500, label: "לפנ
 /* הספרים */
 $("bookList").innerHTML = BOOKS.map(b => `<div class="book"><button type="button" class="img" data-read="${b.id}" aria-label="לקרוא את ${esc(b.name)}"><img src="${bqCover(b)}" alt="" loading="lazy" width="400" height="400"></button>
   <div class="t"><h3>${esc(b.name)}</h3>${GAME.includes(b.id) ? '<span><span class="tag">🎮 כולל משחק אישי</span></span>' : ""}<p>${esc(b.d)}</p>
-  <div class="row"><button type="button" class="rd" data-read="${b.id}">📖 לקרוא</button><button type="button" class="want" data-want="${b.id}">💛 אני רוצה את הספר הזה</button></div></div></div>`).join("");
+  <div class="reads">${b.v.map((v, i) => `<button type="button" data-read="${b.id}" data-ver="${i}">📖 לקרוא · ${esc(v[0])}</button>`).join("")}</div><div class="row"><button type="button" class="want" data-want="${b.id}">💛 אני רוצה את הספר הזה</button></div></div></div>`).join("");
 document.addEventListener("click", e => {
-  const r = e.target.closest("[data-read]"); if (r) { bqRead(r.dataset.read, 0); return; }
+  const r = e.target.closest("[data-read]"); if (r) { bqRead(r.dataset.read, +(r.dataset.ver || 0)); return; }
   const w = e.target.closest("[data-want]"); if (w) { want(w.dataset.want); }
 });
 
