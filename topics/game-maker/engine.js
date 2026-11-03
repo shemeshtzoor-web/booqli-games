@@ -2,11 +2,12 @@
    ממציאים משחק עם הגן – המנוע המשותף (3.11.2026)
    משמש גם את עמוד היצירה (topics/game-maker/) וגם את עמוד המשחק להורים (g/).
    המשחק כולו נשמר בתוך הקישור (אחרי #), דחוס עם lz-string (lib/). אין שרת ואין מאגר.
-   סוגי משחקים: q = חידון · m = זיכרון · w = מי אני?
+   סוגי משחקים: x = המשחק של הגן (מ-3.11.2026 – כל ילד אומר מילה או משפט, וסבאבוקלי בונה מזה משחק) · q = חידון · m = זיכרון · w = מי אני? (q/m/w – לקישורים ישנים)
    מבנה: {v:1, k, n:שם המשחק, tp:נושא, te:אימוג'י הנושא, g:שם הגן, d:תאריך, id:[{x,e}] הרעיונות, it:[...]}
      חידון: it = [{q:שאלה, a:תשובה נכונה, w:[תשובות לא נכונות], e}]
      זיכרון: it = [{x:מילה, e}]
      מי אני: it = [{x:התשובה, e, c:[רמזים]}]
+     המשחק של הגן: it = [{x:מה שהילד אמר, e}] – הסבבים נבנים בזמן המשחק (מה אמרנו על...? · איזו מילה חסרה? · זיכרון)
    ===================================================================== */
 window.GM = (function(){
   "use strict";
@@ -14,7 +15,8 @@ window.GM = (function(){
   var TYPES = {
     q: { ic: "❓", name: "חידון", sub: "סבאבוקלי שואל, וכל הגן עונה" },
     m: { ic: "🃏", name: "משחק זיכרון", sub: "הופכים קלפים ומוצאים זוגות" },
-    w: { ic: "🕵️", name: "מי אני?", sub: "רמזים, ומנחשים מי זה" }
+    w: { ic: "🕵️", name: "מי אני?", sub: "רמזים, ומנחשים מי זה" },
+    x: { ic: "🎲", name: "המשחק של הגן", sub: "כל ילד אמר רעיון, וסבאבוקלי בנה מזה משחק" }
   };
 
   /* ---------- עזרים ---------- */
@@ -161,15 +163,16 @@ window.GM = (function(){
     if (!g || typeof g !== "object" || !TYPES[g.k] || !Array.isArray(g.it)) return null;
     var out = { v: 1, k: g.k, n: clean(g.n, 60), tp: clean(g.tp, 40), te: clean(g.te, 8), g: clean(g.g, 40), d: clean(g.d, 10), id: [], it: [] };
     (Array.isArray(g.id) ? g.id : []).slice(0, 20).forEach(function(x){ if (x && x.x) out.id.push({ x: clean(x.x, 40), e: clean(x.e, 8) }); });
-    g.it.slice(0, 10).forEach(function(x){
+    g.it.slice(0, g.k === "x" ? 40 : 10).forEach(function(x){
       if (!x) return;
+      if (g.k === "x" && x.x) out.it.push({ x: clean(x.x, 60), e: clean(x.e, 8) });
       if (g.k === "q" && x.q && x.a) out.it.push({ q: clean(x.q, 120), a: clean(x.a, 50), w: (Array.isArray(x.w) ? x.w : []).slice(0, 2).map(function(w){ return clean(w, 50); }).filter(Boolean), e: clean(x.e, 8) });
       if (g.k === "m" && x.x) out.it.push({ x: clean(x.x, 30), e: clean(x.e, 8) });
       if (g.k === "w" && x.x) out.it.push({ x: clean(x.x, 40), e: clean(x.e, 8), c: (Array.isArray(x.c) ? x.c : []).slice(0, 4).map(function(c){ return clean(c, 90); }).filter(Boolean) });
     });
     if (g.k === "q") out.it = out.it.filter(function(x){ return x.w.length; });
     if (g.k === "w") out.it = out.it.filter(function(x){ return x.c.length; });
-    var min = g.k === "m" ? 2 : 1;
+    var min = g.k === "m" ? 2 : g.k === "x" ? 3 : 1;
     return out.it.length >= min ? out : null;
   }
 
@@ -226,10 +229,11 @@ window.GM = (function(){
       showQ();
     }
 
-    if (game.k === "m") {
-      var cards = shuffle(game.it.concat(game.it).map(function(x, i){ return { x: x.x, e: x.e, id: x.x + "|" + x.e }; }));
-      var n = game.it.length, found = 0, open = [], lock = false;
+    function memory(items, done){
+      var cards = shuffle(items.concat(items).map(function(x, i){ return { x: x.x, e: x.e, id: x.x + "|" + x.e }; }));
+      var n = items.length, found = 0, open = [], lock = false;
       var cols = { 2: 2, 3: 3, 4: 4, 5: 5, 6: 4, 7: 5, 8: 4 }[n] || 4;
+      if (game.k === "x") prog.textContent = "";
       prog.textContent = "זוגות: 0 מתוך " + n;
       area.innerHTML = '<p class="gm-m-help">הופכים שני קלפים. אותו ציור? מצאתם זוג!</p><div class="gm-grid" style="--cols:' + cols + '">' +
         cards.map(function(c, i){ return '<button type="button" class="gm-card" data-i="' + i + '" aria-label="קלף ' + (i + 1) + '"><span class="gm-back" aria-hidden="true">✨</span><span class="gm-front"><b>' + esc(c.e || "✨") + '</b><small>' + esc(c.x) + '</small></span></button>'; }).join("") + '</div>';
@@ -244,13 +248,14 @@ window.GM = (function(){
           var a = cards[+open[0].getAttribute("data-i")], z = cards[+open[1].getAttribute("data-i")];
           if (a.id === z.id) {
             found++; prog.textContent = "זוגות: " + found + " מתוך " + n;
-            setTimeout(function(){ open.forEach(function(x){ x.classList.add("got"); }); open = []; lock = false; sound.ding(); if (found === n) setTimeout(win, 700); else say(pick(PRAISE) + " מצאתם זוג!"); }, 500);
+            setTimeout(function(){ open.forEach(function(x){ x.classList.add("got"); }); open = []; lock = false; sound.ding(); if (found === n) setTimeout(done, 700); else say(pick(PRAISE) + " מצאתם זוג!"); }, 500);
           } else {
             setTimeout(function(){ open.forEach(function(x){ x.classList.remove("up"); x.setAttribute("aria-label", "קלף"); }); open = []; lock = false; }, 1300);
           }
         };
       });
     }
+    if (game.k === "m") memory(game.it, win);
 
     if (game.k === "w") {
       var ws = shuffle(game.it), wi = 0, all = game.it;
@@ -288,6 +293,65 @@ window.GM = (function(){
       };
       showW();
     }
+        /* ---------- המשחק של הגן: נבנה מהמשפטים של הילדים ---------- */
+    if (game.k === "x") {
+      var tp = game.tp || "הנושא שלנו";
+      var SILLY_X = ["פיל ורוד עם משקפיים", "גלידה בטעם מלפפון", "מכונית שעושה מיאו", "דג על אופניים", "סבאבוקלי בפיג'מה", "בננה שרוקדת", "ענן בטעם תות", "תרנגולת עם כובע", "חתול שנובח", "מקרר שמנגן בגיטרה", "נעל עם כנפיים", "עוגה של חול", "מטרייה מגבינה", "גרביים שמדברות"];
+      var SILLY_W = ["בננה", "גרביים", "פיל", "מקרר", "נעל", "פיצה", "מטאטא", "כרית", "סיר", "מברשת"];
+      var heb = function(w){ return w.replace(/[^\u0590-\u05FF\w]/g, ""); };
+      var words = function(t){ return t.split(/\s+/).filter(function(w){ return heb(w).length >= 2; }); };
+      var belong = shuffle(game.it).slice(0, 4).map(function(x){ return { t: "b", it: x }; });
+      var miss = shuffle(game.it.filter(function(x){ return words(x.x).length >= 2; })).slice(0, 3).map(function(x){ return { t: "m", it: x }; });
+      var rounds = [];
+      for (var r = 0; r < 4; r++) { if (belong[r]) rounds.push(belong[r]); if (miss[r]) rounds.push(miss[r]); }
+      rounds = rounds.slice(0, 6);
+      var memItems = shuffle(game.it).slice(0, 6);
+      var total = rounds.length + 1, ri = 0;
+      var stage = function(){ prog.textContent = "שלב " + Math.min(ri + 1, total) + " מתוך " + total; };
+      var ask = function(o, done){
+        var opts = shuffle(o.opts);
+        area.innerHTML = '<div class="gm-q"><div class="gm-q-e" aria-hidden="true">' + esc(o.e) + '</div><h3 class="gm-q-t">' + esc(o.title) + '</h3>' + (o.sub || "") +
+          '<button type="button" class="gm-say" aria-label="להקריא שוב">🔊 להקריא</button>' +
+          '<div class="gm-opts">' + opts.map(function(x, i){ return '<button type="button" class="gm-opt" data-i="' + i + '"><span class="gm-ol">' + "אבג"[i] + '</span>' + esc(x) + '</button>'; }).join("") + '</div>' +
+          '<div class="gm-fb" aria-live="polite"></div></div>';
+        var read = function(){ say(o.speak + " " + opts.map(function(x, i){ return "אבג"[i] + ": " + x; }).join(". ")); };
+        area.querySelector(".gm-say").onclick = read; read();
+        var fin = false, fb = area.querySelector(".gm-fb");
+        area.querySelectorAll(".gm-opt").forEach(function(b){
+          b.onclick = function(){
+            if (fin || stopped) return;
+            var v = opts[+b.getAttribute("data-i")];
+            if (v === o.ok) { fin = true; b.classList.add("ok"); sound.ding(); var p = pick(PRAISE); fb.textContent = "🎉 " + p + " " + (o.okSay || v); say(p + " " + (o.okSay || v)); setTimeout(done, 2300); }
+            else { b.classList.add("no"); b.disabled = true; sound.soft(); fb.textContent = "כמעט! נסו שוב 🙂"; say("כמעט! נסו שוב"); }
+          };
+        });
+      };
+      var next = function(){
+        if (stopped) return;
+        if (ri >= rounds.length) {
+          ri = rounds.length; stage();
+          say("שלב אחרון: משחק זיכרון עם הרעיונות שלכם!");
+          return memory(memItems, win);
+        }
+        stage();
+        var R = rounds[ri++], it = R.it;
+        if (R.t === "b") {
+          var sil = shuffle(SILLY_X.filter(function(x){ return x !== it.x; })).slice(0, 2);
+          ask({ e: game.te || "🎲", title: "מה אמרנו על " + tp + "?", speak: "מה אמרנו על " + tp + "?", opts: [it.x].concat(sil), ok: it.x }, next);
+        } else {
+          var w = words(it.x), cand = w.map(function(x, i){ return i; }).filter(function(i){ return heb(w[i]).length >= 2; });
+          var k = cand.sort(function(a, b){ return heb(w[b]).length - heb(w[a]).length; })[Math.floor(Math.random() * Math.min(2, cand.length))];
+          var right = w[k];
+          var others = [];
+          game.it.forEach(function(y){ if (y !== it) words(y.x).forEach(function(z){ if (z !== right && w.indexOf(z) < 0 && others.indexOf(z) < 0) others.push(z); }); });
+          others = shuffle(others).concat(shuffle(SILLY_W)).filter(function(z){ return z !== right; }).slice(0, 2);
+          var shown = w.map(function(x, i){ return i === k ? '<span class="gm-blank">?</span>' : esc(x); }).join(" ");
+          ask({ e: it.e || "🧩", title: "איזו מילה חסרה?", sub: '<p class="gm-sent">' + shown + '</p>', speak: "איזו מילה חסרה? " + w.map(function(x, i){ return i === k ? "בִּיפּ" : x; }).join(" ") + ".", opts: [right].concat(others), ok: right, okSay: it.x }, next);
+        }
+      };
+      say("המשחק של הגן על " + tp + "! כל מה שאמרתם נמצא כאן.");
+      next();
+    }
     return api;
   }
 
@@ -296,14 +360,15 @@ window.GM = (function(){
     var t = TYPES[game.k], body = "";
     if (game.k === "q") body = '<ol class="s-list">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + " " + esc(x.q) + '</b><br>✔️ ' + esc(x.a) + (x.w.length ? ' <span class="s-w">· תשובות מבלבלות: ' + esc(x.w.join(" / ")) + '</span>' : "") + '</li>'; }).join("") + '</ol>';
     if (game.k === "m") body = '<div class="s-cards">' + game.it.map(function(x){ return '<span><b>' + esc(x.e) + '</b>' + esc(x.x) + '</span>'; }).join("") + '</div>';
+    if (game.k === "x") body = '<ol class="s-list s-kids">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + '</b> ' + esc(x.x) + '</li>'; }).join("") + '</ol><p class="s-w">במשחק: "מה אמרנו על ' + esc(game.tp) + '?", "איזו מילה חסרה?" ומשחק זיכרון – כל פעם בסדר אחר.</p>';
     if (game.k === "w") body = '<ol class="s-list">' + game.it.map(function(x){ return '<li><b>' + esc(x.e) + " " + esc(x.x) + '</b><br>' + x.c.map(esc).join(" · ") + '</li>'; }).join("") + '</ol>';
-    var ideas = game.id && game.id.length ? '<h3>💡 הרעיונות שלנו על ' + esc(game.tp) + '</h3><div class="s-ideas">' + game.id.map(function(x){ return '<span>' + esc(x.e) + " " + esc(x.x) + '</span>'; }).join("") + '</div>' : "";
+    var ideas = game.k !== "x" && game.id && game.id.length ? '<h3>💡 הרעיונות שלנו על ' + esc(game.tp) + '</h3><div class="s-ideas">' + game.id.map(function(x){ return '<span>' + esc(x.e) + " " + esc(x.x) + '</span>'; }).join("") + '</div>' : "";
     var d = game.d ? game.d.split("-").reverse().join(".") : "";
     return '<div class="s-page">' +
       '<div class="s-top"><img src="' + esc(String(logo || "").replace(/logo\.png$/, "logo-dark.png")) + '" alt="BOOQLI" style="height:12mm;width:auto"><span>🏫 גן ' + esc(game.g || "___") + (d ? " · " + d : "") + '</span></div>' +
       '<h1>' + esc(t.ic) + " " + esc(game.n || t.name) + '</h1>' +
-      '<p class="s-sub">המשחק שהמצאנו יחד בגן: ' + esc(t.name) + ' על ' + esc(game.te) + " " + esc(game.tp) + '. הילדים חשבו על הרעיונות, ' + (game.k === "q" ? "על השאלות ועל התשובות" : game.k === "w" ? "ועל הרמזים" : "ובחרו את הציורים") + '.</p>' +
-      ideas + '<h3>' + esc(t.ic) + ' ' + (game.k === "q" ? "השאלות שלנו" : game.k === "w" ? "החידות שלנו" : "הקלפים שלנו") + '</h3>' + body +
+      '<p class="s-sub">המשחק שהמצאנו יחד בגן על ' + esc(game.te) + " " + esc(game.tp) + '. ' + (game.k === "x" ? "כל ילד אמר מילה או משפט, וסבאבוקלי בנה מזה משחק" : "הילדים חשבו על הרעיונות, " + (game.k === "q" ? "על השאלות ועל התשובות" : game.k === "w" ? "ועל הרמזים" : "ובחרו את הציורים")) + '.</p>' +
+      ideas + '<h3>' + esc(t.ic) + ' ' + (game.k === "x" ? "מה אמרו הילדים – " + game.it.length + " רעיונות" : game.k === "q" ? "השאלות שלנו" : game.k === "w" ? "החידות שלנו" : "הקלפים שלנו") + '</h3>' + body +
       (url ? '<div class="s-home"><div class="s-qr">' + (typeof siteQR === "function" ? siteQR(url) : "") + '</div><div><b>📲 ממשיכים לשחק בבית!</b><br>סורקים את הקוד בטלפון, והמשחק שהמצאנו נפתח. תנו לילדים להיות המורים ולהסביר לכם מה למדנו 😊</div></div>' : "") +
       (typeof sitePrintFooter === "function" ? sitePrintFooter("game-maker", "", logo || "../../img/logo.png") : "") + '</div>';
   }
