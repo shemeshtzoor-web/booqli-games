@@ -421,7 +421,7 @@
     copyN = 0; for (const k in COPY) delete COPY[k];
     document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "day" ? "month" : view)));
     const m = $("#main");
-    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "ideas" ? vIdeas() : view === "page" ? await vPage() : view === "chats" ? await vChats() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
+    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "stats" ? await window.BQ_STATS.html() : view === "ideas" ? vIdeas() : view === "page" ? await vPage() : view === "chats" ? await vChats() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
     m.innerHTML = html;
     $("#sub").textContent = "booqli Games · " + nice(todayISO());
   }
@@ -503,6 +503,7 @@
       else if (manual) toast("יש לך את הגרסה האחרונה ✔️");
     } catch (e) { if (manual) toast("אין חיבור לעדכון כרגע – עובד עם מה שיש"); }
   }
+  window.BQ_RENDER = render; window.BQ_TOAST = t => toast(t); window.KIT_TOPIC_NAME = id => { const t = topic(id); return t ? t.ic + " " + t.name : ""; };
   if (view === "day") view = "month";
   render();
   update(false);
