@@ -59,6 +59,15 @@
   const dmy = d => d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
 
   /* ---------- Cloudflare ---------- */
+  /* יום שכבר עבר לא משתנה – זוכרים אותו (בזיכרון של הלשונית בלבד) */
+  const CACHE = new Map();
+  async function gqlDay(cfg, query, variables, end) {
+    const k = cfg.account + "|" + query.length + "|" + JSON.stringify(variables.f);
+    if (CACHE.has(k)) return CACHE.get(k);
+    const d = await gql(cfg, query, variables);
+    if (end < new Date(Date.now() - 2 * 36e5)) CACHE.set(k, d);
+    return d;
+  }
   async function gql(cfg, query, variables) {
     const r = await fetch(API + "/graphql", { method: "POST", headers: { "Authorization": "Bearer " + cfg.token, "Content-Type": "application/json" }, body: JSON.stringify({ query, variables }) });
     let j = null; try { j = await r.json(); } catch (e) {}
@@ -85,20 +94,42 @@
     } } }`;
 
   let DATA = null, ERR = "", LOADING = false, SETUP = false;
+  /* (3.11.2026) ב-Cloudflare, טווח ארוך = נתונים מדוגמים (מספרים עגולים ומשוערים). לכן שואלים יום אחד בכל פעם (ספירה מדויקת) ומחברים כאן. */
+  const dayChunks = (a, b) => { const out = []; let x = new Date(a); while (x < b) { const n = new Date(x.getFullYear(), x.getMonth(), x.getDate() + 1); out.push([x, n < b ? n : b]); x = n; } return out; };
+  const QP = `query($acc: string, $f: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject) { viewer { accounts(filter: { accountTag: $acc }) {
+      t: rumPageloadEventsAdaptiveGroups(filter: $f, limit: 100) { count sum { visits } dimensions { requestHost } } } } }`;
+  async function pool(items, n, fn) { const out = new Array(items.length); let i = 0; await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => { while (i < items.length) { const k = i++; out[k] = await fn(items[k], k); } })); return out; }
+  const mergeInto = (bag, arr) => (arr || []).forEach(x => { const k = JSON.stringify(x.dimensions); const o = bag[k] || (bag[k] = { count: 0, sum: { visits: 0 }, dimensions: x.dimensions }); o.count += x.count; o.sum.visits += (x.sum && x.sum.visits) || 0; });
+  let PROG = "", LOADID = 0;
   async function load() {
+    const my = ++LOADID;
     const cfg = await store.get();
     if (!cfg.token || !cfg.account) { SETUP = true; return; }
-    LOADING = true; ERR = ""; window.BQ_RENDER && window.BQ_RENDER();
+    LOADING = true; ERR = ""; PROG = ""; window.BQ_RENDER && window.BQ_RENDER();
     try {
       const R = range(period);
-      const f = { AND: [{ datetime_geq: iso(R.a) }, { datetime_lt: iso(R.b) }] };
-      const pf = { AND: [{ datetime_geq: iso(R.pa) }, { datetime_lt: iso(R.pb) }] };
-      const d = await gql(cfg, Q, { acc: cfg.account, f, pf });
-      const acc = d && d.viewer && d.viewer.accounts && d.viewer.accounts[0];
-      if (!acc) throw new Error("לא נמצא החשבון. בדקי את מספר החשבון בהגדרות.");
       const mine = arr => (arr || []).filter(x => !x.dimensions.requestHost || x.dimensions.requestHost === HOST);
-      DATA = { R, paths: mine(acc.paths), days: mine(acc.days), refs: mine(acc.refs), countries: mine(acc.countries), devices: mine(acc.devices), os: mine(acc.os), prev: mine(acc.prev), at: new Date() };
-    } catch (e) { ERR = String(e.message || e); DATA = null; }
+      const ch = dayChunks(R.a, R.b), bags = { paths: {}, days: {}, refs: {}, countries: {}, devices: {}, os: {} };
+      let done = 0;
+      await pool(ch, 4, async ([a, b]) => {
+        if (my !== LOADID) return;
+        const f = { AND: [{ datetime_geq: iso(a) }, { datetime_lt: iso(b) }] };
+        const d = await gqlDay(cfg, Q, { acc: cfg.account, f, pf: f }, b);
+        const acc = d && d.viewer && d.viewer.accounts && d.viewer.accounts[0];
+        if (!acc) throw new Error("לא נמצא החשבון. בדקי את מספר החשבון בהגדרות.");
+        Object.keys(bags).forEach(k => mergeInto(bags[k], mine(acc[k])));
+        done++; PROG = done + " / " + ch.length; const el = document.getElementById("stProg"); if (el) el.textContent = PROG;
+      });
+      /* התקופה הקודמת – רק סך הצפיות, גם יום-יום */
+      const pch = dayChunks(R.pa, R.pb), pv = {};
+      await pool(pch, 4, async ([a, b]) => { const d = await gqlDay(cfg, QP, { acc: cfg.account, f: { AND: [{ datetime_geq: iso(a) }, { datetime_lt: iso(b) }] } }, b); const acc = d && d.viewer && d.viewer.accounts && d.viewer.accounts[0]; mergeInto(pv, mine(acc && acc.t)); });
+      const arr = o => Object.values(o).sort((x, y) => y.count - x.count);
+      /* היום הראשון שיש בו נתונים – כדי לכתוב "נמדד מ-..." */
+      const dl = Object.values(bags.days).map(x => x.dimensions.date).sort();
+      if (my !== LOADID) return; /* בינתיים בחרו טווח אחר */
+      DATA = { R, paths: arr(bags.paths), days: arr(bags.days), refs: arr(bags.refs), countries: arr(bags.countries), devices: arr(bags.devices), os: arr(bags.os), prev: arr(pv), first: dl[0] || null, at: new Date() };
+    } catch (e) { if (my !== LOADID) return; ERR = String(e.message || e); DATA = null; }
+    if (my !== LOADID) return;
     LOADING = false; window.BQ_RENDER && window.BQ_RENDER();
   }
 
@@ -152,12 +183,12 @@
     let h = `<h1>📊 מדידה – מה קורה באתר</h1><div class="row" style="margin:8px 0">` +
       PERIODS.map(([k, t]) => `<button class="btn sm ${k === period ? "" : "o"}" data-st="p:${k}">${t}</button>`).join("") +
       `<button class="btn sm s" data-st="reload">🔄 רענון</button><button class="btn sm o" data-st="setup" style="margin-inline-start:auto">⚙️ חיבור ל-Cloudflare</button></div>`;
-    if (LOADING) return h + `<div class="card">⏳ מושכים את הנתונים…</div>`;
+    if (LOADING) return h + `<div class="card">⏳ סופרים יום אחרי יום, כדי שהמספרים יהיו מדויקים… <b id="stProg">${PROG}</b></div>`;
     if (ERR) return h + `<div class="card flag">😕 ${esc(ERR)}<br><span class="small">אם המפתח בוטל או פג – ⚙️ חיבור ל-Cloudflare ושמירה מחדש. אם זה ממשיך, צלמי את ההודעה ושלחי ל-Claude.</span></div>`;
     const D = DATA, C = crunch(D);
     const ch = C.prevViews ? Math.round((C.views - C.prevViews) / C.prevViews * 100) : null;
     window.__bqStatsText = summaryText(C, D);
-    h += `<p class="mute small">${dmy(D.R.a)} – ${dmy(new Date(D.R.b - 1))} · ${ch != null ? `<b style="color:${ch >= 0 ? "#17733b" : "#C13671"}">${ch >= 0 ? "▲" : "▼"} ${Math.abs(ch)}% צפיות לעומת התקופה הקודמת</b> · ` : ""}לא כולל את המכשירים שלך · <button class="btn sm wa" data-st="copy">📋 להעתיק סיכום</button></p>`;
+    h += `<p class="mute small">${dmy(D.R.a)} – ${dmy(new Date(D.R.b - 1))} · ${ch != null ? `<b style="color:${ch >= 0 ? "#17733b" : "#C13671"}">${ch >= 0 ? "▲" : "▼"} ${Math.abs(ch)}% צפיות לעומת התקופה הקודמת</b> · ` : ""}לא כולל את המכשירים שלך · ${D.first && new Date(D.first + "T00:00:00") > D.R.a ? `<b>נמדד רק מ-${new Date(D.first + "T12:00:00").getDate()}.${new Date(D.first + "T12:00:00").getMonth() + 1}</b> · ` : ""}ספירה מדויקת, יום אחרי יום · <button class="btn sm wa" data-st="copy">📋 להעתיק סיכום</button></p>`;
     h += `<div class="st-kpi">` + C.kpi.map(k => `<div><span>${k[0]}</span><b>${fmtN(k[2])}</b><small>${k[1]}</small></div>`).join("") + `</div>`;
     /* לפי יום */
     const days = D.days.slice().sort((a, b) => a.dimensions.date < b.dimensions.date ? -1 : 1), dmax = Math.max(1, ...days.map(x => x.count));
@@ -202,7 +233,7 @@
   async function onClick(b) {
     const a = b.dataset.st;
     if (a.startsWith("p:")) { period = a.slice(2); DATA = null; return load(); }
-    if (a === "reload") { DATA = null; return load(); }
+    if (a === "reload") { DATA = null; CACHE.clear(); return load(); }
     if (a === "setup") { SETUP = true; return window.BQ_RENDER(); }
     if (a === "cancel") { SETUP = false; return window.BQ_RENDER(); }
     if (a === "copy") { try { await navigator.clipboard.writeText(window.__bqStatsText || ""); window.BQ_TOAST && window.BQ_TOAST("הסיכום הועתק ✔️"); } catch (e) {} return; }
