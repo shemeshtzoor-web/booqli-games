@@ -1,5 +1,5 @@
 {
- "version": "2026-11-03 14:15",
+ "version": "2026-11-03 14:37",
  "groups": [
   {
    "id": "savta",
@@ -12,6 +12,7 @@
   {
    "id": "savta-first",
    "group": "savta",
+   "topic": "savta",
    "title": "הספר הראשון שלי",
    "kind": "video",
    "ratio": "4:5",
@@ -19,11 +20,12 @@
    "thumb": "savta/booqli-savta-first-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"הספר הראשון שלי\" – שהנכדים הם הגיבורים שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=first&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=first",
-   "bytes": 2941963
+   "bytes": 2476674
   },
   {
    "id": "savta-birthday",
    "group": "savta",
+   "topic": "savta",
    "title": "ילד/ת יום הולדת",
    "kind": "video",
    "ratio": "4:5",
@@ -31,11 +33,12 @@
    "thumb": "savta/booqli-savta-birthday-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"ילד/ת יום הולדת\" – שהנכדה היא הגיבורה שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=birthday&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=birthday",
-   "bytes": 2759085
+   "bytes": 2282798
   },
   {
    "id": "savta-kinder",
    "group": "savta",
+   "topic": "savta",
    "title": "הולך/ת לגן",
    "kind": "video",
    "ratio": "4:5",
@@ -43,11 +46,12 @@
    "thumb": "savta/booqli-savta-kinder-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"הולך/ת לגן\" – שהנכדים הם הגיבורים שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=kinder&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=kinder",
-   "bytes": 3194454
+   "bytes": 2623139
   },
   {
    "id": "savta-druki",
    "group": "savta",
+   "topic": "savta",
    "title": "דרוקי הדרקון",
    "kind": "video",
    "ratio": "4:5",
@@ -55,11 +59,12 @@
    "thumb": "savta/booqli-savta-druki-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"דרוקי הדרקון\" – שהנכד הוא הגיבור שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=druki&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=druki",
-   "bytes": 2780244
+   "bytes": 2308682
   },
   {
    "id": "savta-hugs",
    "group": "savta",
+   "topic": "savta",
    "title": "חיבוקים",
    "kind": "video",
    "ratio": "4:5",
@@ -67,11 +72,12 @@
    "thumb": "savta/booqli-savta-hugs-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"חיבוקים\" – שהנכדים הם הגיבורים שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=hugs&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=hugs",
-   "bytes": 2513500
+   "bytes": 2099060
   },
   {
    "id": "savta-superhero",
    "group": "savta",
+   "topic": "savta",
    "title": "גיבור/ת על",
    "kind": "video",
    "ratio": "4:5",
@@ -79,11 +85,12 @@
    "thumb": "savta/booqli-savta-superhero-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"גיבור/ת על\" – שהנכד הוא הגיבור שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=superhero&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=superhero",
-   "bytes": 2645289
+   "bytes": 2162414
   },
   {
    "id": "savta-night",
    "group": "savta",
+   "topic": "savta",
    "title": "אני והחד־קרן",
    "kind": "video",
    "ratio": "4:5",
@@ -91,11 +98,12 @@
    "thumb": "savta/booqli-savta-night-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"אני והחד־קרן\" – שהנכדה היא הגיבורה שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=night&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=night",
-   "bytes": 2774482
+   "bytes": 2264877
   },
   {
    "id": "savta-savanna",
    "group": "savta",
+   "topic": "savta",
    "title": "בסוואנה",
    "kind": "video",
    "ratio": "4:5",
@@ -103,11 +111,12 @@
    "thumb": "savta/booqli-savta-savanna-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"בסוואנה\" – שהנכדה היא הגיבורה שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=savanna&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=savanna",
-   "bytes": 3105385
+   "bytes": 2545349
   },
   {
    "id": "savta-class1",
    "group": "savta",
+   "topic": "savta",
    "title": "עולה לכיתה א'",
    "kind": "video",
    "ratio": "4:5",
@@ -115,7 +124,7 @@
    "thumb": "savta/booqli-savta-class1-4x5.jpg",
    "date": "2026-11-03",
    "text": "סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"עולה לכיתה א'\" – שהנכדה היא הגיבורה שלו, מתמונה אחת.\n📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 https://games.booqli.ai/savta/?book=class1&utm_source=facebook&utm_medium=paid&utm_campaign=savta&utm_content=class1",
-   "bytes": 2596631
+   "bytes": 2180570
   }
  ]
 }

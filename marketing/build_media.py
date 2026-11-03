@@ -4,6 +4,7 @@
    רק חומרי פרסום שממילא מתפרסמים. אף פעם לא: צילומים אמיתיים של ילדים בלי אישור, תמונות של לקוחות, ספרים של הזמנות, מידע פרטי.
 הוספה: שמים את הקובץ ב-marketing/media/<קבוצה>/, מוסיפים שורה ל-ITEMS, ומריצים:  python3 marketing/build_media.py
 (בונה את marketing/media/media.json עם הגודל של כל קובץ. התוסף מוריד רק מה שחדש או שהשתנה.)
+topic = ה-id של הנושא במרכז הפרסום (build_kit.py) – כך הקבצים מסודרים בתוסף לפי הנושאים של האתר.
 slot = "<נושא>:video" או "<נושא>:image" – אם המשבצת של הנושא בתוסף ריקה, הקובץ נכנס גם אליה."""
 import json, os, time
 HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.join(HERE, "media")
@@ -18,7 +19,7 @@ def savta_text(bid, name, noun, hero):
     return (f"סבתא, סבא 💛 הנכדים תמיד זוכרים מי אהב אותם.\n\nהספר \"{name}\" – ש{noun} {hero} שלו, מתמונה אחת.\n"
             f"📲 בלי אתר ובלי טכנולוגיה – שולחים תמונה בוואטסאפ\n📖 רואים את כל הספר לפני – משלמים רק אם אוהבים\n"
             f"🎁 ובמתנה: אפליקציה בטוחה לילדים, עם המון משחקים בחינם\n\n👈 {link}")
-ITEMS = [{"id":"savta-"+b, "group":"savta", "title":n, "kind":"video", "ratio":"4:5", "file":f"savta/booqli-savta-{b}-4x5.mp4",
+ITEMS = [{"id":"savta-"+b, "group":"savta", "topic":"savta", "title":n, "kind":"video", "ratio":"4:5", "file":f"savta/booqli-savta-{b}-4x5.mp4",
           "thumb":f"savta/booqli-savta-{b}-4x5.jpg", "date":"2026-11-03", "text":savta_text(b, n, no, he)} for b, n, no, he in BOOKS]
 for it in ITEMS:
     p = os.path.join(M, it["file"]); assert os.path.exists(p), p

@@ -205,6 +205,7 @@
       <p style="margin:8px 0 0"><b>🎯 קהל יעד:</b> ${esc(t.target)}</p></div>`;
     h += `<div class="card"><h3>📝 מאמר ב-booqli.ai</h3>${art.status === "חסר" ? `<div class="flag art">חסר מאמר: "${esc(art.title)}" – להוסיף ביום שמפרסמים את הנושא.</div>` : `<span class="pill g">${esc(art.status)}</span> ${esc(art.title)}`}
       ${t.id !== "join" ? `<label class="inp small">כתובת המאמר (אם יש – המודעה הממומנת תוביל אליו)<input data-art="${t.id}" value="${esc(articleUrl(t))}" placeholder="https://www.booqli.ai/he/articles/..."></label>` : ""}</div>`;
+    if (window.BQ_MEDIA) h += await window.BQ_MEDIA.topicBlock(t.id);
     h += `<div class="card"><h3>🖼️ התמונה והסרטון של הנושא</h3><p class="small mute">רק סרטון 4:5 (למשל 1080×1350) ורק תמונה 1:1 (למשל 1080×1080). קובץ במידה אחרת לא יישמר. נשמר במחשב הזה, בתוך התוסף.</p>${await mediaBlock(t)}</div>`;
     h += `<div class="card"><h3>✨ כותרות</h3>${(t.headlines || []).map(x => `<div class="hl"><span>${esc(x)}</span>${cbtn(x, "📋")}</div>`).join("")}</div>`;
     h += `<div class="card"><h3>📋 טקסטים להעתקה</h3>` + texts(t).map(([k, title, ch, txt]) => {
@@ -506,7 +507,7 @@
       else if (manual) toast("יש לך את הגרסה האחרונה ✔️");
     } catch (e) { if (manual) toast("אין חיבור לעדכון כרגע – עובד עם מה שיש"); }
   }
-  window.BQ_VIEW = () => view; window.BQ_CBTN = (t, l) => cbtn(t, l);
+  window.BQ_VIEW = () => view; window.BQ_TOPICS = () => KIT.topics; window.BQ_CBTN = (t, l) => cbtn(t, l);
   window.BQ_RENDER = render; window.BQ_TOAST = t => toast(t); window.KIT_TOPIC_NAME = id => { const t = topic(id); return t ? t.ic + " " + t.name : ""; };
   if (view === "day") view = "month";
   render();
