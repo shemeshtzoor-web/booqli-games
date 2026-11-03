@@ -168,8 +168,11 @@ const LINES = [
     fx("🔒","מצב ילדים נעול (להורים)","app/","p","נעילה קוד ילדים בטוח")]},
   {id:"books", c:"#4E8576", ic:"📚", name:"ספרי BOOQLI", sub:"משחקים לפי הספרים, שבהם הילד הוא הגיבור",
     items: CATALOG.filter(t => t.book).map(fromCat)},
-  {id:"school", c:"#6B2FA3", ic:"🎒", name:"כיתות א'–ג'", sub:"בבנייה", go:"school/",
-    items: CATALOG.filter(t => !t.book && !t.zone && !t.href && isSchoolOnly(t)).map(fromCat)},
+  {id:"school", c:"#6B2FA3", ic:"🎒", name:"כיתות א'–ג'", sub:"מסלול הקריאה פתוח · עוד מקצועות בדרך", go:"school/",
+    items: [fx("📖","מסלול הקריאה: 18 שלבים","school/reading/","tpks","קריאה אותיות ניקוד מילים משפטים סיפורים כתב יד כתיב דפי עבודה צביעה כיתה א", {games: KIDS_GAMES.filter(g => g.topic === "school-reading").length}),
+      fx("🧭","בודקים באיזו רמה הילד","school/reading/?place=1","pks","מבחן מיקום רמה קריאה"),
+      fx("🖨️","דפי קריאה להדפסה לפי שלב","school/reading/#all-sheets","tps","דפי עבודה אותיות ניקוד צביעה תעודה")]
+      .concat(CATALOG.filter(t => !t.book && !t.zone && !t.href && isSchoolOnly(t)).map(fromCat))},
   {id:"booqli", c:"#FF56C2", ic:"🎁", name:"מ-BOOQLI", sub:"ספרים, מתנות ושירותים", items:[
     fx("🏫","ספר אישי לכל ילד בגן + מחשבון מחיר","kindergartens/","tp","גן מחירים הזמנה ספר אישי סיטונאי מחשבון ועד הורים"),
     fx("🎁","מתנות וספקיות לגן לפי עונות","gifts/","tp","מתנות ספקיות ועד חנוכה סוף שנה יום הולדת"),

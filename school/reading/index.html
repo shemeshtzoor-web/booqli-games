@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מסלול הקריאה: מהאותיות ועד קריאה מלאה · booqli Games</title>
+<meta name="description" content="מסלול קריאה בחינם לגן חובה ולכיתות א'–ג': 18 שלבים מהכרת האותיות, הניקוד והמילים ועד סיפורים, קריאה בלי ניקוד וכתיב נכון. משחקים, אתגרים ומדבקות, דפי עבודה וצביעה להדפסה, ומדריך להורים ולמורות.">
+<link rel="canonical" href="https://games.booqli.ai/school/reading/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="מסלול הקריאה של אלפבוקלי · booqli Games">
+<meta property="og:description" content="18 שלבים מהאות הראשונה ועד סיפורים שלמים: משחקים, אתגרים, מדבקות ודפי עבודה להדפסה. בחינם, בחסות BOOQLI.">
+<meta property="og:url" content="https://games.booqli.ai/school/reading/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/noto-hebrew-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../site.css">
+<style>
+/* ===== מסלול הקריאה (3.11.2026) ===== */
+@font-face{font-family:BQRead;src:url(fonts/noto-hebrew-500.woff2) format("woff2");font-weight:400 600;font-display:swap}
+@font-face{font-family:BQRead;src:url(fonts/noto-hebrew-700.woff2) format("woff2");font-weight:700 900;font-display:swap}
+@font-face{font-family:GveretLevin;src:url(fonts/gveret-levin.woff2) format("woff2");font-display:swap}
+:root{--rp:#6B2FA3;--rb:#F1E3FF}
+.rd{font-family:BQRead,Assistant,Arial,sans-serif;font-weight:700;line-height:1.5}
+.cv{font-family:GveretLevin,BQRead,cursive;font-weight:400}
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:800;font-size:17px;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;background:#E0399F;color:#fff;box-shadow:0 3px 0 #A3216F;text-decoration:none;min-height:46px}
+.btn.alt{background:#fff;color:#4E8576;border:2px solid #CDE7DC;box-shadow:none}
+.btn.sm{font-size:15px;padding:8px 14px;min-height:40px}
+.btn.wa{background:#1FA855;box-shadow:0 3px 0 #137a3c}
+.btn.danger{color:#A3216F;border-color:#F3C6DD}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:12px}
+.row.start{justify-content:flex-start}
+.note{font-size:14px;color:var(--muted)}
+.muted{color:var(--muted)}
+#readApp{margin-top:14px}
+/* כותרת */
+.r-hero{background:#fff;border-radius:28px;padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;box-shadow:0 6px 0 #d9e9e1;border-top:10px solid var(--rp)}
+.r-hero img{width:110px;height:auto}
+.r-hero small{font-weight:800;color:var(--rp)}
+.r-hero h1{font-size:clamp(26px,5.5vw,40px);color:var(--rp);line-height:1.1}
+.bubble{background:var(--rb);border-radius:18px;padding:9px 14px;font-weight:700;margin-top:10px;font-size:17px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.stats span{background:#F4FAF7;border-radius:999px;padding:5px 12px;font-weight:700;font-size:15px}
+.starts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.bigbtn{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;background:#E0399F;color:#fff;border-radius:24px;padding:16px 12px;text-decoration:none;box-shadow:0 5px 0 #A3216F}
+.bigbtn span{font-size:38px;line-height:1.1}.bigbtn b{font-family:Fredoka,Assistant,sans-serif;font-size:21px}.bigbtn small{font-size:14px;opacity:.95}
+.bigbtn.alt{background:#fff;color:var(--rp);box-shadow:0 5px 0 #d9e9e1;border:3px solid var(--rb)}
+.bigbtn.alt2{background:#fff;color:#4E8576;box-shadow:0 5px 0 #d9e9e1;border:3px solid #CDE7DC}
+/* המפה */
+.world{margin-top:16px;background:var(--wb);border-radius:24px;padding:14px 14px 6px}
+.world h2{color:var(--wc);font-size:22px;display:flex;gap:8px;align-items:center}
+.path{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+.st a{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;text-decoration:none;color:#2B1526;background:#fff;border-radius:20px;padding:10px 6px 10px;box-shadow:0 4px 0 rgba(0,0,0,.06);min-height:118px;position:relative}
+.st .dot{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:22px;background:var(--wc);color:#fff}
+.st .nm{font-family:BQRead,Assistant,sans-serif;font-weight:700;font-size:14.5px;line-height:1.35}
+.st small{font-size:12px;letter-spacing:1px}
+.st em{position:absolute;top:-9px;inset-inline-start:50%;transform:translateX(50%);background:#FF56C2;color:#fff;font-style:normal;font-weight:800;font-size:12px;border-radius:999px;padding:1px 9px;white-space:nowrap}
+.st.cur a{outline:3px solid #FF56C2;animation:glow 1.8s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 6px rgba(255,86,194,.25)}}
+.st.done .dot{background:#FFF3CF;font-size:28px}
+.st.skip .dot{background:#fff;color:var(--wc);border:3px dashed var(--wc)}
+.st.lock a{opacity:.55}.st.lock .dot{background:#ddd;font-size:20px}
+.album{margin-top:16px;background:#fff;border-radius:24px;padding:14px;box-shadow:0 5px 0 #d9e9e1}
+.album h2{font-size:21px;color:#C13671}.album h2 small{font-size:15px;color:var(--muted)}
+.stk{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.stk span{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#F4F4F4;color:#bbb;font-weight:800;font-size:20px}
+.stk span.got{background:#FFF3CF;font-size:28px}
+.tools-row{margin:16px 0 4px}
+/* שלב */
+.r-top{margin:2px 0 10px}
+.back{display:inline-flex;font-weight:800;color:#4E8576;background:#fff;border:2px solid #CDE7DC;border-radius:999px;padding:7px 14px;text-decoration:none}
+.lvhead{background:#fff;border-radius:26px;padding:18px;box-shadow:0 6px 0 #d9e9e1;border-top:10px solid var(--wc)}
+.lvhead small{font-weight:800;color:var(--wc)}
+.lvhead h1{font-family:BQRead,Fredoka,sans-serif;font-size:clamp(28px,6vw,42px);color:var(--wc);line-height:1.2}
+.stars{display:flex;gap:4px;margin:6px 0 4px}.stars i{font-style:normal;font-size:26px;filter:grayscale(1) opacity(.3)}.stars i.on{filter:none}
+.learn{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px;margin-top:12px}
+.lt{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--wb);border:0;border-radius:18px;padding:8px 4px;cursor:pointer;color:#2B1526}
+.lt .lt-l{font-size:40px;line-height:1.15}.lt .lt-l.sm{font-size:28px}
+.lt .cv{font-size:26px;color:var(--wc);line-height:1.1}
+.lt .emo{font-size:30px}.lt small{font-family:BQRead,sans-serif;font-weight:600;font-size:14px}
+.lt.w{flex-direction:row;justify-content:center;gap:6px;font-size:19px;padding:10px 6px}.lt.w .emo{font-size:26px}
+.learn.sl{display:block}.learn.sl p{display:flex;gap:10px;align-items:center;font-size:20px;margin:6px 0;flex-wrap:wrap}.learn.sl .emo{font-size:26px}
+.pairs{margin-top:10px;background:#FAF6FD;border-radius:16px;padding:8px 12px;font-size:18px}
+.vowel{display:flex;align-items:center;gap:12px;margin-top:10px;background:var(--wb);border-radius:18px;padding:8px 14px}
+.vowel .huge{font-size:44px}.vowel b{font-family:BQRead,sans-serif;font-size:24px;color:var(--wc)}
+.r-h2{font-size:24px;color:#4E8576;margin:20px 0 8px}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.gcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;background:#fff;border-radius:22px;padding:14px 10px;text-decoration:none;color:#2B1526;box-shadow:0 5px 0 #d9e9e1;border:3px solid transparent;position:relative}
+.gcard:hover{border-color:#FFC8EA}
+.gcard .ic{width:64px;height:64px;border-radius:20px;background:#FFF1C9;display:grid;place-items:center;font-size:34px}
+.gcard b{font-family:BQRead,Fredoka,sans-serif;font-size:18px;line-height:1.3}
+.gcard small{font-family:BQRead,sans-serif;font-weight:500;color:#6b5a66;font-size:13.5px;line-height:1.4}
+.gcard em{position:absolute;top:8px;inset-inline-end:10px;font-style:normal;font-weight:800;font-size:13px;color:#9A5800}
+.chal{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:14px;align-items:center;margin-top:16px;border-radius:24px;padding:14px 18px;text-decoration:none;color:#2B1526;background:#fff;box-shadow:0 5px 0 #d9e9e1}
+.chal span{grid-row:span 2;font-size:44px}.chal b{font-family:BQRead,Fredoka,sans-serif;font-size:21px}.chal small{font-family:BQRead,sans-serif;font-weight:500;font-size:14.5px;color:#6b5a66}
+.chal.on{background:#FFE3F4;border:3px solid #FF56C2;animation:glow 1.8s ease-in-out infinite}
+.chal.off{opacity:.8}.chal.done{background:#FFF8E1}
+.lvnav{display:flex;justify-content:space-between;margin:14px 2px 0;font-weight:800}
+.lvnav a{color:#4E8576;text-decoration:none}
+.adultbox{margin-top:18px;background:#fff;border-radius:22px;padding:12px 16px;box-shadow:0 4px 0 #d9e9e1}
+.adultbox summary{font-weight:800;color:#4E8576;cursor:pointer;font-size:17px}
+.adultbox p{margin-top:8px;font-size:16px}.adultbox h3{font-size:18px;color:#C13671;margin-top:14px}
+.sheets{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sh{background:#F4FAF7;border:2px solid #CDE7DC;border-radius:999px;padding:7px 13px;font-weight:700;text-decoration:none;color:#2B1526;font-size:15px}
+.sh.book{background:#FFE3F4;border-color:#FFC8EA}
+.lockbox{background:#fff;border-radius:26px;padding:24px 18px;text-align:center;box-shadow:0 6px 0 #d9e9e1}
+.lockbox h1{font-family:BQRead,sans-serif;font-size:28px;color:var(--rp)}.lockbox p{margin-top:8px}
+/* משחק */
+.gview{background:#fff;border-radius:26px;padding:16px;box-shadow:0 6px 0 #d9e9e1;position:relative;min-height:420px}
+.gview>h1{font-family:BQRead,Fredoka,sans-serif;font-size:clamp(22px,5vw,30px);color:var(--rp);line-height:1.25}
+.gview>p{margin-top:6px}
+.stage{position:relative;margin-top:10px;min-height:340px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:#E1F0EA}.dots i.on{background:#FF56C2}
+.lab-q{font-family:BQRead,sans-serif;font-weight:700;font-size:clamp(19px,4.4vw,24px);text-align:center;margin:4px 0 8px;line-height:1.45}
+.lab-q .inl{font-size:1.5em;color:#C13671;background:#FFE3F4;border-radius:12px;padding:0 10px;display:inline-block;line-height:1.3}
+.q{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:4px auto 14px;text-align:center}
+.q .emo{font-size:clamp(72px,18vw,104px)}
+.q .huge{font-size:clamp(84px,22vw,128px);line-height:1.1;color:#2B1526}
+.q .big{font-size:clamp(44px,11vw,64px)}
+.q .word{font-size:clamp(40px,10vw,58px)}
+.q .sent{font-size:clamp(25px,6vw,36px);line-height:1.6;display:block;width:100%}
+.q.tfq .emo{font-size:clamp(60px,15vw,84px)}
+.q .cvq .cv,.cvq .cv{font-size:clamp(84px,22vw,124px);color:#6B2FA3;line-height:1.1}
+.blank{display:inline-block;min-width:.9em;border-bottom:4px solid #FF56C2;color:#FF56C2;text-align:center}
+.opts{display:grid;gap:12px;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));max-width:640px;margin:0 auto}
+.opt{font:inherit;border:3px solid #E1F0EA;background:#fff;border-radius:22px;min-height:104px;display:grid;place-items:center;cursor:pointer;padding:6px;color:#2B1526;transition:transform .12s}
+.opt .emo{font-size:clamp(46px,12vw,66px)}
+.opt.txt .rd{font-size:clamp(36px,9vw,54px)}
+.opt.txt .cv{font-size:clamp(46px,11vw,64px);color:#6B2FA3}
+.opt.wtxt .rd{font-size:clamp(22px,5.4vw,32px);line-height:1.35}
+.opt.tfb{font-family:BQRead,sans-serif;font-weight:700;font-size:clamp(20px,5vw,26px);min-height:76px}
+.opt.wide .emo{font-size:clamp(36px,9vw,52px);letter-spacing:2px}
+.opt:active{transform:scale(.96)}
+.opt.ok{border-color:#46C46E;background:#E9F9EE;animation:pop .4s}
+.opt.no{border-color:#ddd;background:#f6f6f6;opacity:.7}
+.shake{animation:shk .4s}
+@keyframes pop{50%{transform:scale(1.07)}}
+@keyframes shk{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.toast{position:absolute;inset:auto 0 6px 0;margin:auto;width:max-content;max-width:92%;background:#FFF1C9;color:#7A4600;font-weight:800;border-radius:999px;padding:8px 18px;box-shadow:0 3px 0 #F3DFA6;pointer-events:none;z-index:5;text-align:center;font-family:BQRead,Assistant,sans-serif}
+.intro{text-align:center;padding:10px}.intro .big{font-size:64px}
+.stbox{margin:0 auto 10px;max-width:640px;background:#FAF6FD;border-radius:16px;padding:6px 14px;text-align:right;width:100%}
+.stbox summary{cursor:pointer;font-weight:800;color:#6B2FA3;font-family:BQRead,sans-serif}
+.stbox p{font-family:BQRead,sans-serif;font-weight:600;font-size:18px;line-height:1.6}
+/* בלונים */
+.balloons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:560px;margin:6px auto 0}
+.balloons.words{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bal{font:inherit;border:0;cursor:pointer;aspect-ratio:4/5;border-radius:50% 50% 46% 46%;display:grid;place-items:center;color:#2B1526;position:relative;animation:float 3s ease-in-out infinite;animation-delay:var(--d,0s);box-shadow:inset -8px -10px 0 rgba(0,0,0,.08)}
+.bal::after{content:"";position:absolute;bottom:-12px;left:50%;width:2px;height:14px;background:#bbb}
+.bal .rd{font-size:clamp(28px,7.5vw,40px)}
+.balloons.words .bal{aspect-ratio:auto;min-height:84px;border-radius:40px}.balloons.words .bal .rd{font-size:clamp(20px,5vw,28px)}
+.bal.c0{background:#FFC2E6}.bal.c1{background:#FFE08A}.bal.c2{background:#B9E8C6}.bal.c3{background:#BFE0FF}.bal.c4{background:#E3CCFF}.bal.c5{background:#FFD3B5}
+.bal.gone{visibility:hidden;animation:none}
+@keyframes float{50%{transform:translateY(-6px)}}
+/* זיכרון */
+.mem{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:560px;margin:0 auto}
+.card{font:inherit;aspect-ratio:1;border-radius:16px;border:3px solid #E1F0EA;background:#6B2FA3;cursor:pointer;display:grid;place-items:center;padding:2px;overflow:hidden}
+.card .back{font-size:28px}.card .face{display:none}
+.card.up{background:#fff}.card.up .back{display:none}.card.up .face{display:block}
+.card .face .emo{font-size:clamp(30px,8vw,44px)}.card .face .rd{font-size:clamp(20px,5.6vw,34px);line-height:1.2}
+.card.got{border-color:#46C46E;background:#E9F9EE}
+/* מה שונה */
+.dgrid{display:grid;grid-template-columns:repeat(var(--c),minmax(0,1fr));gap:8px;max-width:440px;margin:0 auto}
+.dgrid .opt{min-height:74px}.dgrid .opt .rd{font-size:clamp(34px,9vw,48px)}
+/* בונים */
+.slots,.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px auto;max-width:620px}
+.slot{min-width:58px;height:70px;border-radius:14px;border:3px dashed #CDE7DC;display:grid;place-items:center;background:#FAFDFB}
+.slot .rd{font-size:36px}.slot.full{border-style:solid;border-color:#B9E8C6;background:#E9F9EE}
+.slots.done .slot{border-color:#46C46E}
+.tile{font:inherit;min-width:58px;height:66px;border-radius:14px;border:0;background:#FFE3F4;box-shadow:0 4px 0 #F3B9DA;cursor:pointer;padding:0 8px}
+.tile .rd{font-size:34px}.tile.used{visibility:hidden}
+.slots.wd .slot{min-width:72px;padding:0 6px}.slots.wd .slot .rd,.tiles.wd .tile .rd{font-size:clamp(20px,5vw,28px)}
+/* כתיבה באצבע */
+.pad{position:relative;width:min(320px,100%);margin:6px auto 0;border-radius:22px;background:#fff;border:3px solid #E1F0EA;overflow:hidden}
+.pad canvas{position:absolute;inset:0;touch-action:none}
+.mode{margin-top:0}
+/* סיפורים */
+.stories{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.stc{font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;background:#FAF6FD;border:3px solid #EADCF7;border-radius:20px;padding:14px 8px;cursor:pointer;position:relative}
+.stc .emo{font-size:40px}.stc .rd{font-size:18px}.stc .ok{position:absolute;top:6px;inset-inline-end:8px;font-style:normal}
+.story{background:#FFFDF5;border-radius:20px;padding:14px 18px;max-width:680px;margin:0 auto;border:2px solid #F3E6B8}
+.story h3{font-size:clamp(24px,6vw,32px);color:#9A5800;margin-bottom:8px}
+.story p{font-size:clamp(21px,5vw,27px);line-height:1.75;margin:2px 0}
+/* חלונות */
+.rmod{position:fixed;inset:0;z-index:200;background:rgba(43,21,38,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.rmod .in{background:#fff;border-radius:28px;max-width:440px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:22px 18px;text-align:center;position:relative;animation:pop .4s}
+.rmod .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,#FF56C2,#FFC93C,#6F988B)}
+.rmod h2{font-family:BQRead,Fredoka,sans-serif;color:#C13671;font-size:27px;margin:4px 0}
+.rmod p{margin:6px 0;font-family:BQRead,Assistant,sans-serif;font-weight:600}
+.rmod .hl{background:#FFE3F4;border-radius:14px;padding:8px;font-weight:800;color:#A3216F}
+.rmod .big{font-size:60px;line-height:1.1}.rmod .sticker{font-size:96px;line-height:1.1;animation:spin 1s ease}
+@keyframes spin{from{transform:scale(.3) rotate(-30deg)}to{transform:none}}
+.rmod .lab{display:block;font-weight:800;margin-top:10px}
+.pin{width:160px;font:700 26px Fredoka,Assistant,sans-serif;text-align:center;border:3px solid #CDE7DC;border-radius:16px;padding:6px;margin-top:6px}
+.pin.name{width:100%;max-width:280px;font-family:BQRead,Assistant,sans-serif;font-size:22px}
+.rmod .msg{min-height:20px;color:#C13671;font-weight:800}
+.rmod .bookad{display:block;margin-top:14px;background:#FFE3F4;border-radius:16px;padding:10px;color:#C13671;font-weight:800;text-decoration:none;font-size:15px}
+.zoomL{display:flex;gap:18px;justify-content:center;align-items:center}.giant{font-size:110px;line-height:1.1}.zoomL .cv{font-size:96px;color:#6B2FA3}
+.zn{font-size:22px;color:#6B2FA3}.zw .rd{font-size:30px}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:260;overflow:hidden}
+.conf i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall 1.7s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.chlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.chi{font:inherit;text-align:right;background:#F4FAF7;border:2px solid #CDE7DC;border-radius:16px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.chi small{color:#6b5a66;font-size:14px}.chi em{font-style:normal;font-size:13px;color:#4E8576;font-weight:800}
+/* מדריך למבוגרים */
+.adult{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 6px 0 #d9e9e1}
+.adult h2{font-size:clamp(23px,5vw,30px);color:#4E8576}
+.adult h3{font-size:19px;color:#C13671;margin:14px 0 4px}
+.adult p,.adult li{font-size:16.5px}
+.adult ul,.adult ol{margin:6px 0;padding-inline-start:22px}
+.cards3{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px}
+.cards3>div{background:#F4FAF7;border-radius:18px;padding:12px 14px}
+.cards3 b{display:block;color:#4E8576;font-size:17px;margin-bottom:2px}
+.tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}
+.tbl td,.tbl th{border-bottom:1px solid #E1F0EA;padding:8px 6px;text-align:right;vertical-align:top}
+.tbl th{color:#4E8576}
+.tbl .sheets{margin-top:0}.tbl .sh{font-size:13.5px;padding:4px 10px}
+.tblwrap{overflow-x:auto}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.links a{background:#F1E3FF;color:#6B2FA3;border-radius:999px;padding:8px 14px;font-weight:800;text-decoration:none}
+select.lvsel{font:inherit;border:2px solid #CDE7DC;border-radius:12px;padding:8px 10px;max-width:100%}
+@media (max-width:600px){
+  .r-hero{grid-template-columns:minmax(0,1fr);text-align:center;padding:16px}.r-hero img{width:88px;margin:0 auto}.stats{justify-content:center}
+  .path{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gview{padding:12px}.opts{gap:8px}.opt{min-height:88px;border-radius:18px}
+  .games{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.gcard small{display:none}
+  .balloons{gap:7px}.mem{gap:6px}
+  .slot,.tile{min-width:48px;height:58px}.slot .rd,.tile .rd{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){.bal,.st.cur a,.chal.on,.opt.ok,.shake,.rmod .in,.rmod .sticker,.conf i{animation:none!important}}
+
+/* ===== דפי הדפסה ===== */
+#print{padding:12px 0 30px}
+body.in-game .adult,body.sheet-mode .bq-hide-sheet,body.sheet-mode #readApp,body.sheet-mode .crumbs,body.sheet-mode .adult{display:none!important}
+.pbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-bottom:6px}
+.pbar select{font:inherit;border:2px solid #CDE7DC;border-radius:999px;padding:7px 12px;max-width:100%}
+.pnote{text-align:center;font-size:14px;color:var(--muted);margin-bottom:10px}
+.pages{--z:1}
+.pg{zoom:var(--z);width:210mm;height:297mm;margin:0 auto 14px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.12);padding:12mm 12mm 10mm;display:flex;flex-direction:column;overflow:hidden;color:#2B1526;font-family:Assistant,Arial,sans-serif}
+.pg .sb{flex:1;min-height:0}
+.sh-h{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;border-bottom:3px solid #FF56C2;padding-bottom:3mm}
+.sh-h b{font-family:BQRead,sans-serif;font-size:21pt;color:#C13671;display:block;line-height:1.2}
+.sh-h small{font-size:10pt;color:#4E8576}
+.sh-h .nm{font-family:BQRead,sans-serif;font-size:13pt;white-space:nowrap}
+.cline{display:inline-block;width:45mm;border-bottom:1.5px solid #555;height:1em;vertical-align:bottom}
+.ins{font-family:BQRead,sans-serif;font-weight:600;font-size:14pt;margin:4mm 0 4mm;line-height:1.5}
+.ins .inl{font-size:1.4em;color:#C13671}
+.pg .emo{font-size:30pt}
+.trace .tr{display:flex;align-items:center;gap:2mm;height:28mm;border-bottom:1px dashed #E1F0EA}
+.trace .mod{display:flex;align-items:center;gap:2mm;min-width:36mm}
+.trace .m{font-size:38pt}.trace .m.sm{font-size:24pt}
+.trace .mod .cv{font-size:40pt;color:#6B2FA3}
+.trace .dl{width:24mm;height:24mm}.trace .empty{flex:1;height:22mm;border-bottom:1.5px solid #CDE7DC}
+.find{display:flex;gap:5mm;align-items:center;margin-bottom:8mm}
+.find .box{border:3px solid #FF56C2;border-radius:4mm;padding:0 4mm}.find .box .rd{font-size:42pt}
+.find .fg{display:grid;grid-template-columns:repeat(8,1fr);gap:2mm 3mm;flex:1}.find .fg .rd{font-size:24pt;text-align:center}
+.cols{display:flex;justify-content:space-between;gap:30mm;margin-top:4mm}
+.cols>div{display:flex;flex-direction:column;gap:7mm}
+.cols span{display:flex;align-items:center;gap:5mm;height:24mm}
+.cols .rd.m{font-size:40pt}.cols .rd.w{font-size:26pt}.cols .rd.s{font-size:16pt;line-height:1.4}
+.cols.wide{gap:12mm}.cols.wide>div:first-child{flex:1}
+.cols .emo{font-size:36pt}
+.pt{width:4mm;height:4mm;border-radius:50%;background:#2B1526;display:inline-block;flex-shrink:0}
+.fin{display:flex;flex-wrap:wrap;gap:8mm;margin-bottom:10mm}.fin span{display:flex;align-items:center;gap:3mm;font-size:18pt}.fin .m{font-size:36pt}
+.wbox{display:inline-block;width:16mm;height:18mm;border:2px solid #8a7a86;border-radius:2mm;vertical-align:middle}
+.wbox.s{width:12mm;height:14mm;margin-inline-start:1mm}
+.ends{display:grid;grid-template-columns:1fr 1fr;gap:8mm 10mm}.ends>div{display:flex;align-items:center;gap:5mm}.ends .w{font-size:28pt}
+.drows>div{display:flex;justify-content:space-between;margin-bottom:6mm;padding:1mm 4mm;border-bottom:1px dashed #E1F0EA}.drows .rd{font-size:28pt}
+.cgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:7mm 2mm;margin-top:4mm}.cgrid .rd{font-size:32pt;text-align:center}
+.opts3{display:grid;grid-template-columns:1fr 1fr;gap:6mm 10mm}.opts3>div{display:flex;align-items:center;gap:4mm;border-bottom:1px dashed #E1F0EA;padding-bottom:2mm}
+.opts3 .ch{display:flex;gap:5mm;flex-wrap:wrap}.opts3 .ch .rd{font-size:22pt}.opts3 .w{font-size:20pt}
+.opts3.two .ch .rd{font-size:20pt}
+.builds{display:flex;flex-direction:column;gap:6mm}.builds>div{display:grid;grid-template-columns:20mm 1fr;grid-template-rows:auto auto;column-gap:4mm;align-items:center}
+.builds .emo{grid-row:span 2}.builds .bx{display:flex;gap:2mm}.builds .bank{font-size:14pt;color:#6b5a66;letter-spacing:1mm}
+.tfs>div{display:flex;align-items:center;gap:5mm;min-height:22mm;border-bottom:1px dashed #E1F0EA}.tfs .s{flex:1;font-size:17pt}.tfs .emo{font-size:26pt}.tfs .yn{font-size:20pt;font-weight:800}
+.orders>div{display:grid;grid-template-columns:22mm 1fr;grid-template-rows:auto 14mm;column-gap:4mm;align-items:center;margin-bottom:6mm}
+.orders .emo{grid-row:span 2;font-size:26pt}.orders .wds{display:flex;flex-wrap:wrap;gap:3mm}.orders .wds i{font-style:normal;border:2px dashed #CDE7DC;border-radius:3mm;padding:0 3mm}.orders .wds .rd{font-size:17pt}
+.orders .line{border-bottom:1.5px solid #8a7a86;align-self:end}
+.draws{display:grid;grid-template-columns:1fr 1fr;gap:6mm}.draws>div{border:2px solid #CDE7DC;border-radius:4mm;padding:3mm;height:100mm;display:flex;flex-direction:column}
+.draws.one{grid-template-columns:1fr;margin-top:5mm}.draws.one>div{height:62mm}
+.draws .s{font-size:16pt}
+.pg .story{border:2px solid #F3E6B8;background:#FFFDF5;border-radius:4mm;padding:4mm 6mm}
+.pg .story p{font-size:17pt;line-height:1.7}
+.qs{margin:5mm 0 0;padding-inline-start:8mm}.qs li{margin-bottom:4mm;font-size:15pt}.qs p .rd{font-size:15pt}.qs .ch{display:flex;gap:8mm;flex-wrap:wrap}.qs .ch .rd{font-size:14pt;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:3mm 8mm;margin-bottom:4mm;align-items:center}.legend span{display:flex;align-items:center;gap:2mm;font-size:14pt}
+.legend .m{font-size:22pt}.legend .sw{width:9mm;height:9mm;border-radius:2mm;display:inline-block;border:1px solid #999}.legend b .rd{font-size:20pt}
+.pix{display:grid;grid-template-columns:repeat(12,13.5mm);grid-auto-rows:13.5mm;justify-content:center;border:2px solid #555;width:max-content;margin:0 auto}
+.pix i{border:.6px solid #999;display:grid;place-items:center;font-style:normal}
+.pix .rd{font-size:12pt;line-height:1;color:#444;font-weight:600}
+.certpg{padding:10mm}
+.cert{height:100%;border:6mm solid #FFE3F4;border-radius:8mm;padding:4mm}
+.cin{height:100%;border:2px dashed #FF56C2;border-radius:5mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:3mm;font-family:BQRead,sans-serif}
+.cin img{width:45mm;height:auto}.c1{font-size:38pt;font-weight:700;color:#C13671}.c2{font-size:30pt;font-weight:700}.c3{font-size:16pt}.c4{font-size:26pt;font-weight:700;color:#6B2FA3}
+.c5{font-size:70pt;line-height:1.1}.c6{font-size:11pt;color:#4E8576}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff!important}
+  body.sheet-mode header.top,body.sheet-mode .sponsor,body.sheet-mode footer,body.sheet-mode .pbar,body.sheet-mode .pnote,body.sheet-mode .bq-nav,body.sheet-mode .bq-doors,body.sheet-mode .site-copy,body.sheet-mode .site-legal,body.sheet-mode .crumbs{display:none!important}
+  main.wrap{max-width:none;padding:0}
+  #print{padding:0}
+  .pg{zoom:1;margin:0;box-shadow:none;break-after:page;page-break-after:always}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
+</head>
+<body>
+<header class="top">
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – דף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap">
+<nav class="crumbs" aria-label="אתם כאן"><a href="../../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <a href="../">🎒 כיתות א'–ג'</a> <span aria-hidden="true">›</span> <span>📖 מסלול הקריאה</span></nav>
+
+<div id="readApp" aria-live="polite"><noscript><p class="note">המשחקים צריכים JavaScript פעיל בדפדפן.</p></noscript></div>
+<div id="print" hidden></div>
+
+<!-- ====== להורים ====== -->
+<section class="adult bq-teach" id="for-parents">
+  <h2>👨‍👩‍👧 להורים: איך עובד מסלול הקריאה?</h2>
+  <p>מסלול אחד, לפי הסדר, מהאות הראשונה ועד קריאה מלאה. הילד מתקדם בקצב שלו, ושלב חדש נפתח רק כשהוא באמת מוכן.</p>
+  <div class="cards3">
+    <div><b>🗺️ 4 עולמות, 18 שלבים</b>אותיות (א–ת, סופיות ואותיות דומות) ← הניקוד, צליל אחרי צליל ← מילים קצרות וארוכות ← משפטים, סיפורונים, קריאה בלי ניקוד וכתיב נכון.</div>
+    <div><b>🏁 עוברים שלב כשמוכנים</b>בכל שלב יש משחקים. אחרי 3 ניצחונות נפתח "אתגר השלב" – 10 שאלות. 8 נכונות = מדבקה לאוסף והשלב הבא נפתח. לא הצליח? ממשיכים לשחק ומנסים שוב, בלי לחץ.</div>
+    <div><b>🧭 מאיפה מתחילים?</b>"בודקים מאיפה מתחילים" – עד 15 שאלות קצרות שמוצאות את השלב המתאים. אפשר גם לבחור שלב לבד, או לדלג קדימה (עם שאלה קטנה למבוגר, כדי שהילד לא ידלג לבד).</div>
+    <div><b>⭐ הניצחונות נשמרים</b>כוכבים, ניצחונות, מדבקות והשלב הנוכחי נשמרים בדפדפן שבו משחקים – כדאי לשחק תמיד מאותו מכשיר. כפתור "מתחילים מההתחלה" במפה מאפס הכל בלחיצה.</div>
+    <div><b>🔇 למה אין כאן הקראה בקול?</b>הקול הממוחשב של הדפדפן לא תמיד קורא נכון ניקוד, ובלימוד קריאה כל צליל חשוב. לכן באזור הזה אתם הקול: קוראים יחד, והתמונות עוזרות לילד לבדוק את עצמו.</div>
+    <div><b>🖨️ דפים בכמויות</b>בכל שלב 4–6 סוגי דפים: כתיבה, צביעה לפי קוד, מתיחת קווים, כתב יד, סיפור ושאלות. כל לחיצה = דף חדש, חוברת של 10 דפים בלחיצה אחת, ותעודה עם השם של הילד.</div>
+  </div>
+  <h3>⏱️ 10 דקות ביום – שגרה שעובדת</h3>
+  <ol>
+    <li>2 משחקים קצרים בשלב של הילד (5 דקות).</li>
+    <li>הילד קורא לכם בקול 3 אותיות / הברות / מילים מהמשחק.</li>
+    <li>דף אחד להדפסה – או דף צביעה כשהוא עייף.</li>
+    <li>חוגגים כל כוכב. כשנפתח אתגר – עושים אותו יחד, בלי למהר.</li>
+  </ol>
+  <h3>💛 כדאי לדעת</h3>
+  <ul>
+    <li>בלבול בין אותיות דומות (ד/ר, ה/ח, ב/כ) הוא טבעי בהתחלה – בשביל זה יש שלב 5.</li>
+    <li>קמץ ופתח נשמעים אותו דבר, וגם סגול וצירי. מה שחשוב הוא הצליל, לא השם של הסימן.</li>
+    <li>אם הקושי נמשך זמן רב – שווה לשתף את המורה או את היועצת בבית הספר.</li>
+  </ul>
+  <div class="row start"><a class="btn wa" id="shareProg" target="_blank" rel="noopener">💬 לשתף את ההתקדמות (לסבתא? 😉)</a></div>
+</section>
+
+<!-- ====== למורות ולגננות ====== -->
+<section class="adult bq-teach" id="for-teachers">
+  <h2>👩‍🏫 למורות ולגננות</h2>
+  <div class="cards3">
+    <div><b>📺 בכיתה</b>מקרינים משחק על הלוח והכיתה עונה יחד. "מה שונה?", "בלונים" ו"נכון או לא?" עובדים מצוין במליאה. שלב לשבוע זה קצב טוב לרוב הכיתות.</div>
+    <div><b>🏠 תרגול בבית</b>בוחרים שלב ושולחים להורים בוואטסאפ הודעה מוכנה עם קישור ישיר לשלב. ילד שהשלב עוד נעול אצלו – ההורה יכול לפתוח אותו בלחיצה.</div>
+    <div><b>🧸 לגננות בגן חובה</b>עולם 1 (שלבים 1–5) מתאים להכנה לכיתה א': היכרות עם האותיות דרך משחק, תמונות וכתיבה באצבע – בלי לחץ לקרוא.</div>
+    <div><b>📚 חוברות לכיתה</b>בכל שלב: "חוברת 10 דפים מעורבבים" – מדפיסים פעם אחת ומחלקים. כל הדפסה יוצאת שונה, כך שאפשר לתת לכל שולחן דף אחר.</div>
+  </div>
+  <h3>📲 הודעה להורים עם קישור לשלב</h3>
+  <div class="row start"><label for="tLv" class="vh">שלב</label><select id="tLv" class="lvsel"></select><a class="btn wa" id="tWa" target="_blank" rel="noopener">💬 שליחה להורים</a></div>
+  <h3>🗓️ קצב לדוגמה (כל כיתה שונה)</h3>
+  <ul>
+    <li><b>גן חובה:</b> עולם 1 – האותיות, בקצב של הגן.</li>
+    <li><b>כיתה א':</b> עולם 1 בתחילת השנה, עולם 2 (הניקוד) ועולם 3 (מילים) במהלך השנה, ומשפטים וסיפורונים לקראת סופה.</li>
+    <li><b>כיתות ב'–ג':</b> סיפורונים, קריאה בלי ניקוד וכתיב נכון (שלבים 16–18), ודפי חזרה מכל השלבים.</li>
+  </ul>
+</section>
+
+<!-- ====== כל הדפים ====== -->
+<section class="adult bq-teach" id="all-sheets">
+  <h2>🖨️ כל דפי ההדפסה לפי שלב</h2>
+  <p class="note">הדפים פתוחים לכל שלב, גם אם במשחק הוא עוד נעול. כל לחיצה = דף חדש.</p>
+  <div class="tblwrap"><table class="tbl" id="sheetTbl"><thead><tr><th>שלב</th><th>דפים</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section class="adult bq-teach">
+  <h2>🔗 עוד באתר</h2>
+  <div class="links">
+    <a href="../">🎒 כל התכנים לכיתות א'–ג'</a>
+    <a href="../../kids/?g=reading">🧒 אזור הילדים: אותיות וקריאה</a>
+    <a href="../../kids/play/?g=letters">🔤 באיזו אות מתחילה? (חדר המשחקים)</a>
+    <a href="../../topics/math/">🔢 חשבון לגיל הרך (גם לכיתות)</a>
+    <a href="../../parents/">👨‍👩‍👧 להורים</a>
+    <a href="../../teachers/">👩‍🏫 לגננות</a>
+    <a href="../../map/">🗺️ מפת האתר</a>
+  </div>
+  <p class="note" style="margin-top:12px">אותיות כתב היד בגופן "גברת לוין" (אלף אלף אלף) ואותיות הדפוס בגופן Noto Sans Hebrew – שניהם ברישיון פתוח (OFL). המשחקים מיועדים לילדים, והשימוש של ילדים באתר באחריות מבוגר.</p>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+  </div>
+</footer>
+<script src="../../common.js"></script>
+<script src="../../catalog.js"></script>
+<script src="../../qrcode.min.js"></script>
+<script src="data.js"></script>
+<script src="sheets.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  /* טבלת כל הדפים */
+  var names = window.READ_SHEET_NAMES || {}, tb = document.querySelector("#sheetTbl tbody");
+  READ.LEVELS.forEach(function(L){
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td><b>' + L.n + '. ' + L.p + '</b><br><span class="note">' + L.cls + '</span></td><td><div class="sheets">' +
+      L.sheets.map(function(s){ return '<a class="sh" target="_blank" rel="noopener" href="?sheet=' + s + '&lvl=' + L.n + '">' + (names[s] || s) + '</a>'; }).join("") +
+      '<a class="sh book" target="_blank" rel="noopener" href="?sheet=book&lvl=' + L.n + '">📚 חוברת</a></div></td>';
+    tb.appendChild(tr);
+  });
+  /* הודעה להורים מהמורה */
+  var sel = document.getElementById("tLv"), wa = document.getElementById("tWa");
+  READ.LEVELS.forEach(function(L){ var o = document.createElement("option"); o.value = L.n; o.textContent = "שלב " + L.n + " – " + L.p; sel.appendChild(o); });
+  var paint = function(){ var L = READ.LEVELS[+sel.value - 1];
+    wa.href = "https://wa.me/?text=" + encodeURIComponent("שלום הורים 😊\nהשבוע מתרגלים קריאה – " + L.p + " (שלב " + L.n + " במסלול הקריאה של BOOQLI).\nבקישור יש משחקים קצרים, אתגר ומדבקות, ודפי עבודה להדפסה. 10 דקות ביום מספיקות!\nhttps://games.booqli.ai/school/reading/?lvl=" + L.n + "&utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=school-reading\n\nכל התכנים בחינם, בחסות BOOQLI 💛"); };
+  sel.onchange = paint; paint();
+  wa.addEventListener("click", function(){ siteEvent("read-share", "teacher-lvl" + sel.value); });
+  /* שיתוף ההתקדמות */
+  var sp = document.getElementById("shareProg");
+  sp.addEventListener("click", function(){
+    var s = READ_APP.S(), L = READ.LEVELS[Math.min(s.cur || s.max, READ.LEVELS.length) - 1], got = READ.LEVELS.filter(function(l){ return s.done[l.n] === 1; }).length;
+    sp.href = "https://wa.me/?text=" + encodeURIComponent("📖 " + (s.name || "הילד/ה שלנו") + " לומד/ת לקרוא עם אלפבוקלי!\nעכשיו בשלב " + L.n + ": " + L.p + " · ⭐ " + s.wins + " ניצחונות · 🏅 " + got + " מדבקות\n\nמסלול הקריאה של booqli Games – בחינם:\nhttps://games.booqli.ai/school/reading/?utm_source=whatsapp&utm_medium=share&utm_campaign=school-reading");
+    siteEvent("read-share", "progress");
+  });
+  siteJoinLinks();
+})();
+</script>
+</body>
+</html>

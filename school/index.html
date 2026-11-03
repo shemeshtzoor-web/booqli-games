@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>כיתות א'–ג' · booqli Games</title>
-<meta name="description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', ובקרוב קריאה וכתיבה, הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
+<meta name="description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', מסלול קריאה מלא (אותיות, ניקוד, מילים, סיפורים), הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
 <link rel="canonical" href="https://games.booqli.ai/school/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="booqli Games">
 <meta property="og:title" content="כיתות א'–ג' · booqli Games">
-<meta property="og:description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', ובקרוב קריאה וכתיבה, הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
+<meta property="og:description" content="תכנים לכיתות א' עד ג': חשבון, רגשות וחברות, הכנה לכיתה א', מסלול קריאה מלא (אותיות, ניקוד, מילים, סיפורים), הבנת הנקרא, אנגלית ומדע. בחינם, בחסות BOOQLI.">
 <meta property="og:url" content="https://games.booqli.ai/school/">
 <meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,6 +18,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../site.css">
+<style>
+/* מרובע מסלול הקריאה (3.11.2026) */
+.readq{margin-top:16px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 6px 0 #d9e9e1;border:3px solid #E7D6FA}
+.readq-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.readq-h h2{font-size:clamp(24px,5vw,32px);color:#6B2FA3}
+.readq-h p{flex-basis:100%;font-size:16.5px}
+.readq-h .tag{background:#FF56C2;color:#fff;border-radius:999px;padding:3px 12px;font-weight:800;font-size:14px}
+.quad{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.quad a{display:flex;flex-direction:column;gap:4px;border-radius:22px;padding:16px 14px;text-decoration:none;color:#2B1526;min-height:150px;position:relative;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+.quad a .n{position:absolute;top:10px;inset-inline-end:12px;font-weight:800;font-size:13px;opacity:.75}
+.quad a span.i{font-size:40px;line-height:1.1}
+.quad a b{font-family:Fredoka,Assistant,sans-serif;font-size:20px;line-height:1.2}
+.quad a small{font-size:14.5px;color:#4b3a46}
+.quad .q1{background:#FFE3F4}.quad .q2{background:#F1E3FF}.quad .q3{background:#DCEBFF}.quad .q4{background:#DDF1DF}
+.readq-go{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;justify-content:center}
+.readq-go a{border-radius:999px;padding:11px 18px;font-weight:800;text-decoration:none;background:#E0399F;color:#fff;box-shadow:0 3px 0 #A3216F}
+.readq-go a.alt{background:#fff;color:#6B2FA3;border:2px solid #E7D6FA;box-shadow:none}
+@media (max-width:420px){.quad{gap:8px}.quad a{padding:12px 10px;min-height:136px}.quad a b{font-size:17px}.quad a small{font-size:13px}}
+</style>
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
 <link rel="preload" href="../common.js" as="script">
@@ -35,7 +54,18 @@
 <nav class="crumbs" aria-label="אתם כאן"><a href="../">🏠 דף הבית</a> <span aria-hidden="true">›</span> <span>🎒 כיתות א'–ג'</span></nav>
 <section class="zone-hero" style="--zc:#6B2FA3;--zb:#F1E3FF">
   <img src="../img/family/alef.webp" alt="" width="120" height="124">
-  <div><small>booqli Games · למורות, לתלמידים ולהורים</small><h1>כיתות א'–ג'</h1><p>אותה חלוקה כמו בגן, ברמה של בית ספר: מערכים למורה, משחקים לתלמידים ותרגול קצר בבית. מתחילים בחשבון וברגשות, ועוד מקצועות בדרך.</p><div class="bubble">שָׁלוֹם! אני אֲלֶפְבּוּקְלִי, ויחד עם חֶשְׁבּוּקְלִי נלמד המון ✏️</div></div>
+  <div><small>booqli Games · למורות, לתלמידים ולהורים</small><h1>כיתות א'–ג'</h1><p>אותה חלוקה כמו בגן, ברמה של בית ספר: משחקים לתלמידים, דפים להדפסה ותרגול קצר בבית. מתחילים במסלול הקריאה, בחשבון וברגשות, ועוד מקצועות בדרך.</p><div class="bubble">שָׁלוֹם! אני אֲלֶפְבּוּקְלִי, ויחד עם חֶשְׁבּוּקְלִי נלמד המון ✏️</div></div>
+</section>
+<section class="readq" aria-labelledby="readqT">
+  <div class="readq-h"><h2 id="readqT">📖 מסלול הקריאה</h2><span class="tag">חדש!</span>
+  <p>מהאות הראשונה ועד קריאה מלאה – 18 שלבים לפי הרמה של הילד. משחקים, אתגר בסוף כל שלב, מדבקות, ודפים להדפסה לכל שלב.</p></div>
+  <div class="quad">
+    <a class="q1" href="reading/?lvl=1"><span class="n">שלבים 1–5</span><span class="i" aria-hidden="true">🔤</span><b>הכרת האותיות</b><small>א–ת, אותיות סופיות, אותיות דומות, דפוס וכתב יד</small></a>
+    <a class="q2" href="reading/?lvl=6"><span class="n">שלבים 6–11</span><span class="i" aria-hidden="true">🎵</span><b>הכרת הניקוד</b><small>קמץ, פתח, חיריק, סגול, חולם, שורוק ושווא</small></a>
+    <a class="q3" href="reading/?lvl=12"><span class="n">שלבים 12–14</span><span class="i" aria-hidden="true">📖</span><b>קריאת מילים קלות</b><small>מילים קצרות, שתי הברות, מילים ארוכות ובניית מילה</small></a>
+    <a class="q4" href="reading/?lvl=15"><span class="n">שלבים 15–18</span><span class="i" aria-hidden="true">🏆</span><b>משפטים וסיפורים</b><small>הבנת הנקרא, קריאה בלי ניקוד וכתיב נכון</small></a>
+  </div>
+  <div class="readq-go"><a href="reading/?place=1">🧭 בודקים באיזו רמה הילד</a><a class="alt" href="reading/">🗺️ למפת המסלול</a><a class="alt" href="reading/#for-teachers">👩‍🏫 למורות</a><a class="alt" href="reading/#all-sheets">🖨️ כל הדפים</a></div>
 </section><div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
 <div id="zone"></div>
 </main>
@@ -48,7 +78,7 @@
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
 <script>
-const LIST = CATALOG.filter(t => t.aud.includes("s") || t.ages[1] >= 7);
+const LIST = CATALOG.filter(t => (t.aud.includes("s") || t.ages[1] >= 7) && t.id !== "school-reading"); /* מסלול הקריאה – במרובע למעלה */
 const OPT = {};
 const SECTIONS = [
   {id:"open", title:"✨ פתוח עכשיו", filter: t => CAT.state(t) === "open" && !t.book, sort:"open"},

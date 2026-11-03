@@ -43,7 +43,7 @@ function siteKidAllowed(href){
   var u; try { u = new URL(href, location.href); } catch (e) { return false; }
   if (u.origin !== location.origin) return false;
   var p = u.pathname;
-  if (/^\/kids(\/|$)/.test(p) || /^\/games\/[^/]+(\/|\/index\.html)?$/.test(p) || p === "/offline.html") return true;
+  if (/^\/kids(\/|$)/.test(p) || /^\/games\/[^/]+(\/|\/index\.html)?$/.test(p) || /^\/school\/reading(\/|\/index\.html)?$/.test(p) && !/[?&]sheet=/.test(u.search) || p === "/offline.html") return true;
   if (/^\/topics\/[^/]+(\/|\/index\.html)?$/.test(p)) return /[?&]play=1(&|$)/.test(u.search);
   return false;
 }
@@ -443,7 +443,7 @@ function siteJoinPopup(){
   var qs = location.search || "";
   if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
-  var kids = /\/kids\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
+  var kids = /\/(kids|school\/reading)\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
   try { kidsOk = localStorage.getItem("booqli_kids_ok") === "1"; } catch (e) { kidsOk = true; }
   try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
   var save = function(o){ try { localStorage.setItem("booqli_join", JSON.stringify(o)); } catch (e) {} };
@@ -664,6 +664,9 @@ window.SITE.menu = [
     { ic: "🎲", t: "חדר המשחקים", href: "/kids/play/" },
     { ic: "🪄", t: "מנפישים את הציור", href: "/kids/animate/" },
     { ic: "📚", t: "משחקי ספרי BOOQLI", href: "/kids/?g=books" } ] },
+  { h: "🎒 כיתות א'–ג'", items: [
+    { ic: "📖", t: "מסלול הקריאה: מהאותיות ועד קריאה מלאה", href: "/school/reading/", hot: true },
+    { ic: "🎒", t: "כל התכנים לכיתות", href: "/school/" } ] },
   { h: "🎁 מ-BOOQLI", items: [
     { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
     { ic: "🎁", t: "מתנות וספקיות לגן", href: "/gifts/" },
