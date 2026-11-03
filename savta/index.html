@@ -134,7 +134,25 @@ section.sv{margin-top:34px}
 .faq details p{padding:0 16px 14px;color:var(--ink)}
 .float{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:none;gap:8px}
 .float a{flex:1;justify-content:center;font-size:18px;padding:13px 10px}
-@media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.promise .ar{display:none}.promise div{min-width:100%}}
+/* מה עוד צריך למלא – מהבהב בעדינות; הבא בתור מהבהב חזק יותר (3.11.2026) */
+@keyframes todoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,86,194,0)}50%{box-shadow:0 0 0 6px rgba(255,86,194,.38)}}
+.todo{border-color:var(--pink)!important;border-radius:14px;animation:todoPulse 1.8s ease-in-out infinite}
+.todo.now{animation-duration:1.1s;background:#FFF0F8}
+.fl.todo{padding:6px 8px;margin-inline:-8px;border:2px dashed var(--pink)}
+.photo .pick.todo{outline:3px solid var(--pink);outline-offset:2px}
+.self label.todo{border:2px dashed var(--pink);padding:4px 8px}
+.consent.todo{border-color:var(--pink)}
+/* סַבָּבּוּקְלִי – מדריך קטן שצמוד לתחתית הטופס */
+.guide{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;margin-top:14px;display:flex;gap:10px;align-items:center;background:#fff;border:3px solid var(--pink);border-radius:22px;padding:8px 12px 8px 8px;box-shadow:0 10px 28px rgba(193,54,113,.22);cursor:pointer;text-align:start;width:100%;font:inherit;color:var(--ink)}
+.guide .gc{position:relative;flex:0 0 auto;width:62px;height:62px}
+.guide .gc img{width:62px;height:62px;object-fit:contain;display:block}
+.guide .gc i{position:absolute;font-style:normal;font-size:24px;top:20px;left:50%;transform:translateX(-50%);line-height:1}
+.guide b{display:block;font-family:Fredoka,Assistant,sans-serif;color:var(--mag);font-size:16px}
+.guide span{display:block;font-weight:800;font-size:18px;line-height:1.35}
+.guide.ok{border-color:var(--wa)}.guide.ok b{color:#1E7F45}
+.guide .go{margin-inline-start:auto;flex:0 0 auto;font-size:22px;color:var(--pink)}
+@media (prefers-reduced-motion:reduce){.todo,.todo.now{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
+@media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.guide{bottom:calc(78px + env(safe-area-inset-bottom,0px))}.guide span{font-size:16.5px}.guide .gc,.guide .gc img{width:52px;height:52px}.guide .gc i{font-size:20px;top:17px}.promise .ar{display:none}.promise div{min-width:100%}}
 @media print{.float{display:none}}
 </style>
 </head>
@@ -196,6 +214,7 @@ section.sv{margin-top:34px}
       <p class="st" id="sendSt"></p>
     </div>
     <div class="done" id="done" hidden>🎉 קיבלנו! נחזור אליכם בוואטסאפ (א׳–ה׳ 8:00–18:00) עם כל הספר לתצוגה.<br>בינתיים – <a href="#app" style="color:#1E7F45">שלחו להורים את האפליקציה במתנה ↓</a></div>
+    <button type="button" class="guide" id="guide" aria-live="polite"><span class="gc" aria-hidden="true"><img src="../img/family/booqli.webp" alt="" width="62" height="62"><i>👓</i></span><span><b>סַבָּבּוּקְלִי כאן לעזור</b><span id="guideTxt">בוחרים ספר 📚</span></span><span class="go" aria-hidden="true">👈</span></button>
   </div>
 </section>
 
@@ -371,29 +390,43 @@ function checkPhoto(it){
 
 /* מחיר + מה חסר */
 function priceOf(n, cover){ let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return cover === "soft" ? t[1] : t[2]; }
-function missing(){
-  const m = [];
+/* מה עוד חסר – לפי הסדר בטופס. כל שורה: [הטקסט, האלמנט שמהבהב, ההסבר של סַבָּבּוּקְלִי] */
+function todos(){
+  const t = [], many = ITEMS.length > 1;
   ITEMS.forEach((it, i) => {
-    const b = book(it.book), p = "ספר " + (i + 1) + ": ";
-    if (!b) m.push(p + "לבחור ספר"); else if (it.ver === "") m.push(p + "נכד או נכדה");
-    if (!it.name.trim()) m.push(p + "השם");
-    if (!it.file) m.push(p + "תמונה"); else if (!(it.c1 && it.c2 && it.c3)) m.push(p + "לסמן את 3 הבדיקות של התמונה");
+    const el = document.querySelector(`.item[data-k="${it.k}"]`); if (!el) return;
+    const b = book(it.book), p = "ספר " + (i + 1) + ": ", g = many ? "ספר " + (i + 1) + " – " : "", who = it.name.trim() || "הנכד/ה";
+    if (!b) t.push([p + "לבחור ספר", el.querySelector("[data-f=book]").closest(".fl"), g + "בוחרים איזה ספר 📚"]);
+    else if (it.ver === "") t.push([p + "נכד או נכדה", el.querySelector("[data-f=ver]").closest(".fl"), g + "נכד או נכדה? לוחצים על אחד 👦👧"]);
+    if (!it.name.trim()) t.push([p + "השם", el.querySelector("[data-f=name]"), g + "כותבים את השם שיופיע בספר ✍️"]);
+    if (!it.file) t.push([p + "תמונה", el.querySelector(".pick"), g + "מעלים תמונה של " + who + " 📷"]);
+    else ["c1", "c2", "c3"].forEach(c => { if (!it[c]) t.push([p + "לסמן את 3 הבדיקות של התמונה", el.querySelector(`[data-f=${c}]`).closest("label"), g + "מסתכלים בתמונה ומסמנים ✔️ מה שנכון"]); });
   });
-  if (!$("consent").checked) m.push("לסמן את האישור");
-  return m;
+  if (!$("consent").checked) t.push(["לסמן את האישור", document.querySelector(".consent"), "מסמנים ✔️ את האישור בתיבה הצהובה 💛"]);
+  return t;
 }
-let ORDER = "", SENT1 = false;
+function missing(){ return [...new Set(todos().map(x => x[0]))]; }
+let ORDER = "", SENT1 = false, GUIDE = null;
 function update(){
   const n = ITEMS.filter(x => x.book).length;
   if (n) { const tot = ITEMS.filter(x => x.book).reduce((s, x) => s + priceOf(n, x.cover), 0);
     $("sum").innerHTML = `<div class="tot">${n} ${n === 1 ? "ספר" : "ספרים"} · ${ils(tot)}</div><p>${n > 1 ? "המחיר לכל ספר יורד ככל שמזמינים יותר. " : ""}משלוח: עד הבית 40 ₪ או לנקודת חלוקה 18 ₪. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>`; }
   else $("sum").innerHTML = `<div class="tot">עוד לא נבחר ספר</div><p>בוחרים ספר למעלה ("אני רוצה את הספר הזה") או כאן בטופס.</p>`;
-  const m = missing();
+  const td = todos(), m = [...new Set(td.map(x => x[0]))];
+  document.querySelectorAll(".todo").forEach(e => e.classList.remove("todo", "now"));
+  td.forEach((x, i) => { if (x[1]) x[1].classList.add("todo"); if (!i && x[1]) x[1].classList.add("now"); });
+  GUIDE = td[0] ? td[0][1] : (SENT1 ? $("send2") : $("send1"));
+  $("guideTxt").textContent = td[0] ? td[0][2] : SENT1 ? "שלב 2: לוחצים על הכפתור הוורוד ושולחים את התמונות 📷" : "הכל מוכן! לוחצים על הכפתור הירוק 💬";
+  $("guide").classList.toggle("ok", !td.length);
   $("send1").disabled = !!m.length;
   $("send2").disabled = !SENT1 || !!m.length;
   $("need").textContent = m.length ? "כדי לשלוח חסר: " + m.slice(0, 4).join(" · ") + (m.length > 4 ? " ועוד" : "") : "";
 }
 $("consent").addEventListener("change", update);
+/* לחיצה על סַבָּבּוּקְלִי – קופצים בדיוק למה שצריך עכשיו */
+$("guide").onclick = () => { const e = GUIDE; if (!e) return; e.scrollIntoView({behavior: "smooth", block: "center"});
+  const f = e.matches("input,select,button") ? e : e.querySelector("select,input:not([type=file]),textarea");
+  setTimeout(() => { if (f && !f.disabled) f.focus({preventScroll: true}); }, 450); ev("savta-guide", ($("guideTxt").textContent || "").slice(0, 30)); };
 
 /* שלב 1: הודעה עם כל הפרטים */
 function message(){
@@ -435,8 +468,9 @@ $("shareApp").onclick = () => {
 };
 document.querySelectorAll("[data-ev]").forEach(a => a.addEventListener("click", () => ev("savta-click", a.dataset.ev)));
 
-/* ?book=<id> – קישור ישר לספר מסוים (למשל מכל סרטון) */
-(() => { const q = new URLSearchParams(location.search).get("book"); renderItems(); if (q && book(q)) { ITEMS[0].book = q; renderItems(); } })();
+/* ?book=<id> – קישור ישר לספר מסוים (למשל מכל סרטון).
+   utm_content של מודעה גובר על book (במטא הכתובת ננעלת בשכפול מודעה, אבל utm_content נשמר לכל מודעה) */
+(() => { const u = new URLSearchParams(location.search), c = u.get("utm_content"), q = c && book(c) ? c : u.get("book"); renderItems(); if (q && book(q)) { ITEMS[0].book = q; renderItems(); } })();
 </script>
 </body>
 </html>
