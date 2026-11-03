@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ממציאים משחק עם כל הגן – סבאבוקלי שואל, הילדים ממציאים · booqli Games</title>
+<meta name="description" content="כל הגן ממציא משחק ביחד על מסך הגן: סבאבוקלי שואל בקול, הילדים עונים והגננת מקלידה. חידון, משחק זיכרון או מי אני? בסוף – סיכום להדפסה וקישור להורים כדי להמשיך לשחק בבית. בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/game-maker/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🎙️ ממציאים משחק עם כל הגן">
+<meta property="og:description" content="סבאבוקלי שואל, הילדים ממציאים, הגננת מקלידה – ויש לגן משחק משלו. סיכום להדפסה וקישור להורים לתרגול בבית.">
+<meta property="og:url" content="https://games.booqli.ai/topics/game-maker/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
+<link rel="stylesheet" href="game.css">
+<style>
+:root{--pink:#FF56C2;--pink-btn:#E0399F;--pink-shadow:#A3216F;--pink-soft:#FFE3F4;--mint:#E1F0EA;--mint-2:#CDE7DC;--sage:#6F988B;--sage-deep:#4E8576;--magenta:#C13671;--wa:#1FA855;--ink:#2B1526;--muted:#6b5a66;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Assistant,Arial,sans-serif;background:var(--mint);color:var(--ink);line-height:1.45;overflow-x:hidden}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;line-height:1.2}
+a{color:var(--magenta)}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:var(--sage)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.logo{height:44px;width:auto;display:block}
+.gan{color:#fff;font-weight:800;text-decoration:none;font-size:14px}.gan .pill{background:rgba(255,255,255,.2);border-radius:999px;padding:2px 10px;margin-inline-start:4px}
+.btn-wa{background:var(--wa);color:#fff;font-weight:800;text-decoration:none;border-radius:999px;padding:8px 14px;font-size:14px}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+main{padding-bottom:30px}
+.hero{margin-top:16px;display:grid;grid-template-columns:1fr 210px;gap:18px;align-items:center;background:linear-gradient(160deg,#FFF6DD,#FFE3F4 55%,#E1F0EA);border:3px solid #FFC2E6;border-radius:30px;padding:24px;position:relative;overflow:hidden}
+.hero small{display:inline-block;background:#fff;color:var(--magenta);border:1.5px solid #FFC2E6;font-weight:800;border-radius:999px;padding:4px 14px;font-size:14px}
+.hero h1{font-size:clamp(30px,5vw,50px);margin:10px 0 6px}.hero h1 span{color:var(--magenta);display:block}
+.hero p{font-size:18px;margin:0 0 12px}
+.hero img{width:100%;height:auto}
+.steps4{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-wrap:wrap;gap:8px}
+.steps4 li{background:#fff;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14.5px;color:var(--sage-deep)}
+.go-big{font:inherit;font-weight:800;font-size:20px;background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:13px 26px;box-shadow:0 5px 0 var(--pink-shadow);cursor:pointer}
+.go-big:active{transform:translateY(3px);box-shadow:0 2px 0 var(--pink-shadow)}
+.safe-note{margin:12px 0 0;font-size:15px;color:var(--sage-deep);font-weight:700}
+@media (max-width:700px){.hero{grid-template-columns:1fr;text-align:center;padding:20px 16px}.hero img{max-width:170px;margin:0 auto;order:-1}.steps4{justify-content:center}}
+.panel{background:#fff;border-radius:24px;padding:20px;margin-top:18px;box-shadow:0 4px 0 #d9e9e1}
+.panel h2{margin:0 0 8px;font-size:24px;color:var(--magenta)}
+.panel ul{margin:6px 0;padding-inline-start:22px}.panel li{margin:4px 0}
+.mine{display:grid;gap:10px}
+.mine .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:#F4FAF7;border-radius:16px;padding:10px 12px}
+.mine .row b{flex:1;min-width:160px}
+.mine button{font:inherit;font-weight:800;border:2px solid var(--sage-deep);background:#fff;color:var(--sage-deep);border-radius:999px;padding:6px 12px;cursor:pointer}
+.mine button.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox h2{font-size:24px;margin:0}.bookbox p{margin:6px 0 12px}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block;margin:4px}
+@media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
+#printArea{display:none}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block}body{background:#fff}@page{size:A4;margin:12mm}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero" id="top">
+    <div>
+      <small>🎙️ חדש לגננות · כל הגן ממציא ביחד</small>
+      <h1>ממציאים משחק עם כל הגן<span>סבאבוקלי שואל, הילדים ממציאים</span></h1>
+      <p>מקרינים על מסך הגן. סַבָּאבּוּקְלִי, ממציא המשחקים של משפחת BOOQLI, שואל בקול שאלות כיפיות, הילדים עונים והגננת מקלידה. תוך רבע שעה יש לגן משחק משלו.</p>
+      <ul class="steps4"><li>1️⃣ בוחרים נושא</li><li>2️⃣ אוספים רעיונות</li><li>3️⃣ חידון / זיכרון / מי אני?</li><li>4️⃣ משחקים כל הגן</li><li>🖨️ סיכום להדפסה</li><li>📲 שולחים להורים</li></ul>
+      <button class="go-big" type="button" id="startBtn">▶️ מתחילים על מסך הגן</button>
+      <p class="safe-note">🔒 במשחק נכתב רק שם הגן. בלי שמות של ילדים ובלי תמונות.</p>
+    </div>
+    <img src="../../img/family/saba.svg" alt="סבאבוקלי – חד-קרן סבא עם משקפיים, שפם לבן ועניבת פרפר" width="210" height="210">
+  </section>
+
+  <section id="studio" class="gm-stage" aria-label="הסטודיו של סבאבוקלי">
+    <div class="gm-bar">
+      <ol class="gm-steps" id="steps" aria-label="השלבים"></ol>
+      <div class="gm-tools">
+        <button type="button" id="backBtn" title="שלב אחורה">↩️ <span>אחורה</span></button>
+        <button type="button" id="voiceBtn" title="הקול של סבאבוקלי">🔊 <span>קול</span></button>
+        <button type="button" id="fullBtn" title="מסך מלא">⛶ <span>מסך מלא</span></button>
+      </div>
+    </div>
+    <div class="gm-talk">
+      <img class="gm-saba" id="saba" src="../../img/family/saba.svg" alt="" width="150" height="150">
+      <div class="gm-bubble"><p id="bubble" aria-live="polite"></p><p class="gm-wait" id="waitTip" hidden></p></div>
+    </div>
+    <div class="gm-body" id="body"></div>
+  </section>
+
+  <section class="panel" id="mineBox" hidden>
+    <h2>🗂️ המשחקים שהמצאנו</h2>
+    <p>נשמרים בדפדפן במחשב הזה. אפשר לשחק שוב, לשלוח להורים או להדפיס.</p>
+    <div class="mine" id="mine"></div>
+  </section>
+
+  <section class="panel" id="howto">
+    <h2>👩‍🏫 איך זה עובד בגן</h2>
+    <ul>
+      <li><b>מקרינים</b> את העמוד על מסך הגן (כפתור "מסך מלא") ומושיבים את הילדים במעגל. כדאי רמקול.</li>
+      <li><b>סבאבוקלי מדבר, הגננת מקלידה.</b> כל מה שהוא אומר מופיע גם בכתב גדול, כך שזה עובד גם בלי קול.</li>
+      <li><b>כל הגן משתתף:</b> כל ילד שמרים יד מוסיף רעיון. אין רעיון לא נכון, ותשובות מצחיקות מתקבלות בשמחה.</li>
+      <li><b>הגננת מקלידה וזה לוקח זמן?</b> סבאבוקלי נותן לילדים משימה קטנה בינתיים: לתופף, לעשות פרצוף מצחיק, לחפש משהו בצבע מסוים.</li>
+      <li><b>15–20 דקות</b> מההתחלה ועד שכל הגן משחק. אפשר לעצור באמצע – הכל נשמר במחשב.</li>
+      <li><b>לסיכום נושא שלמדנו:</b> בוחרים "📚 מה שלמדנו" ומקלידים את הנושא. המשחק הופך לחזרה של כל הגן, והסיכום המודפס והקישור להורים ממשיכים את הלמידה בבית.</li>
+      <li><b>💜 חינוך מיוחד:</b> משחק זיכרון עם 3 זוגות הוא הכי פשוט. אפשר לבחור רעיונות עם ציור ברור, ולתת לכל ילד להצביע על התשובה במקום לענות בקול.</li>
+    </ul>
+    <h2 style="margin-top:14px">🔒 מה כותבים ומה לא</h2>
+    <ul>
+      <li>במשחק נכתב <b>רק שם הגן</b> (בלי עיר ובלי רחוב). לא כותבים שמות של ילדים, ואין תמונות.</li>
+      <li>אם נכתב משהו שנשמע כמו שם של ילד, סבאבוקלי יעצור וישאל.</li>
+      <li>"לפרסם באפליקציה" שולח בקשה ל-BOOQLI. המשחק עולה רק אחרי שעברנו עליו, ואפשר לבקש להוריד אותו בכל רגע.</li>
+    </ul>
+  </section>
+
+  <section class="bookbox">
+    <div style="font-size:64px" aria-hidden="true">📖</div>
+    <div>
+      <h2>ספר שהילד הוא הגיבור שלו</h2>
+      <p>BOOQLI מכינה ספר ילדים אמיתי, עם השם של הילד לאורך כל העלילה ואיורים אישיים בכל עמוד. לגנים – מחירים סיטונאיים לחגים ולסוף השנה.</p>
+      <a id="orderLink" target="_blank" rel="noopener">להכיר את הספרים ←</a>
+      <a id="ganBtn" target="_blank" rel="noopener">🏫 הצעת מחיר לגן</a>
+    </div>
+  </section>
+</main>
+
+<div id="printArea"></div>
+
+<script src="../../qrcode.min.js"></script>
+<script src="../../lib/lz-string-1.5.0.min.js"></script>
+<script src="../../common.js"></script>
+<script src="engine.js"></script>
+<script src="studio.js"></script>
+</body>
+</html>

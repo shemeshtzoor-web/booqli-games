@@ -266,7 +266,7 @@ function siteJoinLinks(){
 // משחקי ספרי BOOQLI (games/) תמיד פתוחים. השמות משמשים רק לכותרת במסך הנעילה.
 window.SITE.lockAllTopics = true;
 window.SITE.openTopics = ["calendar", "safety"];  // לוח החופשות + "מה אתה עושה כאן, פחד?" (אזעקות) – פתוחים תמיד לכולם (בקשת שמש 1.11.2026)
-window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", safety: "מה אתה עושה כאן, פחד?", winter: "החורף", colors: "עולם הצבעים", purim: "פורים", pesach: "פסח" };
+window.SITE.locked = { hanukkah: "חנוכה", "birthday-party": "יום הולדת בגן", autumn: "הסתיו", feelings: "עולם הרגשות", "morning-circle": "מפגש בוקר", "last-minute": "הגעתי לא מוכנה", calendar: "לוח החופשות", suppliers: "ספקי המתנות לגן", math: "חשבון לגיל הרך", earthquake: "רעידת אדמה", safety: "מה אתה עושה כאן, פחד?", winter: "החורף", colors: "עולם הצבעים", purim: "פורים", pesach: "פסח", "game-maker": "ממציאים משחק עם כל הגן" };
 function siteIsLocked(id){ return !!id && SITE.openTopics.indexOf(id) < 0 && (SITE.lockAllTopics || !!SITE.locked[id]); }
 window.SITE.codeHash = "b4a218f2f6c3362ac15eed44acc0d7527da1151678f7bc15d0500b9f9b54d2c7";
 function siteUnlocked(){ if (siteOwner()) return true; try { return localStorage.getItem("booqli_code") === SITE.codeHash; } catch (e) { return !!window.__booqliOpen; } }
@@ -667,7 +667,8 @@ window.SITE.menu = [
     { ic: "😊", t: "עולם הרגשות", href: "/topics/feelings/", id: "feelings" },
     { ic: "☀️", t: "מפגש בוקר: 30 רעיונות", href: "/topics/morning-circle/", id: "morning-circle" },
     { ic: "🎂", t: "יום הולדת בגן", href: "/topics/birthday-party/", id: "birthday-party" },
-    { ic: "🆘", t: "הגעתי לא מוכנה!", href: "/topics/last-minute/", id: "last-minute" } ] },
+    { ic: "🆘", t: "הגעתי לא מוכנה!", href: "/topics/last-minute/", id: "last-minute" },
+    { ic: "🎙️", t: "ממציאים משחק עם כל הגן", href: "/topics/game-maker/", id: "game-maker", hot: true } ] },
   { h: "🛡️ מוגנות ובטיחות", items: [
     { ic: "🚨", t: "אזעקות ומרחב מוגן", href: "/topics/safety/", id: "safety" },
     { ic: "🌍", t: "רעידת אדמה", href: "/topics/earthquake/", id: "earthquake" } ] },

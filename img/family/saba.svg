@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 330" width="330" height="330">
+<!-- סַבָּאבּוּקְלִי – ממציא המשחקים של משפחת BOOQLI. איור מקורי, באותו סגנון של חדי־הקרן במשפחה -->
+<g stroke="#3B2A35" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+  <!-- זנב -->
+  <path d="M232 262 C262 250 276 270 268 300 C258 290 246 288 236 292" fill="#C9D3DC"/>
+  <!-- רגליים -->
+  <path d="M110 268 v34 q0 8 8 8 h18 q8 0 8 -8 v-34z" fill="#fff"/>
+  <path d="M186 268 v34 q0 8 8 8 h18 q8 0 8 -8 v-34z" fill="#fff"/>
+  <path d="M110 296 h34 v6 q0 8 -8 8 h-18 q-8 0 -8 -8z M186 296 h34 v6 q0 8 -8 8 h-18 q-8 0 -8 -8z" fill="#E7E2F0"/>
+  <!-- גוף -->
+  <ellipse cx="165" cy="238" rx="78" ry="56" fill="#fff"/>
+  <!-- וסט -->
+  <path d="M112 200 Q165 226 218 200 L226 236 Q165 262 104 236 Z" fill="#6F988B"/>
+  <circle cx="165" cy="238" r="5" fill="#fff" stroke-width="3"/>
+  <!-- אוזניים -->
+  <path d="M92 74 L98 26 L134 58 Z" fill="#fff"/>
+  <path d="M238 74 L232 26 L196 58 Z" fill="#fff"/>
+  <path d="M101 62 L104 42 L120 56 Z M229 62 L226 42 L210 56 Z" fill="#FFC7DF" stroke-width="0"/>
+  <!-- קרן -->
+  <path d="M150 52 L166 8 L182 52 Z" fill="#E4E9EE"/>
+  <path d="M154 40 L178 32 M158 30 L174 24" fill="none" stroke-width="4"/>
+  <!-- ראש -->
+  <path d="M165 46 C228 46 250 92 248 138 C246 192 210 214 165 214 C120 214 84 192 82 138 C80 92 102 46 165 46Z" fill="#fff"/>
+  <!-- רעמה כסופה -->
+  <path d="M146 50 C96 52 66 98 74 150 C78 186 70 214 56 236 C96 232 112 200 110 170 C108 140 112 100 146 72 C158 62 166 56 146 50Z" fill="#B7C3CF"/>
+  <path d="M132 66 C104 84 96 122 98 160 C99 184 92 206 80 222" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="M150 50 C176 48 196 60 204 80 C186 72 168 72 150 82 Z" fill="#B7C3CF"/>
+  <!-- גבות לבנות עבות -->
+  <path d="M114 96 q18 -14 38 -2" fill="none" stroke-width="7"/>
+  <path d="M184 94 q20 -12 38 2" fill="none" stroke-width="7"/>
+  <!-- עיניים -->
+  <circle cx="134" cy="124" r="17" fill="#C13671"/>
+  <circle cx="200" cy="124" r="17" fill="#C13671"/>
+  <circle cx="129" cy="118" r="6" fill="#fff" stroke-width="0"/>
+  <circle cx="195" cy="118" r="6" fill="#fff" stroke-width="0"/>
+  <circle cx="139" cy="130" r="3" fill="#fff" stroke-width="0"/>
+  <circle cx="205" cy="130" r="3" fill="#fff" stroke-width="0"/>
+  <!-- משקפיים עגולים -->
+  <circle cx="134" cy="124" r="27" fill="none" stroke-width="6"/>
+  <circle cx="200" cy="124" r="27" fill="none" stroke-width="6"/>
+  <path d="M161 122 q6 -6 12 0" fill="none" stroke-width="6"/>
+  <!-- לחיים -->
+  <ellipse cx="102" cy="164" rx="14" ry="9" fill="#FFC7DF" stroke-width="0"/>
+  <ellipse cx="230" cy="164" rx="14" ry="9" fill="#FFC7DF" stroke-width="0"/>
+  <!-- חוטם -->
+  <ellipse cx="167" cy="176" rx="40" ry="28" fill="#FFE3F0"/>
+  <ellipse cx="153" cy="170" rx="5" ry="7" fill="#3B2A35" stroke-width="0"/>
+  <ellipse cx="181" cy="170" rx="5" ry="7" fill="#3B2A35" stroke-width="0"/>
+  <!-- שפם לבן גדול -->
+  <path d="M167 186 C152 178 130 180 120 194 C132 206 154 204 167 194 C180 204 202 206 214 194 C204 180 182 178 167 186Z" fill="#F4F6F8"/>
+  <path d="M146 192 q-10 4 -18 2 M188 192 q10 4 18 2" fill="none" stroke-width="3"/>
+  <!-- חיוך -->
+  <path d="M154 204 q13 10 26 0" fill="none" stroke-width="5"/>
+  <!-- עניבת פרפר ורודה -->
+  <path d="M165 222 L136 208 L136 236 Z" fill="#FF56C2"/>
+  <path d="M165 222 L194 208 L194 236 Z" fill="#FF56C2"/>
+  <circle cx="165" cy="222" r="8" fill="#E0399F"/>
+</g>
+<!-- נורה של רעיון -->
+<g transform="translate(262 52)" stroke="#3B2A35" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M0 -26 C18 -26 28 -12 26 2 C24 14 14 18 12 28 h-24 C-14 18 -24 14 -26 2 C-28 -12 -18 -26 0 -26Z" fill="#FFD84D"/>
+  <path d="M-12 34 h24 M-9 42 h18" fill="none"/>
+  <path d="M-38 -30 l-10 -8 M38 -30 l10 -8 M0 -40 v-12 M-44 0 h-12 M44 0 h12" fill="none" stroke="#FFB800"/>
+</g>
+</svg>

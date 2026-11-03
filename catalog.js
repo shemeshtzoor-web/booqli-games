@@ -12,7 +12,7 @@
    aud    = קהל: t גננות · p הורים · k ילדים · s כיתות א'–ג'   (למשל "tpk")
    subj   = תחומים (מהרשימה CAT.SUBJECTS)          type = סוגים: plan game print story video craft offline msg guide
    min    = משך המערך בדקות                          sped = מתאים גם לחינוך מיוחד · deaf = התאמות לכבדי שמיעה
-   host   = הדמות מארחת: booqli garb hesh alef lev ona shomer
+   host   = הדמות מארחת: booqli garb hesh alef lev ona shomer saba
    group  = routine (שגרת הגן) / habits (הרגלים)    zone = suppliers (אזור הספקים)
    season = נושא של לוח השנה                       tags = מילות מפתח לחיפוש (8–20)
    book / img / href = משחק של ספר BOOQLI
@@ -33,6 +33,7 @@ window.CATALOG = [
   {"id":"shavuot","name":"שבועות","ic":"🌾","bg":"#FFF3CF","event":"2027-06-11","ready":false,"ages":[3,6],"aud":"tpk","subj":["חגים ומורשת"],"type":[],"host":"ona","tags":["שבועות","ביכורים","חקלאות","מוצרי חלב","גבינה","שבעת המינים","חגים"],"season":true},
   {"id":"summer","name":"קיץ","ic":"☀️","bg":"#FFF1C9","event":"2027-06-21","ready":false,"ages":[3,6],"aud":"tpk","subj":["מדע וטבע"],"type":[],"host":"ona","tags":["עונות","קיץ","ים","שמש","מים","חופש גדול","סוף שנה"],"season":true},
   {"id":"last-minute","name":"הגעתי לא מוכנה! 10 פעילויות","ic":"🆘","bg":"#FFE3F4","ready":true,"ages":[3,6],"aud":"t","group":"routine","subj":["תנועה ומוזיקה","רגשות וחברה"],"type":["plan","print"],"min":30,"noPrep":true,"noGift":true,"host":"booqli","tags":["הרגע האחרון","לא מוכנה","בלי הכנה","בלי ציוד","ממלאת מקום","מחליפה","החלפה","סייעת","משחקי מעגל","משחקים לגן","היכרות","שמות","תנועה","קשב","רגשות","ספירה","סיפור","דף להדפסה"]},
+  {"id":"game-maker","name":"ממציאים משחק עם כל הגן","ic":"🎙️","bg":"linear-gradient(135deg,#FFF6DD,#FFE3F4)","ready":true,"ages":[3,8],"aud":"t","group":"routine","subj":["שפה ואוריינות","רגשות וחברה"],"type":["game","print","msg"],"min":20,"sped":true,"noGift":true,"host":"saba","p":"כל הגן ממציא משחק ביחד על מסך הגן: סבאבוקלי שואל בקול, הילדים עונים והגננת מקלידה. חידון, זיכרון או מי אני? – וסיכום להדפסה וקישור להורים","tags":["ממציאים משחק","יוצרים משחק","משחק של הגן","סבאבוקלי","חידון","משחק זיכרון","מי אני","חידות","סיכום נושא","חזרה על החומר","תרגול בבית","הקרנה","מסך הגן","הודעה להורים","דף סיכום להדפסה","שפה","דיבור","עבודת צוות","יצירתיות"]},
   {"id":"morning-circle","name":"מפגש בוקר: 30 רעיונות","ic":"☀️","bg":"#FFF3CF","ready":true,"ages":[3,6],"aud":"tp","group":"routine","subj":["שפה ואוריינות","רגשות וחברה"],"type":["plan","print","msg"],"sped":true,"noGift":true,"host":"booqli","tags":["מפגש בוקר","מעגל בוקר","שגרת בוקר","פתיחת יום","רעיונות למפגש","מחזוריות","סדר יום","רגשות","תנועה","שפה","חרוזים","חשבון","דמיון","מחמאות","טוב לב","חוברת להדפסה","הדפסה","מערך לגננת"]},
   {"id":"birthday-party","name":"יום הולדת בגן","ic":"🎂","bg":"#FFE3F4","ready":true,"ages":[3,6],"aud":"tp","group":"routine","subj":["רגשות וחברה","חשבון"],"type":["plan","game","print","craft","story"],"min":45,"host":"booqli","tags":["יום הולדת","ימי הולדת בגן","מסיבת יום הולדת","מערך יום הולדת","שעת יום הולדת","כתר","זר","כיסא המלוכה","הרמות","עוגה","נרות","משאלה","ברכות","חוברת ברכות","כרטיס ברכה","תמונה","מדבקות","מתנה להורים","ספירה","חשבון","משחקים","דף להדפסה","מערך לגננת","הקראה","הספר המלא","ספר יום הולדת","סיפור"]},
   {"id":"stories","name":"סיפורים וקריאה","ic":"📖","bg":"#FFE3F4","ready":false,"ages":[3,6],"aud":"tpk","subj":["שפה ואוריינות"],"type":[],"sped":true,"host":"alef","tags":["סיפור","הקראה","ספרים","האזנה","BOOQLI","עידוד קריאה","אותיות","קריאה","אלף-בית","צלילים","חרוזים","מילים","אוריינות","מוכנות לכיתה א"]},
@@ -194,7 +195,8 @@ C.HOSTS = {
   alef:   {name:"אֲלֶפְבּוּקְלִי",  plain:"אלפבוקלי",   role:"אותיות, קריאה וסיפורים",    img:"img/family/alef.webp"},
   lev:    {name:"לֵבְבּוּקְלִי",    plain:"לבבוקלי",    role:"רגשות",                   img:"img/family/lev.webp"},
   ona:    {name:"עוֹנְבּוּקְלִי",   plain:"עונבוקלי",   role:"עונות וחגים",              img:"img/family/ona.webp"},
-  shomer: {name:"שׁוֹמֶרְבּוּקְלִי", plain:"שומרבוקלי",  role:"מוגנות ובטיחות",           img:"img/family/shomer.webp"}
+  shomer: {name:"שׁוֹמֶרְבּוּקְלִי", plain:"שומרבוקלי",  role:"מוגנות ובטיחות",           img:"img/family/shomer.webp"},
+  saba:   {name:"סַבָּאבּוּקְלִי",   plain:"סבאבוקלי",   role:"ממציא המשחקים",            img:"img/family/saba.svg"}
 };
 C.HOST_ORDER = ["garb","hesh","lev","ona","shomer","alef","booqli"];
 C.AUD = {

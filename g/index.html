@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>המשחק שהמצאנו בגן · booqli Games</title>
+<meta name="description" content="משחק שהילדים המציאו יחד בגן, עם סבאבוקלי. משחקים בבית ונותנים לילדים להיות המורים. בחינם, בחסות BOOQLI.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🎮 המשחק שהילדים המציאו בגן">
+<meta property="og:description" content="הילדים המציאו את השאלות בעצמם! לוחצים ומשחקים איתם בבית.">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../common.js" as="script">
+<link rel="stylesheet" href="../topics/game-maker/game.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Assistant,Arial,sans-serif;background:#E1F0EA;color:#2B1526;line-height:1.45;overflow-x:hidden}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;line-height:1.2}
+a{color:#C13671}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:#6F988B}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.logo{height:44px;width:auto;display:block}
+.btn-wa{background:#1FA855;color:#fff;font-weight:800;text-decoration:none;border-radius:999px;padding:8px 14px;font-size:14px}
+.sponsor{background:#fff;color:#4E8576;text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+.intro{display:flex;align-items:center;gap:14px;margin-top:16px;background:#FFF6DD;border:3px solid #FFD98A;border-radius:26px;padding:14px 16px}
+.intro img{width:96px;height:auto;flex-shrink:0}
+.intro h1{margin:0;font-size:clamp(22px,4vw,34px);color:#C13671}
+.intro p{margin:4px 0 0}
+.box{background:#fff;border-radius:26px;padding:16px clamp(12px,2.4vw,24px) 20px;margin-top:14px;box-shadow:0 8px 24px rgba(78,133,118,.16);font-size:clamp(17px,1.8vw,22px)}
+.ideas{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+.ideas span{background:#fff;border:2px solid #FFC2E6;border-radius:999px;padding:3px 12px;font-weight:800}
+.tip{background:#F4FAF7;border-radius:18px;padding:12px 14px;margin-top:14px}
+.tip b{color:#4E8576}
+.coupon{margin:14px 0 0;background:#FFE3F4;border:2px dashed #FF56C2;border-radius:18px;padding:12px;text-align:center}
+.coupon a{font-weight:800}
+.bad{text-align:center;padding:30px 10px}
+.bad div{font-size:64px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.gal a{display:block;background:#F4FAF7;border:3px solid #CDE7DC;border-radius:20px;padding:14px;text-decoration:none;color:#2B1526;font-weight:800}
+.gal a b{display:block;font-size:40px}
+.gal a small{display:block;color:#4E8576}
+.foot{text-align:center;color:#4E8576;font-size:14px;padding:20px 16px 30px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap brand">
+    <a href="../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<main class="wrap" id="main"></main>
+<p class="foot">booqli Games · משחקים, דפי עבודה ופעילויות חינוכיים לגיל הרך · בחסות BOOQLI</p>
+
+<script src="../lib/lz-string-1.5.0.min.js"></script>
+<script src="../common.js"></script>
+<script src="../topics/game-maker/engine.js"></script>
+<script src="../topics/game-maker/gallery.js"></script>
+<script>
+(function(){
+  var CODE = location.hash.slice(1), main = document.getElementById("main"), esc = GM.esc;
+  var game = CODE ? GM.decode(CODE) : null;
+  var ORDER = "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=gan_game&utm_campaign=game-maker";
+
+  if (!game) {
+    // בלי משחק בקישור: פינת המשחקים שגנים המציאו (רק מה שאושר לפרסום)
+    var list = (window.GAN_GAMES || []).map(function(x){ var g = GM.decode(x.c); return g ? { g: g, c: x.c } : null; }).filter(Boolean);
+    main.innerHTML = '<section class="intro"><img src="../img/family/saba.svg" alt="" width="96" height="96"><div><h1>משחקים שגנים המציאו</h1><p>' +
+      (CODE ? "אוי, הקישור למשחק לא שלם. בקשו מהגננת לשלוח אותו שוב 🙂" : "כל משחק כאן הומצא על ידי ילדי גן, יחד עם הגננת וסבאבוקלי.") + '</p></div></section>' +
+      '<section class="box">' + (list.length ? '<div class="gal">' + list.map(function(x){ return '<a href="#' + esc(x.c) + '"><b aria-hidden="true">' + esc(x.g.te || GM.TYPES[x.g.k].ic) + '</b>' + esc(x.g.n) + '<small>' + esc(GM.TYPES[x.g.k].name) + (x.g.g ? " · גן " + esc(x.g.g) : "") + '</small></a>'; }).join("") + '</div>'
+        : '<div class="bad"><div aria-hidden="true">🎨</div><h2>בקרוב יופיעו כאן משחקים שגנים המציאו</h2></div>') +
+      '<div class="tip">👩‍🏫 <b>גננות:</b> רוצות להמציא משחק עם כל הגן? <a href="../topics/game-maker/">ממציאים משחק עם סבאבוקלי ←</a></div></section>';
+    window.addEventListener("hashchange", function(){ location.reload(); });
+    siteJoinLinks();
+    siteEvent("gm-gallery", CODE ? "bad-link" : "open");
+    return;
+  }
+
+  document.title = game.n + " · המשחק של גן " + (game.g || "") + " · booqli Games";
+  main.innerHTML = '<section class="intro"><img src="../img/family/saba.svg" alt="סבאבוקלי" width="96" height="96"><div><h1>' + esc(game.te) + ' ' + esc(game.n) + '</h1>' +
+    '<p>הילדים' + (game.g ? ' בגן ' + esc(game.g) : '') + ' המציאו את המשחק הזה בעצמם' + (game.tp ? ', על ' + esc(game.tp) : '') + '! לוחצים ומשחקים ביחד 🎉</p></div></section>' +
+    '<section class="box"><div id="game"></div></section>' +
+    (game.id && game.id.length ? '<section class="box"><b>💡 הרעיונות שהילדים חשבו עליהם:</b><div class="ideas">' + game.id.map(function(x){ return '<span>' + esc(x.e) + ' ' + esc(x.x) + '</span>'; }).join("") + '</div>' +
+      '<div class="tip">😊 <b>טיפ להורים:</b> בקשו מהילד להסביר לכם כל רעיון. "מה זה? איפה ראית את זה בגן?" – ככה חוזרים על מה שלמדו.</div></section>' : "") +
+    '<section class="box"><div class="tip">👩‍🏫 גם אתן גננות? <a href="../topics/game-maker/">ממציאים משחק עם כל הגן ←</a> · <a href="../kids/">עוד משחקים לילדים ←</a></div></section>';
+  var start = function(){
+    GM.play(document.getElementById("game"), game, { onWin: function(x){
+      siteEvent("gm-home-win", game.k);
+      x.innerHTML = '<button type="button" class="gm-btn">🔁 לשחק שוב</button><a class="gm-btn sec" style="text-decoration:none" href="../kids/">🎮 עוד משחקים</a>';
+      x.firstChild.onclick = start;
+      var c = document.createElement("div"); c.className = "coupon";
+      c.innerHTML = '🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד<br><a href="' + ORDER + '" target="_blank" rel="noopener">להכיר את הספרים של BOOQLI ←</a>';
+      x.parentNode.appendChild(c);
+    } });
+  };
+  // הקול בטלפון נפתח רק אחרי נגיעה – לכן כפתור התחלה
+  var g = document.getElementById("game");
+  g.innerHTML = '<div class="gm-center" style="padding:20px 0"><div style="font-size:72px" aria-hidden="true">' + esc(GM.TYPES[game.k].ic) + '</div><h2 style="margin:6px 0">' + esc(GM.TYPES[game.k].name) + '</h2><p>' + esc(GM.TYPES[game.k].sub) + '</p><button type="button" class="gm-btn" id="go">▶️ מתחילים לשחק</button></div>';
+  document.getElementById("go").onclick = function(){ GM.sound.pop(); start(); };
+  siteJoinLinks();
+  siteEvent("gm-open", game.k);
+})();
+</script>
+</body>
+</html>
