@@ -142,6 +142,8 @@ section.sv{margin-top:34px}
 .photo .pick.todo{outline:3px solid var(--pink);outline-offset:2px}
 .self label.todo{border:2px dashed var(--pink);padding:4px 8px}
 .consent.todo{border-color:var(--pink)}
+.more{margin-top:12px;width:100%;background:#FFF8E6;border:2.5px dashed #F5B400;border-radius:18px;padding:12px 14px;font:inherit;font-weight:800;font-size:17px;color:var(--ink);text-align:start;cursor:pointer;line-height:1.45}
+.more u{color:var(--mag);white-space:nowrap}
 /* סַבָּבּוּקְלִי – מדריך קטן שצמוד לתחתית הטופס */
 .guide{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;margin-top:14px;display:flex;gap:10px;align-items:center;background:#fff;border:3px solid var(--pink);border-radius:22px;padding:8px 12px 8px 8px;box-shadow:0 10px 28px rgba(193,54,113,.22);cursor:pointer;text-align:start;width:100%;font:inherit;color:var(--ink)}
 .guide .gc{position:relative;flex:0 0 auto;width:62px;height:62px}
@@ -405,18 +407,28 @@ function todos(){
   if (!$("consent").checked) t.push(["לסמן את האישור", document.querySelector(".consent"), "מסמנים ✔️ את האישור בתיבה הצהובה 💛"]);
   return t;
 }
+/* "כל ספר נוסף – המחיר יורד": המחיר לספר עכשיו, ובכמה ספרים הוא יורד בפעם הבאה */
+function moreTip(n){
+  if (!n || n >= MAX) return "";
+  const cov = (ITEMS.find(x => x.book) || {}).cover || "hard", now = priceOf(n, cov);
+  let m = n + 1; while (m <= MAX && priceOf(m, cov) >= now) m++;
+  if (m > MAX) return "";
+  const add = m - n, nw = priceOf(m, cov);
+  return `${add === 1 ? "ספר אחד נוסף" : add + " ספרים נוספים"} לנכד/ה נוסף/ת – וכל ספר בהזמנה יורד מ-${ils(now)} ל-${ils(nw)}. כדאי לקנות לכל הנכדים ביחד!`;
+}
 function missing(){ return [...new Set(todos().map(x => x[0]))]; }
 let ORDER = "", SENT1 = false, GUIDE = null;
 function update(){
   const n = ITEMS.filter(x => x.book).length;
   if (n) { const tot = ITEMS.filter(x => x.book).reduce((s, x) => s + priceOf(n, x.cover), 0);
-    $("sum").innerHTML = `<div class="tot">${n} ${n === 1 ? "ספר" : "ספרים"} · ${ils(tot)}</div><p>${n > 1 ? "המחיר לכל ספר יורד ככל שמזמינים יותר. " : ""}משלוח: עד הבית 40 ₪ או לנקודת חלוקה 18 ₪. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>`; }
+    $("sum").innerHTML = `<div class="tot">${n} ${n === 1 ? "ספר" : "ספרים"} · ${ils(tot)}</div><p>${n > 1 ? "המחיר לכל ספר יורד ככל שמזמינים יותר. " : ""}משלוח: עד הבית 40 ₪ או לנקודת חלוקה 18 ₪. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>${moreTip(n) ? `<button type="button" class="more" id="moreBtn">💡 ${moreTip(n)} <u>➕ להוסיף ספר</u></button>` : ""}`;
+    const mb = $("moreBtn"); if (mb) mb.onclick = () => { $("addItem").click(); ev("savta-more", String(n)); }; }
   else $("sum").innerHTML = `<div class="tot">עוד לא נבחר ספר</div><p>בוחרים ספר למעלה ("אני רוצה את הספר הזה") או כאן בטופס.</p>`;
   const td = todos(), m = [...new Set(td.map(x => x[0]))];
   document.querySelectorAll(".todo").forEach(e => e.classList.remove("todo", "now"));
   td.forEach((x, i) => { if (x[1]) x[1].classList.add("todo"); if (!i && x[1]) x[1].classList.add("now"); });
   GUIDE = td[0] ? td[0][1] : (SENT1 ? $("send2") : $("send1"));
-  $("guideTxt").textContent = td[0] ? td[0][2] : SENT1 ? "שלב 2: לוחצים על הכפתור הוורוד ושולחים את התמונות 📷" : "הכל מוכן! לוחצים על הכפתור הירוק 💬";
+  $("guideTxt").textContent = td[0] ? td[0][2] : SENT1 ? "שלב 2: לוחצים על הכפתור הוורוד ושולחים את התמונות 📷" : "הכל מוכן! לוחצים על הכפתור הירוק 💬" + (ITEMS.length < MAX ? " · או עוד ספר לנכד נוסף – והמחיר לכל ספר יורד 💰" : "");
   $("guide").classList.toggle("ok", !td.length);
   $("send1").disabled = !!m.length;
   $("send2").disabled = !SENT1 || !!m.length;
