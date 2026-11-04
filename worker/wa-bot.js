@@ -1,6 +1,6 @@
 /* BOOQLI – בוט ההזמנות לסבים בוואטסאפ (Cloudflare Worker), 4.11.2026
    כל ההזמנה בתוך השיחה, בלי קישורים: ספר ← נכד/נכדה ← שם ← הקדשה ← תמונות ← שם המזמין ← עוד ספר? ← אישור ← סיכום.
-   בכל שלב יש "🙋 לדבר עם בן אדם" – והבוט שותק בשיחה הזאת. גם כששמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק.
+   כפתור "🙋 לדבר עם בן אדם" רק בהודעה הראשונה (אפשר לחזור אליו תמיד), וגם כתיבת "בן אדם"/"נציג" – והבוט שותק בשיחה הזאת. גם כששמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק.
    שמש מחזירה את הבוט בשיחה ע"י הודעה "#בוט". הבוט עונה רק למי שכתב/ה משהו על סבים/נכד/ספר (TRIGGER) או לחץ/ה על כפתור שלו,
    כדי לא להפריע לשיחות אחרות (גנים, הורים).
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
@@ -37,7 +37,8 @@ function dedIdeas(g){
     `${f("לנכד המתוק", "לנכדה המתוקה")} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\nסבא וסבתא ❤️`
   ];
 }
-const CONSENT = "אני מאשר/ת שקיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר, ושקראתי את התקנון ואת מדיניות הפרטיות של BOOQLI (booqli.ai).";
+const CONSENT = "אני מאשר/ת:\n1. קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.\n2. קראתי את התקנון ואת מדיניות הפרטיות של BOOQLI:\nתקנון: https://www.booqli.ai/he/terms-of-service\nמדיניות פרטיות: https://www.booqli.ai/he/privacy-policy";
+const HUMAN_TXT = /בן אדם|בנאדם|נציג|אדם אמיתי|אדם אנושי/;
 
 /* ===== שליחה לוואטסאפ ===== */
 const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם בן אדם" } };
@@ -60,7 +61,7 @@ async function ask(env, to, st, log){
   const c = st.cur, n = st.list.length;
   const S = (m) => wa(env, to, m, log);
   switch (st.step) {
-    case "hi": return S(buttons("שלום ❤️ כאן סבאבוקלי מ-BOOQLI!\nאני אעזור לכם להזמין ספר אישי שבו הנכד או הנכדה הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, בכריכה קשה עד הבית.\n\nמתחילים הזמנה, או מעדיפים לדבר עם בן אדם?", [["s:go", "❤️ מתחילים הזמנה"], HUMAN]));
+    case "hi": return S(buttons("שלום ❤️ כאן סבאבוקלי מ-BOOQLI!\nאני אעזור לכם להזמין ספר אישי שבו הנכד או הנכדה הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, בכריכה קשה עד הבית.\n\n👀 אדם אמיתי משגיח על כל התהליך.\n🙋 רוצים לדבר עם בן אדם? תמיד אפשר לחזור להודעה הזאת וללחוץ על הכפתור למטה – או פשוט לכתוב \"בן אדם\".", [["s:go", "❤️ מתחילים הזמנה"], HUMAN]));
     case "book": {
       const page = st.page || 0, part = page ? BOOKS.slice(9) : BOOKS.slice(0, 9);
       const rows = part.map(b => ({ id: "b:" + b.id, title: b.name.slice(0, 24) }));
@@ -70,7 +71,7 @@ async function ask(env, to, st, log){
     case "ver": {
       const b = book(c.book);
       if (b.img) await S(image(b.img, b.name));
-      return S(buttons(`"${b.name}" – בשביל נכד או נכדה?`, [["v:b", "👦 נכד"], ["v:g", "👧 נכדה"], HUMAN]));
+      return S(buttons(`"${b.name}" – בשביל נכד או נכדה?`, [["v:b", "👦 נכד"], ["v:g", "👧 נכדה"]]));
     }
     case "name": return S(text(`איך קוראים ל${kid(c) === "הנכדה" ? "נכדה" : "נכד"}? ✍️\n(השם הזה יופיע בספר – פשוט כותבים אותו כאן)`));
     case "ded": {
@@ -79,7 +80,7 @@ async function ask(env, to, st, log){
     }
     case "dedown": return S(text("כתבו כאן את ההקדשה שלכם ❤️ (עד 300 תווים בערך)"));
     case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\nתמונה ברורה, הפנים למצלמה.`));
-    case "picsmore": return S(buttons(`קיבלנו ${c.pics.length === 1 ? "תמונה אחת" : c.pics.length + " תמונות"} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"], HUMAN]));
+    case "picsmore": return S(buttons(`קיבלנו ${c.pics.length === 1 ? "תמונה אחת" : c.pics.length + " תמונות"} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"]]));
     case "who": return S(st.profile
       ? buttons(`לרשום את ההזמנה על השם "${st.profile}"?`, [["w:yes", "✅ כן"], ["w:other", "✍️ שם אחר"]])
       : text("ואיך קוראים לך? 🙂"));
@@ -91,7 +92,7 @@ async function ask(env, to, st, log){
       t += `\n🚚 + משלוח עד הבית ${ils(SHIP)}\n\nככל שמוסיפים ספרים – המחיר של כל ספר יורד.`;
       return S(buttons(t, m < MAX ? [["m:yes", "➕ כן, עוד ספר"], ["m:no", "✅ לא, זהו"]] : [["m:no", "✅ זהו"]]));
     }
-    case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "✅ מאשר/ת"], HUMAN]));
+    case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "✅ קראתי ומאשר/ת"]]));
   }
 }
 
@@ -105,7 +106,7 @@ async function step(env, from, st, ev, log){
   const S = m => wa(env, from, m, log);
   const c = st.cur;
   const id = ev.id || "", txt = (ev.text || "").trim();
-  if (id === "human") { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
+  if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log); }
   switch (st.step) {
     case "hi": if (id === "s:go") st.step = "book"; break;
@@ -171,7 +172,8 @@ export async function handle(env, from, profile, ev, opts){
     if (!(ev.id || TRIGGER.test(ev.text || ""))) return;           /* לא שיחה על ספר לנכד – לא מתערבים */
     st = { step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0 };
     if (ev.id === "s:go") st.step = "book";
-    await ask(env, from, st, log);
+    if (ev.id === "human" || HUMAN_TXT.test(ev.text || "")) await step(env, from, st, { id: "human" }, log);
+    else await ask(env, from, st, log);
   } else {
     if (!ev.image) st.burst = 0;
     await step(env, from, st, ev, log);
