@@ -5,7 +5,8 @@
    • הזמנה לגן: שם הגן ← שם הגננת ← כמה ילדים ← ספר (עד 2 נושאים, +קריאה) ← כריכה ← מחיר ← הקדשת הגן
                         ← תמונות בנים (שם הילד בכיתוב) ← תמונות בנות ← בדיקת הרשימה ← אישור ← סיכום.
    "🙋 לדבר עם בן אדם" בהודעה הראשונה (אפשר לחזור אליה), או כתיבת "בן אדם"/"נציג" – הבוט שותק; "להמשיך" מחזיר.
-   שמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק; "#בוט" מחזיר. הבוט מתחיל רק בהודעה על ספר/נכד/גן/הזמנה (TRIGGER)
+   שמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק. חוזרים להזמנה מאותו מקום: הלקוח לוחץ "▶️ להמשיך בהזמנה" (או כותב "להמשיך"),
+   או ששמש כותבת בהודעה שלה "להמשיך בהזמנה"/"נמשיך בהזמנה" (או "#בוט") – והבוט מיד ממשיך מהשאלה שעצרו בה. הבוט מתחיל רק בהודעה על ספר/נכד/גן/הזמנה (TRIGGER)
    או בלחיצה על כפתור שלו. הזמנה מלאה מהאתר ("הזמנה סב-") – לא נוגע.
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
      WA_TOKEN, WA_PHONE_ID, VERIFY_TOKEN, APP_SECRET – מטא;  DRIVE_URL, DRIVE_KEY – הקוד בגוגל (worker/drive-saver.gs).
@@ -84,6 +85,15 @@ const CONSENT_LINKS = "לקריאה (נפתח בדפדפן):\n📄 התקנון:
 const CONSENT = CONSENT_LINKS + "בלחיצה על הכפתור למטה אני מאשר/ת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ אני ההורה, או שקיבלתי אישור מההורים, לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
 const CONSENT_GAN = CONSENT_LINKS + "בלחיצה על הכפתור למטה אני מאשרת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ קיבלנו אישור מההורים של כל הילדים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
 const HUMAN_TXT = /בן אדם|בנאדם|נציג|אדם אמיתי|אדם אנושי/;
+const RESUME_TXT = /^(להמשיך|ממשיכים|נמשיך|המשך)( בהזמנה)?[.!]?$/;               /* הלקוח */
+const OWNER_RESUME = /להמשיך בהזמנה|נמשיך בהזמנה|ממשיכים בהזמנה|#בוט/;          /* שמש, מהאפליקציה */
+const RESUME_BTN = [["resume", "▶️ להמשיך בהזמנה"]];
+async function resume(env, to, st, log, db, who){                           /* חוזרים בדיוק לשאלה שעצרו בה */
+  st.human = 0; st.burst = 0;
+  if (st.step === "done") return;
+  await wa(env, to, text(who === "owner" ? "ממשיכים בהזמנה מאיפה שעצרנו 👇" : "מעולה, ממשיכים מאיפה שעצרנו 👇"), log);
+  await ask(env, to, st, log, db);
+}
 const HI = "שלום ❤️ כאן סבאבוקלי מבוקלי!\nאני אעזור לכם להזמין ספר אישי שבו הילד/ה, הנכד/ה – או כל ילדי הגן – הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, מודפס באיכות גבוהה ומגיע עד הבית.\n\n👀 אדם אמיתי משגיח על כל התהליך.\n🙋 רוצים לדבר עם בן אדם? תמיד אפשר לחזור להודעה הזאת וללחוץ על הכפתור למטה – או פשוט לכתוב \"בן אדם\".\n❓ יש שאלה? כתבו \"שאלות\" בכל שלב.";
 
 /* ===== שליחה לוואטסאפ ===== */
@@ -238,7 +248,7 @@ async function step(env, from, st, ev, log, db){
   const c = st.cur, G = st.g;
   const id = ev.id || "", txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
-  if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
+  if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(buttons("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה – לוחצים כאן, וממשיכים בדיוק מאיפה שעצרנו 👇", RESUME_BTN)); return; }
   /* שאלות: "שאלות" = תפריט; מילות שאלה בטקסט חופשי = תשובה עם קישור; ואז חוזרים לאותה שאלה */
   const free = !["dedown", "g-dedown", "name", "g-name", "g-teacher", "whoown"].includes(st.step);
   const fq = id.startsWith("q:") ? id.slice(2) : (!id && txt && free ? faqOf(txt) : "");
@@ -317,7 +327,7 @@ async function step(env, from, st, ev, log, db){
       }
       else if (id === "g:rdone") { if ((G.r || 0) + 1 < rounds(G).length) { G.r = (G.r || 0) + 1; st.step = "g-pics"; } else st.step = "g-check"; }
       else if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
-      else if (id === "g:drive") { st.human = Date.now(); await S(text("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו לחזור להזמנה כאן – כתבו \"להמשיך\".")); return; }
+      else if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
       else if (txt && /^להמשיך$/.test(txt)) { /* חוזרים לאותה שאלה */ }
       else if (txt) { await S(text("כדי לשייך שם לתמונה – שולחים את התמונה עם השם בכיתוב שלה 📷")); }
       break;
@@ -397,7 +407,7 @@ export async function handle(env, from, profile, ev, opts){
   const k = "st:" + from, raw = await db.get(k);
   let st = raw ? JSON.parse(raw) : null;
   if (st && st.human) {                                            /* מצב "בן אדם": הבוט שותק */
-    if (/^להמשיך$/.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) { st.human = 0; st.burst = 0; await ask(env, from, st, log, db); }
+    if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
   } else if (!st || st.step === "done") {
     if (/הזמנה (סב|גן)-\d/.test(ev.text || "")) return;              /* הזמנה מלאה מהאתר – שמש מטפלת */
     if (!(ev.id || TRIGGER.test(ev.text || ""))) return;           /* לא שיחה על ספר – לא מתערבים */
@@ -407,7 +417,7 @@ export async function handle(env, from, profile, ev, opts){
     else await ask(env, from, st, log, db);
   } else {
     if (!ev.image) st.burst = 0;
-    if (/^להמשיך$/.test((ev.text || "").trim())) await ask(env, from, st, log, db);
+    if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim())) await resume(env, from, st, log, db);
     else await step(env, from, st, ev, log, db);
   }
   st.ts = Date.now();
@@ -441,7 +451,7 @@ export default {
           if (ch.field === "smb_message_echoes") for (const m of v.message_echoes || []) {
             const k = "st:" + m.to, raw = await db.get(k); const st = raw ? JSON.parse(raw) : { step: "done", list: [], cur: fresh(), g: {} };
             const t = (m.text && m.text.body) || "";
-            if (/#בוט/.test(t)) { st.human = 0; st.burst = 0; await db.put(k, JSON.stringify(st)); if (st.step !== "done") await ask(env, m.to, st, null, db); }
+            if (OWNER_RESUME.test(t)) { await resume(env, m.to, st, null, db, "owner"); await db.put(k, JSON.stringify(st)); }
             else { st.human = Date.now(); await db.put(k, JSON.stringify(st)); }
           }
           const name = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || "";
