@@ -57,18 +57,27 @@ async function readAsk(S, bid, RB){
   if (v.length) return RB(bid, v[0]);
 }
 /* ה-PDF מועלה פעם אחת לוואטסאפ (מזהה נשמר 20 יום) – כך הוא נשלח מהר, ואחריו מחכים רגע כדי שהשאלה הבאה תגיע אחריו ולא לפניו */
-async function mediaId(env, db, key, link, filename){
+async function mediaId(env, db, key, link, filename, mime){
+  mime = mime || "application/pdf";
   try {
     const k = "media:" + env.WA_PHONE_ID + ":" + key, have = await db.get(k); if (have) return have;
     const pdf = await fetch(link); if (!pdf.ok) return "";
     const fd = new FormData();
-    fd.append("messaging_product", "whatsapp"); fd.append("type", "application/pdf");
-    fd.append("file", new Blob([await pdf.arrayBuffer()], { type: "application/pdf" }), filename);
+    fd.append("messaging_product", "whatsapp"); fd.append("type", mime);
+    fd.append("file", new Blob([await pdf.arrayBuffer()], { type: mime }), filename);
     const r = await fetch(`${GRAPH}/${env.WA_PHONE_ID}/media`, { method: "POST", headers: { "Authorization": "Bearer " + env.WA_TOKEN }, body: fd });
     const j = await r.json();
     if (!j.id) { console.log("media upload failed", JSON.stringify(j)); return ""; }
     await db.put(k, j.id, 20 * 86400); return j.id;
   } catch (e) { console.log("media failed", String(e)); return ""; }
+}
+/* סרטון בתוך השיחה (מועלה פעם אחת), ומחכים רגע כדי שההודעה הבאה תגיע אחריו */
+async function sendVideo(S, key, env, db, log){
+  const V = VIDS[key]; if (!V) return;
+  const link = `${SITE}/kindergartens/video/${V.file}`;
+  const mid = log ? "" : await mediaId(env, db, "vid-" + key, link, V.file, "video/mp4");
+  await S({ type: "video", video: Object.assign(mid ? { id: mid } : { link }, { caption: V.cap }) });
+  if (!log) await new Promise(r => setTimeout(r, mid ? 3000 : 8000));
 }
 async function readBook(S, bid, v, env, db, log){
   if (!(PAGES[bid] || {})[v]) return;
@@ -87,7 +96,12 @@ const orderSave = covs => covs.reduce((t, c) => t + priceOf(1, c), 0) - orderTot
 const priceLine = covs => { const n = covs.length, t = orderTotal(covs), s = orderSave(covs); return `${n === 1 ? "ספר אחד" : n + " ספרים"}: ${ils(t)}${s > 0 ? ` (חוסכים ${ils(s)})` : ""}`; };
 const COVERS = { staple: "💜 חוברת כרומו סיכות", soft: "💛 כריכה רכה פיג'מה", hard: "💗 כריכה קשה פרימיום" };
 const COVER_INFO = { hard: "21×21 ס״מ, בסגנון אלבום, דפים כרומו 170 ג׳", soft: "כמו ספריית פיג'מה – 20×20 ס״מ, כרוך בהדבקה, כריכה כרומו 300 ג׳, דפים כרומו 170 ג׳", staple: "20×20 ס״מ, בסגנון מגזין, כרוך בסיכות, כריכה ודפים כרומו 170 ג׳ מבריק" };
-const VIDEO_COVERS = "https://youtu.be/sGODE7ehbMY", VIDEO_PHOTO = "https://youtu.be/Fk42FO0TDmg";
+/* סרטונים – נשלחים כקובץ וידאו בתוך השיחה, אף פעם לא קישור החוצה (לפי שמש). הקבצים מעמוד הגנים */
+const VIDS = {
+  covers: { file: "covers.mp4", cap: "📕 ההבדל בין הכריכות – סרטון קצר" },
+  photo: { file: "photo.mp4", cap: "📸 איך בוחרים תמונה טובה – סרטון קצר" },
+  guide: { file: "guide-wa.mp4", cap: "🎬 סרטון הסבר של שמש" }
+};
 /* הנחיות לתמונה (מהמדריך של שמש) */
 const PHOTO_TIPS = "📸 *תמונה טובה = איור טוב:*\n🔵 ילד/ה אחד/ת בלבד – בלי אנשים או חיות, גם לא ברקע\n🔴 מבט ישיר למצלמה – לא הצידה ולא מלמעלה\n🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים, כתרים או פלסטרים\n🟢 בנים עם כיפה – שהכיפה תופיע בתמונה\n🟣 בנות – התסרוקת באיור תהיה כמו בתמונה\n⚪ אם מצלמים במיוחד – רקע לבן וחולצה לבנה\n😀 והכי חשוב – חיוך!";
 /* "כל מה שחשוב לדעת" (מהמדריך של שמש) */
@@ -95,12 +109,12 @@ const KNOW = "📋 *כל מה שחשוב לדעת*\n\n✂️ *אין צורך ל
 /* עמוד הגנים – תשובות מוכנות עם קישור, וחוזרים לאותה שאלה */
 const PAGE = SITE + "/kindergartens/";
 const FAQ = {
-  photo: ["📸 איך בוחרים תמונה טובה (סרטון)", VIDEO_PHOTO, "📸 תמונה טובה"],
-  cover: ["📕 ההבדל בין הכריכות (סרטון)", VIDEO_COVERS, "📕 ההבדל בין הכריכות"],
+  photo: ["📸 איך בוחרים תמונה טובה (סרטון)", "video:photo", "📸 תמונה טובה"],
+  cover: ["📕 ההבדל בין הכריכות (סרטון)", "video:covers", "📕 ההבדל בין הכריכות"],
   know: ["📋 כל מה שחשוב לדעת", "", "📋 כל מה שחשוב לדעת"],
-  guide: ["🎬 סרטון הסבר קצר של שמש", PAGE + "#guide", "🎬 סרטון הסבר"],
+  guide: ["🎬 סרטון הסבר של שמש", "video:guide", "🎬 סרטון הסבר"],
   price: ["💰 מחירים", "", "💰 מחירים"],
-  faq: ["❓ עוד שאלות ותשובות", PAGE + "#faq", "❓ עוד שאלות"]
+
 };
 const PAYS = { bank: "🏦 העברה בנקאית", bit: "📱 ביט", paybox: "📱 פייבוקס", card: "💳 אשראי (בתיאום)" };
 /* תשובות מוכנות – רק מתוך ההודעות והמדריך של שמש. מה שלא כאן – עובר לשמש */
@@ -279,10 +293,11 @@ async function ask(env, to, st, log, db){
     case "cover": {
       const covs = st.list.map(x => x.cover), m = covs.length + 1;
       const pr = k => orderTotal(covs.concat(k)) - orderTotal(covs);           /* כמה הספר הזה מוסיף */
-      return S(buttons(`איזו כריכה ל"${bname(c.book, c.ver)}"?\n\n${COVERS.hard} – ${COVER_INFO.hard}\n${COVERS.soft} – ${COVER_INFO.soft}\n\n🎬 סרטון של הכריכות: ${VIDEO_COVERS}\n\n${m === 1 ? "המחיר לספר אחד" : "המחיר לספר הזה (כשיש " + m + " ספרים בהזמנה)"}: קשה ${ils(priceOf(m, "hard"))} · רכה ${ils(priceOf(m, "soft"))}`,
+      return S(buttons(`איזו כריכה ל"${bname(c.book, c.ver)}"?\n\n${COVERS.hard} – ${COVER_INFO.hard}\n${COVERS.soft} – ${COVER_INFO.soft}\n\n${m === 1 ? "המחיר לספר אחד" : "המחיר לספר הזה (כשיש " + m + " ספרים בהזמנה)"}: קשה ${ils(priceOf(m, "hard"))} · רכה ${ils(priceOf(m, "soft"))}`,
         [["cv:hard", `💗 קשה – ${ils(priceOf(m, "hard"))}`], ["cv:soft", `💛 רכה – ${ils(priceOf(m, "soft"))}`], ["q:cover", "❓ מה ההבדל?"]]));
     }
-    case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\n\n${PHOTO_TIPS}\n\n🎬 סרטון קצר – איך בוחרים תמונה טובה: ${VIDEO_PHOTO}`));
+    case "pics": if (!st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
+      return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\n\n${PHOTO_TIPS}`));
     case "picsmore": return S(buttons(`קיבלנו ${c.pics.length <= 1 ? "את התמונה" : c.pics.length + " תמונות"} של ${c.name} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"]]));
     case "who": return S(st.profile
       ? buttons(`לרשום את ההזמנה על השם "${st.profile}"?`, [["w:yes", "✅ כן"], ["w:other", "✍️ שם אחר"]])
@@ -316,7 +331,8 @@ async function ask(env, to, st, log, db){
     case "g-cover": {
       const ks = ["hard", "soft"].concat(G.kids >= STAPLE.from ? ["staple"] : []);
       const lines = ks.map(k => `${COVERS[k]} – ${COVER_INFO[k]}`).join("\n");
-      return S(buttons(`איזו כריכה לספרים של הגן?\n\n${lines}${G.kids < STAPLE.from ? "\n(חוברת כרומו סיכות – מ-20 ספרים)" : ""}\n\n🎬 סרטון של שלוש הכריכות: ${VIDEO_COVERS}`,
+      if (!st.vidCovers) { st.vidCovers = 1; await sendVideo(S, "covers", env, db, log); }
+      return S(buttons(`איזו כריכה לספרים של הגן?\n\n${lines}${G.kids < STAPLE.from ? "\n(חוברת כרומו סיכות – מ-20 ספרים)" : ""}`,
         ks.map(k => ["c:" + k, { hard: "💗 קשה פרימיום", soft: "💛 רכה פיג'מה", staple: "💜 כרומו סיכות" }[k]])));
     }
     case "g-ded": {
@@ -325,8 +341,9 @@ async function ask(env, to, st, log, db){
     }
     case "g-dedown": return S(text("כתבו כאן את ההקדשה של הגן ❤️ (עד 350 תווים בערך)\nרוצים אחת לבנים ואחת לבנות? כתבו את שתיהן, אחת אחרי השנייה."));
     case "g-pics": {
+      if (!G.r && !st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
       const R = rounds(G), [b, sub] = R[G.r || 0], two = G.books.length > 1, boys = sub === "בנים";
-      const tip = G.r ? "" : `\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים בכיתוב "יוסי 1", "יוסי 2".\n🎬 סרטון קצר – איך בוחרים תמונה טובה: ${VIDEO_PHOTO}`;
+      const tip = G.r ? "" : `\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים בכיתוב "יוסי 1", "יוסי 2".`;
       const order = two && !G.r ? `נעבור לפי הסדר:\n${R.map((x, i) => `${i + 1}. ${book(x[0]).name} – ${x[1]}`).join("\n")}\n\n` : "";
       return S(text(`${G.r ? "" : "עכשיו התמונות 📷\n"}${order}${two ? `*${book(b).name}* – ` : ""}${boys ? "*הבנים*: מעבירים לכאן תמונה של כל ילד" : "*הבנות*: מעבירים לכאן תמונה של כל ילדה"}${two ? ` שמקבל${boys ? "" : "ת"} את הספר הזה` : ""}, ובכיתוב של התמונה – *${boys ? "השם שלו" : "השם שלה"}*.${G.r ? "" : "\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."}${tip}`));
     }
@@ -433,6 +450,7 @@ async function step(env, from, st, ev, log, db){
   if (fq === "know") answer = KNOW;
   else if (fq === "price" && st.mode === "gan") { const n = G.kids || 25; answer = `💰 מחיר לספר${G.kids ? ` (ל-${n} ספרים)` : ""}:\n${COVERS.hard} – ${ils(ganP("hard", n))}\n${COVERS.soft} – ${ils(ganP("soft", n))}\n${COVERS.staple} – ${n >= STAPLE.from ? ils(STAPLE.p) : "מ-20 ספרים"}\n\n🚚 משלוח צ'יטה ${ils(SHIP)}, או איסוף עצמי בלי עלות.\nהמחירים לגנים כוללים הנחה משמעותית לפי הכמות.`; }
   else if (fq === "price") answer = `💰 המחיר יורד ככל שמזמינים יותר ספרים:\nספר אחד – קשה ${ils(priceOf(1, "hard"))} · רכה ${ils(priceOf(1, "soft"))}\n2 ספרים – קשה ${ils(priceOf(2, "hard"))} · רכה ${ils(priceOf(2, "soft"))} לספר\n3 ספרים – קשה ${ils(priceOf(3, "hard"))} · רכה ${ils(priceOf(3, "soft"))} לספר\n🚚 + משלוח עד הבית ${ils(SHIP)}, או איסוף עצמי בלי עלות`;
+  else if (fq && FAQ[fq] && FAQ[fq][1].startsWith("video:")) { st.lastQ = txt || fq; await sendVideo(S, FAQ[fq][1].slice(6), env, db, log); return S(buttons("עזר? 🙂", QA_BTNS)); }
   else if (fq && FAQ[fq]) answer = faqMsg(fq);
   else if (asking) { const k = qaOf(txt); if (k) answer = QA[k].a(st); }
   if (answer) { st.lastQ = txt || fq; await sendLong(S, answer); return S(buttons("עזר? 🙂", QA_BTNS)); }
