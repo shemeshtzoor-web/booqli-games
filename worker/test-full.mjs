@@ -1,5 +1,5 @@
 /* בדיקה מלאה: סבתא, הורה ל-2, גננת עם נושא אחד, גננת עם 2 נושאים – עם "דרייב" מדומה */
-import { handle } from "./wa-bot.mjs";
+import { handle } from "./wa-bot.js";
 const drive = [], issues = [];
 globalThis.fetch = async (u, o) => {
   u = String(u);
