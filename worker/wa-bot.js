@@ -34,8 +34,8 @@ const book = id => BOOKS.find(b => b.id === id);
 const readLink = id => `${SITE}/kindergartens/?read=${id}`;
 /* לפני "איזה ספר?" (פעם אחת בשיחה): מה מיוחד בספרים + קישורי קריאה (לפי שמש) */
 const BOOKS_INTRO = "📚 *הספרים שלנו כתובים, ערוכים ומנוקדים.*\nההתאמה האישית היא ב:\n✨ שם הילד/ה בתוך הסיפור\n🎨 איורים אישיים בדמות הילד/ה\n💌 הקדשה אישית מטעמכם – מודפסת בעמוד השער\n\n📖 *אפשר לקרוא את הספרים לפני שבוחרים:*\n"
-  + "אחרי שבוחרים ספר יש כפתור *📖 לקרוא את הספר* – וכל העמודים מגיעים לכאן, לשיחה 🙂";
-/* עמודי הספרים לקריאה בתוך וואטסאפ: order/books/<ספר>-<b|g>/jpg/01.jpg ... (מספר עמודים לכל גרסה, כמו books.js) */
+  + "אחרי שבוחרים ספר יש כפתור *📖 לקרוא את הספר* – והספר המלא מגיע לכאן, לשיחה, כקובץ PDF 🙂";
+/* הגרסאות של כל ספר לקריאה (PDF ב-order/books/pdf/), כמו books.js */
 const PAGES = { birthday: { g: 22, b: 22 }, hugs: { g: 20, b: 20 }, superhero: { g: 21, b: 21 }, first: { g: 20, b: 20 }, class1: { g: 22, b: 22 },
   kinder: { g: 20, b: 20 }, savanna: { g: 20, b: 20 }, druki: { g: 22, b: 22 }, night: { g: 20 }, summer: { g: 26 } };
 const RESTART_BTN = ["restart", "↩️ להתחלה"], RESTART_NOTE = "↩️ להתחלה מחדש – כותבים: מחדש";
@@ -50,17 +50,16 @@ function withRestart(m, stp){
   else i.footer = { text: RESTART_NOTE };
   return m;
 }
-/* קריאת ספר בתוך וואטסאפ: אם יש בן ובת – שואלים איזו גרסה; אחר כך שולחים את כל העמודים כתמונות (וואטסאפ מקבץ לאלבום) */
+/* קריאת ספר בתוך וואטסאפ: אם יש בן ובת – שואלים איזו גרסה; אחר כך שולחים את הספר כקובץ PDF (order/books/pdf/<ספר>-<b|g>.pdf) */
 async function readAsk(S, bid){
   const v = Object.keys(PAGES[bid] || {});
   if (v.length > 1) return S(buttons(`📖 איזו גרסה של "${book(bid).name}" לקרוא?`, [["rd:" + bid + ":b", "👦 גרסת בן"], ["rd:" + bid + ":g", "👧 גרסת בת"]]));
   if (v.length) return readBook(S, bid, v[0]);
 }
 async function readBook(S, bid, v){
-  const n = (PAGES[bid] || {})[v]; if (!n) return;
-  await S(text(`📖 "${book(bid).name}" – ${v === "g" ? "גרסת בת" : "גרסת בן"}\nהעמודים מגיעים עכשיו 👇 לוחצים על תמונה ומדפדפים הצידה.`));
-  for (let i = 1; i <= n; i++) await S(image(`${SITE}/order/books/${bid}-${v}/jpg/${String(i).padStart(2, "0")}.jpg`, i === 1 ? `עמוד 1 מתוך ${n}` : undefined));
-  await S(text("זהו, סוף הספר ❤️ ממשיכים 👇"));
+  if (!(PAGES[bid] || {})[v]) return;
+  const name = `${book(bid).name} – ${v === "g" ? "גרסת בת" : "גרסת בן"}`;
+  await S({ type: "document", document: { link: `${SITE}/order/books/pdf/${bid}-${v}.pdf`, filename: name.replace(/[\/:*?"<>|]/g, "") + ".pdf", caption: `📖 "${name}"\nלוחצים על הקובץ כדי לקרוא, ובסוף חוזרים לכאן ❤️` } });
 }
 const ils = n => n.toLocaleString("en-US") + " ₪";
 const tier = n => { let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return t; };
