@@ -154,6 +154,33 @@ section.sv{margin-top:34px}
 .hop::after{content:"";position:absolute;bottom:-9px;inset-inline-start:26px;border:8px solid transparent;border-top-color:var(--pink);border-bottom:0}
 .hop.ok{border-color:var(--wa);color:#1E7F45}.hop.ok::after{border-top-color:var(--wa)}
 @keyframes hopIn{0%{transform:translateY(8px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+/* ===== מסלול ההזמנה – צעד אחד בכל פעם (4.11.2026) ===== */
+.wz{display:grid;gap:12px}
+.wz .doneb{background:#F4FAF7;border:2px solid var(--mint);border-radius:18px;padding:10px 14px;font-weight:700;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.wz .doneb b{color:var(--saged)}
+.wz .doneb .ed{margin-inline-start:auto;border:0;background:none;color:var(--mag);font:800 16px Assistant,sans-serif;text-decoration:underline;cursor:pointer;padding:4px}
+.wz .doneb img{width:48px;height:48px;object-fit:cover;border-radius:10px}
+.wz .step{background:#FFFBFD;border:3px solid var(--pink);border-radius:24px;padding:18px;animation:hopIn .4s cubic-bezier(.3,1.5,.5,1)}
+.wz .step h3{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,5.5vw,28px);color:var(--mag);line-height:1.2;margin-bottom:10px;display:flex;gap:10px;align-items:center}
+.wz .step h3 img{width:46px;height:46px;object-fit:contain;flex:0 0 auto}
+.wz .step p.h{color:var(--mute);font-weight:700;margin:-4px 0 10px}
+.wz select,.wz input[type=text],.wz textarea{width:100%;font:inherit;font-size:21px;font-weight:700;padding:14px;border:2.5px solid #E6D8E1;border-radius:16px;background:#fff;color:var(--ink)}
+.wz textarea{min-height:130px;font-size:19px;line-height:1.5;resize:vertical}
+.wz select:focus,.wz input:focus,.wz textarea:focus{outline:none;border-color:var(--pink)}
+.wz .go{width:100%;margin-top:12px;justify-content:center;font-size:22px;padding:16px}
+.wz .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
+.wz .two .btn{justify-content:center;font-size:21px;padding:18px 10px}
+.wz .alt{margin-top:10px;width:100%;border:2px dashed var(--pink);background:#fff;color:var(--mag);border-radius:999px;padding:11px;font:800 17px Assistant,sans-serif;cursor:pointer}
+.wz .cov{display:flex;gap:12px;align-items:center;margin-top:10px;font-weight:800}
+.wz .cov img{width:84px;filter:drop-shadow(0 6px 10px rgba(43,21,38,.25))}
+.wz .pick{display:flex;justify-content:center;font-size:22px;padding:22px 14px;width:100%}
+.wz .pv{display:block;width:min(220px,70%);margin:12px auto 0;border-radius:18px;border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.wz .err{color:#B3261E;font-weight:800;margin-top:8px}
+.wz .tip{margin-top:10px;background:#FFF8E6;border:2.5px dashed #F5B400;border-radius:18px;padding:12px 14px;font-weight:800;line-height:1.5}
+.wz .sumr{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.wz .sumr li{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;box-shadow:0 2px 8px rgba(78,133,118,.12)}
+.wz .fine{font-size:15px;color:var(--mute);margin-top:10px;line-height:1.5}.wz .fine a{color:var(--mag)}
+.wz .st{text-align:center;font-weight:800;color:var(--saged);margin-top:8px}
 @media (prefers-reduced-motion:reduce){.todo,.todo.now,.hop{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
 @media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.promise .ar{display:none}.promise div{min-width:100%}}
 @media print{.float{display:none}}
@@ -204,21 +231,8 @@ section.sv{margin-top:34px}
 
 <section class="sv" id="order">
   <h2>ההזמנה שלי</h2>
-  <p class="lead">עד 10 ספרים · אפשר לנכדים שונים ולספרים שונים</p>
-  <div class="form">
-    <div id="items"></div>
-    <button type="button" class="btn btn-soft add" id="addItem">➕ עוד ספר לנכד/ה נוסף/ת</button>
-    <div class="sum" id="sum"></div>
-    <label class="consent"><input type="checkbox" id="consent"><span>אני ההורה של הילד/ה, או שקיבלתי אישור מההורים, לשלוח את התמונה ל-BOOQLI כדי ליצור ממנה איורים לספר בעזרת בינה מלאכותית. קראתי ואני מסכים/ה ל<a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">תקנון האתר</a> ול<a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</span></label>
-    <p class="need" id="need" aria-live="polite"></p>
-    <div class="send">
-      <button type="button" class="btn btn-wa" id="send1" disabled>💬 שלב 1: שולחים לנו את הפרטים</button>
-      <button type="button" class="btn btn-main" id="send2" disabled>📷 שלב 2: שולחים את התמונות</button>
-      <p class="st" id="sendSt"></p>
-    </div>
-    <div class="done" id="done" hidden>🎉 קיבלנו! נחזור אליכם בוואטסאפ (א׳–ה׳ 8:00–18:00) עם כל הספר לתצוגה.<br>בינתיים – <a href="#app" style="color:#1E7F45">שלחו להורים את האפליקציה במתנה ↓</a></div>
-    
-  </div>
+  <p class="lead">צעד אחד בכל פעם 💛</p>
+  <div class="form wz" id="wz" aria-live="polite"></div>
 </section>
 
 <section class="sv" id="gets">
@@ -309,215 +323,140 @@ document.addEventListener("click", e => {
   const w = e.target.closest("[data-want]"); if (w) { want(w.dataset.want); }
 });
 
-/* ===== הטופס ===== */
-let ITEMS = [], seq = 0;
-const blank = id => ({k: ++seq, book: id || "", ver: "", name: "", ded: "", cover: "hard", file: null, url: "", check: null, c1: false, c2: false, c3: false});
-function want(id){
-  ev("savta-want", id);
-  const empty = ITEMS.find(x => !x.book);
-  if (empty) empty.book = id; else if (ITEMS.length < MAX) ITEMS.push(blank(id)); else { alert("אפשר עד 10 ספרים בהזמנה אחת 🙂 לעוד – כתבו לנו בוואטסאפ."); return; }
-  const it = ITEMS.find(x => x.book === id && !x.name) || ITEMS[ITEMS.length - 1];
-  renderItems(); const el = document.querySelector(`.item[data-k="${it.k}"]`); if (el) { el.scrollIntoView({behavior: "smooth", block: "start"}); setTimeout(() => { const n = el.querySelector("[data-f=name]"); n && n.focus({preventScroll: true}); }, 500); }
-}
+/* ===== מסלול ההזמנה (4.11.2026, לפי שמש): צעד אחד בכל פעם, הצעד הבא נפתח רק אחרי הקודם.
+   ספר (+ נכד/נכדה) ← שם ← הקדשה (מוצעת, בלי השם – מאשרים או מתקנים) ← תמונה ← (פעם אחת) שם המזמין ← עוד ספר?
+   בסוף: התמונות עולות לשרת הקטן (SITE.photoUpload – Cloudflare Worker, worker/photo-upload.js), ונשלחת הודעת
+   וואטסאפ אחת לשמש עם כל ספר: שם + הקדשה + קישור לתמונה. בלי בדיקות ובלי סימונים. */
+const UPLOAD = (window.SITE && SITE.photoUpload) || "";
 const book = id => BOOKS.find(b => b.id === id);
 function verOpts(b){ return b ? b.v.map((v, i) => [i, /בן/.test(v[0]) ? "נכד" : "נכדה"]) : []; }
-function itemHTML(it, i){
-  const b = book(it.book), vs = verOpts(b);
-  if (b && vs.length === 1) it.ver = "0";
-  const c = it.check;
-  return `<div class="item" data-k="${it.k}"><h3>📖 ספר ${i + 1}${ITEMS.length > 1 ? `<button type="button" class="rm" data-rm="${it.k}">✕ להסיר</button>` : ""}</h3>
-  <label class="fl">איזה ספר?<select data-f="book"><option value="">– בוחרים ספר –</option>${BOOKS.map(x => `<option value="${x.id}" ${x.id === it.book ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
-  ${b ? `<div class="fl">למי?<div class="seg">${vs.map(([k, t]) => `<label><input type="radio" name="v${it.k}" data-f="ver" value="${k}" ${String(it.ver) === String(k) ? "checked" : ""}>${t === "נכד" ? "👦 נכד" : "👧 נכדה"}</label>`).join("")}</div></div>` : ""}
-  <label class="fl">השם של ${b && vs.length === 1 && vs[0][1] === "נכדה" ? "הנכדה" : "הנכד/ה"} בספר<input type="text" data-f="name" value="${esc(it.name)}" maxlength="30" autocomplete="off" placeholder="למשל: נועה"></label>
-  <label class="fl">ההקדשה – מילים מהלב שלכם בתחילת הספר<textarea data-f="ded" maxlength="400" placeholder="למשל: לנועה האהובה, שתמיד תזכרי כמה סבא וסבתא אוהבים אותך 💛">${esc(it.ded)}</textarea></label>
-  <div class="dedb"><button type="button" data-ded="idea">✨ רעיון להקדשה</button><button type="button" data-ded="check">✔️ לבדוק את ההקדשה</button></div><ul class="chk dedchk" data-dedchk></ul>
-  <div class="fl">כריכה<div class="seg"><label><input type="radio" name="c${it.k}" data-f="cover" value="hard" ${it.cover === "hard" ? "checked" : ""}>💗 כריכה קשה</label><label><input type="radio" name="c${it.k}" data-f="cover" value="soft" ${it.cover === "soft" ? "checked" : ""}>💛 כריכה רכה</label></div></div>
-  <div class="photo"><label class="btn btn-soft pick">📷 ${it.file ? "להחליף תמונה" : "בוחרים תמונה של " + (it.name ? esc(it.name) : "הנכד/ה")}<input type="file" accept="image/*" data-f="file" hidden></label>
-  ${it.file ? `<div class="pv"><img src="${it.url}" alt="התמונה שנבחרה"><ul class="chk">${c ? c.map(x => `<li class="${x[0] ? "ok" : "warn"}">${x[0] ? "✓" : "💡"} ${x[1]}</li>`).join("") : "<li>⏳ בודקים את התמונה…</li>"}</ul></div>
-  <div class="self"><b style="font-size:16px;color:#6b5a66">ועכשיו אתם – מסמנים מה שנכון בתמונה:</b>
-   <label><input type="checkbox" data-f="c1" ${it.c1 ? "checked" : ""}>אין כובע או קשת על הראש</label>
-   <label><input type="checkbox" data-f="c2" ${it.c2 ? "checked" : ""}>הפנים נקיות – בלי אוכל או לכלוך</label>
-   <label><input type="checkbox" data-f="c3" ${it.c3 ? "checked" : ""}>בלי משקפי שמש, והנכד/ה לבד בתמונה</label></div>` : `<p style="font-size:16px;color:#6b5a66;margin-top:8px">תמונה ברורה ועדכנית, פנים למצלמה. התמונה נשארת בטלפון שלכם עד שאתם שולחים.</p>`}</div></div>`;
-}
-function renderItems(){
-  if (!ITEMS.length) ITEMS.push(blank());
-  $("items").innerHTML = ITEMS.map(itemHTML).join("");
-  $("addItem").hidden = ITEMS.length >= MAX;
-  update();
-}
-$("addItem").onclick = () => { if (ITEMS.length < MAX) { ITEMS.push(blank()); renderItems(); ev("savta-add", String(ITEMS.length)); document.querySelector(".item:last-child").scrollIntoView({behavior: "smooth", block: "start"}); } };
-$("items").addEventListener("click", e => { const b = e.target.closest("[data-rm]"); if (b) { ITEMS = ITEMS.filter(x => String(x.k) !== b.dataset.rm); renderItems(); } });
-$("items").addEventListener("input", e => { const f = e.target.dataset.f, it = itemOf(e.target); if (!it) return; if (f === "name" || f === "ded") { it[f] = e.target.value; update(); } });
-$("items").addEventListener("change", e => {
-  const f = e.target.dataset.f, it = itemOf(e.target); if (!it || !f) return;
-  if (f === "book") { it.book = e.target.value; it.ver = ""; renderItems(); return; }
-  if (f === "ver" || f === "cover") { it[f] = e.target.value; update(); return; }
-  if (/^c[123]$/.test(f)) { it[f] = e.target.checked; update(); return; }
-  if (f === "file" && e.target.files[0]) { const fl = e.target.files[0]; if (it.url) URL.revokeObjectURL(it.url); it.file = fl; it.url = URL.createObjectURL(fl); it.check = null; it.c1 = it.c2 = it.c3 = false; renderItems(); checkPhoto(it); ev("savta-photo", "pick"); }
-});
-/* הקדשה: רעיונות מוכנים (לפי נכד/נכדה והספר) + בדיקה בטלפון – בלי לשלוח לשום מקום */
-function dedGirl(it){ const b = book(it.book), v = b && verOpts(b).find(x => String(x[0]) === String(it.ver)); return v ? v[1] === "נכדה" : null; }
+function priceOf(n, cover){ let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return cover === "soft" ? t[1] : t[2]; }
+const ORD = {who: "", list: []};          /* list = ספרים שכבר גמרנו */
+let CUR = null, STEP = "book", ORDER = "", PHOTOS_LEFT = null;
+const fresh = id => ({book: id || "", ver: "", name: "", ded: "", dedI: 0, blob: null, url: ""});
+const isGirl = it => { const v = verOpts(book(it.book)).find(x => String(x[0]) === String(it.ver)); return v ? v[1] === "נכדה" : false; };
+const kid = it => isGirl(it) ? "הנכדה" : "הנכד";
+const SB = '<img src="../img/family/booqli.webp" alt="" width="46" height="46">';
 function dedIdeas(it){
-  const N = it.name.trim() || "___", g = dedGirl(it), f = (m, w) => g ? w : m;
-  const L = [
-    `ל${N} ${f("האהוב", "האהובה")}, שתמיד ${f("תזכור", "תזכרי")} כמה סבא וסבתא אוהבים אותך 💛`,
-    `${N} ${f("היקר", "היקרה")}, הספר הזה כולו שלך – כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. באהבה גדולה, סבא וסבתא`,
-    `ל${N} שלנו, ${f("שתגדל", "שתגדלי")} עם חיוך, סקרנות ולב טוב. אוהבים אותך עד השמיים, סבא וסבתא`,
-    `${N} ${f("מתוק", "מתוקה")}, בכל פעם ${f("שתקרא", "שתקראי")} את הספר – ${f("תדע", "תדעי")} שסבא וסבתא תמיד לידך 💛`
-  ];
-  if (it.book === "birthday") L.unshift(`ל${N}, מזל טוב ליום ההולדת! שכל החלומות שלך יתגשמו. באהבה, סבא וסבתא 🎂`);
-  if (it.book === "class1") L.unshift(`ל${N}, ${f("תלמיד", "תלמידה")} של כיתה א'! ${f("שתלמד", "שתלמדי")} בשמחה ובאומץ. גאים בך, סבא וסבתא`);
-  if (it.book === "kinder") L.unshift(`ל${N}, שהגן יהיה מלא חברים, משחקים וחיוכים. אוהבים, סבא וסבתא`);
+  const g = isGirl(it), f = (m, w) => g ? w : m, L = [];
+  if (it.book === "birthday") L.push(`מזל טוב ליום ההולדת! שכל החלומות שלך יתגשמו. אוהבים אותך עד השמיים, סבא וסבתא 🎂`);
+  if (it.book === "class1") L.push(`${f("לתלמיד", "לתלמידה")} החדש${f("", "ה")} של כיתה א' – ${f("שתלמד", "שתלמדי")} בשמחה ובאומץ. גאים בך, סבא וסבתא`);
+  if (it.book === "kinder") L.push(`שהגן יהיה מלא חברים, משחקים וחיוכים. אוהבים אותך, סבא וסבתא`);
+  L.push(`${f("לנכד האהוב", "לנכדה האהובה")} שלנו, שתמיד ${f("תזכור", "תזכרי")} כמה אנחנו אוהבים אותך. סבא וסבתא 💛`,
+         `הספר הזה כולו שלך – כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. באהבה גדולה, סבא וסבתא`,
+         `בכל פעם ${f("שתקרא", "שתקראי")} את הספר – ${f("תדע", "תדעי")} שסבא וסבתא תמיד לידך 💛`);
   return L;
 }
-function dedCheck(it){
-  const d = it.ded.trim(), N = it.name.trim(), out = [];
-  if (!d) return [[0, "עוד לא כתבתם הקדשה – אפשר ללחוץ על ✨ ולקבל רעיון"]];
-  out.push(d.length < 12 ? [0, "קצרה מאוד – אולי עוד כמה מילים מהלב?"] : d.length > 300 ? [0, `ארוכה (${d.length} תווים) – עדיף עד 300, כדי שתיכנס יפה בדף`] : [1, "האורך מתאים לדף בספר"]);
-  if (N) out.push(d.replace(/[֑-ׇ]/g, "").includes(N.replace(/[֑-ׇ]/g, "")) ? [1, `השם ${N} מופיע בהקדשה`] : [0, `כדאי לכתוב בהקדשה את השם – ${N}`]);
-  out.push(/סבא|סבתא|סבתא'ל|סבתוש|סבאל|נונה|נונו|באבא|זיידה|סבים/.test(d) ? [1, "יש חתימה מכם"] : [0, "כדאי לחתום בסוף, למשל: סבא וסבתא"]);
-  if (/[a-z]/i.test(d)) out.push([0, "יש אותיות באנגלית – הספר בעברית, כדאי לבדוק"]);
-  if (/(.)\1{3,}|\s{2,}|\.\.\.\.+|!!!+/.test(d)) out.push([0, "יש רווחים או סימנים כפולים – כדאי לסדר"]);
-  if (/[א-ת][,.!?][א-ת]/.test(d)) out.push([0, "חסר רווח אחרי פסיק או נקודה"]);
-  const g = dedGirl(it); if (g !== null && N) { const bad = g ? /(האהוב |היקר |אתה |תזכור |מתוק |שתגדל |תדע )/.test(d + " ") : /(האהובה|היקרה|את הגיבורה|תזכרי|מתוקה|שתגדלי|תדעי)/.test(d); if (bad) out.push([0, `כדאי לבדוק זכר/נקבה – בחרתם ${g ? "נכדה" : "נכד"}`]); }
-  const good = out.every(o => o[0]);
-  out.unshift(good ? [1, "<b>הקדשה יפה! אפשר להמשיך 💛</b>"] : [1, "<b>יפה! כמה הצעות קטנות:</b>"]);
-  return out;
+function want(id){ ev("savta-want", id);
+  if (STEP === "send" || STEP === "more") { if (ORD.list.length < MAX) { CUR = fresh(id); STEP = book(id).v.length > 1 ? "ver" : "name"; if (STEP === "name") CUR.ver = "0"; } }
+  else if (STEP === "book" || STEP === "ver") { CUR.book = id; CUR.ver = ""; STEP = book(id).v.length > 1 ? "ver" : "name"; if (STEP === "name") CUR.ver = "0"; }
+  draw(true);
 }
-$("items").addEventListener("click", e => {
-  const b = e.target.closest("[data-ded]"); if (!b) return; const it = itemOf(b), el = b.closest(".item"); if (!it) return;
-  const ta = el.querySelector("[data-f=ded]"), ul = el.querySelector("[data-dedchk]");
-  if (b.dataset.ded === "idea") { const L = dedIdeas(it); it.dedI = ((it.dedI ?? -1) + 1) % L.length; it.ded = L[it.dedI]; ta.value = it.ded; ul.innerHTML = '<li class="ok">✨ רעיון ' + (it.dedI + 1) + " מתוך " + L.length + " – אפשר לשנות כל מילה, או ללחוץ שוב לרעיון אחר</li>"; update(); ev("savta-ded", "idea"); }
-  else { ul.innerHTML = dedCheck(it).map(x => `<li class="${x[0] ? "ok" : "warn"}">${x[0] ? "✓" : "💡"} ${x[1]}</li>`).join(""); ev("savta-ded", "check"); }
+/* ציור המסלול: מה שכבר עשינו – שורות קטנות עם "לתקן"; הצעד של עכשיו – כרטיס גדול */
+function draw(scroll){
+  const w = $("wz"), n = ORD.list.length, h = [];
+  ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.url ? `<img src="${it.url}" alt="">` : ""}</div>`));
+  if (CUR && STEP !== "send") {
+    const b = book(CUR.book), num = n + 1, pre = ORD.list.length || STEP !== "book" ? `ספר ${num}: ` : "";
+    if (b && STEP !== "book") h.push(`<div class="doneb">✓ ${pre}<b>${esc(b.name)}</b>${CUR.ver !== "" && b.v.length > 1 ? " · " + (isGirl(CUR) ? "👧 נכדה" : "👦 נכד") : ""}<button type="button" class="ed" data-go="book">לתקן</button></div>`);
+    if (CUR.name && !["book", "ver", "name"].includes(STEP)) h.push(`<div class="doneb">✓ השם: <b>${esc(CUR.name)}</b><button type="button" class="ed" data-go="name">לתקן</button></div>`);
+    if (CUR.ded && ["photo", "who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ ההקדשה מוכנה<button type="button" class="ed" data-go="ded">לתקן</button></div>`);
+    if (CUR.blob && ["who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ התמונה <img src="${CUR.url}" alt=""><button type="button" class="ed" data-go="photo">להחליף</button></div>`);
+    if (ORD.who && STEP === "more") h.push(`<div class="doneb">✓ המזמין/ה: <b>${esc(ORD.who)}</b><button type="button" class="ed" data-go="who">לתקן</button></div>`);
+  }
+  h.push(stepHTML());
+  w.innerHTML = h.join("");
+  const f = w.querySelector(".step input[type=text], .step textarea");
+  if (scroll) { w.querySelector(".step").scrollIntoView({behavior: "smooth", block: "center"}); if (f) setTimeout(() => f.focus({preventScroll: true}), 450); }
+}
+function stepHTML(){
+  const it = CUR, b = it && book(it.book);
+  if (STEP === "book") return `<div class="step"><h3>${SB}איזה ספר ${ORD.list.length ? "לנכד הבא" : "תרצו"}?</h3>
+    <select id="wBook"><option value="">👇 לוחצים כאן ובוחרים ספר</option>${BOOKS.map(x => `<option value="${x.id}" ${x.id === it.book ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+    <p class="h" style="margin-top:8px">רוצים לראות את הספרים? <a href="#books" style="color:var(--mag)">לכל הספרים ↑</a></p></div>`;
+  if (STEP === "ver") return `<div class="step"><h3>${SB}הספר בשביל נכד או נכדה?</h3><div class="cov"><img src="${bqCover(b)}" alt="">${esc(b.name)}</div>
+    <div class="two" style="margin-top:12px"><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכד")[0]}">👦 נכד</button><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכדה")[0]}">👧 נכדה</button></div></div>`;
+  if (STEP === "name") return `<div class="step"><h3>${SB}איך קוראים ל${isGirl(it) ? "נכדה" : "נכד"}?</h3><p class="h">השם הזה יופיע בספר</p>
+    <input type="text" id="wName" value="${esc(it.name)}" maxlength="30" autocomplete="off" placeholder="למשל: ${isGirl(it) ? "נועה" : "יונתן"}">
+    <button type="button" class="btn btn-main go" data-next="name">ממשיכים ←</button><p class="err" id="wErr"></p></div>`;
+  if (STEP === "ded") { if (!it.ded) it.ded = dedIdeas(it)[0];
+    return `<div class="step"><h3>${SB}הקדשה מכם ל${esc(it.name)}</h3><p class="h">כתבנו לכם הקדשה. אפשר לשנות כל מילה – או פשוט לאשר 💛</p>
+    <textarea id="wDed" maxlength="400">${esc(it.ded)}</textarea>
+    <button type="button" class="btn btn-main go" data-next="ded">✓ ההקדשה טובה, ממשיכים ←</button><button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div>`; }
+  if (STEP === "photo") return `<div class="step"><h3>${SB}תמונה של ${esc(it.name)}</h3><p class="h">תמונה ברורה, הפנים למצלמה</p>
+    ${it.blob ? `<img class="pv" src="${it.url}" alt="התמונה שבחרתם"><button type="button" class="btn btn-main go" data-next="photo">✓ התמונה טובה, ממשיכים ←</button><label class="alt" style="display:block;text-align:center">🔄 להחליף תמונה<input type="file" accept="image/*" id="wFile" hidden></label>`
+      : `<label class="btn btn-main pick">📷 בוחרים תמונה מהטלפון<input type="file" accept="image/*" id="wFile" hidden></label>`}<p class="err" id="wErr"></p></div>`;
+  if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
+    <input type="text" id="wWho" value="${esc(ORD.who)}" maxlength="40" autocomplete="name" placeholder="למשל: סבתא רינה">
+    <button type="button" class="btn btn-main go" data-next="who">ממשיכים ←</button><p class="err" id="wErr"></p></div>`;
+  if (STEP === "more") { const n = ORD.list.length + 1, now = priceOf(n, "hard"), nx = n < MAX ? priceOf(n + 1, "hard") : 0;
+    return `<div class="step"><h3>${SB}כל הכבוד! 🎉 רוצים ספר גם לנכד נוסף?</h3>
+    ${nx && nx < now ? `<div class="tip">💡 עם עוד ספר – כל ספר בהזמנה יורד מ-${ils(now)} ל-${ils(nx)}. כדאי לכל הנכדים ביחד!</div>` : ""}
+    <div class="two" style="margin-top:12px">${n < MAX ? `<button type="button" class="btn btn-main" data-more="yes">➕ כן, עוד ספר</button>` : ""}<button type="button" class="btn btn-wa" data-more="no">✅ לא, זהו</button></div></div>`; }
+  if (STEP === "send") { const n = ORD.list.length, tot = n * priceOf(n, "hard");
+    return `<div class="step"><h3>${SB}שולחים לנו את ההזמנה</h3>
+    <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
+    <p class="h" style="margin-top:10px">${n} ${n === 1 ? "ספר" : "ספרים"} בכריכה קשה · ${ils(tot)} + משלוח. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
+    <button type="button" class="btn btn-wa go" id="wSend">💬 שולחים לנו בוואטסאפ</button>
+    <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
+    <p class="st" id="wSt"></p>
+    <p class="fine">בשליחה אני מאשר/ת שקיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI כדי ליצור ממנה איורים לספר, ושקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת אצלנו כ-3 חודשים אחרי ההזמנה.</p></div>`; }
+  return "";
+}
+const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
+$("wz").addEventListener("change", e => {
+  if (e.target.id === "wBook" && e.target.value) { CUR.book = e.target.value; CUR.ver = ""; CUR.ded = ""; const b = book(CUR.book); if (b.v.length > 1) STEP = "ver"; else { CUR.ver = "0"; STEP = "name"; } ev("savta-step", "book"); draw(true); }
+  if (e.target.id === "wFile" && e.target.files[0]) photo(e.target.files[0]);
 });
-const itemOf = el => { const d = el.closest(".item"); return d && ITEMS.find(x => String(x.k) === d.dataset.k); };
-
-/* בדיקת תמונה – בטלפון עצמו, בלי לשלוח לשום מקום. עצה בלבד, אף פעם לא חוסם. */
-function checkPhoto(it){
-  const img = new Image();
-  img.onload = async () => {
-    const W = img.naturalWidth, H = img.naturalHeight, out = [];
-    out.push(Math.min(W, H) >= 700 ? [1, "התמונה גדולה וברורה"] : Math.min(W, H) >= 450 ? [1, "גודל התמונה בסדר"] : [0, "התמונה קטנה – אם יש, עדיף את המקורית מהגלריה (לא צילום מסך)"]);
-    const s = 240 / Math.max(W, H), w = Math.max(8, Math.round(W * s)), h = Math.max(8, Math.round(H * s));
-    const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const x = cv.getContext("2d", {willReadFrequently: true}); x.drawImage(img, 0, 0, w, h);
-    const d = x.getImageData(0, 0, w, h).data, g = new Float32Array(w * h); let sum = 0;
-    for (let i = 0; i < w * h; i++) { g[i] = .299 * d[i * 4] + .587 * d[i * 4 + 1] + .114 * d[i * 4 + 2]; sum += g[i]; }
-    const mean = sum / (w * h);
-    out.push(mean < 55 ? [0, "התמונה חשוכה – עדיף לצלם ליד חלון או באור יום"] : mean > 215 ? [0, "התמונה בהירה מאוד – עדיף בלי שמש ישירה על הפנים"] : [1, "התאורה טובה"]);
-    /* חדות: שונות של לפלסיאן במרכז התמונה */
-    let n = 0, m1 = 0, m2 = 0;
-    for (let yy = Math.floor(h * .15); yy < h * .85 - 1; yy++) for (let xx = Math.floor(w * .2); xx < w * .8 - 1; xx++) {
-      const i = yy * w + xx, L = 4 * g[i] - g[i - 1] - g[i + 1] - g[i - w] - g[i + w]; n++; m1 += L; m2 += L * L; }
-    const v = n ? m2 / n - (m1 / n) ** 2 : 0;
-    out.push(v > 60 ? [1, "התמונה חדה"] : [0, "התמונה נראית קצת מטושטשת – אם יש תמונה חדה יותר, עדיף"]);
-    /* פנים – רק בדפדפנים שיודעים (בעיקר אנדרואיד) */
-    if ("FaceDetector" in window) {
-      try { const f = await new FaceDetector({maxDetectedFaces: 5}).detect(img);
-        if (f.length === 1) { const r = f[0].boundingBox; out.push(r.width * r.height / (W * H) > .05 ? [1, "רואים פנים אחד, קרוב מספיק"] : [0, "הפנים רחוקות – עדיף תמונה קרובה יותר"]); }
-        else if (f.length > 1) out.push([0, "יש כמה אנשים בתמונה – עדיף שהנכד/ה לבד"]);
-        else out.push([0, "לא מצאנו פנים בבירור – עדיף תמונה שהנכד/ה מסתכל/ת למצלמה"]);
-      } catch (e) {}
-    }
-    const good = out.every(o => o[0]);
-    out.unshift(good ? [1, "<b>תמונה מצוינת!</b>"] : [1, "<b>אפשר לשלוח – יש לנו כמה עצות:</b>"]);
-    it.check = out; ev("savta-photo", good ? "good" : "tips");
-    const el = document.querySelector(`.item[data-k="${it.k}"] .chk`); if (el) el.innerHTML = out.map(o => `<li class="${o[0] ? "ok" : "warn"}">${o[0] ? "✓" : "💡"} ${o[1]}</li>`).join("");
-  };
-  img.onerror = () => { it.check = [[0, "לא הצלחנו לפתוח את התמונה – נסו תמונה אחרת, או שלחו לנו אותה בוואטסאפ"]]; renderItems(); };
-  img.src = it.url;
+$("wz").addEventListener("click", e => {
+  const t = e.target.closest("button,[data-go]"); if (!t) return;
+  if (t.dataset.go) { STEP = t.dataset.go; if (STEP === "book") { CUR.ver = ""; } draw(true); return; }
+  if (t.dataset.ver !== undefined) { CUR.ver = t.dataset.ver; CUR.ded = ""; STEP = "name"; ev("savta-step", "ver"); draw(true); return; }
+  if (t.dataset.ded) { const L = dedIdeas(CUR); CUR.dedI = (CUR.dedI + 1) % L.length; CUR.ded = L[CUR.dedI]; $("wDed").value = CUR.ded; return; }
+  if (t.dataset.next === "name") { const v = $("wName").value.trim(); if (!v) return err("כותבים את השם 🙂"); CUR.name = v; STEP = "ded"; ev("savta-step", "name"); draw(true); return; }
+  if (t.dataset.next === "ded") { const v = $("wDed").value.trim(); if (!v) return err("כותבים כמה מילים, או לוחצים על ✨ הקדשה אחרת"); CUR.ded = v; STEP = "photo"; ev("savta-step", "ded"); draw(true); return; }
+  if (t.dataset.next === "photo") { STEP = ORD.who ? "more" : "who"; ev("savta-step", "photo"); draw(true); return; }
+  if (t.dataset.next === "who") { const v = $("wWho").value.trim(); if (!v) return err("כותבים את השם שלך 🙂"); ORD.who = v; STEP = "more"; ev("savta-step", "who"); draw(true); return; }
+  if (t.dataset.more === "yes") { if (STEP === "more") ORD.list.push(CUR); CUR = fresh(); STEP = "book"; ev("savta-more", String(ORD.list.length)); draw(true); return; }
+  if (t.dataset.more === "no") { ORD.list.push(CUR); CUR = null; STEP = "send"; ev("savta-step", "more-no"); draw(true); return; }
+  if (t.id === "wSend") send();
+});
+$("wz").addEventListener("input", e => { if (e.target.id === "wDed" && CUR) CUR.ded = e.target.value; });
+$("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".step .go"); b && b.click(); } });
+/* תמונה: מקטינים בטלפון (עד 2000 פיקסלים, JPEG) כדי שתעלה מהר */
+function photo(file){
+  const img = new Image(), u = URL.createObjectURL(file);
+  img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    c.toBlob(bl => { URL.revokeObjectURL(u); if (!bl) return err("לא הצלחנו לפתוח את התמונה – נסו תמונה אחרת"); if (CUR.url) URL.revokeObjectURL(CUR.url); CUR.blob = bl; CUR.url = URL.createObjectURL(bl); ev("savta-photo", "pick"); draw(true); }, "image/jpeg", .88); };
+  img.onerror = () => { URL.revokeObjectURL(u); err("לא הצלחנו לפתוח את התמונה – נסו תמונה אחרת"); };
+  img.src = u;
 }
-
-/* מחיר + מה חסר */
-function priceOf(n, cover){ let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return cover === "soft" ? t[1] : t[2]; }
-/* מה עוד חסר – לפי הסדר בטופס. כל שורה: [הטקסט, האלמנט שמהבהב, ההסבר של סַבָּבּוּקְלִי] */
-function todos(){
-  const t = [], many = ITEMS.length > 1;
-  ITEMS.forEach((it, i) => {
-    const el = document.querySelector(`.item[data-k="${it.k}"]`); if (!el) return;
-    const b = book(it.book), p = "ספר " + (i + 1) + ": ", g = many ? "ספר " + (i + 1) + " – " : "", who = it.name.trim() || "הנכד/ה";
-    if (!b) t.push([p + "לבחור ספר", el.querySelector("[data-f=book]").closest(".fl"), "בוחרים ספר 📚"]);
-    else if (it.ver === "") t.push([p + "נכד או נכדה", el.querySelector("[data-f=ver]").closest(".fl"), "נכד או נכדה?"]);
-    if (!it.name.trim()) t.push([p + "השם", el.querySelector("[data-f=name]"), "איך קוראים ל" + (it.ver !== "" && verOpts(b).find(v => String(v[0]) === String(it.ver)) && verOpts(b).find(v => String(v[0]) === String(it.ver))[1] === "נכדה" ? "נכדה" : "נכד") + "? ✍️"]);
-    if (!it.ded.trim()) t.push([p + "הקדשה", el.querySelector("[data-f=ded]"), "כמה מילים מהלב להקדשה 💛"]);
-    if (!it.file) t.push([p + "תמונה", el.querySelector(".pick"), "עכשיו תמונה של " + who + " 📷"]);
-    else ["c1", "c2", "c3"].forEach(c => { if (!it[c]) t.push([p + "לסמן את 3 הבדיקות של התמונה", el.querySelector(`[data-f=${c}]`).closest("label"), "מסמנים מה שנכון ✔️"]); });
-  });
-  if (!$("consent").checked) t.push(["לסמן את האישור", document.querySelector(".consent"), "רק לסמן כאן ✔️"]);
-  return t;
-}
-/* סַבָּבּוּקְלִי קופץ ליד הדבר הבא, עם מילה טובה ו"עוד כמה נשאר" */
-function sbHop(td){
-  let hop = $("hop");
-  if (!hop) { hop = document.createElement("div"); hop.id = "hop"; hop.className = "hop"; hop.setAttribute("aria-live", "polite"); hop.innerHTML = '<img src="../img/family/booqli.webp" alt="" width="38" height="38"><span id="hopTxt"></span>'; }
-  const left = new Set(td.map(x => x[0])).size; if (left > HOP_START) HOP_START = left;
-  const done = HOP_START - left;
-  const cheer = ["יופי!", "כל הכבוד!", "מצוין!", "איזה יופי!", "עוד קצת!"];
-  const target = td[0] ? td[0][1] : (SENT1 ? $("send2") : $("send1"));
-  let txt;
-  if (td[0]) txt = (done > 0 ? cheer[done % cheer.length] + " " : "") + td[0][2] + (left > 1 ? ` · עוד ${left}` : "");
-  else txt = SENT1 ? "ועכשיו התמונות 📷" : "מעולה! לוחצים כאן 💚";
-  hop.classList.toggle("ok", !td[0]);
-  if (target && target !== HOP_AT) { HOP_AT = target; target.parentNode.insertBefore(hop, target); hop.style.animation = "none"; void hop.offsetWidth; hop.style.animation = ""; }
-  $("hopTxt").textContent = txt;
-}
-/* "כל ספר נוסף – המחיר יורד": המחיר לספר עכשיו, ובכמה ספרים הוא יורד בפעם הבאה */
-function moreTip(n){
-  if (!n || n >= MAX) return "";
-  const cov = (ITEMS.find(x => x.book) || {}).cover || "hard", now = priceOf(n, cov);
-  let m = n + 1; while (m <= MAX && priceOf(m, cov) >= now) m++;
-  if (m > MAX) return "";
-  const add = m - n, nw = priceOf(m, cov);
-  return `${add === 1 ? "ספר אחד נוסף" : add + " ספרים נוספים"} לנכד/ה נוסף/ת – וכל ספר בהזמנה יורד מ-${ils(now)} ל-${ils(nw)}. כדאי לקנות לכל הנכדים ביחד!`;
-}
-function missing(){ return [...new Set(todos().map(x => x[0]))]; }
-let ORDER = "", SENT1 = false, HOP_AT = null, HOP_START = 0;
-function update(){
-  const n = ITEMS.filter(x => x.book).length;
-  if (n) { const tot = ITEMS.filter(x => x.book).reduce((s, x) => s + priceOf(n, x.cover), 0);
-    $("sum").innerHTML = `<div class="tot">${n} ${n === 1 ? "ספר" : "ספרים"} · ${ils(tot)}</div><p>${n > 1 ? "המחיר לכל ספר יורד ככל שמזמינים יותר. " : ""}משלוח: עד הבית 40 ₪ או לנקודת חלוקה 18 ₪. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>${moreTip(n) ? `<button type="button" class="more" id="moreBtn">💡 ${moreTip(n)} <u>➕ להוסיף ספר</u></button>` : ""}`;
-    const mb = $("moreBtn"); if (mb) mb.onclick = () => { $("addItem").click(); ev("savta-more", String(n)); }; }
-  else $("sum").innerHTML = `<div class="tot">עוד לא נבחר ספר</div><p>בוחרים ספר למעלה ("אני רוצה את הספר הזה") או כאן בטופס.</p>`;
-  const td = todos(), m = [...new Set(td.map(x => x[0]))];
-  document.querySelectorAll(".todo").forEach(e => e.classList.remove("todo", "now"));
-  td.forEach((x, i) => { if (x[1]) x[1].classList.add("todo"); if (!i && x[1]) x[1].classList.add("now"); });
-  sbHop(td);
-  $("send1").disabled = !!m.length;
-  $("send2").disabled = !SENT1 || !!m.length;
-  $("need").textContent = m.length ? "כדי לשלוח חסר: " + m.slice(0, 4).join(" · ") + (m.length > 4 ? " ועוד" : "") : "";
-}
-$("consent").addEventListener("change", update);
-
-/* שלב 1: הודעה עם כל הפרטים */
-function message(){
+/* שליחה: מעלים כל תמונה לשרת הקטן, ואז הודעה אחת לשמש בוואטסאפ */
+async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {"Content-Type": "image/jpeg"}, body: bl}); if (!r.ok) throw new Error(r.status); return (await r.json()).url; }
+async function send(){
+  const b = $("wSend"); if (b.dataset.busy) return; b.dataset.busy = "1";
   if (!ORDER) ORDER = "סב-" + String(Math.floor(1000 + Math.random() * 9000));
-  const n = ITEMS.length;
-  const lines = ITEMS.map((it, i) => { const b = book(it.book), who = verOpts(b).find(v => String(v[0]) === String(it.ver));
-    return `📖 *ספר ${i + 1}:* ${b.name} (${who ? who[1] : ""}) · שם: *${it.name.trim()}* · ${it.cover === "soft" ? "כריכה רכה" : "כריכה קשה"}\n✍️ הקדשה: ${it.ded.trim()}\n📷 תמונה ${i + 1}`; });
-  return `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${n} ${n === 1 ? "ספר" : "ספרים"}\n\n${lines.join("\n\n")}\n\n✓ אני ההורה של הילד/ה או שקיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI ליצירת איורים לספר בעזרת בינה מלאכותית, וקראתי ואני מסכים/ה לתקנון האתר (https://www.booqli.ai/he/terms-of-service) ולמדיניות הפרטיות (https://www.booqli.ai/he/privacy-policy).\n\nעכשיו אשלח את התמונות 📷\n(סבים${SRC ? " · " + SRC : ""})`;
+  let links = true;
+  for (let i = 0; i < ORD.list.length; i++) { const it = ORD.list[i]; if (it.link) continue;
+    if (!UPLOAD) { links = false; break; }
+    $("wSt").textContent = `⏳ שולחים את התמונה ${ORD.list.length > 1 ? (i + 1) + " מתוך " + ORD.list.length : ""}…`;
+    try { it.link = await up(it.blob); } catch (e) { links = false; break; } }
+  const lines = ORD.list.map((it, i) => `📖 *ספר ${i + 1}: ${book(it.book).name}* (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: *${it.name}*\n✍️ הקדשה: ${it.ded}\n📷 ${it.link || "התמונה – שולחים מיד אחרי ההודעה"}`);
+  const msg = `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${ORD.who}\n\n${lines.join("\n\n")}\n\n✓ קיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\n(" + SRC + ")" : ""}`;
+  ev("savta-send", ORD.list.length + (links ? "-links" : "-nolinks"));
+  $("wSt").innerHTML = links ? "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה" : "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה, ואחר כך חוזרים לכאן לשלוח את התמונות";
+  if (!links) { b.insertAdjacentHTML("afterend", `<button type="button" class="btn btn-main go" id="wPics">📷 עכשיו שולחים את התמונות</button>`); $("wPics").onclick = sharePics; }
+  delete b.dataset.busy;
+  location.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
 }
-$("send1").onclick = () => {
-  if (missing().length) return update();
-  const u = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(message());
-  const w = window.open(u, "_blank"); if (!w) location.href = u;
-  SENT1 = true; update(); ev("savta-send", String(ITEMS.length));
-  $("sendSt").textContent = "✓ אחרי שלחצתם \"שלח\" בוואטסאפ – חוזרים לכאן ולוחצים על שלב 2 (התמונות).";
-};
-/* שלב 2: התמונות – דרך חלון השיתוף של הטלפון. השיחה איתנו תופיע ראשונה, כי פתחתם אותה רגע קודם. */
-$("send2").onclick = async () => {
-  const files = ITEMS.map((it, i) => new File([it.file], `${i + 1}-${it.name.trim().replace(/[^\w֐-׿-]+/g, "_")}.${(it.file.name.split(".").pop() || "jpg").toLowerCase()}`, {type: it.file.type || "image/jpeg"}));
-  try {
-    if (navigator.canShare && navigator.canShare({files})) {
-      await navigator.share({files, text: "התמונות להזמנה " + ORDER});
-      ev("savta-photos", "shared"); $("done").hidden = false; $("sendSt").textContent = "";
-      $("done").scrollIntoView({behavior: "smooth", block: "center"}); return;
-    }
-  } catch (e) { if (e && e.name === "AbortError") return; }
-  /* בלי שיתוף קבצים (בעיקר במחשב): מורידים את התמונות, ושולחים בוואטסאפ ב-📎 */
+/* גיבוי, כשאין שרת תמונות: חלון השיתוף של הטלפון */
+async function sharePics(){
+  const files = ORD.list.map((it, i) => new File([it.blob], `${i + 1}-${it.name.replace(/[^\w֐-׿-]+/g, "_")}.jpg`, {type: "image/jpeg"}));
+  try { if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files, text: "התמונות להזמנה " + ORDER}); ev("savta-photos", "shared"); return; } } catch (e) { if (e && e.name === "AbortError") return; }
   files.forEach(f => { const a = document.createElement("a"); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); });
-  ev("savta-photos", "download");
-  $("sendSt").innerHTML = "📎 התמונות ירדו למחשב. בשיחת הוואטסאפ איתנו לוחצים על 📎 ובוחרים אותן. מסתבכים? פשוט שלחו מהטלפון 🙂";
-  $("done").hidden = false;
-};
+  $("wSt").textContent = "📎 התמונות ירדו למחשב – מצרפים אותן בשיחה איתנו ב-📎"; ev("savta-photos", "download");
+}
 
 /* שליחת האפליקציה להורים */
 $("shareApp").onclick = () => {
@@ -528,9 +467,10 @@ $("shareApp").onclick = () => {
 document.querySelectorAll("[data-ev]").forEach(a => a.addEventListener("click", () => ev("savta-click", a.dataset.ev)));
 
 
-/* ?book=<id> – קישור ישר לספר מסוים (למשל מכל סרטון).
-   utm_content של מודעה גובר על book (במטא הכתובת ננעלת בשכפול מודעה, אבל utm_content נשמר לכל מודעה) */
-(() => { const u = new URLSearchParams(location.search), c = u.get("utm_content"), q = c && book(c) ? c : u.get("book"); renderItems(); if (q && book(q)) { ITEMS[0].book = q; renderItems(); } })();
+/* ?book=<id> / utm_content – הספר כבר בחור, ומתחילים מהשם (או נכד/נכדה) */
+(() => { const u = new URLSearchParams(location.search), c = u.get("utm_content"), q = c && book(c) ? c : u.get("book");
+  CUR = fresh(); if (q && book(q)) { CUR.book = q; const b = book(q); if (b.v.length > 1) STEP = "ver"; else { CUR.ver = "0"; STEP = "name"; } }
+  draw(false); })();
 </script>
 </body>
 </html>
