@@ -138,8 +138,11 @@ section.sv{margin-top:34px}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::before{content:"＋ ";color:var(--pink)}.faq details[open] summary::before{content:"－ "}
 .faq details p{padding:0 16px 14px;color:var(--ink)}
-.float{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:none;gap:8px}
-.float a{flex:1;justify-content:center;font-size:18px;padding:13px 10px}
+.float{position:fixed;right:calc(84px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;display:none}
+.float a{justify-content:center;font-size:18px;padding:13px 18px}
+/* עיגול וואטסאפ ירוק – תמיד בפינה, בכל רוחב (שמש, 4.11.2026) */
+.waDot{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:61;width:62px;height:62px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.25),0 0 0 4px #fff}
+.waDot:active{transform:scale(.94)}.waDot:focus-visible{outline:3px solid var(--mag);outline-offset:3px}
 /* מה עוד צריך למלא – מהבהב בעדינות; הבא בתור מהבהב חזק יותר (3.11.2026) */
 @keyframes todoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,86,194,0)}50%{box-shadow:0 0 0 6px rgba(255,86,194,.38)}}
 .todo{border-color:var(--pink)!important;border-radius:14px;animation:todoPulse 1.8s ease-in-out infinite}
@@ -199,7 +202,7 @@ section.sv{margin-top:34px}
 .wz .st{text-align:center;font-weight:800;color:var(--saged);margin-top:8px}
 @media (prefers-reduced-motion:reduce){.todo,.todo.now,.hop{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
 @media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.promise .ar{display:none}.promise div,.promise .pgo{min-width:100%}}
-@media print{.float{display:none}}
+@media print{.float,.waDot{display:none}}
 </style>
 </head>
 <body>
@@ -220,7 +223,7 @@ section.sv{margin-top:34px}
     <div><b>💚</b><span>שולחים להדפסה ומשלמים רק אם אוהבים</span></div>
   </div>
   <p class="nohow"><span>בלי אתר</span><span>בלי בוט</span><span>בלי ידע בטכנולוגיה</span><br>שיחת וואטסאפ עם בן אדם אמיתי</p>
-  <div class="ctas"><a class="btn btn-main" href="#books" data-ev="hero_books">📚 לבחור ספר</a><a class="btn btn-wa js-wa-sv" href="#" target="_blank" rel="noopener" data-where="hero">💬 מעדיפים לדבר? כתבו לנו</a></div>
+  <div class="ctas"><a class="btn btn-main" href="#books" data-ev="hero_books">📚 לבחור ספר</a></div>
 </section>
 
 <section class="sv" id="ba">
@@ -296,7 +299,8 @@ section.sv{margin-top:34px}
 </section>
 
 </main>
-<div class="float"><a class="btn btn-main" href="#books" data-ev="float_books">📚 לבחור ספר</a><a class="btn btn-wa js-wa-sv" href="#" target="_blank" rel="noopener" data-where="float">💬 וואטסאפ</a></div>
+<div class="float"><a class="btn btn-main" href="#books" data-ev="float_books">📚 לבחור ספר</a></div>
+<a class="waDot js-wa-sv" href="#" target="_blank" rel="noopener" data-where="dot" aria-label="שאלה? כתבו לנו בוואטסאפ" title="שאלה? כתבו לנו בוואטסאפ"><svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path fill="#fff" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3.1 29l6.4-1.9c2 1.1 4.2 1.6 6.5 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2 0-4-.5-5.7-1.6l-.4-.2-3.8 1.1 1.1-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 10 10 5.3 16 5.3S26.9 10 26.9 15.8 22 26.4 16 26.4zm6-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.1 1.4 3.3c.2.2 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
 <footer class="foot">
   <div class="wrap">
     <img class="logo" src="../img/logo.png" alt="BOOQLI" width="95" height="40">
