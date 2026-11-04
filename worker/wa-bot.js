@@ -1,6 +1,6 @@
 /* BOOQLI – בוט ההזמנות לסבים בוואטסאפ (Cloudflare Worker), 4.11.2026
    כל ההזמנה בתוך השיחה, בלי קישורים: ספר ← נכד/נכדה ← שם ← הקדשה ← תמונות ← שם המזמין ← עוד ספר? ← אישור ← סיכום.
-   בכל שלב יש "🙋 לדבר עם שמש" – והבוט שותק בשיחה הזאת. גם כששמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק.
+   בכל שלב יש "🙋 לדבר עם בן אדם" – והבוט שותק בשיחה הזאת. גם כששמש כותבת בעצמה מהאפליקציה (coexistence) – הבוט שותק.
    שמש מחזירה את הבוט בשיחה ע"י הודעה "#בוט". הבוט עונה רק למי שכתב/ה משהו על סבים/נכד/ספר (TRIGGER) או לחץ/ה על כפתור שלו,
    כדי לא להפריע לשיחות אחרות (גנים, הורים).
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
@@ -32,15 +32,15 @@ const priceLine = n => { const p = priceOf(n), t = n * p, s = n * priceOf(1) - t
 function dedIdeas(g){
   const f = (m, w) => g ? w : m;
   return [
-    `${f("לנכד האהוב", "לנכדה האהובה")} שלנו,\nהספר הזה נכתב בשבילך, כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. ${f("שתמיד תגדל", "שתמיד תגדלי")} עם חיוך גדול, סקרנות ואומץ, ${f("ותדע שאתה יכול", "ותדעי שאת יכולה")} להגשים כל חלום שרק ${f("תרצה", "תרצי")}. בכל פעם ${f("שתפתח", "שתפתחי")} את הספר – ${f("תזכור", "תזכרי")} כמה אנחנו גאים בך ואוהבים אותך, היום, מחר ובכל יום. שהספר הזה ילווה אותך בחום ובאהבה.\nבאהבה גדולה, סבא וסבתא 💛`,
-    `${f("לנכד היקר", "לנכדה היקרה")} שלנו,\nמהיום שנולדת העולם שלנו נעשה צבעוני ושמח יותר. אנחנו מאחלים לך לב טוב, חברים אמיתיים והמון הרפתקאות מופלאות. ${f("זכור", "זכרי")} תמיד ${f("שאתה מיוחד, שאתה אהוב", "שאת מיוחדת, שאת אהובה")}, ושסבא וסבתא תמיד כאן בשבילך – לחבק, להקשיב, לצחוק ולשמוח איתך בכל רגע. העולם מחכה לך – ${f("צא", "צאי")} לגלות אותו.\nאוהבים אותך עד השמיים, סבא וסבתא 💛`,
-    `${f("לנכד המתוק", "לנכדה המתוקה")} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\nסבא וסבתא 💛`
+    `${f("לנכד האהוב", "לנכדה האהובה")} שלנו,\nהספר הזה נכתב בשבילך, כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. ${f("שתמיד תגדל", "שתמיד תגדלי")} עם חיוך גדול, סקרנות ואומץ, ${f("ותדע שאתה יכול", "ותדעי שאת יכולה")} להגשים כל חלום שרק ${f("תרצה", "תרצי")}. בכל פעם ${f("שתפתח", "שתפתחי")} את הספר – ${f("תזכור", "תזכרי")} כמה אנחנו גאים בך ואוהבים אותך, היום, מחר ובכל יום. שהספר הזה ילווה אותך בחום ובאהבה.\nבאהבה גדולה, סבא וסבתא ❤️`,
+    `${f("לנכד היקר", "לנכדה היקרה")} שלנו,\nמהיום שנולדת העולם שלנו נעשה צבעוני ושמח יותר. אנחנו מאחלים לך לב טוב, חברים אמיתיים והמון הרפתקאות מופלאות. ${f("זכור", "זכרי")} תמיד ${f("שאתה מיוחד, שאתה אהוב", "שאת מיוחדת, שאת אהובה")}, ושסבא וסבתא תמיד כאן בשבילך – לחבק, להקשיב, לצחוק ולשמוח איתך בכל רגע. העולם מחכה לך – ${f("צא", "צאי")} לגלות אותו.\nאוהבים אותך עד השמיים, סבא וסבתא ❤️`,
+    `${f("לנכד המתוק", "לנכדה המתוקה")} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\nסבא וסבתא ❤️`
   ];
 }
 const CONSENT = "אני מאשר/ת שקיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר, ושקראתי את התקנון ואת מדיניות הפרטיות של BOOQLI (booqli.ai).";
 
 /* ===== שליחה לוואטסאפ ===== */
-const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם שמש" } };
+const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם בן אדם" } };
 async function wa(env, to, msg, log){
   const body = Object.assign({ messaging_product: "whatsapp", to }, msg);
   if (log) { log.push(body); return; }                       /* בבדיקות – רק רושמים */
@@ -60,24 +60,24 @@ async function ask(env, to, st, log){
   const c = st.cur, n = st.list.length;
   const S = (m) => wa(env, to, m, log);
   switch (st.step) {
-    case "hi": return S(buttons("שלום 💛 כאן BOOQLI – ספר אישי שבו הנכד/ה הם הגיבורים, כתוב ע\"י שמש צור, מנוקד ובחרוזים, בכריכה קשה עד הבית.\n\nאפשר להזמין ממש כאן בוואטסאפ, צעד אחר צעד – בלי קישורים. ובכל שלב אפשר לבקש לדבר עם שמש.", [["s:go", "📚 מתחילים הזמנה"], HUMAN]));
+    case "hi": return S(buttons("שלום ❤️ כאן סבאבוקלי מ-BOOQLI!\nאני אעזור לכם להזמין ספר אישי שבו הנכד או הנכדה הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, בכריכה קשה עד הבית.\n\nמתחילים הזמנה, או מעדיפים לדבר עם בן אדם?", [["s:go", "❤️ מתחילים הזמנה"], HUMAN]));
     case "book": {
       const page = st.page || 0, part = page ? BOOKS.slice(9) : BOOKS.slice(0, 9);
       const rows = part.map(b => ({ id: "b:" + b.id, title: b.name.slice(0, 24) }));
       rows.push(page ? { id: "page:0", title: "⬅️ לספרים הקודמים" } : { id: "page:1", title: "➡️ עוד ספרים" });
-      return S(list(`${n ? "איזה ספר לנכד הבא?" : "איזה ספר תרצו?"} 📚\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", rows, page ? "עוד ספרים" : "הספרים"));
+      return S(list(`${n ? "איזה ספר לנכד הבא?" : "איזה ספר תרצו?"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", rows, page ? "עוד ספרים" : "הספרים"));
     }
     case "ver": {
       const b = book(c.book);
-      if (b.img) await S(image(b.img, "📖 " + b.name));
+      if (b.img) await S(image(b.img, b.name));
       return S(buttons(`"${b.name}" – בשביל נכד או נכדה?`, [["v:b", "👦 נכד"], ["v:g", "👧 נכדה"], HUMAN]));
     }
     case "name": return S(text(`איך קוראים ל${kid(c) === "הנכדה" ? "נכדה" : "נכד"}? ✍️\n(השם הזה יופיע בספר – פשוט כותבים אותו כאן)`));
     case "ded": {
       if (!c.ded) c.ded = dedIdeas(c.ver === "g")[0];
-      return S(buttons(`הקדשה מכם ל${c.name} 💛\n\n${c.ded}`, [["d:ok", "✅ מאשרים"], ["d:next", "✨ הקדשה אחרת"], ["d:own", "✍️ אכתוב בעצמי"]]));
+      return S(buttons(`הקדשה מכם ל${c.name} ❤️\n\n${c.ded}`, [["d:ok", "✅ מאשרים"], ["d:next", "✨ הקדשה אחרת"], ["d:own", "✍️ אכתוב בעצמי"]]));
     }
-    case "dedown": return S(text("כתבו כאן את ההקדשה שלכם 💛 (עד 300 תווים בערך)"));
+    case "dedown": return S(text("כתבו כאן את ההקדשה שלכם ❤️ (עד 300 תווים בערך)"));
     case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\nתמונה ברורה, הפנים למצלמה.`));
     case "picsmore": return S(buttons(`קיבלנו ${c.pics.length === 1 ? "תמונה אחת" : c.pics.length + " תמונות"} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"], HUMAN]));
     case "who": return S(st.profile
@@ -86,26 +86,26 @@ async function ask(env, to, st, log){
     case "whoown": return S(text("איך לרשום את השם שלך? 🙂"));
     case "more": {
       const m = n + 1;
-      let t = `כל הכבוד! 🎉 רוצים ספר גם לנכד נוסף?\n\n📖 עכשיו – ${priceLine(m)}`;
+      let t = `כל הכבוד! 🎉 רוצים ספר גם לנכד נוסף?\n\n❤️ עכשיו – ${priceLine(m)}`;
       if (m < MAX && priceOf(m + 1) < priceOf(m)) t += `\n➕ עם עוד ספר – ${priceLine(m + 1)}`;
       t += `\n🚚 + משלוח עד הבית ${ils(SHIP)}\n\nככל שמוסיפים ספרים – המחיר של כל ספר יורד.`;
       return S(buttons(t, m < MAX ? [["m:yes", "➕ כן, עוד ספר"], ["m:no", "✅ לא, זהו"]] : [["m:no", "✅ זהו"]]));
     }
-    case "consent": return S(buttons("לפני שנתחיל להכין 💛\n\n" + CONSENT, [["c:yes", "✅ מאשר/ת"], HUMAN]));
+    case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "✅ מאשר/ת"], HUMAN]));
   }
 }
 
 function summary(st, id, links){
   const n = st.list.length, t = n * priceOf(n);
-  const lines = st.list.map((c, i) => `📖 *ספר ${i + 1}: ${book(c.book).name}* (${c.ver === "g" ? "נכדה" : "נכד"})\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
-  return `📋 *סיכום הזמנה ${id}*\n👤 המזמין/ה: ${st.who}\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(n)}\n🚚 משלוח עד הבית ${ils(SHIP)}\n*סה"כ ${ils(t + SHIP)}*\n\n✓ ${CONSENT}`;
+  const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${book(c.book).name}* (${c.ver === "g" ? "נכדה" : "נכד"})\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
+  return `📋 *סיכום הזמנה ${id}*\n👤 המזמין/ה: ${st.who}\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(n)}\n🚚 משלוח עד הבית ${ils(SHIP)}\n*סה"כ ${ils(t + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
 async function step(env, from, st, ev, log){
   const S = m => wa(env, from, m, log);
   const c = st.cur;
   const id = ev.id || "", txt = (ev.text || "").trim();
-  if (id === "human") { st.human = Date.now(); await S(text("בשמחה 💛 שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
+  if (id === "human") { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log); }
   switch (st.step) {
     case "hi": if (id === "s:go") st.step = "book"; break;
@@ -119,7 +119,7 @@ async function step(env, from, st, ev, log){
       else if (id === "d:own") st.step = "dedown";
       else if (txt) { c.ded = txt.slice(0, 450); st.step = "pics"; }   /* כתבו הקדשה ישר במקום ללחוץ */
       break;
-    case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה 💛")); st.step = "pics"; } break;
+    case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "pics"; } break;
     case "pics": case "picsmore":
       if (ev.image) { if (c.pics.length < PICS) c.pics.push(ev.image); st.step = "picsmore";
         if (st.burst) return;                 /* כמה תמונות ברצף – עונים פעם אחת */
@@ -138,7 +138,7 @@ async function step(env, from, st, ev, log){
         st.done = oid; st.step = "done";
         const sum = summary(st, oid, false);
         for (let i = 0; i < sum.length; i += 3900) await S(text(sum.slice(i, i + 3900)));   /* הודעה בוואטסאפ – עד 4096 תווים */
-        await S(text("תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים 💛"));
+        await S(text("תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️"));
         if (env.STATE && !log) await env.STATE.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: oid, who: st.who, at: new Date().toISOString(), text: summary(st, oid, true), list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })) }), { expirationTtl: 90 * 86400 });
         return;
       }
