@@ -31,9 +31,31 @@ const book = id => BOOKS.find(b => b.id === id);
 const readLink = id => `${SITE}/kindergartens/?read=${id}`;
 const ils = n => n.toLocaleString("en-US") + " ₪";
 const tier = n => { let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return t; };
-const priceOf = n => tier(n)[2];                                              /* פרטי – כריכה קשה */
-const priceLine = n => { const p = priceOf(n), t = n * p, s = n * priceOf(1) - t; return `${n === 1 ? "ספר אחד" : n + " ספרים"}: ${n === 1 ? ils(p) : n + " × " + ils(p) + " = " + ils(t)}${s > 0 ? ` (חוסכים ${ils(s)})` : ""}`; };
-const COVERS = { staple: "💜 כריכה רכה סיכות", soft: "💛 כריכה רכה בהדבקה", hard: "💗 כריכה קשה" };
+const priceOf = (n, cov) => tier(n)[cov === "soft" ? 1 : 2];                 /* פרטי: קשה (ברירת מחדל) או רכה */
+/* מחיר הזמנה פרטית: כל ספר לפי הכריכה שלו, במדרגה של כמות הספרים הכוללת */
+const orderTotal = covs => covs.reduce((t, c) => t + priceOf(covs.length, c), 0);
+const orderSave = covs => covs.reduce((t, c) => t + priceOf(1, c), 0) - orderTotal(covs);
+const priceLine = covs => { const n = covs.length, t = orderTotal(covs), s = orderSave(covs); return `${n === 1 ? "ספר אחד" : n + " ספרים"}: ${ils(t)}${s > 0 ? ` (חוסכים ${ils(s)})` : ""}`; };
+const COVERS = { staple: "💜 כריכה רכה סיכות", soft: "💛 כריכה רכה", hard: "💗 כריכה קשה" };
+const COVER_INFO = { hard: "21×21 ס״מ, בסגנון אלבום, דפים כרומו 170 ג׳", soft: "20×20 ס״מ, כרוך בהדבקה, כריכה כרומו 300 ג׳, דפים כרומו 170 ג׳", staple: "20×20 ס״מ, בסגנון מגזין, כרוך בסיכות, כריכה ודפים כרומו 170 ג׳ מבריק" };
+/* עמוד הגנים – תשובות מוכנות עם קישור, וחוזרים לאותה שאלה */
+const PAGE = SITE + "/kindergartens/";
+const FAQ = {
+  photo: ["📸 איך בוחרים תמונה טובה", PAGE + "#photos", "📸 תמונה טובה"],
+  cover: ["📕 מה ההבדל בין הכריכות", PAGE + "#prices", "📕 ההבדל בין הכריכות"],
+  guide: ["🎬 מה חשוב לדעת (סרטון קצר של שמש)", PAGE + "#guide", "🎬 מה חשוב לדעת"],
+  price: ["💰 המחירים לפי כמות", PAGE + "#prices", "💰 מחירים"],
+  faq: ["❓ עוד שאלות ותשובות", PAGE + "#faq", "❓ עוד שאלות"]
+};
+const faqMsg = k => `${FAQ[k][0]} – לוחצים על הקישור, ובסוף חוזרים לכאן:\n${FAQ[k][1]}`;
+function faqOf(t){
+  if (/^(שאלות|שאלה|\?|❓)$/.test(t)) return "menu";
+  if (/תמונה טובה|איזו תמונה|איך לצלם|איך מצלמים|תמונה מתאימה/.test(t)) return "photo";
+  if (/כריכ/.test(t) && /הבדל|מה|איזו|איזה|\?/.test(t)) return "cover";
+  if (/מה (צריך|חשוב) לדעת|סרטון/.test(t)) return "guide";
+  if (/מחיר|כמה (זה )?עולה|עלות/.test(t)) return "price";
+  return "";
+}
 const ganP = (c, n) => c === "staple" ? (n >= STAPLE.from ? STAPLE.p : 0) : c === "soft" ? tier(n)[1] : tier(n)[2];
 
 /* ===== מילים לפי מי מזמין ===== */
@@ -62,7 +84,7 @@ const CONSENT_LINKS = "לקריאה (נפתח בדפדפן):\n📄 התקנון:
 const CONSENT = CONSENT_LINKS + "בלחיצה על הכפתור למטה אני מאשר/ת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ אני ההורה, או שקיבלתי אישור מההורים, לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
 const CONSENT_GAN = CONSENT_LINKS + "בלחיצה על הכפתור למטה אני מאשרת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ קיבלנו אישור מההורים של כל הילדים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
 const HUMAN_TXT = /בן אדם|בנאדם|נציג|אדם אמיתי|אדם אנושי/;
-const HI = "שלום ❤️ כאן סבאבוקלי מבוקלי!\nאני אעזור לכם להזמין ספר אישי שבו הילד/ה, הנכד/ה – או כל ילדי הגן – הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, בכריכה קשה עד הבית.\n\n👀 אדם אמיתי משגיח על כל התהליך.\n🙋 רוצים לדבר עם בן אדם? תמיד אפשר לחזור להודעה הזאת וללחוץ על הכפתור למטה – או פשוט לכתוב \"בן אדם\".";
+const HI = "שלום ❤️ כאן סבאבוקלי מבוקלי!\nאני אעזור לכם להזמין ספר אישי שבו הילד/ה, הנכד/ה – או כל ילדי הגן – הם הגיבורים – כתוב ע\"י שמש צור, מנוקד ובחרוזים, מודפס באיכות גבוהה ומגיע עד הבית.\n\n👀 אדם אמיתי משגיח על כל התהליך.\n🙋 רוצים לדבר עם בן אדם? תמיד אפשר לחזור להודעה הזאת וללחוץ על הכפתור למטה – או פשוט לכתוב \"בן אדם\".\n❓ יש שאלה? כתבו \"שאלות\" בכל שלב.";
 
 /* ===== שליחה לוואטסאפ ===== */
 const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם בן אדם" } };
@@ -91,7 +113,7 @@ function store(env, mem){
 }
 
 /* ===== המסלול ===== */
-const fresh = () => ({ book: "", ver: "", name: "", ded: "", dedI: 0, pics: [] });
+const fresh = () => ({ book: "", ver: "", name: "", ded: "", dedI: 0, cover: "", pics: [] });
 const newId = p => p + "-" + String(1000 + Math.floor(Math.random() * 9000));
 const bookRows = (page, prefix) => {
   const part = page ? BOOKS.slice(9) : BOOKS.slice(0, 9);
@@ -134,16 +156,22 @@ async function ask(env, to, st, log, db){
       return S(buttons(`הקדשה מכם ל${c.name} ❤️\n\n${c.ded}`, [["d:ok", "✅ מאשרים"], ["d:next", "✨ הקדשה אחרת"], ["d:own", "✍️ אכתוב בעצמי"]]));
     }
     case "dedown": return S(text("כתבו כאן את ההקדשה שלכם ❤️ (עד 300 תווים בערך)"));
-    case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\nתמונה ברורה, הפנים למצלמה.`));
+    case "cover": {
+      const covs = st.list.map(x => x.cover), m = covs.length + 1;
+      const pr = k => orderTotal(covs.concat(k)) - orderTotal(covs);           /* כמה הספר הזה מוסיף */
+      return S(buttons(`איזו כריכה ל"${book(c.book).name}"?\n\n💗 כריכה קשה – ${COVER_INFO.hard}\n💛 כריכה רכה – ${COVER_INFO.soft}\n\n${m === 1 ? "המחיר לספר אחד" : "המחיר לספר הזה (כשיש " + m + " ספרים בהזמנה)"}: קשה ${ils(priceOf(m, "hard"))} · רכה ${ils(priceOf(m, "soft"))}`,
+        [["cv:hard", `💗 קשה – ${ils(priceOf(m, "hard"))}`], ["cv:soft", `💛 רכה – ${ils(priceOf(m, "soft"))}`], ["q:cover", "❓ מה ההבדל?"]]));
+    }
+    case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\nתמונה ברורה, הפנים למצלמה.\n\n📸 איך בוחרים תמונה טובה: ${FAQ.photo[1]}`));
     case "picsmore": return S(buttons(`קיבלנו ${c.pics.length === 1 ? "תמונה אחת" : c.pics.length + " תמונות"} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"]]));
     case "who": return S(st.profile
       ? buttons(`לרשום את ההזמנה על השם "${st.profile}"?`, [["w:yes", "✅ כן"], ["w:other", "✍️ שם אחר"]])
       : text("ואיך קוראים לך? 🙂"));
     case "whoown": return S(text("איך לרשום את השם שלך? 🙂"));
     case "more": {
-      const m = n + 1;
-      let t = `כל הכבוד! 🎉 רוצים ספר גם לילד/ה נוסף/ת? (אח, אחות, בן דוד, חברה…)\n\n❤️ עכשיו – ${priceLine(m)}`;
-      if (m < MAX && priceOf(m + 1) < priceOf(m)) t += `\n➕ עם עוד ספר – ${priceLine(m + 1)}`;
+      const covs = st.list.map(x => x.cover).concat(c.cover || "hard"), m = covs.length;
+      let t = `כל הכבוד! 🎉 רוצים ספר גם לילד/ה נוסף/ת? (אח, אחות, בן דוד, חברה…)\n\n❤️ עכשיו – ${priceLine(covs)}`;
+      if (m < MAX && priceOf(m + 1, "hard") < priceOf(m, "hard")) t += `\n➕ עם עוד ספר – ${priceLine(covs.concat(c.cover || "hard"))}`;
       t += `\n🚚 + משלוח עד הבית ${ils(SHIP)}\n\nככל שמוסיפים ספרים – המחיר של כל ספר יורד.`;
       return S(buttons(t, m < MAX ? [["m:yes", "➕ כן, עוד ספר"], ["m:no", "✅ לא, זהו"]] : [["m:no", "✅ זהו"]]));
     }
@@ -160,13 +188,10 @@ async function ask(env, to, st, log, db){
       return S(buttons(`בחרתם: ${G.books.map(id => book(id).name).join(" + ")} ✓\nרוצים נושא נוסף לחלק מהילדים? (עד ${GANBOOKS} נושאים)`, bs));
     }
     case "g-cover": {
-      const lines = Object.keys(COVERS).map(k => `${COVERS[k]} – ${ganP(k, G.kids) ? ganP(k, G.kids) + " ₪ לספר" : "מ-20 ספרים"}`).join("\n");
-      const bs = (G.kids >= STAPLE.from ? [["c:staple", "💜 רכה סיכות"]] : []).concat([["c:soft", "💛 רכה בהדבקה"], ["c:hard", "💗 כריכה קשה"]]);
-      return S(buttons(`איזו כריכה? המחיר ל-${G.kids} ספרים:\n\n${lines}`, bs));
-    }
-    case "g-price": {
-      const p = ganP(G.cover, G.kids), single = G.cover === "hard" ? 149 : 132, save = Math.round((1 - p / single) * 100);
-      return S(buttons(`👧👦 ${G.kids} ילדים = ${G.kids} ספרים\n📕 ${COVERS[G.cover]} – ${p} ₪ לספר\n💰 ${ils(G.kids * p)}\n🚚 + משלוח ${ils(SHIP)}${save >= 5 ? `\n🎉 חיסכון של ${save}% לעומת ספר בודד` : ""}`, [["g:go", "✅ ממשיכים"], ["human", "🙋 שאלה לשמש"]]));
+      const ks = ["hard", "soft"].concat(G.kids >= STAPLE.from ? ["staple"] : []);
+      const lines = ks.map(k => `${COVERS[k]} – ${COVER_INFO[k]}`).join("\n");
+      return S(buttons(`איזו כריכה לספרים של הגן?\n\n${lines}${G.kids < STAPLE.from ? "\n(כריכה רכה סיכות – מ-20 ספרים)" : ""}\n\n💰 המחירים לפי כמות – בעמוד הגנים, ובסוף חוזרים לכאן:\n${FAQ.price[1]}`,
+        ks.map(k => ["c:" + k, { hard: "💗 כריכה קשה", soft: "💛 כריכה רכה", staple: "💜 רכה סיכות" }[k]])));
     }
     case "g-ded": {
       if (!G.ded) G.ded = ganDed(st)[0];
@@ -175,8 +200,9 @@ async function ask(env, to, st, log, db){
     case "g-dedown": return S(text("כתבו כאן את ההקדשה של הגן ❤️ (עד 350 תווים בערך)\nרוצים אחת לבנים ואחת לבנות? כתבו את שתיהן, אחת אחרי השנייה."));
     case "g-pics": {
       const R = rounds(G), [b, sub] = R[G.r || 0], two = G.books.length > 1, boys = sub === "בנים";
+      const tip = G.r ? "" : `\n\n📸 איך בוחרים תמונה טובה: ${FAQ.photo[1]}`;
       const order = two && !G.r ? `נעבור לפי הסדר:\n${R.map((x, i) => `${i + 1}. ${book(x[0]).name} – ${x[1]}`).join("\n")}\n\n` : "";
-      return S(text(`${G.r ? "" : "עכשיו התמונות 📷\n"}${order}${two ? `*${book(b).name}* – ` : ""}${boys ? "*הבנים*: מעבירים לכאן תמונה של כל ילד" : "*הבנות*: מעבירים לכאן תמונה של כל ילדה"}${two ? ` שמקבל${boys ? "" : "ת"} את הספר הזה` : ""}, ובכיתוב של התמונה – *${boys ? "השם שלו" : "השם שלה"}*.${G.r ? "" : "\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."}`));
+      return S(text(`${G.r ? "" : "עכשיו התמונות 📷\n"}${order}${two ? `*${book(b).name}* – ` : ""}${boys ? "*הבנים*: מעבירים לכאן תמונה של כל ילד" : "*הבנות*: מעבירים לכאן תמונה של כל ילדה"}${two ? ` שמקבל${boys ? "" : "ת"} את הספר הזה` : ""}, ובכיתוב של התמונה – *${boys ? "השם שלו" : "השם שלה"}*.${G.r ? "" : "\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."}${tip}`));
     }
     case "g-picsmore": {
       const P = await ganPics(db, st), [b, sub] = rounds(G)[G.r || 0], cur = P.by[b + "|" + sub] || { names: [], nameless: 0 }, nl = cur.nameless;
@@ -196,15 +222,15 @@ async function ask(env, to, st, log, db){
 }
 
 function summary(st, links){
-  const n = st.list.length, t = n * priceOf(n);
-  const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${book(c.book).name}* (${kidW(st, c)})\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
-  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(n)}\n🚚 משלוח עד הבית ${ils(SHIP)}\n*סה"כ ${ils(t + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
+  const covs = st.list.map(c => c.cover), n = covs.length, t = orderTotal(covs);
+  const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${book(c.book).name}* (${kidW(st, c)})\n📕 ${COVERS[c.cover || "hard"]}\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
+  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n🚚 משלוח עד הבית ${ils(SHIP)}\n*סה"כ ${ils(t + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
-async function ganSummary(st, db){
+async function ganSummary(st, db, owner){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
   const nb = realNames(P.b), ng = realNames(P.g);
   const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n");
-  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}\n\n💰 ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}\n🚚 משלוח ${ils(SHIP)}\n*סה"כ ${ils(G.kids * p + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
+  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)} + משלוח ${ils(SHIP)} = ${ils(G.kids * p + SHIP)}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
 async function step(env, from, st, ev, log, db){
@@ -213,6 +239,15 @@ async function step(env, from, st, ev, log, db){
   const id = ev.id || "", txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
   if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
+  /* שאלות: "שאלות" = תפריט; מילות שאלה בטקסט חופשי = תשובה עם קישור; ואז חוזרים לאותה שאלה */
+  const free = !["dedown", "g-dedown", "name", "g-name", "g-teacher", "whoown"].includes(st.step);
+  const fq = id.startsWith("q:") ? id.slice(2) : (!id && txt && free ? faqOf(txt) : "");
+  if (fq === "menu") { await S(list("❓ במה אפשר לעזור?\nבוחרים נושא – ומקבלים הסבר קצר עם קישור.", "בוחרים שאלה", Object.keys(FAQ).filter(k => !(k === "price" && st.mode !== "gan")).map(k => ({ id: "q:" + k, title: FAQ[k][2], description: FAQ[k][0].replace(/^\S+ /, "").slice(0, 72) })), "שאלות")); return; }
+  if (fq && FAQ[fq]) {
+    if (fq === "price" && st.mode !== "gan") { const covs = st.list.map(x => x.cover).concat(c.cover || "hard"); await S(text(`💰 המחיר יורד ככל שמזמינים יותר ספרים:\nספר אחד – קשה ${ils(priceOf(1, "hard"))} · רכה ${ils(priceOf(1, "soft"))}\n2 ספרים – קשה ${ils(priceOf(2, "hard"))} · רכה ${ils(priceOf(2, "soft"))} לספר\n3 ספרים – קשה ${ils(priceOf(3, "hard"))} · רכה ${ils(priceOf(3, "soft"))} לספר\n🚚 + משלוח עד הבית ${ils(SHIP)}`)); }
+    else await S(text(faqMsg(fq)));
+    return st.step === "hi" ? undefined : ask(env, from, st, log, db);
+  }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log, db); }
   switch (st.step) {
     case "hi":
@@ -228,12 +263,13 @@ async function step(env, from, st, ev, log, db){
       break;
     case "name": if (txt && !id) { c.name = txt.slice(0, 30); st.step = "ded"; } break;
     case "ded":
-      if (id === "d:ok") st.step = "pics";
+      if (id === "d:ok") st.step = "cover";
       else if (id === "d:next") { const L = dedIdeas(c.ver === "g", st); c.dedI = (c.dedI + 1) % L.length; c.ded = L[c.dedI]; }
       else if (id === "d:own") st.step = "dedown";
-      else if (txt && !id) { c.ded = txt.slice(0, 450); st.step = "pics"; }
+      else if (txt && !id) { c.ded = txt.slice(0, 450); st.step = "cover"; }
       break;
-    case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "pics"; } break;
+    case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "cover"; } break;
+    case "cover": if (id === "cv:hard" || id === "cv:soft") { c.cover = id.slice(3); st.step = "pics"; } break;
     case "pics": case "picsmore":
       if (ev.image) { if (c.pics.length < PICS) c.pics.push(await savePic(env, st, c.ver === "g" ? "בנות" : "בנים", c.name, ev.image, from, db)); st.step = "picsmore";
         if (st.burst) return; st.burst = 1; }
@@ -246,7 +282,7 @@ async function step(env, from, st, ev, log, db){
       else if (id === "m:no") { st.list.push(c); st.cur = fresh(); st.step = "consent"; }
       break;
     case "consent":
-      if (id === "c:yes") return finish(env, from, st, log, db, summary(st, false), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️", CONSENT);
+      if (id === "c:yes") return finish(env, from, st, log, db, summary(st, false), summary(st, false), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️", CONSENT);
       break;
 
     /* ---- גן ---- */
@@ -259,8 +295,7 @@ async function step(env, from, st, ev, log, db){
       else if (id === "g:more") { st.page = 0; st.step = "g-book"; }
       else if (id === "g:read") { for (const b of G.books.filter(b => book(b).img)) await S(text(`📖 לקריאת "${book(b).name}" – לוחצים על הקישור, ובסוף חוזרים לכאן:\n${readLink(b)}`)); }
       break;
-    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-price"; } break;
-    case "g-price": if (id === "g:go") st.step = "g-ded"; break;
+    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-ded"; } break;
     case "g-ded":
       if (id === "gd:ok") { G.r = 0; st.step = "g-pics"; }
       else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; G.ded = L[G.dedI]; }
@@ -292,21 +327,21 @@ async function step(env, from, st, ev, log, db){
       else if (id === "g:morepics") { G.r = 0; st.step = "g-pics"; }
       break;
     case "g-consent":
-      if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספרים הדיגיטליים ותשלח לך כאן לתצוגה ולאישור לפני ההדפסה ❤️", CONSENT_GAN);
+      if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), await ganSummary(st, db, true), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספרים הדיגיטליים ותשלח לך כאן לתצוגה ולאישור לפני ההדפסה ❤️", CONSENT_GAN);
       break;
   }
   return ask(env, from, st, log, db);
 }
 
 /* סוף הזמנה: סיכום ללקוח (בלי קישורים), תודה, דרייב (מסמך + מייל לשמש), שמירה ב-KV */
-async function finish(env, from, st, log, db, sum, thanks, consentText){
+async function finish(env, from, st, log, db, sum, ownerSum, thanks, consentText){
   const S = m => wa(env, from, m, log);
   st.done = st.oid; st.step = "done"; const consentAt = new Date().toISOString();
   await sendLong(S, sum);
   await S(text(thanks));
-  const drive = await driveOrder(env, st, from, consentAt, sum, consentText, db);
-  await db.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: st.oid, mode: st.mode || "private", role: st.role || "", who: st.who, at: consentAt, consentAt, consentText, drive, text: sum,
-    list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })), gan: st.mode === "gan" ? st.g : null }), 90 * 86400);
+  const drive = await driveOrder(env, st, from, consentAt, ownerSum, consentText, db);
+  await db.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: st.oid, mode: st.mode || "private", role: st.role || "", who: st.who, at: consentAt, consentAt, consentText, drive, text: ownerSum,
+    list: st.list.map(c => ({ book: c.book, ver: c.ver, cover: c.cover, name: c.name, ded: c.ded, pics: c.pics })), gan: st.mode === "gan" ? st.g : null }), 90 * 86400);
 }
 
 /* ===== דרייב ===== */
