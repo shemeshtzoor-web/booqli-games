@@ -72,7 +72,7 @@ async function mediaId(env, db, key, link, filename){
 }
 async function readBook(S, bid, v, env, db, log){
   if (!(PAGES[bid] || {})[v]) return;
-  const name = `${book(bid).name} – ${v === "g" ? "גרסת בת" : "גרסת בן"}`, link = `${SITE}/order/books/pdf/${bid}-${v}.pdf`;
+  const name = `${bname(bid, v)} – ${v === "g" ? "גרסת בת" : "גרסת בן"}`, link = `${SITE}/order/books/pdf/${bid}-${v}.pdf`;
   const filename = name.replace(/\//g, "-").replace(/[\\:*?"<>|]/g, "") + ".pdf";
   const mid = log ? "" : await mediaId(env, db, bid + "-" + v, link, filename);
   await S({ type: "document", document: Object.assign(mid ? { id: mid } : { link }, { filename, caption: `📖 ספר לדוגמה: "${name}"\nלוחצים על הקובץ כדי לקרוא – ובינתיים ממשיכים כאן 👇` }) });
@@ -207,10 +207,16 @@ function store(env, mem){
 /* ===== המסלול ===== */
 const fresh = () => ({ book: "", ver: "", name: "", ded: "", dedI: 0, cover: "", pics: [] });
 const newId = p => p + "-" + String(1000 + Math.floor(Math.random() * 9000));
-const bookRows = (page, prefix) => {
-  const part = page ? BOOKS.slice(9) : BOOKS.slice(0, 9);
-  const rows = part.map(b => ({ id: prefix + b.id, title: b.name.slice(0, 24) }));
-  rows.push(page ? { id: "page:0", title: "⬅️ לספרים הקודמים" } : { id: "page:1", title: "➡️ עוד ספרים" });
+/* שם הספר לפי מין: "הולך/ת לגן" ← "הולכת לגן" (בת) / "הולך לגן" (בן). בלי מין – כמו שהוא */
+const FIN = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+const gname = (name, v) => !v ? name : name.replace(/(\S+)\/(\S+)/g, (m, a, b) => v === "g" ? a.replace(/[ךםןףץ]$/, x => FIN[x]) + b : a);
+const bname = (id, v) => gname(book(id).name, v);
+/* רשימת הספרים; כשיודעים בן/בת – רק ספרים שיש להם הגרסה הזאת, ובשמות לפי המין */
+const bookRows = (page, prefix, v) => {
+  const all = BOOKS.filter(b => !(v && PAGES[b.id] && !PAGES[b.id][v]));
+  const part = page ? all.slice(9) : all.slice(0, 9);
+  const rows = part.map(b => ({ id: prefix + b.id, title: gname(b.name, v).slice(0, 24) }));
+  if (all.length > 9) rows.push(page ? { id: "page:0", title: "⬅️ לספרים הקודמים" } : { id: "page:1", title: "➡️ עוד ספרים" });
   return rows;
 };
 async function ganPics(db, st){                               /* תמונות הגן – כל תמונה במפתח משלה (כמה תמונות באותו רגע) */
@@ -234,9 +240,10 @@ async function ask(env, to, st, log, db){
   const S = m => wa(env, to, withRestart(m, st.step), log);
   switch (st.step) {
     case "hi": return S(buttons(HI, [["s:go", "❤️ ספר לילד או לנכד"], ["s:gan", "🏫 הזמנה לגן"], HUMAN]));
-    case "for": return S(buttons("למי הספר? ❤️", [["f:g", "👵 לנכד/ה שלי"], ["f:p", "👩 לילד/ה שלי"]]));
+    case "for": return S(list(`${n ? "ולמי הספר הבא? ❤️" : "למי הספר? ❤️"}\nלוחצים על "בוחרים" ובוחרים.`, "בוחרים", [
+      { id: "f:g:b", title: "👦 לנכד שלי" }, { id: "f:g:g", title: "👧 לנכדה שלי" }, { id: "f:p:b", title: "👦 לבן שלי" }, { id: "f:p:g", title: "👧 לבת שלי" }], "למי הספר"));
     case "book": if (!st.intro) { st.intro = 1; await S(text(BOOKS_INTRO)); }
-      return S(list(`${n ? "איזה ספר לילד/ה הבא/ה?" : "איזה ספר תרצו?"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "b:"), st.page ? "עוד ספרים" : "הספרים"));
+      return S(list(`${c.ver ? `איזה ספר ל${kidW(st, c)}?` : n ? "איזה ספר לילד/ה הבא/ה?" : "איזה ספר תרצו?"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "b:", c.ver), st.page ? "עוד ספרים" : "הספרים"));
     case "ver": {
       const b = book(c.book);
       if (b.img && !PAGES[b.id] && !st.reread) await S(image(b.img, b.name));   /* לספר בלי דוגמה – תמונת כריכה */
@@ -252,7 +259,7 @@ async function ask(env, to, st, log, db){
     case "cover": {
       const covs = st.list.map(x => x.cover), m = covs.length + 1;
       const pr = k => orderTotal(covs.concat(k)) - orderTotal(covs);           /* כמה הספר הזה מוסיף */
-      return S(buttons(`איזו כריכה ל"${book(c.book).name}"?\n\n${COVERS.hard} – ${COVER_INFO.hard}\n${COVERS.soft} – ${COVER_INFO.soft}\n\n🎬 סרטון של הכריכות: ${VIDEO_COVERS}\n\n${m === 1 ? "המחיר לספר אחד" : "המחיר לספר הזה (כשיש " + m + " ספרים בהזמנה)"}: קשה ${ils(priceOf(m, "hard"))} · רכה ${ils(priceOf(m, "soft"))}`,
+      return S(buttons(`איזו כריכה ל"${bname(c.book, c.ver)}"?\n\n${COVERS.hard} – ${COVER_INFO.hard}\n${COVERS.soft} – ${COVER_INFO.soft}\n\n🎬 סרטון של הכריכות: ${VIDEO_COVERS}\n\n${m === 1 ? "המחיר לספר אחד" : "המחיר לספר הזה (כשיש " + m + " ספרים בהזמנה)"}: קשה ${ils(priceOf(m, "hard"))} · רכה ${ils(priceOf(m, "soft"))}`,
         [["cv:hard", `💗 קשה – ${ils(priceOf(m, "hard"))}`], ["cv:soft", `💛 רכה – ${ils(priceOf(m, "soft"))}`], ["q:cover", "❓ מה ההבדל?"]]));
     }
     case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\n\n${PHOTO_TIPS}\n\n🎬 סרטון קצר – איך בוחרים תמונה טובה: ${VIDEO_PHOTO}`));
@@ -322,7 +329,7 @@ async function ask(env, to, st, log, db){
 
 function summary(st, links){
   const covs = st.list.map(c => c.cover), n = covs.length, t = orderTotal(covs);
-  const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${book(c.book).name}* (${kidW(st, c)})\n📕 ${COVERS[c.cover || "hard"]}\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
+  const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${bname(c.book, c.ver)}* (${kidW(st, c)})\n📕 ${COVERS[c.cover || "hard"]}\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
   return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n${shipLine(st) || "🚚 משלוח עד הבית " + ils(SHIP)}\n*סה"כ ${ils(t + shipCost(st))}*${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 async function ganSummary(st, db, owner){
@@ -335,6 +342,10 @@ async function ganSummary(st, db, owner){
 async function step(env, from, st, ev, log, db){
   const S = m => wa(env, from, m, log);
   const RB = (bid, v) => readBook(S, bid, v, env, db, log);
+  const sample = async () => {                                     /* ספר לדוגמה אוטומטי, בגרסה שבחרו (אם יש) */
+    const P = PAGES[st.cur.book] || {}, vv = P[st.cur.ver] ? st.cur.ver : Object.keys(P)[0];
+    if (vv) await RB(st.cur.book, vv);
+  };
   const c = st.cur, G = st.g;
   const id = ev.id || "", txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
@@ -380,18 +391,28 @@ async function step(env, from, st, ev, log, db){
       if (id === "s:go") st.step = "for";
       else if (id === "s:gan") { st.mode = "gan"; st.oid = newId("גן"); st.step = "g-name"; }
       break;
-    case "for": if (id === "f:g" || id === "f:p") { st.role = id.slice(2); if (st.role === "p") st.oid = st.oid.replace(/^סב-/, "הו-"); st.page = 0; st.step = "book"; } break;
-    case "book": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); c.ded = ""; st.step = "ver"; } break;
+    case "for": {
+      const m = id.match(/^f:(g|p)(?::(b|g))?$/);
+      if (m) {
+        if (!st.list.length) { st.role = m[1]; if (st.role === "p") st.oid = st.oid.replace(/^סב-/, "הו-"); }
+        c.ver = m[2] || ""; st.page = 0; st.step = "book";
+      }
+      break;
+    }
+    case "book": if (id.startsWith("b:") && book(id.slice(2))) {
+        c.book = id.slice(2); c.ded = "";
+        if (c.ver) { st.step = "name"; await sample(); } else st.step = "ver";   /* כבר יודעים בן/בת – לא שואלים שוב */
+      }
+      break;
     case "ver":
       if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); break; }        /* בחרו ספר אחר מהרשימה */
       if (id === "r:read" && PAGES[c.book]) return readAsk(S, c.book, RB);
       if (id === "v:b" || id === "v:g") {
         c.ver = id.slice(2); c.ded = ""; st.step = "name";
-        const P = PAGES[c.book] || {}, vv = P[c.ver] ? c.ver : Object.keys(P)[0];   /* ספר לדוגמה אוטומטי, בגרסה שבחרו (אם יש) */
-        if (vv) await RB(c.book, vv);
+        await sample();
       }
       break;
-    case "name": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); c.ver = ""; st.step = "ver"; break; }   /* לחצו על ספר אחר מהרשימה */
+    case "name": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); if (c.ver) await sample(); else st.step = "ver"; break; }   /* לחצו על ספר אחר מהרשימה */
       if (id === "nm:first" && st.nameTry) { c.name = st.nameTry.split(" ")[0]; st.nameTry = ""; st.step = "ded"; break; }
       if (id === "nm:all" && st.nameTry) { c.name = st.nameTry; st.nameTry = ""; st.step = "ded"; break; }
       if (id === "nm:again") { st.nameTry = ""; break; }
@@ -425,7 +446,7 @@ async function step(env, from, st, ev, log, db){
     case "who": if (id === "w:yes") { st.who = st.profile; st.step = "more"; } else if (id === "w:other") st.step = "whoown"; else if (txt && !id) { st.who = txt.slice(0, 40); st.step = "more"; } break;
     case "whoown": if (txt) { st.who = txt.slice(0, 40); st.step = "more"; } break;
     case "more":
-      if (id === "m:yes") { st.list.push(c); st.cur = fresh(); st.page = 0; st.step = "book"; }
+      if (id === "m:yes") { st.list.push(c); st.cur = fresh(); st.page = 0; st.step = "for"; }
       else if (id === "m:no") { st.list.push(c); st.cur = fresh(); st.step = "ship"; }
       break;
     case "ship":
