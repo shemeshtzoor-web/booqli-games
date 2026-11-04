@@ -400,7 +400,7 @@ function stepHTML(){
     <button type="button" class="btn btn-wa go" id="wSend">💬 שולחים לנו בוואטסאפ</button>
     <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
     <p class="st" id="wSt"></p>
-    <p class="fine">בשליחה אני מאשר/ת שקיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI כדי ליצור ממנה איורים לספר, ושקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת אצלנו כ-3 חודשים אחרי ההזמנה.</p></div>`; }
+    <p class="fine">בשליחה אני מאשר/ת שקיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה שאשלח כאן או בוואטסאפ, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר, ושקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת אצלנו כ-3 חודשים אחרי ההזמנה.</p></div>`; }
   return "";
 }
 const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
@@ -443,7 +443,7 @@ async function send(){
     $("wSt").textContent = `⏳ שולחים את התמונה ${ORD.list.length > 1 ? (i + 1) + " מתוך " + ORD.list.length : ""}…`;
     try { it.link = await up(it.blob); } catch (e) { links = false; break; } }
   const lines = ORD.list.map((it, i) => `📖 *ספר ${i + 1}: ${book(it.book).name}* (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: *${it.name}*\n✍️ הקדשה: ${it.ded}\n📷 ${it.link || "התמונה – שולחים מיד אחרי ההודעה"}`);
-  const msg = `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${ORD.who}\n\n${lines.join("\n\n")}\n\n✓ קיבלתי אישור מההורים לשלוח את התמונה ל-BOOQLI ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\n(" + SRC + ")" : ""}`;
+  const msg = `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${ORD.who}\n\n${lines.join("\n\n")}\n\n✓ קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה שאשלח כאן או בוואטסאפ, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\n(" + SRC + ")" : ""}`;
   ev("savta-send", ORD.list.length + (links ? "-links" : "-nolinks"));
   $("wSt").innerHTML = links ? "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה" : "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה, ואחר כך חוזרים לכאן לשלוח את התמונות";
   if (!links) { b.insertAdjacentHTML("afterend", `<button type="button" class="btn btn-main go" id="wPics">📷 עכשיו שולחים את התמונות</button>`); $("wPics").onclick = sharePics; }
