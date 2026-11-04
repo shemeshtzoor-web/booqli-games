@@ -1,5 +1,5 @@
 {
- "version": "2026-11-03 21:12",
+ "version": "2026-11-04 08:13",
  "groups": [
   {
    "id": "game-maker",
@@ -11,6 +11,12 @@
    "name": "💛 סבים – ספר אישי לנכדים",
    "note": "9 סרטונים 4:5 עם מוזיקה מקורית. כל סרטון מוביל לעמוד הסבים עם הספר שלו כבר בטופס (?book=), ונמדד בנפרד (utm_content).",
    "link": "https://games.booqli.ai/savta/"
+  },
+  {
+   "id": "road-safety",
+   "name": "🚦 זהירות בדרכים",
+   "note": "סרטון 29 שנ' עם מוזיקה מקורית: הסיפור, משחק הרמזור, סדר החצייה, בטוח או מסוכן, קסדה, המערכים והדפים. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי, ותמונה 1:1.",
+   "link": "https://games.booqli.ai/topics/road-safety/"
   }
  ],
  "items": [
@@ -157,6 +163,47 @@
    "date": "2026-11-03",
    "text": "ערב טוב גננות 🌙 יש לכם משהו מקורי למחר? 🤩\n🎙️ ממציאים משחק עם כל הגן: כל ילד אומר מילה, וסבאבוקלי בונה מזה משחק אמיתי – 🏃 מרוץ · 🧺 תופסים · 🐍 נחש · 🎰 לוטו.\n📲 ובסוף שולחים להורים, והילדים ממשיכים לשחק בבית!\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/game-maker/?utm_source=facebook_group&utm_medium=post&utm_campaign=game-maker",
    "bytes": 2196564
+  },
+  {
+   "id": "road-safety-4x5",
+   "group": "road-safety",
+   "topic": "road-safety",
+   "title": "זהירות בדרכים – 4:5",
+   "kind": "video",
+   "ratio": "4:5",
+   "file": "road-safety/booqli-road-safety-4x5.mp4",
+   "thumb": "road-safety/booqli-road-safety-4x5.jpg",
+   "date": "2026-11-04",
+   "text": "🚦 זהירות בדרכים – לגן ולכיתות א'–ג'!\nשׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך.\n📖 סיפור מאויר עם הקראה · 🎮 5 משחקים · 👩‍🏫 מערך לגננת · 🎒 שיעור למורה · 🖨️ 4 דפים להדפסה\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/road-safety/?utm_source=facebook_group&utm_medium=post&utm_campaign=road-safety",
+   "slot": "road-safety:video",
+   "bytes": 1631624
+  },
+  {
+   "id": "road-safety-9x16",
+   "group": "road-safety",
+   "topic": "road-safety",
+   "title": "זהירות בדרכים – 9:16 (סטורי)",
+   "kind": "video",
+   "ratio": "9:16",
+   "file": "road-safety/booqli-road-safety-9x16.mp4",
+   "thumb": "road-safety/booqli-road-safety-9x16.jpg",
+   "date": "2026-11-04",
+   "text": "🚦 זהירות בדרכים – לגן ולכיתות א'–ג'!\nשׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך.\n📖 סיפור מאויר עם הקראה · 🎮 5 משחקים · 👩‍🏫 מערך לגננת · 🎒 שיעור למורה · 🖨️ 4 דפים להדפסה\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/road-safety/?utm_source=facebook_group&utm_medium=post&utm_campaign=road-safety",
+   "bytes": 2123284
+  },
+  {
+   "id": "road-safety-1x1",
+   "group": "road-safety",
+   "topic": "road-safety",
+   "title": "זהירות בדרכים – תמונה 1:1",
+   "kind": "image",
+   "ratio": "1:1",
+   "file": "road-safety/booqli-road-safety-1x1.jpg",
+   "thumb": "road-safety/booqli-road-safety-1x1.jpg",
+   "date": "2026-11-04",
+   "text": "🚦 זהירות בדרכים – לגן ולכיתות א'–ג'!\nשׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך.\n📖 סיפור מאויר עם הקראה · 🎮 5 משחקים · 👩‍🏫 מערך לגננת · 🎒 שיעור למורה · 🖨️ 4 דפים להדפסה\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/road-safety/?utm_source=facebook_group&utm_medium=post&utm_campaign=road-safety",
+   "slot": "road-safety:image",
+   "bytes": 160564
   }
  ]
 }

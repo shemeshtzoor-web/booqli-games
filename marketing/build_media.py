@@ -11,6 +11,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.join(HERE, "media
 GROUPS = [
   {"id":"game-maker","name":"🎙️ ממציאים משחק עם כל הגן","note":"סרטון 20 שנ' עם מוזיקה מקורית: בוחרים נושא → כל ילד אומר מילה → סבאבוקלי מגריל משחק → המרוץ. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי."},
   {"id":"savta","name":"💛 סבים – ספר אישי לנכדים","note":"9 סרטונים 4:5 עם מוזיקה מקורית. כל סרטון מוביל לעמוד הסבים עם הספר שלו כבר בטופס (?book=), ונמדד בנפרד (utm_content).","link":"https://games.booqli.ai/savta/"},
+  {"id":"road-safety","name":"🚦 זהירות בדרכים","note":"סרטון 29 שנ' עם מוזיקה מקורית: הסיפור, משחק הרמזור, סדר החצייה, בטוח או מסוכן, קסדה, המערכים והדפים. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי, ותמונה 1:1.","link":"https://games.booqli.ai/topics/road-safety/"},
 ]
 BOOKS = [("first","הספר הראשון שלי","הנכדים","הם הגיבורים"),("birthday","ילד/ת יום הולדת","הנכדה","היא הגיבורה"),("kinder","הולך/ת לגן","הנכדים","הם הגיבורים"),
          ("druki","דרוקי הדרקון","הנכד","הוא הגיבור"),("hugs","חיבוקים","הנכדים","הם הגיבורים"),("superhero","גיבור/ת על","הנכד","הוא הגיבור"),
@@ -41,6 +42,12 @@ GM_TEXT = ("ערב טוב גננות 🌙 יש לכם משהו מקורי למח
            "📲 ובסוף שולחים להורים, והילדים ממשיכים לשחק בבית!\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/game-maker/?utm_source=facebook_group&utm_medium=post&utm_campaign=game-maker")
 ITEMS += [{"id":"game-maker-4x5","group":"game-maker","topic":"game-maker","title":"ממציאים משחק – 4:5","kind":"video","ratio":"4:5","file":"game-maker/booqli-game-maker-4x5.mp4","thumb":"game-maker/booqli-game-maker-4x5.jpg","date":"2026-11-03","text":GM_TEXT,"slot":"game-maker:video"},
           {"id":"game-maker-9x16","group":"game-maker","topic":"game-maker","title":"ממציאים משחק – 9:16 (סטורי)","kind":"video","ratio":"9:16","file":"game-maker/booqli-game-maker-9x16.mp4","thumb":"game-maker/booqli-game-maker-9x16.jpg","date":"2026-11-03","text":GM_TEXT}]
+
+RS_TEXT = ("🚦 זהירות בדרכים – לגן ולכיתות א'–ג'!\nשׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך.\n"
+           "📖 סיפור מאויר עם הקראה · 🎮 5 משחקים · 👩‍🏫 מערך לגננת · 🎒 שיעור למורה · 🖨️ 4 דפים להדפסה\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/road-safety/?utm_source=facebook_group&utm_medium=post&utm_campaign=road-safety")
+ITEMS += [{"id":"road-safety-4x5","group":"road-safety","topic":"road-safety","title":"זהירות בדרכים – 4:5","kind":"video","ratio":"4:5","file":"road-safety/booqli-road-safety-4x5.mp4","thumb":"road-safety/booqli-road-safety-4x5.jpg","date":"2026-11-04","text":RS_TEXT,"slot":"road-safety:video"},
+          {"id":"road-safety-9x16","group":"road-safety","topic":"road-safety","title":"זהירות בדרכים – 9:16 (סטורי)","kind":"video","ratio":"9:16","file":"road-safety/booqli-road-safety-9x16.mp4","thumb":"road-safety/booqli-road-safety-9x16.jpg","date":"2026-11-04","text":RS_TEXT},
+          {"id":"road-safety-1x1","group":"road-safety","topic":"road-safety","title":"זהירות בדרכים – תמונה 1:1","kind":"image","ratio":"1:1","file":"road-safety/booqli-road-safety-1x1.jpg","thumb":"road-safety/booqli-road-safety-1x1.jpg","date":"2026-11-04","text":RS_TEXT,"slot":"road-safety:image"}]
 for it in ITEMS:
     p = os.path.join(M, it["file"]); assert os.path.exists(p), p
     it["bytes"] = os.path.getsize(p)

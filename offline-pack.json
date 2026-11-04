@@ -1,6 +1,6 @@
 {
- "version": "302e30ec9d94",
- "bytes": 16907955,
+ "version": "2b587414e3c5",
+ "bytes": 17035590,
  "fonts": [
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap",
@@ -138,6 +138,7 @@
   "/img/family/hesh.webp",
   "/img/family/lev.webp",
   "/img/family/ona.webp",
+  "/img/family/saba.svg",
   "/img/family/shomer.webp",
   "/img/logo-dark.png",
   "/img/logo.png",
@@ -174,6 +175,8 @@
   "/topics/pesach/img/matza-real.webp",
   "/topics/purim/",
   "/topics/purim/art.js",
+  "/topics/road-safety/",
+  "/topics/road-safety/art.js",
   "/topics/safety/",
   "/topics/safety/img/kids.webp",
   "/topics/safety/img/og.jpg",

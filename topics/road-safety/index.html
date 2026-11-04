@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>זהירות בדרכים לגן ולכיתות א'–ג': מערכים, משחקים ודפי עבודה · booqli Games</title>
+<meta name="description" content="זהירות בדרכים עם שׁוֹמֶרְבּוּקְלִי ומשפחת BOOQLI: סיפור מאויר עם הקראה, משחק הרמזור, סדר החצייה, בטוח או מסוכן, קסדה ואופניים, חידון, מערך לגננת, מערך למורה ו-4 דפים להדפסה. בחינם, בחסות BOOQLI.">
+<link rel="canonical" href="https://games.booqli.ai/topics/road-safety/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="booqli Games">
+<meta property="og:title" content="🚦 זהירות בדרכים: מערכים, משחקים ודפי עבודה לגן ולכיתות א'–ג'">
+<meta property="og:description" content="סיפור מאויר, משחק הרמזור, סדר החצייה, בטוח או מסוכן, קסדה ואופניים, חידון, מערכים לגננת ולמורה ו-4 דפים להדפסה. בחינם.">
+<meta property="og:url" content="https://games.booqli.ai/topics/road-safety/">
+<meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== צבעי המותג של BOOQLI ===== */
+:root{
+  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
+  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --ok:#22A55B; --bad:#E5484D; --blue:#3AA7F0; --blue-soft:#DCEBFF;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
+  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
+    linear-gradient(#F4FAF7, var(--mint));
+  background-color:var(--mint);min-height:100vh}
+a{color:inherit}
+h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+
+header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:nowrap}
+.logo{height:44px;width:auto;max-width:none;display:block;flex-shrink:0}
+.brand>a:first-child{flex-shrink:0;display:block}
+.gan{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:15px;min-width:0}
+.gan .pill{background:var(--pink);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:8px 14px;white-space:nowrap;font-size:14px;display:inline-flex;gap:6px;align-items:center;border:0;cursor:pointer}
+@media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex:0 0 100%;font-size:14px;padding-top:4px}.btn-wa{margin-inline-start:auto}}
+.sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
+
+.btn-main{background:var(--pink-btn);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 var(--pink-shadow);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-main:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-shadow)}
+.btn-sec{background:#fff;color:var(--sage-deep);border:2px solid var(--sage-deep);border-radius:999px;padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-wa-big{background:var(--wa);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 3px 0 #13773A}
+.row-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
+
+/* ===== פתיח ===== */
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--pink),var(--blue),var(--sage))}
+.hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.hero small{font-weight:800;color:var(--magenta)}
+.hero h1{font-size:clamp(34px,7vw,56px);line-height:1.05;margin-top:4px;color:var(--magenta)}
+.hero h1 span{color:var(--sage-deep)}
+.hero p{font-size:18px;max-width:640px;margin:10px 0 0}
+.nums{display:grid;grid-template-columns:repeat(4,58px);gap:8px;justify-content:center}
+.nums b{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-family:Fredoka,sans-serif;font-size:30px;color:#fff;animation:bob 2.4s ease-in-out infinite}
+.nums b:nth-child(2n){animation-delay:.4s}.nums b:nth-child(3n){animation-delay:.8s}
+@keyframes bob{50%{transform:translateY(-5px) rotate(-4deg)}}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pills span{background:var(--mint);border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:var(--sage-deep)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+@media (max-width:700px){.hero .grid{grid-template-columns:minmax(0,1fr)}.nums{order:-1;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;max-width:100%}.nums b{width:auto;height:auto;aspect-ratio:1;font-size:22px;border-radius:12px}}
+
+/* ===== בחירת גיל ===== */
+.sec-title{text-align:center;margin:30px 0 12px}
+.sec-title h2{font-size:28px;color:var(--sage-deep)}
+.sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
+.agepick{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.agepick{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.agebtn b{font-size:16px}}
+.agebtn{background:#fff;border:3px solid transparent;border-radius:22px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 4px 0 #d9e9e1;transition:transform .15s}
+.agebtn:hover{transform:translateY(-3px)}
+.agebtn .e{font-size:30px;line-height:1.1}
+.agebtn b{font-family:Fredoka,sans-serif;font-size:19px;line-height:1.1;white-space:nowrap}
+.agebtn small{font-size:12px;font-weight:800;color:var(--muted);white-space:nowrap}
+.agebtn[aria-pressed="true"]{border-color:var(--c);background:var(--b);transform:translateY(-3px)}
+
+/* ===== לוח הגיל ===== */
+.agehead{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);display:flex;gap:14px;align-items:center}
+.agehead .e{font-size:40px;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
+.agehead small{display:block;font-weight:800;color:var(--c)}
+.agehead h2{font-size:clamp(24px,4.6vw,32px);line-height:1.1}
+.agehead p{margin:6px 0 0;color:var(--muted)}
+.screen-note{margin-top:12px;background:#FFF6CF;border-radius:18px;padding:10px 14px;font-size:15px}
+.screen-note a{font-weight:800;color:var(--magenta)}
+.amenu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media (max-width:560px){.amenu{grid-template-columns:1fr 1fr 1fr;gap:6px}}
+.amenu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 0 #d9e9e1;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
+.amenu a span{font-size:26px}
+
+/* ===== קופסת משחק ===== */
+.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
+.act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
+.act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
+.act-h h2{font-size:26px;line-height:1.1}
+.act .intro{margin:2px 0 12px;color:var(--muted)}
+.why{background:#F7FBF9;border-radius:14px;padding:8px 12px;font-size:15px;margin:16px 0 0}
+.why b{color:var(--sage-deep)}
+.dots{display:flex;justify-content:center;gap:7px;margin:4px 0 10px;min-height:16px}
+.dots i{width:16px;height:16px;border-radius:50%;background:#EEE;border:2px solid #ddd}
+.dots i.ok{background:var(--ok);border-color:var(--ok)}
+.dots i.no{background:#FFC24B;border-color:#FFC24B}
+.dots i.now{border-color:var(--pink);transform:scale(1.2)}
+.stage{position:relative;min-height:280px;background:linear-gradient(160deg,var(--b),#fff 80%);border-radius:22px;padding:14px 10px 16px;text-align:center}
+.startbox{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:250px}
+.startbox .e{font-size:64px;line-height:1}
+.qtext{font-family:Fredoka,sans-serif;font-size:clamp(22px,4.6vw,30px);line-height:1.2;margin:2px 0 10px}
+.qtext .ltr{font-size:1.25em}
+.say-btn{border:0;background:#fff;border-radius:999px;width:40px;height:40px;cursor:pointer;font-size:20px;box-shadow:0 2px 0 var(--mint-2);vertical-align:middle;margin-inline-start:6px}
+.vis{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;margin:0 auto 12px;max-width:520px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.7);opacity:.3}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.grp{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:300px}
+.grp svg{width:var(--s,56px);height:var(--s,56px)}
+.plus{font-family:Fredoka,sans-serif;font-size:40px;color:var(--sage-deep);padding:0 6px}
+.ex{font-family:Fredoka,sans-serif;font-size:clamp(40px,10vw,64px);direction:ltr;letter-spacing:1px;color:var(--ink)}
+.seq{display:flex;gap:8px;justify-content:center;direction:ltr;flex-wrap:wrap}
+.seq span{width:58px;height:58px;border-radius:16px;background:#fff;border:3px solid var(--mint-2);display:grid;place-items:center;font-family:Fredoka,sans-serif;font-size:28px}
+.seq span.q{border-style:dashed;border-color:var(--pink);color:var(--pink)}
+.seq svg{width:48px;height:48px}
+.opts{display:grid;gap:12px;max-width:560px;margin:0 auto;grid-template-columns:repeat(var(--n,3),1fr)}
+.opt{background:#fff;border:3px solid var(--mint-2);border-radius:22px;padding:8px;cursor:pointer;font-family:Fredoka,sans-serif;font-size:clamp(28px,7vw,40px);font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 0 var(--mint-2);min-height:84px;transition:background .2s,border-color .2s;touch-action:manipulation;color:var(--ink)}
+.opt svg{max-width:100%}
+.opt .pd{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
+.opt .pd i{width:9px;height:9px;border-radius:50%;background:var(--pink)}
+.opt.big{min-height:150px}
+.opt.right{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 4px 0 #157A40}
+.opt.right .pd i{background:#fff}
+.opt.wrong{animation:shake .45s;opacity:.4;border-color:#FFC24B}
+.opt:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.fbk{min-height:30px;font-weight:800;color:var(--sage-deep);margin-top:10px;font-size:18px}
+.counter{font-family:Fredoka,sans-serif;font-size:clamp(60px,16vw,96px);line-height:1;color:var(--c);min-height:96px}
+.balloons{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;max-width:520px;margin:0 auto}
+.balloon{border:0;background:none;cursor:pointer;padding:0;width:clamp(72px,20vw,100px);touch-action:manipulation;animation:float 3s ease-in-out infinite}
+.balloon:nth-child(2n){animation-delay:.6s}.balloon:nth-child(3n){animation-delay:1.1s}
+.balloon svg{width:100%;height:auto;display:block}
+.balloon.popped{animation:popout .35s forwards;pointer-events:none}
+@keyframes float{50%{transform:translateY(-8px)}}
+@keyframes popout{to{transform:scale(1.6);opacity:0}}
+.hand{width:min(260px,70vw);display:block;margin:0 auto;cursor:pointer;touch-action:manipulation}
+.burst{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:3}
+.burst i{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--c);animation:fly .9s ease-out forwards}
+@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
+
+/* ===== דף העבודה ===== */
+.pv{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+@media (max-width:640px){.pv{grid-template-columns:1fr}}
+.pv-box{width:238px;height:337px;overflow:hidden;border-radius:10px;box-shadow:0 0 0 2px var(--mint),0 6px 18px rgba(0,0,0,.08);margin:0 auto;background:#fff;position:relative}
+.pv-box>.sheet{transform:scale(.3);transform-origin:top right;position:absolute;top:0;right:0}
+.pv ol{margin:0;padding-inline-start:22px;display:grid;gap:4px}
+.pv .need{margin:8px 0 0;color:var(--muted);font-size:15px}
+.offbox{margin-top:24px;background:#fff;border-radius:24px;padding:18px;border:3px dashed var(--c);text-align:center}
+.offbox h3{font-size:22px;color:var(--sage-deep)}
+.offbox p{margin:6px auto 0;max-width:620px;font-size:17px}
+
+/* ===== שליחה ושיתוף ===== */
+.share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
+.share h3{color:var(--wa);font-size:22px}
+.share p{color:var(--muted);margin:6px 0 4px}
+.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 4px 0 #d9e9e1}
+.peek .e{font-size:40px}
+.peek b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
+.peek span{display:block;color:var(--muted);font-size:15px}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
+.bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+@media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
+footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
+footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
+
+/* ===== מסך הניצחון + זיקוקים ===== */
+#fw{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none}
+.win{position:fixed;inset:0;z-index:85;background:rgba(43,21,38,.55);display:grid;place-items:center;padding:16px}
+.win .in{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:22px 20px;text-align:center;max-height:calc(100vh - 32px);overflow:auto;position:relative}
+.win .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;border-radius:28px 28px 0 0;background:linear-gradient(90deg,var(--pink),var(--blue),var(--sage))}
+.win .big{font-size:70px;line-height:1.1;margin-top:6px}
+.win h3{font-size:32px;color:var(--magenta)}
+.win p{margin:6px 0}
+.coupon{margin:14px 0;background:var(--pink-soft);border:2px dashed var(--pink);border-radius:18px;padding:12px}
+.coupon b{font-family:Fredoka,sans-serif;font-size:24px;color:var(--magenta);letter-spacing:1px}
+.coupon p{margin:4px 0}
+.coupon a{color:var(--magenta);font-weight:800}
+
+/* ===== דפי הדפסה ===== */
+#print{display:none}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:3mm}
+.s-head h1{font-size:21pt;color:#C13671;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FF56C2,#3AA7F0,#6F988B);margin-bottom:4mm}
+.s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
+.p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:2.5mm 5mm}
+.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:.5mm}
+.p-box p{margin:0}
+.s-tip{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700;margin:0}
+.s-row{display:flex;align-items:center;justify-content:space-between;gap:6mm;border-bottom:1.5px dashed #E1F0EA;padding:1mm 0}
+.s-row:last-child{border-bottom:0}
+.s-nums{display:flex;gap:4mm;direction:ltr;font-family:Fredoka,sans-serif;font-size:24pt}
+.s-nums span{width:13mm;height:13mm;border:1.5px solid #CDE7DC;border-radius:50%;display:grid;place-items:center;line-height:1}
+.s-ex{display:grid;gap:3.5mm 8mm;font-family:Fredoka,sans-serif;direction:ltr}
+.s-ex div{display:flex;align-items:center;gap:2mm;white-space:nowrap}
+.s-ex i{display:inline-block;width:16mm;height:10mm;border:1.5px solid #6b5a66;border-radius:2mm}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important;margin:0;padding:0}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== זהירות בדרכים – תוספות ===== */
+.hero::before{background:linear-gradient(90deg,#FF4D5E,#FFD23F,#2BD46A)}
+.hero-art{width:240px;max-width:100%}
+.hero-art svg{width:100%;height:auto;display:block;border-radius:22px}
+@media (max-width:700px){.hero-art{order:-1;width:200px;margin:0 auto}}
+.sped{display:inline-flex;align-items:center;gap:6px;background:#F1E3FF;color:#6B2FA3;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px}
+.amenu.nine{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:900px){.amenu.nine{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.bob{animation:bob2 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob2{50%{transform:translateY(-5px)}}
+.aud2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+@media (max-width:560px){.aud2{grid-template-columns:minmax(0,1fr)}}
+.aud2 a{background:#fff;border-radius:22px;padding:14px 16px;text-decoration:none;box-shadow:0 4px 0 #d9e9e1;display:flex;gap:12px;align-items:center;border-inline-start:8px solid var(--c)}
+.aud2 .e{font-size:38px}
+.aud2 b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta);display:block}
+.aud2 span{color:var(--muted);font-size:15px}
+/* סיפור */
+.st-pic{width:min(640px,100%);aspect-ratio:4/3;margin:0 auto 10px;border-radius:24px;overflow:hidden;border:5px solid #fff;box-shadow:0 6px 0 var(--mint-2),0 14px 30px rgba(78,133,118,.18);background:#fff}
+.st-pic svg{width:100%;height:100%;display:block}
+.st-text{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(19px,3.2vw,28px);line-height:1.45;margin:6px auto 14px;max-width:36ch;text-wrap:pretty;min-height:3em}
+.st-nav{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.st-nav button:disabled{opacity:.4;cursor:default}
+.st-num{font-weight:800;color:var(--sage-deep);font-variant-numeric:tabular-nums;min-width:52px}
+.stage:fullscreen{background:#fff;padding:24px;overflow:auto;display:flex;flex-direction:column;justify-content:center}
+.stage:fullscreen .st-pic{width:min(860px,64vh * 4 / 3)}
+.stage:fullscreen .st-text{font-size:clamp(26px,3.6vw,44px)}
+/* רמזור */
+.light-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;align-items:center;max-width:620px;margin:0 auto}
+@media (max-width:560px){.light-row{grid-template-columns:minmax(0,1fr)}}
+.light-row svg{width:100%;height:auto;display:block;max-height:300px}
+.bigbtns{display:grid;gap:12px}
+.bigbtn{border:0;border-radius:24px;padding:16px 10px;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,5vw,30px);font-weight:700;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;touch-action:manipulation;min-height:84px}
+.bigbtn.stop{background:#E5484D;box-shadow:0 5px 0 #A3262A}
+.bigbtn.go{background:#1F9E55;box-shadow:0 5px 0 #137038}
+.bigbtn:active{transform:translateY(3px);box-shadow:none}
+.bigbtn.wrong{animation:shake .45s}
+.bigbtn:disabled{opacity:.55;cursor:default}
+/* סדר החצייה */
+.steps5{display:grid;gap:10px;max-width:560px;margin:0 auto}
+.scard{display:flex;gap:12px;align-items:center;background:#fff;border:3px solid var(--mint-2);border-radius:20px;padding:10px 12px;font-weight:800;font-size:clamp(16px,3.6vw,19px);cursor:pointer;text-align:right;box-shadow:0 4px 0 var(--mint-2);touch-action:manipulation;width:100%}
+.scard .e{font-size:34px;line-height:1}
+.scard .n{margin-inline-start:auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:Fredoka,sans-serif;font-size:22px;background:var(--mint);color:var(--sage-deep);flex-shrink:0}
+.scard.right{background:#E6F8EC;border-color:var(--ok)}
+.scard.right .n{background:var(--ok);color:#fff}
+.scard.wrong{animation:shake .45s;border-color:#FFC24B}
+.scard:disabled{cursor:default}
+/* בטוח או מסוכן */
+.sit{max-width:560px;margin:0 auto}
+.sit .pic{font-size:clamp(70px,18vw,104px);line-height:1.1;animation:pop .4s}
+.sit .bigbtns{grid-template-columns:1fr 1fr;margin-top:12px}
+.didu{background:#FFF6CF;border-radius:16px;padding:10px 14px;margin:12px auto 0;max-width:560px;font-size:16px;text-align:right;animation:pop .4s}
+.didu b{color:var(--magenta)}
+/* רכיבה */
+.dress{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;align-items:center}
+@media (max-width:620px){.dress{grid-template-columns:minmax(0,1fr)}}
+.dress .fig{max-width:320px;margin:0 auto;width:100%}
+.dress .fig svg{width:100%;height:auto;display:block;border-radius:20px}
+.items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.item{background:#fff;border:3px solid var(--mint-2);border-radius:18px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:800;font-size:13px;line-height:1.15;min-height:84px;justify-content:center;touch-action:manipulation}
+.item span{font-size:34px;line-height:1}
+.item.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.item.wrong{animation:shake .45s;opacity:.4;border-color:#FFC24B}
+.item:disabled{cursor:default}
+.ride-go{transition:transform 2.2s ease-in}
+/* מערכים */
+.plan-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.plan-head div{background:var(--b);border-radius:16px;padding:10px;text-align:center}
+.plan-head b{display:block;font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
+.plan-head span{font-size:13px;color:var(--muted)}
+.prep{background:#F7FBF9;border-radius:14px;padding:10px 12px;font-size:15px;margin-bottom:6px}
+.step{border:2px solid var(--mint);border-radius:18px;margin-top:8px;background:#fff}
+.step summary{cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center;padding:10px 12px;font-weight:800;font-size:17px}
+.step summary::-webkit-details-marker{display:none}
+.step summary .m{background:var(--c);color:#fff;border-radius:999px;padding:2px 10px;font-size:14px;white-space:nowrap}
+.step summary .e{font-size:24px}
+.step .bd{padding:0 14px 12px;font-size:16px}
+.step .bd p{margin:6px 0}
+.step .say{background:#FFF6CF;border-radius:12px;padding:6px 10px}
+.step .ad{color:var(--muted);font-size:15px}
+.stepgo{font-size:14px;padding:6px 12px;margin-top:4px}
+/* בלי מסך */
+.offgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.offgrid{grid-template-columns:minmax(0,1fr)}}
+.off{background:var(--b);border-radius:20px;padding:12px 14px}
+.off h3{font-size:19px;color:var(--sage-deep)}
+.off p{margin:4px 0 8px;font-size:16px}
+.off .btn-sec{font-size:14px;padding:6px 12px}
+/* דפים */
+.sheets4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.sheets4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.sheets4{grid-template-columns:minmax(0,1fr)}}
+.sheets4>div{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.sheets4 h3{font-size:18px;color:var(--sage-deep);min-height:2.4em;display:flex;align-items:center}
+/* עובדות */
+.facts{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:#F7FBF9;border-radius:14px;padding:8px 12px;font-size:16px;display:flex;gap:10px}
+.facts li>span:first-child{font-size:24px;line-height:1.2}
+.src{font-size:14px;color:var(--muted);margin-top:10px}
+.src a{color:var(--sage-deep);font-weight:700}
+/* הדפסה */
+.w6{display:grid;grid-template-columns:repeat(2,1fr);gap:4mm}
+.w6>div{border:2px solid #CDE7DC;border-radius:5mm;padding:2mm 3mm;text-align:center;font-weight:700;font-size:12.5pt;display:flex;flex-direction:column;gap:1mm}
+.w6 svg{width:100%;height:42mm}
+.w6 .ck{display:flex;justify-content:center;gap:8mm;font-size:12pt}
+.w6 .ck span{display:inline-flex;align-items:center;gap:2mm}
+.w6 .ck i{display:inline-block;width:8mm;height:8mm;border:1.5px solid #6b5a66;border-radius:50%}
+.route{flex:1;border:2.5px dashed #6F988B;border-radius:6mm;position:relative;min-height:120mm}
+.route .h1,.route .h2{position:absolute;width:34mm;text-align:center;font-weight:800;font-size:12pt}
+.route .h1{bottom:3mm;right:4mm}.route .h2{top:3mm;left:4mm}
+.route svg{width:100%;height:auto}
+.legend{display:flex;justify-content:space-around;gap:3mm}
+.legend div{text-align:center;font-size:10.5pt;font-weight:700}
+.legend svg{width:20mm;height:20mm;display:block;margin:0 auto}
+.lines p{border-bottom:1.5px solid #CDE7DC;margin:0;padding-top:7mm;font-size:12pt}
+.cert{flex:1;border:4mm solid #E1F0EA;outline:1.5mm solid #FF56C2;outline-offset:-6mm;border-radius:8mm;padding:12mm 12mm 8mm;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3mm}
+.cert h2{font-size:30pt;color:#C13671;line-height:1.1}
+.cert .nm2{font-size:16pt;border-bottom:2px solid #4E8576;min-width:110mm;padding-bottom:1mm}
+.cert ul{list-style:none;padding:0;margin:0;text-align:right;font-size:13pt;display:grid;gap:2mm}
+.cert li::before{content:"☐ ";font-size:15pt}
+.cert .sig{display:flex;justify-content:space-between;width:100%;margin-top:auto;font-size:11pt}
+.cert .sig span{border-top:1.5px solid #6b5a66;padding-top:1mm;width:60mm}
+</style>
+<!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<link rel="preload" href="../../common.js" as="script">
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../" aria-label="booqli Games – לדף הבית"><img class="logo" src="../../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
+    <a id="ganLink" class="gan" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
+  </div>
+</header>
+<div class="sponsor">🎁 כל התכנים מוענקים בחינם, בחסות BOOQLI ❤️</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <small>booqli Games · מוגנות ובטיחות · לגן ולכיתות א'–ג'</small>
+        <h1>🚦 זהירות <span>בדרכים</span></h1>
+        <p>שׁוֹמֶרְבּוּקְלִי וכל המשפחה יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך. סיפור מאויר עם הקראה, 5 משחקים, מערך לגננת, מערך למורה ו-4 דפים להדפסה.</p>
+        <div class="pills"><span>👧 גילאי 3–8</span><span>📖 סיפור מאויר</span><span>🎮 5 משחקים</span><span>👩‍🏫 2 מערכים מוכנים</span><span>🖨️ 4 דפים להדפסה</span><span>🏡 6 רעיונות בלי מסך</span><span>🔊 עם הקראה</span><span>🆓 בחינם</span><span>🛡️ אתר בטוח להורים ולילדים</span></div>
+        <div class="acts">
+          <a class="btn-main" href="#story">👇 מתחילים בסיפור</a>
+          <button class="btn-sec js-gift" type="button">🎁 מתנה להורים</button>
+          <span class="sped">💜 מתאים גם לחינוך מיוחד</span>
+          <span id="heroLike"></span>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+    </div>
+    <div class="aud2">
+      <a href="#plan-gan" style="--c:#6F988B"><span class="e" aria-hidden="true">👩‍🏫</span><div><b>לגננת: מערך 45 דק'</b><span>גילאי 3–6 · 8 שלבים עם 💜 ו-🦻</span></div></a>
+      <a href="#plan-school" style="--c:#3AA7F0"><span class="e" aria-hidden="true">🎒</span><div><b>למורה: שיעור 45 דק'</b><span>כיתות א'–ג' · 7 שלבים עם 💜 ו-🦻</span></div></a>
+    </div>
+  </section>
+
+  <nav class="amenu nine" aria-label="מה יש בעמוד" style="margin-top:16px">
+    <a href="#story" style="border-top:5px solid #FF56C2"><span aria-hidden="true">📖</span>הסיפור</a>
+    <a href="#g-light" style="border-top:5px solid #E5484D"><span aria-hidden="true">🚦</span>הרמזור</a>
+    <a href="#g-steps" style="border-top:5px solid #FF9A2E"><span aria-hidden="true">🚸</span>סדר החצייה</a>
+    <a href="#g-safe" style="border-top:5px solid #46C46E"><span aria-hidden="true">👍</span>בטוח או מסוכן</a>
+    <a href="#g-ride" style="border-top:5px solid #9B5DE5"><span aria-hidden="true">⛑️</span>קסדה ואופניים</a>
+    <a href="#g-quiz" style="border-top:5px solid #3AA7F0"><span aria-hidden="true">❓</span>חידון</a>
+    <a href="#plan-gan" style="border-top:5px solid #6F988B"><span aria-hidden="true">👩‍🏫</span>מערך לגננת</a>
+    <a href="#plan-school" style="border-top:5px solid #2F6FD6"><span aria-hidden="true">🎒</span>מערך למורה</a>
+    <a href="#offline" style="border-top:5px solid #C13671"><span aria-hidden="true">🏡</span>בלי מסך</a>
+    <a href="#sheetBox" style="border-top:5px solid #E0399F"><span aria-hidden="true">🖨️</span>להדפסה</a>
+    <a href="#facts" style="border-top:5px solid #4E8576"><span aria-hidden="true">📌</span>למבוגרים</a>
+  </nav>
+
+  <section class="act" id="story" style="--c:#FF56C2;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">📖</span><div><small>סיפור מאויר · 11 עמודים · עם הקראה</small><h2>שׁוֹמֶרְבּוּקְלִי והמשפחה בדרך לגן השעשועים</h2></div></div>
+    <p class="intro">מקרינים בגן או בכיתה, לוחצים 🔊 או מקריאים בעצמכם. בסוף – 5 שאלות.</p>
+    <div class="stage" id="s-story"></div>
+  </section>
+
+  <section class="act" id="g-light" style="--c:#E5484D;--b:#FFE3E5">
+    <div class="act-h"><span class="e" aria-hidden="true">🚦</span><div><small>משחק 1 · עם הקראה · גילאי 2–6</small><h2>הרמזור של גַּרְבּוּקְלִי</h2></div></div>
+    <p class="intro">מסתכלים על האיש ברמזור: אדום – עומדים. ירוק – חוצים, יד ביד עם מבוגר.</p>
+    <div class="dots" id="d-light"></div>
+    <div class="stage" id="s-light"></div>
+    <p class="why"><b>בגן:</b> כל הילדים קמים – "עומדים" = קופאים במקום, "חוצים יחד" = צועדים במקום ונותנים יד לחבר.</p>
+  </section>
+
+  <section class="act" id="g-steps" style="--c:#FF9A2E;--b:#FFEBD2">
+    <div class="act-h"><span class="e" aria-hidden="true">🚸</span><div><small>משחק 2 · מסדרים · גילאי 4–8</small><h2>סדר החצייה</h2></div></div>
+    <p class="intro">לוחצים על השלבים לפי הסדר: מה עושים קודם, ומה אחר כך?</p>
+    <div class="stage" id="s-steps"></div>
+  </section>
+
+  <section class="act" id="g-safe" style="--c:#46C46E;--b:#DDF1DF">
+    <div class="act-h"><span class="e" aria-hidden="true">👍</span><div><small>משחק 3 · 10 מצבים · עם הקראה</small><h2>בטוח או מסוכן?</h2></div></div>
+    <p class="intro">שומעים את המצב ובוחרים: 👍 בטוח, או ✋ מסוכן. אחרי כל תשובה – הסבר קצר.</p>
+    <div class="dots" id="d-safe"></div>
+    <div class="stage" id="s-safe"></div>
+  </section>
+
+  <section class="act" id="g-ride" style="--c:#9B5DE5;--b:#F1E3FF">
+    <div class="act-h"><span class="e" aria-hidden="true">⛑️</span><div><small>משחק 4 · אופניים וקורקינט · 💜 כישורי חיים</small><h2>אֲלֶפְבּוּקְלִי מתכונן לרכיבה</h2></div></div>
+    <p class="intro">מה לוקחים כשרוכבים על אופניים או על קורקינט? יש כאן גם דברים שלא מתאימים.</p>
+    <div class="stage" id="s-ride"></div>
+    <p class="why"><b>למה זה חשוב?</b> קסדה שומרת על הראש אם נופלים, ואפוד זוהר עוזר לנהגים לראות אותנו.</p>
+  </section>
+
+  <section class="act" id="g-quiz" style="--c:#3AA7F0;--b:#DCEBFF">
+    <div class="act-h"><span class="e" aria-hidden="true">❓</span><div><small>משחק 5 · 8 שאלות · גילאי 5–8 ולכיתות</small><h2>חידון זהירות בדרכים</h2></div></div>
+    <p class="intro">אחרי כל תשובה נכונה – "הידעת?" קצר. מתאים לשחק בקבוצות בכיתה.</p>
+    <div class="dots" id="d-quiz"></div>
+    <div class="stage" id="s-quiz"></div>
+  </section>
+
+  <section class="act" id="plan-gan" style="--c:#6F988B;--b:#E1F0EA">
+    <div class="act-h"><span class="e" aria-hidden="true">👩‍🏫</span><div><small>לגננת · מערך מוכן</small><h2>מערך 45 דקות: יד ביד בדרך לגן השעשועים</h2></div></div>
+    <div class="plan-head"><div><b>45 דק'</b><span>8 שלבים</span></div><div><b>3–6</b><span>גילאים</span></div><div><b>💜 🦻</b><span>התאמות</span></div></div>
+    <div class="prep"><b>🧺 מה מכינים:</b> מקרן או מסך גדול · נייר דבק לבן או רצועות נייר למעבר חצייה · 2 צלחות נייר (אדומה וירוקה) על מקל · קסדה אמיתית ובובה · אפוד זוהר (אם יש) · דף "בטוח או מסוכן" ותעודה מודפסים לכל ילד · צבעים</div>
+    <div id="planGan"></div>
+  </section>
+
+  <section class="act" id="plan-school" style="--c:#2F6FD6;--b:#DCEBFF">
+    <div class="act-h"><span class="e" aria-hidden="true">🎒</span><div><small>למורה · כיתות א'–ג' · שיעור מוכן</small><h2>שיעור 45 דקות: המסלול הבטוח שלי</h2></div></div>
+    <div class="plan-head"><div><b>45 דק'</b><span>7 שלבים</span></div><div><b>א'–ג'</b><span>כיתות</span></div><div><b>💜 🦻</b><span>התאמות</span></div></div>
+    <div class="prep"><b>🧺 מה מכינים:</b> מקרן · לוח ומרקרים · דף "המסלול הבטוח שלי" ותעודה מודפסים לכל תלמיד · צבעים · (רשות) תמונה של הרחוב ליד בית הספר</div>
+    <div id="planSchool"></div>
+  </section>
+
+  <section class="act" id="offline" style="--c:#C13671;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">🏡</span><div><small>לגן, לכיתה ולבית · בלי מסך</small><h2>6 רעיונות בלי מסך</h2></div></div>
+    <div class="offgrid" id="offBox"></div>
+  </section>
+
+  <section class="act" id="sheetBox" style="--c:#E0399F;--b:#FFE3F4">
+    <div class="act-h"><span class="e" aria-hidden="true">🖨️</span><div><small>להדפסה · A4</small><h2>4 דפים להדפסה</h2></div></div>
+    <div class="sheets4">
+      <div><h3>👍 דף עבודה: בטוח או מסוכן?</h3><div class="pv-box" id="pv1"></div><button class="btn-main" type="button" id="print1">🖨️ להדפיס</button></div>
+      <div><h3>🖍️ דף צביעה: מעבר החצייה</h3><div class="pv-box" id="pv2"></div><button class="btn-main" type="button" id="print2">🖨️ להדפיס</button></div>
+      <div><h3>🗺️ המסלול הבטוח שלי (לכיתות)</h3><div class="pv-box" id="pv3"></div><button class="btn-main" type="button" id="print3">🖨️ להדפיס</button></div>
+      <div><h3>🏅 תעודת הולך רגל זהיר</h3><div class="pv-box" id="pv4"></div><button class="btn-main" type="button" id="print4">🖨️ להדפיס</button></div>
+    </div>
+  </section>
+
+  <section class="act" id="facts" style="--c:#4E8576;--b:#E1F0EA">
+    <div class="act-h"><span class="e" aria-hidden="true">📌</span><div><small>לגננות, למורות ולהורים</small><h2>מה חשוב לזכור</h2></div></div>
+    <ul class="facts">
+      <li><span aria-hidden="true">🤝</span><span><b>ילדים עד גיל 9 חוצים כביש רק עם מבוגר.</b> ילדים צעירים עוד לא יודעים להעריך מרחק ומהירות של מכונית, והנהגים מתקשים לראות אותם.</span></li>
+      <li><span aria-hidden="true">🦓</span><span><b>חוצים במעבר חצייה או ברמזור,</b> לא בין מכוניות חונות. גם כשהאיש ירוק – מסתכלים לשני הצדדים, מוודאים שהמכוניות עצרו, וחוצים בקו ישר.</span></li>
+      <li><span aria-hidden="true">🚗</span><span><b>בכל נסיעה, גם קצרה:</b> מושב בטיחות או בוסטר שמתאים לגיל, למשקל ולגובה של הילד, וחגורה לכולם. המושב האחורי בטוח יותר, ויוצאים מהדלת שליד המדרכה.</span></li>
+      <li><span aria-hidden="true">⛑️</span><span><b>קסדה בכל רכיבה</b> על אופניים ועל קורקינט, עם רצועה סגורה מתחת לסנטר. רוכבים בגינה או בשביל, רחוק מהכביש. אופניים וקורקינט חשמליים אינם מיועדים לילדים (יש להם גיל מינימלי בחוק).</span></li>
+      <li><span aria-hidden="true">🦺</span><span><b>בחושך, בגשם ובערפל:</b> בגדים בהירים ומחזירי אור, כדי שהנהגים יראו אותנו מרחוק.</span></li>
+      <li><span aria-hidden="true">⚽</span><span><b>משחקים רחוק מהכביש ומהחניה.</b> כדור שבורח לכביש – קוראים למבוגר.</span></li>
+    </ul>
+    <p class="src">על פי ההנחיות של משרד החינוך (<a href="https://pop.education.gov.il/tchumey_daat/zehirot-drahim/yesodi/noseem_nilmadim/haziyat-kvish-atzmait/" target="_blank" rel="noopener">חציית כביש</a>) ותקנות התעבורה על מושבי בטיחות. הפעילויות בעמוד הן חינוכיות ומונעות, ולא ממליצות לילד מתחת לגיל 9 לחצות כביש בלי מבוגר.</p>
+  </section>
+
+  <section class="share">
+    <h3>💌 לגננות ולמורות: לשלוח להורים</h3>
+    <p>הודעה מוכנה: מה למדנו על זהירות בדרכים, רעיון קטן לבית וקישור למשחקים.</p>
+    <div class="row-btns">
+      <button class="btn-wa-big" type="button" id="parentsBtn">📲 הודעה להורים בוואטסאפ</button>
+      <button class="btn-sec" type="button" id="shareBtn">💬 לשלוח לחברה מהצוות</button>
+    </div>
+  </section>
+
+  <a class="peek" href="../safety/">
+    <span class="e" aria-hidden="true">🛡️</span>
+    <div><b>עוד במוגנות ובטיחות: "מה אתה עושה כאן, פחד?" ←</b><span>ספר עם הקראה, נשימת פרח ונר, ומה עושים באזעקה.</span></div>
+  </a>
+
+  <section class="bookbox">
+    <div style="font-size:56px">📖</div>
+    <div>
+      <h2>ספר אמיתי שהילד הוא הגיבור שלו</h2>
+      <p>השם של הילד לאורך כל העלילה · איורים אישיים בכל עמוד · ספר מודפס באיכות גבוהה. גננות וועדי הורים: ספר אישי לכל ילד בגן, במחירים סיטונאיים.</p>
+      <a id="orderBtn" target="_blank" rel="noopener">להכיר את הספרים ←</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
+    <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
+    <p>כל המשחקים, הטקסטים והאיורים מקוריים · אתר בטוח להורים ולילדים</p>
+    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+  </div>
+</footer>
+
+<div id="win" class="win" hidden role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="in">
+    <div class="big" id="winIc">🏆</div>
+    <h3 id="wTitle">כל הכבוד!</h3>
+    <p id="winText"></p>
+    <div class="coupon" id="winCoupon"></div>
+    <div class="row-btns">
+      <button class="btn-main" id="winAgain" type="button">לשחק שוב</button>
+      <button class="btn-sec" id="winNext" type="button">הלאה ←</button>
+    </div>
+    <div class="row-btns"><span id="winLike"></span><button class="btn-sec js-gift" type="button">🎁 לשלוח להורים</button></div>
+  </div>
+</div>
+<canvas id="fw" hidden aria-hidden="true"></canvas>
+<div id="print" aria-hidden="true"></div>
+
+<script src="../../qrcode.min.js"></script>
+<script src="../../common.js"></script>
+<script src="../../catalog.js"></script>
+<script src="art.js"></script>
+<script>
+/* ======================== הגדרות ======================== */
+const CONFIG = {
+  topicName: "זהירות בדרכים",
+  coupon: "",
+  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=road_safety",
+  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=road_safety",
+  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+};
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const PRAISE = ["כל הכבוד!", "נכון מאוד!", "מצוין!", "יופי!", "בדיוק!"];
+const INK = RS.INK, svg = RS.svg;
+
+/* ======================== הקראה ======================== */
+const spoken = t => String(t).replace(/<[^>]+>/g, " ").replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu, "").replace(/\s+/g, " ").trim();
+let speakFailShown = false;
+function speak(t){
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(spoken(t)); u.lang = "he-IL"; u.rate = .85;
+    const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (v) u.voice = v;
+    let started = false; u.onstart = () => started = true; speechSynthesis.speak(u);
+    setTimeout(() => { if (!started && !speakFailShown){ speakFailShown = true; toast("🔈 לא שומעים? בדקו שהקול פתוח, פתחו את האתר בכרום או בספארי (לא מתוך אפליקציה), ובאנדרואיד ודאו שמותקן קול בעברית."); } }, 2500);
+  } catch(e){ if (!speakFailShown){ speakFailShown = true; toast("🔈 ההקראה לא נתמכת בדפדפן הזה. אפשר להקריא בעצמכם 😊"); } }
+}
+
+/* ======================== צלילים ======================== */
+let AC = null;
+function audio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); } catch(e){ AC = null; } return AC; }
+function tone(f, t, d, type = "sine", v = .25){ const C = audio(); if (!C) return; const t0 = C.currentTime + .02 + t, o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(v, t0 + .02); g.gain.exponentialRampToValueAtTime(.001, t0 + d); o.connect(g); g.connect(C.destination); o.start(t0); o.stop(t0 + d + .05); }
+const okSound = () => { tone(784, 0, .15, "triangle", .25); tone(1047, .1, .25, "triangle", .25); };
+const dropSound = () => { [0, .12, .22, .34, .43].forEach((t, i) => tone(900 + i * 140, t, .09, "sine", .15)); };
+function winSound(){
+  [[523,0],[659,.11],[784,.22],[1047,.33],[784,.46],[1047,.57]].forEach(([f,t]) => { tone(f, t, .2, "square", .12); tone(f*2, t, .12, "triangle", .08); });
+  [523,659,784,1047].forEach(f => { tone(f, .74, 1.1, "square", .09); tone(f/2, .74, 1.1, "triangle", .1); });
+}
+
+/* ======================== הסיפור ======================== */
+const STORY = [
+  "בּוּקְלִי קורא לכולם: \"היום כל המשפחה הולכת לגן השעשועים!\" שׁוֹמֶרְבּוּקְלִי מחייך: \"מעולה! ובדרך – שומרים יחד על כללי הזהירות.\"",
+  "הולכים על המדרכה, רחוק משפת הכביש. הכביש הוא של המכוניות, והמדרכה – של הולכי הרגל.",
+  "לֵבְבּוּקְלִי נותן יד לסַבָּאבּוּקְלִי. \"ליד הכביש תמיד מחזיקים יד של מבוגר,\" אומר סבא, \"ככה אני שומר עליך.\"",
+  "הגענו לכביש. עוצרים על המדרכה! לא רצים ולא קופצים לכביש. עומדים ליד המבוגר ומחכים.",
+  "גַּרְבּוּקְלִי מכיר את הצבעים של הרמזור: איש אדום – עומדים ומחכים. איש ירוק – חוצים, יחד עם המבוגר.",
+  "גם כשהאיש ירוק – מסתכלים לשני הצדדים ומקשיבים. חֶשְׁבּוּקְלִי סופר: \"אחת – לצד הזה, שתיים – לצד השני. המכוניות עצרו!\" ועכשיו חוצים במעבר החצייה, בקו ישר.",
+  "בנסיעה ברכב: חֶשְׁבּוּקְלִי יושב במושב הבטיחות, וכולם חוגרים חגורה – בכל נסיעה, גם קצרה. ויוצאים מהרכב רק מהדלת שליד המדרכה.",
+  "אֲלֶפְבּוּקְלִי רוכב על אופניים, ועוֹנְבּוּקְלִי על קורקינט. לפני הכל – חובשים קסדה וסוגרים את הרצועה! ורוכבים בגינה או בשביל, לא בכביש.",
+  "ערב. כבר חשוך בחוץ. עוֹנְבּוּקְלִי ושׁוֹמֶרְבּוּקְלִי לובשים אפוד זוהר – וככה הנהגים רואים אותם מרחוק.",
+  "בגן השעשועים – אוי! הכדור התגלגל לכביש. בּוּקְלִי לא רץ אחריו. הוא עוצר וקורא: \"סבא!\" – והמבוגר מביא את הכדור.",
+  "הגענו בשלום! כולם שמרו על הכללים. ומה אתם זוכרים מהדרך?"
+];
+const STORYQ = [
+  {q:"איפה הולכים ברחוב?", a:[{e:"🚶", t:"על המדרכה", ok:1}, {e:"🛣️", t:"בכביש"}, {e:"〰️", t:"על הקו הצהוב"}], d:"המדרכה היא של הולכי הרגל, והולכים בה רחוק משפת הכביש."},
+  {q:"האיש ברמזור אדום. מה עושים?", a:[{e:"✋", t:"עומדים ומחכים", ok:1}, {e:"🏃", t:"רצים מהר"}, {e:"🦘", t:"קופצים"}], d:"באדום עומדים ומחכים על המדרכה, ליד המבוגר."},
+  {q:"עם מי חוצים כביש?", a:[{e:"🤝", t:"עם מבוגר, יד ביד", ok:1}, {e:"🧒", t:"לבד"}, {e:"🧸", t:"עם בובה"}], d:"ילדים חוצים רק עם מבוגר שמחזיק להם את היד."},
+  {q:"מה חובשים כשרוכבים על אופניים?", a:[{e:"⛑️", t:"קסדה", ok:1}, {e:"🧢", t:"כובע מצחייה"}, {e:"👑", t:"כתר"}], d:"קסדה שומרת על הראש, ואת הרצועה סוגרים מתחת לסנטר."},
+  {q:"הכדור התגלגל לכביש. מה עושים?", a:[{e:"📣", t:"קוראים למבוגר", ok:1}, {e:"🏃", t:"רצים אחריו"}, {e:"🙈", t:"סוגרים עיניים"}], d:"לא רצים אחרי הכדור. קוראים למבוגר, והוא יביא אותו בזהירות."}
+];
+let SI = 0;
+function storyDraw(){
+  const st = $("s-story"), n = STORY.length;
+  st.innerHTML = `<div class="st-pic">${svg(RS.page[SI + 1](), "0 0 640 480")}</div>
+    <p class="st-text">${STORY[SI]}</p>
+    <div class="st-nav"><button class="btn-sec" type="button" id="stPrev">→ הקודם</button><button class="say-btn" type="button" id="stSay" aria-label="להקריא">🔊</button><span class="st-num">${SI + 1} / ${n}</span><button class="btn-main" type="button" id="stNext">${SI < n - 1 ? "הבא ←" : "לשאלות ←"}</button><button class="btn-sec" type="button" id="stFull" aria-label="מסך מלא">⛶</button></div>`;
+  $("stPrev").disabled = SI === 0;
+  $("stPrev").onclick = () => { if (SI > 0){ SI--; storyDraw(); speak(STORY[SI]); } };
+  $("stNext").onclick = () => { audio(); if (SI < n - 1){ SI++; storyDraw(); speak(STORY[SI]); } else storyQuiz(); };
+  $("stSay").onclick = () => speak(STORY[SI]);
+  $("stFull").onclick = () => { try { document.fullscreenElement ? document.exitFullscreen() : st.requestFullscreen(); } catch(e){} };
+  if ((st.requestFullscreen === undefined)) $("stFull").hidden = true;
+}
+function storyQuiz(){ RUN.story = {i: 0, res: [], n: STORYQ.length}; quizRound("story"); }
+
+/* ======================== מנוע חידון (לסיפור ולחידון) ======================== */
+const QSETS = {story: {data: () => STORYQ, st: "s-story", dots: null}, quiz: {data: () => QUIZ, st: "s-quiz", dots: "d-quiz"}};
+const RUN = {};
+function dotsOf(id){ const R = RUN[id], d = QSETS[id].dots; if (!d) return; $(d).innerHTML = Array.from({length: R.n}, (_, k) => `<i class="${R.res[k] === true ? "ok" : R.res[k] === false ? "no" : k === R.i ? "now" : ""}"></i>`).join(""); }
+function quizRound(id){
+  const R = RUN[id], q = QSETS[id].data()[R.i], st = $(QSETS[id].st), opts = shuffle(q.a); R.first = true; R.lock = false; dotsOf(id);
+  st.innerHTML = `${id === "story" ? `<p style="font-weight:800;color:var(--magenta);margin:0 0 4px">שאלה ${R.i + 1} מתוך ${R.n}</p>` : ""}<div class="qtext"><span>${q.q}</span><button class="say-btn" type="button" aria-label="להקריא שוב">🔊</button></div>
+    <div class="opts" style="--n:3">${opts.map((o, k) => `<button class="opt" type="button" data-k="${k}"><span style="font-size:clamp(34px,9vw,50px)">${o.e}</span><span style="font-family:Assistant,sans-serif;font-size:clamp(14px,3.4vw,18px);font-weight:800;line-height:1.2">${o.t}</span></button>`).join("")}</div>
+    <div class="fbk" aria-live="polite"></div><div class="qmore"></div>`;
+  const sayQ = () => speak(q.q + " " + opts.map(o => o.t).join("? ") + "?");
+  st.querySelector(".say-btn").onclick = sayQ; sayQ();
+  st.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (R.lock) return; const o = opts[+b.dataset.k], fb = st.querySelector(".fbk");
+    if (o.ok){
+      R.lock = true; b.classList.add("right"); burstAt(b); okSound(); const p = pick(PRAISE); fb.textContent = "✅ " + p;
+      st.querySelectorAll(".opt").forEach(x => x.disabled = true); R.res[R.i] = R.first; dotsOf(id);
+      const more = st.querySelector(".qmore");
+      more.innerHTML = `<div class="didu"><b>💡 ${id === "quiz" ? "הידעת?" : "נכון!"}</b> ${q.d} <button class="say-btn" type="button" aria-label="להקריא">🔊</button></div><div class="row-btns"><button class="btn-main" type="button">${R.i < R.n - 1 ? "לשאלה הבאה ←" : "לסיום ←"}</button></div>`;
+      speak(p + " " + q.d);
+      more.querySelector(".say-btn").onclick = () => speak(q.d);
+      more.querySelector(".btn-main").onclick = () => { R.i++; if (R.i >= R.n) finish(id); else quizRound(id); };
+    } else { R.first = false; b.classList.add("wrong"); b.disabled = true; fb.textContent = "🤔 כמעט! נסו שוב"; speak("כמעט! נסו שוב"); }
+  });
+}
+
+/* ======================== משחק 1: הרמזור ======================== */
+const LG = {};
+function lightArt(state){ return svg(`<rect width="300" height="300" rx="24" fill="#DFF3FF"/>${RS.road(300, 236, 220, {walk: 26, road: 50, noBottom: 1})}${RS.pedLight(220, 236, state, .82)}${RS.ch("garb", 100, 250, 150)}`, "0 0 300 300"); }
+function lightStart(){
+  $("d-light").innerHTML = "";
+  $("s-light").innerHTML = `<div class="startbox"><div style="width:180px">${lightArt("red")}</div><button class="btn-main" type="button">▶️ מתחילים לשחק</button></div>`;
+  $("s-light").querySelector("button").onclick = () => { audio(); LG.seq = shuffle(["red","green","red","green","red","green","red","green"]); LG.i = 0; LG.first = 0; lightRound(); };
+}
+function lightRound(){
+  const state = LG.seq[LG.i], st = $("s-light"); LG.lock = false; LG.miss = false;
+  $("d-light").innerHTML = LG.seq.map((_, k) => `<i class="${k < LG.i ? "ok" : k === LG.i ? "now" : ""}"></i>`).join("");
+  st.innerHTML = `<div class="qtext"><span>מה עושים עכשיו?</span><button class="say-btn" type="button" aria-label="להקריא">🔊</button></div>
+    <div class="light-row"><div>${lightArt(state)}</div><div class="bigbtns"><button class="bigbtn stop" type="button" data-a="red">✋ עומדים</button><button class="bigbtn go" type="button" data-a="green">🤝 חוצים יחד</button></div></div><div class="fbk" aria-live="polite"></div>`;
+  const q = state === "red" ? "האיש ברמזור אדום. מה עושים?" : "האיש ברמזור ירוק. מה עושים?";
+  st.querySelector(".say-btn").onclick = () => speak(q); speak(q);
+  st.querySelectorAll(".bigbtn").forEach(b => b.onclick = () => {
+    if (LG.lock) return; const fb = st.querySelector(".fbk");
+    if (b.dataset.a === state){
+      LG.lock = true; okSound(); burstAt(b); if (!LG.miss) LG.first++;
+      const t = state === "red" ? "נכון! באדום עומדים ומחכים." : "נכון! בירוק מסתכלים לשני הצדדים, וחוצים יד ביד עם מבוגר.";
+      fb.textContent = "✅ " + t; speak(t); st.querySelectorAll(".bigbtn").forEach(x => x.disabled = true);
+      setTimeout(() => { LG.i++; if (LG.i >= LG.seq.length) finish("light", `${LG.first} מתוך 8 כבר בניסיון הראשון! גַּרְבּוּקְלִי גאה בכם 🚦`); else lightRound(); }, state === "red" ? 1800 : 2600);
+    } else { LG.miss = true; b.classList.add("wrong"); const t = state === "red" ? "כמעט! האיש אדום – עומדים ומחכים." : "כמעט! האיש ירוק – עכשיו אפשר לחצות יחד עם מבוגר."; fb.textContent = "🤔 " + t; speak(t); }
+  });
+}
+
+/* ======================== משחק 2: סדר החצייה ======================== */
+const STEPS = [
+  {e:"✋", t:"עוצרים על המדרכה, לפני הכביש"},
+  {e:"🤝", t:"נותנים יד למבוגר"},
+  {e:"🚦", t:"מחכים לאיש הירוק ברמזור"},
+  {e:"👀", t:"מסתכלים לשני הצדדים ומקשיבים"},
+  {e:"🦓", t:"חוצים במעבר החצייה, בקו ישר"}
+];
+function stepsStart(){
+  const st = $("s-steps"), list = shuffle(STEPS.map((s, i) => ({...s, i}))); let next = 0;
+  st.innerHTML = `<div class="qtext"><span>מה עושים קודם?</span><button class="say-btn" type="button" aria-label="להקריא">🔊</button></div><div class="steps5">${list.map(s => `<button class="scard" type="button" data-i="${s.i}"><span class="e" aria-hidden="true">${s.e}</span><span>${s.t}</span><span class="n">?</span></button>`).join("")}</div><div class="fbk" aria-live="polite"></div>`;
+  const q = "מסדרים את השלבים של חציית הכביש. מה עושים קודם?";
+  st.querySelector(".say-btn").onclick = () => speak(q + " " + list.map(s => s.t).join(". ")); speak(q);
+  st.querySelectorAll(".scard").forEach(b => b.onclick = () => {
+    audio(); const i = +b.dataset.i, fb = st.querySelector(".fbk");
+    if (i === next){
+      b.classList.add("right"); b.disabled = true; b.querySelector(".n").textContent = next + 1; okSound(); burstAt(b); next++;
+      speak((next) + ". " + STEPS[i].t); fb.textContent = next < 5 ? "✅ ומה עכשיו?" : "🎉 חצינו בשלום!";
+      if (next === 5) setTimeout(() => finish("steps", "סידרתם את כל 5 השלבים! עוצרים, יד, מחכים לירוק, מסתכלים – וחוצים 🚸"), 2200);
+    } else { b.classList.add("wrong"); setTimeout(() => b.classList.remove("wrong"), 500); fb.textContent = "🤔 כמעט! מה עושים לפני זה?"; speak("כמעט! מה עושים לפני זה?"); }
+  });
+}
+
+/* ======================== משחק 3: בטוח או מסוכן ======================== */
+const SAFE = [
+  {e:"🚗🪑", t:"יושבים במושב בטיחות וחוגרים", ok:1, d:"בכל נסיעה, גם קצרה – מושב בטיחות וחגורה."},
+  {e:"⚽➡️🛣️", t:"רצים אחרי הכדור לכביש", ok:0, d:"לא רצים אחרי הכדור. קוראים למבוגר שיביא אותו."},
+  {e:"🦓🤝", t:"חוצים במעבר חצייה, יד ביד עם אבא", ok:1, d:"מעבר חצייה ויד של מבוגר – ככה חוצים."},
+  {e:"🚙🧒🚙", t:"חוצים בין מכוניות שחונות", ok:0, d:"הנהגים לא רואים אותנו מאחורי מכוניות חונות. חוצים רק במעבר חצייה."},
+  {e:"🚲⛑️", t:"רוכבים על אופניים עם קסדה", ok:1, d:"קסדה עם רצועה סגורה שומרת על הראש."},
+  {e:"🛴🚗", t:"רוכבים על קורקינט בכביש", ok:0, d:"רוכבים בגינה או בשביל, רחוק מהמכוניות."},
+  {e:"🌙🦺", t:"בערב לובשים אפוד זוהר", ok:1, d:"האפוד הזוהר עוזר לנהגים לראות אותנו בחושך."},
+  {e:"🚪🛣️", t:"יוצאים מהרכב מהדלת שליד הכביש", ok:0, d:"יוצאים רק מהדלת שליד המדרכה."},
+  {e:"🚶🏠", t:"הולכים על המדרכה, רחוק מהכביש", ok:1, d:"המדרכה היא המקום של הולכי הרגל."},
+  {e:"🔴🏃", t:"האיש ברמזור אדום – ורצים לחצות", ok:0, d:"באדום עומדים ומחכים. חוצים רק בירוק, עם מבוגר."}
+];
+function safeStart(){
+  $("d-safe").innerHTML = "";
+  $("s-safe").innerHTML = `<div class="startbox"><span class="e" aria-hidden="true">👍✋</span><button class="btn-main" type="button">▶️ מתחילים</button></div>`;
+  $("s-safe").querySelector("button").onclick = () => { audio(); RUN.safe = {list: shuffle(SAFE), i: 0, res: []}; safeRound(); };
+}
+function safeRound(){
+  const R = RUN.safe, s = R.list[R.i], st = $("s-safe"); R.lock = false; R.first = true;
+  $("d-safe").innerHTML = R.list.map((_, k) => `<i class="${R.res[k] === true ? "ok" : R.res[k] === false ? "no" : k === R.i ? "now" : ""}"></i>`).join("");
+  st.innerHTML = `<div class="sit"><div class="pic" aria-hidden="true">${s.e}</div><div class="qtext"><span>${s.t}</span><button class="say-btn" type="button" aria-label="להקריא">🔊</button></div>
+    <div class="bigbtns"><button class="bigbtn go" type="button" data-a="1">👍 בטוח</button><button class="bigbtn stop" type="button" data-a="0">✋ מסוכן</button></div><div class="fbk" aria-live="polite"></div><div class="qmore"></div></div>`;
+  const q = s.t + ". בטוח או מסוכן?";
+  st.querySelector(".say-btn").onclick = () => speak(q); speak(q);
+  st.querySelectorAll(".bigbtn").forEach(b => b.onclick = () => {
+    if (R.lock) return; const fb = st.querySelector(".fbk");
+    if (+b.dataset.a === s.ok){
+      R.lock = true; okSound(); burstAt(b); R.res[R.i] = R.first; st.querySelectorAll(".bigbtn").forEach(x => x.disabled = true);
+      const t = (s.ok ? "נכון, זה בטוח! " : "נכון, זה מסוכן! ") + s.d; fb.textContent = "✅ " + (s.ok ? "בטוח!" : "מסוכן!");
+      const more = st.querySelector(".qmore");
+      more.innerHTML = `<div class="didu"><b>💡</b> ${s.d}</div><div class="row-btns"><button class="btn-main" type="button">${R.i < R.list.length - 1 ? "הבא ←" : "לסיום ←"}</button></div>`;
+      speak(t); more.querySelector(".btn-main").onclick = () => { R.i++; if (R.i >= R.list.length) finish("safe"); else safeRound(); };
+    } else { R.first = false; b.classList.add("wrong"); b.disabled = true; fb.textContent = "🤔 כמעט! חשבו שוב"; speak("כמעט! חשבו שוב"); }
+  });
+}
+
+/* ======================== משחק 4: מתכוננים לרכיבה ======================== */
+const RIDE = [
+  {k:"helmet", e:"⛑️", t:"קסדה", ok:1, say:"קסדה על הראש, ורצועה סגורה!"},
+  {k:"vest",   e:"🦺", t:"אפוד זוהר", ok:1, say:"אפוד זוהר, שיראו אותי מרחוק!"},
+  {k:"shoes",  e:"👟", t:"נעליים סגורות", ok:1, say:"נעליים סגורות לדיווש!"},
+  {k:"bell",   e:"🔔", t:"פעמון", ok:1, say:"פעמון – כדי שישמעו אותי!"},
+  {k:"flip",   e:"🩴", t:"כפכפים", say:"בכפכפים הרגל מחליקה מהדוושה. נסו משהו אחר!"},
+  {k:"phones", e:"🎧", t:"אוזניות", say:"עם אוזניות לא שומעים מה קורה מסביב. נסו משהו אחר!"},
+  {k:"crown",  e:"👑", t:"כתר", say:"כתר יפה, אבל הוא לא שומר על הראש! נסו משהו אחר."},
+  {k:"ice",    e:"🍦", t:"גלידה ביד", say:"כשרוכבים – שתי הידיים על הכידון! נסו משהו אחר."}
+];
+const RD = {w: {}, n: 0};
+function rideFig(go){ return svg(`<rect width="320" height="300" rx="24" fill="#DFF3FF"/>${RS.sun(270, 50, 20)}${RS.tree(40, 230, .7)}<rect y="230" width="320" height="70" fill="#BFE6A8"/><path d="M0 262 Q160 246 320 266 V286 Q160 268 0 280Z" fill="#E8DCC8" stroke="${INK}" stroke-width="2.5"/>
+  <g class="ride-go" id="rdGo" style="transform:translateX(${go ? "-340px" : "0"})">${RS.bike(170, 282, .95)}${RS.ch("alef", 166, 222, 112, {helmet: RD.w.helmet, vest: RD.w.vest})}${RD.w.bell ? `<text x="206" y="196" font-size="22">🔔</text>` : ""}${RD.w.shoes ? `<text x="146" y="262" font-size="20">👟</text>` : ""}</g>`, "0 0 320 300"); }
+function rideStart(){
+  RD.w = {}; RD.n = 0;
+  const st = $("s-ride"), list = shuffle(RIDE);
+  st.innerHTML = `<div class="qtext"><span>מה לוקחים לרכיבה?</span><button class="say-btn" type="button" aria-label="להקריא">🔊</button></div>
+    <div class="dress"><div class="fig" id="rFig">${rideFig()}</div><div class="items">${list.map(it => `<button class="item" type="button" data-k="${it.k}"><span aria-hidden="true">${it.e}</span>${it.t}</button>`).join("")}</div></div><div class="fbk" aria-live="polite"></div>`;
+  const q = "אֲלֶפְבּוּקְלִי רוצה לרכוב על האופניים. מה הוא צריך? מצאו ארבעה דברים.";
+  st.querySelector(".say-btn").onclick = () => speak(q); speak(q);
+  st.querySelectorAll(".item").forEach(b => b.onclick = () => {
+    audio(); const it = RIDE.find(x => x.k === b.dataset.k), fb = st.querySelector(".fbk");
+    if (it.ok){
+      b.classList.add("right"); b.disabled = true; RD.w[it.k] = 1; RD.n++; okSound(); burstAt(b);
+      $("rFig").innerHTML = rideFig(); fb.textContent = "✅ " + it.say; speak(it.say);
+      if (RD.n === 4){ fb.textContent = "🎉 מוכנים לרכיבה בטוחה!"; st.querySelectorAll(".item").forEach(x => x.disabled = true);
+        setTimeout(() => { const g = $("rdGo"); if (g) g.style.transform = "translateX(-340px)"; }, 900);
+        setTimeout(() => finish("ride", "אֲלֶפְבּוּקְלִי עם קסדה, אפוד זוהר, נעליים סגורות ופעמון – ויוצא לרכוב בגינה! 🚲"), 3000); }
+    } else { b.classList.add("wrong"); b.disabled = true; fb.textContent = "🤔 " + it.say; speak(it.say); }
+  });
+}
+
+/* ======================== משחק 5: חידון ======================== */
+const QUIZ = [
+  {q:"איפה הכי בטוח לחצות את הכביש?", a:[{e:"🦓", t:"במעבר חצייה", ok:1}, {e:"🚙", t:"בין מכוניות חונות"}, {e:"↪️", t:"בסיבוב של הכביש"}], d:"במעבר חצייה ובמעבר עם רמזור הנהגים מצפים להולכי רגל. לחצות במקום אחר – מסוכן יותר."},
+  {q:"עד איזה גיל ילדים חוצים כביש רק עם מבוגר?", a:[{e:"9️⃣", t:"עד גיל 9", ok:1}, {e:"5️⃣", t:"עד גיל 5"}, {e:"3️⃣", t:"עד גיל 3"}], d:"ילדים צעירים עוד לא יודעים להעריך כמה רחוקה מכונית וכמה מהר היא נוסעת. לכן עד גיל 9 חוצים עם מבוגר."},
+  {q:"באיזה צבע האיש ברמזור, כשמותר לחצות?", a:[{e:"🟢", t:"ירוק", ok:1}, {e:"🔴", t:"אדום"}, {e:"🔵", t:"כחול"}], d:"וגם בירוק – מסתכלים לשני הצדדים ומוודאים שהמכוניות עצרו."},
+  {q:"מתי חוגרים חגורת בטיחות?", a:[{e:"✅", t:"בכל נסיעה", ok:1}, {e:"🛣️", t:"רק בנסיעה ארוכה"}, {e:"🌧️", t:"רק כשיורד גשם"}], d:"גם בנסיעה קצרה לגן או לסופר. וילדים יושבים במושב בטיחות או בבוסטר שמתאים לגיל ולגובה שלהם."},
+  {q:"מאיזו דלת יוצאים מהרכב?", a:[{e:"🚶", t:"מהדלת שליד המדרכה", ok:1}, {e:"🛣️", t:"מהדלת שליד הכביש"}, {e:"🪟", t:"מהחלון"}], d:"מהדלת של המדרכה יוצאים ישר למקום בטוח, רחוק מהמכוניות שנוסעות."},
+  {q:"מה עוזר לנהגים לראות אותנו בחושך?", a:[{e:"🦺", t:"אפוד זוהר", ok:1}, {e:"🖤", t:"בגדים שחורים"}, {e:"🕶️", t:"משקפי שמש"}], d:"מחזירי אור ובגדים בהירים בולטים באור של הפנסים, גם מרחוק."},
+  {q:"מה עושים לפני שרוכבים על קורקינט?", a:[{e:"⛑️", t:"חובשים קסדה", ok:1}, {e:"🎧", t:"שמים אוזניות"}, {e:"🍦", t:"קונים גלידה"}], d:"קסדה בכל רכיבה – על אופניים ועל קורקינט – עם רצועה סגורה מתחת לסנטר."},
+  {q:"איפה הכי בטוח לשחק בכדור?", a:[{e:"🌳", t:"בגינה או בחצר", ok:1}, {e:"🛣️", t:"על המדרכה ליד הכביש"}, {e:"🅿️", t:"בחניה"}], d:"משחקים רחוק מהכביש ומהמכוניות. ואם הכדור בורח – קוראים למבוגר."}
+];
+function quizStart(){
+  $("d-quiz").innerHTML = "";
+  $("s-quiz").innerHTML = `<div class="startbox"><span class="e" aria-hidden="true">❓</span><button class="btn-main" type="button">▶️ להתחיל את החידון</button></div>`;
+  $("s-quiz").querySelector("button").onclick = () => { audio(); RUN.quiz = {i: 0, res: [], n: QUIZ.length}; quizRound("quiz"); };
+}
+
+/* ======================== מערכים ======================== */
+const PLAN_GAN = [
+  {m:3, e:"🚦", t:"פתיחה: רמזור הפתעה", d:"מרימים צלחת אדומה – כולם קופאים. צלחת ירוקה – צועדים במקום. אחרי כמה סבבים שואלים: איפה ראיתם רמזור? מה הוא אומר לנו?", say:"\"אדום – עומדים! ירוק – צועדים! מי יודע מה עוד הרמזור מלמד אותנו?\"", sped:"מתחילים רק עם צבע אחד (אדום = עוצרים), ומוסיפים את הירוק כשהילדים מצליחים. אפשר להחזיק יד של ילד שקשה לו לעצור.", deaf:"הצבעים עצמם הם הסימן. מוסיפים תנועה קבועה: יד פתוחה קדימה = עוצרים, הליכה במקום = הולכים.", go:"g-light"},
+  {m:8, e:"📖", t:"הסיפור במקרן", d:"מקרינים את \"שׁוֹמֶרְבּוּקְלִי והמשפחה בדרך לגן השעשועים\" (11 עמודים) ומקריאים, או לוחצים 🔊. עוצרים בעמודים 3, 5 ו-7 ושואלים: מה הם עשו נכון? בסוף עונים יחד על 5 השאלות.", say:"\"למה לֵבְבּוּקְלִי נותן יד לסבא? כי ליד הכביש מבוגר שומר עלינו!\"", sped:"גילאי 3–4 או קשב קצר: עמודים 1, 3, 5, 7 ו-11. מחזיקים ביד חפץ שקשור לעמוד (מכונית צעצוע, קסדה).", deaf:"מקרינים את הטקסט גדול, מצביעים על הדמות שמדברת ומראים בתנועה: יד ביד, עצור, להסתכל לצדדים.", go:"story"},
+  {m:5, e:"🎮", t:"משחק הרמזור במקרן", d:"משחקים בהרמזור של גַּרְבּוּקְלִי. ילד אחד לוחץ, וכל השאר עונים בגוף: אדום – קופאים, ירוק – צועדים במקום ונותנים יד לחבר.", say:"\"האיש ירוק! לפני שחוצים – מה עוד עושים? נכון, מסתכלים לשני הצדדים!\"", sped:"לוחצים יחד עם הילד. מותר לחכות כמה שצריך – אין זמן במשחק.", deaf:"הכפתורים גדולים וצבעוניים, והמשוב מופיע בכתב. מוסיפים אגודל למעלה לכל הצלחה.", go:"g-light"},
+  {m:8, e:"🦓", t:"מעבר חצייה בגן", d:"מדביקים על הרצפה פסים לבנים מנייר דבק (או מניחים רצועות נייר). ילד אחד הוא \"הרמזור\" עם הצלחות, ושניים הם \"מכוניות\" שעוצרות. כל ילד חוצה יד ביד עם הגננת לפי 5 השלבים: עוצרים, נותנים יד, מחכים לירוק, מסתכלים, חוצים בקו ישר.", say:"\"עוצרים על המדרכה... נותנים יד... מחכים לאיש הירוק... מסתכלים לצד הזה ולצד השני... וחוצים!\"", sped:"מסמנים את 5 השלבים בתמונות על הקיר ומצביעים על כל אחד. ילד שמתקשה במגע – מחזיק בקצה צעיף או חבל במקום ביד.", deaf:"מראים כל שלב בתמונה ובתנועה לפני שעושים אותו. מסכמים עם הילד סימן קבוע ל\"עצור\".", go:"g-steps"},
+  {m:6, e:"👍", t:"בטוח או מסוכן?", d:"מקרינים את המשחק. הילדים עונים בגוף: אגודל למעלה = בטוח, יד עוצרת = מסוכן. אחרי כל מצב שואלים: מה כדאי לעשות במקום?", say:"\"רצים אחרי הכדור לכביש? ✋ מסוכן! אז מה עושים? קוראים למבוגר!\"", sped:"בוחרים 4–5 מצבים בלבד, ומדגימים כל אחד עם צעצוע (מכונית, כדור, בובה).", deaf:"התשובות הן תנועות ידיים מלכתחילה. התמונות והכתוביות על המסך מספיקות לרוב המצבים.", go:"g-safe"},
+  {m:5, e:"⛑️", t:"קסדה אמיתית", d:"מביאים קסדה אמיתית ובובה. כל ילד מנסה לחבוש לבובה ולסגור את הרצועה. אחר כך משחקים יחד ב\"אֲלֶפְבּוּקְלִי מתכונן לרכיבה\".", say:"\"הקסדה יושבת ישר על הראש, והרצועה סגורה מתחת לסנטר. קליק!\"", sped:"מתרגלים רק את הקליק של הרצועה. אפשר לחבוש קסדה על הילד עצמו, אם הוא רוצה.", deaf:"מראים את הקליק מקרוב, ומבקשים מהילד להרגיש את הסגירה ביד.", go:"g-ride"},
+  {m:8, e:"🖍️", t:"דף עבודה: בטוח או מסוכן", d:"מחלקים את הדף. בכל ציור – מסמנים 👍 או ✋, ואז צובעים. מי שמסיים – צובע את דף מעבר החצייה.", say:"\"בכל תמונה – מה רואים? זה בטוח, או שצריך לעצור?\"", sped:"מגדילים את הדף ל-A3, או גוזרים 3 ציורים בלבד. אפשר להדביק מדבקה במקום לסמן.", deaf:"מדגימים על הלוח את הסימון בציור הראשון לפני שמתחילים.", go:"sheetBox"},
+  {m:2, e:"🏅", t:"סיכום ותעודה", d:"כל ילד מקבל תעודת \"הולך רגל זהיר\" עם השם שלו. שולחים להורים את ההודעה המוכנה, עם רעיון לתרגל בדרך הביתה.", say:"\"היום כולכם הולכי רגל זהירים! ובדרך הביתה – תראו להורים איך חוצים יד ביד.\"", sped:"התעודה עם תמונה של הילד חוצה בגן (רק באישור ההורים, ונשארת אצלם).", deaf:"קוראים את הכללים שבתעודה עם הילד ומצביעים על כל אחד.", go:"sheetBox"}
+];
+const PLAN_SCHOOL = [
+  {m:5, e:"🗺️", t:"פתיחה: איך הגעתם היום?", d:"על הלוח טבלה: ברגל / ברכב / באוטובוס / באופניים או קורקינט. כל תלמיד מסמן קו. סופרים יחד ומשווים: באיזו דרך הגיעו הכי הרבה?", say:"\"בכל דרך שהגעתם – היו בה כללים ששמרו עליכם. היום נגלה אותם!\"", sped:"מכינים מראש כרטיסי תמונה לכל דרך, והתלמיד מדביק את שלו.", deaf:"כותבים את שמות הדרכים עם ציור קטן, ומבקשים להצביע במקום לענות בקול.", go:null},
+  {m:7, e:"📖", t:"הסיפור ושיחה", d:"מקרינים את הסיפור. בכיתות ב'–ג' תלמידים קוראים עמוד בתורם. אחרי כל 3 עמודים שואלים: איזה כלל הדמויות שמרו? כותבים על הלוח רשימת כללים.", say:"\"מה עשה חֶשְׁבּוּקְלִי לפני שחצה? למה זה חשוב גם כשהאיש ירוק?\"", sped:"קריאה בזוגות, או המורה קוראת והתלמיד מצביע על הדמות. רשימת הכללים בתמונות.", deaf:"הטקסט על המסך גדול. הכללים נכתבים על הלוח בזמן הקריאה.", go:"story"},
+  {m:8, e:"❓", t:"חידון בקבוצות", d:"מחלקים ל-4 קבוצות. מקרינים את חידון זהירות בדרכים, כל קבוצה עונה בתורה, ואת ה\"הידעת?\" קוראים בקול.", say:"\"למה ילדים עד גיל 9 חוצים רק עם מבוגר? בואו נקרא בהידעת!\"", sped:"תלמיד יכול להצביע על התשובה במקום לקרוא אותה. מוותרים על ניקוד.", deaf:"כל שאלה ותשובה כתובות על המסך. נותנים לקבוצה רגע להתייעץ בכתב או בסימנים.", go:"g-quiz"},
+  {m:8, e:"🚸", t:"משחק תפקידים: חוצים נכון", d:"מסדרים את השלבים במשחק \"סדר החצייה\", ואז ממחישים בכיתה: מעבר חצייה מנייר, תלמיד-רמזור, תלמידים-מכוניות, ותלמיד אחד שהוא \"המבוגר\". מדברים: למה אסור לחצות בין מכוניות חונות?", say:"\"הנהג יושב גבוה ורחוק – האם הוא רואה ילד שעומד מאחורי מכונית?\"", sped:"התלמיד מקבל תפקיד שנוח לו (רמזור עם צלחות). הכללים בתמונות על הקיר.", deaf:"מסכמים סימנים קבועים: עצור, להסתכל, לחצות. הרמזור בצלחות צבעוניות.", go:"g-steps"},
+  {m:10, e:"✏️", t:"המסלול הבטוח שלי", d:"כל תלמיד מקבל את הדף \"המסלול הבטוח שלי\": מצייר את הדרך מהבית לבית הספר, מסמן מעבר חצייה, רמזור ומקומות שצריך להיזהר בהם, וכותב 3 כללים שהוא שומר.", say:"\"איפה בדרך שלכם יש מעבר חצייה? איפה צריך לעצור ולהסתכל?\"", sped:"מציירים רק 2 נקודות (בית ובית ספר) ומדביקים סימנים מוכנים. הכללים – בהעתקה מהלוח או בציור.", deaf:"הדף כתוב ומאויר. מדגימים מסלול אחד על הלוח לפני שמתחילים.", go:"sheetBox"},
+  {m:5, e:"👍", t:"בטוח או מסוכן – סיכום", d:"מקרינים את \"בטוח או מסוכן?\" ועונים כל הכיתה יחד בתנועה. כל תלמיד אומר כלל אחד שלמד היום.", say:"\"מצב אחרון: בערב לובשים אפוד זוהר. בטוח? 👍 למה?\"", sped:"תשובה בכרטיס 👍 / ✋ במקום בקול.", deaf:"התשובות הן תנועות. המצב כתוב על המסך.", go:"g-safe"},
+  {m:2, e:"🏅", t:"התחייבות ותעודה", d:"כל תלמיד ממלא תעודת \"הולך רגל זהיר\", ושולחים להורים את ההודעה המוכנה: לעבור יחד עם הילד על המסלול שצייר.", say:"\"קחו הביתה את המסלול שלכם, ולכו בו יחד עם ההורים השבוע.\"", sped:"המורה ממלאת את השם, והתלמיד צובע וחותם.", deaf:"ההודעה להורים בכתב, עם הסבר מה לתרגל.", go:"sheetBox"}
+];
+function planDraw(box, plan){
+  $(box).innerHTML = plan.map((s, i) => `<details class="step" ${i === 0 ? "open" : ""}><summary><span class="m">${s.m} דק'</span><span class="e" aria-hidden="true">${s.e}</span><span>${i + 1}. ${s.t}</span></summary><div class="bd">
+    <p>${s.d}</p><p class="say"><b>💬 מה אומרים:</b> ${s.say}</p><p class="ad"><b>💜 חינוך מיוחד:</b> ${s.sped}</p><p class="ad"><b>🦻 כבדי שמיעה:</b> ${s.deaf}</p>
+    ${s.go ? `<a class="btn-sec stepgo" href="#${s.go}">לפעילות בעמוד ←</a>` : ""}</div></details>`).join("");
+}
+
+/* ======================== בלי מסך ======================== */
+const OFF = [
+  {e:"🦓", t:"מעבר חצייה בחצר", p:"מציירים בגיר (או מדביקים בנייר דבק) מעבר חצייה. ילד אחד רמזור, אחרים מכוניות על אופני ילדים, וכולם מתרגלים לחצות יד ביד.", home:"מציירים בגיר מעבר חצייה ליד הבית, ומתרגלים יחד: עוצרים, נותנים יד, מסתכלים לשני הצדדים וחוצים"},
+  {e:"🚦", t:"רמזור מצלחות", p:"צובעים צלחת נייר באדום וצלחת בירוק ומדביקים על מקל. משחקים \"רמזור\": אדום – קופאים, ירוק – הולכים.", home:"מכינים רמזור משתי צלחות נייר, ומשחקים בבית: אדום – קופאים, ירוק – הולכים"},
+  {e:"🚶", t:"הדרך הבטוחה שלי", p:"בדרך לגן או לבית הספר – הילד \"מדריך\" את המבוגר: איפה המדרכה, איפה מעבר החצייה, איפה עוצרים ומסתכלים.", home:"בדרך הביתה, תנו לילד להיות המדריך: שיראה לכם איפה עוצרים, איפה חוצים ואיפה מסתכלים"},
+  {e:"⛑️", t:"בודקים את הקסדה", p:"כל ילד בודק עם הורה: הקסדה יושבת ישר, קרוב לגבות, והרצועה סגורה מתחת לסנטר – קליק!", home:"בודקים יחד את הקסדה: יושבת ישר על הראש, לא זזה, והרצועה סגורה מתחת לסנטר"},
+  {e:"🔦", t:"מה רואים בחושך?", p:"מחשיכים את החדר ומאירים בפנס: על בגד כהה, על בגד בהיר ועל פס מחזיר אור. מה הכי בולט?", home:"בערב, מכבים את האור ומאירים בפנס על בגדים שונים: מה הכי רואים? ככה רואים אותנו הנהגים"},
+  {e:"🧸", t:"מושב בטיחות לבובה", p:"בונים מכונית מכיסאות ושמים את הבובות במושבים. כל \"נוסע\" חוגר את הבובה לפני שנוסעים.", home:"לפני כל נסיעה – הילד בודק שכולם חגורים, כמו \"שוטר החגורות\" של המשפחה"}
+];
+function offDraw(){
+  $("offBox").innerHTML = OFF.map((o, i) => `<div class="off"><h3>${o.e} ${o.t}</h3><p>${o.p}</p><button class="btn-sec" type="button" data-i="${i}">📲 לשלוח להורים</button></div>`).join("");
+  $("offBox").querySelectorAll("button").forEach(b => b.onclick = () => sendParents(OFF[+b.dataset.i]));
+}
+
+/* ======================== דפי הדפסה ======================== */
+const foot = () => sitePrintFooter("road-safety", "", "../../img/logo.png");
+const sHead = t => `<div class="s-head"><h1>${t}</h1><span class="nm">השם שלי: ____________</span></div><div class="s-strip"></div>`;
+function bw(fn){ RS.COLOR = false; const s = fn(); RS.COLOR = true; return s; }
+const WK = [
+  ["רוכבים על אופניים עם קסדה", () => RS.bike(100, 108, .9) + RS.helmet(100, 40, .55)],
+  ["רצים אחרי כדור לכביש", () => `<rect x="0" y="70" width="200" height="50" fill="#fff" stroke="${INK}" stroke-width="3"/><path d="M20 95 h30 M80 95 h30 M140 95 h30" stroke="${INK}" stroke-width="3"/>` + RS.ball(110, 92, 14) + `<path d="M60 50 q20 -14 36 0" fill="none" stroke="${INK}" stroke-width="3" stroke-dasharray="5 5"/>`],
+  ["יושבים במושב בטיחות", () => RS.seat(100, 120, .8)],
+  ["חוצים כשהאיש אדום", () => RS.pedLight(100, 124, "red", .48) + `<text x="150" y="70" font-size="40">🏃</text>`],
+  ["אפוד זוהר בחושך", () => RS.moon(40, 40) + `<g transform="translate(110 98) scale(1.4)"><path d="M-40 -36 Q0 -16 40 -36 L46 22 Q0 40 -46 22Z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M-44 -4 Q0 14 44 -4" fill="none" stroke="${INK}" stroke-width="2"/><path d="M-44 6 Q0 24 44 6" fill="none" stroke="${INK}" stroke-width="2"/></g>`],
+  ["חוצים בין מכוניות חונות", () => RS.car(56, 112, "#fff", .5, 1) + RS.car(150, 112, "#fff", .5, -1) + `<circle cx="104" cy="70" r="10" fill="#fff" stroke="${INK}" stroke-width="3"/><path d="M104 80 v24 M92 88 h24" stroke="${INK}" stroke-width="3"/>`]
+];
+function sheetWork(){ return `<div class="sheet">${sHead("👍 בטוח או מסוכן?")}<div class="s-body"><p class="s-tip">בכל ציור – מקיפים 👍 אם זה בטוח, או ✋ אם זה מסוכן. אחר כך צובעים!</p>
+  <div class="w6">${WK.map(([t, f]) => `<div>${svg(bw(f), "0 0 200 130")}<span>${t}</span><div class="ck"><span>👍 <i></i></span><span>✋ <i></i></span></div></div>`).join("")}</div>
+  <div class="p-box"><h2>להורה: מדברים על זה</h2><p>מה אפשר לעשות במקום במצבים המסוכנים? בדרך הבאה ברחוב – חפשו יחד מעבר חצייה ורמזור.</p></div></div>${foot()}</div>`; }
+function sheetColor(){ return `<div class="sheet">${sHead("🖍️ דף צביעה: מעבר החצייה")}<div class="s-body"><p class="s-tip">צובעים את הרמזור (איזה איש דולק?), את המכונית, את האופניים ואת הקסדה. מי עוד הולך ברחוב? ציירו!</p>
+  ${svg(bw(() => RS.sky(600, 700) + RS.cloud(130, 80, .9) + RS.sun(500, 80, 30) + RS.house(110, 330, 1.4) + RS.tree(300, 330, 1.2) + RS.house(490, 330, 1.3) + RS.road(600, 330, 300, {walk: 70, road: 200}) + RS.pedLight(440, 400, "green", .9) + RS.car(140, 560, "#fff", 1.1, 1) + RS.bike(470, 664, .8) + RS.helmet(80, 640, .6)), "0 0 600 700", 'style="width:100%;height:auto;display:block"')}</div>${foot()}</div>`; }
+function sheetRoute(){
+  const ic = (f, vb = "0 0 120 120") => svg(bw(f), vb);
+  return `<div class="sheet">${sHead("🗺️ המסלול הבטוח שלי")}<div class="s-body"><p class="s-tip">מציירים את הדרך מהבית לבית הספר (או לגן). מסמנים בה מעבר חצייה, רמזור ומקומות שעוצרים ומסתכלים.</p>
+  <div class="route"><div class="h1">${ic(() => RS.house(60, 110, .8))}🏠 הבית שלי</div><div class="h2">${ic(() => RS.house(60, 110, .8, "#fff").replace("#E5484D", "#fff"))}🏫 בית הספר</div></div>
+  <div class="legend"><div>${ic(() => `<rect x="10" y="20" width="100" height="80" fill="#fff" stroke="${INK}" stroke-width="3"/>` + [0,1,2,3,4].map(k => `<rect x="30" y="${28 + k * 15}" width="60" height="8" fill="#fff" stroke="${INK}" stroke-width="2"/>`).join(""))}מעבר חצייה</div><div>${ic(() => RS.pedLight(60, 120, "red", .45))}רמזור</div><div>${ic(() => `<circle cx="60" cy="60" r="40" fill="#fff" stroke="${INK}" stroke-width="4"/><text x="60" y="76" text-anchor="middle" font-size="44">✋</text>`)}עוצרים</div><div>${ic(() => `<circle cx="60" cy="60" r="40" fill="#fff" stroke="${INK}" stroke-width="4"/><text x="60" y="76" text-anchor="middle" font-size="44">👀</text>`)}מסתכלים</div></div>
+  <div class="lines"><b>3 כללים שאני שומר/ת בדרך:</b><p>1.</p><p>2.</p><p>3.</p></div></div>${foot()}</div>`;
+}
+function sheetCert(){ return `<div class="sheet"><div class="cert">${svg(RS.ch("shomer", 80, 160, 150) + RS.pedLight(150, 160, "green", .5) + RS.ch("saba", 220, 160, 140), "0 0 300 165", 'style="width:70mm;height:auto"')}
+  <h2>תעודת הולך רגל זהיר</h2><p style="margin:0;font-size:13pt">התעודה מוענקת ל:</p><div class="nm2">&nbsp;</div>
+  <p style="margin:0;font-size:13pt">שמבטיח/ה לשמור על כללי הזהירות בדרכים:</p>
+  <ul><li>הולכים על המדרכה, רחוק מהכביש</li><li>חוצים רק עם מבוגר, יד ביד</li><li>חוצים במעבר חצייה, בירוק, ומסתכלים לשני הצדדים</li><li>חוגרים חגורה בכל נסיעה</li><li>חובשים קסדה כשרוכבים</li><li>בחושך – בגדים בהירים ואפוד זוהר</li></ul>
+  <p style="margin:2mm 0 0;font-size:12pt;color:#4E8576;font-weight:700">שׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI גאים בך! 🦄</p>
+  <div class="sig"><span>חתימת הילד/ה</span><span>חתימת הגננת / המורה</span></div></div>${foot()}</div>`; }
+
+/* ======================== סוף משחק ======================== */
+function couponHTML(){
+  if (CONFIG.coupon) return `<p>🎁 מתנה מ-BOOQLI: קופון הנחה לספר אישי שהילד הוא הגיבור שלו</p><b>${CONFIG.coupon}</b><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a></p>`;
+  return `<p>🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד</p><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת ספר אישי ←</a></p>`;
+}
+const GAMES = {
+  story: {e:"📖", sec:"story", begin:() => { SI = 0; storyDraw(); }, next:"g-light", nt:"למשחק הרמזור ←"},
+  light: {e:"🚦", sec:"g-light", begin:lightStart, next:"g-steps", nt:"לסדר החצייה ←"},
+  steps: {e:"🚸", sec:"g-steps", begin:stepsStart, next:"g-safe", nt:"לבטוח או מסוכן ←"},
+  safe:  {e:"👍", sec:"g-safe", begin:safeStart, next:"g-ride", nt:"לקסדה ואופניים ←"},
+  ride:  {e:"⛑️", sec:"g-ride", begin:rideStart, next:"g-quiz", nt:"לחידון ←"},
+  quiz:  {e:"❓", sec:"g-quiz", begin:quizStart, next:"sheetBox", nt:"לדפים להדפסה ←"}
+};
+let WIN_G = null;
+function finish(id, text){
+  WIN_G = id; let title = "כל הכבוד! 🎉";
+  if (!text){
+    const R = RUN[id], n = R.n || R.list.length, sc = R.res.filter(Boolean).length;
+    title = sc === n ? "מושלם! 🏆" : "כל הכבוד! 🎉";
+    text = `הצלחתם ${sc} מתוך ${n} כבר בניסיון הראשון.` + (sc < n ? " ובכל השאר – בניסיון השני. מעולה!" : "") + (id === "story" ? " שׁוֹמֶרְבּוּקְלִי גאה בכם 🦄" : " עכשיו אתם מומחים לזהירות בדרכים 🚦");
+  }
+  $("winIc").textContent = GAMES[id].e; $("wTitle").textContent = title; $("winText").textContent = text;
+  $("winCoupon").innerHTML = couponHTML(); $("winNext").textContent = GAMES[id].nt;
+  $("win").hidden = false; bigFireworks(); winSound(); speak(title);
+  setTimeout(() => $("winAgain").focus({preventScroll:true}), 60);
+}
+$("winAgain").onclick = () => { $("win").hidden = true; GAMES[WIN_G].begin(); $(GAMES[WIN_G].sec).scrollIntoView({behavior:"smooth"}); };
+$("winNext").onclick = () => { $("win").hidden = true; const t = $(GAMES[WIN_G].next); if (t && !t.hidden && t.offsetParent) t.scrollIntoView({behavior:"smooth"}); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("win").hidden) $("win").hidden = true; });
+
+/* ======================== זיקוקים ======================== */
+function burstAt(el){
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const b = document.createElement("span"); b.className = "burst";
+  for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2, r = 36 + Math.random()*30, d = document.createElement("i");
+    d.style.setProperty("--x", (Math.cos(a)*r).toFixed(0) + "px"); d.style.setProperty("--y", (Math.sin(a)*r).toFixed(0) + "px"); d.style.setProperty("--c", cols[i % cols.length]); b.appendChild(d); }
+  if (getComputedStyle(el).position === "static") el.style.position = "relative";
+  el.appendChild(b); setTimeout(() => b.remove(), 1000);
+}
+function bigFireworks(ms = 4000){
+  const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const P = [], R = []; const start = performance.now(); let last = 0;
+  function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(cols)}); }
+  function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(cols) : r.c}); } }
+  (function frame(t){
+    const el = t - start; x.clearRect(0, 0, W, H);
+    if (el < ms - 1200 && t - last > 260){ rocket(); if (Math.random() < .5) rocket(); last = t; }
+    for (let i = R.length - 1; i >= 0; i--){ const r = R[i]; r.y += r.vy; x.fillStyle = "#fff"; x.beginPath(); x.arc(r.x, r.y, 3*dpr, 0, 7); x.fill(); if (r.y <= r.ty){ explode(r); R.splice(i, 1); } }
+    for (let i = P.length - 1; i >= 0; i--){ const p = P[i]; p.x += p.vx; p.y += p.vy; p.vy += .06*dpr; p.vx *= .985; p.l -= .012; if (p.l <= 0){ P.splice(i, 1); continue; } x.globalAlpha = p.l; x.fillStyle = p.c; x.beginPath(); x.arc(p.x, p.y, 3*dpr, 0, 7); x.fill(); }
+    x.globalAlpha = 1;
+    if (el < ms || P.length) requestAnimationFrame(frame); else cv.hidden = true;
+  })(start);
+}
+
+/* ======================== הדפסה ======================== */
+let printed = false; addEventListener("beforeprint", () => printed = true);
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4500); }
+function doPrint(html){
+  $("print").innerHTML = html;
+  const imgs = [...$("print").querySelectorAll("img")];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })))
+    .then(() => { printed = false; try { print(); } catch(e){} setTimeout(() => { if (!printed) toast("🖨️ חלון ההדפסה לא נפתח. פתחו את האתר בדפדפן רגיל (כרום או ספארי) ונסו שוב."); }, 1500); });
+}
+
+$("print1").onclick = () => doPrint(sheetWork());
+$("print2").onclick = () => doPrint(sheetColor());
+$("print3").onclick = () => doPrint(sheetRoute());
+$("print4").onclick = () => doPrint(sheetCert());
+
+/* ======================== הודעות וואטסאפ ======================== */
+const TOPIC_URL = location.href.split(/[?#]/)[0].replace(/index\.html?$/, "");
+function waSend(t){ const u = "https://wa.me/?text=" + encodeURIComponent(t); const w = window.open(u, "_blank", "noopener"); if (!w) location.href = u; }
+function sendParents(o){
+  const idea = o || OFF[2];
+  waSend(`🚦 השבוע למדנו על זהירות בדרכים!\n\nשמענו את הסיפור של שׁוֹמֶרְבּוּקְלִי והמשפחה בדרך לגן השעשועים, תרגלנו חצייה יד ביד במעבר חצייה, דיברנו על חגורה ומושב בטיחות, ועל קסדה כשרוכבים.\n\n🏡 רעיון קטן לבית: ${idea.home}.\n\n🤝 תזכורת: ילדים עד גיל 9 חוצים כביש רק עם מבוגר.\n\nורוצים להמשיך לשחק? משחק הרמזור, בטוח או מסוכן, קסדה ואופניים וחידון:\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_parents&utm_campaign=road_safety\n\nבחינם, בחסות BOOQLI ❤️`);
+}
+function sendGift(){ waSend(`🎁 מתנה מהגן: זהירות בדרכים – לשחק וללמוד בבית!\n\nסיפור מאויר עם הקראה, משחק הרמזור, סדר החצייה, בטוח או מסוכן, קסדה ואופניים, חידון ודפים להדפסה.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=gan_gift&utm_campaign=road_safety\n\nבחסות BOOQLI ❤️`); }
+document.querySelectorAll(".js-gift").forEach(b => b.onclick = sendGift);
+$("parentsBtn").onclick = () => sendParents();
+$("shareBtn").onclick = () => waSend(`🚦 מצאתי נושא שלם על זהירות בדרכים, לגן ולכיתות א'–ג': סיפור מאויר עם הקראה, 5 משחקים, מערך לגננת, מערך למורה ו-4 דפים להדפסה.\nבחינם · אתר בטוח להורים ולילדים.\n\n👈 ${TOPIC_URL}?utm_source=whatsapp&utm_medium=share&utm_campaign=road_safety\n\nבחסות BOOQLI ❤️`);
+
+/* ======================== הפעלה ======================== */
+$("heroArt").innerHTML = RS.hero();
+storyDraw(); lightStart(); stepsStart(); safeStart(); rideStart(); quizStart();
+planDraw("planGan", PLAN_GAN); planDraw("planSchool", PLAN_SCHOOL); offDraw();
+$("pv1").innerHTML = sheetWork(); $("pv2").innerHTML = sheetColor(); $("pv3").innerHTML = sheetRoute(); $("pv4").innerHTML = sheetCert();
+const sheetParam = new URLSearchParams(location.search).get("sheet");
+const SHEETS = {work: sheetWork, color: sheetColor, route: sheetRoute, cert: sheetCert};
+if (SHEETS[sheetParam]) $("print").innerHTML = SHEETS[sheetParam]();
+
+siteJoinLinks(); siteDevBar(); siteBackBar("../../"); siteCloseBar("road-safety", "זהירות בדרכים", "../../");
+$("heroLike").appendChild(siteLikeButton("road-safety", "אהבתי"));
+$("winLike").appendChild(siteLikeButton("road-safety-game", "אהבתי את המשחק"));
+$("ganLink").href = CONFIG.gan; $("orderBtn").href = CONFIG.order; $("siteLink").href = CONFIG.site;
+</script>
+</body>
+</html>
