@@ -340,13 +340,17 @@ document.addEventListener("click", e => {
    בסוף: התמונות עולות לשרת הקטן (SITE.photoUpload – Cloudflare Worker, worker/photo-upload.js), ונשלחת הודעת
    וואטסאפ אחת לשמש עם כל ספר: שם + הקדשה + קישור לתמונה. בלי בדיקות ובלי סימונים. */
 const UPLOAD = (window.SITE && SITE.photoUpload) || "";
-const book = id => BOOKS.find(b => b.id === id);
-function verOpts(b){ return b ? b.v.map((v, i) => [i, /בן/.test(v[0]) ? "נכד" : "נכדה"]) : []; }
+/* כל נושאי הספרים של BOOQLI (4.11.2026, לפי המדף באתר הראשי). לאלה שאינם ב-books.js עוד אין תצוגה מקדימה – רק ברשימה הנפתחת.
+   כל הספרים יש גם לבנים וגם לבנות, ולכן תמיד שואלים נכד או נכדה (ver = "b" / "g"). */
+const EXTRA = [["sleep","רציתי לישון, אבל..."],["lucy","איפה לוסי?"],["dream","רגע לפני החלום"],["space","המסע לחלל"],["pacifier","ביי ביי מוצץ"],["diaper","ביי ביי חיתול"],["vikings","הוויקינגים"],["sibling","אח/ות גדול/ה"]];
+const ALLB = BOOKS.concat(EXTRA.filter(x => !BOOKS.some(b => b.id === x[0])).map(x => ({id: x[0], name: x[1], v: [], img: ""})));
+const book = id => ALLB.find(b => b.id === id);
+function verOpts(b){ return [["b", "נכד"], ["g", "נכדה"]]; }
 function priceOf(n, cover){ let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return cover === "soft" ? t[1] : t[2]; }
 const ORD = {who: "", list: []};          /* list = ספרים שכבר גמרנו */
 let CUR = null, STEP = "book", ORDER = "", PHOTOS_LEFT = null;
 const fresh = id => ({book: id || "", ver: "", name: "", ded: "", dedI: 0, blob: null, url: ""});
-const isGirl = it => { const v = verOpts(book(it.book)).find(x => String(x[0]) === String(it.ver)); return v ? v[1] === "נכדה" : false; };
+const isGirl = it => it.ver === "g";
 const kid = it => isGirl(it) ? "הנכדה" : "הנכד";
 const SB = '<img src="../img/family/booqli.webp" alt="" width="46" height="46">';
 /* הקדשות מוכנות: ברכה כללית לנכד/ה, כ-300 תווים, בלי פרטים אישיים – מתאימה כמעט לכולם (שמש, 4.11.2026) */
@@ -359,8 +363,8 @@ function dedIdeas(it){
   ];
 }
 function want(id){ ev("savta-want", id);
-  if (STEP === "send" || STEP === "more") { if (ORD.list.length < MAX) { CUR = fresh(id); STEP = book(id).v.length > 1 ? "ver" : "name"; if (STEP === "name") CUR.ver = "0"; } }
-  else if (STEP === "book" || STEP === "ver") { CUR.book = id; CUR.ver = ""; STEP = book(id).v.length > 1 ? "ver" : "name"; if (STEP === "name") CUR.ver = "0"; }
+  if (STEP === "send" || STEP === "more") { if (ORD.list.length < MAX) { CUR = fresh(id); STEP = "ver"; } }
+  else if (STEP === "book" || STEP === "ver") { CUR.book = id; CUR.ver = ""; STEP = "ver"; }
   draw(true);
 }
 /* ציור המסלול: מה שכבר עשינו – שורות קטנות עם "לתקן"; הצעד של עכשיו – כרטיס גדול */
@@ -373,7 +377,7 @@ function draw(scroll){
   ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.url ? `<img src="${it.url}" alt="">` : ""}</div>`));
   if (CUR && STEP !== "send") {
     const b = book(CUR.book), num = n + 1, pre = ORD.list.length || STEP !== "book" ? `ספר ${num}: ` : "";
-    if (b && STEP !== "book") h.push(`<div class="doneb">✓ ${pre}<b>${esc(b.name)}</b>${CUR.ver !== "" && b.v.length > 1 ? " · " + (isGirl(CUR) ? "👧 נכדה" : "👦 נכד") : ""}<button type="button" class="ed" data-go="book">לתקן</button></div>`);
+    if (b && STEP !== "book") h.push(`<div class="doneb">✓ ${pre}<b>${esc(b.name)}</b>${CUR.ver !== "" ? " · " + (isGirl(CUR) ? "👧 נכדה" : "👦 נכד") : ""}<button type="button" class="ed" data-go="book">לתקן</button></div>`);
     if (CUR.name && !["book", "ver", "name"].includes(STEP)) h.push(`<div class="doneb">✓ השם: <b>${esc(CUR.name)}</b><button type="button" class="ed" data-go="name">לתקן</button></div>`);
     if (CUR.ded && ["photo", "who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ ההקדשה מוכנה<button type="button" class="ed" data-go="ded">לתקן</button></div>`);
     if (CUR.blob && ["who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ התמונה <img src="${CUR.url}" alt=""><button type="button" class="ed" data-go="photo">להחליף</button></div>`);
@@ -387,9 +391,9 @@ function draw(scroll){
 function stepHTML(){
   const it = CUR, b = it && book(it.book);
   if (STEP === "book") return `<div class="step"><h3>${SB}איזה ספר ${ORD.list.length ? "לנכד הבא" : "תרצו"}?</h3>
-    <select id="wBook"><option value="">👇 לוחצים כאן ובוחרים ספר</option>${BOOKS.map(x => `<option value="${x.id}" ${x.id === it.book ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+    <select id="wBook"><option value="">👇 לוחצים כאן ובוחרים ספר</option>${ALLB.map(x => `<option value="${x.id}" ${x.id === it.book ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
     <p class="h" style="margin-top:8px">רוצים לראות את הספרים? <a href="#books" style="color:var(--mag)">לכל הספרים ↑</a></p></div>`;
-  if (STEP === "ver") return `<div class="step"><h3>${SB}הספר בשביל נכד או נכדה?</h3><div class="cov"><img src="${bqCover(b)}" alt="">${esc(b.name)}</div>
+  if (STEP === "ver") return `<div class="step"><h3>${SB}הספר בשביל נכד או נכדה?</h3><div class="cov">${b.img ? `<img src="${bqCover(b)}" alt="">` : "📖"}${esc(b.name)}</div>
     <div class="two" style="margin-top:12px"><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכד")[0]}">👦 נכד</button><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכדה")[0]}">👧 נכדה</button></div></div>`;
   if (STEP === "name") return `<div class="step"><h3>${SB}איך קוראים ל${isGirl(it) ? "נכדה" : "נכד"}?</h3><p class="h">השם הזה יופיע בספר</p>
     <input type="text" id="wName" value="${esc(it.name)}" maxlength="30" autocomplete="off" placeholder="למשל: ${isGirl(it) ? "נועה" : "יונתן"}">
@@ -422,7 +426,7 @@ function stepHTML(){
 }
 const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
 $("wz").addEventListener("change", e => {
-  if (e.target.id === "wBook" && e.target.value) { CUR.book = e.target.value; CUR.ver = ""; CUR.ded = ""; const b = book(CUR.book); if (b.v.length > 1) STEP = "ver"; else { CUR.ver = "0"; STEP = "name"; } ev("savta-step", "book"); draw(true); }
+  if (e.target.id === "wBook" && e.target.value) { CUR.book = e.target.value; CUR.ver = ""; CUR.ded = ""; STEP = "ver"; ev("savta-step", "book"); draw(true); }
   if (e.target.id === "wFile" && e.target.files[0]) photo(e.target.files[0]);
 });
 $("wz").addEventListener("click", e => {
@@ -488,7 +492,7 @@ document.querySelectorAll("[data-ev]").forEach(a => a.addEventListener("click", 
 document.querySelectorAll("[data-start]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); ev("savta-start", a.dataset.start); draw(true); }));
 /* ?book=<id> / utm_content – הספר כבר בחור, ומתחילים מהשם (או נכד/נכדה) */
 (() => { const u = new URLSearchParams(location.search), c = u.get("utm_content"), q = c && book(c) ? c : u.get("book");
-  CUR = fresh(); if (q && book(q)) { CUR.book = q; const b = book(q); if (b.v.length > 1) STEP = "ver"; else { CUR.ver = "0"; STEP = "name"; } }
+  CUR = fresh(); if (q && book(q)) { CUR.book = q; STEP = "ver"; }
   draw(false); })();
 </script>
 </body>
