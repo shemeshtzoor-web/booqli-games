@@ -19,6 +19,7 @@ function doPost(e) {
     if (q.action === "order") return out_(saveOrder_(q));
     if (q.action === "alert") return out_(alert_(q));
     if (q.action === "ded") return out_(saveDed_(q));
+    if (q.action === "note") return out_(saveNote_(q));
     if (q.action === "trash") return out_(trash_(q));
     if (q.action === "ping") return out_({ ok: true, folder: root_().getUrl() });
     return out_({ ok: false, error: "action" });
@@ -72,6 +73,18 @@ function saveDed_(q) {
   String(q.text || "").split("\n").forEach(function (line) { body.appendParagraph(line).setLeftToRight(false).setAlignment(DocumentApp.HorizontalAlignment.RIGHT); });
   doc.saveAndClose();
   DriveApp.getFileById(doc.getId()).moveTo(dir);
+  return { ok: true };
+}
+
+/* מסמך בתיקיית ההזמנה (למשל "פרטי המזמין"): {order, title, name, text} – מחליף אם כבר קיים */
+function saveNote_(q) {
+  var folder = orderFolder_(q.order, q.title), name = clean_(q.name || "פרטים");
+  var old = folder.getFilesByName(name); while (old.hasNext()) old.next().setTrashed(true);
+  var doc = DocumentApp.create(name), body = doc.getBody();
+  body.setAttributes(rtl_());
+  String(q.text || "").split("\n").forEach(function (line) { body.appendParagraph(line).setLeftToRight(false).setAlignment(DocumentApp.HorizontalAlignment.RIGHT); });
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).moveTo(folder);
   return { ok: true };
 }
 

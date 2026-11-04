@@ -39,7 +39,7 @@ const BOOKS_INTRO = "📚 *הספרים שלנו כתובים, ערוכים ומ
 const PAGES = { birthday: { g: 22, b: 22 }, hugs: { g: 20, b: 20 }, superhero: { g: 21, b: 21 }, first: { g: 20, b: 20 }, class1: { g: 22, b: 22 },
   kinder: { g: 20, b: 20 }, savanna: { g: 20, b: 20 }, druki: { g: 22, b: 22 }, night: { g: 20 }, summer: { g: 26 } };
 const RESTART_BTN = ["restart", "↩️ להתחלה"], RESTART_NOTE = "↩️ להתחלה מחדש – כותבים: מחדש";
-const TEXT_Q = ["name", "dedown", "pics", "who", "whoown", "addr", "phoneown", "g-name", "g-teacher", "g-kids", "g-dedown", "g-pics"];
+const TEXT_Q = ["name", "dedown", "pics", "who", "whoown", "addr", "phoneown", "email", "g-name", "g-teacher", "g-kids", "g-dedown", "g-pics"];
 /* כפתור/שורה "להתחלה" בכל שאלה (חוץ מהפתיחה). אין מקום לכפתור (3 כפתורים / 10 שורות) – שורה קטנה בתחתית */
 function withRestart(m, stp){
   if (stp === "hi") return m;
@@ -332,9 +332,13 @@ async function ask(env, to, st, log, db){
     }
     case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "☑️ קראתי ומאשר/ת"]]));
     case "ship": return S(buttons(SHIP_TXT, [["sh:ship", "🚚 משלוח – 40 ₪"], ["sh:pickup", "🚗 איסוף עצמי"]]));
-    case "addr": return S(text("לאיזו כתובת לשלוח? 📍\nכותבים עיר, רחוב ומספר (ואם צריך – קומה ודירה)."));
-    case "phone": return S(buttons(`📞 לאיזה טלפון השליח יתקשר? ${fmtPhone(st.from)}?`, [["ph:yes", "✅ כן, למספר הזה"], ["ph:other", "✍️ מספר אחר"]]));
-    case "phoneown": return S(text("כתבו את מספר הטלפון לשליח 📞"));
+    case "addr":
+      if (st.mode === "gan") return S(text("לאיזו כתובת לשלוח? 📍\nכותבים עיר, רחוב ומספר (ואם צריך – קומה ודירה)."));
+      if (!st.detIntro) { st.detIntro = 1; await S(text("כמעט סיימנו 🙂\nאנחנו מאוד מקווים שתאהבו את הסקיצות ❤️ ולכן כבר עכשיו צריך את הפרטים שלכם להזמנה: *כתובת מלאה, טלפון ואימייל*.")); }
+      return S(text("📍 מה הכתובת המלאה?\nכותבים עיר, רחוב ומספר (ואם צריך – קומה ודירה)."));
+    case "phone": return S(buttons(st.mode === "gan" ? `📞 לאיזה טלפון השליח יתקשר? ${fmtPhone(st.from)}?` : `📞 מספר הטלפון שלך: ${fmtPhone(st.from)}?`, [["ph:yes", "✅ כן, המספר הזה"], ["ph:other", "✍️ מספר אחר"]]));
+    case "phoneown": return S(text("כתבו את מספר הטלפון 📞"));
+    case "email": return S(buttons("📧 מה כתובת האימייל שלך?\nכותבים אותה כאן למטה 👇", [["em:none", "🚫 אין לי אימייל"]]));
     case "pay": return S(list(`💳 קודם מקבלים סקיצה, ומשלמים רק אם אוהבים ❤️\n\nבאיזו דרך נוח לך לשלם? שמש תשלח לך קישור לתשלום.`, "בוחרים דרך תשלום", Object.keys(PAYS).map(k => ({ id: "pay:" + k, title: PAYS[k] })), "תשלום"));
 
     /* ---- גן ---- */
@@ -387,7 +391,7 @@ async function ask(env, to, st, log, db){
 function summary(st, links){
   const covs = st.list.map(c => c.cover), n = covs.length, t = orderTotal(covs);
   const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${bname(c.book, c.ver)}* (${kidW(st, c)})\n📕 ${COVERS[c.cover || "hard"]}\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
-  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n${shipLine(st) || "🚚 משלוח עד הבית " + ils(SHIP)}\n*סה"כ ${ils(t + shipCost(st))}*${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
+  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n${st.ship && st.ship.method === "pickup" ? "🚗 איסוף עצמי מבית הדפוס (ליד עפולה), בתיאום" : "🚚 משלוח צ'יטה עד הבית – " + ils(SHIP)}\n*סה"כ ${ils(t + shipCost(st))}*${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${st.ship ? `\n\n*הפרטים שלכם:*\n👤 ${st.who}\n📍 ${st.ship.addr || "—"}\n📞 ${st.ship.phone || "—"}\n📧 ${st.ship.email || "—"}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 async function ganSummary(st, db, owner){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
@@ -506,10 +510,10 @@ async function step(env, from, st, ev, log, db){
   /* כתבו תשובה במקום ללחוץ על כפתור */
   const SHORT_OK = ["ded", "g-ded", "who"];                                  /* שם אפשר גם לכתוב טקסט חופשי – רק תשובה קצרה נחשבת לכפתור */
   if (!id && txt && (BTN_STEPS.includes(st.step) || (SHORT_OK.includes(st.step) && txt.length <= 12)) && !looksQuestion(txt)) id = await matchBtn(env, from, st, txt, db);
-  if (!id && st.step === "phone" && txt.replace(/\D/g, "").length >= 9) { st.ship.phone = txt.slice(0, 30); st.step = "pay"; return ask(env, from, st, log, db); }
+  if (!id && st.step === "phone" && txt.replace(/\D/g, "").length >= 9) { st.ship.phone = txt.slice(0, 30); st.step = st.mode === "gan" ? "pay" : "email"; return ask(env, from, st, log, db); }
   /* שאלות: "שאלות" = תפריט; שאלה חופשית בכל שלב = תשובה רק מתוך מה שיש בבוט, ואם אין – לשמש */
   const isQ = looksQuestion(txt);
-  const free = !["dedown", "g-dedown", "addr"].includes(st.step) || (isQ && !!(qaOf(txt) || faqOf(txt)));
+  const free = !["dedown", "g-dedown", "addr", "email"].includes(st.step) || (isQ && !!(qaOf(txt) || faqOf(txt)));
   const asking = !id && txt && free && (isQ || BTN_STEPS.includes(st.step));
   const fq = id.startsWith("q:") ? id.slice(2) : (asking || (!id && txt && free && faqOf(txt) === "menu") ? faqOf(txt, st.step) : "");
   if (fq === "menu") { await S(list("❓ במה אפשר לעזור?\nבוחרים נושא – או פשוט כותבים את השאלה.", "בוחרים שאלה", Object.keys(FAQ).filter(k => k !== "price" || st.mode === "gan").map(k => ({ id: "q:" + k, title: FAQ[k][2], description: FAQ[k][0].replace(/^\S+ /, "").slice(0, 72) })), "שאלות")); return; }
@@ -611,15 +615,19 @@ async function step(env, from, st, ev, log, db){
       else if (id === "m:no") { st.list.push(c); st.cur = fresh(); st.step = "ship"; }
       break;
     case "ship":
-      if (id === "sh:pickup") { st.ship = { method: "pickup" }; st.step = "pay"; }
-      else if (id === "sh:ship") { st.ship = { method: "ship" }; st.step = "addr"; }
+      if (id === "sh:pickup") { st.ship = Object.assign(st.ship || {}, { method: "pickup" }); st.step = st.mode === "gan" ? "pay" : "addr"; }   /* פרטי: תמיד כתובת, טלפון ואימייל */
+      else if (id === "sh:ship") { st.ship = Object.assign(st.ship || {}, { method: "ship" }); st.step = "addr"; }
       break;
     case "addr": if (txt && !id) { if (txt.length < 6 || junk(txt)) await S(text("כתבו כתובת מלאה: עיר, רחוב ומספר 📍")); else { st.ship.addr = txt.slice(0, 200); st.step = "phone"; } } break;
     case "phone":
-      if (id === "ph:yes") { st.ship.phone = fmtPhone(st.from); st.step = "pay"; }
+      if (id === "ph:yes") { st.ship.phone = fmtPhone(st.from); st.step = st.mode === "gan" ? "pay" : "email"; }
       else if (id === "ph:other") st.step = "phoneown";
       break;
-    case "phoneown": if (txt && /\d{7,}/.test(txt.replace(/\D/g, ""))) { st.ship.phone = txt.slice(0, 30); st.step = "pay"; } else if (txt) { await S(text("כתבו מספר טלפון, למשל 050-1234567 📞")); return; } break;
+    case "phoneown": if (txt && /\d{7,}/.test(txt.replace(/\D/g, ""))) { st.ship.phone = txt.slice(0, 30); st.step = st.mode === "gan" ? "pay" : "email"; } else if (txt) { await S(text("כתבו מספר טלפון, למשל 050-1234567 📞")); return; } break;
+    case "email":
+      if (id === "em:none") { st.ship.email = ""; st.step = "pay"; }
+      else if (txt && !id) { const m = txt.replace(/\s+/g, "").match(/[^\s@]+@[^\s@]+\.[a-z]{2,}/i); if (m) { st.ship.email = m[0].toLowerCase().slice(0, 80); st.step = "pay"; } else { await S(text("כתבו כתובת אימייל, למשל name@gmail.com 📧")); return; } }
+      break;
     case "pay": if (id.startsWith("pay:") && PAYS[id.slice(4)]) { st.pay = id.slice(4); st.step = st.mode === "gan" ? "g-consent" : "consent"; } break;
     case "consent":
       if (id === "c:yes") return finish(env, from, st, log, db, summary(st, false), summary(st, false), THANKS(st) + "\n\n📚 רוצים להזמין ספר נוסף? כותבים: מחדש", CONSENT);
@@ -711,6 +719,7 @@ function btnStep(id){
   if (/^w:(yes|other)$/.test(id)) return "who";
   if (/^sh:(pickup|ship)$/.test(id)) return "ship";
   if (/^ph:(yes|other)$/.test(id)) return "phone";
+  if (id === "em:none") return "email";
   if (/^pay:/.test(id)) return "pay";
   if (/^gd:(ok|next|own)$/.test(id)) return "g-ded";
   if (/^gdm:(one|each)$/.test(id)) return "g-dedmode";
@@ -719,7 +728,7 @@ function btnStep(id){
   return "";
 }
 const SEGS = [["ver", "name", "ded", "dedown", "cover", "pics", "picsmore", "who", "whoown", "more"],
-  ["ship", "addr", "phone", "phoneown", "pay", "consent", "g-consent"],
+  ["ship", "addr", "phone", "phoneown", "email", "pay", "consent", "g-consent"],
   ["g-book2", "g-cover", "g-dedmode", "g-ded", "g-dedown"]];
 function canBack(cur, to){ return SEGS.some(s => s.includes(cur) && s.includes(to) && s.indexOf(to) < s.indexOf(cur)); }
 
@@ -776,6 +785,8 @@ async function driveOrder(env, st, from, consentAt, sum, consentText, db){
   const full = sum.replace("✓ אישור ההורים לתמונות – התקבל", "") +
     `📞 טלפון: +${from}\n🕐 אושר: ${new Date(consentAt).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}\n\nהנוסח שאושר:\n${consentText}` +
     (left.length ? "\n\n⚠️ תמונות שלא נכנסו לדרייב – בשרת הקטן (90 יום):\n" + left.join("\n") : "");
+  if (st.mode !== "gan" && st.ship)                                          /* פרטי: מסמך "פרטי המזמין" בתיקיית ההזמנה */
+    await drivePost(env, { action: "note", order: st.oid, title: title(st, from), name: "פרטי המזמין", text: `הזמנה: ${st.oid}\nשם המזמין: ${st.who || ""}\nטלפון: ${st.ship.phone || ""}\nאימייל: ${st.ship.email || ""}\nכתובת: ${st.ship.addr || ""}\nוואטסאפ: +${from}\nמשלוח: ${st.ship.method === "pickup" ? "איסוף עצמי" : "משלוח צ'יטה עד הבית"}\nתשלום: ${st.pay && PAYS[st.pay] ? PAYS[st.pay].replace(/^\S+ /, "") : ""}\nספרים: ${st.list.map(c => `${bname(c.book, c.ver)} – ${c.name}`).join(" · ")}` });
   if (st.mode === "gan") for (const [b, sub] of rounds(st.g))                /* בכל תיקייה (ספר / בנים|בנות) – ההקדשה בלשון הנכונה */
     await drivePost(env, { action: "ded", order: st.oid, title: title(st, from), topic: st.g.books.length > 1 ? book(b).name : "", sub, text: ganDedFor(st, b, sub) });
   const d = await drivePost(env, { action: "order", order: st.oid, title: title(st, from), summary: full, expected });

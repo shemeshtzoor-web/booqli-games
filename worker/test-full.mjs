@@ -38,7 +38,7 @@ async function run(who, from, profile, steps, show = true){
     check(who, label, log);
   }
   const st = JSON.parse(mem["st:" + from]);
-  console.log("📁 דרייב:", drive.filter(d => d.action !== "ping").map(d => d.action === "photo" ? `תמונה: ${d.topic ? d.topic + "/" : ""}${d.sub}/${d.name}.jpg` : d.action === "ded" ? `הקדשה: ${d.topic ? d.topic + "/" : ""}${d.sub}` : d.action).join("\n          "));
+  console.log("📁 דרייב:", drive.filter(d => d.action !== "ping").map(d => d.action === "photo" ? `תמונה: ${d.topic ? d.topic + "/" : ""}${d.sub}/${d.name}.jpg` : d.action === "ded" ? `הקדשה: ${d.topic ? d.topic + "/" : ""}${d.sub}` : d.action === "note" ? "📄 " + d.name + ": " + d.text.replace(/\n/g, " | ") : d.action).join("\n          "));
   return { st, mem };
 }
 
@@ -49,7 +49,7 @@ await run("סבתא רינה", "11", "רינה", [
   [{ text: "מה ההבדל בין הכריכות?" }, "שואלת על כריכות"], [{ id: "qa:go" }, "ממשיכים"], [{ id: "cv:hard" }, "קשה"],
   [{ text: "איזה תמונה לשלוח?" }, "שואלת איזו תמונה"], [{ id: "qa:go" }, "ממשיכים"],
   [{ image: { media: "a", sha: "1" } }, "תמונה 1"], [{ image: { media: "b", sha: "2" } }, "תמונה 2"], [{ id: "p:done" }, "סיימתי"],
-  [{ id: "w:yes" }, "השם שלי"], [{ id: "m:no" }, "זהו"], [{ id: "sh:ship" }, "משלוח"], [{ text: "הרצל 5, חיפה" }, "כתובת"], [{ id: "ph:yes" }, "הטלפון הזה"],
+  [{ id: "w:yes" }, "השם שלי"], [{ id: "m:no" }, "זהו"], [{ id: "sh:ship" }, "משלוח"], [{ text: "הרצל 5, חיפה" }, "כתובת"], [{ id: "ph:yes" }, "הטלפון הזה"], [{ text: "רינה כהן@" }, "אימייל לא תקין"], [{ text: "rina.cohen@gmail.com" }, "אימייל"],
   [{ id: "pay:bit" }, "ביט"], [{ id: "c:yes" }, "מאשרת"], [{ text: "תודה!" }, "תודה אחרי ההזמנה"]]);
 
 /* 2. אבא – 2 ילדים, בן ובת, לוחץ על כפתורים ישנים, מבקש בן אדם וממשיך */
@@ -60,8 +60,8 @@ await run("אבא דני", "22", "דני", [
   [{ image: { media: "c", sha: "3" } }, "תמונה"], [{ id: "cv:hard" }, "כפתור ישן – מחליף לקשה"], [{ id: "p:done" }, "סיימתי"],
   [{ id: "w:other" }, "שם אחר"], [{ text: "דני לוי" }, "השם שלי"], [{ id: "m:yes" }, "עוד ספר"], [{ id: "f:p:g" }, "לבת"], [{ id: "b:hugs" }, "חיבוקים"],
   [{ text: "מיה" }, "שם"], [{ id: "d:ok" }, "הקדשה"], [{ id: "cv:hard" }, "קשה"], [{ image: { media: "d", sha: "4" }, caption: "מיה" }, "תמונה"], [{ id: "p:done" }, "סיימתי"],
-  [{ id: "m:no" }, "זהו"], [{ id: "sh:pickup" }, "איסוף"], [{ id: "pay:bank" }, "העברה"], [{ id: "sh:ship" }, "כפתור ישן – בעצם משלוח"], [{ text: "רוטשילד 10 תל אביב" }, "כתובת"],
-  [{ id: "ph:yes" }, "טלפון"], [{ id: "pay:bank" }, "העברה"], [{ id: "c:yes" }, "מאשר"]]);
+  [{ id: "m:no" }, "זהו"], [{ id: "sh:pickup" }, "איסוף"], [{ text: "רוטשילד 10 תל אביב" }, "כתובת"], [{ id: "ph:other" }, "מספר אחר"], [{ text: "052-1234567" }, "טלפון"], [{ id: "em:none" }, "אין אימייל"],
+  [{ id: "pay:bank" }, "העברה"], [{ id: "sh:ship" }, "כפתור ישן – בעצם משלוח"], [{ text: "רוטשילד 10 תל אביב" }, "כתובת שוב"], [{ id: "ph:yes" }, "טלפון"], [{ text: "dani@walla.co.il" }, "אימייל"], [{ id: "pay:bank" }, "העברה"], [{ id: "c:yes" }, "מאשר"]]);
 
 /* 3. גננת – נושא אחד, הקדשה מוכנה, תמונות בכל הדרכים */
 await run("גננת מירב (נושא אחד)", "33", "מירב", [
