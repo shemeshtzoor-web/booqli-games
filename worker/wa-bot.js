@@ -485,6 +485,7 @@ export async function handle(env, from, profile, ev, opts){
   const db = store(env, opts.mem), log = opts.log;
   const k = "st:" + from, raw = await db.get(k);
   let st = raw ? JSON.parse(raw) : null;
+  if (/^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) st = null;   /* מתחילים הזמנה חדשה מההתחלה */
   if (st && st.human) {                                            /* מצב "בן אדם": הבוט שותק */
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
   } else if (!st || st.step === "done") {
