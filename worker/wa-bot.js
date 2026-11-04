@@ -100,10 +100,18 @@ const bookRows = (page, prefix) => {
   return rows;
 };
 async function ganPics(db, st){                               /* תמונות הגן – כל תמונה במפתח משלה (כמה תמונות באותו רגע) */
-  const keys = await db.list("gp:" + st.oid + ":"), out = { b: [], g: [], nameless: 0, nb: 0, ng: 0 };
-  for (const k of keys) { const v = JSON.parse(await db.get(k) || "{}"), girl = v.sub === "בנות"; (girl ? out.g : out.b).push(v.name); if (v.name === "ללא שם") { out.nameless++; girl ? out.ng++ : out.nb++; } }
+  const keys = await db.list("gp:" + st.oid + ":"), out = { b: [], g: [], nameless: 0, by: {} };
+  for (const k of keys) {
+    const v = JSON.parse(await db.get(k) || "{}"), girl = v.sub === "בנות", key = (v.book || "") + "|" + v.sub;
+    (girl ? out.g : out.b).push(v.name); (out.by[key] = out.by[key] || { names: [], nameless: 0 }).names.push(v.name);
+    if (v.name === "ללא שם") { out.nameless++; out.by[key].nameless++; }
+  }
   return out;
 }
+/* סבבי התמונות בגן: לכל נושא – בנים ואז בנות (נושא אחד = 2 סבבים, שני נושאים = 4) */
+const rounds = G => G.books.flatMap(b => [[b, "בנים"], [b, "בנות"]]);
+const roundName = (G, r) => { const [b, sub] = rounds(G)[r]; return (G.books.length > 1 ? `"${book(b).name}" – ` : "") + sub; };
+const realNames = a => [...new Set(a.filter(x => x !== "ללא שם"))];
 const names = a => [...new Set(a)].join(", ");
 const cnt = (n, one, many) => n === 1 ? one : n + " " + many;
 
@@ -165,17 +173,22 @@ async function ask(env, to, st, log, db){
       return S(buttons(`הקדשה מהגן לכל הילדים ❤️\n(בלי שמות – השם של כל ילד כבר בספר)\n\n${G.ded}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
     }
     case "g-dedown": return S(text("כתבו כאן את ההקדשה של הגן ❤️ (עד 350 תווים בערך)\nרוצים אחת לבנים ואחת לבנות? כתבו את שתיהן, אחת אחרי השנייה."));
-    case "g-boys": return S(text("עכשיו התמונות 📷\nקודם *הבנים*: מעבירים לכאן תמונה של כל ילד, ובכיתוב של התמונה – *השם שלו*.\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."));
-    case "g-girls": return S(text("ועכשיו *הבנות* 📷\nתמונה של כל ילדה, ובכיתוב – *השם שלה*."));
-    case "g-boysmore": case "g-girlsmore": {
-      const P = await ganPics(db, st), boys = st.step === "g-boysmore", arr = boys ? P.b : P.g, nl = boys ? P.nb : P.ng;
+    case "g-pics": {
+      const R = rounds(G), [b, sub] = R[G.r || 0], two = G.books.length > 1, boys = sub === "בנים";
+      const order = two && !G.r ? `נעבור לפי הסדר:\n${R.map((x, i) => `${i + 1}. ${book(x[0]).name} – ${x[1]}`).join("\n")}\n\n` : "";
+      return S(text(`${G.r ? "" : "עכשיו התמונות 📷\n"}${order}${two ? `*${book(b).name}* – ` : ""}${boys ? "*הבנים*: מעבירים לכאן תמונה של כל ילד" : "*הבנות*: מעבירים לכאן תמונה של כל ילדה"}${two ? ` שמקבל${boys ? "" : "ת"} את הספר הזה` : ""}, ובכיתוב של התמונה – *${boys ? "השם שלו" : "השם שלה"}*.${G.r ? "" : "\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."}`));
+    }
+    case "g-picsmore": {
+      const P = await ganPics(db, st), [b, sub] = rounds(G)[G.r || 0], cur = P.by[b + "|" + sub] || { names: [], nameless: 0 }, nl = cur.nameless;
       const warn = nl ? `\n⚠️ ${nl === 1 ? "תמונה אחת הגיעה" : nl + " תמונות הגיעו"} בלי שם – שלחו ${nl === 1 ? "אותה" : "אותן"} שוב, עם השם בכיתוב 🙏` : "";
-      return S(buttons(`קיבלנו ${cnt(arr.length, "תמונה אחת", "תמונות")} של ${boys ? "בנים" : "בנות"}: ${names(arr.filter(x => x !== "ללא שם")) || "—"} ✓${warn}\nממשיכים לשלוח, או:`,
-        boys ? [["g:boysdone", "✅ סיימנו בנים"], ["g:pause", "⏸️ נמשיך מחר"], ["g:drive", "📁 אעדיף דרייב"]] : [["g:girlsdone", "✅ סיימנו בנות"], ["g:pause", "⏸️ נמשיך מחר"]]));
+      const bs = [["g:rdone", sub === "בנים" ? "✅ סיימנו בנים" : "✅ סיימנו בנות"], ["g:pause", "⏸️ נמשיך מחר"]];
+      if (!G.r) bs.push(["g:drive", "📁 אעדיף דרייב"]);
+      return S(buttons(`${roundName(G, G.r || 0)}: קיבלנו ${cnt(cur.names.length, "תמונה אחת", "תמונות")} – ${names(cur.names.filter(x => x !== "ללא שם")) || "—"} ✓${warn}\nממשיכים לשלוח, או:`, bs));
     }
     case "g-check": {
-      const P = await ganPics(db, st), nb = new Set(P.b.filter(x => x !== "ללא שם")), ng = new Set(P.g.filter(x => x !== "ללא שם")), miss = G.kids - nb.size - ng.size;
-      return S(buttons(`בודקים יחד 👀\n\n👦 ${cnt(nb.size, "בן אחד", "בנים")}: ${[...nb].join(", ") || "—"}\n👧 ${cnt(ng.size, "בת אחת", "בנות")}: ${[...ng].join(", ") || "—"}\n\n${miss > 0 ? `⚠️ חסרות עוד ${miss} תמונות לפי מספר הילדים (${G.kids})` : "✓ יש תמונה לכל הילדים"}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}`,
+      const P = await ganPics(db, st), nb = new Set(realNames(P.b)), ng = new Set(realNames(P.g)), miss = G.kids - nb.size - ng.size;
+      const lines = rounds(G).map(([b, sub], i) => { const nm = realNames((P.by[b + "|" + sub] || { names: [] }).names); return `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)} (${nm.length}): ${nm.join(", ") || "—"}`; }).join("\n");
+      return S(buttons(`בודקים יחד 👀\n\n${lines}\n\n${miss > 0 ? `⚠️ חסרות עוד ${miss} תמונות לפי מספר הילדים (${G.kids})` : "✓ יש תמונה לכל הילדים"}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}`,
         [["g:ok", "✅ הכל נכון"], ["g:morepics", "📷 עוד תמונות"], ["human", "✏️ לתקן משהו"]]));
     }
     case "g-consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT_GAN, [["gc:yes", "☑️ קראתי ומאשרת"]]));
@@ -189,8 +202,9 @@ function summary(st, links){
 }
 async function ganSummary(st, db){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
-  const nb = [...new Set(P.b.filter(x => x !== "ללא שם"))], ng = [...new Set(P.g.filter(x => x !== "ללא שם"))];
-  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n👦 בנים: ${nb.join(", ") || "—"}\n👧 בנות: ${ng.join(", ") || "—"}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}\n\n💰 ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}\n🚚 משלוח ${ils(SHIP)}\n*סה"כ ${ils(G.kids * p + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
+  const nb = realNames(P.b), ng = realNames(P.g);
+  const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n");
+  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}\n\n💰 ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}\n🚚 משלוח ${ils(SHIP)}\n*סה"כ ${ils(G.kids * p + SHIP)}*\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
 async function step(env, from, st, ev, log, db){
@@ -248,25 +262,25 @@ async function step(env, from, st, ev, log, db){
     case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-price"; } break;
     case "g-price": if (id === "g:go") st.step = "g-ded"; break;
     case "g-ded":
-      if (id === "gd:ok") st.step = "g-boys";
+      if (id === "gd:ok") { G.r = 0; st.step = "g-pics"; }
       else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; G.ded = L[G.dedI]; }
       else if (id === "gd:own") st.step = "g-dedown";
-      else if (txt && !id) { G.ded = txt.slice(0, 800); st.step = "g-boys"; }
+      else if (txt && !id) { G.ded = txt.slice(0, 800); G.r = 0; st.step = "g-pics"; }
       break;
     case "g-dedown": if (txt) { G.ded = (G.dedOwn ? G.ded + "\n\n" : "") + txt.slice(0, 450); G.dedOwn = 1; await S(buttons("הקדשה יפה ❤️ רוצים להוסיף עוד הקדשה (למשל לבנות)?", [["gd:done", "✅ זהו, ממשיכים"]])); return; }
-      if (id === "gd:done") st.step = "g-boys";
+      if (id === "gd:done") { G.r = 0; st.step = "g-pics"; }
       break;
-    case "g-boys": case "g-boysmore": case "g-girls": case "g-girlsmore": {
-      const boys = st.step === "g-boys" || st.step === "g-boysmore";
+    case "g-pics": case "g-picsmore": {
+      const [rb, rsub] = rounds(G)[G.r || 0], boys = rsub === "בנים";
       if (ev.image) {
         const nm = (ev.caption || "").trim().split("\n")[0].slice(0, 30) || "ללא שם";
-        const p = await savePic(env, st, boys ? "בנים" : "בנות", nm, ev.image, from, db);
-        await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ sub: boys ? "בנים" : "בנות", name: nm, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "" }), 90 * 86400);
-        st.step = boys ? "g-boysmore" : "g-girlsmore";
+        const topic = G.books.length > 1 ? book(rb).name : "";
+        const p = await savePic(env, st, rsub, nm, ev.image, from, db, topic);
+        await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: rb, topic, sub: rsub, name: nm, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "" }), 90 * 86400);
+        st.step = "g-picsmore";
         if (st.burst) return; st.burst = 1;                        /* הרבה תמונות ברצף – עונים פעם אחת */
       }
-      else if (id === "g:boysdone") st.step = "g-girls";
-      else if (id === "g:girlsdone") st.step = "g-check";
+      else if (id === "g:rdone") { if ((G.r || 0) + 1 < rounds(G).length) { G.r = (G.r || 0) + 1; st.step = "g-pics"; } else st.step = "g-check"; }
       else if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
       else if (id === "g:drive") { st.human = Date.now(); await S(text("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו לחזור להזמנה כאן – כתבו \"להמשיך\".")); return; }
       else if (txt && /^להמשיך$/.test(txt)) { /* חוזרים לאותה שאלה */ }
@@ -275,7 +289,7 @@ async function step(env, from, st, ev, log, db){
     }
     case "g-check":
       if (id === "g:ok") st.step = "g-consent";
-      else if (id === "g:morepics") st.step = "g-boys";
+      else if (id === "g:morepics") { G.r = 0; st.step = "g-pics"; }
       break;
     case "g-consent":
       if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספרים הדיגיטליים ותשלח לך כאן לתצוגה ולאישור לפני ההדפסה ❤️", CONSENT_GAN);
@@ -307,24 +321,24 @@ async function drivePost(env, body){
   } catch (e) { console.log("drive failed", String(e)); return null; }
 }
 /* תמונה: מורידים ממטא ושומרים בדרייב בשם הילד. הדרייב לא זמין – גיבוי ב-KV (90 יום), ומנסים שוב בסוף ההזמנה */
-async function savePic(env, st, sub, name, img, from, db){
+async function savePic(env, st, sub, name, img, from, db, topic){
   if (!env.WA_TOKEN) return img;                                    /* בבדיקות בלי מטא */
   try {
     const m = await (await fetch(`${GRAPH}/${img.media}`, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } })).json();
     const r = await fetch(m.url, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } }); if (!r.ok) return { media: img.media };
     const buf = await r.arrayBuffer(), mime = m.mime_type || "image/jpeg";
-    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), sub, name, mime, b64: b64(buf) });
+    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), topic: topic || "", sub, name, mime, b64: b64(buf) });
     if (d) return { media: img.media, drive: d.file };
     const a = new Uint8Array(18); crypto.getRandomValues(a); const key = [...a].map(b => b.toString(16).padStart(2, "0")).join("") + ".jpg";
     await env.STATE.put(key, buf, { expirationTtl: 90 * 86400, metadata: { type: mime } });
-    return { media: img.media, link: (env.SELF_URL || "") + "/p/" + key, pending: key, mime, sub, name };
+    return { media: img.media, link: (env.SELF_URL || "") + "/p/" + key, pending: key, mime, sub, name, topic: topic || "" };
   } catch (e) { return { media: img.media }; }
 }
 async function driveOrder(env, st, from, consentAt, sum, consentText, db){
   if (!env.DRIVE_URL) return null;
   const retry = async p => {                                        /* תמונה שלא נכנסה לדרייב – עוד ניסיון, ואז מוחקים מה-KV */
     const buf = await env.STATE.get(p.pending, { type: "arrayBuffer" }); if (!buf) return false;
-    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), sub: p.sub, name: p.name, mime: p.mime, b64: b64(buf) });
+    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), topic: p.topic || "", sub: p.sub, name: p.name, mime: p.mime, b64: b64(buf) });
     if (d) { p.drive = d.file; await env.STATE.delete(p.pending); delete p.pending; delete p.link; return true; }
     return false;
   };

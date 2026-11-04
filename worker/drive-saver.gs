@@ -4,6 +4,7 @@
    2. פריסה ← פריסה חדשה ← סוג: אפליקציית אינטרנט ← הפעלה בתור: אני ← גישה: כל אחד ← פריסה ← מאשרים את ההרשאות.
    3. את הכתובת שמתקבלת (מסתיימת ב-/exec) מדביקים ב-Cloudflare בשם DRIVE_URL.
    מה נשמר:  BOOQLI הזמנות / "סב-1234 · רחל כהן · 04.11" / בנים|בנות / "דנה.jpg", "דנה 2.jpg" ...
+              גן עם 2 נושאים: BOOQLI הזמנות / "גן-1234 · גן רימון · 04.11" / <נושא> / בנים|בנות / ...
               + "סיכום ההזמנה" (מסמך גוגל) באותה תיקייה, ומייל לבעלת החשבון עם קישור לתיקייה.
    אין כאן שום מידע פרטי: המייל נשלח לחשבון שבו הקוד רץ, והמילה הסודית שמורה במאפייני הסקריפט. */
 
@@ -44,11 +45,12 @@ function sub_(parent, name) {
 
 function clean_(s) { return String(s || "").replace(/[\\\/:*?"<>|#%]/g, " ").replace(/\s+/g, " ").trim().slice(0, 60) || "ילד"; }
 
-/* תמונה אחת: {order, title, sub: "בנים"|"בנות", name, mime, b64} */
+/* תמונה אחת: {order, title, topic?, sub: "בנים"|"בנות", name, mime, b64} */
 function savePhoto_(q) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);   /* כמה תמונות באותו רגע – בלי שמות כפולים */
   try {
-    var folder = orderFolder_(q.order, q.title), dir = sub_(folder, q.sub === "בנות" ? "בנות" : "בנים");
+    var folder = orderFolder_(q.order, q.title), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;   /* גן עם 2 נושאים: <גן>/<נושא>/בנים|בנות */
+    var dir = sub_(base_, q.sub === "בנות" ? "בנות" : "בנים");
     var base = clean_(q.name), ext = /png/.test(q.mime) ? ".png" : ".jpg", name = base + ext, n = 1;
     while (dir.getFilesByName(name).hasNext()) { n++; name = base + " " + n + ext; }
     var blob = Utilities.newBlob(Utilities.base64Decode(q.b64), q.mime || "image/jpeg", name);
@@ -86,9 +88,9 @@ function saveOrder_(q) {
   return { ok: true, folder: folder.getUrl(), doc: f.getUrl(), photos: count };
 }
 
-function countPhotos_(folder) {
+function countPhotos_(folder) {                                  /* כל התמונות בתיקיות שמתחת (גם נושא/בנים) */
   var n = 0, subs = folder.getFolders();
-  while (subs.hasNext()) { var fs = subs.next().getFiles(); while (fs.hasNext()) { fs.next(); n++; } }
+  while (subs.hasNext()) { var f = subs.next(), fs = f.getFiles(); while (fs.hasNext()) { if (/^image\//.test(fs.next().getMimeType())) n++; } n += countPhotos_(f); }
   return n;
 }
 function rtl_() { var a = {}; a[DocumentApp.Attribute.FONT_FAMILY] = "Arial"; a[DocumentApp.Attribute.FONT_SIZE] = 12; return a; }
