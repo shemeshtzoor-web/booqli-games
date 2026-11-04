@@ -166,13 +166,21 @@ function dedIdeas(g, st){
     `${to[2]} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\n${S} ❤️`
   ];
 }
-function ganDed(st){
-  const g = st.g.name || "הגן";
+function ganDed(st, sub){                                     /* בלי sub – ברבים (מה שהגננת רואה); "בנים"/"בנות" – לכל ספר, בזכר/נקבה */
+  const g = st.g.name || "הגן", f = (pl, m, w) => sub === "בנים" ? m : sub === "בנות" ? w : pl;
   return [
-    `ילדים יקרים,\nהשנה בגן הייתם גיבורים אמיתיים – למדתם, שיחקתם, צחקתם וגדלתם יחד. שהספר הזה יזכיר לכם תמיד כמה אתם מיוחדים, כמה אתם אהובים, וכמה כיף היה לנו איתכם. המשיכו לחלום בגדול, לשאול שאלות ולשמור על הלב הטוב שלכם.\nבאהבה, צוות ${g} ❤️`,
-    `לילדי ${g} האהובים,\nכל יום איתכם הוא הרפתקה – מלא צחוק, סקרנות וחיבוקים. הספר הזה הוא מזכרת קטנה מהשנה המיוחדת שלנו יחד. תזכרו שאתם יכולים להגשים כל חלום, ושתמיד יש מי שמאמין בכם.\nאוהבים, הגננות ❤️`,
-    `לילדים המתוקים שלנו,\nשתמיד תאמינו בעצמכם, תהיו חברים טובים ותשמחו בכל דבר קטן. היה לנו לכבוד ללוות אתכם השנה ולראות אתכם גדלים. בכל פעם שתפתחו את הספר – תזכרו כמה אנחנו גאים בכם.\nצוות ${g} ❤️`
+    `${f("ילדים יקרים", "ילד יקר", "ילדה יקרה")},\nהשנה בגן ${f("הייתם גיבורים אמיתיים", "היית גיבור אמיתי", "היית גיבורה אמיתית")} – ${f("למדתם, שיחקתם, צחקתם וגדלתם יחד", "למדת, שיחקת, צחקת וגדלת יחד איתנו", "למדת, שיחקת, צחקת וגדלת יחד איתנו")}. שהספר הזה יזכיר ${f("לכם", "לך", "לך")} תמיד כמה ${f("אתם מיוחדים", "אתה מיוחד", "את מיוחדת")}, כמה ${f("אתם אהובים", "אתה אהוב", "את אהובה")}, וכמה כיף היה לנו ${f("איתכם", "איתך", "איתך")}. ${f("המשיכו", "המשך", "המשיכי")} לחלום בגדול, לשאול שאלות ולשמור על הלב הטוב ${f("שלכם", "שלך", "שלך")}.\nבאהבה, צוות ${g} ❤️`,
+    `${f(`לילדי ${g} האהובים`, `לילד האהוב שלנו מ${g}`, `לילדה האהובה שלנו מ${g}`)},\nכל יום ${f("איתכם", "איתך", "איתך")} הוא הרפתקה – מלא צחוק, סקרנות וחיבוקים. הספר הזה הוא מזכרת קטנה מהשנה המיוחדת שלנו יחד. ${f("תזכרו שאתם יכולים", "תזכור שאתה יכול", "תזכרי שאת יכולה")} להגשים כל חלום, ושתמיד יש מי שמאמין ${f("בכם", "בך", "בך")}.\nאוהבים, הגננות ❤️`,
+    `${f("לילדים המתוקים שלנו", "לילד המתוק שלנו", "לילדה המתוקה שלנו")},\nשתמיד ${f("תאמינו בעצמכם, תהיו חברים טובים ותשמחו", "תאמין בעצמך, תהיה חבר טוב ותשמח", "תאמיני בעצמך, תהיי חברה טובה ותשמחי")} בכל דבר קטן. היה לנו לכבוד ללוות ${f("אתכם", "אותך", "אותך")} השנה ולראות ${f("אתכם גדלים", "אותך גדל", "אותך גדלה")}. בכל פעם ${f("שתפתחו", "שתפתח", "שתפתחי")} את הספר – ${f("תזכרו", "תזכור", "תזכרי")} כמה אנחנו גאים ${f("בכם", "בך", "בך")}.\nצוות ${g} ❤️`
   ];
+}
+/* ההקדשה לקבוצה (ספר + בנים/בנות): מוכנה – בזכר/נקבה; שהגננת כתבה – כפי שנכתבה, עם הערה לשמש */
+function ganDedFor(st, b, sub){
+  const D = (st.g.deds || {})[b] || (st.g.deds || {}).all;
+  if (!D) return st.g.ded || "";
+  if (typeof D === "object" && D.i != null) return ganDed(st, sub)[D.i];
+  const t = typeof D === "object" ? D.own : D;
+  return t + `\n\n———\n✍️ הנוסח של הגננת, כפי שנכתב – להתאים ל${sub === "בנות" ? "בנות (נקבה)" : "בנים (זכר)"}.`;
 }
 const CONSENT_LINKS = "לקריאה (נפתח בדפדפן):\n📄 התקנון: https://www.booqli.ai/he/terms-of-service\n🔒 מדיניות הפרטיות: https://www.booqli.ai/he/privacy-policy\n\n";
 const CONSENT = CONSENT_LINKS + "בלחיצה על הכפתור למטה אני מאשר/ת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ אני ההורה, או שקיבלתי אישור מההורים, לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
@@ -433,11 +441,11 @@ async function step(env, from, st, ev, log, db){
   };
   const c = st.cur, G = st.g;
   /* גן – הקדשה: אחת לכל הגן, או אחת לכל ספר (ההתאמה לבנים/בנות – אצל שמש) */
-  const dedDone = t => {
-    G.deds = G.deds || {}; G.deds[G.dedFor || "all"] = t;
-    const i = G.books.indexOf(G.dedFor);
-    if (G.dedFor && G.dedFor !== "all" && i >= 0 && i + 1 < G.books.length) { G.dedFor = G.books[i + 1]; G.dedI = 0; st.step = "g-ded"; return; }
-    G.ded = G.deds.all || G.books.map(b => `📚 ${book(b).name}:\n${G.deds[b] || ""}`).join("\n\n");
+  const dedDone = (t, i) => {
+    G.deds = G.deds || {}; G.deds[G.dedFor || "all"] = i != null ? { i, t } : { own: t, t };
+    const bi = G.books.indexOf(G.dedFor);
+    if (G.dedFor && G.dedFor !== "all" && bi >= 0 && bi + 1 < G.books.length) { G.dedFor = G.books[bi + 1]; G.dedI = 0; st.step = "g-ded"; return; }
+    G.ded = G.deds.all ? G.deds.all.t : G.books.map(b => `📚 ${book(b).name}:\n${(G.deds[b] || {}).t || ""}`).join("\n\n");
     G.grp = ""; st.step = "g-pics";
   };
   const askPend = (pr, n) => askPendF(S, st, pr, n);
@@ -629,7 +637,7 @@ async function step(env, from, st, ev, log, db){
       else if (id === "gdm:each") { G.deds = {}; G.dedFor = G.books[0]; G.dedI = 0; st.step = "g-ded"; }
       break;
     case "g-ded":
-      if (id === "gd:ok") { const L = ganDed(st); dedDone(L[(G.dedI || 0) % L.length]); }
+      if (id === "gd:ok") { const L = ganDed(st), i = (G.dedI || 0) % L.length; dedDone(L[i], i); }
       else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; }
       else if (id === "gd:own") { G.dedOwn = 0; G.ded = ""; st.step = "g-dedown"; }
       else if (txt && !id) {
@@ -765,6 +773,8 @@ async function driveOrder(env, st, from, consentAt, sum, consentText, db){
   const full = sum.replace("✓ אישור ההורים לתמונות – התקבל", "") +
     `📞 טלפון: +${from}\n🕐 אושר: ${new Date(consentAt).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}\n\nהנוסח שאושר:\n${consentText}` +
     (left.length ? "\n\n⚠️ תמונות שלא נכנסו לדרייב – בשרת הקטן (90 יום):\n" + left.join("\n") : "");
+  if (st.mode === "gan") for (const [b, sub] of rounds(st.g))                /* בכל תיקייה (ספר / בנים|בנות) – ההקדשה בלשון הנכונה */
+    await drivePost(env, { action: "ded", order: st.oid, title: title(st, from), topic: st.g.books.length > 1 ? book(b).name : "", sub, text: ganDedFor(st, b, sub) });
   const d = await drivePost(env, { action: "order", order: st.oid, title: title(st, from), summary: full, expected });
   return d ? { folder: d.folder, doc: d.doc, photos: d.photos } : null;
 }

@@ -18,6 +18,7 @@ function doPost(e) {
     if (q.action === "photo") return out_(savePhoto_(q));
     if (q.action === "order") return out_(saveOrder_(q));
     if (q.action === "alert") return out_(alert_(q));
+    if (q.action === "ded") return out_(saveDed_(q));
     if (q.action === "trash") return out_(trash_(q));
     if (q.action === "ping") return out_({ ok: true, folder: root_().getUrl() });
     return out_({ ok: false, error: "action" });
@@ -59,6 +60,19 @@ function savePhoto_(q) {
     var file = dir.createFile(blob);
     return { ok: true, file: file.getUrl(), folder: folder.getUrl(), name: name };
   } finally { lock.releaseLock(); }
+}
+
+/* הקדשה לגן: {order, title, topic?, sub, text} – מסמך "הקדשה" בתוך התיקייה של הספר + בנים|בנות (מחליף אם כבר קיים) */
+function saveDed_(q) {
+  var folder = orderFolder_(q.order, q.title), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;
+  var dir = sub_(base_, q.sub === "בנות" ? "בנות" : "בנים"), name = "הקדשה – " + (q.sub === "בנות" ? "בנות" : "בנים");
+  var old = dir.getFilesByName(name); while (old.hasNext()) old.next().setTrashed(true);
+  var doc = DocumentApp.create(name), body = doc.getBody();
+  body.setAttributes(rtl_());
+  String(q.text || "").split("\n").forEach(function (line) { body.appendParagraph(line).setLeftToRight(false).setAlignment(DocumentApp.HorizontalAlignment.RIGHT); });
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).moveTo(dir);
+  return { ok: true };
 }
 
 /* תמונה שהוחלפה (גן – תמונה אחת לכל ילד): {file} – לאשפה (לא מחיקה – אפשר לשחזר). רק קבצים בתוך "BOOQLI הזמנות" */
