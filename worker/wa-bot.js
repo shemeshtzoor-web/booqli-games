@@ -70,8 +70,10 @@ async function ask(env, to, st, log){
     }
     case "ver": {
       const b = book(c.book);
-      if (b.img) await S(image(b.img, b.name));
-      return S(buttons(`"${b.name}" – בשביל נכד או נכדה?`, [["v:b", "👦 נכד"], ["v:g", "👧 נכדה"]]));
+      if (b.img && !st.reread) await S(image(b.img, b.name));
+      st.reread = 0;
+      /* ספר עם עמודים לקריאה (עמוד הגנים) – גם כפתור "לקרוא" */
+      return S(buttons(`"${b.name}" – בשביל נכד או נכדה?`, [["v:b", "👦 נכד"], ["v:g", "👧 נכדה"]].concat(b.img ? [["r:read", "📖 לקרוא את הספר"]] : [])));
     }
     case "name": return S(text(`איך קוראים ל${kid(c) === "הנכדה" ? "נכדה" : "נכד"}? ✍️\n(השם הזה יופיע בספר – פשוט כותבים אותו כאן)`));
     case "ded": {
@@ -111,6 +113,9 @@ async function step(env, from, st, ev, log){
   switch (st.step) {
     case "hi": if (id === "s:go") st.step = "book"; break;
     case "ver": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); break; }  /* בחרו ספר אחר מהרשימה */
+      if (id === "r:read" && book(c.book).img) {   /* שולחים קישור לקריאה, ושואלים שוב את אותה שאלה */
+        await S(text(`📖 לקריאת "${book(c.book).name}" – לוחצים על הקישור, ובסוף חוזרים לכאן:\n${SITE}/kindergartens/?read=${c.book}`));
+        st.reread = 1; break; }
       if (id === "v:b" || id === "v:g") { c.ver = id.slice(2); c.ded = ""; st.step = "name"; } break;
     case "book": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); c.ded = ""; st.step = "ver"; } break;
     case "name": if (txt && !id) { c.name = txt.slice(0, 30); st.step = "ded"; } break;
