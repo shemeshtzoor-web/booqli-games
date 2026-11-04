@@ -183,6 +183,11 @@ section.sv{margin-top:34px}
 .wz .cov img{width:84px;filter:drop-shadow(0 6px 10px rgba(43,21,38,.25))}
 .wz .pick{display:flex;justify-content:center;font-size:22px;padding:22px 14px;width:100%}
 .wz .pv{display:block;width:auto;max-width:min(220px,70%);max-height:260px;object-fit:contain;margin:12px auto 0;border-radius:18px;border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.wz .pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin:6px 0 4px}
+.wz .pics div{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.wz .pics img{width:100%;height:100%;object-fit:cover;display:block}
+.wz .pics .rm{position:absolute;top:4px;left:4px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(43,21,38,.75);color:#fff;font-size:15px;cursor:pointer}
+.wz .doneb img+img{margin-inline-start:-18px}
 .wz .err{color:#B3261E;font-weight:800;margin-top:8px}
 .wz .prc{margin-top:6px;background:#fff;border:2.5px solid var(--mint);border-radius:18px;padding:12px 14px;display:grid;gap:6px;font-weight:800;font-size:18px;line-height:1.45;font-variant-numeric:tabular-nums}
 .wz .prc .up{color:var(--mag)}.wz .prc .nw{white-space:nowrap;unicode-bidi:isolate}.wz .prc .sh{color:var(--mute);font-size:16.5px}.wz .prc .tot{border-top:2px dashed var(--mint);padding-top:6px;font-size:21px;color:var(--saged)}
@@ -352,7 +357,8 @@ function verOpts(b){ return [["b", "נכד"], ["g", "נכדה"]]; }
 function priceOf(n, cover){ let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return cover === "soft" ? t[1] : t[2]; }
 const ORD = {who: "", list: []};          /* list = ספרים שכבר גמרנו */
 let CUR = null, STEP = "book", ORDER = "", PHOTOS_LEFT = null;
-const fresh = id => ({book: id || "", ver: "", name: "", ded: "", dedI: 0, blob: null, url: ""});
+const PICS = 5; /* עד 5 תמונות לכל ספר – "שלחו כמה, ואנחנו נבחר את הטובה ביותר" */
+const fresh = id => ({book: id || "", ver: "", name: "", ded: "", dedI: 0, pics: []});
 const isGirl = it => it.ver === "g";
 const kid = it => isGirl(it) ? "הנכדה" : "הנכד";
 const SB = '<img src="../img/family/booqli.webp" alt="" width="46" height="46">';
@@ -377,13 +383,13 @@ function priceLine(n){ const p = priceOf(n, "hard"), t = n * p, save = n * price
   return `${n === 1 ? "ספר אחד" : n + " ספרים"}: <span class="nw">${n === 1 ? ils(p) : n + " × " + ils(p) + " = " + ils(t)}</span>${save > 0 ? ` <b class="sv">חוסכים ${ils(save)}</b>` : ""}`; }
 function draw(scroll){
   const w = $("wz"), n = ORD.list.length, h = [];
-  ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.url ? `<img src="${it.url}" alt="">` : ""}</div>`));
+  ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.pics.map(x => `<img src="${x.url}" alt="">`).join("")}</div>`));
   if (CUR && STEP !== "send") {
     const b = book(CUR.book), num = n + 1, pre = ORD.list.length || STEP !== "book" ? `ספר ${num}: ` : "";
     if (b && STEP !== "book") h.push(`<div class="doneb">✓ ${pre}<b>${esc(b.name)}</b>${CUR.ver !== "" ? " · " + (isGirl(CUR) ? "👧 נכדה" : "👦 נכד") : ""}<button type="button" class="ed" data-go="book">לתקן</button></div>`);
     if (CUR.name && !["book", "ver", "name"].includes(STEP)) h.push(`<div class="doneb">✓ השם: <b>${esc(CUR.name)}</b><button type="button" class="ed" data-go="name">לתקן</button></div>`);
     if (CUR.ded && ["photo", "who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ ההקדשה מוכנה<button type="button" class="ed" data-go="ded">לתקן</button></div>`);
-    if (CUR.blob && ["who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ התמונה <img src="${CUR.url}" alt=""><button type="button" class="ed" data-go="photo">להחליף</button></div>`);
+    if (CUR.pics.length && ["who", "more"].includes(STEP)) h.push(`<div class="doneb">✓ ${CUR.pics.length === 1 ? "התמונה" : CUR.pics.length + " תמונות"} ${CUR.pics.map(x => `<img src="${x.url}" alt="">`).join("")}<button type="button" class="ed" data-go="photo">לתקן</button></div>`);
     if (ORD.who && STEP === "more") h.push(`<div class="doneb">✓ המזמין/ה: <b>${esc(ORD.who)}</b><button type="button" class="ed" data-go="who">לתקן</button></div>`);
   }
   h.push(stepHTML());
@@ -406,9 +412,11 @@ function stepHTML(){
     return `<div class="step"><h3>${SB}הקדשה מכם ל${esc(it.name)}</h3><p class="h">כתבנו לכם הקדשה. אפשר לשנות כל מילה – או פשוט לאשר 💛</p>
     <textarea id="wDed" maxlength="400">${esc(it.ded)}</textarea>
     <button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="ded">הבא ←</button></div>`; }
-  if (STEP === "photo") return `<div class="step"><h3>${SB}תמונה של ${esc(it.name)}</h3><p class="h">תמונה ברורה, הפנים למצלמה</p>
-    ${it.blob ? `<img class="pv" src="${it.url}" alt="התמונה שבחרתם"><label class="alt" style="display:block;text-align:center">🔄 להחליף תמונה<input type="file" accept="image/*" id="wFile" hidden></label>`
-      : `<label class="btn btn-main pick">📷 בוחרים תמונה מהטלפון<input type="file" accept="image/*" id="wFile" hidden></label>`}<p class="err" id="wErr"></p></div>${it.blob ? '<div class="nav"><button type="button" class="btn btn-main nextb" data-next="photo">הבא ←</button></div>' : ""}`;
+  if (STEP === "photo") { const n = it.pics.length;
+    return `<div class="step"><h3>${SB}${n ? "תמונות של " : "תמונה של "}${esc(it.name)}</h3><p class="h">אפשר לשלוח כמה תמונות – ואנחנו נבחר את הטובה ביותר 💛</p>
+    ${n ? `<div class="pics">${it.pics.map((x, k) => `<div><img src="${x.url}" alt="תמונה ${k + 1}"><button type="button" class="rm" data-rmpic="${k}" aria-label="להוריד את תמונה ${k + 1}">✕</button></div>`).join("")}</div>` : ""}
+    ${n < PICS ? `<label class="${n ? "alt" : "btn btn-main pick"}" ${n ? 'style="display:block;text-align:center"' : ""}>📷 ${n ? "עוד תמונה" : "בוחרים תמונות מהטלפון"}<input type="file" accept="image/*" id="wFile" multiple hidden></label>` : ""}
+    <p class="err" id="wErr"></p></div>${n ? '<div class="nav"><button type="button" class="btn btn-main nextb" data-next="photo">הבא ←</button></div>' : ""}`; }
   if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
     <input type="text" id="wWho" value="${esc(ORD.who)}" maxlength="40" autocomplete="name" placeholder="למשל: סבתא רינה">
     <p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="who">הבא ←</button></div>`;
@@ -431,12 +439,13 @@ function stepHTML(){
 const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
 $("wz").addEventListener("change", e => {
   if (e.target.id === "wBook" && e.target.value) { CUR.book = e.target.value; CUR.ver = ""; CUR.ded = ""; STEP = "ver"; ev("savta-step", "book"); draw(true); }
-  if (e.target.id === "wFile" && e.target.files[0]) photo(e.target.files[0]);
+  if (e.target.id === "wFile" && e.target.files.length) { const fs = [...e.target.files].slice(0, PICS - CUR.pics.length); let left = fs.length; fs.forEach(f => photo(f, () => { if (!--left) draw(true); })); }
 });
 $("wz").addEventListener("click", e => {
   const t = e.target.closest("button,[data-go]"); if (!t) return;
   if (t.dataset.go) { STEP = t.dataset.go; if (STEP === "book") { CUR.ver = ""; } draw(true); return; }
   if (t.dataset.ver !== undefined) { CUR.ver = t.dataset.ver; CUR.ded = ""; STEP = "name"; ev("savta-step", "ver"); draw(true); return; }
+  if (t.dataset.rmpic !== undefined) { const x = CUR.pics.splice(+t.dataset.rmpic, 1)[0]; if (x) URL.revokeObjectURL(x.url); draw(false); return; }
   if (t.dataset.ded) { const L = dedIdeas(CUR); CUR.dedI = (CUR.dedI + 1) % L.length; CUR.ded = L[CUR.dedI]; $("wDed").value = CUR.ded; return; }
   if (t.dataset.next === "name") { const v = $("wName").value.trim(); if (!v) return err("כותבים את השם 🙂"); CUR.name = v; STEP = "ded"; ev("savta-step", "name"); draw(true); return; }
   if (t.dataset.next === "ded") { const v = $("wDed").value.trim(); if (!v) return err("כותבים כמה מילים, או לוחצים על ✨ הקדשה אחרת"); CUR.ded = v; STEP = "photo"; ev("savta-step", "ded"); draw(true); return; }
@@ -449,12 +458,12 @@ $("wz").addEventListener("click", e => {
 $("wz").addEventListener("input", e => { if (e.target.id === "wDed" && CUR) CUR.ded = e.target.value; });
 $("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".nav .nextb"); b && b.click(); } });
 /* תמונה: מקטינים בטלפון (עד 2000 פיקסלים, JPEG) כדי שתעלה מהר */
-function photo(file){
+function photo(file, done){
   const img = new Image(), u = URL.createObjectURL(file);
   img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
     c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    c.toBlob(bl => { URL.revokeObjectURL(u); if (!bl) return err("לא הצלחנו לפתוח את התמונה – נסו תמונה אחרת"); if (CUR.url) URL.revokeObjectURL(CUR.url); CUR.blob = bl; CUR.url = URL.createObjectURL(bl); ev("savta-photo", "pick"); draw(true); }, "image/jpeg", .88); };
-  img.onerror = () => { URL.revokeObjectURL(u); err("לא הצלחנו לפתוח את התמונה – נסו תמונה אחרת"); };
+    c.toBlob(bl => { URL.revokeObjectURL(u); if (bl && CUR.pics.length < PICS) CUR.pics.push({blob: bl, url: URL.createObjectURL(bl)}); ev("savta-photo", "pick"); done(); }, "image/jpeg", .88); };
+  img.onerror = () => { URL.revokeObjectURL(u); done(); setTimeout(() => err("תמונה אחת לא נפתחה – אפשר לבחור אחרת"), 50); };
   img.src = u;
 }
 /* שליחה: מעלים כל תמונה לשרת הקטן, ואז הודעה אחת לשמש בוואטסאפ */
@@ -463,11 +472,13 @@ async function send(){
   const b = $("wSend"); if (b.dataset.busy) return; b.dataset.busy = "1";
   if (!ORDER) ORDER = "סב-" + String(Math.floor(1000 + Math.random() * 9000));
   let links = true;
-  for (let i = 0; i < ORD.list.length; i++) { const it = ORD.list[i]; if (it.link) continue;
+  const all = ORD.list.flatMap(it => it.pics), tot = all.length; let k = 0;
+  for (const x of all) { k++; if (x.link) continue;
     if (!UPLOAD) { links = false; break; }
-    $("wSt").textContent = `⏳ שולחים את התמונה ${ORD.list.length > 1 ? (i + 1) + " מתוך " + ORD.list.length : ""}…`;
-    try { it.link = await up(it.blob); } catch (e) { links = false; break; } }
-  const lines = ORD.list.map((it, i) => `📖 *ספר ${i + 1}: ${book(it.book).name}* (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: *${it.name}*\n✍️ הקדשה: ${it.ded}\n📷 ${it.link || "התמונה – שולחים מיד אחרי ההודעה"}`);
+    $("wSt").textContent = `⏳ שולחים את התמונות… ${tot > 1 ? k + " מתוך " + tot : ""}`;
+    try { x.link = await up(x.blob); } catch (e) { links = false; break; } }
+  const pl = it => links ? (it.pics.length === 1 ? "📷 " + it.pics[0].link : "📷 תמונות:\n" + it.pics.map(x => x.link).join("\n")) : `📷 ${it.pics.length === 1 ? "התמונה" : it.pics.length + " תמונות"} – שולחים מיד אחרי ההודעה`;
+  const lines = ORD.list.map((it, i) => `📖 *ספר ${i + 1}: ${book(it.book).name}* (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: *${it.name}*\n✍️ הקדשה: ${it.ded}\n${pl(it)}`);
   const msg = `שלום BOOQLI 💛\nהזמנה ${ORDER} · ${ORD.who}\n\n${lines.join("\n\n")}\n\n✓ קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה שאשלח כאן או בוואטסאפ, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\n(" + SRC + ")" : ""}`;
   ev("savta-send", ORD.list.length + (links ? "-links" : "-nolinks"));
   $("wSt").innerHTML = links ? "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה" : "✓ נפתח וואטסאפ – לוחצים שם על ➤ שליחה, ואחר כך חוזרים לכאן לשלוח את התמונות";
@@ -477,7 +488,7 @@ async function send(){
 }
 /* גיבוי, כשאין שרת תמונות: חלון השיתוף של הטלפון */
 async function sharePics(){
-  const files = ORD.list.map((it, i) => new File([it.blob], `${i + 1}-${it.name.replace(/[^\w֐-׿-]+/g, "_")}.jpg`, {type: "image/jpeg"}));
+  const files = ORD.list.flatMap((it, i) => it.pics.map((x, k) => new File([x.blob], `${i + 1}-${it.name.replace(/[^\w\u0590-\u05FF-]+/g, "_")}-${k + 1}.jpg`, {type: "image/jpeg"})));
   try { if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files, text: "התמונות להזמנה " + ORDER}); ev("savta-photos", "shared"); return; } } catch (e) { if (e && e.name === "AbortError") return; }
   files.forEach(f => { const a = document.createElement("a"); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); });
   $("wSt").textContent = "📎 התמונות ירדו למחשב – מצרפים אותן בשיחה איתנו ב-📎"; ev("savta-photos", "download");
