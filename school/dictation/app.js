@@ -15,10 +15,13 @@ const ev = (k, n) => { try { siteEvent(k, String(n)); } catch (e) {} };
 /* ---------- ההתקדמות ---------- */
 const KEY = "booqli_dictation", MAXW = 30;
 const EXAMPLE = ["שמש", "כיתה", "חבר", "תפוח", "עכבר", "מחברת", "צבע", "טלפון"];
-const blank = () => ({v:1, name:"", g:"", words:EXAMPLE.slice(), example:true, m:{}, stars:0});
+const blank = () => ({v:1, cls:"", words:EXAMPLE.slice(), example:true, m:{}, stars:0});
 let S = (() => { try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o && o.v === 1) return Object.assign(blank(), o); } catch (e) {} return blank(); })();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-const G = (m, f, n) => S.g === "b" ? m : S.g === "g" ? f : (n || m + "/" + f);
+/* (4.11.2026, לפי שמש) פונים תמיד ברבים – לכל ילדי הכיתה. G נשאר כדי שיהיה קל לחזור לבן/בת */
+const G = (m, f, n) => n;
+/* שם הכיתה: "ב'2" → "כיתה ב'2" */
+const clsName = c => { c = String(c || "").replace(/[<>"]/g, "").trim().slice(0, 24); return !c ? "" : /^כית/.test(c) ? c : "כיתה " + c; };
 
 /* ---------- עברית ---------- */
 const NIQ = /[֑-ׇ]/g;
@@ -147,7 +150,7 @@ const GAMES = {
   write: {ic:"✏️", t:"כותבים במחברת", s:"כותבים ביד או במקלדת", c:"g3"},
   test:  {ic:"📝", t:"הכתבה אמיתית", s:"כל המילים, כמו בכיתה", c:"g4"}
 };
-let incoming = null; /* רשימה שהגיעה בקישור */
+let incoming = null, incomingCls = ""; /* רשימה (וכיתה) שהגיעו בקישור */
 let G1 = null;       /* המשחק הנוכחי */
 
 function route(){
@@ -165,12 +168,12 @@ function route(){
 /* ================================ דף הבית ================================ */
 function home(){
   G1 = null;
-  const hi = S.name ? "שלום " + esc(S.name) + "!" : "שלום!";
+  const hi = S.cls ? "שלום ילדי " + esc(clsName(S.cls)) + "!" : "שלום ילדים!";
   let h = '<section class="card d-hero"><img src="../../img/family/alef.webp" alt="" width="104" height="107"><div>' +
     '<small>כיתות א\'–ג\' · אֲלֶפְבּוּקְלִי</small><h1>מאמן ההכתבה</h1>' +
     '<div class="bubble">' + hi + ' ' + (S.words.length ? G("בוא נלמד", "בואי נלמד", "בואו נלמד") + " את מילות ההכתבה של השבוע ✏️" : "עוד אין מילים. מבוגר יכול להוסיף אותן באזור ההורים.") + '</div>' +
     '<div class="row start"><span class="starpill" title="כוכבים שנאספו">⭐ ' + S.stars + '</span></div></div></section>';
-  if (incoming) h += '<section class="newlist" aria-live="polite"><h2>📬 קיבלתם רשימת מילים חדשה (' + incoming.length + ')</h2><div class="ws">' + incoming.map(esc).join(" · ") + '</div>' +
+  if (incoming) h += '<section class="newlist" aria-live="polite"><h2>📬 קיבלתם את מילות ההכתבה' + (incomingCls ? ' של ' + esc(clsName(incomingCls)) : '') + ' (' + incoming.length + ' מילים)</h2><div class="ws">' + incoming.map(esc).join(" · ") + '</div>' +
     '<div class="row start"><button type="button" class="btn purple" id="inYes">לשמור ולהתחיל</button><button type="button" class="btn alt sm" id="inNo">לא עכשיו</button></div>' +
     (S.example ? "" : '<p class="note">הרשימה החדשה תחליף את המילים שיש עכשיו. הכוכבים נשמרים.</p>') + '</section>';
   else if (S.example) h += '<div class="exnote">✋ זו <b>רשימה לדוגמה</b>. הורים: מכניסים את המילים של השבוע ב"אזור ההורים" למטה.</div>';
@@ -186,7 +189,7 @@ function home(){
   $("toP").onclick = () => { if (typeof siteKidLock === "function" && siteKidLock()) adult("אזור ההורים: כאן משנים את המילים.", () => go("?p=1")); else go("?p=1"); };
   $("toSheet").onclick = e => { e.preventDefault(); go("?sheet=1"); };
   if (incoming) {
-    $("inYes").onclick = () => { S.words = incoming; S.example = false; save(); ev("dict-received", incoming.length); incoming = null; home(); };
+    $("inYes").onclick = () => { S.words = incoming; S.example = false; if (incomingCls) S.cls = incomingCls; save(); ev("dict-received", incoming.length); incoming = null; home(); };
     $("inNo").onclick = () => { incoming = null; home(); };
   }
 }
@@ -194,13 +197,12 @@ function home(){
 /* ================================ אזור ההורים ================================ */
 let micStream = null, recorder = null;
 function stopMic(){ try { if (recorder && recorder.state !== "inactive") recorder.stop(); } catch (e) {} recorder = null; if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; } }
-const listLink = ws => "https://games.booqli.ai/school/dictation/?w=" + encodeURIComponent(ws.join(","));
+const listLink = ws => "https://games.booqli.ai/school/dictation/?w=" + encodeURIComponent(ws.join(",")) + (S.cls ? "&c=" + encodeURIComponent(S.cls).replace(/'/g, "%27") : "");
 function parents(){
   const ws = S.example ? [] : S.words;
   app.innerHTML = '<section class="card pz">' +
     '<div class="pbar2"><button type="button" class="x" id="pBack" aria-label="חזרה">→</button><h2>👩‍👧 אזור ההורים</h2></div>' +
-    '<div class="field"><label for="pName">שם הילד/ה (לא חובה)</label><input type="text" id="pName" maxlength="20" autocomplete="off" value="' + esc(S.name) + '"></div>' +
-    '<div class="field"><span class="lab">פונים אל</span><div class="seg"><button type="button" id="gG" aria-pressed="' + (S.g === "g") + '">בת</button><button type="button" id="gB" aria-pressed="' + (S.g === "b") + '">בן</button></div></div>' +
+    '<div class="field"><label for="pCls">הכיתה</label><input type="text" id="pCls" maxlength="24" autocomplete="off" placeholder="למשל: ב\'2" value="' + esc(S.cls) + '"><span class="note">יופיע במשחק ("שלום ילדי כיתה ב\'2!") ובהודעה להורים. לא כותבים את שם הילד.</span></div>' +
     '<div class="field"><label for="pWords">מילות ההכתבה של השבוע</label>' +
     '<textarea id="pWords" placeholder="מילה אחת בכל שורה, למשל:&#10;שמש&#10;כיתה&#10;תפוח">' + esc(ws.join("\n")) + '</textarea>' +
     '<div class="tip">🎤 <b>רוצים להקריא במקום להקליד?</b> לוחצים בתוך התיבה, ואז על המיקרופון במקלדת של הטלפון. אומרים מילה, לוחצים "אנטר", ואז את המילה הבאה. אפשר גם להדביק רשימה מוואטסאפ.</div></div>' +
@@ -214,21 +216,19 @@ function parents(){
     '<h3>🔄 מתחילים מחדש</h3><div class="row start"><button type="button" class="btn alt sm" id="pReset">איפוס הכוכבים</button></div>' +
     '</section>';
   $("pBack").onclick = () => go("");
-  $("gG").onclick = () => { S.g = "g"; save(); $("gG").setAttribute("aria-pressed", true); $("gB").setAttribute("aria-pressed", false); };
-  $("gB").onclick = () => { S.g = "b"; save(); $("gB").setAttribute("aria-pressed", true); $("gG").setAttribute("aria-pressed", false); };
   const st = $("pStatus");
   $("pSave").onclick = () => {
-    S.name = $("pName").value.trim().slice(0, 20);
+    S.cls = $("pCls").value.replace(/[<>"]/g, "").trim().slice(0, 24);
     const list = parseWords($("pWords").value);
     if (list.length) { S.words = list; S.example = false; ev("dict-list", list.length); }
     save(); paintRecs(); paintShare();
-    st.textContent = list.length ? "✔️ נשמר: " + list.length + " מילים מוכנות למשחק." + (canRecord ? " עכשיו אפשר להקליט אותן למטה." : "") : "השם נשמר. כדי לשמור מילים, כתבו לפחות מילה אחת.";
+    st.textContent = list.length ? "✔️ נשמר: " + list.length + " מילים מוכנות למשחק." + (canRecord ? " עכשיו אפשר להקליט אותן למטה." : "") : "הכיתה נשמרה. כדי לשמור מילים, כתבו לפחות מילה אחת.";
   };
   function paintShare(){
     const list = S.example ? [] : S.words, wa = $("pWa"), cp = $("pCopy");
     if (!list.length) { wa.removeAttribute("href"); wa.onclick = e => { e.preventDefault(); st.textContent = "קודם שומרים מילים, ואז שולחים."; }; cp.onclick = wa.onclick; return; }
     const link = listLink(list);
-    const msg = "שלום הורים 😊\nאלה מילות ההכתבה של השבוע:\n" + list.join(", ") + "\n\nבקישור יש משחקים לתרגול (בונים מילה, מוצאים את הכתיב הנכון וכותבים במחברת), והרשימה כבר נטענת לבד:\n" +
+    const msg = "שלום הורים" + (S.cls ? " של " + clsName(S.cls) : "") + " 😊\nאלה מילות ההכתבה של השבוע:\n" + list.join(", ") + "\n\nבקישור יש משחקים לתרגול (בונים מילה, מוצאים את הכתיב הנכון וכותבים במחברת), והרשימה כבר נטענת לבד:\n" +
       link + "&utm_source=whatsapp&utm_medium=class_parents&utm_campaign=school-dictation\n\nבחינם, בחסות BOOQLI 💛";
     wa.href = "https://wa.me/?text=" + encodeURIComponent(msg);
     wa.onclick = () => ev("dict-share", "whatsapp");
@@ -494,8 +494,8 @@ function finish(){
 function sheet(){
   document.body.classList.add("sheet-mode"); app.hidden = true;
   const box = $("print"); box.hidden = false;
-  const ws = S.words.slice(0, MAXW), nm = S.name ? '<u>' + esc(S.name) + '</u>' : '<span class="cline"></span>';
-  const head = (t, s) => '<header class="sh-h"><div><b>' + t + '</b><small>מאמן ההכתבה · ' + s + '</small></div><div class="nm">שֵׁם: ' + nm + '</div></header>';
+  const ws = S.words.slice(0, MAXW), nm = '<span class="cline"></span>', cl = S.cls ? esc(clsName(S.cls)) + ' · ' : '';
+  const head = (t, s) => '<header class="sh-h"><div><b>' + t + '</b><small>מאמן ההכתבה · ' + cl + s + '</small></div><div class="nm">שֵׁם: ' + nm + '</div></header>';
   const foot = () => typeof sitePrintFooter === "function" ? sitePrintFooter("school-dictation", "", "../../img/logo.png") : "";
   const pages = [];
   for (let i = 0; i < ws.length; i += 11) {
@@ -526,8 +526,10 @@ window.addEventListener("afterprint", fit);
   const p = P(), w = p.get("w");
   if (w) {
     const list = parseWords(w.replace(/,/g, "\n"));
-    if (list.length && list.map(plain).join(",") !== S.words.map(plain).join(",")) incoming = list;
-    p.delete("w"); ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(k => p.delete(k));
+    const c = (p.get("c") || "").replace(/[<>"]/g, "").trim().slice(0, 24);
+    if (list.length && (list.map(plain).join(",") !== S.words.map(plain).join(",") || S.example)) { incoming = list; incomingCls = c; }
+    else if (c && !S.cls) { S.cls = c; save(); }
+    p.delete("w"); p.delete("c"); ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(k => p.delete(k));
     const qs = p.toString();
     setTimeout(() => { try { if (typeof siteSetUrl === "function") siteSetUrl(base() + (qs ? "?" + qs : ""), false); } catch (e) {} }, 1600);
   }
