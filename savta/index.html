@@ -67,7 +67,7 @@ section.sv{margin-top:34px}
 /* ספרים */
 .books{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:16px}
 /* הספרים בקרוסלה – ספר אחד בכל פעם, כדי שלא יתפסו מקום (4.11.2026) */
-#bookList.books{display:block}#bookList .sl{padding:6px 4px 10px}#bookList .sl>.book{max-width:400px;margin:0 auto}#bookList .book .img{aspect-ratio:auto;height:clamp(190px,52vw,250px)}#bookList .book .img img{object-fit:contain;transform:scale(1.3)}
+#bookList.books{display:block}#bookList .nextBook{display:flex;justify-content:center;width:min(400px,100%);margin:12px auto 0;font-size:21px;padding:15px;border:3px solid var(--pink);color:var(--mag);background:#fff}#bookList .nbHint{text-align:center;color:var(--mute);font-weight:700;font-size:15px;margin-top:6px}#bookList .sl{padding:6px 4px 10px}#bookList .sl>.book{max-width:400px;margin:0 auto}#bookList .book .img{aspect-ratio:auto;height:clamp(190px,52vw,250px)}#bookList .book .img img{object-fit:contain;transform:scale(1.3)}
 .book{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 6px 22px rgba(78,133,118,.12);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
 .book:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(78,133,118,.2)}
 .book .img{background:var(--mint);aspect-ratio:1;display:block;border:0;padding:0;cursor:pointer;overflow:hidden;width:100%}
@@ -230,7 +230,7 @@ section.sv{margin-top:34px}
 
 <section class="sv" id="books">
   <h2>בחרו ספר לנכד או לנכדה</h2>
-  <p class="lead">מדפדפים בחיצים ← → · לוחצים על הספר כדי לקרוא אותו</p>
+  <p class="lead">לוחצים על הספר כדי לקרוא אותו · "ספר אחר" מעביר לספר הבא</p>
   <div class="books" id="bookList"></div>
 </section>
 
@@ -323,7 +323,10 @@ if (window.siteCarousel) { siteCarousel($("baBox"), {every: 3500, label: "לפנ
 $("bookList").innerHTML = BOOKS.map(b => `<div class="book"><button type="button" class="img" data-read="${b.id}" aria-label="לקרוא את ${esc(b.name)}"><img src="${bqCover(b)}" alt="" loading="lazy" width="400" height="400"></button>
   <div class="t"><h3>${esc(b.name)}</h3>${GAME.includes(b.id) ? '<span><span class="tag">🎮 כולל משחק אישי</span></span>' : ""}<p>${esc(b.d)}</p>
   <div class="reads">${b.v.map((v, i) => `<button type="button" data-read="${b.id}" data-ver="${i}">📖 לקרוא · ${esc(v[0])}</button>`).join("")}</div><div class="row"><button type="button" class="want" data-want="${b.id}">💛 אני רוצה את הספר הזה</button></div></div></div>`).join("");
-if (window.siteCarousel) siteCarousel($("bookList"), {every: 6000, label: "הספרים"});
+if (window.siteCarousel) { siteCarousel($("bookList"), {every: 6000, label: "הספרים"});
+  /* כפתור גדול וברור לספר הבא (שמש: "שיהיה ברור מאוד איך עוברים לספר הבא") */
+  $("bookList").insertAdjacentHTML("beforeend", '<button type="button" class="btn btn-soft nextBook" id="nextBook">📚 ספר אחר ←</button><p class="nbHint">הספרים מתחלפים גם לבד כל כמה שניות</p>');
+  $("nextBook").onclick = () => { const b = $("bookList").querySelector(".s-car .pv"); if (b) b.click(); ev("savta-next-book", ""); }; }
 document.addEventListener("click", e => {
   const r = e.target.closest("[data-read]"); if (r) { bqRead(r.dataset.read, +(r.dataset.ver || 0)); return; }
   const w = e.target.closest("[data-want]"); if (w) { want(w.dataset.want); }
