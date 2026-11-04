@@ -168,10 +168,12 @@ const LINES = [
     fx("🔒","מצב ילדים נעול (להורים)","app/","p","נעילה קוד ילדים בטוח")]},
   {id:"books", c:"#4E8576", ic:"📚", name:"ספרי BOOQLI", sub:"משחקים לפי הספרים, שבהם הילד הוא הגיבור",
     items: CATALOG.filter(t => t.book).map(fromCat)},
-  {id:"school", c:"#6B2FA3", ic:"🎒", name:"כיתות א'–ג'", sub:"מסלול הקריאה פתוח · עוד מקצועות בדרך", go:"school/",
+  {id:"school", c:"#6B2FA3", ic:"🎒", name:"כיתות א'–ג'", sub:"מסלול הקריאה ומאמן ההכתבה פתוחים · עוד מקצועות בדרך", go:"school/",
     items: [fx("📖","מסלול הקריאה: 18 שלבים","school/reading/","tpks","קריאה אותיות ניקוד מילים משפטים סיפורים כתב יד כתיב דפי עבודה צביעה כיתה א", {games: KIDS_GAMES.filter(g => g.topic === "school-reading").length}),
       fx("🧭","בודקים באיזו רמה הילד","school/reading/?place=1","pks","מבחן מיקום רמה קריאה"),
-      fx("🖨️","דפי קריאה להדפסה לפי שלב","school/reading/#all-sheets","tps","דפי עבודה אותיות ניקוד צביעה תעודה")]
+      fx("🖨️","דפי קריאה להדפסה לפי שלב","school/reading/#all-sheets","tps","דפי עבודה אותיות ניקוד צביעה תעודה"),
+      fx("✏️","מאמן ההכתבה: מילות השבוע","school/dictation/","tpks","הכתבה מילים כתיב כתיבה כתב יד מילות השבוע שיעורי בית כיתה ב", {games: KIDS_GAMES.filter(g => g.topic === "school-dictation").length}),
+      fx("🖨️","דף הכתבה להדפסה","school/dictation/?sheet=1","tps","הכתבה דף עבודה הדפסה")]
       .concat(CATALOG.filter(t => !t.book && !t.zone && !t.href && isSchoolOnly(t)).map(fromCat))},
   {id:"booqli", c:"#FF56C2", ic:"🎁", name:"מ-BOOQLI", sub:"ספרים, מתנות ושירותים", items:[
     fx("🏫","ספר אישי לכל ילד בגן + מחשבון מחיר","kindergartens/","tp","גן מחירים הזמנה ספר אישי סיטונאי מחשבון ועד הורים"),
