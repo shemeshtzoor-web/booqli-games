@@ -8,6 +8,10 @@
      WA_PHONE_ID    – Phone number ID של המספר
      VERIFY_TOKEN   – מילה סודית לחיבור ה-webhook (ממציאים)
      APP_SECRET     – App secret של האפליקציה במטא (לבדיקת חתימה)
+     DRIVE_URL      – הכתובת של הקוד בגוגל (worker/drive-saver.gs, מסתיימת ב-/exec) – שומר בדרייב של שמש
+     DRIVE_KEY      – מילה סודית, זהה ל-SECRET במאפייני הסקריפט בגוגל
+   דרייב: כל תמונה נשמרת מיד ב"BOOQLI הזמנות / סב-1234 · שם · תאריך / בנים|בנות / <שם הילד>.jpg";
+   בסוף ההזמנה – מסמך "סיכום ההזמנה" באותה תיקייה ומייל לשמש. הדרייב לא זמין? התמונה נשמרת ב-KV ומנסים שוב בסוף ההזמנה.
    חיבורים: KV בשם STATE (אפשר אותו namespace של התמונות).
    כתובות: GET/POST /wa  ← webhook של מטא.  GET /p/<id>.jpg ← תמונות שהתקבלו (כמו בשרת התמונות).  GET /orders?k=VERIFY_TOKEN ← רשימת הזמנות. */
 
@@ -108,6 +112,7 @@ async function step(env, from, st, ev, log){
   const S = m => wa(env, from, m, log);
   const c = st.cur;
   const id = ev.id || "", txt = (ev.text || "").trim();
+  if (!st.oid) { st.oid = "סב-" + String(1000 + Math.floor(Math.random() * 9000)); st.day = dayStr(); }   /* שיחה שהתחילה לפני הגרסה הזו */
   if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(text("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nכשתרצו להמשיך בהזמנה – פשוט כתבו \"להמשיך\".")); return; }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log); }
   switch (st.step) {
@@ -127,7 +132,7 @@ async function step(env, from, st, ev, log){
       break;
     case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "pics"; } break;
     case "pics": case "picsmore":
-      if (ev.image) { if (c.pics.length < PICS) c.pics.push(ev.image); st.step = "picsmore";
+      if (ev.image) { if (c.pics.length < PICS) c.pics.push(await savePic(env, st, c, ev.image, from)); st.step = "picsmore";
         if (st.burst) return;                 /* כמה תמונות ברצף – עונים פעם אחת */
         st.burst = 1; }
       else if (id === "p:done" && c.pics.length) st.step = st.who ? "more" : "who";
@@ -140,12 +145,13 @@ async function step(env, from, st, ev, log){
       break;
     case "consent":
       if (id === "c:yes") {
-        const oid = "סב-" + String(1000 + Math.floor(Math.random() * 9000));
-        st.done = oid; st.step = "done";
+        const oid = st.oid || ("סב-" + String(1000 + Math.floor(Math.random() * 9000)));
+        st.done = oid; st.step = "done"; const consentAt = new Date().toISOString();
         const sum = summary(st, oid, false);
         for (let i = 0; i < sum.length; i += 3900) await S(text(sum.slice(i, i + 3900)));   /* הודעה בוואטסאפ – עד 4096 תווים */
         await S(text("תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️"));
-        if (env.STATE && !log) await env.STATE.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: oid, who: st.who, at: new Date().toISOString(), consentAt: new Date().toISOString(), consentText: CONSENT, text: summary(st, oid, true), list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })) }), { expirationTtl: 90 * 86400 });
+        const drive = await driveOrder(env, st, from, consentAt);
+        if (env.STATE && !log) await env.STATE.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: oid, who: st.who, at: consentAt, consentAt, consentText: CONSENT, drive, text: summary(st, oid, true), list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })) }), { expirationTtl: 90 * 86400 });
         return;
       }
       break;
@@ -153,15 +159,46 @@ async function step(env, from, st, ev, log){
   return ask(env, from, st, log);
 }
 
-/* תמונה שהתקבלה: מורידים ממטא ושומרים ב-KV (90 יום), כדי שיהיה קישור קבוע לסיכום */
-async function keepPic(env, mediaId, origin){
+/* ===== דרייב ===== */
+function dayStr(){ const d = new Date(Date.now() + 2 * 3600e3); return String(d.getUTCDate()).padStart(2, "0") + "." + String(d.getUTCMonth() + 1).padStart(2, "0"); }
+const title = (st, from) => `${st.oid} · ${st.who || st.profile || from || ""} · ${st.day || dayStr()}`.replace(/ · {2}/g, " · ");
+const subOf = c => c.ver === "g" ? "בנות" : "בנים";
+function b64(buf){ const u = new Uint8Array(buf); let s = ""; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
+async function drivePost(env, body){
+  if (!env.DRIVE_URL || !env.DRIVE_KEY) return null;
   try {
-    const m = await (await fetch(`${GRAPH}/${mediaId}`, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } })).json();
-    const r = await fetch(m.url, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } }); if (!r.ok) return { media: mediaId };
+    const r = await fetch(env.DRIVE_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ key: env.DRIVE_KEY }, body)), redirect: "follow" });
+    const j = await r.json(); return j && j.ok ? j : null;
+  } catch (e) { console.log("drive failed", String(e)); return null; }
+}
+/* תמונה שהתקבלה: מורידים ממטא ושומרים בדרייב בשם הילד. אם הדרייב לא זמין – ב-KV (90 יום), ומנסים שוב בסוף ההזמנה */
+async function savePic(env, st, c, img, from){
+  if (!env.WA_TOKEN) return img;                                    /* בבדיקות בלי מטא */
+  try {
+    const m = await (await fetch(`${GRAPH}/${img.media}`, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } })).json();
+    const r = await fetch(m.url, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } }); if (!r.ok) return { media: img.media };
+    const buf = await r.arrayBuffer(), mime = m.mime_type || "image/jpeg";
+    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), sub: subOf(c), name: c.name, mime, b64: b64(buf) });
+    if (d) return { media: img.media, drive: d.file };
     const a = new Uint8Array(18); crypto.getRandomValues(a); const key = [...a].map(b => b.toString(16).padStart(2, "0")).join("") + ".jpg";
-    await env.STATE.put(key, await r.arrayBuffer(), { expirationTtl: 90 * 86400, metadata: { type: m.mime_type || "image/jpeg" } });
-    return { media: mediaId, link: origin + "/p/" + key };
-  } catch (e) { return { media: mediaId }; }
+    await env.STATE.put(key, buf, { expirationTtl: 90 * 86400, metadata: { type: mime } });
+    return { media: img.media, link: (env.SELF_URL || "") + "/p/" + key, pending: key, mime };
+  } catch (e) { return { media: img.media }; }
+}
+/* סוף ההזמנה: תמונות שלא נכנסו לדרייב – עוד ניסיון; ואז מסמך סיכום + מייל לשמש */
+async function driveOrder(env, st, from, consentAt){
+  if (!env.DRIVE_URL) return null;
+  for (const c of st.list) for (const p of c.pics) if (p.pending) {
+    const buf = await env.STATE.get(p.pending, { type: "arrayBuffer" }); if (!buf) continue;
+    const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), sub: subOf(c), name: c.name, mime: p.mime, b64: b64(buf) });
+    if (d) { p.drive = d.file; await env.STATE.delete(p.pending); delete p.pending; delete p.link; }   /* נכנסה לדרייב – מוחקים את העותק בשרת הקטן */
+  }
+  const expected = st.list.reduce((n, c) => n + c.pics.length, 0);
+  const full = summary(st, st.oid, false).replace("✓ אישור ההורים לתמונות – התקבל", "") +
+    `📞 טלפון: +${from}\n🕐 אושר: ${new Date(consentAt).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}\n\nהנוסח שאושר:\n${CONSENT}` +
+    (st.list.some(c => c.pics.some(p => p.pending)) ? "\n\n⚠️ חלק מהתמונות לא נכנסו לדרייב – הן בשרת הקטן:\n" + st.list.flatMap(c => c.pics.filter(p => p.pending).map(p => c.name + ": " + p.link)).join("\n") : "");
+  const d = await drivePost(env, { action: "order", order: st.oid, title: title(st, from), summary: full, expected });
+  return d ? { folder: d.folder, doc: d.doc, photos: d.photos } : null;
 }
 
 /* הודעה אחת שנכנסה. ev = {id, text, image}. מחזיר את מה שנשלח (בבדיקות) */
@@ -175,7 +212,7 @@ export async function handle(env, from, profile, ev, opts){
   } else if (!st || st.step === "done") {
     if (/הזמנה סב-\d/.test(ev.text || "")) return;                 /* הזמנה מלאה מהאתר – שמש מטפלת, הבוט לא מתערב */
     if (!(ev.id || TRIGGER.test(ev.text || ""))) return;           /* לא שיחה על ספר לנכד – לא מתערבים */
-    st = { step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0 };
+    st = { step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0, oid: "סב-" + String(1000 + Math.floor(Math.random() * 9000)), day: dayStr() };
     if (ev.id === "s:go") st.step = "book";
     if (ev.id === "human" || HUMAN_TXT.test(ev.text || "")) await step(env, from, st, { id: "human" }, log);
     else await ask(env, from, st, log);
@@ -222,7 +259,7 @@ export default {
             if (m.type === "text") ev.text = m.text.body;
             else if (m.type === "interactive") ev.id = (m.interactive.button_reply || m.interactive.list_reply || {}).id;
             else if (m.type === "button") ev.text = m.button.text;
-            else if (m.type === "image") ev.image = await keepPic(env, m.image.id, url.origin);
+            else if (m.type === "image") { env.SELF_URL = url.origin; ev.image = { media: m.image.id }; }
             else continue;
             await handle(env, m.from, name, ev);
           }
