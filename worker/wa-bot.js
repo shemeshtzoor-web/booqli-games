@@ -34,7 +34,7 @@ const book = id => BOOKS.find(b => b.id === id);
 const readLink = id => `${SITE}/kindergartens/?read=${id}`;
 /* לפני "איזה ספר?" (פעם אחת בשיחה): מה מיוחד בספרים + קישורי קריאה (לפי שמש) */
 const BOOKS_INTRO = "📚 *הספרים שלנו כתובים, ערוכים ומנוקדים.*\nההתאמה האישית היא ב:\n✨ שם הילד/ה בתוך הסיפור\n🎨 איורים אישיים בדמות הילד/ה\n💌 הקדשה אישית מטעמכם – מודפסת בעמוד השער\n\n📖 *אפשר לקרוא את הספרים לפני שבוחרים:*\n"
-  + "אחרי שבוחרים ספר יש כפתור *📖 לקרוא את הספר* – והספר המלא מגיע לכאן, לשיחה, כקובץ PDF 🙂";
+  + "אחרי שבוחרים ספר יש כפתור *📖 ספר לדוגמה* – והספר המלא מגיע לכאן, לשיחה, כקובץ PDF 🙂";
 /* הגרסאות של כל ספר לקריאה (PDF ב-order/books/pdf/), כמו books.js */
 const PAGES = { birthday: { g: 22, b: 22 }, hugs: { g: 20, b: 20 }, superhero: { g: 21, b: 21 }, first: { g: 20, b: 20 }, class1: { g: 22, b: 22 },
   kinder: { g: 20, b: 20 }, savanna: { g: 20, b: 20 }, druki: { g: 22, b: 22 }, night: { g: 20 }, summer: { g: 26 } };
@@ -53,13 +53,14 @@ function withRestart(m, stp){
 /* קריאת ספר בתוך וואטסאפ: אם יש בן ובת – שואלים איזו גרסה; אחר כך שולחים את הספר כקובץ PDF (order/books/pdf/<ספר>-<b|g>.pdf) */
 async function readAsk(S, bid){
   const v = Object.keys(PAGES[bid] || {});
-  if (v.length > 1) return S(buttons(`📖 איזו גרסה של "${book(bid).name}" לקרוא?`, [["rd:" + bid + ":b", "👦 גרסת בן"], ["rd:" + bid + ":g", "👧 גרסת בת"]]));
+  if (v.length > 1) return S(buttons(`📖 ספר לדוגמה – איזו גרסה של "${book(bid).name}"?`, [["rd:" + bid + ":b", "👦 גרסת בן"], ["rd:" + bid + ":g", "👧 גרסת בת"]]));
   if (v.length) return readBook(S, bid, v[0]);
 }
 async function readBook(S, bid, v){
   if (!(PAGES[bid] || {})[v]) return;
   const name = `${book(bid).name} – ${v === "g" ? "גרסת בת" : "גרסת בן"}`;
-  await S({ type: "document", document: { link: `${SITE}/order/books/pdf/${bid}-${v}.pdf`, filename: name.replace(/[\/:*?"<>|]/g, "") + ".pdf", caption: `📖 "${name}"\nלוחצים על הקובץ כדי לקרוא, ובסוף חוזרים לכאן ❤️` } });
+  await S({ type: "document", document: { link: `${SITE}/order/books/pdf/${bid}-${v}.pdf`, filename: name.replace(/\//g, "-").replace(/[\\:*?"<>|]/g, "") + ".pdf", caption: `📖 ספר לדוגמה: "${name}"\nלוחצים על הקובץ כדי לקרוא, ובסוף חוזרים לכאן ❤️` } });
+  await S(buttons("איך ממשיכים? 🙂", [["rd:go", "▶️ להמשיך בהזמנה"], ["rd:other", "📚 לבחור ספר אחר"]]));
 }
 const ils = n => n.toLocaleString("en-US") + " ₪";
 const tier = n => { let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return t; };
@@ -224,7 +225,7 @@ async function ask(env, to, st, log, db){
       const b = book(c.book);
       if (b.img && !st.reread) await S(image(b.img, b.name));
       st.reread = 0;
-      return S(buttons(`"${b.name}" – בשביל בן או בת?`, [["v:b", "👦 בן"], ["v:g", "👧 בת"]].concat(PAGES[b.id] ? [["r:read", "📖 לקרוא את הספר"]] : [])));
+      return S(buttons(`"${b.name}" – בשביל בן או בת?`, [["v:b", "👦 בן"], ["v:g", "👧 בת"]].concat(PAGES[b.id] ? [["r:read", "📖 ספר לדוגמה"]] : [])));
     }
     case "name": return S(text(`איך קוראים ל${kidW(st, c)}? ✍️\n(השם הזה יופיע בספר – פשוט כותבים אותו כאן)`));
     case "ded": {
@@ -266,7 +267,7 @@ async function ask(env, to, st, log, db){
       return S(list(`${G.books.length ? "איזה נושא נוסף?" : "איזה ספר לגן? 📚"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "gb:"), st.page ? "עוד ספרים" : "הספרים"));
     case "g-book2": {
       const bs = [["g:one", "✅ נושא אחד מספיק"], ["g:more", "➕ עוד נושא"]];
-      if (G.books.some(id => PAGES[id])) bs.push(["g:read", "📖 לקרוא את הספרים"]);
+      if (G.books.some(id => PAGES[id])) bs.push(["g:read", "📖 ספרים לדוגמה"]);
       return S(buttons(`בחרתם: ${G.books.map(id => book(id).name).join(" + ")} ✓\nרוצים נושא נוסף לחלק מהילדים? (עד ${GANBOOKS} נושאים)`, bs));
     }
     case "g-cover": {
@@ -330,7 +331,14 @@ async function step(env, from, st, ev, log, db){
   if (id === "qa:go") { st.lastQ = ""; return ask(env, from, st, log, db); }
   if (id === "restart") return S(buttons("להתחיל מההתחלה? ↩️\nכל הבחירות עד עכשיו יימחקו.", [["restart:yes", "✅ כן, מההתחלה"], ["restart:no", "▶️ לא, ממשיכים"]]));
   if (id === "restart:no") return ask(env, from, st, log, db);
-  if (id.startsWith("rd:")) { const [, bid, v] = id.split(":"); await readBook(S, bid, v); if (st.step === "ver") st.reread = 1; return ask(env, from, st, log, db); }
+  if (id === "rd:go") { if (st.step === "ver") st.reread = 1; return ask(env, from, st, log, db); }
+  if (id === "rd:other") {                                                   /* אחרי ספר לדוגמה – חוזרים לרשימת הספרים */
+    st.page = 0;
+    if (st.mode === "gan" && ["g-book", "g-book2"].includes(st.step)) { G.books = []; st.step = "g-book"; }
+    else if (["book", "ver"].includes(st.step)) { c.book = ""; st.step = "book"; }
+    return ask(env, from, st, log, db);
+  }
+  if (id.startsWith("rd:")) { const [, bid, v] = id.split(":"); return readBook(S, bid, v); }
   /* שאלות: "שאלות" = תפריט; שאלה חופשית בכל שלב = תשובה רק מתוך מה שיש בבוט, ואם אין – לשמש */
   const free = !["dedown", "g-dedown", "addr"].includes(st.step);
   const asking = !id && txt && free && (looksQuestion(txt) || BTN_STEPS.includes(st.step));
@@ -359,7 +367,7 @@ async function step(env, from, st, ev, log, db){
     case "book": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); c.ded = ""; st.step = "ver"; } break;
     case "ver":
       if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); break; }        /* בחרו ספר אחר מהרשימה */
-      if (id === "r:read" && PAGES[c.book]) { const one = Object.keys(PAGES[c.book]).length === 1; await readAsk(S, c.book); if (!one) return; st.reread = 1; break; }
+      if (id === "r:read" && PAGES[c.book]) return readAsk(S, c.book);
       if (id === "v:b" || id === "v:g") { c.ver = id.slice(2); c.ded = ""; st.step = "name"; }
       break;
     case "name": if (txt && !id) { c.name = txt.slice(0, 30); st.step = "ded"; } break;
@@ -405,7 +413,7 @@ async function step(env, from, st, ev, log, db){
     case "g-book2":
       if (id === "g:one") st.step = "g-cover";
       else if (id === "g:more") { st.page = 0; st.step = "g-book"; }
-      else if (id === "g:read") { const rb = G.books.filter(b => PAGES[b]); for (const b of rb) await readAsk(S, b); if (rb.some(b => Object.keys(PAGES[b]).length > 1)) return; }
+      else if (id === "g:read") { for (const b of G.books.filter(b => PAGES[b])) await readAsk(S, b); return; }
       break;
     case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-ded"; } break;
     case "g-ded":
