@@ -3,7 +3,7 @@
    1. ⚙️ הגדרות הפרויקט ← מאפייני סקריפט ← מוסיפים: SECRET = אותה מילה סודית שמודבקת ב-Cloudflare (DRIVE_KEY).
    2. פריסה ← פריסה חדשה ← סוג: אפליקציית אינטרנט ← הפעלה בתור: אני ← גישה: כל אחד ← פריסה ← מאשרים את ההרשאות.
    3. את הכתובת שמתקבלת (מסתיימת ב-/exec) מדביקים ב-Cloudflare בשם DRIVE_URL.
-   מה נשמר:  BOOQLI הזמנות / "סב-1234 · רחל כהן · 04.11" / בנים|בנות / "דנה.jpg", "דנה 2.jpg" ...
+   מה נשמר:  BOOQLI הזמנות / "סב-1234 · רחל כהן · 04.11" / בנים|בנות / "דנה.jpg", "דנה (2).jpg" ...
               גן עם 2 נושאים: BOOQLI הזמנות / "גן-1234 · גן רימון · 04.11" / <נושא> / בנים|בנות / ...
               + "סיכום ההזמנה" (מסמך גוגל) באותה תיקייה, ומייל לבעלת החשבון עם קישור לתיקייה.
    אין כאן שום מידע פרטי: המייל נשלח לחשבון שבו הקוד רץ, והמילה הסודית שמורה במאפייני הסקריפט. */
@@ -52,7 +52,7 @@ function savePhoto_(q) {
     var folder = orderFolder_(q.order, q.title), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;   /* גן עם 2 נושאים: <גן>/<נושא>/בנים|בנות */
     var dir = sub_(base_, q.sub === "בנות" ? "בנות" : "בנים");
     var base = clean_(q.name), ext = /png/.test(q.mime) ? ".png" : ".jpg", name = base + ext, n = 1;
-    while (dir.getFilesByName(name).hasNext()) { n++; name = base + " " + n + ext; }
+    while (dir.getFilesByName(name).hasNext()) { n++; name = base + " (" + n + ")" + ext; }   /* עוד תמונה של אותו ילד: "יוסי 1 (2).jpg" */
     var blob = Utilities.newBlob(Utilities.base64Decode(q.b64), q.mime || "image/jpeg", name);
     var file = dir.createFile(blob);
     return { ok: true, file: file.getUrl(), folder: folder.getUrl(), name: name };
