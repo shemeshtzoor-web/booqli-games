@@ -192,12 +192,25 @@ const list = (t, btn, rows, title) => ({ type: "interactive", interactive: { typ
 const image = (link, caption) => ({ type: "image", image: { link, caption } });
 async function sendLong(S, t){ for (let i = 0; i < t.length; i += 3900) await S(text(t.slice(i, i + 3900))); }
 
-/* ===== אחסון: KV אמיתי, או זיכרון בבדיקות ===== */
+/* ===== אחסון =====
+   מצב השיחות: מסד D1 (env.DB) – תמיד הגרסה העדכנית. KV מחזיר לפעמים עותק ישן עד דקה, ואז הבוט "שכח" שלב והתחיל מההתחלה.
+   בלי DB – KV (כמו קודם). גיבויי תמונות (קבצים) נשארים ב-KV. בבדיקות – זיכרון. */
+let tableReady = false;
 function store(env, mem){
   if (mem) return {
     get: async k => mem[k] ?? null, put: async (k, v) => { mem[k] = v; }, del: async k => { delete mem[k]; },
     list: async p => Object.keys(mem).filter(k => k.startsWith(p)).sort()
   };
+  if (env.DB) {
+    const ready = async () => { if (!tableReady) { await env.DB.prepare("CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT, exp INTEGER)").run(); tableReady = true; } };
+    const now = () => Math.floor(Date.now() / 1000);
+    return {
+      get: async k => { await ready(); const r = await env.DB.prepare("SELECT v FROM kv WHERE k = ? AND (exp IS NULL OR exp > ?)").bind(k, now()).first(); return r ? r.v : null; },
+      put: async (k, v, ttl) => { await ready(); await env.DB.prepare("INSERT INTO kv (k, v, exp) VALUES (?, ?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v, exp = excluded.exp").bind(k, String(v), now() + (ttl || 30 * 86400)).run(); },
+      del: async k => { await ready(); await env.DB.prepare("DELETE FROM kv WHERE k = ?").bind(k).run(); },
+      list: async p => { await ready(); const r = await env.DB.prepare("SELECT k FROM kv WHERE k >= ? AND k < ? AND (exp IS NULL OR exp > ?) ORDER BY k").bind(p, p + "\uffff", now()).all(); return r.results.map(x => x.k); }
+    };
+  }
   return {
     get: k => env.STATE.get(k), put: (k, v, ttl) => env.STATE.put(k, v, { expirationTtl: ttl || 30 * 86400 }), del: k => env.STATE.delete(k),
     list: async p => { const out = []; let cursor; do { const r = await env.STATE.list({ prefix: p, cursor }); r.keys.forEach(x => out.push(x.name)); cursor = r.list_complete ? null : r.cursor; } while (cursor); return out.sort(); }
@@ -720,7 +733,7 @@ export default {
     }
     if (url.pathname === "/orders" && env.VERIFY_TOKEN && url.searchParams.get("k") === env.VERIFY_TOKEN) {
       const ks = await store(env).list("order:"), out = [];
-      for (const k of ks.slice(-50)) out.push(JSON.parse(await env.STATE.get(k)));
+      const db = store(env); for (const k of ks.slice(-50)) out.push(JSON.parse(await db.get(k)));
       return Response.json(out);
     }
     return new Response("BOOQLI", { status: 404 });
