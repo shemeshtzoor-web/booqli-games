@@ -14,9 +14,9 @@ const ev = (k, n) => { try { siteEvent(k, String(n)); } catch (e) {} };
 
 /* ---------- ההתקדמות ---------- */
 const KEY = "booqli_dictation", MAXW = 30;
-const EXAMPLE = ["שמש", "כיתה", "חבר", "תפוח", "עכבר", "מחברת", "צבע", "טלפון"];
+const EXAMPLE = ["שֶׁמֶשׁ", "כִּיתָּה", "חָבֵר", "תַּפּוּחַ", "עַכְבָּר", "מַחְבֶּרֶת", "צֶבַע", "טֶלֶפוֹן"];
 const blank = () => ({v:1, cls:"", font:"cv", words:EXAMPLE.slice(), example:true, m:{}, stars:0});
-let S = (() => { try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o && o.v === 1) return Object.assign(blank(), o); } catch (e) {} return blank(); })();
+let S = (() => { try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o && o.v === 1) { const x = Object.assign(blank(), o); if (x.example) x.words = EXAMPLE.slice(); return x; } } catch (e) {} return blank(); })();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 /* (4.11.2026, לפי שמש) פונים תמיד ברבים – לכל ילדי הכיתה. G נשאר כדי שיהיה קל לחזור לבן/בת */
 const G = (m, f, n) => n;
@@ -32,23 +32,74 @@ const FIN = {"כ":"ך","מ":"ם","נ":"ן","פ":"ף","צ":"ץ"};
 const FINALS = new Set(Object.values(FIN));
 const CONF = {"א":["ע","ה"],"ע":["א"],"ה":["א"],"ט":["ת"],"ת":["ט"],"כ":["ח","ק"],"ח":["כ"],"ק":["כ"],"ס":["ש"],"ש":["ס"],
   "ב":["ו"],"ו":["ב"],"מ":["נ"],"ם":["מ"],"נ":["מ"],"ן":["נ"],"צ":["ס"],"ץ":["צ"],"פ":["ב"],"ף":["פ"],"ך":["כ"],"ד":["ר"],"ר":["ד"],"ג":["ק"],"ז":["ס"],"ל":["ר"],"י":["ו"]};
-/* שתי דרכי כתיב שגויות: אות דומה, ו/י חסרה או מיותרת, סופית לא נכונה */
+/* ---------- ניקוד (4.11.2026): כל מילה נשמרת ומוצגת עם ניקוד; ההשוואה תמיד בלי ניקוד ---------- */
+const MARK = /[֑-ׇ]/;
+const hasNq = w => MARK.test(String(w));
+/* אות + הסימנים שאחריה (ניקוד, דגש, שין/שׂין) = "יחידה" אחת */
+function clusters(w){ const out = []; for (const ch of String(w)) { if (isL(ch) || ch === " ") out.push({b: ch, m: ""}); else if (MARK.test(ch) && out.length && out[out.length - 1].b !== " ") out[out.length - 1].m += ch; } return out; }
+const joinC = cs => cs.map(c => c.b + c.m).join("");
+const fixM = (b, m) => { if (b !== "ש") m = m.replace(/[\u05C1\u05C2]/g, ""); if ("אהחער".includes(b)) m = m.replace(/\u05BC/g, ""); return m; };
+/* שתי דרכי כתיב שגויות (עם אותו ניקוד): אות דומה, ו/י חסרה או מיותרת, סופית לא נכונה */
 function wrongVariants(word){
-  const w = plain(word), ch = [...w], out = new Set();
-  const atEnd = i => i === ch.length - 1 || ch[i + 1] === " ";
-  ch.forEach((c, i) => {
-    (CONF[c] || []).forEach(a => {
+  const cs = clusters(word), right = plain(word), out = new Map();
+  const atEnd = i => i === cs.length - 1 || cs[i + 1].b === " ";
+  const add = n => { const k = joinC(n); if (plain(k) !== right && plain(k).trim()) out.set(plain(k), k); };
+  cs.forEach((c, i) => {
+    if (c.b === " ") return;
+    (CONF[c.b] || []).forEach(a => {
       if (FINALS.has(a) && !atEnd(i)) return;
-      if (FIN[a] && atEnd(i) && !FINALS.has(c)) return;
-      const n = ch.slice(); n[i] = a; out.add(n.join(""));
+      if (FIN[a] && atEnd(i) && !FINALS.has(c.b)) return;
+      const n = cs.slice(); n[i] = {b: a, m: fixM(a, c.m)}; add(n);
     });
-    if ((c === "ו" || c === "י") && ch.length > 2) { const n = ch.slice(); n.splice(i, 1); out.add(n.join("")); }
+    if ((c.b === "ו" || c.b === "י") && cs.length > 2) { const n = cs.slice(); n.splice(i, 1); add(n); }
   });
-  if (ch.length > 1 && !atEnd(0)) ["ו", "י"].forEach(x => { const n = ch.slice(); n.splice(1, 0, x); out.add(n.join("")); });
-  out.delete(w);
-  const list = shuffle([...out]).filter(v => v.trim());
-  if (list.length < 2 && ch.length > 2) { const n = ch.slice(); [n[0], n[1]] = [n[1], n[0]]; if (n.join("") !== w) list.push(n.join("")); }
+  if (cs.length > 1 && !atEnd(0) && !hasNq(word)) ["ו", "י"].forEach(x => { const n = cs.slice(); n.splice(1, 0, {b: x, m: ""}); add(n); });
+  const list = shuffle([...out.values()]);
+  if (list.length < 2 && cs.length > 2) { const n = cs.slice(); [n[0], n[1]] = [n[1], n[0]]; add(n); return shuffle([...out.values()]).slice(0, 2); }
   return list.slice(0, 2);
+}
+/* הניקוד של הנקדן מגיע בכתיב חסר (כִּתָּה). שומרים את האותיות של המורה (כיתה) ומעבירים אליהן את הניקוד: כִּיתָּה, שׁוּלְחָן, חוֹם */
+function alignNq(input, opt){
+  const oc = clusters(String(opt).replace(/\|/g, "")).filter(c => c.b !== " "), ic = [...plain(input)].filter(isL), out = []; let j = 0;
+  for (const ch of ic) {
+    const c = oc[j];
+    if (c && c.b === ch) { out.push({b: ch, m: c.m}); j++; continue; }
+    if (ch === "ו" || ch === "י" || ch === "א") {
+      const prev = out[out.length - 1];
+      if (ch === "ו" && prev && prev.m.includes("ֻ")) { prev.m = prev.m.replace("ֻ", ""); out.push({b: "ו", m: "ּ"}); continue; }
+      if (ch === "ו" && prev && prev.m.includes("ֹ")) { prev.m = prev.m.replace("ֹ", ""); out.push({b: "ו", m: "ֹ"}); continue; }
+      out.push({b: ch, m: ""}); continue;
+    }
+    return null;
+  }
+  return j === oc.length ? joinC(out) : null;
+}
+/* הנקדן של דיקטה (dicta.org.il) – חינמי. בקשה "פשוטה" (text/plain) כדי שהדפדפן לא יחסום אותה */
+const NAKDAN = "https://nakdan-2-0.loadbalancer.dicta.org.il/api";
+async function nakdan(words){
+  const todo = words.filter(w => !hasNq(w));
+  if (!todo.length) return {words: words.slice(), alt: {}};
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+  let raw;
+  try { const res = await fetch(NAKDAN, {method: "POST", headers: {"content-type": "text/plain;charset=UTF-8"}, signal: ctl.signal,
+      body: JSON.stringify({task: "nakdan", genre: "modern", data: todo.map(plain).join("\n"), addmorph: false, keepqq: false})});
+    raw = await res.json(); } finally { clearTimeout(t); }
+  if (!Array.isArray(raw)) throw new Error("shape");
+  /* מפרקים את התשובה בחזרה לשורות */
+  const lines = [[]]; raw.forEach(x => { if (x.sep) { if (/\n/.test(x.word)) lines.push([]); else lines[lines.length - 1].push(" "); } else lines[lines.length - 1].push(x); });
+  const res = {}, alt = {};
+  todo.forEach((w, i) => {
+    const toks = (lines[i] || []).filter(x => x !== " "), parts = plain(w).split(" ");
+    if (toks.length !== parts.length) return;
+    const outParts = parts.map((part, k) => {
+      const opts = (toks[k].options || []).filter(o => typeof o === "string").sort((a, b) => (a.includes("|") ? 1 : 0) - (b.includes("|") ? 1 : 0));
+      const ok = []; opts.forEach(o => { const al = alignNq(part, o); if (al && !ok.includes(al)) ok.push(al); });
+      if (parts.length === 1 && ok.length > 1) alt[plain(w)] = ok;
+      return ok[0] || part;
+    });
+    res[w] = outParts.join(" ");
+  });
+  return {words: words.map(w => res[w] || w), alt};
 }
 function parseWords(t){
   const seen = new Set(), out = [];
@@ -211,6 +262,7 @@ function parents(){
     '<textarea id="pWords" placeholder="מילה אחת בכל שורה, למשל:&#10;שמש&#10;כיתה&#10;תפוח">' + esc(ws.join("\n")) + '</textarea>' +
     '<div class="tip">🎤 <b>רוצים להקריא במקום להקליד?</b> לוחצים בתוך התיבה, ואז על המיקרופון במקלדת של הטלפון. אומרים מילה, לוחצים "אנטר", ואז את המילה הבאה. אפשר גם להדביק רשימה מוואטסאפ.</div></div>' +
     '<div class="row start"><button type="button" class="btn green" id="pSave">💾 שמירה</button></div><div class="status" id="pStatus" aria-live="polite"></div>' +
+    '<div id="nqBox" hidden><h3>🔤 בודקים את הניקוד</h3><p class="note">הניקוד נוסף לבד (בעזרת הנקדן של דיקטה). למילה שאפשר לקרוא בכמה דרכים (סֵפֶר / סַפָּר) – לוחצים עליה עד שהניקוד נכון. אפשר גם לתקן בתיבה למעלה ולשמור.</p><div class="nqs"></div></div>' +
     '<h3>🎙️ מקליטים את המילים בקול שלכם (מומלץ)</h3>' +
     '<p class="note">הילד ישמע אתכם בזמן המשחק. לוחצים 🎙️, אומרים את המילה, והיא נשמרת לבד אחרי 3 שניות. מילה בלי הקלטה – ' + (ttsOK() ? "הטלפון מקריא אותה בקול ממוחשב (לפעמים הוא טועה בהגייה)." : "תוצג למבוגר כדי שיקריא אותה.") + '</p>' +
     '<div class="recs" id="recs"></div>' +
@@ -225,9 +277,26 @@ function parents(){
     S.cls = $("pCls").value.replace(/[<>"]/g, "").trim().slice(0, 24);
     const list = parseWords($("pWords").value);
     if (list.length) { S.words = list; S.example = false; ev("dict-list", list.length); }
-    save(); paintRecs(); paintShare();
-    st.textContent = list.length ? "✔️ נשמר: " + list.length + " מילים מוכנות למשחק." + (canRecord ? " עכשיו אפשר להקליט אותן למטה." : "") : "הכיתה נשמרה. כדי לשמור מילים, כתבו לפחות מילה אחת.";
+    save(); paintRecs(); paintShare(); paintNq();
+    st.textContent = list.length ? "✔️ נשמר: " + list.length + " מילים." : "הכיתה נשמרה. כדי לשמור מילים, כתבו לפחות מילה אחת.";
+    if (list.length) addNq(st);
   };
+  async function addNq(st){
+    if (!S.words.some(w => !hasNq(w))) { st.textContent += " מוכנות למשחק."; return; }
+    st.textContent = "✔️ נשמר. מוסיפים ניקוד…"; $("pSave").disabled = true;
+    try { const r = await nakdan(S.words); S.words = r.words; S.alt = Object.assign(S.alt || {}, r.alt); save(); ev("dict-nikud", "ok");
+      st.textContent = "✔️ נשמר עם ניקוד: " + S.words.length + " מילים. בדקו את הניקוד למטה – לוחצים על מילה כדי להחליף ניקוד."; }
+    catch (e) { ev("dict-nikud", "fail"); st.textContent = "✔️ המילים נשמרו, אבל לא הצלחתי להוסיף ניקוד כרגע. אפשר ללחוץ שוב על \"שמירה\" בעוד רגע, או להקליד את המילים עם ניקוד."; }
+    $("pSave").disabled = false; $("pWords").value = S.words.join("\n"); paintNq(); paintRecs(); paintShare();
+  }
+  function paintNq(){
+    const box = $("nqBox"), list = S.example ? [] : S.words;
+    if (!list.length) { box.hidden = true; return; } box.hidden = false;
+    box.querySelector(".nqs").innerHTML = list.map((w, i) => { const n = (S.alt && S.alt[plain(w)] || []).length;
+      return '<button type="button" class="nq" data-i="' + i + '"' + (n > 1 ? "" : " disabled") + '><span class="rd">' + esc(w) + '</span><span class="cv">' + esc(w) + '</span>' + (n > 1 ? '<small>🔄 ' + n + ' אפשרויות</small>' : '') + '</button>'; }).join("");
+    box.querySelectorAll(".nq").forEach(b => b.onclick = () => { const i = +b.dataset.i, w = S.words[i], al = S.alt[plain(w)] || []; if (al.length < 2) return;
+      S.words[i] = al[(al.indexOf(w) + 1) % al.length]; save(); $("pWords").value = S.words.join("\n"); paintNq(); paintShare(); speak(S.words[i]); });
+  }
   function paintShare(){
     const list = S.example ? [] : S.words, wa = $("pWa"), cp = $("pCopy");
     if (!list.length) { wa.removeAttribute("href"); wa.onclick = e => { e.preventDefault(); st.textContent = "קודם שומרים מילים, ואז שולחים."; }; cp.onclick = wa.onclick; return; }
@@ -272,7 +341,7 @@ function parents(){
       .catch(() => { st.textContent = "צריך לאשר לדפדפן להשתמש במיקרופון (בהגדרות האתר)."; });
   }
   $("pReset").onclick = () => adult("האיפוס מוחק את הכוכבים וההתקדמות של כל המילים במכשיר הזה. המילים וההקלטות נשארות.", () => { S.stars = 0; S.m = {}; save(); st.textContent = "✔️ הכוכבים אופסו."; });
-  paintRecs(); paintShare();
+  paintRecs(); paintShare(); paintNq();
 }
 
 /* ================================ המשחקים ================================ */
@@ -325,11 +394,11 @@ const stars = n => "⭐".repeat(n);
 function build(w){
   const st = frame(G("תקשיב למילה וסדר את האותיות. מתחילים מימין!", "תקשיבי למילה וסדרי את האותיות. מתחילים מימין!", "מקשיבים למילה ומסדרים את האותיות. מתחילים מימין!"));
   st.appendChild(listen(w));
-  const chars = [...plain(w)], need = chars.filter(isL);
+  const chars = clusters(w), need = chars.filter(c => c.b !== " ").map(c => c.b + c.m);
   const slots = document.createElement("div"); slots.className = "slots rd wd"; const sl = [];
-  chars.forEach(c => { const s = document.createElement("div"); if (c === " ") s.className = "slot gap"; else { s.className = "slot"; sl.push(s); } slots.appendChild(s); });
+  chars.forEach(c => { const s = document.createElement("div"); if (c.b === " ") s.className = "slot gap"; else { s.className = "slot"; sl.push(s); } slots.appendChild(s); });
   st.appendChild(slots);
-  const extra = []; need.forEach(c => (CONF[c] || []).forEach(a => { if (!need.includes(a)) extra.push(a); }));
+  const extra = []; chars.forEach((c, i) => (CONF[c.b] || []).forEach(a => { const isEnd = i === chars.length - 1 || chars[i + 1].b === " "; if (FINALS.has(a) && !isEnd) return; if (FIN[a] && isEnd) return; const t = a + fixM(a, c.m); if (!need.includes(t)) extra.push(t); }));
   const pool = need.concat(shuffle([...new Set(extra)]).slice(0, need.length > 5 ? 3 : 2));
   const tiles = document.createElement("div"); tiles.className = "tiles"; st.appendChild(tiles);
   let pos = 0; const mark = () => sl.forEach((s, i) => s.classList.toggle("next", i === pos)); mark();
@@ -347,7 +416,7 @@ function build(w){
 function pick(w){
   const st = frame(G("תקשיב למילה. איזו מהן כתובה נכון?", "תקשיבי למילה. איזו מהן כתובה נכון?", "מקשיבים למילה. איזו מהן כתובה נכון?"));
   st.appendChild(listen(w));
-  const right = plain(w), box = document.createElement("div"); box.className = "choices"; st.appendChild(box);
+  const right = w, box = document.createElement("div"); box.className = "choices"; st.appendChild(box);
   let tries = 0, over = false;
   shuffle([right].concat(wrongVariants(w))).forEach(o => { const b = document.createElement("button"); b.type = "button"; b.className = "choice"; b.innerHTML = '<span class="rd wd">' + esc(o) + '</span>';
     b.onclick = () => {
@@ -392,7 +461,7 @@ function kbInput(id){ const i = document.createElement("input"); i.type = "text"
   i.autocomplete = "off"; i.setAttribute("autocorrect", "off"); i.setAttribute("autocapitalize", "off"); i.spellcheck = false; i.setAttribute("aria-label", "כותבים את המילה"); return i; }
 const sameWord = (a, b) => tight(a) === tight(b);
 function diffHTML(typed, right){ const a = [...tight(typed)], b = [...tight(right)]; return a.map((c, i) => c === b[i] ? esc(c) : '<span class="wrong">' + esc(c) + '</span>').join("") + (a.length < b.length ? '<span class="wrong">_</span>' : "") || "—"; }
-const compareBox = w => '<div class="big rd right">' + esc(plain(w)) + '</div><div class="cvw cv" aria-label="בכתב יד">' + esc(plain(w)) + '</div>';
+const compareBox = w => '<div class="big rd right">' + esc(w) + '</div><div class="cvw cv" aria-label="בכתב יד">' + esc(w) + '</div>';
 function tools(pad){ const r = document.createElement("div"); r.className = "row";
   r.innerHTML = '<button type="button" class="btn alt sm">↶ ביטול קו</button><button type="button" class="btn alt sm">🧽 מחיקה</button>';
   r.children[0].onclick = () => pad.undo(); r.children[1].onclick = () => pad.clear(); return r; }
@@ -405,7 +474,7 @@ function write(w){
   let tries = 0, won = false;
   function win(out, fb){ if (won) return; won = true;
     const n = Math.max(1, (tries === 0 ? 3 : tries === 1 ? 2 : 1) - G1.peeks); award(w, "w", n); SND.win(); confetti(); bub(PRAISE() + " " + stars(n));
-    out.innerHTML = '<div class="verdict ok"><div class="big rd wd right">' + esc(plain(w)) + ' ✓</div>' + (fb ? '<div>' + fb + '</div>' : "") + '</div>'; out.appendChild(nextBtn()); }
+    out.innerHTML = '<div class="verdict ok"><div class="big rd wd right">' + esc(w) + ' ✓</div>' + (fb ? '<div>' + fb + '</div>' : "") + '</div>'; out.appendChild(nextBtn()); }
   function paint(){
     if (won) return; area.innerHTML = "";
     const out = document.createElement("div");
@@ -424,7 +493,7 @@ function write(w){
           '<div class="row"><button type="button" class="btn green sm" id="sY">✓ כתבתי נכון</button><button type="button" class="btn alt sm" id="sN">טעיתי, עוד פעם</button></div></div>';
         fin.disabled = true;
         $("sY").onclick = () => { fin.remove(); win(out); };
-        $("sN").onclick = () => { tries++; SND.soft(); pad.clear(); out.innerHTML = ""; fin.disabled = false; bub("מסתכלים טוב על המילה, וכותבים שוב ✍️"); peek(plain(w), 1800); };
+        $("sN").onclick = () => { tries++; SND.soft(); pad.clear(); out.innerHTML = ""; fin.disabled = false; bub("מסתכלים טוב על המילה, וכותבים שוב ✍️"); peek(w, 1800); };
       };
       area.append(pad.el, tools(pad), fin, out);
     }
@@ -473,7 +542,7 @@ function finish(){
   R.forEach(it => {
     const d = document.createElement("div"); d.className = "res";
     d.innerHTML = (it.img ? '<img alt="מה שנכתב" src="' + it.img + '">' : '<div class="typed rd">' + esc(it.typed) + '</div>') +
-      '<div class="w"><span class="rd wd">' + esc(plain(it.w)) + '</span><small></small></div><div class="mark">' + (it.img ? "" : it.ok ? "✅" : "❌") + '</div>';
+      '<div class="w"><span class="rd wd">' + esc(it.w) + '</span><small></small></div><div class="mark">' + (it.img ? "" : it.ok ? "✅" : "❌") + '</div>';
     rows.appendChild(d); it.row = d;
     if (it.img) {
       d.querySelector("small").textContent = "אבא ואמא: נכון? סמנו ✓";
@@ -505,13 +574,13 @@ function sheet(){
   for (let i = 0; i < ws.length; i += 11) {
     pages.push('<section class="pg">' + head("מתרגלים לכתוב", "מילות ההכתבה של השבוע") +
       '<p class="instr">קוראים את המילה, מסתכלים איך היא נראית בכתב יד, וכותבים אותה פעמיים בשורה.</p><div class="sb copyrows">' +
-      ws.slice(i, i + 11).map(w => '<div><span class="rd">' + esc(plain(w)) + '</span><span class="cv">' + esc(plain(w)) + '</span><span class="ln"></span></div>').join("") + '</div>' + foot() + '</section>');
+      ws.slice(i, i + 11).map(w => '<div><span class="rd">' + esc(w) + '</span><span class="cv">' + esc(w) + '</span><span class="ln"></span></div>').join("") + '</div>' + foot() + '</section>');
   }
   const n = Math.max(ws.length, 10);
   pages.push('<section class="pg">' + head("הכתבה", "מבוגר מקריא, ילד כותב") +
     '<p class="instr">המבוגר מקריא כל מילה (בסדר מעורבב), והילד כותב בשורה. בסוף בודקים יחד ומתקנים.</p><div class="sb"><div class="dictrows">' +
     Array.from({length: n}, (_, i) => '<div>' + (i + 1) + '.</div>').join("") + '</div>' +
-    '<div class="answers"><b>למבוגר – סדר ההקראה:</b> ' + shuffle(ws).map((w, i) => (i + 1) + '. <span class="rd">' + esc(plain(w)) + '</span>').join(" · ") + '</div></div>' + foot() + '</section>');
+    '<div class="answers"><b>למבוגר – סדר ההקראה:</b> ' + shuffle(ws).map((w, i) => (i + 1) + '. <span class="rd">' + esc(w) + '</span>').join(" · ") + '</div></div>' + foot() + '</section>');
   box.innerHTML = '<div class="pbar"><button type="button" class="btn alt sm" id="pBack">← חזרה למשחקים</button><button type="button" class="btn sm" id="pPrint">🖨️ הדפסה</button><button type="button" class="btn alt sm" id="pNew">🔄 סדר הקראה חדש</button></div>' +
     '<p class="pnote">' + (S.example ? "⚠️ אלה מילים לדוגמה. מכניסים את מילות השבוע באזור ההורים, ואז מדפיסים. " : "") + 'מדפיסים בגודל A4. מותר לשתף בחינם, עם הקרדיט של BOOQLI.</p>' +
     '<div class="pages" id="pages">' + pages.join("") + '</div>';
@@ -531,14 +600,19 @@ window.addEventListener("afterprint", fit);
   if (w) {
     const list = parseWords(w.replace(/,/g, "\n"));
     const c = (p.get("c") || "").replace(/[<>"]/g, "").trim().slice(0, 24);
-    if (list.length && (list.map(plain).join(",") !== S.words.map(plain).join(",") || S.example)) { incoming = list; incomingCls = c; }
+    if (list.length && (list.join(",") !== S.words.join(",") || S.example)) { incoming = list; incomingCls = c; }
     else if (c && !S.cls) { S.cls = c; save(); }
     p.delete("w"); p.delete("c"); ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(k => p.delete(k));
     const qs = p.toString();
     setTimeout(() => { try { if (typeof siteSetUrl === "function") siteSetUrl(base() + (qs ? "?" + qs : ""), false); } catch (e) {} }, 1600);
   }
   route();
+  /* רשימה ישנה בלי ניקוד – מוסיפים ניקוד פעם אחת, בשקט */
+  if (!S.example && S.words.some(w => !hasNq(w)) && S.nqTry !== S.words.join(",")) {
+    S.nqTry = S.words.join(","); save();
+    nakdan(S.words).then(r => { S.words = r.words; S.alt = Object.assign(S.alt || {}, r.alt); save(); if (!G1 && !P().get("p") && !P().get("sheet")) home(); }).catch(() => {});
+  }
   if (window.indexedDB) loadRecs().then(() => { if (!G1 && !P().get("sheet") && !P().get("p")) home(); });
 })();
-window.DICT_APP = {S: () => S, cur: () => G1 && G1.list[G1.i], plain, wrongVariants, parseWords};
+window.DICT_APP = {alignNq, clusters, S: () => S, cur: () => G1 && G1.list[G1.i], plain, wrongVariants, parseWords};
 })();

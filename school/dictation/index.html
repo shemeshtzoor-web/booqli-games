@@ -147,6 +147,10 @@
 .seg button[aria-pressed="true"]{border-color:var(--dp);background:var(--db);color:var(--dp)}
 .tip{background:#F4FAF7;border-radius:16px;padding:10px 14px;font-size:15px;margin-top:10px}
 .status{min-height:1.5em;font-weight:700;color:#2E8F4C;margin-top:8px}
+.nqs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.nq{font:inherit;display:flex;flex-direction:column;align-items:center;gap:0;background:#FAF6FD;border:2px solid #E7D6FA;border-radius:14px;padding:6px 12px;cursor:pointer;color:#2B1526;min-width:84px}
+.nq:disabled{cursor:default;opacity:1}
+.nq .rd{font-size:22px}.nq .cv{font-size:26px;color:#6B2FA3;line-height:1.2}.nq small{font-size:12px;color:#6B2FA3;font-weight:800}
 .recs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .rec{display:flex;align-items:center;gap:8px;background:#FAF6FD;border-radius:14px;padding:6px 10px}
 .rec .rd{flex:1;min-width:0;font-size:21px}
@@ -236,7 +240,7 @@ body.cvmode .verdict .big.wd{font-size:clamp(46px,12vw,60px)}
 <section class="adult bq-teach" id="for-parents">
   <h2>👩‍👧 איך זה עובד? (להורים ולמורות)</h2>
   <ol>
-    <li><b>מכניסים את המילים של השבוע</b> באזור ההורים: מקלידים מילה בכל שורה, או לוחצים על המיקרופון במקלדת של הטלפון ומקריאים.</li>
+    <li><b>מכניסים את המילים של השבוע</b> באזור ההורים: מקלידים מילה בכל שורה, או לוחצים על המיקרופון במקלדת של הטלפון ומקריאים. <b>הניקוד נוסף לבד</b> (בעזרת הנקדן של דיקטה), ואפשר לבחור ניקוד אחר למילה בלחיצה.</li>
     <li><b>מקליטים את המילים בקול שלכם</b> (מומלץ): הילד שומע אתכם בזמן המשחק. בלי הקלטה – הטלפון מקריא בקול ממוחשב, שלפעמים טועה בהגייה.</li>
     <li><b>שולחים לכיתה:</b> כפתור "שליחה להורים בכיתה" שולח בוואטסאפ קישור שהמילים כבר בתוכו. מי שפותח אותו – הרשימה נטענת אצלו.</li>
     <li><b>הילד משחק</b> 10 דקות ביום: בונים מילה ← מי כתובה נכון ← כותבים במחברת ← הכתבה אמיתית.</li>
