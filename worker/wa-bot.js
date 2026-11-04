@@ -171,7 +171,7 @@ const fmtPhone = n => String(n || "").replace(/^972/, "0").replace(/^(\d{3})(\d{
 const shipLine = st => st.ship && st.ship.method === "pickup" ? "🚗 איסוף עצמי מבית הדפוס (ליד עפולה), בתיאום" : st.ship && st.ship.method === "ship" ? `🚚 משלוח צ'יטה עד הבית – ${ils(SHIP)}\n📍 ${st.ship.addr}\n📞 ${st.ship.phone}` : "";
 const shipCost = st => st.ship && st.ship.method === "pickup" ? 0 : SHIP;
 async function resume(env, to, st, log, db, who){                           /* חוזרים בדיוק לשאלה שעצרו בה */
-  st.human = 0; st.burst = 0;
+  st.human = 0;
   if (st.step === "done") return;
   await wa(env, to, text(who === "owner" ? "ממשיכים בהזמנה מאיפה שעצרנו 👇" : "מעולה, ממשיכים מאיפה שעצרנו 👇"), log);
   await ask(env, to, st, log, db);
@@ -228,6 +228,12 @@ async function ganPics(db, st){                               /* תמונות ה
   }
   return out;
 }
+/* כל התמונות של הילד הנוכחי (כל תמונה במפתח משלה – כמה תמונות באותו רגע לא דורסות זו את זו) */
+async function kidPics(db, st, have){
+  const out = [...(have || [])], seen = new Set(out.map(p => p.media));
+  for (const k of await db.list("pp:" + st.oid + ":" + st.list.length + ":")) { const p = JSON.parse(await db.get(k) || "{}"); if (p.media && !seen.has(p.media)) { seen.add(p.media); out.push(p); } }
+  return out.slice(0, 10);
+}
 /* סבבי התמונות בגן: לכל נושא – בנים ואז בנות (נושא אחד = 2 סבבים, שני נושאים = 4) */
 const rounds = G => G.books.flatMap(b => [[b, "בנים"], [b, "בנות"]]);
 const roundName = (G, r) => { const [b, sub] = rounds(G)[r]; return (G.books.length > 1 ? `"${book(b).name}" – ` : "") + sub; };
@@ -263,7 +269,7 @@ async function ask(env, to, st, log, db){
         [["cv:hard", `💗 קשה – ${ils(priceOf(m, "hard"))}`], ["cv:soft", `💛 רכה – ${ils(priceOf(m, "soft"))}`], ["q:cover", "❓ מה ההבדל?"]]));
     }
     case "pics": return S(text(`עכשיו שולחים כאן תמונה של ${c.name} 📷\nאפשר כמה תמונות (עד ${PICS}) – ואנחנו נבחר את הטובה ביותר.\n\n${PHOTO_TIPS}\n\n🎬 סרטון קצר – איך בוחרים תמונה טובה: ${VIDEO_PHOTO}`));
-    case "picsmore": return S(buttons(`קיבלנו ${c.pics.length === 1 ? "תמונה אחת" : c.pics.length + " תמונות"} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"]]));
+    case "picsmore": return S(buttons(`קיבלנו ${c.pics.length <= 1 ? "את התמונה" : c.pics.length + " תמונות"} של ${c.name} ✓\nאפשר לשלוח עוד, או להמשיך.`, [["p:done", "✅ סיימתי תמונות"]]));
     case "who": return S(st.profile
       ? buttons(`לרשום את ההזמנה על השם "${st.profile}"?`, [["w:yes", "✅ כן"], ["w:other", "✍️ שם אחר"]])
       : text("ואיך קוראים לך? 🙂"));
@@ -339,6 +345,37 @@ async function ganSummary(st, db, owner){
   return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
+/* תשובה בכתב לשאלה עם כפתורים: "בת", "קשה", "ביט", "חיבוקים", "כן"... ← הכפתור המתאים */
+const YES = ["c:yes", "gc:yes", "d:ok", "gd:ok", "g:ok", "w:yes", "ph:yes", "m:yes", "gd:done"], DONE = ["p:done", "g:rdone", "gd:done", "m:no", "g:one"];
+/* תשובה שלא יכולה להיות שם / הקדשה / כתובת: בלי אותיות, או רק "כן", "לא", "אוקי"... */
+const junk = t => !/[א-תa-z]/i.test(t || "") || /^(כן|לא|אוקי|ok|בסדר|תודה|זהו|סיימתי|מה|למה|איך|נכון|יופי|מעולה)[.!?]*$/i.test(String(t).trim());
+const NO = ["m:no", "w:other", "ph:other", "d:next", "gd:next", "g:one", "p:done"];
+const norm = t => String(t || "").replace(/[^\p{L}\p{N} ]/gu, " ").replace(/\s+/g, " ").trim();
+async function matchBtn(env, from, st, txt, db){
+  if (st.step === "hi") return /גן|גננת|גננות/.test(txt) ? "s:gan" : /ספר|נכד|ילד|הזמנ|להזמין|בן|בת|נכדה|סבתא|סבא/.test(txt) ? "s:go" : "";
+  const log = [];
+  await ask(env, from, JSON.parse(JSON.stringify(st)), log, db);                  /* מה השאלה הנוכחית מציעה */
+  const opts = [];
+  for (const m of log) { const i = m.interactive; if (!i) continue;
+    if (i.type === "button") i.action.buttons.forEach(b => opts.push([b.reply.id, b.reply.title]));
+    else i.action.sections.forEach(sec => sec.rows.forEach(r => opts.push([r.id, r.title]))); }
+  const ids = opts.map(o => o[0]).filter(x => x !== "restart" && x !== "human" && !x.startsWith("page:"));
+  const t = norm(txt), w = t.split(" ");
+  if (/^(כן|כמובן|בטח|מאשר|מאשרת|מאשרים|אישור|נכון|אוקי|ok|יופי|מעולה)$/i.test(t)) { const y = ids.filter(x => YES.includes(x)); if (y.length === 1) return y[0]; }
+  if (t === "לא") { const n = ids.filter(x => NO.includes(x)); if (n.length === 1) return n[0]; }
+  if (/^(זהו|סיימתי|סיימנו|זה הכל|זה הכול|די|מספיק)$/.test(t)) { const d = ids.filter(x => DONE.includes(x)); if (d.length === 1) return d[0]; }
+  const exact = opts.filter(([id, ti]) => ids.includes(id) && norm(ti) === t); if (exact.length === 1) return exact[0][0];
+  const part = opts.filter(([id, ti]) => ids.includes(id) && t.length >= 2 && (norm(ti).split(" ").some(x => w.includes(x) && x.length >= 2)));
+  return part.length === 1 ? part[0][0] : "";
+}
+/* כמה תמונות ברצף: כל תמונה נשמרת לבד, ועונים רק אחרי האחרונה (מחכים רגע לראות אם מגיעה עוד) */
+async function lastInBurst(db, from, log){
+  if (log) return true;
+  const me = Date.now() + ":" + Math.random().toString(36).slice(2, 8);
+  await db.put("burst:" + from, me, 120);
+  await new Promise(r => setTimeout(r, 5000));
+  return (await db.get("burst:" + from)) === me;
+}
 async function step(env, from, st, ev, log, db){
   const S = m => wa(env, from, m, log);
   const RB = (bid, v) => readBook(S, bid, v, env, db, log);
@@ -347,7 +384,8 @@ async function step(env, from, st, ev, log, db){
     if (vv) await RB(st.cur.book, vv);
   };
   const c = st.cur, G = st.g;
-  const id = ev.id || "", txt = (ev.text || "").trim();
+  let id = ev.id || "";
+  const txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
   if (!st.from) st.from = from;
   if (id === "human" || (!id && HUMAN_TXT.test(txt))) {
@@ -367,9 +405,14 @@ async function step(env, from, st, ev, log, db){
     return ask(env, from, st, log, db);
   }
   if (id.startsWith("rd:")) { const [, bid, v] = id.split(":"); return RB(bid, v); }
+  /* כתבו תשובה במקום ללחוץ על כפתור */
+  const SHORT_OK = ["ded", "g-ded", "who"];                                  /* שם אפשר גם לכתוב טקסט חופשי – רק תשובה קצרה נחשבת לכפתור */
+  if (!id && txt && (BTN_STEPS.includes(st.step) || (SHORT_OK.includes(st.step) && txt.length <= 12)) && !looksQuestion(txt)) id = await matchBtn(env, from, st, txt, db);
+  if (!id && st.step === "phone" && txt.replace(/\D/g, "").length >= 9) { st.ship.phone = txt.slice(0, 30); st.step = "pay"; return ask(env, from, st, log, db); }
   /* שאלות: "שאלות" = תפריט; שאלה חופשית בכל שלב = תשובה רק מתוך מה שיש בבוט, ואם אין – לשמש */
-  const free = !["dedown", "g-dedown", "addr"].includes(st.step);
-  const asking = !id && txt && free && (looksQuestion(txt) || BTN_STEPS.includes(st.step));
+  const isQ = looksQuestion(txt);
+  const free = !["dedown", "g-dedown", "addr"].includes(st.step) || (isQ && !!(qaOf(txt) || faqOf(txt)));
+  const asking = !id && txt && free && (isQ || BTN_STEPS.includes(st.step));
   const fq = id.startsWith("q:") ? id.slice(2) : (asking || (!id && txt && free && faqOf(txt) === "menu") ? faqOf(txt) : "");
   if (fq === "menu") { await S(list("❓ במה אפשר לעזור?\nבוחרים נושא – או פשוט כותבים את השאלה.", "בוחרים שאלה", Object.keys(FAQ).filter(k => k !== "price" || st.mode === "gan").map(k => ({ id: "q:" + k, title: FAQ[k][2], description: FAQ[k][0].replace(/^\S+ /, "").slice(0, 72) })), "שאלות")); return; }
   let answer = "";
@@ -379,6 +422,10 @@ async function step(env, from, st, ev, log, db){
   else if (fq && FAQ[fq]) answer = faqMsg(fq);
   else if (asking) { const k = qaOf(txt); if (k) answer = QA[k].a(st); }
   if (answer) { st.lastQ = txt || fq; await sendLong(S, answer); return S(buttons("עזר? 🙂", QA_BTNS)); }
+  if (asking && !isQ) {                                           /* לא שאלה ולא כפתור – מסבירים ושואלים שוב */
+    await S(text("לא בטוח שהבנתי 🙂 בוחרים באחת האפשרויות למטה 👇\n(ואם יש שאלה – פשוט כותבים אותה)"));
+    return ask(env, from, st, log, db);
+  }
   if (asking) {                                                  /* לא יודע – לא מנחש: עובר לשמש */
     st.human = Date.now();
     await S(buttons("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN));
@@ -418,7 +465,7 @@ async function step(env, from, st, ev, log, db){
       if (id === "nm:again") { st.nameTry = ""; break; }
       if (txt && !id) {                                                      /* בודקים שזה שם פרטי בלבד */
         const nm = txt.replace(/[.,!׳"'״]+$/g, "").replace(/\s+/g, " ").trim(), w = nm.split(" ");
-        if (/\d/.test(nm) || nm.length > 25 || w.length > 3 || !/[א-תa-z]/i.test(nm)) {
+        if (/\d/.test(nm) || nm.length > 25 || w.length > 3 || junk(nm)) {
           return S(text("נראה לי שזה לא שם 🙂\nכותבים רק את *השם הפרטי*, למשל: נועה"));
         }
         if (w.length > 1) {
@@ -434,17 +481,26 @@ async function step(env, from, st, ev, log, db){
       if (id === "d:ok") st.step = "cover";
       else if (id === "d:next") { const L = dedIdeas(c.ver === "g", st); c.dedI = (c.dedI + 1) % L.length; c.ded = L[c.dedI]; }
       else if (id === "d:own") st.step = "dedown";
-      else if (txt && !id) { c.ded = txt.slice(0, 450); st.step = "cover"; }
+      else if (txt && !id) {
+        if (txt.length < 15 || junk(txt)) { await S(text("רוצים לכתוב הקדשה משלכם? לוחצים *✍️ אכתוב בעצמי* 🙂\nאו בוחרים באחת האפשרויות 👇")); }
+        else { c.ded = txt.slice(0, 450); st.step = "cover"; }
+      }
       break;
-    case "dedown": if (txt) { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "cover"; } break;
+    case "dedown": if (txt) { if (txt.length < 5 || junk(txt)) await S(text("כתבו כאן את ההקדשה המלאה 🙂")); else { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "cover"; } } break;
     case "cover": if (id === "cv:hard" || id === "cv:soft") { c.cover = id.slice(3); st.step = "pics"; } break;
     case "pics": case "picsmore":
-      if (ev.image) { if (c.pics.length < PICS) c.pics.push(await savePic(env, st, c.ver === "g" ? "בנות" : "בנים", c.name, ev.image, from, db)); st.step = "picsmore";
-        if (st.burst) return; st.burst = 1; }
-      else if (id === "p:done" && c.pics.length) st.step = st.who ? "more" : "who";
+      if (ev.image) {
+        const p = await savePic(env, st, c.ver === "g" ? "בנות" : "בנים", c.name, ev.image, from, db);
+        c.pics.push(p);
+        await db.put("pp:" + st.oid + ":" + st.list.length + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify(p), 90 * 86400);
+        st.step = "picsmore";
+        if (!(await lastInBurst(db, from, log))) return;             /* עוד תמונה בדרך – היא תענה */
+        c.pics = await kidPics(db, st, c.pics);
+      }
+      else if (id === "p:done") { c.pics = await kidPics(db, st, c.pics); if (c.pics.length) st.step = st.who ? "more" : "who"; }
       break;
-    case "who": if (id === "w:yes") { st.who = st.profile; st.step = "more"; } else if (id === "w:other") st.step = "whoown"; else if (txt && !id) { st.who = txt.slice(0, 40); st.step = "more"; } break;
-    case "whoown": if (txt) { st.who = txt.slice(0, 40); st.step = "more"; } break;
+    case "who": if (id === "w:yes") { st.who = st.profile; st.step = "more"; } else if (id === "w:other") st.step = "whoown"; else if (txt && !id) { if (junk(txt)) await S(text("כתבו את השם שלך 🙂")); else { st.who = txt.slice(0, 40); st.step = "more"; } } break;
+    case "whoown": if (txt) { if (junk(txt)) await S(text("כתבו את השם שלך 🙂")); else { st.who = txt.slice(0, 40); st.step = "more"; } } break;
     case "more":
       if (id === "m:yes") { st.list.push(c); st.cur = fresh(); st.page = 0; st.step = "for"; }
       else if (id === "m:no") { st.list.push(c); st.cur = fresh(); st.step = "ship"; }
@@ -453,7 +509,7 @@ async function step(env, from, st, ev, log, db){
       if (id === "sh:pickup") { st.ship = { method: "pickup" }; st.step = "pay"; }
       else if (id === "sh:ship") { st.ship = { method: "ship" }; st.step = "addr"; }
       break;
-    case "addr": if (txt && !id) { st.ship.addr = txt.slice(0, 200); st.step = "phone"; } break;
+    case "addr": if (txt && !id) { if (txt.length < 6 || junk(txt)) await S(text("כתבו כתובת מלאה: עיר, רחוב ומספר 📍")); else { st.ship.addr = txt.slice(0, 200); st.step = "phone"; } } break;
     case "phone":
       if (id === "ph:yes") { st.ship.phone = fmtPhone(st.from); st.step = "pay"; }
       else if (id === "ph:other") st.step = "phoneown";
@@ -465,8 +521,8 @@ async function step(env, from, st, ev, log, db){
       break;
 
     /* ---- גן ---- */
-    case "g-name": if (txt && !id) { G.name = txt.slice(0, 50); st.step = "g-teacher"; } break;
-    case "g-teacher": if (txt && !id) { st.who = txt.slice(0, 40); st.step = "g-kids"; } break;
+    case "g-name": if (txt && !id) { if (junk(txt)) await S(text("כתבו את שם הגן 🙂 (למשל: גן רימון, חיפה)")); else { G.name = txt.slice(0, 50); st.step = "g-teacher"; } } break;
+    case "g-teacher": if (txt && !id) { if (junk(txt)) await S(text("כתבו את השם שלך 🙂")); else { st.who = txt.slice(0, 40); st.step = "g-kids"; } } break;
     case "g-kids": { const k = parseInt(txt.replace(/[^\d]/g, ""), 10); if (k > 0 && k < 1000) { G.kids = k; st.page = 0; st.step = "g-book"; } else if (txt) { await S(text("כתבו רק מספר, למשל 25 🙂")); return; } break; }
     case "g-book": if (id.startsWith("gb:") && book(id.slice(3))) { const nb = id.slice(3); if (!G.books.includes(nb)) { G.books.push(nb); for (const v of ["b", "g"]) if ((PAGES[nb] || {})[v]) await RB(nb, v); } st.step = G.books.length >= GANBOOKS ? "g-cover" : "g-book2"; } break;
     case "g-book2":
@@ -479,9 +535,13 @@ async function step(env, from, st, ev, log, db){
       if (id === "gd:ok") { G.r = 0; st.step = "g-pics"; }
       else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; G.ded = L[G.dedI]; }
       else if (id === "gd:own") st.step = "g-dedown";
-      else if (txt && !id) { G.ded = txt.slice(0, 800); G.r = 0; st.step = "g-pics"; }
+      else if (txt && !id) {
+        if (txt.length < 15 || junk(txt)) await S(text("רוצים לכתוב הקדשה משלכם? לוחצים *✍️ אכתוב בעצמי* 🙂\nאו בוחרים באחת האפשרויות 👇"));
+        else { G.ded = txt.slice(0, 800); G.r = 0; st.step = "g-pics"; }
+      }
       break;
-    case "g-dedown": if (txt) { G.ded = (G.dedOwn ? G.ded + "\n\n" : "") + txt.slice(0, 450); G.dedOwn = 1; await S(buttons("הקדשה יפה ❤️ רוצים להוסיף עוד הקדשה (למשל לבנות)?", [["gd:done", "✅ זהו, ממשיכים"]])); return; }
+    case "g-dedown": if (txt && (txt.length < 5 || junk(txt))) { await S(text("כתבו כאן את ההקדשה המלאה 🙂")); break; }
+      if (txt) { G.ded = (G.dedOwn ? G.ded + "\n\n" : "") + txt.slice(0, 450); G.dedOwn = 1; await S(buttons("הקדשה יפה ❤️ רוצים להוסיף עוד הקדשה (למשל לבנות)?", [["gd:done", "✅ זהו, ממשיכים"]])); return; }
       if (id === "gd:done") { G.r = 0; st.step = "g-pics"; }
       break;
     case "g-pics": case "g-picsmore": {
@@ -492,7 +552,7 @@ async function step(env, from, st, ev, log, db){
         const p = await savePic(env, st, rsub, nm, ev.image, from, db, topic);
         await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: rb, topic, sub: rsub, name: nm, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "" }), 90 * 86400);
         st.step = "g-picsmore";
-        if (st.burst) return; st.burst = 1;                        /* הרבה תמונות ברצף – עונים פעם אחת */
+        if (!(await lastInBurst(db, from, log))) return;             /* הרבה תמונות ברצף – עונים אחרי האחרונה */
       }
       else if (id === "g:rdone") { if ((G.r || 0) + 1 < rounds(G).length) { G.r = (G.r || 0) + 1; st.step = "g-pics"; } else st.step = "g-check"; }
       else if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
@@ -587,14 +647,20 @@ export async function handle(env, from, profile, ev, opts){
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
   } else if (!st || st.step === "done") {
     if (/הזמנה (סב|גן)-\d/.test(ev.text || "")) return;              /* הזמנה מלאה מהאתר – שמש מטפלת */
-    /* מספר עסקי – עונים לכל הודעה. רק אחרי הזמנה שהסתיימה ב-12 השעות האחרונות ("תודה!") לא פותחים מחדש, אלא אם מדברים על ספר/הזמנה */
-    if (st && !ev.id && !TRIGGER.test(ev.text || "") && Date.now() - (st.ts || 0) < 12 * 3600e3) return;
+    /* מספר עסקי – עונים לכל הודעה */
+    if (st && !ev.id && Date.now() - (st.ts || 0) < 12 * 3600e3) {   /* אחרי הזמנה: "תודה", "מתי הספר יגיע?" – לא פותחים הזמנה חדשה (רק "מחדש") */
+      if (!st.doneAck) {                                             /* עונים פעם אחת, ומשם שמש ממשיכה איתה */
+        st.doneAck = 1;
+        await wa(env, from, text(`תודה ❤️ ההזמנה ${st.oid || ""} אצל שמש, והיא תחזור אלייך כאן בהקדם.\nלהזמנה חדשה – כותבים: מחדש`), log);
+        st.ts = Date.now(); await db.put(k, JSON.stringify(st), 30 * 86400);
+      }
+      return;
+    }
     st = { from, step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0, oid: newId("סב"), day: dayStr(), role: "g", mode: "private", g: { name: "", kids: 0, books: [], cover: "", ded: "", dedI: 0 } };
     if (ev.id === "human" || HUMAN_TXT.test(ev.text || "")) await step(env, from, st, { id: "human" }, log, db);
     else if (ev.id === "s:go" || ev.id === "s:gan") await step(env, from, st, ev, log, db);
     else await ask(env, from, st, log, db);
   } else {
-    if (!ev.image) st.burst = 0;
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim())) await resume(env, from, st, log, db);
     else await step(env, from, st, ev, log, db);
   }
