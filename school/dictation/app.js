@@ -420,7 +420,7 @@ function write(w){
       const pad = makePad(), fin = document.createElement("button"); fin.type = "button"; fin.className = "btn purple wide"; fin.style.marginTop = "10px"; fin.textContent = "סיימתי ✓";
       fin.onclick = () => {
         if (pad.empty()) { bub("קודם כותבים, ואחר כך לוחצים \"סיימתי\" 🙂"); return; }
-        out.innerHTML = '<div class="verdict cmp"><div>' + G("השווה למילה הנכונה (אפשר עם מבוגר):", "השווי למילה הנכונה (אפשר עם מבוגר):", "משווים למילה הנכונה (אפשר עם מבוגר):") + '</div>' + compareBox(w) +
+        out.innerHTML = '<div class="verdict cmp"><div>' + "👨‍👩‍👧 אבא ואמא: בדקו אם המילה כתובה נכון, ולחצו ✓ או \"עוד פעם\":" + '</div>' + compareBox(w) +
           '<div class="row"><button type="button" class="btn green sm" id="sY">✓ כתבתי נכון</button><button type="button" class="btn alt sm" id="sN">טעיתי, עוד פעם</button></div></div>';
         fin.disabled = true;
         $("sY").onclick = () => { fin.remove(); win(out); };
@@ -466,7 +466,7 @@ function finish(){
     SND.win(); confetti(); return;
   }
   const R = G1.res, game = G1;
-  app.innerHTML = '<section class="card"><h2 style="font-size:28px;color:#C13671;text-align:center">תוצאות ההכתבה</h2><div id="score" style="text-align:center;margin:8px 0"></div><div id="rows"></div>' +
+  app.innerHTML = '<section class="card"><h2 style="font-size:28px;color:#C13671;text-align:center">תוצאות ההכתבה</h2><div id="score" style="text-align:center;margin:8px 0"></div>' + (R.some(r => r.img) ? '<div class="parentcheck">👨‍👩‍👧 <b>אבא ואמא:</b> בדקו אם המילים שנכתבו ביד כתובות נכון, וסמנו <b>✓</b> ליד מילה נכונה או <b>✗</b> ליד מילה עם טעות.</div>' : '') + '<div id="rows"></div>' +
     '<div class="row"><button type="button" class="btn green" id="again">עוד הכתבה</button><button type="button" class="btn alt" id="home">לכל המשחקים</button></div></section>';
   $("again").onclick = () => start("test"); $("home").onclick = () => go("");
   const rows = $("rows");
@@ -476,7 +476,7 @@ function finish(){
       '<div class="w"><span class="rd wd">' + esc(plain(it.w)) + '</span><small></small></div><div class="mark">' + (it.img ? "" : it.ok ? "✅" : "❌") + '</div>';
     rows.appendChild(d); it.row = d;
     if (it.img) {
-      d.querySelector("small").textContent = "בודקים יחד: נכון או לא?";
+      d.querySelector("small").textContent = "אבא ואמא: נכון? סמנו ✓";
       const m = d.querySelector(".mark"), box = document.createElement("div"); box.className = "self";
       box.innerHTML = '<button type="button" class="y" aria-label="נכון" aria-pressed="false">✓</button><button type="button" class="n" aria-label="לא נכון" aria-pressed="false">✗</button>';
       const set = v => { if (game.done) return; it.ok = v; box.children[0].setAttribute("aria-pressed", v); box.children[1].setAttribute("aria-pressed", !v); paintScore(); };
@@ -486,7 +486,7 @@ function finish(){
   function paintScore(){
     const good = R.filter(r => r.ok).length, left = R.filter(r => r.ok === null).length;
     $("score").innerHTML = '<div class="bigscore">' + good + '/' + R.length + '</div><p class="note">' +
-      (left ? "סמנו ✓ או ✗ ליד כל מילה שנכתבה ביד (" + left + " נשארו)" : good === R.length ? G("מושלם! אתה מוכן להכתבה 🌟", "מושלם! את מוכנה להכתבה 🌟", "מושלם! מוכנים להכתבה 🌟") : "כל הכבוד על התרגול! את המילים שלא הצליחו כדאי לתרגל עוד.") + '</p>';
+      (left ? "אבא ואמא: סמנו ✓ או ✗ ליד כל מילה שנכתבה ביד (נשארו " + left + ")" : good === R.length ? G("מושלם! אתה מוכן להכתבה 🌟", "מושלם! את מוכנה להכתבה 🌟", "מושלם! מוכנים להכתבה 🌟") : "כל הכבוד על התרגול! את המילים שלא הצליחו כדאי לתרגל עוד.") + '</p>';
     if (!left && !game.done) { game.done = true; let earned = 0; R.forEach(r => { if (r.ok) { setBest(r.w, "w", 3); earned += 2; } }); S.stars += earned; save();
       ev("dict-test", good + "of" + R.length);
       $("score").insertAdjacentHTML("beforeend", '<span class="starpill">⭐ +' + earned + '</span>'); SND.win(); confetti(); }
