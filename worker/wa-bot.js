@@ -105,6 +105,7 @@ const FAQ = {
 const PAYS = { bank: "🏦 העברה בנקאית", bit: "📱 ביט", paybox: "📱 פייבוקס", card: "💳 אשראי (בתיאום)" };
 /* תשובות מוכנות – רק מתוך ההודעות והמדריך של שמש. מה שלא כאן – עובר לשמש */
 const QA = {
+  author: { re: /מי כתב|מי כותב|מי הסופר|מי המחבר|מי כתבה|כתבה את|כתב את|מי אייר|מי איירה|מי מאייר/, a: () => "✍️ *את כל הספרים כתבה שמש צור* – בחרוזים, ערוכים ומנוקדים.\n🎨 האיורים נוצרים בדמות הילד/ה, לפי התמונה ששולחים." },
   pay: { re: /תשלום|לשלם|משלמים|ביט|פייבוקס|העברה בנקאית|אשראי/, a: st => st.mode === "gan" ? "💳 *תשלום:* התשלום מתבצע מראש, לפני תחילת עריכת הספרים – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." : "💳 *תשלום:* קודם רואים את כל הספר הדיגיטלי, ומשלמים רק אם אוהבים ❤️ – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." },
   time: { re: /כמה זמן|מתי (זה )?(מגיע|מוכן|יהיה)|זמן אספקה|זמני אספקה|עריכה|תוך כמה/, a: st => "⏱️ *זמנים:* " + (st.mode === "gan" ? "עריכה עד 3 ימי עסקים מהתשלום. " : "") + "אחרי שמאשרים הדפסה – משלוח צ'יטה עד 14 ימי עסקים, או איסוף עצמי מבית הדפוס (ליד עפולה) בתיאום, כשבוע מאישור ההדפסה." },
   ship: { re: /משלוח|איסוף|לאסוף|עפולה|צ'יטה|שליח/, a: () => "📦 *משלוח או איסוף:* 🚚 משלוח צ'יטה עד הבית – 40 ₪, עד 14 ימי עסקים מאישור ההדפסה. 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – בלי עלות, בתיאום, כשבוע מאישור ההדפסה. בוחרים בסוף ההזמנה." },
@@ -171,7 +172,7 @@ const fmtPhone = n => String(n || "").replace(/^972/, "0").replace(/^(\d{3})(\d{
 const shipLine = st => st.ship && st.ship.method === "pickup" ? "🚗 איסוף עצמי מבית הדפוס (ליד עפולה), בתיאום" : st.ship && st.ship.method === "ship" ? `🚚 משלוח צ'יטה עד הבית – ${ils(SHIP)}\n📍 ${st.ship.addr}\n📞 ${st.ship.phone}` : "";
 const shipCost = st => st.ship && st.ship.method === "pickup" ? 0 : SHIP;
 async function resume(env, to, st, log, db, who){                           /* חוזרים בדיוק לשאלה שעצרו בה */
-  st.human = 0;
+  st.human = 0; st.owner = 0;
   if (st.step === "done") return;
   await wa(env, to, text(who === "owner" ? "ממשיכים בהזמנה מאיפה שעצרנו 👇" : "מעולה, ממשיכים מאיפה שעצרנו 👇"), log);
   await ask(env, to, st, log, db);
@@ -439,11 +440,10 @@ async function step(env, from, st, ev, log, db){
     await S(text("לא בטוח שהבנתי 🙂 בוחרים באחת האפשרויות למטה 👇\n(ואם יש שאלה – פשוט כותבים אותה)"));
     return ask(env, from, st, log, db);
   }
-  if (asking) {                                                  /* לא יודע – לא מנחש: עובר לשמש */
-    st.human = Date.now();
-    await S(buttons("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN));
+  if (asking) {                                                  /* לא יודע – לא מנחש: עובר לשמש, ובינתיים ממשיכים */
+    await S(text("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים ממשיכים בהזמנה 👇"));
     await alertOwner(env, st, from, "שאלה שהבוט לא יודע לענות עליה", txt);
-    return;
+    return ask(env, from, st, log, db);
   }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log, db); }
   switch (st.step) {
@@ -656,8 +656,12 @@ export async function handle(env, from, profile, ev, opts){
   let st = raw ? JSON.parse(raw) : null;
   if (ev.id === "restart:yes" || /^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) { st = null; if (ev.id) ev = { text: "מחדש" }; }   /* מתחילים הזמנה חדשה מההתחלה */
   if (st && st.human && ev.id && ev.id !== "human") st.human = 0;  /* לחצו על כפתור של הבוט – רוצים את הבוט, ממשיכים בלי לחכות */
-  if (st && st.human) {                                            /* מצב "בן אדם": הבוט שותק */
+  if (st && st.human) {                                            /* מצב "בן אדם" */
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
+    else if (!st.owner) {                                          /* שמש עוד לא כתבה – לא שותקים: מעבירים לה ומציעים להמשיך */
+      await wa(env, from, buttons("📩 קיבלתי, והעברתי גם את זה לשמש – היא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN), log);
+      if (Date.now() - (st.alertAt || 0) > 10 * 60e3) { st.alertAt = Date.now(); await alertOwner(env, st, from, "כתבה שוב בזמן שמחכה לך", ev.text || (ev.image ? "(תמונה)" : "")); }
+    }
   } else if (!st || st.step === "done") {
     if (/הזמנה (סב|גן)-\d/.test(ev.text || "")) return;              /* הזמנה מלאה מהאתר – שמש מטפלת */
     /* מספר עסקי – עונים לכל הודעה */
@@ -709,7 +713,7 @@ export default {
             const k = "st:" + m.to, raw = await db.get(k); const st = raw ? JSON.parse(raw) : { step: "done", list: [], cur: fresh(), g: {} };
             const t = (m.text && m.text.body) || "";
             if (OWNER_RESUME.test(t)) { await resume(env, m.to, st, null, db, "owner"); await db.put(k, JSON.stringify(st)); }
-            else { st.human = Date.now(); await db.put(k, JSON.stringify(st)); }
+            else { st.human = Date.now(); st.owner = Date.now(); await db.put(k, JSON.stringify(st)); }   /* שמש כותבת – הבוט שותק */
           }
           const name = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || "";
           for (const m of v.messages || []) {
