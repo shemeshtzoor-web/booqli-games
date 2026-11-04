@@ -1237,6 +1237,15 @@ document.addEventListener("click", e => {
   const btn = e.target.closest("button[data-v]"), onImg = e.target.closest(".img");
   if (btn || onImg) bqRead(card.dataset.book, btn ? +btn.dataset.v : 0);
 });
+/* קישור ישיר לקריאה (לבוט הוואטסאפ): kindergartens/?read=hugs&ver=b – הספר נפתח לבד. ver: b = גרסת בן, g = גרסת בת */
+(() => {
+  const q = new URLSearchParams(location.search), id = q.get("read"); if (!id) return;
+  const b = (window.BQ_BOOKS || []).find(x => x.id === id); if (!b) return;
+  const want = q.get("ver") === "b" ? "-b" : q.get("ver") === "g" ? "-g" : "";
+  const i = Math.max(0, b.v.findIndex(v => want && v[1].endsWith(want)));
+  bqRead(id, i);
+  if (window.siteEvent) siteEvent("click", "read_link_" + id + (want || ""));
+})();
 
 /* ===== ציטוטים אמיתיים (רק באישור, שמות מקוצרים) – הקטע מוצג רק כשיש לפחות ציטוט אחד =====
    {q:"הציטוט", by:"א.ב", role:"גננת / ועד הורים", where:"עיר (לא חובה)"} */
