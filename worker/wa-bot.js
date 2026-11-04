@@ -561,6 +561,7 @@ export async function handle(env, from, profile, ev, opts){
   const k = "st:" + from, raw = await db.get(k);
   let st = raw ? JSON.parse(raw) : null;
   if (ev.id === "restart:yes" || /^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) { st = null; if (ev.id) ev = { text: "מחדש" }; }   /* מתחילים הזמנה חדשה מההתחלה */
+  if (st && st.human && ev.id && ev.id !== "human") st.human = 0;  /* לחצו על כפתור של הבוט – רוצים את הבוט, ממשיכים בלי לחכות */
   if (st && st.human) {                                            /* מצב "בן אדם": הבוט שותק */
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
   } else if (!st || st.step === "done") {
@@ -618,6 +619,7 @@ export default {
             else if (m.type === "button") ev.text = m.button.text;
             else if (m.type === "image") { ev.image = { media: m.image.id }; ev.caption = m.image.caption || ""; }
             else continue;
+            console.log("in", m.type, ev.id || (ev.image ? "image" : "text"));   /* לבדיקת תקלות – בלי תוכן ההודעה */
             await handle(env, m.from, name, ev);
           }
         }
