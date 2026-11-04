@@ -138,6 +138,16 @@ const looksQuestion = t => /\?|^(מה|איך|כמה|למה|מתי|האם|אפש�
 /* שלבים שבהם כל טקסט הוא שאלה (אין שם תשובה בכתב) */
 const BTN_STEPS = ["hi", "for", "book", "ver", "cover", "picsmore", "more", "ship", "phone", "pay", "consent", "g-book", "g-book2", "g-cover", "g-check", "g-consent"];
 /* מייל לשמש: לקוחה צריכה אותך (דרך הקוד בגוגל) */
+/* חלון השאלות של שמש (ב-Claude): כל הודעה שמגיעה אליה – ואחרי החיבור ל-055 גם כל תשובה שלה – נשמרת כמסמך קטן
+   בתיקייה "שאלות-לקוחות" בדרייב (פעולת note). הדף קורא משם, מציע תשובה בסגנון שלה, ושמש מעתיקה. */
+async function logQA(env, st, from, kind, why, msg){
+  if (!msg) return;
+  const d = new Date(Date.now() + 2 * 3600e3), pad = n => String(n).padStart(2, "0"), who = (st && (st.who || st.profile)) || "";
+  const stamp = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`;
+  const books = st ? (st.mode === "gan" ? (st.g.books || []).map(b => book(b).name).join(" + ") : (st.list || []).concat(st.cur && st.cur.book ? [st.cur] : []).map(c => bname(c.book, c.ver)).join(" + ")) : "";
+  await drivePost(env, { action: "note", order: "שאלות-לקוחות", title: "שאלות-לקוחות", name: `${kind === "a" ? "תשובה" : "שאלה"} ${stamp} · ${who || from}`,
+    text: `BOOQLI-QA\nסוג: ${kind === "a" ? "תשובה של שמש" : "הודעה מלקוח"}\nזמן: ${stamp}\nלקוח: ${who}\nטלפון: ${from}\nסוג הזמנה: ${st && st.mode === "gan" ? "גן" : "פרטי"}\nהזמנה: ${(st && st.oid) || ""}\nשלב: ${(st && st.step) || ""}\nספרים: ${books}\nסיבה: ${why || ""}\nהודעה: ${String(msg).slice(0, 1500)}` });
+}
 async function alertOwner(env, st, from, why, q){
   await drivePost(env, { action: "alert", order: st.oid || "", who: st.who || st.profile || "", phone: from, why, q: q || "", step: st.step || "" });
 }
@@ -490,6 +500,7 @@ async function step(env, from, st, ev, log, db){
     st.human = Date.now();
     await S(buttons("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה – לוחצים כאן, וממשיכים בדיוק מאיפה שעצרנו 👇", RESUME_BTN));
     await alertOwner(env, st, from, st.lastQ ? "לא עזר – מבקשת את שמש" : "מבקשת לדבר עם שמש", st.lastQ || txt);
+    await logQA(env, st, from, "q", st.lastQ ? "לא עזר – מבקשת את שמש" : "מבקשת לדבר עם שמש", st.lastQ || txt);
     return;
   }
   if (id === "qa:go") { st.lastQ = ""; return ask(env, from, st, log, db); }
@@ -534,6 +545,7 @@ async function step(env, from, st, ev, log, db){
   if (asking) {                                                  /* לא יודע – לא מנחש: עובר לשמש, ובינתיים ממשיכים */
     await S(text("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים ממשיכים בהזמנה 👇"));
     await alertOwner(env, st, from, "שאלה שהבוט לא יודע לענות עליה", txt);
+    await logQA(env, st, from, "q", "שאלה שהבוט לא יודע לענות עליה", txt);
     return ask(env, from, st, log, db);
   }
   /* מתחרטים: לחצו על כפתור משלב קודם – חוזרים לשלב ההוא וממשיכים משם */
@@ -804,6 +816,7 @@ export async function handle(env, from, profile, ev, opts){
   if (ev.id === "restart:yes" || /^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) { st = null; if (ev.id) ev = { text: "מחדש" }; }   /* מתחילים הזמנה חדשה מההתחלה */
   if (st && st.human && !st.owner && ev.id && ev.id !== "human") st.human = 0;   /* כששמש כותבת בעצמה – הבוט חוזר רק כשהיא כותבת #בוט */  /* לחצו על כפתור של הבוט – רוצים את הבוט, ממשיכים בלי לחכות */
   if (st && st.human) {                                            /* מצב "בן אדם" */
+    if (!log && !ev.id && !RESUME_TXT.test((ev.text || "").trim())) await logQA(env, st, from, "q", st.owner ? "בשיחה עם שמש" : "מחכה לשמש", ev.text || (ev.image ? "(תמונה)" : ""));
     if (!st.owner && (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3)) await resume(env, from, st, log, db);
     else if (!st.owner) {                                          /* שמש עוד לא כתבה – לא שותקים: מעבירים לה ומציעים להמשיך */
       await wa(env, from, buttons("📩 קיבלתי, והעברתי גם את זה לשמש – היא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN), log);
@@ -813,6 +826,7 @@ export async function handle(env, from, profile, ev, opts){
     if (/הזמנה (סב|גן)-\d/.test(ev.text || "")) return;              /* הזמנה מלאה מהאתר – שמש מטפלת */
     /* מספר עסקי – עונים לכל הודעה */
     if (st && !ev.id && Date.now() - (st.ts || 0) < 12 * 3600e3) {   /* אחרי הזמנה: "תודה", "מתי הספר יגיע?" – לא פותחים הזמנה חדשה (רק "מחדש") */
+      if (!log) await logQA(env, st, from, "q", "כתבה אחרי שההזמנה נשלחה", ev.text || (ev.image ? "(תמונה)" : ""));
       if (!st.doneAck) {                                             /* עונים פעם אחת, ומשם שמש ממשיכה איתה */
         st.doneAck = 1;
         await wa(env, from, buttons(`תודה ❤️ הבקשה ${st.oid || ""} התקבלה, ושמש תחזור אלייך כאן בהקדם.`, [["restart:yes", "📚 הזמנה נוספת"]]), log);
@@ -863,7 +877,7 @@ export default {
             const k = "st:" + m.to, raw = await db.get(k); const st = raw ? JSON.parse(raw) : { step: "done", list: [], cur: fresh(), g: {} };
             const t = (m.text && m.text.body) || "";
             if (OWNER_RESUME.test(t)) { await resume(env, m.to, st, null, db, "owner"); await db.put(k, JSON.stringify(st)); }
-            else { st.human = Date.now(); st.owner = Date.now(); await db.put(k, JSON.stringify(st)); }   /* שמש כותבת – הבוט שותק */
+            else { st.human = Date.now(); st.owner = Date.now(); await db.put(k, JSON.stringify(st)); await logQA(env, st, m.to, "a", "", t); }   /* שמש כותבת – הבוט שותק; התשובה נשמרת לחלון */
           }
           const name = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || "";
           for (const m of v.messages || []) {
