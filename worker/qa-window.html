@@ -1,0 +1,240 @@
+<title>שאלות לקוחות BOOQLI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Suez+One&display=swap">
+<style>
+/* Layout: one working column — a status strip, then one card per customer conversation, newest first */
+:root{
+  --bg:#fbf7f8; --surface:#ffffff; --ink:#2b2226; --muted:#7a6a70; --line:#eadfe3;
+  --accent:#d6457a; --accent-ink:#ffffff; --mint:#2f9e7e; --mint-soft:#e3f4ee; --warn:#b4542d; --bubble:#f6eef1; --me:#e7f3ef;
+  --font-ui:"Assistant",system-ui,"Segoe UI",Arial,sans-serif; --font-display:"Suez One","Assistant",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1c1719; --surface:#262022; --ink:#f3ebee; --muted:#b7a6ad; --line:#3a3135;
+  --accent:#ef6a9b; --accent-ink:#1c1719; --mint:#5cc7a5; --mint-soft:#1f3a31; --warn:#f08a5d; --bubble:#322a2d; --me:#203530; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1c1719; --surface:#262022; --ink:#f3ebee; --muted:#b7a6ad; --line:#3a3135;
+  --accent:#ef6a9b; --accent-ink:#1c1719; --mint:#5cc7a5; --mint-soft:#1f3a31; --warn:#f08a5d; --bubble:#322a2d; --me:#203530; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:16px;line-height:1.55;direction:rtl;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-family:var(--font-display);font-weight:400;font-size:1.7rem;margin:0;text-wrap:balance}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.status{color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:4px 14px}
+.status b{color:var(--ink);font-variant-numeric:tabular-nums}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--muted)}
+.note.warn{border-color:var(--warn);color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card.open{border-inline-start:4px solid var(--accent)}
+.who{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.who .name{font-weight:700;font-size:1.05rem}
+.phone{font-variant-numeric:tabular-nums;color:var(--muted);user-select:all}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.8rem;padding:2px 8px;border-radius:99px;background:var(--bubble);color:var(--muted)}
+.chip.why{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.msgs{display:flex;flex-direction:column;gap:6px}
+.msg{max-width:88%;padding:8px 12px;border-radius:12px;background:var(--bubble);white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me{background:var(--me);align-self:flex-end}
+.msg small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px;font-variant-numeric:tabular-nums}
+label{font-size:.85rem;color:var(--muted);font-weight:600}
+textarea,input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;resize:vertical}
+textarea{min-height:110px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;font-weight:600;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button.done{border-color:var(--mint);color:var(--mint)}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toast{color:var(--mint);font-weight:600;font-size:.9rem;min-height:1.4em}
+.closed summary{cursor:pointer;color:var(--muted)}
+.closed .card{opacity:.8}
+.empty{text-align:center;padding:28px 12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <h1>שאלות לקוחות</h1>
+    <div class="status" id="status"><span>בודקת שאלות חדשות…</span></div>
+  </div>
+  <div id="notice" class="note" hidden></div>
+  <div id="list"><div class="empty">כאן יופיעו שאלות מהבוט: מי שאל, מה שאל, והצעת תשובה בסגנון שלך.</div></div>
+  <details class="closed" id="closedBox" hidden><summary id="closedSum">שיחות שטופלו</summary><div id="closed" class="wrap" style="margin-top:12px"></div></details>
+</div>
+
+<script>
+const KB = "🗺️ *איך זה עובד:*\n1️⃣ בוחרים ספר ושולחים כאן תמונה\n2️⃣ בן אדם אמיתי עובר על כל בקשה\n3️⃣ תוך יום עסקים אחד – נשלח לכם סקיצה לכל ספר\n4️⃣ אוהבים? משלמים בקישור שנשלח לכם. לא אוהבים? נפרדים כידידים ❤️\n\n_אנחנו שומרים לעצמנו את הזכות לא להכין סקיצות לבקשה שאינה תקינה._\n\n📚 *הספרים שלנו כתובים, ערוכים ומנוקדים.*\nההתאמה האישית היא ב:\n✨ שם הילד/ה בתוך הסיפור\n🎨 איורים אישיים בדמות הילד/ה\n💌 הקדשה אישית מטעמכם – מודפסת בעמוד השער\n\n📖 *ספר לדוגמה:*\nאחרי שבוחרים ספר נשלח לכם לכאן ספר לדוגמה – הספר המלא, כקובץ PDF 🙂\n\n📋 *כל מה שחשוב לדעת*\n\n✂️ *אין צורך לערוך שום דבר* – שולחים תמונה, שם והקדשה, ומקבלים ספר מושלם.\n\n🤖 *בינה מלאכותית:* בינה מלאכותית אינה מצלמה – גם כשהדמיון גבוה מאוד (עד 99%), ייתכנו הבדלים קלים במראה או בפרופורציות. *כל ספר עובר בדיקה אנושית*, איור אחר איור, לפני ההדפסה.\n\n🔍 *לפני ההדפסה* נשלח לכם את הספר לאישור – בודקים שהשמות נכונים ושאין שגיאות בהקדשה. האישור נועד לבדיקת הפרטים, לא לסבבי תיקונים בדמות.\n\n📦 *מידות:* כריכה רכה 20×20 ס״מ · כריכה קשה 21×21 ס״מ. הספרים מגיעים בלי אריזה אישית – הכי יפה לארוז בצלופן ובסרט 🎀\n\n⏱️ *אספקה:* משלוח צ'יטה עד 14 ימי עסקים מאישור ההדפסה · איסוף עצמי מבית הדפוס (ליד עפולה) בתיאום, כשבוע מאישור ההדפסה.\n\n💜 *חוברת כרומו סיכות:* הכריכה הזו מתאימה רק להזמנות של 20 ספרים ומעלה (למשל לגן). בהזמנה קטנה יותר בוחרים כריכה קשה או רכה.\n\n✍️ *את כל הספרים כתבה שמש צור* – בחרוזים, ערוכים ומנוקדים.\n🎨 האיורים נוצרים בדמות הילד/ה, לפי התמונה ששולחים.\n\n💳 *תשלום:* קודם מקבלים סקיצה של הספר, ומשלמים רק אם אוהבים ❤️ – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת קישור לתשלום.\n\n⏱️ *זמנים:* סקיצות – תוך יום עסקים אחד מההזמנה (אם הבקשה תקינה). אחרי שמאשרים הדפסה – משלוח צ'יטה עד 14 ימי עסקים, או איסוף עצמי מבית הדפוס (ליד עפולה) בתיאום, כשבוע מאישור ההדפסה.\n\n📦 *משלוח או איסוף:* 🚚 משלוח צ'יטה עד הבית – 40 ₪, עד 14 ימי עסקים מאישור ההדפסה. 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – בלי עלות, בתיאום, כשבוע מאישור ההדפסה. בוחרים בסוף ההזמנה.\n\n💌 *הקדשה:* מציעים לכם הקדשה מוכנה (אפשר לבקש אחרת), או כותבים לבד – עד 300 תווים בערך.\n\nלגנים: 💌 *הקדשה:* הקדשה אחת לכל ילדי הגן – או אחת לכל ספר (עד 2), עד 350 תווים, *בלי שם הילד* (השם כבר בספר). את ההתאמה לבנים ולבנות אנחנו עושים. אפשר לבחור הקדשה מוכנה או לכתוב לבד.\n\n👯 *שני ילדים עם אותו שם:* כותבים בכיתוב של התמונה \"יוסי 1\", \"יוסי 2\" – וכך לא מתבלבלים.\n\n🤖 *האיורים:* בינה מלאכותית אינה מצלמה – גם כשהדמיון גבוה מאוד (עד 99%), ייתכנו הבדלים קלים במראה או בפרופורציות. *כל ספר עובר בדיקה אנושית*, איור אחר איור, לפני ההדפסה.\n\n🔍 *לפני ההדפסה* נשלח לכם את הספר לאישור – בודקים שכל הילדים נמצאים, שהשמות נכונים ושאין שגיאות בהקדשה. האישור נועד לבדיקת הפרטים, לא לסבבי תיקונים בדמות. טעות שלנו – מתוקנת מיד.\n\n📦 *מידות:* כריכה רכה 20×20 ס״מ · כריכה קשה 21×21 ס״מ. הספרים מגיעים בלי אריזה אישית – הכי יפה לארוז בצלופן שקוף ובסרט 🎀\n\n✂️ *אין צורך לערוך שום דבר!* שולחים תמונה, שם והקדשה – ומקבלים ספר מושלם.\n\n💰 ככל שמזמינים יותר ספרים – המחיר של כל ספר יורד. כתבו \"כמה זה עולה\" ותקבלו את המחירים.\n\nלגנים: 🎁 *ספרים נוספים במהלך השנה:* כל גן מקבל קופון *GANIM50* – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה. ו🌱 *גן מביא גן:* כל גן שיגיע דרככם ויסגור הזמנה – 50 ₪ הנחה או זיכוי.\n\nכריכות: 💜 חוברת כרומו סיכות – 20×20 ס״מ, בסגנון מגזין, כרוך בסיכות, כריכה ודפים כרומו 170 ג׳ מבריק | 💛 כריכה רכה פיג'מה – כמו ספריית פיג'מה – 20×20 ס״מ, כרוך בהדבקה, כריכה כרומו 300 ג׳, דפים כרומו 170 ג׳ | 💗 כריכה קשה פרימיום – 21×21 ס״מ, בסגנון אלבום, דפים כרומו 170 ג׳\n\nמחירים לפרטיים (לספר): ספר אחד – קשה 149 ₪, רכה 132 ₪; 2 ספרים – קשה 123, רכה 106; 3 ספרים – קשה 111, רכה 94. משלוח צ׳יטה 40 ₪ או איסוף עצמי חינם.\n\nמחירים לגנים לספר (25 ספרים): קשה 77 ₪, רכה 60 ₪, חוברת סיכות 50 ₪ (מ-20 ספרים).\n\n⚠️ *חשוב:* שולחים תמונת פנים ברורה – האחריות לתמונה טובה היא שלכם. לא בטוחים? צפו בסרטון 👆\n\n📸 *תמונה טובה = איור טוב:*\n🔵 ילד/ה אחד/ת בלבד – בלי אנשים או חיות, גם לא ברקע\n🔴 מבט ישיר למצלמה – לא הצידה ולא מלמעלה\n🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים, כתרים או פלסטרים\n🟢 בנים עם כיפה – שהכיפה תופיע בתמונה\n🟣 בנות – התסרוקת באיור תהיה כמו בתמונה\n⚪ אם מצלמים במיוחד – רקע לבן וחולצה לבנה\n😀 והכי חשוב – חיוך!";
+
+/* ===== חלון השאלות: קורא מהדרייב את ההודעות שהבוט רשם (BOOQLI-QA), מקבץ לפי לקוח, ומציע תשובה ===== */
+const DAYS = 21;
+const since = new Date(Date.now() - DAYS * 864e5).toISOString().slice(0, 10) + "T00:00:00Z";
+const QUERY = { query: `fullText contains 'BOOQLI-QA' and createdTime > '${since}'`, pageSize: 100, snippetVerbosity: "MAX_ALLOWED" };
+const S = { items: [], handled: {}, sugg: {}, stats: { raw: 0, edited: 0 }, checked: null, err: "" };
+let db = null, sample = null, perms = null;
+const $ = id => document.getElementById(id);
+const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const unmd = t => String(t || "").replace(/\\([\\`*_{}\[\]()#+\-.!|>~?:"'=])/g, "$1").replace(/ /g, " ");
+
+function parseDoc(f){
+  const raw = unmd(f.contentSnippet || "");
+  if (!raw.includes("BOOQLI-QA")) return null;
+  const i = raw.indexOf("הודעה:"), head = i >= 0 ? raw.slice(0, i) : raw, msg = i >= 0 ? raw.slice(i + 6).trim() : "";
+  const o = { id: f.id, msg };
+  for (const line of head.split(/\n+/)) { const m = line.match(/^\s*([^:]+):\s*(.*)$/); if (m) o[m[1].trim()] = m[2].trim(); }
+  o.me = (o["סוג"] || "").includes("שמש");
+  o.ts = Date.parse((o["זמן"] || "").replace(" ", "T") + "+02:00") || Date.parse(f.createdTime) || 0;
+  o.phone = (o["טלפון"] || "").replace(/\D/g, "");
+  return o.phone ? o : null;
+}
+function threads(){
+  const by = {};
+  for (const it of S.items) (by[it.phone] = by[it.phone] || []).push(it);
+  return Object.entries(by).map(([phone, list]) => {
+    list.sort((a, b) => a.ts - b.ts);
+    const lastQ = [...list].reverse().find(x => !x.me), last = list[list.length - 1];
+    const upTo = (S.handled[phone] || {}).upTo || 0;
+    const open = !!lastQ && lastQ.ts > upTo && !last.me;
+    return { phone, list, lastQ, last, open, info: lastQ || last };
+  }).sort((a, b) => b.last.ts - a.last.ts);
+}
+const ago = ts => { const m = Math.round((Date.now() - ts) / 6e4); return m < 1 ? "עכשיו" : m < 60 ? `לפני ${m} דק׳` : m < 1440 ? `לפני ${Math.round(m / 60)} שע׳` : new Date(ts).toLocaleDateString("he-IL"); };
+const fmtPhone = p => p.replace(/^972/, "0").replace(/^(\d{3})(\d{3})(\d+)$/, "$1-$2-$3");
+
+/* ===== ציור ===== */
+function render(){
+  const a = document.activeElement;
+  if (a && /^(TEXTAREA|INPUT)$/.test(a.tagName) && a.closest("#list")) { S.pending = true; return; }   /* לא מוחקים מה שכותבים */
+  S.pending = false;
+  const T = threads(), open = T.filter(t => t.open), closed = T.filter(t => !t.open);
+  $("status").innerHTML = `<span>פתוחות: <b>${open.length}</b></span>` +
+    `<span>הועתקו כמו שהן: <b>${S.stats.raw || 0}</b> · אחרי תיקון: <b>${S.stats.edited || 0}</b></span>` +
+    `<span>${S.checked ? "נבדק " + new Date(S.checked).toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" }) : "בודקת…"}</span>`;
+  const box = $("list");
+  if (!open.length) box.innerHTML = `<div class="empty">${S.checked ? "אין שאלות פתוחות 🎉 כשלקוח ישאל משהו שהבוט לא יודע, הוא יופיע כאן תוך דקה." : "בודקת שאלות חדשות בדרייב…"}</div>`;
+  else box.innerHTML = open.map(card).join("");
+  $("closedBox").hidden = !closed.length;
+  $("closedSum").textContent = `שיחות שטופלו (${closed.length})`;
+  $("closed").innerHTML = closed.slice(0, 15).map(card).join("");
+  for (const t of open) wire(t);
+  for (const t of closed) wire(t);
+  document.title = open.length ? `(${open.length}) שאלות לקוחות BOOQLI` : "שאלות לקוחות BOOQLI";
+}
+function card(t){
+  const i = t.info, g = S.sugg[t.phone], fresh = g && g.forTs === (t.lastQ && t.lastQ.ts);
+  const msgs = t.list.slice(-6).map(m => `<div class="msg${m.me ? " me" : ""}">${esc(m.msg)}<small>${m.me ? "את · " : ""}${esc(ago(m.ts))}</small></div>`).join("");
+  return `<article class="card${t.open ? " open" : ""}" id="c-${t.phone}">
+    <div class="who"><span class="name">${esc(i["לקוח"] || "לקוח/ה")}</span><span class="phone">${esc(fmtPhone(t.phone))}</span></div>
+    <div class="chips">${i["סיבה"] ? `<span class="chip why">${esc(i["סיבה"])}</span>` : ""}<span class="chip">${esc(i["סוג הזמנה"] || "")}${i["הזמנה"] ? " · " + esc(i["הזמנה"]) : ""}</span>${i["ספרים"] ? `<span class="chip">${esc(i["ספרים"])}</span>` : ""}${i["שלב"] ? `<span class="chip">שלב: ${esc(i["שלב"])}</span>` : ""}</div>
+    <div class="msgs">${msgs}</div>
+    ${t.open ? `
+    <div><label for="s-${t.phone}">הצעת תשובה (אפשר לערוך)</label>
+      <textarea id="s-${t.phone}" placeholder="${sample ? "לוחצים ✨ הציעי תשובה" : "כאן תופיע הצעה"}">${esc(fresh ? (g.edit ?? g.text) : "")}</textarea></div>
+    <div><label for="h-${t.phone}">מה לענות, בקצרה (לא חובה)</label>
+      <input type="text" id="h-${t.phone}" placeholder="למשל: תגידי לה שאפשר רק בהקדשה"></div>
+    <div class="row">
+      <button class="primary" data-a="copy">📋 העתק</button>
+      <button data-a="gen">${fresh ? "✨ נסחי מחדש" : "✨ הציעי תשובה"}</button>
+      <button class="done" data-a="done">✓ טופל</button>
+    </div>
+    <div class="toast" id="t-${t.phone}" aria-live="polite"></div>` : `<div class="row"><button data-a="reopen">↩︎ להחזיר לפתוחות</button></div>`}
+  </article>`;
+}
+function wire(t){
+  const el = $("c-" + t.phone); if (!el) return;
+  el.querySelectorAll("button[data-a]").forEach(b => b.onclick = () => act(b.dataset.a, t, b));
+  const ta = $("s-" + t.phone);
+  if (ta) ta.oninput = () => { const g = S.sugg[t.phone]; if (g) g.edit = ta.value; };
+}
+const toast = (t, msg) => { const e = $("t-" + t.phone); if (e) { e.textContent = msg; setTimeout(() => { if (e.textContent === msg) e.textContent = ""; }, 3500); } };
+
+/* ===== פעולות ===== */
+async function act(a, t, btn){
+  if (a === "copy") {
+    const ta = $("s-" + t.phone), txt = ta ? ta.value.trim() : "";
+    if (!txt) return toast(t, "אין עדיין טקסט להעתקה");
+    try { await navigator.clipboard.writeText(txt); toast(t, "הועתק ✓ – מדביקים בוואטסאפ"); }
+    catch { ta.select(); toast(t, "סומן – לוחצים Ctrl+C"); }
+    const g = S.sugg[t.phone], same = g && txt === String(g.text).trim();
+    S.stats[same ? "raw" : "edited"] = (S.stats[same ? "raw" : "edited"] || 0) + 1;
+    if (db) db.doc("stats/main").set({ raw: S.stats.raw || 0, edited: S.stats.edited || 0 }).catch(() => {});
+    return;
+  }
+  if (a === "done" || a === "reopen") {
+    const upTo = a === "done" ? (t.last.ts || Date.now()) : 0;
+    S.handled[t.phone] = { upTo }; render();
+    if (db) db.doc("handled/" + t.phone).set({ upTo }).catch(() => {});
+    return;
+  }
+  if (a === "gen") return suggest(t, btn);
+}
+
+function examples(){
+  const out = [], T = threads();
+  for (const t of T) for (let k = 1; k < t.list.length; k++) {
+    const a = t.list[k], q = t.list[k - 1];
+    if (a.me && !q.me) out.push(`לקוח: ${q.msg}\nשמש: ${a.msg}`);
+  }
+  return out.slice(0, 12).join("\n\n");
+}
+async function suggest(t, btn){
+  if (!sample) return toast(t, "ההצעות עובדות רק כשהדף פתוח ב-Claude עם החשבון שלך");
+  const ta = $("s-" + t.phone), hint = ($("h-" + t.phone) || {}).value || "";
+  const conv = t.list.slice(-8).map(m => `${m.me ? "שמש" : "לקוח"}: ${m.msg}`).join("\n");
+  const i = t.info, ex = examples();
+  const prompt = `את כותבת תשובת וואטסאפ בשם שמש צור, בעלת BOOQLI (בוקלי) – ספרי ילדים אישיים מודפסים: הילד/ה הוא הגיבור, עם השם שלו, איורים בדמותו והקדשה.
+כללים:
+- עברית פשוטה, חמה וקצרה (2–5 שורות), בגוף ראשון של שמש, בפנייה בלשון שמתאימה ללקוח/ה. אפשר אימוג׳י אחד או שניים.
+- להשתמש רק בעובדות מהמידע למטה. אם אין שם תשובה – לא להמציא: לכתוב שתבדקי ותחזרי אליה/אליו בהקדם.
+- לא להבטיח מחירים, הנחות או זמנים שלא כתובים במידע.
+- השם של העסק נכתב רק BOOQLI או בוקלי.
+- לסיים, כשמתאים, בהזמנה להמשיך בהזמנה בבוט (כותבים "להמשיך").
+- להחזיר רק את טקסט התשובה, בלי הסברים.
+
+המידע של העסק:
+${KB}
+
+${ex ? "דוגמאות לתשובות אמיתיות של שמש (לחקות את הסגנון):\n" + ex + "\n\n" : ""}פרטי הלקוח: ${i["לקוח"] || ""} · ${i["סוג הזמנה"] || ""}${i["ספרים"] ? " · ספרים: " + i["ספרים"] : ""}${i["שלב"] ? " · שלב בבוט: " + i["שלב"] : ""}
+השיחה (האחרונה למטה):
+${conv}
+${hint.trim() ? `\nשמש רוצה לענות בערך כך – לנסח את זה יפה, בלי להוסיף עובדות: ${hint.trim()}` : ""}`;
+  btn.disabled = true; const label = btn.textContent; btn.textContent = "חושבת…";
+  try {
+    const r = await sample(prompt, { cache: false, onText: u => { if (ta) ta.value = u.text; } });
+    const forTs = t.lastQ ? t.lastQ.ts : 0;
+    S.sugg[t.phone] = { forTs, text: r.text };
+    if (ta) ta.value = r.text;
+    if (db) db.doc("sugg/" + t.phone).set({ forTs, text: r.text }).catch(() => {});
+    toast(t, r.truncated ? "ההצעה נקטעה – אפשר לבקש שוב" : "הצעה מוכנה ✓");
+  } catch (e) {
+    toast(t, e && e.code === "not_granted" ? "צריך לאשר ל-Claude לכתוב הצעות (בהרשאות של הדף)" : e && e.code === "rate_limited" ? "רגע, יותר מדי בקשות – נסי שוב בעוד דקה" : "לא הצלחתי להכין הצעה – נסי שוב");
+  } finally { btn.disabled = false; btn.textContent = label; }
+}
+
+/* ===== חיבורים ===== */
+function notice(html, warn){ const n = $("notice"); n.hidden = !html; n.className = "note" + (warn ? " warn" : ""); n.innerHTML = html || ""; }
+async function start(){
+  if (!window.claude || !claude.use) { notice("החלון עובד רק כשהוא פתוח ב-Claude, עם החשבון שלך.", true); return; }
+  const [mcp, smp, d, p] = await Promise.all(["mcp", "sample", "db", "permissions"].map(n => claude.use(n).catch(() => null)));
+  sample = smp; db = d; perms = p;
+  if (db) {
+    db.collection("handled").onSnapshot(s => { s.docs.forEach(x => S.handled[x.id] = x.data()); render(); }, () => {});
+    db.collection("sugg").onSnapshot(s => { s.docs.forEach(x => { const v = x.data(), cur = S.sugg[x.id]; S.sugg[x.id] = Object.assign({}, v, cur && cur.forTs === v.forTs && cur.edit != null ? { edit: cur.edit } : {}); }); render(); }, () => {});
+    db.doc("stats/main").onSnapshot(s => { if (s.exists) S.stats = Object.assign({}, s.data()); render(); }, () => {});
+  }
+  if (!mcp) { notice("אין חיבור לגוגל דרייב מהדף. פותחים את הדף ב-Claude ומאשרים לו גישה לדרייב.", true); return; }
+  mcp.watchTool("Google Drive", "search_files", QUERY, ev => {
+    if (ev.type === "error") {
+      const c = ev.error && ev.error.code;
+      if (["not_granted", "denied", "server_not_connected", "unauthorized"].includes(c)) { S.items = []; notice(`צריך לאשר לדף גישה לגוגל דרייב כדי לראות את השאלות. <button id="perm">פתיחת ההרשאות</button>`, true); const b = $("perm"); if (b) b.onclick = () => perms && perms.manage().catch(() => {}); }
+      else notice("הבדיקה בדרייב לא הצליחה הפעם – ננסה שוב בעוד דקה.", true);
+      render(); return;
+    }
+    let pl = ev.result && ev.result.payload;
+    if (!pl || !pl.files) { try { const c = (ev.result.content || []).find(x => x.type === "text"); pl = JSON.parse(c.text); } catch { pl = { files: [] }; } }
+    S.items = (pl.files || []).map(parseDoc).filter(Boolean);
+    S.checked = Date.now(); notice(""); render();
+  }, { refetchInterval: 60000 });
+}
+document.addEventListener("focusout", () => setTimeout(() => { if (S.pending) render(); }, 200));
+render();
+start();
+</script>
