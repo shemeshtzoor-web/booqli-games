@@ -173,13 +173,16 @@ section.sv{margin-top:34px}
 .wz textarea{min-height:230px;font-size:18px;line-height:1.55;resize:vertical}
 .wz select:focus,.wz input:focus,.wz textarea:focus{outline:none;border-color:var(--pink)}
 .wz .go{width:100%;margin-top:12px;justify-content:center;font-size:22px;padding:16px}
+/* "הבא" – כפתור קצר מתחת לכרטיס, תמיד באותו מקום (כמו Next) */
+.wz .nav{display:flex;justify-content:flex-end;margin-top:-2px;scroll-margin-bottom:110px}
+.wz .nextb{font-size:23px;padding:14px 34px;min-width:150px;justify-content:center;box-shadow:0 5px 0 #B0237A}
 .wz .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
 .wz .two .btn{justify-content:center;font-size:21px;padding:18px 10px}
 .wz .alt{margin-top:10px;width:100%;border:2px dashed var(--pink);background:#fff;color:var(--mag);border-radius:999px;padding:11px;font:800 17px Assistant,sans-serif;cursor:pointer}
 .wz .cov{display:flex;gap:12px;align-items:center;margin-top:10px;font-weight:800}
 .wz .cov img{width:84px;filter:drop-shadow(0 6px 10px rgba(43,21,38,.25))}
 .wz .pick{display:flex;justify-content:center;font-size:22px;padding:22px 14px;width:100%}
-.wz .pv{display:block;width:min(220px,70%);margin:12px auto 0;border-radius:18px;border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.wz .pv{display:block;width:auto;max-width:min(220px,70%);max-height:260px;object-fit:contain;margin:12px auto 0;border-radius:18px;border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.15)}
 .wz .err{color:#B3261E;font-weight:800;margin-top:8px}
 .wz .prc{margin-top:6px;background:#fff;border:2.5px solid var(--mint);border-radius:18px;padding:12px 14px;display:grid;gap:6px;font-weight:800;font-size:18px;line-height:1.45;font-variant-numeric:tabular-nums}
 .wz .prc .up{color:var(--mag)}.wz .prc .nw{white-space:nowrap;unicode-bidi:isolate}.wz .prc .sh{color:var(--mute);font-size:16.5px}.wz .prc .tot{border-top:2px dashed var(--mint);padding-top:6px;font-size:21px;color:var(--saged)}
@@ -386,7 +389,8 @@ function draw(scroll){
   h.push(stepHTML());
   w.innerHTML = h.join("");
   const f = w.querySelector(".step input[type=text], .step textarea");
-  if (scroll) { w.querySelector(".step").scrollIntoView({behavior: "smooth", block: "center"}); if (f) setTimeout(() => f.focus({preventScroll: true}), 450); }
+  if (scroll) { const nv = w.querySelector(".nav"), pv = w.querySelector(".step .pv"), go = () => (nv || w.querySelector(".step")).scrollIntoView({behavior: "smooth", block: nv ? "end" : "center"});
+    if (pv && !pv.complete) pv.addEventListener("load", go, {once: true}); go(); if (f) setTimeout(() => f.focus({preventScroll: true}), 450); }
 }
 function stepHTML(){
   const it = CUR, b = it && book(it.book);
@@ -397,17 +401,17 @@ function stepHTML(){
     <div class="two" style="margin-top:12px"><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכד")[0]}">👦 נכד</button><button type="button" class="btn btn-main" data-ver="${verOpts(b).find(x => x[1] === "נכדה")[0]}">👧 נכדה</button></div></div>`;
   if (STEP === "name") return `<div class="step"><h3>${SB}איך קוראים ל${isGirl(it) ? "נכדה" : "נכד"}?</h3><p class="h">השם הזה יופיע בספר</p>
     <input type="text" id="wName" value="${esc(it.name)}" maxlength="30" autocomplete="off" placeholder="למשל: ${isGirl(it) ? "נועה" : "יונתן"}">
-    <button type="button" class="btn btn-main go" data-next="name">ממשיכים ←</button><p class="err" id="wErr"></p></div>`;
+    <p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="name">הבא ←</button></div>`;
   if (STEP === "ded") { if (!it.ded) it.ded = dedIdeas(it)[0];
     return `<div class="step"><h3>${SB}הקדשה מכם ל${esc(it.name)}</h3><p class="h">כתבנו לכם הקדשה. אפשר לשנות כל מילה – או פשוט לאשר 💛</p>
     <textarea id="wDed" maxlength="400">${esc(it.ded)}</textarea>
-    <button type="button" class="btn btn-main go" data-next="ded">✓ ההקדשה טובה, ממשיכים ←</button><button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div>`; }
+    <button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="ded">הבא ←</button></div>`; }
   if (STEP === "photo") return `<div class="step"><h3>${SB}תמונה של ${esc(it.name)}</h3><p class="h">תמונה ברורה, הפנים למצלמה</p>
-    ${it.blob ? `<img class="pv" src="${it.url}" alt="התמונה שבחרתם"><button type="button" class="btn btn-main go" data-next="photo">✓ התמונה טובה, ממשיכים ←</button><label class="alt" style="display:block;text-align:center">🔄 להחליף תמונה<input type="file" accept="image/*" id="wFile" hidden></label>`
-      : `<label class="btn btn-main pick">📷 בוחרים תמונה מהטלפון<input type="file" accept="image/*" id="wFile" hidden></label>`}<p class="err" id="wErr"></p></div>`;
+    ${it.blob ? `<img class="pv" src="${it.url}" alt="התמונה שבחרתם"><label class="alt" style="display:block;text-align:center">🔄 להחליף תמונה<input type="file" accept="image/*" id="wFile" hidden></label>`
+      : `<label class="btn btn-main pick">📷 בוחרים תמונה מהטלפון<input type="file" accept="image/*" id="wFile" hidden></label>`}<p class="err" id="wErr"></p></div>${it.blob ? '<div class="nav"><button type="button" class="btn btn-main nextb" data-next="photo">הבא ←</button></div>' : ""}`;
   if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
     <input type="text" id="wWho" value="${esc(ORD.who)}" maxlength="40" autocomplete="name" placeholder="למשל: סבתא רינה">
-    <button type="button" class="btn btn-main go" data-next="who">ממשיכים ←</button><p class="err" id="wErr"></p></div>`;
+    <p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="who">הבא ←</button></div>`;
   if (STEP === "more") { const n = ORD.list.length + 1;
     return `<div class="step"><h3>${SB}כל הכבוד! 🎉 רוצים ספר גם לנכד נוסף?</h3>
     <div class="prc"><div>📖 עכשיו – ${priceLine(n)}</div>${n < MAX ? `<div class="up">➕ עם עוד ספר – ${priceLine(n + 1)}</div>` : ""}<div class="sh">🚚 + משלוח עד הבית ${ils(SHIP)}</div></div>
@@ -443,7 +447,7 @@ $("wz").addEventListener("click", e => {
   if (t.id === "wSend") send();
 });
 $("wz").addEventListener("input", e => { if (e.target.id === "wDed" && CUR) CUR.ded = e.target.value; });
-$("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".step .go"); b && b.click(); } });
+$("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".nav .nextb"); b && b.click(); } });
 /* תמונה: מקטינים בטלפון (עד 2000 פיקסלים, JPEG) כדי שתעלה מהר */
 function photo(file){
   const img = new Image(), u = URL.createObjectURL(file);
