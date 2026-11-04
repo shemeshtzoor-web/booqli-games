@@ -286,8 +286,8 @@ async function ask(env, to, st, log, db){
     }
     case "name": return S(text(`✍️ מה השם הפרטי של ה${kidW(st, c)}?\nכותבים אותו כאן למטה, בהודעה רגילה 👇\n\nזה השם שבו ${c.ver === "g" ? `ה${kidW(st, c)} תיקרא` : `ה${kidW(st, c)} ייקרא`} לאורך כל הסיפור.`));
     case "ded": {
-      if (!c.ded) c.ded = dedIdeas(c.ver === "g", st)[0];
-      return S(buttons(`הקדשה מכם ל${c.name} ❤️\n\n${c.ded}`, [["d:ok", "✅ מאשרים"], ["d:next", "✨ הקדשה אחרת"], ["d:own", "✍️ אכתוב בעצמי"]]));
+      const L = dedIdeas(c.ver === "g", st), idea = L[(c.dedI || 0) % L.length];
+      return S(buttons(`הקדשה מכם ל${c.name} ❤️\n\n${idea}`, [["d:ok", "✅ מאשרים"], ["d:next", "✨ הקדשה אחרת"], ["d:own", "✍️ אכתוב בעצמי"]]));
     }
     case "dedown": return S(text("כתבו כאן את ההקדשה שלכם ❤️ (עד 300 תווים בערך)"));
     case "cover": {
@@ -336,8 +336,8 @@ async function ask(env, to, st, log, db){
         ks.map(k => ["c:" + k, { hard: "💗 קשה פרימיום", soft: "💛 רכה פיג'מה", staple: "💜 כרומו סיכות" }[k]])));
     }
     case "g-ded": {
-      if (!G.ded) G.ded = ganDed(st)[0];
-      return S(buttons(`הקדשה מהגן לכל הילדים ❤️\n(בלי שמות – השם של כל ילד כבר בספר)\n\n${G.ded}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
+      const L = ganDed(st), idea = L[(G.dedI || 0) % L.length];
+      return S(buttons(`הקדשה מהגן לכל הילדים ❤️\n(בלי שמות – השם של כל ילד כבר בספר)\n\n${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
     }
     case "g-dedown": return S(text("כתבו כאן את ההקדשה של הגן ❤️ (עד 350 תווים בערך)\nרוצים אחת לבנים ואחת לבנות? כתבו את שתיהן, אחת אחרי השנייה."));
     case "g-pics": {
@@ -436,6 +436,12 @@ async function step(env, from, st, ev, log, db){
     return ask(env, from, st, log, db);
   }
   if (id.startsWith("rd:")) { const [, bid, v] = id.split(":"); return RB(bid, v); }
+  /* מתחרטים בהקדשה: "דווקא ההקדשה שלכם" – חוזרים להקדשה המוכנה */
+  if (txt && !id && DED_BACK.test(txt) && txt.length <= 60 && (["dedown", "cover"].includes(st.step) || (st.step === "g-dedown" && !G.dedOwn))) {
+    st.step = st.mode === "gan" ? "g-ded" : "ded";
+    await S(text("אין בעיה ❤️ חוזרים להקדשה שהצענו:"));
+    return ask(env, from, st, log, db);
+  }
   /* כתבו תשובה במקום ללחוץ על כפתור */
   const SHORT_OK = ["ded", "g-ded", "who"];                                  /* שם אפשר גם לכתוב טקסט חופשי – רק תשובה קצרה נחשבת לכפתור */
   if (!id && txt && (BTN_STEPS.includes(st.step) || (SHORT_OK.includes(st.step) && txt.length <= 12)) && !looksQuestion(txt)) id = await matchBtn(env, from, st, txt, db);
@@ -462,6 +468,13 @@ async function step(env, from, st, ev, log, db){
     await S(text("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים ממשיכים בהזמנה 👇"));
     await alertOwner(env, st, from, "שאלה שהבוט לא יודע לענות עליה", txt);
     return ask(env, from, st, log, db);
+  }
+  /* מתחרטים: לחצו על כפתור משלב קודם – חוזרים לשלב ההוא וממשיכים משם */
+  const back = btnStep(id);
+  if (back && back !== st.step && canBack(st.step, back)) {
+    st.step = back;
+    if (back === "ded" && c.ded) c.ded = "";
+    if (!/^(d|gd):next$/.test(id)) await S(text("אין בעיה ❤️ עדכנו."));
   }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log, db); }
   switch (st.step) {
@@ -509,8 +522,8 @@ async function step(env, from, st, ev, log, db){
       }
       break;
     case "ded":
-      if (id === "d:ok") st.step = "cover";
-      else if (id === "d:next") { const L = dedIdeas(c.ver === "g", st); c.dedI = (c.dedI + 1) % L.length; c.ded = L[c.dedI]; }
+      if (id === "d:ok") { const L = dedIdeas(c.ver === "g", st); c.ded = L[(c.dedI || 0) % L.length]; st.step = "cover"; }
+      else if (id === "d:next") { const L = dedIdeas(c.ver === "g", st); c.dedI = ((c.dedI || 0) + 1) % L.length; }
       else if (id === "d:own") st.step = "dedown";
       else if (txt && !id) {
         if (txt.length < 15 || junk(txt)) { await S(text("רוצים לכתוב הקדשה משלכם? לוחצים *✍️ אכתוב בעצמי* 🙂\nאו בוחרים באחת האפשרויות 👇")); }
@@ -518,7 +531,7 @@ async function step(env, from, st, ev, log, db){
       }
       break;
     case "dedown": if (txt) { if (txt.length < 5 || junk(txt)) await S(text("כתבו כאן את ההקדשה המלאה 🙂")); else { c.ded = txt.slice(0, 450); await S(text("הקדשה יפה ❤️")); st.step = "cover"; } } break;
-    case "cover": if (id === "cv:hard" || id === "cv:soft") { c.cover = id.slice(3); st.step = "pics"; } break;
+    case "cover": if (id === "cv:hard" || id === "cv:soft") { c.cover = id.slice(3); st.step = c.pics.length ? "picsmore" : "pics"; } break;
     case "pics": case "picsmore":
       if (ev.image) {
         const p = await savePic(env, st, c.ver === "g" ? "בנות" : "בנים", c.name, ev.image, from, db);
@@ -563,12 +576,12 @@ async function step(env, from, st, ev, log, db){
       break;
     case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-ded"; } break;
     case "g-ded":
-      if (id === "gd:ok") { G.r = 0; st.step = "g-pics"; }
-      else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; G.ded = L[G.dedI]; }
-      else if (id === "gd:own") st.step = "g-dedown";
+      if (id === "gd:ok") { const L = ganDed(st); G.ded = L[(G.dedI || 0) % L.length]; G.dedOwn = 0; G.r = 0; st.step = "g-pics"; }
+      else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; }
+      else if (id === "gd:own") { G.dedOwn = 0; G.ded = ""; st.step = "g-dedown"; }
       else if (txt && !id) {
         if (txt.length < 15 || junk(txt)) await S(text("רוצים לכתוב הקדשה משלכם? לוחצים *✍️ אכתוב בעצמי* 🙂\nאו בוחרים באחת האפשרויות 👇"));
-        else { G.ded = txt.slice(0, 800); G.r = 0; st.step = "g-pics"; }
+        else { G.ded = txt.slice(0, 800); G.dedOwn = 0; G.r = 0; st.step = "g-pics"; }
       }
       break;
     case "g-dedown": if (txt && (txt.length < 5 || junk(txt))) { await S(text("כתבו כאן את ההקדשה המלאה 🙂")); break; }
@@ -608,6 +621,26 @@ function ganNext(env, st){
   return "תודה רבה! 🎉 קיבלנו את ההזמנה.\n\n*מה קורה עכשיו:*\n1️⃣ *תשלום* – מראש, לפני תחילת עריכת הספרים. שמש תשלח לך כאן את הפרטים" + (st && st.pay ? " ל" + PAYS[st.pay].replace(/^\S+ /, "") : "") + "." +
     "\n2️⃣ *עריכה* – עד 3 ימי עסקים מהתשלום.\n3️⃣ *אישור הדפסה* – נשלח לך כאן את כל הספרים לבדיקה: שכל הילדים נמצאים, שהשמות נכונים ושההקדשה נכונה. *אין צורך לבדוק את הסיפור או את האיורים.*\n4️⃣ *הדפסה ואספקה* – לפי מה שבחרתם (משלוח או איסוף).\n\n🌱 *גן מביא גן:* כל גן שיגיע דרככם ויסגור הזמנה – 50 ₪ הנחה או זיכוי, גם אם זה יקרה בעוד שנה.\n🎁 *צריכים ספרים נוספים במהלך השנה?* קופון *GANIM50* – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה.\n\nתודה שבחרתם בבוקלי למתנה לכל ילדי הגן! ❤️";
 }
+
+/* חזרה לשלב קודם: לאיזה שלב שייך כל כפתור, ובאיזה קטעים מותר לחזור (בלי לשבור תמונות או ספרים שכבר נשמרו) */
+const DED_BACK = /(רעיון|הצעה|הצעת|שהצעתם|הקדשה (ה)?מוכנה|ההקדשה (שלכם|שלך|הקודמת|שהצעת|הראשונה)|התחרטתי|מעדיפ.*(שלכם|שלך))/;
+function btnStep(id){
+  if (/^d:(ok|next|own)$/.test(id)) return "ded";
+  if (/^cv:(hard|soft)$/.test(id)) return "cover";
+  if (/^v:[bg]$/.test(id)) return "ver";
+  if (/^w:(yes|other)$/.test(id)) return "who";
+  if (/^sh:(pickup|ship)$/.test(id)) return "ship";
+  if (/^ph:(yes|other)$/.test(id)) return "phone";
+  if (/^pay:/.test(id)) return "pay";
+  if (/^gd:(ok|next|own)$/.test(id)) return "g-ded";
+  if (/^c:(staple|soft|hard)$/.test(id)) return "g-cover";
+  if (/^g:(one|more)$/.test(id)) return "g-book2";
+  return "";
+}
+const SEGS = [["ver", "name", "ded", "dedown", "cover", "pics", "picsmore", "who", "whoown", "more"],
+  ["ship", "addr", "phone", "phoneown", "pay", "consent", "g-consent"],
+  ["g-book2", "g-cover", "g-ded", "g-dedown"]];
+function canBack(cur, to){ return SEGS.some(s => s.includes(cur) && s.includes(to) && s.indexOf(to) < s.indexOf(cur)); }
 
 /* סוף הזמנה: סיכום ללקוח (בלי קישורים), תודה, דרייב (מסמך + מייל לשמש), שמירה ב-KV */
 async function finish(env, from, st, log, db, sum, ownerSum, thanks, consentText){
