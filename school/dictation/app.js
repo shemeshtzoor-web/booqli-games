@@ -15,7 +15,7 @@ const ev = (k, n) => { try { siteEvent(k, String(n)); } catch (e) {} };
 /* ---------- ההתקדמות ---------- */
 const KEY = "booqli_dictation", MAXW = 30;
 const EXAMPLE = ["שמש", "כיתה", "חבר", "תפוח", "עכבר", "מחברת", "צבע", "טלפון"];
-const blank = () => ({v:1, cls:"", words:EXAMPLE.slice(), example:true, m:{}, stars:0});
+const blank = () => ({v:1, cls:"", font:"cv", words:EXAMPLE.slice(), example:true, m:{}, stars:0});
 let S = (() => { try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o && o.v === 1) return Object.assign(blank(), o); } catch (e) {} return blank(); })();
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 /* (4.11.2026, לפי שמש) פונים תמיד ברבים – לכל ילדי הכיתה. G נשאר כדי שיהיה קל לחזור לבן/בת */
@@ -153,7 +153,9 @@ const GAMES = {
 let incoming = null, incomingCls = ""; /* רשימה (וכיתה) שהגיעו בקישור */
 let G1 = null;       /* המשחק הנוכחי */
 
+const applyFont = () => document.body.classList.toggle("cvmode", S.font !== "rd");
 function route(){
+  applyFont();
   stopSound(); stopMic();
   const p = P();
   document.body.classList.remove("in-game", "sheet-mode");
@@ -178,7 +180,8 @@ function home(){
     (S.example ? "" : '<p class="note">הרשימה החדשה תחליף את המילים שיש עכשיו. הכוכבים נשמרים.</p>') + '</section>';
   else if (S.example) h += '<div class="exnote">✋ זו <b>רשימה לדוגמה</b>. הורים: מכניסים את המילים של השבוע ב"אזור ההורים" למטה.</div>';
   h += '<section class="card words"><h2>המילים של השבוע <small>' + S.words.length + ' מילים · 🌱 מתחילים · 🌿 משתפרים · 🌸 יודעים</small></h2>' +
-    '<div class="garden">' + S.words.map((w, i) => '<button type="button" class="chip" data-i="' + i + '" aria-label="לשמוע: ' + esc(w) + '"><span class="rd">' + esc(w) + '</span><span class="lv">' + stage(w) + '</span></button>').join("") + '</div>' +
+    '<div class="garden">' + S.words.map((w, i) => '<button type="button" class="chip" data-i="' + i + '" aria-label="לשמוע: ' + esc(w) + '"><span class="rd wd">' + esc(w) + '</span><span class="lv">' + stage(w) + '</span></button>').join("") + '</div>' +
+    '<div class="fontsw"><span>איך כותבים את המילים?</span><div class="modes" role="group" aria-label="סוג הכתב"><button type="button" data-f="cv" aria-pressed="' + (S.font !== "rd") + '">✍️ כתב יד</button><button type="button" data-f="rd" aria-pressed="' + (S.font === "rd") + '">🔤 דפוס</button></div></div>' +
     '<p class="note" style="margin-top:8px">' + (hasSound(S.words[0] || "") ? "לוחצים על מילה כדי לשמוע אותה." : "") + '</p></section>';
   h += '<div class="games">' + Object.keys(GAMES).map(k => { const g = GAMES[k];
     return '<button type="button" class="game ' + g.c + '" data-g="' + k + '"' + (S.words.length ? "" : " disabled") + '><span class="emo">' + g.ic + '</span><b>' + g.t + '</b><small>' + g.s + '</small></button>'; }).join("") + '</div>';
@@ -186,6 +189,7 @@ function home(){
   app.innerHTML = h;
   app.querySelectorAll(".chip").forEach(b => b.onclick = () => { if (!speak(S.words[+b.dataset.i])) peek(S.words[+b.dataset.i], 1600); });
   app.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { ac(); go("?g=" + b.dataset.g); });
+  app.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { S.font = b.dataset.f; save(); applyFont(); app.querySelectorAll("[data-f]").forEach(x => x.setAttribute("aria-pressed", x === b)); ev("dict-font", S.font); });
   $("toP").onclick = () => { if (typeof siteKidLock === "function" && siteKidLock()) adult("אזור ההורים: כאן משנים את המילים.", () => go("?p=1")); else go("?p=1"); };
   $("toSheet").onclick = e => { e.preventDefault(); go("?sheet=1"); };
   if (incoming) {
@@ -322,14 +326,14 @@ function build(w){
   const st = frame(G("תקשיב למילה וסדר את האותיות. מתחילים מימין!", "תקשיבי למילה וסדרי את האותיות. מתחילים מימין!", "מקשיבים למילה ומסדרים את האותיות. מתחילים מימין!"));
   st.appendChild(listen(w));
   const chars = [...plain(w)], need = chars.filter(isL);
-  const slots = document.createElement("div"); slots.className = "slots rd"; const sl = [];
+  const slots = document.createElement("div"); slots.className = "slots rd wd"; const sl = [];
   chars.forEach(c => { const s = document.createElement("div"); if (c === " ") s.className = "slot gap"; else { s.className = "slot"; sl.push(s); } slots.appendChild(s); });
   st.appendChild(slots);
   const extra = []; need.forEach(c => (CONF[c] || []).forEach(a => { if (!need.includes(a)) extra.push(a); }));
   const pool = need.concat(shuffle([...new Set(extra)]).slice(0, need.length > 5 ? 3 : 2));
   const tiles = document.createElement("div"); tiles.className = "tiles"; st.appendChild(tiles);
   let pos = 0; const mark = () => sl.forEach((s, i) => s.classList.toggle("next", i === pos)); mark();
-  shuffle(pool).forEach(c => { const t = document.createElement("button"); t.type = "button"; t.className = "tile rd"; t.textContent = c;
+  shuffle(pool).forEach(c => { const t = document.createElement("button"); t.type = "button"; t.className = "tile rd wd"; t.textContent = c;
     t.onclick = () => {
       if (pos >= need.length) return;
       if (c === need[pos]) { sl[pos].textContent = c; t.classList.add("used"); pos++; mark(); SND.pop(); if (pos === need.length) done(); }
@@ -345,7 +349,7 @@ function pick(w){
   st.appendChild(listen(w));
   const right = plain(w), box = document.createElement("div"); box.className = "choices"; st.appendChild(box);
   let tries = 0, over = false;
-  shuffle([right].concat(wrongVariants(w))).forEach(o => { const b = document.createElement("button"); b.type = "button"; b.className = "choice"; b.innerHTML = '<span class="rd">' + esc(o) + '</span>';
+  shuffle([right].concat(wrongVariants(w))).forEach(o => { const b = document.createElement("button"); b.type = "button"; b.className = "choice"; b.innerHTML = '<span class="rd wd">' + esc(o) + '</span>';
     b.onclick = () => {
       if (over || b.classList.contains("off")) return;
       if (o === right) { over = true; b.classList.add("good"); const n = Math.max(1, (tries ? 1 : 3) - G1.peeks); award(w, "p", n); SND.win(); confetti(); bub(PRAISE() + " " + stars(n)); st.appendChild(nextBtn()); }
@@ -401,7 +405,7 @@ function write(w){
   let tries = 0, won = false;
   function win(out, fb){ if (won) return; won = true;
     const n = Math.max(1, (tries === 0 ? 3 : tries === 1 ? 2 : 1) - G1.peeks); award(w, "w", n); SND.win(); confetti(); bub(PRAISE() + " " + stars(n));
-    out.innerHTML = '<div class="verdict ok"><div class="big rd right">' + esc(plain(w)) + ' ✓</div>' + (fb ? '<div>' + fb + '</div>' : "") + '</div>'; out.appendChild(nextBtn()); }
+    out.innerHTML = '<div class="verdict ok"><div class="big rd wd right">' + esc(plain(w)) + ' ✓</div>' + (fb ? '<div>' + fb + '</div>' : "") + '</div>'; out.appendChild(nextBtn()); }
   function paint(){
     if (won) return; area.innerHTML = "";
     const out = document.createElement("div");
@@ -409,7 +413,7 @@ function write(w){
       const inp = kbInput("kbW"), chk = document.createElement("button"); chk.type = "button"; chk.className = "btn purple wide"; chk.style.marginTop = "10px"; chk.textContent = "בדיקה ✓";
       chk.onclick = () => { const v = inp.value; if (!plain(v)) return;
         if (sameWord(v, w)) { chk.remove(); inp.disabled = true; win(out); }
-        else { tries++; SND.soft(); out.innerHTML = '<div class="verdict no"><div class="big rd">' + diffHTML(v, w) + '</div><div>' + G("כמעט! מה שבאדום צריך תיקון. נסה שוב", "כמעט! מה שבאדום צריך תיקון. נסי שוב", "כמעט! מה שבאדום צריך תיקון. מנסים שוב") + '</div></div>'; inp.focus(); } };
+        else { tries++; SND.soft(); out.innerHTML = '<div class="verdict no"><div class="big rd wd">' + diffHTML(v, w) + '</div><div>' + G("כמעט! מה שבאדום צריך תיקון. נסה שוב", "כמעט! מה שבאדום צריך תיקון. נסי שוב", "כמעט! מה שבאדום צריך תיקון. מנסים שוב") + '</div></div>'; inp.focus(); } };
       inp.addEventListener("keydown", e => { if (e.key === "Enter") chk.click(); });
       area.append(inp, chk, out); setTimeout(() => inp.focus(), 60);
     } else {
@@ -469,7 +473,7 @@ function finish(){
   R.forEach(it => {
     const d = document.createElement("div"); d.className = "res";
     d.innerHTML = (it.img ? '<img alt="מה שנכתב" src="' + it.img + '">' : '<div class="typed rd">' + esc(it.typed) + '</div>') +
-      '<div class="w"><span class="rd">' + esc(plain(it.w)) + '</span><small></small></div><div class="mark">' + (it.img ? "" : it.ok ? "✅" : "❌") + '</div>';
+      '<div class="w"><span class="rd wd">' + esc(plain(it.w)) + '</span><small></small></div><div class="mark">' + (it.img ? "" : it.ok ? "✅" : "❌") + '</div>';
     rows.appendChild(d); it.row = d;
     if (it.img) {
       d.querySelector("small").textContent = "בודקים יחד: נכון או לא?";

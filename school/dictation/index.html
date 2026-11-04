@@ -191,6 +191,17 @@ body.in-game .bq-teach{display:none!important}
 .dictrows div{display:flex;align-items:end;gap:3mm;height:17mm;border-bottom:1.5px solid #8a7a86;font-size:13pt;color:#8a7a86;font-weight:700}
 .answers{margin-top:5mm;border-top:2px dashed #CDE7DC;padding-top:3mm;font-size:11pt;color:#6b5a66}
 .answers .rd{font-size:12pt;font-weight:600}
+/* כתב יד ("כתב של גדולים") – ברירת המחדל לכל המילים; אפשר לעבור לדפוס */
+.fontsw{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;font-weight:700}
+.fontsw .modes{margin:0;flex:1;min-width:220px}
+body.cvmode .wd{font-family:GveretLevin,BQRead,cursive;font-weight:400}
+body.cvmode .chip .wd{font-size:27px;line-height:1.25}
+body.cvmode .tile.wd{font-size:44px}
+body.cvmode .slots.wd .slot{font-size:48px}
+body.cvmode .choice .wd{font-size:clamp(42px,11vw,56px)}
+body.cvmode #peekbox .wd{font-size:clamp(58px,17vw,86px)}
+body.cvmode .res .w .wd{font-size:30px}
+body.cvmode .verdict .big.wd{font-size:clamp(46px,12vw,60px)}
 @media (max-width:420px){.games{gap:8px}.game{padding:12px 10px;min-height:134px}.game b{font-size:17px}.game small{font-size:13px}.tile{width:54px;height:54px;font-size:30px}.slot{width:40px;height:54px;font-size:32px}.d-hero{grid-template-columns:1fr;text-align:center}.d-hero img{margin:0 auto;width:86px}.adultrow{grid-template-columns:1fr}.res img,.res .typed{width:92px}}
 @media (prefers-reduced-motion:reduce){.speak.pulse,.choice.good,.shake,.conf i,.rec button.on{animation:none!important}}
 @media print{
@@ -233,7 +244,7 @@ body.in-game .bq-teach{display:none!important}
   <p class="note">מורות: אפשר להכניס את הרשימה פעם אחת ולשלוח את הקישור בקבוצת ההורים של הכיתה. רוצים לתרגל קריאה? <a href="../reading/">למסלול הקריאה</a>.</p>
 </section>
 </main>
-<div id="peekbox" hidden><div><span class="rd" id="peekword"></span></div></div>
+<div id="peekbox" hidden><div><span class="rd wd" id="peekword"></span></div></div>
 <footer class="foot">
   <div class="wrap">
     <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
