@@ -37,7 +37,7 @@ function dedIdeas(g){
     `${f("לנכד המתוק", "לנכדה המתוקה")} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\nסבא וסבתא ❤️`
   ];
 }
-const CONSENT = "אני מאשר/ת:\n1. קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.\n2. קראתי את התקנון ואת מדיניות הפרטיות של BOOQLI:\nתקנון: https://www.booqli.ai/he/terms-of-service\nמדיניות פרטיות: https://www.booqli.ai/he/privacy-policy";
+const CONSENT = "לקריאה (נפתח בדפדפן):\n📄 התקנון: https://www.booqli.ai/he/terms-of-service\n🔒 מדיניות הפרטיות: https://www.booqli.ai/he/privacy-policy\n\nבלחיצה על הכפתור למטה אני מאשר/ת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ אני ההורה, או שקיבלתי אישור מההורים, לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה ששלחתי או שאשלח כאן, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר.";
 const HUMAN_TXT = /בן אדם|בנאדם|נציג|אדם אמיתי|אדם אנושי/;
 
 /* ===== שליחה לוואטסאפ ===== */
@@ -94,7 +94,7 @@ async function ask(env, to, st, log){
       t += `\n🚚 + משלוח עד הבית ${ils(SHIP)}\n\nככל שמוסיפים ספרים – המחיר של כל ספר יורד.`;
       return S(buttons(t, m < MAX ? [["m:yes", "➕ כן, עוד ספר"], ["m:no", "✅ לא, זהו"]] : [["m:no", "✅ זהו"]]));
     }
-    case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "✅ קראתי ומאשר/ת"]]));
+    case "consent": return S(buttons("לפני שנתחיל להכין ❤️\n\n" + CONSENT, [["c:yes", "☑️ קראתי ומאשר/ת"]]));
   }
 }
 
@@ -145,7 +145,7 @@ async function step(env, from, st, ev, log){
         const sum = summary(st, oid, false);
         for (let i = 0; i < sum.length; i += 3900) await S(text(sum.slice(i, i + 3900)));   /* הודעה בוואטסאפ – עד 4096 תווים */
         await S(text("תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️"));
-        if (env.STATE && !log) await env.STATE.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: oid, who: st.who, at: new Date().toISOString(), text: summary(st, oid, true), list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })) }), { expirationTtl: 90 * 86400 });
+        if (env.STATE && !log) await env.STATE.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: oid, who: st.who, at: new Date().toISOString(), consentAt: new Date().toISOString(), consentText: CONSENT, text: summary(st, oid, true), list: st.list.map(c => ({ book: c.book, ver: c.ver, name: c.name, ded: c.ded, pics: c.pics })) }), { expirationTtl: 90 * 86400 });
         return;
       }
       break;
