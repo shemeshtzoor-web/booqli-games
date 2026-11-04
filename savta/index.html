@@ -170,7 +170,7 @@ section.sv{margin-top:34px}
 .wz .step h3 img{width:46px;height:46px;object-fit:contain;flex:0 0 auto}
 .wz .step p.h{color:var(--mute);font-weight:700;margin:-4px 0 10px}
 .wz select,.wz input[type=text],.wz textarea{width:100%;font:inherit;font-size:21px;font-weight:700;padding:14px;border:2.5px solid #E6D8E1;border-radius:16px;background:#fff;color:var(--ink)}
-.wz textarea{min-height:130px;font-size:19px;line-height:1.5;resize:vertical}
+.wz textarea{min-height:230px;font-size:18px;line-height:1.55;resize:vertical}
 .wz select:focus,.wz input:focus,.wz textarea:focus{outline:none;border-color:var(--pink)}
 .wz .go{width:100%;margin-top:12px;justify-content:center;font-size:22px;padding:16px}
 .wz .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
@@ -181,6 +181,9 @@ section.sv{margin-top:34px}
 .wz .pick{display:flex;justify-content:center;font-size:22px;padding:22px 14px;width:100%}
 .wz .pv{display:block;width:min(220px,70%);margin:12px auto 0;border-radius:18px;border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.15)}
 .wz .err{color:#B3261E;font-weight:800;margin-top:8px}
+.wz .prc{margin-top:6px;background:#fff;border:2.5px solid var(--mint);border-radius:18px;padding:12px 14px;display:grid;gap:6px;font-weight:800;font-size:18px;line-height:1.45;font-variant-numeric:tabular-nums}
+.wz .prc .up{color:var(--mag)}.wz .prc .nw{white-space:nowrap;unicode-bidi:isolate}.wz .prc .sh{color:var(--mute);font-size:16.5px}.wz .prc .tot{border-top:2px dashed var(--mint);padding-top:6px;font-size:21px;color:var(--saged)}
+.wz .prc .sv{display:inline-block;background:#E7F7EC;color:#1E7F45;border-radius:999px;padding:0 10px;font-size:15.5px;white-space:nowrap}
 .wz .tip{margin-top:10px;background:#FFF8E6;border:2.5px dashed #F5B400;border-radius:18px;padding:12px 14px;font-weight:800;line-height:1.5}
 .wz .sumr{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .wz .sumr li{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;box-shadow:0 2px 8px rgba(78,133,118,.12)}
@@ -346,15 +349,14 @@ const fresh = id => ({book: id || "", ver: "", name: "", ded: "", dedI: 0, blob:
 const isGirl = it => { const v = verOpts(book(it.book)).find(x => String(x[0]) === String(it.ver)); return v ? v[1] === "נכדה" : false; };
 const kid = it => isGirl(it) ? "הנכדה" : "הנכד";
 const SB = '<img src="../img/family/booqli.webp" alt="" width="46" height="46">';
+/* הקדשות מוכנות: ברכה כללית לנכד/ה, כ-300 תווים, בלי פרטים אישיים – מתאימה כמעט לכולם (שמש, 4.11.2026) */
 function dedIdeas(it){
-  const g = isGirl(it), f = (m, w) => g ? w : m, L = [];
-  if (it.book === "birthday") L.push(`מזל טוב ליום ההולדת! שכל החלומות שלך יתגשמו. אוהבים אותך עד השמיים, סבא וסבתא 🎂`);
-  if (it.book === "class1") L.push(`${f("לתלמיד", "לתלמידה")} החדש${f("", "ה")} של כיתה א' – ${f("שתלמד", "שתלמדי")} בשמחה ובאומץ. גאים בך, סבא וסבתא`);
-  if (it.book === "kinder") L.push(`שהגן יהיה מלא חברים, משחקים וחיוכים. אוהבים אותך, סבא וסבתא`);
-  L.push(`${f("לנכד האהוב", "לנכדה האהובה")} שלנו, שתמיד ${f("תזכור", "תזכרי")} כמה אנחנו אוהבים אותך. סבא וסבתא 💛`,
-         `הספר הזה כולו שלך – כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. באהבה גדולה, סבא וסבתא`,
-         `בכל פעם ${f("שתקרא", "שתקראי")} את הספר – ${f("תדע", "תדעי")} שסבא וסבתא תמיד לידך 💛`);
-  return L;
+  const g = isGirl(it), f = (m, w) => g ? w : m;
+  return [
+    `${f("לנכד האהוב", "לנכדה האהובה")} שלנו,\nהספר הזה נכתב בשבילך, כי ${f("אתה הגיבור", "את הגיבורה")} של הלב שלנו. ${f("שתמיד תגדל", "שתמיד תגדלי")} עם חיוך גדול, סקרנות ואומץ, ${f("ותדע שאתה יכול", "ותדעי שאת יכולה")} להגשים כל חלום שרק ${f("תרצה", "תרצי")}. בכל פעם ${f("שתפתח", "שתפתחי")} את הספר – ${f("תזכור", "תזכרי")} כמה אנחנו גאים בך ואוהבים אותך, היום, מחר ובכל יום. שהספר הזה ילווה אותך בחום ובאהבה.\nבאהבה גדולה, סבא וסבתא 💛`,
+    `${f("לנכד היקר", "לנכדה היקרה")} שלנו,\nמהיום שנולדת העולם שלנו נעשה צבעוני ושמח יותר. אנחנו מאחלים לך לב טוב, חברים אמיתיים והמון הרפתקאות מופלאות. ${f("זכור", "זכרי")} תמיד ${f("שאתה מיוחד, שאתה אהוב", "שאת מיוחדת, שאת אהובה")}, ושסבא וסבתא תמיד כאן בשבילך – לחבק, להקשיב, לצחוק ולשמוח איתך בכל רגע. העולם מחכה לך – ${f("צא", "צאי")} לגלות אותו.\nאוהבים אותך עד השמיים, סבא וסבתא 💛`,
+    `${f("לנכד המתוק", "לנכדה המתוקה")} שלנו,\nהספר הזה הוא מתנה קטנה עם אהבה ענקית. ${f("שתמיד תאמין", "שתמיד תאמיני")} בעצמך, ${f("תצחק", "תצחקי")} הרבה, ${f("תשאל", "תשאלי")} שאלות ${f("ותגלה", "ותגלי")} כל יום משהו חדש ומרגש. ${f("כשתקרא", "כשתקראי")} בו – ${f("תדע", "תדעי")} שבכל עמוד מחכה לך חיבוק חם מאיתנו. אנחנו כל כך גאים בך, ונמשיך לאהוב אותך תמיד, בכל גיל ובכל מקום. ${f("תהיה שמח ובריא", "תהיי שמחה ובריאה")}!\nסבא וסבתא 💛`
+  ];
 }
 function want(id){ ev("savta-want", id);
   if (STEP === "send" || STEP === "more") { if (ORD.list.length < MAX) { CUR = fresh(id); STEP = book(id).v.length > 1 ? "ver" : "name"; if (STEP === "name") CUR.ver = "0"; } }
@@ -362,6 +364,10 @@ function want(id){ ev("savta-want", id);
   draw(true);
 }
 /* ציור המסלול: מה שכבר עשינו – שורות קטנות עם "לתקן"; הצעד של עכשיו – כרטיס גדול */
+/* המחיר בשפה פשוטה: כמה ספרים × כמה = סה"כ, וכמה חוסכים לעומת ספר בודד. משלוח עד הבית 40 ₪ */
+const SHIP = 40;
+function priceLine(n){ const p = priceOf(n, "hard"), t = n * p, save = n * priceOf(1, "hard") - t;
+  return `${n === 1 ? "ספר אחד" : n + " ספרים"}: <span class="nw">${n === 1 ? ils(p) : n + " × " + ils(p) + " = " + ils(t)}</span>${save > 0 ? ` <b class="sv">חוסכים ${ils(save)}</b>` : ""}`; }
 function draw(scroll){
   const w = $("wz"), n = ORD.list.length, h = [];
   ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.url ? `<img src="${it.url}" alt="">` : ""}</div>`));
@@ -398,14 +404,16 @@ function stepHTML(){
   if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
     <input type="text" id="wWho" value="${esc(ORD.who)}" maxlength="40" autocomplete="name" placeholder="למשל: סבתא רינה">
     <button type="button" class="btn btn-main go" data-next="who">ממשיכים ←</button><p class="err" id="wErr"></p></div>`;
-  if (STEP === "more") { const n = ORD.list.length + 1, now = priceOf(n, "hard"), nx = n < MAX ? priceOf(n + 1, "hard") : 0;
+  if (STEP === "more") { const n = ORD.list.length + 1;
     return `<div class="step"><h3>${SB}כל הכבוד! 🎉 רוצים ספר גם לנכד נוסף?</h3>
-    ${nx && nx < now ? `<div class="tip">💡 עם עוד ספר – כל ספר בהזמנה יורד מ-${ils(now)} ל-${ils(nx)}. כדאי לכל הנכדים ביחד!</div>` : ""}
+    <div class="prc"><div>📖 עכשיו – ${priceLine(n)}</div>${n < MAX ? `<div class="up">➕ עם עוד ספר – ${priceLine(n + 1)}</div>` : ""}<div class="sh">🚚 + משלוח עד הבית ${ils(SHIP)}</div></div>
+    ${n < MAX ? `<p class="h" style="margin-top:8px">ככל שמוסיפים ספרים – המחיר של כל ספר יורד. כדאי לכל הנכדים ביחד!</p>` : ""}
     <div class="two" style="margin-top:12px">${n < MAX ? `<button type="button" class="btn btn-main" data-more="yes">➕ כן, עוד ספר</button>` : ""}<button type="button" class="btn btn-wa" data-more="no">✅ לא, זהו</button></div></div>`; }
   if (STEP === "send") { const n = ORD.list.length, tot = n * priceOf(n, "hard");
     return `<div class="step"><h3>${SB}שולחים לנו את ההזמנה</h3>
     <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
-    <p class="h" style="margin-top:10px">${n} ${n === 1 ? "ספר" : "ספרים"} בכריכה קשה · ${ils(tot)} + משלוח. <b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
+    <div class="prc" style="margin-top:10px"><div>📖 ${priceLine(n)}</div><div class="sh">🚚 משלוח עד הבית ${ils(SHIP)}</div><div class="tot">סה"כ ${ils(tot + SHIP)}</div></div>
+    <p class="h" style="margin-top:8px"><b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
     <button type="button" class="btn btn-wa go" id="wSend">💬 שולחים לנו בוואטסאפ</button>
     <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
     <p class="st" id="wSt"></p>
