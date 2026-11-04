@@ -123,7 +123,7 @@ const QA = {
   pay: { re: /תשלום|לשלם|משלמים|ביט|פייבוקס|העברה בנקאית|אשראי/, a: st => st.mode === "gan" ? "💳 *תשלום:* התשלום מתבצע מראש, לפני תחילת עריכת הספרים – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." : "💳 *תשלום:* קודם רואים את כל הספר הדיגיטלי, ומשלמים רק אם אוהבים ❤️ – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." },
   time: { re: /כמה זמן|מתי (זה )?(מגיע|מוכן|יהיה)|זמן אספקה|זמני אספקה|עריכה|תוך כמה/, a: st => "⏱️ *זמנים:* " + (st.mode === "gan" ? "עריכה עד 3 ימי עסקים מהתשלום. " : "") + "אחרי שמאשרים הדפסה – משלוח צ'יטה עד 14 ימי עסקים, או איסוף עצמי מבית הדפוס (ליד עפולה) בתיאום, כשבוע מאישור ההדפסה." },
   ship: { re: /משלוח|איסוף|לאסוף|עפולה|צ'יטה|שליח/, a: () => "📦 *משלוח או איסוף:* 🚚 משלוח צ'יטה עד הבית – 40 ₪, עד 14 ימי עסקים מאישור ההדפסה. 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – בלי עלות, בתיאום, כשבוע מאישור ההדפסה. בוחרים בסוף ההזמנה." },
-  ded: { re: /הקדש/, a: st => st.mode === "gan" ? "💌 *הקדשה:* הקדשה אחת לכל ילדי הגן, עד 350 תווים, *בלי שם הילד* (השם כבר בספר). אפשר אחת לבנים ואחת לבנות. אפשר לבחור הקדשה מוכנה או לכתוב לבד." : "💌 *הקדשה:* מציעים לכם הקדשה מוכנה (אפשר לבקש אחרת), או כותבים לבד – עד 300 תווים בערך." },
+  ded: { re: /הקדש/, a: st => st.mode === "gan" ? "💌 *הקדשה:* הקדשה אחת לכל ילדי הגן – או אחת לכל ספר (עד 2), עד 350 תווים, *בלי שם הילד* (השם כבר בספר). את ההתאמה לבנים ולבנות אנחנו עושים. אפשר לבחור הקדשה מוכנה או לכתוב לבד." : "💌 *הקדשה:* מציעים לכם הקדשה מוכנה (אפשר לבקש אחרת), או כותבים לבד – עד 300 תווים בערך." },
   names: { re: /אותו שם|שם זהה|שני ילדים עם|שמות זהים/, a: () => "👯 *שני ילדים עם אותו שם:* כותבים בכיתוב של התמונה \"יוסי 1\", \"יוסי 2\" – וכך לא מתבלבלים." },
   ai: { re: /בינה מלאכותית|\bAI\b|דומה|דמיון|איור/, a: () => "🤖 *האיורים:* בינה מלאכותית אינה מצלמה – גם כשהדמיון גבוה מאוד (עד 99%), ייתכנו הבדלים קלים במראה או בפרופורציות. *כל ספר עובר בדיקה אנושית*, איור אחר איור, לפני ההדפסה." },
   check: { re: /אישור הדפסה|סקיצ|לבדוק|תיקון|תיקונים|לשנות/, a: () => "🔍 *לפני ההדפסה* נשלח לכם את הספר לאישור – בודקים שכל הילדים נמצאים, שהשמות נכונים ושאין שגיאות בהקדשה. האישור נועד לבדיקת הפרטים, לא לסבבי תיקונים בדמות. טעות שלנו – מתוקנת מיד." },
@@ -204,6 +204,7 @@ async function wa(env, to, msg, log){
 const text = t => ({ type: "text", text: { body: t } });
 const buttons = (t, bs) => ({ type: "interactive", interactive: { type: "button", body: { text: t.slice(0, 1024) }, action: { buttons: bs.slice(0, 3).map(b => b.type ? b : { type: "reply", reply: { id: b[0], title: b[1] } }) } } });
 const list = (t, btn, rows, title) => ({ type: "interactive", interactive: { type: "list", body: { text: t }, action: { button: btn, sections: [{ title: title || "ספרים", rows }] } } });
+const quote = (m, mid) => mid ? Object.assign(m, { context: { message_id: mid } }) : m;   /* תשובה שמצטטת הודעה (למשל תמונה) */
 const image = (link, caption) => ({ type: "image", image: { link, caption } });
 async function sendLong(S, t){ for (let i = 0; i < t.length; i += 3900) await S(text(t.slice(i, i + 3900))); }
 
@@ -248,12 +249,16 @@ const bookRows = (page, prefix, v) => {
   return rows;
 };
 async function ganPics(db, st){                               /* תמונות הגן – כל תמונה במפתח משלה (כמה תמונות באותו רגע) */
-  const keys = await db.list("gp:" + st.oid + ":"), out = { b: [], g: [], nameless: 0, by: {} };
+  const keys = await db.list("gp:" + st.oid + ":"), out = { b: [], g: [], nameless: 0, by: {}, recs: [], pend: [], all: 0 };
   for (const k of keys) {
     const v = JSON.parse(await db.get(k) || "{}"), girl = v.sub === "בנות", key = (v.book || "") + "|" + v.sub;
+    if (!v.sub) continue;
+    v.k = k; out.recs.push(v); out.all++;
     (girl ? out.g : out.b).push(v.name); (out.by[key] = out.by[key] || { names: [], nameless: 0 }).names.push(v.name);
     if (v.name === "ללא שם") { out.nameless++; out.by[key].nameless++; }
   }
+  for (const k of await db.list("gq:" + st.oid + ":")) { const v = JSON.parse(await db.get(k) || "null"); if (v) { v.k = k; out.pend.push(v); } }   /* תמונות שעוד לא יודעים של מי */
+  out.pend.sort((x, y) => (x.ts || 0) - (y.ts || 0));
   return out;
 }
 /* כל התמונות של הילד הנוכחי (כל תמונה במפתח משלה – כמה תמונות באותו רגע לא דורסות זו את זו) */
@@ -265,6 +270,9 @@ async function kidPics(db, st, have){
 /* סבבי התמונות בגן: לכל נושא – בנים ואז בנות (נושא אחד = 2 סבבים, שני נושאים = 4) */
 const rounds = G => G.books.flatMap(b => [[b, "בנים"], [b, "בנות"]]);
 const roundName = (G, r) => { const [b, sub] = rounds(G)[r]; return (G.books.length > 1 ? `"${book(b).name}" – ` : "") + sub; };
+const grpName = (G, key) => { const [b, sub] = String(key).split("|"); return (G.books.length > 1 ? `"${book(b).name}" – ` : "") + sub; };
+const kidName = t => String(t || "").split("\n")[0].replace(/[.,!׳"'״:]+$/g, "").replace(/\s+/g, " ").trim();
+const badKid = n => !n || n.length > 25 || n.split(" ").length > 3 || /\d/.test(n.replace(/ ?\d+$/, "")) || junk(n);
 const realNames = a => [...new Set(a.filter(x => x !== "ללא שם"))];
 const names = a => [...new Set(a)].join(", ");
 const cnt = (n, one, many) => n === 1 ? one : n + " " + many;
@@ -335,24 +343,24 @@ async function ask(env, to, st, log, db){
       return S(buttons(`איזו כריכה לספרים של הגן?\n\n${lines}${G.kids < STAPLE.from ? "\n(חוברת כרומו סיכות – מ-20 ספרים)" : ""}`,
         ks.map(k => ["c:" + k, { hard: "💗 קשה פרימיום", soft: "💛 רכה פיג'מה", staple: "💜 כרומו סיכות" }[k]])));
     }
+    case "g-dedmode": return S(buttons(`💌 *הקדשה מהגן*\nאפשר הקדשה אחת לכל הגן, או הקדשה נפרדת לכל ספר (${G.books.map(b => book(b).name).join(" / ")}).\nאת ההתאמה לבנים ולבנות אנחנו עושים 🙂`, [["gdm:one", "💌 אחת לכל הגן"], ["gdm:each", "📚 אחת לכל ספר"]]));
     case "g-ded": {
-      const L = ganDed(st), idea = L[(G.dedI || 0) % L.length];
-      return S(buttons(`הקדשה מהגן לכל הילדים ❤️\n(בלי שמות – השם של כל ילד כבר בספר)\n\n${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
+      const L = ganDed(st), idea = L[(G.dedI || 0) % L.length], per = G.dedFor && G.dedFor !== "all";
+      return S(buttons(`${per ? `הקדשה לספר "${book(G.dedFor).name}" ❤️` : "הקדשה מהגן לכל הילדים ❤️"}\n(בלי שמות – השם של כל ילד כבר בספר. את ההתאמה לבנים ולבנות אנחנו עושים)\n\n${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
     }
-    case "g-dedown": return S(text("כתבו כאן את ההקדשה של הגן ❤️ (עד 350 תווים בערך)\nרוצים אחת לבנים ואחת לבנות? כתבו את שתיהן, אחת אחרי השנייה."));
-    case "g-pics": {
-      if (!G.r && !st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
-      const R = rounds(G), [b, sub] = R[G.r || 0], two = G.books.length > 1, boys = sub === "בנים";
-      const tip = G.r ? "" : `\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים בכיתוב "יוסי 1", "יוסי 2".`;
-      const order = two && !G.r ? `נעבור לפי הסדר:\n${R.map((x, i) => `${i + 1}. ${book(x[0]).name} – ${x[1]}`).join("\n")}\n\n` : "";
-      return S(text(`${G.r ? "" : "עכשיו התמונות 📷\n"}${order}${two ? `*${book(b).name}* – ` : ""}${boys ? "*הבנים*: מעבירים לכאן תמונה של כל ילד" : "*הבנות*: מעבירים לכאן תמונה של כל ילדה"}${two ? ` שמקבל${boys ? "" : "ת"} את הספר הזה` : ""}, ובכיתוב של התמונה – *${boys ? "השם שלו" : "השם שלה"}*.${G.r ? "" : "\nאפשר כמה תמונות לאותו ילד – נבחר את הטובה."}${tip}`));
-    }
-    case "g-picsmore": {
-      const P = await ganPics(db, st), [b, sub] = rounds(G)[G.r || 0], cur = P.by[b + "|" + sub] || { names: [], nameless: 0 }, nl = cur.nameless;
-      const warn = nl ? `\n⚠️ ${nl === 1 ? "תמונה אחת הגיעה" : nl + " תמונות הגיעו"} בלי שם – שלחו ${nl === 1 ? "אותה" : "אותן"} שוב, עם השם בכיתוב 🙏` : "";
-      const bs = [["g:rdone", sub === "בנים" ? "✅ סיימנו בנים" : "✅ סיימנו בנות"], ["g:pause", "⏸️ נמשיך מחר"]];
-      if (!G.r) bs.push(["g:drive", "📁 אעדיף דרייב"]);
-      return S(buttons(`${roundName(G, G.r || 0)}: קיבלנו ${cnt(cur.names.length, "תמונה אחת", "תמונות")} – ${names(cur.names.filter(x => x !== "ללא שם")) || "—"} ✓${warn}\nממשיכים לשלוח, או:`, bs));
+    case "g-dedown": return S(text(`כתבו כאן את ההקדשה${G.dedFor && G.dedFor !== "all" ? ` לספר "${book(G.dedFor).name}"` : " של הגן"} ❤️ (עד 350 תווים בערך)\nכותבים פעם אחת – ואת ההתאמה לבנים ולבנות אנחנו עושים.`));
+    case "g-pics": case "g-picsmore": {
+      if (!st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
+      if (!G.picIntro) { G.picIntro = 1; await S(text(`עכשיו התמונות 📷 *תמונה אחת לכל ילד/ה.*\n\nאיך שולחים:\n1️⃣ בוחרים קבוצה (ספר + בנים/בנות) – אפשר לעבור קבוצה מתי שרוצים\n2️⃣ כותבים את *השם הפרטי* של הילד/ה\n3️⃣ שולחים את התמונה שלו/ה\nוחוזר חלילה – שם, תמונה, שם, תמונה 🙂\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים "יוסי 1", "יוסי 2".`)); }
+      const P = await ganPics(db, st);
+      if (G.grp && P.pend.length) return askPendF(S, st, P.pend[0], P.pend.length);
+      if (!G.grp) return S(list(`${P.pend.length ? "📷 קיבלנו תמונה – קודם בוחרים לאיזו קבוצה היא שייכת.\n" : st.gname ? `✍️ ${st.gname} ✓ – קודם בוחרים קבוצה.\n` : ""}לאיזו קבוצה שולחים עכשיו? 📷\nלוחצים על "בוחרים קבוצה" ובוחרים.`, "בוחרים קבוצה",
+        rounds(G).map(([b, sub]) => { const n = ((P.by[b + "|" + sub] || {}).names || []).length; return { id: "gg:" + b + "|" + sub, title: G.books.length > 1 ? book(b).name.slice(0, 24 - sub.length - 3) + " – " + sub : sub, description: n ? `התקבלו ${n} ✓` : "עוד לא התקבלו תמונות" }; })
+          .concat(P.all ? [{ id: "g:fin", title: "✅ סיימתי תמונות", description: "לבדיקה של כל הרשימה" }] : [{ id: "g:drive", title: "📁 אעדיף דרייב", description: "שמש תשלח קישור לתיקייה" }]), "קבוצות"));
+      const cur = (P.by[G.grp] || { names: [] }).names, last = st.gok || "";
+      st.gok = "";
+      return S(buttons(`${last ? `📷 ${last} ✓\n` : ""}*${grpName(G, G.grp)}*: ${cur.length ? cnt(cur.length, "תמונה אחת", "תמונות") + " ✓" : "עוד אין תמונות"}\n\n${st.gname ? `עכשיו שולחים את התמונה של *${st.gname}* 📷` : `✍️ כותבים את השם הפרטי של ${G.grp.endsWith("בנות") ? "הילדה הבאה" : "הילד הבא"} 👇\nואחר כך שולחים את התמונה ${G.grp.endsWith("בנות") ? "שלה" : "שלו"}`}`,
+        [["g:grp", "🔄 קבוצה אחרת"], ["g:fin", "✅ סיימתי תמונות"], ["g:pause", "⏸️ נמשיך מחר"]]));
     }
     case "g-check": {
       const P = await ganPics(db, st), nb = new Set(realNames(P.b)), ng = new Set(realNames(P.g)), miss = G.kids - nb.size - ng.size;
@@ -372,7 +380,7 @@ function summary(st, links){
 async function ganSummary(st, db, owner){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
   const nb = realNames(P.b), ng = realNames(P.g);
-  const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n");
+  const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n") + (owner && P.recs.some(r => r.rep) ? `\n🔄 הוחלפה תמונה: ${P.recs.filter(r => r.rep).map(r => r.name).join(", ")} (בדרייב – החדשה היא האחרונה)` : "");
   return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
@@ -407,6 +415,15 @@ async function lastInBurst(db, from, log){
   await new Promise(r => setTimeout(r, 5000));
   return (await db.get("burst:" + from)) === me;
 }
+/* גן – תמונה שעוד לא יודעים של מי (או שלשם הזה כבר יש תמונה): שואלים, עם ציטוט של התמונה */
+function askPendF(S, st, pr, n){
+  const G = st.g;
+  st.gask = pr.k;
+  if (pr.name) return S(quote(buttons(`ל*${pr.name}* כבר יש תמונה ב${grpName(G, G.grp)}.\nבגנים – תמונה אחת לכל ילד/ה. מה עושים עם התמונה הזו?`,
+    [["gr:rep", "🔄 להחליף"], ["gr:new", "👯 ילד/ה אחר/ת"], ["gr:no", "❌ לא לשמור"]]), pr.mid));
+  return S(quote(text(`עבור מי התמונה הזו? 📷\nכותבים רק את השם הפרטי 👇${n > 1 ? `\n(יש עוד ${n - 1} ${n - 1 === 1 ? "תמונה" : "תמונות"} בלי שם – נשאל על כל אחת)` : ""}`), pr.mid));
+}
+
 async function step(env, from, st, ev, log, db){
   const S = m => wa(env, from, m, log);
   const RB = (bid, v) => readBook(S, bid, v, env, db, log);
@@ -415,6 +432,38 @@ async function step(env, from, st, ev, log, db){
     if (vv) await RB(st.cur.book, vv);
   };
   const c = st.cur, G = st.g;
+  /* גן – הקדשה: אחת לכל הגן, או אחת לכל ספר (ההתאמה לבנים/בנות – אצל שמש) */
+  const dedDone = t => {
+    G.deds = G.deds || {}; G.deds[G.dedFor || "all"] = t;
+    const i = G.books.indexOf(G.dedFor);
+    if (G.dedFor && G.dedFor !== "all" && i >= 0 && i + 1 < G.books.length) { G.dedFor = G.books[i + 1]; G.dedI = 0; st.step = "g-ded"; return; }
+    G.ded = G.deds.all || G.books.map(b => `📚 ${book(b).name}:\n${G.deds[b] || ""}`).join("\n\n");
+    G.grp = ""; st.step = "g-pics";
+  };
+  const askPend = (pr, n) => askPendF(S, st, pr, n);
+  /* גן – משייכים תמונות שממתינות: שם בכיתוב / שם שנכתב קודם / תשובה לשאלה. כפילות (אותה תמונה בדיוק) – מזהים לפי חתימת הקובץ */
+  const ganFlush = async () => {
+    const P = await ganPics(db, st), shas = new Map(P.recs.filter(r => r.sha).map(r => [r.sha, r.name])), saved = [];
+    st.gask = "";
+    if (!G.grp) return ask(env, from, st, log, db);                 /* קודם בוחרים קבוצה */
+    for (const pr of P.pend) {
+      if (pr.sha && shas.has(pr.sha)) { await db.del(pr.k); await S(quote(text(`את התמונה הזו כבר קיבלתי (${shas.get(pr.sha)}) ✓`), pr.mid)); continue; }
+      if (!pr.name && pr.cap && !badKid(pr.cap)) pr.name = pr.cap;
+      if (!pr.name && st.gname) { pr.name = st.gname; st.gname = ""; }
+      if (!pr.name) { await db.put(pr.k, JSON.stringify(pr), 90 * 86400); st.gok = saved.join(", "); if (saved.length) await S(text(`📷 ${saved.join(", ")} ✓`)); return askPend(pr, P.pend.length - P.pend.indexOf(pr)); }
+      const [b, sub] = G.grp.split("|"), old = P.recs.filter(r => r.book === b && r.sub === sub && r.name === pr.name);
+      if (old.length && !pr.rep) { await db.put(pr.k, JSON.stringify(pr), 90 * 86400); if (saved.length) await S(text(`📷 ${saved.join(", ")} ✓`)); return askPend(pr, 1); }
+      for (const o of old) { if (o.drive) await drivePost(env, { action: "trash", file: o.drive }); await db.del(o.k); }   /* הוחלפה – הישנה לאשפה בדרייב */
+      const topic = G.books.length > 1 ? book(b).name : "";
+      const p = await savePic(env, st, sub, pr.name, { media: pr.media }, from, db, topic);
+      await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: b, topic, sub, name: pr.name, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "", sha: pr.sha || "", media: pr.media, rep: old.length ? 1 : 0 }), 90 * 86400);
+      await db.del(pr.k);
+      if (pr.sha) shas.set(pr.sha, pr.name);
+      saved.push(pr.name + (old.length ? " (הוחלפה)" : ""));
+    }
+    st.gok = saved.join(", ");
+    return ask(env, from, st, log, db);
+  };
   let id = ev.id || "";
   const txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
@@ -574,40 +623,60 @@ async function step(env, from, st, ev, log, db){
       else if (id === "g:more") { st.page = 0; st.step = "g-book"; }
       else if (id === "g:read") { for (const b of G.books.filter(b => PAGES[b])) await readAsk(S, b, RB); return; }
       break;
-    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "g-ded"; } break;
+    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); G.deds = {}; G.dedFor = "all"; G.dedI = 0; st.step = G.books.length > 1 ? "g-dedmode" : "g-ded"; } break;
+    case "g-dedmode":
+      if (id === "gdm:one") { G.deds = {}; G.dedFor = "all"; G.dedI = 0; st.step = "g-ded"; }
+      else if (id === "gdm:each") { G.deds = {}; G.dedFor = G.books[0]; G.dedI = 0; st.step = "g-ded"; }
+      break;
     case "g-ded":
-      if (id === "gd:ok") { const L = ganDed(st); G.ded = L[(G.dedI || 0) % L.length]; G.dedOwn = 0; G.r = 0; st.step = "g-pics"; }
+      if (id === "gd:ok") { const L = ganDed(st); dedDone(L[(G.dedI || 0) % L.length]); }
       else if (id === "gd:next") { const L = ganDed(st); G.dedI = ((G.dedI || 0) + 1) % L.length; }
       else if (id === "gd:own") { G.dedOwn = 0; G.ded = ""; st.step = "g-dedown"; }
       else if (txt && !id) {
         if (txt.length < 15 || junk(txt)) await S(text("רוצים לכתוב הקדשה משלכם? לוחצים *✍️ אכתוב בעצמי* 🙂\nאו בוחרים באחת האפשרויות 👇"));
-        else { G.ded = txt.slice(0, 800); G.dedOwn = 0; G.r = 0; st.step = "g-pics"; }
+        else dedDone(txt.slice(0, 800));
       }
       break;
     case "g-dedown": if (txt && (txt.length < 5 || junk(txt))) { await S(text("כתבו כאן את ההקדשה המלאה 🙂")); break; }
-      if (txt) { G.ded = (G.dedOwn ? G.ded + "\n\n" : "") + txt.slice(0, 450); G.dedOwn = 1; await S(buttons("הקדשה יפה ❤️ רוצים להוסיף עוד הקדשה (למשל לבנות)?", [["gd:done", "✅ זהו, ממשיכים"]])); return; }
-      if (id === "gd:done") { G.r = 0; st.step = "g-pics"; }
+      if (txt) { await S(text("הקדשה יפה ❤️")); dedDone(txt.slice(0, 600)); }
+      else if (id === "gd:done" && G.ded) st.step = "g-pics";             /* כפתור ישן */
       break;
     case "g-pics": case "g-picsmore": {
-      const [rb, rsub] = rounds(G)[G.r || 0], boys = rsub === "בנים";
-      if (ev.image) {
-        const nm = (ev.caption || "").trim().split("\n")[0].slice(0, 30) || "ללא שם";
-        const topic = G.books.length > 1 ? book(rb).name : "";
-        const p = await savePic(env, st, rsub, nm, ev.image, from, db, topic);
-        await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: rb, topic, sub: rsub, name: nm, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "" }), 90 * 86400);
-        st.step = "g-picsmore";
+      st.step = "g-pics";
+      if (ev.image) {                                                  /* קודם שומרים "בהמתנה" – ורק כשיודעים של מי, מעלים לדרייב */
+        await db.put("gq:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ media: ev.image.media, sha: ev.image.sha || "", cap: kidName(ev.caption), mid: ev.mid || "", ts: Date.now() }), 90 * 86400);
         if (!(await lastInBurst(db, from, log))) return;             /* הרבה תמונות ברצף – עונים אחרי האחרונה */
+        return ganFlush();
       }
-      else if (id === "g:rdone") { if ((G.r || 0) + 1 < rounds(G).length) { G.r = (G.r || 0) + 1; st.step = "g-pics"; } else st.step = "g-check"; }
-      else if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
-      else if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
-      else if (txt && /^להמשיך$/.test(txt)) { /* חוזרים לאותה שאלה */ }
-      else if (txt) { await S(text("כדי לשייך שם לתמונה – שולחים את התמונה עם השם בכיתוב שלה 📷")); }
+      if (id.startsWith("gg:") && rounds(G).some(([b, sub]) => b + "|" + sub === id.slice(3))) { G.grp = id.slice(3); return ganFlush(); }
+      if (id === "g:grp" || id === "g:rdone") { G.grp = ""; break; }
+      if (id === "g:fin") { const P = await ganPics(db, st); if (P.pend.length) { await S(text("רגע 🙂 יש עוד תמונה שלא יודעים של מי:")); break; } if (!P.all) { await S(text("עוד לא קיבלנו תמונות 🙂")); break; } st.step = "g-check"; break; }
+      if (/^gr:(rep|new|no)$/.test(id) && st.gask) {                    /* לשם הזה כבר יש תמונה */
+        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; break; }
+        if (id === "gr:no") { await db.del(st.gask); st.gask = ""; await S(text("אין בעיה – לא שמרנו את התמונה הזו 👍")); return ganFlush(); }
+        if (id === "gr:new") { const P = await ganPics(db, st), have = new Set((P.by[G.grp] || { names: [] }).names); let n = 2; while (have.has(pr.name + " " + n)) n++; pr.name = pr.name + " " + n; }
+        else pr.rep = 1;
+        await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
+        return ganFlush();
+      }
+      if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט כותבים \"להמשיך\".")); return; }
+      if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
+      if (txt && !id && !/^להמשיך$/.test(txt)) {
+        const nm = kidName(txt);
+        if (badKid(nm)) { await S(text("כותבים רק את *השם הפרטי* של הילד/ה 🙂 למשל: נועה\n(שני ילדים עם אותו שם? נועה 1, נועה 2)")); break; }
+        if (st.gask) {                                                  /* תשובה ל"עבור מי התמונה הזו?" */
+          const pr = JSON.parse(await db.get(st.gask) || "null");
+          if (pr) { pr.name = nm; await db.put(st.gask, JSON.stringify(pr), 90 * 86400); }
+          return ganFlush();
+        }
+        st.gname = nm;
+        if (G.grp) { const P = await ganPics(db, st); if ((P.by[G.grp] || { names: [] }).names.includes(nm)) await S(text(`⚠️ ל${nm} כבר יש תמונה ב${grpName(G, G.grp)}. אם זו ${G.grp.endsWith("בנות") ? "ילדה אחרת" : "ילד אחר"} – כותבים ${nm} 2`)); }
+      }
       break;
     }
     case "g-check":
       if (id === "g:ok") st.step = "ship";
-      else if (id === "g:morepics") { G.r = 0; st.step = "g-pics"; }
+      else if (id === "g:morepics") { G.grp = ""; st.step = "g-pics"; }
       break;
     case "g-consent":
       if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), await ganSummary(st, db, true), ganNext(env, st), CONSENT_GAN);
@@ -633,13 +702,14 @@ function btnStep(id){
   if (/^ph:(yes|other)$/.test(id)) return "phone";
   if (/^pay:/.test(id)) return "pay";
   if (/^gd:(ok|next|own)$/.test(id)) return "g-ded";
+  if (/^gdm:(one|each)$/.test(id)) return "g-dedmode";
   if (/^c:(staple|soft|hard)$/.test(id)) return "g-cover";
   if (/^g:(one|more)$/.test(id)) return "g-book2";
   return "";
 }
 const SEGS = [["ver", "name", "ded", "dedown", "cover", "pics", "picsmore", "who", "whoown", "more"],
   ["ship", "addr", "phone", "phoneown", "pay", "consent", "g-consent"],
-  ["g-book2", "g-cover", "g-ded", "g-dedown"]];
+  ["g-book2", "g-cover", "g-dedmode", "g-ded", "g-dedown"]];
 function canBack(cur, to){ return SEGS.some(s => s.includes(cur) && s.includes(to) && s.indexOf(to) < s.indexOf(cur)); }
 
 /* סוף הזמנה: סיכום ללקוח (בלי קישורים), תודה, דרייב (מסמך + מייל לשמש), שמירה ב-KV */
@@ -772,7 +842,7 @@ export default {
             if (m.type === "text") ev.text = m.text.body;
             else if (m.type === "interactive") ev.id = (m.interactive.button_reply || m.interactive.list_reply || {}).id;
             else if (m.type === "button") ev.text = m.button.text;
-            else if (m.type === "image") { ev.image = { media: m.image.id }; ev.caption = m.image.caption || ""; }
+            else if (m.type === "image") { ev.image = { media: m.image.id, sha: m.image.sha256 || "" }; ev.caption = m.image.caption || ""; ev.mid = m.id || ""; }
             else continue;
             console.log("in", m.type, ev.id || (ev.image ? "image" : "text"));   /* לבדיקת תקלות – בלי תוכן ההודעה */
             await handle(env, m.from, name, ev);

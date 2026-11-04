@@ -18,6 +18,7 @@ function doPost(e) {
     if (q.action === "photo") return out_(savePhoto_(q));
     if (q.action === "order") return out_(saveOrder_(q));
     if (q.action === "alert") return out_(alert_(q));
+    if (q.action === "trash") return out_(trash_(q));
     if (q.action === "ping") return out_({ ok: true, folder: root_().getUrl() });
     return out_({ ok: false, error: "action" });
   } catch (err) {
@@ -58,6 +59,23 @@ function savePhoto_(q) {
     var file = dir.createFile(blob);
     return { ok: true, file: file.getUrl(), folder: folder.getUrl(), name: name };
   } finally { lock.releaseLock(); }
+}
+
+/* תמונה שהוחלפה (גן – תמונה אחת לכל ילד): {file} – לאשפה (לא מחיקה – אפשר לשחזר). רק קבצים בתוך "BOOQLI הזמנות" */
+function trash_(q) {
+  var id = (String(q.file || "").match(/[-\w]{25,}/) || [])[0];
+  if (!id) return { ok: false, error: "file" };
+  var file = DriveApp.getFileById(id), rootId = root_().getId(), level = [file.getParents()];
+  for (var d = 0; d < 5; d++) {
+    var next = [];
+    for (var i = 0; i < level.length; i++) while (level[i].hasNext()) {
+      var f = level[i].next();
+      if (f.getId() === rootId) { file.setTrashed(true); return { ok: true }; }
+      next.push(f.getParents());
+    }
+    level = next;
+  }
+  return { ok: false, error: "outside" };
 }
 
 /* סוף ההזמנה: {order, title, summary, expected} – מסמך סיכום + מייל */
