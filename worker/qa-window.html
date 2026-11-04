@@ -67,7 +67,10 @@ const KB = "🗺️ *איך זה עובד:*\n1️⃣ בוחרים ספר ושו�
 /* ===== חלון השאלות: קורא מהדרייב את ההודעות שהבוט רשם (BOOQLI-QA), מקבץ לפי לקוח, ומציע תשובה ===== */
 const DAYS = 21;
 const since = new Date(Date.now() - DAYS * 864e5).toISOString().slice(0, 10) + "T00:00:00Z";
-const QUERY = { query: `fullText contains 'BOOQLI-QA' and createdTime > '${since}'`, pageSize: 100, snippetVerbosity: "MAX_ALLOWED" };
+/* קוראים רק מתוך התיקייה "BOOQLI הזמנות / שאלות-לקוחות" – לא משום מקום אחר בדרייב */
+const ROOT_ID = "1zXa2wZZ4OTIpireX6Fkwm_QYLlluH4T1";
+const FOLDER_Q = { query: `parentId = '${ROOT_ID}' and title = 'שאלות-לקוחות' and mimeType = 'application/vnd.google-apps.folder'`, pageSize: 1, excludeContentSnippets: true };
+const qOf = folder => ({ query: `parentId = '${folder}' and createdTime > '${since}'`, pageSize: 100, snippetVerbosity: "MAX_ALLOWED" });
 const S = { items: [], handled: {}, sugg: {}, stats: { raw: 0, edited: 0 }, checked: null, err: "" };
 let db = null, sample = null, perms = null;
 const $ = id => document.getElementById(id);
@@ -221,7 +224,16 @@ async function start(){
     db.doc("stats/main").onSnapshot(s => { if (s.exists) S.stats = Object.assign({}, s.data()); render(); }, () => {});
   }
   if (!mcp) { notice("אין חיבור לגוגל דרייב מהדף. פותחים את הדף ב-Claude ומאשרים לו גישה לדרייב.", true); return; }
-  mcp.watchTool("Google Drive", "search_files", QUERY, ev => {
+  const files = pl => { if (pl && pl.files) return pl.files; try { return JSON.parse(pl.content.find(x => x.type === "text").text).files || []; } catch { return []; } };
+  let folder = null;
+  const look = async () => {
+    try { const r = await mcp.callTool("Google Drive", "search_files", FOLDER_Q, { cache: false }); const f = files(r.payload || r)[0]; folder = f && f.id; }
+    catch (e) { if (e && ["not_granted", "denied", "server_not_connected", "unauthorized"].includes(e.code)) { notice(`צריך לאשר לדף גישה לגוגל דרייב כדי לראות את השאלות. <button id="perm">פתיחת ההרשאות</button>`, true); const b = $("perm"); if (b) b.onclick = () => perms && perms.manage().catch(() => {}); return; } }
+    if (!folder) { S.checked = Date.now(); render(); setTimeout(look, 60000); return; }   /* התיקייה נוצרת עם השאלה הראשונה */
+    watch();
+  };
+  const watch = () => {
+  mcp.watchTool("Google Drive", "search_files", qOf(folder), ev => {
     if (ev.type === "error") {
       const c = ev.error && ev.error.code;
       if (["not_granted", "denied", "server_not_connected", "unauthorized"].includes(c)) { S.items = []; notice(`צריך לאשר לדף גישה לגוגל דרייב כדי לראות את השאלות. <button id="perm">פתיחת ההרשאות</button>`, true); const b = $("perm"); if (b) b.onclick = () => perms && perms.manage().catch(() => {}); }
@@ -233,6 +245,8 @@ async function start(){
     S.items = (pl.files || []).map(parseDoc).filter(Boolean);
     S.checked = Date.now(); notice(""); render();
   }, { refetchInterval: 60000 });
+  };
+  look();
 }
 document.addEventListener("focusout", () => setTimeout(() => { if (S.pending) render(); }, 200));
 render();
