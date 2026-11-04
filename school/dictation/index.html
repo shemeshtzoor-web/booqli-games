@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>מאמן ההכתבה: מילים להכתבה בכיתה · booqli Games</title>
-<meta name="description" content="מאמן הכתבה בחינם לכיתות א'–ג': ההורה מכניס את מילות ההכתבה של השבוע (או מקבל אותן בקישור מהכיתה), והילד מתרגל במשחקים: בונים מילה, מוצאים את הכתיב הנכון, כותבים במחברת והכתבה אמיתית. דף הכתבה להדפסה.">
+<meta name="description" content="מאמן הכתבה בחינם לכיתות א'–ג': ההורה מכניס את מילות ההכתבה של השבוע (או מקבל אותן בקישור מהכיתה), והילד מתרגל במשחקים: בונים מילה, מוצאים את הכתיב הנכון, כותבים מהזיכרון והכתבה אמיתית. דף הכתבה להדפסה.">
 <link rel="canonical" href="https://games.booqli.ai/school/dictation/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
@@ -72,6 +72,30 @@
 .game:active{transform:scale(.97)}
 .g1{background:#FFE3F4}.g2{background:#DCEBFF}.g3{background:#DDF1DF}.g4{background:#F1E3FF}
 .game:disabled{opacity:.5}
+.g5{background:#FFF1C9}
+.game.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:12px;background:linear-gradient(90deg,#F1E3FF,#FFE3F4)}
+.game.wide>*:not(.emo){display:block}
+/* מסתכלים, מסתירים, כותבים */
+.model{margin:10px auto 6px;max-width:480px;background:#FAF6FD;border:3px solid #E7D6FA;border-radius:22px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.model .mcv{font-size:clamp(58px,16vw,84px);color:var(--dp);line-height:1.15}
+.model .mrd{font-size:clamp(28px,7vw,36px);color:#4b3a46}
+.model.off{background:#F4F4F4;border-style:dashed}
+.model .hid{font-size:22px;font-weight:800;color:#6b5a66}
+/* הכתבה אמיתית: דף מבחן */
+.card.exam{border-top:10px solid var(--margin)}
+.examh{display:flex;align-items:center;gap:12px;border-bottom:3px solid #FF56C2;padding-bottom:8px;margin-bottom:4px}
+.examh .num{font-family:Fredoka,Assistant,sans-serif;font-size:46px;font-weight:700;color:var(--margin);line-height:1;min-width:52px;text-align:center}
+.examh b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:24px;color:#C13671}
+.examh small{display:block;font-size:15px;font-weight:700;color:#4b3a46}
+.exam .pad{border-color:#D6E4F5}
+/* בלונים */
+.sky{position:relative;height:340px;border-radius:22px;overflow:hidden;background:linear-gradient(#CFE6FF,#F1F8FF 70%,#DDF1DF);margin-top:6px;touch-action:manipulation}
+.bal{position:absolute;top:0;width:78px;height:94px;border:0;border-radius:50% 50% 48% 48%/56% 56% 44% 44%;color:#2B1526;font-size:36px;cursor:pointer;display:grid;place-items:center;padding:0 0 10px;box-shadow:inset -9px -12px 0 rgba(0,0,0,.08);will-change:transform;transition:opacity .25s,scale .25s,filter .2s}
+.bal::after{content:"";position:absolute;bottom:-20px;left:50%;width:2px;height:20px;background:rgba(43,21,38,.35)}
+.bal.c0{background:#FF9AD5}.bal.c1{background:#FFD45C}.bal.c2{background:#8FD3FF}.bal.c3{background:#9BE3A8}.bal.c4{background:#CDB0FF}
+.bal.bad{filter:grayscale(1);opacity:.45}
+.bal.popped{scale:1.6;opacity:0;pointer-events:none}
+body.cvmode .bal.wd{font-size:44px}
 .adultrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
 .adultrow .btn{width:100%}
 /* משחק */
@@ -243,7 +267,7 @@ body.cvmode .verdict .big.wd{font-size:clamp(46px,12vw,60px)}
     <li><b>מכניסים את המילים של השבוע</b> באזור ההורים: מקלידים מילה בכל שורה, או לוחצים על המיקרופון במקלדת של הטלפון ומקריאים. <b>הניקוד נוסף לבד</b> (בעזרת הנקדן של דיקטה), ואפשר לבחור ניקוד אחר למילה בלחיצה.</li>
     <li><b>מקליטים את המילים בקול שלכם</b> (מומלץ): הילד שומע אתכם בזמן המשחק. בלי הקלטה – הטלפון מקריא בקול ממוחשב, שלפעמים טועה בהגייה.</li>
     <li><b>שולחים לכיתה:</b> כפתור "שליחה להורים בכיתה" שולח בוואטסאפ קישור שהמילים כבר בתוכו. מי שפותח אותו – הרשימה נטענת אצלו.</li>
-    <li><b>הילד משחק</b> 10 דקות ביום: בונים מילה ← מי כתובה נכון ← כותבים במחברת ← הכתבה אמיתית.</li>
+    <li><b>הילד משחק</b> 10 דקות ביום: בונים מילה ← מי כתובה נכון ← מפוצצים בלונים ← מסתכלים, מסתירים, כותבים ← הכתבה אמיתית.</li>
   </ol>
   <p class="note">המילים, ההקלטות והכוכבים נשמרים בדפדפן, כדי שאפשר יהיה להמשיך בפעם הבאה. כל התכנים בחינם. כתב היד לא נבדק אוטומטית – כותבים, ואז משווים יחד למילה הנכונה. מי שמקליד במקלדת מקבל בדיקה מלאה.</p>
   <p class="note">מורות: אפשר להכניס את הרשימה פעם אחת ולשלוח את הקישור בקבוצת ההורים של הכיתה. רוצים לתרגל קריאה? <a href="../reading/">למסלול הקריאה</a>.</p>

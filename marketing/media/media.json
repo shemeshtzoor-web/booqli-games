@@ -1,5 +1,5 @@
 {
- "version": "2026-11-04 08:13",
+ "version": "2026-11-04 22:50",
  "groups": [
   {
    "id": "game-maker",
@@ -11,6 +11,11 @@
    "name": "💛 סבים – ספר אישי לנכדים",
    "note": "9 סרטונים 4:5 עם מוזיקה מקורית. כל סרטון מוביל לעמוד הסבים עם הספר שלו כבר בטופס (?book=), ונמדד בנפרד (utm_content).",
    "link": "https://games.booqli.ai/savta/"
+  },
+  {
+   "id": "dictation",
+   "name": "✏️ מאמן ההכתבה – כיתות א'–ג'",
+   "note": "סרטון 22 שנ' עם מוזיקה מקורית: מילים להכתבה? ← ההורה מקליד והניקוד נוסף לבד ← 5 משחקים ← שולחים לכל הכיתה בקישור אחד ← בחינם, בטוח לילדים, עובד גם בלי אינטרנט. 4:5 לפיד ולוואטסאפ, 9:16 לסטורי."
   },
   {
    "id": "road-safety",
@@ -204,6 +209,32 @@
    "text": "🚦 זהירות בדרכים – לגן ולכיתות א'–ג'!\nשׁוֹמֶרְבּוּקְלִי וכל משפחת BOOQLI יוצאים לגן השעשועים, ובדרך לומדים לחצות יד ביד, לחגור, לחבוש קסדה ולהיראות בחושך.\n📖 סיפור מאויר עם הקראה · 🎮 5 משחקים · 👩‍🏫 מערך לגננת · 🎒 שיעור למורה · 🖨️ 4 דפים להדפסה\nבחינם · אתר בטוח להורים ולילדים · בחסות BOOQLI 💕\n👈 https://games.booqli.ai/topics/road-safety/?utm_source=facebook_group&utm_medium=post&utm_campaign=road-safety",
    "slot": "road-safety:image",
    "bytes": 160564
+  },
+  {
+   "id": "dictation-4x5",
+   "group": "dictation",
+   "topic": "school-dictation",
+   "title": "מאמן ההכתבה – 4:5",
+   "kind": "video",
+   "ratio": "4:5",
+   "file": "dictation/booqli-dictation-4x5.mp4",
+   "thumb": "dictation/booqli-dictation-4x5.jpg",
+   "date": "2026-11-04",
+   "text": "✏️ חדש! מאמן ההכתבה – לכל ילדי כיתות א'–ג'\nהמורה נתנה מילים להכתבה? מקלידים אותן פעם אחת (הניקוד נוסף לבד), והילדים מתרגלים ב-5 משחקים: בונים מילה, מי כתובה נכון, מפוצצים בלונים, כותבים מהזיכרון והכתבה אמיתית 🎈\n📲 שולחים קישור אחד לכל הורי הכיתה – והמילים נטענות אצל כולם.\n\n✅ בחינם – הכל. תמיד.\n🛡️ בטוח לילדים\n📴 עובד גם בלי אינטרנט (באפליקציה)\n\n👈 https://games.booqli.ai/school/dictation/?utm_source=whatsapp&utm_medium=share&utm_campaign=school-dictation\n\n🙏 מכירים הורים או מורות של כיתות א'–ג'? שלחו להם את ההודעה הזו 💕\n🙏 עזרו לנו לגדול – הזמינו חברים לקבוצה 💕\nhttps://chat.whatsapp.com/I00ZXog0R88HDDMolWYKbx",
+   "bytes": 2774326
+  },
+  {
+   "id": "dictation-9x16",
+   "group": "dictation",
+   "topic": "school-dictation",
+   "title": "מאמן ההכתבה – 9:16 (סטורי)",
+   "kind": "video",
+   "ratio": "9:16",
+   "file": "dictation/booqli-dictation-9x16.mp4",
+   "thumb": "dictation/booqli-dictation-9x16.jpg",
+   "date": "2026-11-04",
+   "text": "✏️ חדש! מאמן ההכתבה – לכל ילדי כיתות א'–ג'\nהמורה נתנה מילים להכתבה? מקלידים אותן פעם אחת (הניקוד נוסף לבד), והילדים מתרגלים ב-5 משחקים: בונים מילה, מי כתובה נכון, מפוצצים בלונים, כותבים מהזיכרון והכתבה אמיתית 🎈\n📲 שולחים קישור אחד לכל הורי הכיתה – והמילים נטענות אצל כולם.\n\n✅ בחינם – הכל. תמיד.\n🛡️ בטוח לילדים\n📴 עובד גם בלי אינטרנט (באפליקציה)\n\n👈 https://games.booqli.ai/school/dictation/?utm_source=whatsapp&utm_medium=share&utm_campaign=school-dictation\n\n🙏 מכירים הורים או מורות של כיתות א'–ג'? שלחו להם את ההודעה הזו 💕\n🙏 עזרו לנו לגדול – הזמינו חברים לקבוצה 💕\nhttps://chat.whatsapp.com/I00ZXog0R88HDDMolWYKbx",
+   "bytes": 3249565
   }
  ]
 }

@@ -198,8 +198,9 @@ window.addEventListener("popstate", () => route());
 const GAMES = {
   build: {ic:"🧩", t:"בונים מילה", s:"שומעים ומסדרים את האותיות", c:"g1"},
   pick:  {ic:"🔍", t:"מי כתובה נכון?", s:"מוצאים את הכתיב הנכון", c:"g2"},
-  write: {ic:"✏️", t:"כותבים במחברת", s:"כותבים ביד או במקלדת", c:"g3"},
-  test:  {ic:"📝", t:"הכתבה אמיתית", s:"כל המילים, כמו בכיתה", c:"g4"}
+  balloon: {ic:"🎈", t:"מפוצצים בלונים", s:"מפוצצים את האותיות לפי הסדר", c:"g5"},
+  write: {ic:"👀", t:"מסתכלים, מסתירים, כותבים", s:"זוכרים את המילה וכותבים מהזיכרון", c:"g3"},
+  test:  {ic:"📝", t:"הכתבה אמיתית", s:"כמו בכיתה: שומעים, כותבים, ובסוף מקבלים ציון", c:"g4 wide"}
 };
 let incoming = null, incomingCls = ""; /* רשימה (וכיתה) שהגיעו בקישור */
 let G1 = null;       /* המשחק הנוכחי */
@@ -301,7 +302,7 @@ function parents(){
     const list = S.example ? [] : S.words, wa = $("pWa"), cp = $("pCopy");
     if (!list.length) { wa.removeAttribute("href"); wa.onclick = e => { e.preventDefault(); st.textContent = "קודם שומרים מילים, ואז שולחים."; }; cp.onclick = wa.onclick; return; }
     const link = listLink(list);
-    const msg = "שלום הורים" + (S.cls ? " של " + clsName(S.cls) : "") + " 😊\nאלה מילות ההכתבה של השבוע:\n" + list.join(", ") + "\n\nבקישור יש משחקים לתרגול (בונים מילה, מוצאים את הכתיב הנכון וכותבים במחברת), והרשימה כבר נטענת לבד:\n" +
+    const msg = "שלום הורים" + (S.cls ? " של " + clsName(S.cls) : "") + " 😊\nאלה מילות ההכתבה של השבוע:\n" + list.join(", ") + "\n\nבקישור יש משחקים לתרגול (בונים מילה, מפוצצים בלונים, מוצאים את הכתיב הנכון וכותבים מהזיכרון), והרשימה כבר נטענת לבד:\n" +
       link + "&utm_source=whatsapp&utm_medium=class_parents&utm_campaign=school-dictation\n\nבחינם, בחסות BOOQLI 💛";
     wa.href = "https://wa.me/?text=" + encodeURIComponent(msg);
     wa.onclick = () => ev("dict-share", "whatsapp");
@@ -354,12 +355,13 @@ function start(type){
   ev("dict-game", type);
   next();
 }
-function frame(bubble){
-  app.innerHTML = '<section class="card">' +
+function frame(bubble, exam){
+  app.innerHTML = '<section class="card' + (exam ? ' paper exam' : '') + '">' +
     '<div class="pbar2"><button type="button" class="x" id="quit" aria-label="יציאה">✕</button><div class="dots">' +
     G1.list.map((_, i) => '<i class="' + (i < G1.i ? "on" : i === G1.i ? "now" : "") + '"></i>').join("") +
     '</div><span class="starpill">⭐ <span id="rs">' + G1.earned + '</span></span></div>' +
-    '<div class="say"><img src="../../img/family/alef.webp" alt="" width="56" height="58"><div class="bubble" id="bub">' + bubble + '</div></div>' +
+    (exam ? '<div class="examh"><span class="num">' + (G1.i + 1) + '.</span><div><b>הכתבה' + (S.cls ? ' · ' + esc(clsName(S.cls)) : '') + '</b><small id="bub">' + bubble + '</small></div></div>'
+      : '<div class="say"><img src="../../img/family/alef.webp" alt="" width="56" height="58"><div class="bubble" id="bub">' + bubble + '</div></div>') +
     '<div id="stage"></div></section>';
   $("quit").onclick = () => go("");
   return $("stage");
@@ -370,7 +372,7 @@ function next(){
   if (G1.i >= G1.list.length) return finish();
   G1.peeks = 0; G1.miss = 0;
   const w = G1.list[G1.i];
-  ({build, pick, write, test})[G1.type](w);
+  ({build, pick, balloon, write, test})[G1.type](w);
   setTimeout(() => speak(w), 350);
 }
 function award(w, k, n){ G1.earned += n; S.stars += n; setBest(w, k, n); save(); const r = $("rs"); if (r) r.textContent = G1.earned; }
@@ -426,6 +428,48 @@ function pick(w){
     }; box.appendChild(b); });
 }
 
+/* --- 🎈 מפוצצים בלונים: בלונים עולים עם אותיות, מפוצצים לפי הסדר --- */
+function balloon(w){
+  const st = frame("מקשיבים למילה ומפוצצים את הבלונים לפי הסדר של האותיות. מתחילים מימין!");
+  st.appendChild(listen(w));
+  const cs = clusters(w), need = cs.filter(c => c.b !== " ").map(c => c.b + c.m);
+  const slots = document.createElement("div"); slots.className = "slots rd wd"; const sl = [];
+  cs.forEach(c => { const s = document.createElement("div"); if (c.b === " ") s.className = "slot gap"; else { s.className = "slot"; sl.push(s); } slots.appendChild(s); });
+  const sky = document.createElement("div"); sky.className = "sky"; sky.setAttribute("aria-label", "בלונים עם אותיות");
+  st.append(slots, sky);
+  const decoys = []; cs.forEach((c, i) => { if (c.b === " ") return; (CONF[c.b] || []).forEach(a => { const isEnd = i === cs.length - 1 || cs[i + 1].b === " "; if (FINALS.has(a) && !isEnd) return; if (FIN[a] && isEnd) return; const t = a + fixM(a, c.m); if (!need.includes(t) && !decoys.includes(t)) decoys.push(t); }); });
+  if (!decoys.length) decoys.push("א", "ב", "מ");
+  let pos = 0, alive = true, last = 0, lastSpawn = -9999, items = [];
+  const slow = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mark = () => sl.forEach((s, i) => s.classList.toggle("next", i === pos)); mark();
+  function spawn(text){
+    const b = document.createElement("button"); b.type = "button"; b.className = "bal rd wd c" + rnd(5); b.textContent = text; b.setAttribute("aria-label", "בלון: " + text);
+    const W = sky.clientWidth || 300; b.style.left = (6 + rnd(Math.max(1, W - 88))) + "px";
+    const it = {el: b, y: (sky.clientHeight || 340) + 4, v: (slow ? .35 : .6) + Math.random() * .45, text, dead: false};
+    b.style.transform = "translateY(" + it.y + "px)"; b.onclick = () => hit(it); sky.appendChild(b); items.push(it);
+  }
+  function hit(it){
+    if (it.dead || pos >= need.length) return;
+    if (it.text === need[pos]) { it.dead = true; it.el.classList.add("popped"); setTimeout(() => it.el.remove(), 300); sl[pos].textContent = it.text; pos++; mark(); SND.pop(); if (pos === need.length) done(); }
+    else if (!it.el.classList.contains("bad")) { G1.miss++; SND.soft(); it.el.classList.add("bad"); }
+  }
+  function tick(t){
+    if (!alive || !sky.isConnected) { alive = false; return; }
+    const dt = last ? Math.min(50, t - last) : 16; last = t;
+    items.forEach(it => { if (it.dead) return; it.y -= it.v * dt * .12; it.el.style.transform = "translateY(" + it.y + "px)"; if (it.y < -100) { it.dead = true; it.el.remove(); } });
+    items = items.filter(i => !i.dead);
+    const hasNeed = items.some(i => i.text === need[pos] && !i.el.classList.contains("bad"));
+    if (items.length < 5 && t - lastSpawn > (hasNeed ? 750 : 250)) { lastSpawn = t; spawn(!hasNeed || Math.random() < .35 ? need[pos] : Math.random() < .65 ? decoys[rnd(decoys.length)] : need[rnd(need.length)]); }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  function done(){
+    alive = false; items.forEach(i => { i.el.classList.add("popped"); setTimeout(() => i.el.remove(), 300); });
+    const n = Math.max(1, 3 - G1.miss - G1.peeks); award(w, "b", n); SND.win(); confetti(); speak(w);
+    bub(PRAISE() + " " + stars(n)); setTimeout(() => { sky.remove(); }, 320); st.appendChild(nextBtn());
+  }
+}
+
 /* --- לוח כתיבה --- */
 function makePad(){
   const wrap = document.createElement("div"); wrap.className = "pad";
@@ -466,11 +510,19 @@ function tools(pad){ const r = document.createElement("div"); r.className = "row
   r.innerHTML = '<button type="button" class="btn alt sm">↶ ביטול קו</button><button type="button" class="btn alt sm">🧽 מחיקה</button>';
   r.children[0].onclick = () => pad.undo(); r.children[1].onclick = () => pad.clear(); return r; }
 
-/* --- ✏️ כותבים במחברת --- */
+/* --- 👀 מסתכלים, מסתירים, כותבים --- */
 function write(w){
-  const st = frame(G("תקשיב וכתוב את המילה. אחר כך לוחצים \"סיימתי\".", "תקשיבי וכתבי את המילה. אחר כך לוחצים \"סיימתי\".", "מקשיבים וכותבים את המילה. אחר כך לוחצים \"סיימתי\"."));
-  st.appendChild(listen(w));
-  const area = document.createElement("div"); st.append(modes(paint), area);
+  const st = frame("מסתכלים טוב על המילה וזוכרים אותה. מוכנים? מסתירים וכותבים מהזיכרון!");
+  st.appendChild(listen(w, {noPeek: true}));
+  const model = document.createElement("div"); model.className = "model";
+  model.innerHTML = '<div class="cv mcv">' + esc(w) + '</div><div class="rd mrd">' + esc(w) + '</div><button type="button" class="btn purple wide" id="hideW">🙈 זכרתי! מסתירים וכותבים</button>';
+  const ms = modes(paint), area = document.createElement("div"); ms.hidden = true; area.hidden = true;
+  st.append(model, ms, area);
+  $("hideW").onclick = () => {
+    model.classList.add("off"); model.innerHTML = '<div class="hid">🙈 המילה מוסתרת</div><button type="button" class="peek">👀 הצצה (עולה כוכב)</button>';
+    model.querySelector(".peek").onclick = () => { G1.peeks++; peek(w); };
+    ms.hidden = false; area.hidden = false; bub("עכשיו כותבים מהזיכרון ✍️"); paint();
+  };
   let tries = 0, won = false;
   function win(out, fb){ if (won) return; won = true;
     const n = Math.max(1, (tries === 0 ? 3 : tries === 1 ? 2 : 1) - G1.peeks); award(w, "w", n); SND.win(); confetti(); bub(PRAISE() + " " + stars(n));
@@ -498,12 +550,11 @@ function write(w){
       area.append(pad.el, tools(pad), fin, out);
     }
   }
-  paint();
 }
 
 /* --- 📝 הכתבה אמיתית --- */
 function test(w){
-  const st = frame("מילה " + (G1.i + 1) + " מתוך " + G1.list.length + ". " + G("תקשיב, כתוב, ואז \"הבאה\".", "תקשיבי, כתבי, ואז \"הבאה\".", "מקשיבים, כותבים, ואז \"הבאה\"."));
+  const st = frame("מילה " + (G1.i + 1) + " מתוך " + G1.list.length + " · מקשיבים וכותבים, בלי הצצות. הציון בסוף!", true);
   st.appendChild(listen(w, {noPeek: true}));
   const area = document.createElement("div"); st.append(modes(paint), area);
   const label = () => G1.i + 1 >= G1.list.length ? "סיימתי את ההכתבה 🎉" : "המילה הבאה ←";
@@ -530,7 +581,7 @@ function finish(){
     app.innerHTML = '<section class="card end"><div class="emo">🏆</div><h2 style="font-size:30px;color:#C13671">' + PRAISE() + '</h2>' +
       '<p class="note">' + G("אספת", "אספת", "אספתם") + ' בסיבוב הזה</p><div class="bigscore">⭐ ' + G1.earned + '</div>' +
       '<div class="row"><button type="button" class="btn green" id="again">עוד סיבוב</button><button type="button" class="btn alt" id="home">לכל המשחקים</button></div>' +
-      (t === "build" ? '<p class="note" style="margin-top:12px">הבא בתור: 🔍 מי כתובה נכון?</p>' : t === "pick" ? '<p class="note" style="margin-top:12px">הבא בתור: ✏️ כותבים במחברת</p>' : '<p class="note" style="margin-top:12px">מוכנים? 📝 הכתבה אמיתית</p>') + '</section>';
+      (t === "build" ? '<p class="note" style="margin-top:12px">הבא בתור: 🔍 מי כתובה נכון?</p>' : t === "pick" ? '<p class="note" style="margin-top:12px">הבא בתור: 🎈 מפוצצים בלונים</p>' : t === "balloon" ? '<p class="note" style="margin-top:12px">הבא בתור: 👀 מסתכלים, מסתירים, כותבים</p>' : '<p class="note" style="margin-top:12px">מוכנים? 📝 הכתבה אמיתית</p>') + '</section>';
     $("again").onclick = () => start(t); $("home").onclick = () => go("");
     SND.win(); confetti(); return;
   }

@@ -1,6 +1,6 @@
 {
- "version": "2b587414e3c5",
- "bytes": 17035590,
+ "version": "e3823d5faf3a",
+ "bytes": 17121294,
  "fonts": [
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap",
@@ -151,6 +151,8 @@
   "/kids/play/games2.js",
   "/lib/jspdf-2.5.1.umd.min.js",
   "/qrcode.min.js",
+  "/school/dictation/",
+  "/school/dictation/app.js",
   "/school/reading/",
   "/school/reading/app.js",
   "/school/reading/data.js",
