@@ -392,7 +392,23 @@ async function step(env, from, st, ev, log, db){
       }
       break;
     case "name": if (id.startsWith("b:") && book(id.slice(2))) { c.book = id.slice(2); c.ver = ""; st.step = "ver"; break; }   /* לחצו על ספר אחר מהרשימה */
-      if (txt && !id) { c.name = txt.slice(0, 30); st.step = "ded"; } break;
+      if (id === "nm:first" && st.nameTry) { c.name = st.nameTry.split(" ")[0]; st.nameTry = ""; st.step = "ded"; break; }
+      if (id === "nm:all" && st.nameTry) { c.name = st.nameTry; st.nameTry = ""; st.step = "ded"; break; }
+      if (id === "nm:again") { st.nameTry = ""; break; }
+      if (txt && !id) {                                                      /* בודקים שזה שם פרטי בלבד */
+        const nm = txt.replace(/[.,!׳"'״]+$/g, "").replace(/\s+/g, " ").trim(), w = nm.split(" ");
+        if (/\d/.test(nm) || nm.length > 25 || w.length > 3 || !/[א-תa-z]/i.test(nm)) {
+          return S(text("נראה לי שזה לא שם 🙂\nכותבים רק את *השם הפרטי*, למשל: נועה"));
+        }
+        if (w.length > 1) {
+          st.nameTry = nm;
+          const cut = t => t.length > 19 ? t.slice(0, 18) + "…" : t;
+          return S(buttons(`כתבתם "${nm}".\nבספר מופיע רק *השם הפרטי* – בלי שם משפחה.\n(שם פרטי כפול, כמו "שי לי"? בוחרים את השם המלא)\n\nאיך לכתוב את השם בספר?`,
+            [["nm:first", cut("✅ " + w[0])], ["nm:all", cut("✅ " + nm)], ["nm:again", "✍️ לכתוב שוב"]]));
+        }
+        c.name = nm; st.step = "ded";
+      }
+      break;
     case "ded":
       if (id === "d:ok") st.step = "cover";
       else if (id === "d:next") { const L = dedIdeas(c.ver === "g", st); c.dedI = (c.dedI + 1) % L.length; c.ded = L[c.dedI]; }
