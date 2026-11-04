@@ -32,6 +32,9 @@ const BOOKS = [
 ].map(([id, name, img]) => ({ id, name, img: img ? `${SITE}/order/books/covers-jpg/${id}.jpg` : "" }));
 const book = id => BOOKS.find(b => b.id === id);
 const readLink = id => `${SITE}/kindergartens/?read=${id}`;
+/* לפני "איזה ספר?" (פעם אחת בשיחה): מה מיוחד בספרים + קישורי קריאה (לפי שמש) */
+const BOOKS_INTRO = "📚 *הספרים שלנו כתובים, ערוכים ומנוקדים.*\nההתאמה האישית היא ב:\n✨ שם הילד/ה בתוך הסיפור\n🎨 איורים אישיים בדמות הילד/ה\n💌 הקדשה אישית מטעמכם – מודפסת בעמוד השער\n\n📖 *אפשר לקרוא את הספרים לפני שבוחרים:*\n"
+  + BOOKS.filter(b => b.img).map(b => `• ${b.name}: ${readLink(b.id)}`).join("\n");
 const ils = n => n.toLocaleString("en-US") + " ₪";
 const tier = n => { let t = TIERS[0]; TIERS.forEach(r => { if (n >= r[0]) t = r; }); return t; };
 const priceOf = (n, cov) => tier(n)[cov === "soft" ? 1 : 2];                 /* פרטי: קשה (ברירת מחדל) או רכה */
@@ -189,7 +192,8 @@ async function ask(env, to, st, log, db){
   switch (st.step) {
     case "hi": return S(buttons(HI, [["s:go", "❤️ ספר לילד או לנכד"], ["s:gan", "🏫 הזמנה לגן"], HUMAN]));
     case "for": return S(buttons("למי הספר? ❤️", [["f:g", "👵 לנכד/ה שלי"], ["f:p", "👩 לילד/ה שלי"]]));
-    case "book": return S(list(`${n ? "איזה ספר לילד/ה הבא/ה?" : "איזה ספר תרצו?"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "b:"), st.page ? "עוד ספרים" : "הספרים"));
+    case "book": if (!st.intro) { st.intro = 1; await S(text(BOOKS_INTRO)); }
+      return S(list(`${n ? "איזה ספר לילד/ה הבא/ה?" : "איזה ספר תרצו?"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "b:"), st.page ? "עוד ספרים" : "הספרים"));
     case "ver": {
       const b = book(c.book);
       if (b.img && !st.reread) await S(image(b.img, b.name));
@@ -232,7 +236,8 @@ async function ask(env, to, st, log, db){
     case "g-name": return S(text("איזה כיף! 🏫 איך קוראים לגן? (ובאיזו עיר)"));
     case "g-teacher": return S(text("ואיך קוראים לך? 🙂"));
     case "g-kids": return S(text("כמה ילדים בגן? (כותבים מספר)"));
-    case "g-book": return S(list(`${G.books.length ? "איזה נושא נוסף?" : "איזה ספר לגן? 📚"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "gb:"), st.page ? "עוד ספרים" : "הספרים"));
+    case "g-book": if (!st.intro) { st.intro = 1; await S(text(BOOKS_INTRO)); }
+      return S(list(`${G.books.length ? "איזה נושא נוסף?" : "איזה ספר לגן? 📚"}\nלוחצים על "בוחרים ספר" ובוחרים מהרשימה.`, "בוחרים ספר", bookRows(st.page || 0, "gb:"), st.page ? "עוד ספרים" : "הספרים"));
     case "g-book2": {
       const bs = [["g:one", "✅ נושא אחד מספיק"], ["g:more", "➕ עוד נושא"]];
       if (G.books.some(id => book(id).img)) bs.push(["g:read", "לקרוא את תוכן הספרים"]);
