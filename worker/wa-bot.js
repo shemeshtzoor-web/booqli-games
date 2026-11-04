@@ -484,7 +484,8 @@ export async function handle(env, from, profile, ev, opts){
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3) await resume(env, from, st, log, db);
   } else if (!st || st.step === "done") {
     if (/הזמנה (סב|גן)-\d/.test(ev.text || "")) return;              /* הזמנה מלאה מהאתר – שמש מטפלת */
-    if (!(ev.id || TRIGGER.test(ev.text || ""))) return;           /* לא שיחה על ספר – לא מתערבים */
+    /* מספר עסקי – עונים לכל הודעה. רק אחרי הזמנה שהסתיימה ב-12 השעות האחרונות ("תודה!") לא פותחים מחדש, אלא אם מדברים על ספר/הזמנה */
+    if (st && !ev.id && !TRIGGER.test(ev.text || "") && Date.now() - (st.ts || 0) < 12 * 3600e3) return;
     st = { from, step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0, oid: newId("סב"), day: dayStr(), role: "g", mode: "private", g: { name: "", kids: 0, books: [], cover: "", ded: "", dedI: 0 } };
     if (ev.id === "human" || HUMAN_TXT.test(ev.text || "")) await step(env, from, st, { id: "human" }, log, db);
     else if (ev.id === "s:go" || ev.id === "s:gan") await step(env, from, st, ev, log, db);
