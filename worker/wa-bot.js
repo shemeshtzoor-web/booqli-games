@@ -10,7 +10,8 @@
    או בלחיצה על כפתור שלו. הזמנה מלאה מהאתר ("הזמנה סב-") – לא נוגע.
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
      WA_TOKEN, WA_PHONE_ID, VERIFY_TOKEN, APP_SECRET – מטא;  DRIVE_URL, DRIVE_KEY – הקוד בגוגל (worker/drive-saver.gs);
-     PAY_TEXT – פרטי התשלום לגנים (בנק / ביט / פייבוקס), נשלחים בסוף הזמנת גן. רק כסוד – המאגר ציבורי!
+   פרטי תשלום לא נמצאים בבוט: הבוט רק שואל איך נוח לשלם, ושמש שולחת את הפרטים בעצמה.
+   שאלה חופשית בכל שלב: הבוט עונה רק מתוך התשובות שכאן (QA) + "▶️ ממשיכים" / "🙋 לא עזר – לשמש"; לא יודע – עובר לשמש + מייל אליה.
    דרייב: כל תמונה נשמרת מיד ב"BOOQLI הזמנות / <מספר> · <שם> · <תאריך> / בנים|בנות / <שם הילד>.jpg";
    בסוף – מסמך "סיכום ההזמנה" + מייל לשמש. הדרייב לא זמין? התמונה נשמרת ב-KV ומנסים שוב בסוף ההזמנה.
    KV בשם STATE. כתובות: GET/POST /wa (webhook), GET /p/<id>.jpg (גיבוי תמונות), GET /orders?k=VERIFY_TOKEN. */
@@ -55,6 +56,29 @@ const FAQ = {
   price: ["💰 מחירים", "", "💰 מחירים"],
   faq: ["❓ עוד שאלות ותשובות", PAGE + "#faq", "❓ עוד שאלות"]
 };
+const PAYS = { bank: "🏦 העברה בנקאית", bit: "📱 ביט", paybox: "📱 פייבוקס", card: "💳 אשראי (בתיאום)" };
+/* תשובות מוכנות – רק מתוך ההודעות והמדריך של שמש. מה שלא כאן – עובר לשמש */
+const QA = {
+  pay: { re: /תשלום|לשלם|משלמים|ביט|פייבוקס|העברה בנקאית|אשראי/, a: st => st.mode === "gan" ? "💳 *תשלום:* התשלום מתבצע מראש, לפני תחילת עריכת הספרים – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." : "💳 *תשלום:* קודם רואים את כל הספר הדיגיטלי, ומשלמים רק אם אוהבים ❤️ – בהעברה בנקאית, ביט, פייבוקס, או אשראי בתיאום. בסוף ההזמנה בוחרים את הדרך הנוחה, ושמש שולחת את הפרטים." },
+  time: { re: /כמה זמן|מתי (זה )?(מגיע|מוכן|יהיה)|זמן אספקה|זמני אספקה|עריכה|תוך כמה/, a: st => "⏱️ *זמנים:* " + (st.mode === "gan" ? "עריכה עד 3 ימי עסקים מהתשלום. " : "") + "אחרי שמאשרים הדפסה – משלוח צ'יטה עד 14 ימי עסקים, או איסוף עצמי מבית הדפוס (ליד עפולה) בתיאום, כשבוע מאישור ההדפסה." },
+  ship: { re: /משלוח|איסוף|לאסוף|עפולה|צ'יטה|שליח/, a: () => "📦 *משלוח או איסוף:* 🚚 משלוח צ'יטה עד הבית – 40 ₪, עד 14 ימי עסקים מאישור ההדפסה. 🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – בלי עלות, בתיאום, כשבוע מאישור ההדפסה. בוחרים בסוף ההזמנה." },
+  ded: { re: /הקדש/, a: st => st.mode === "gan" ? "💌 *הקדשה:* הקדשה אחת לכל ילדי הגן, עד 350 תווים, *בלי שם הילד* (השם כבר בספר). אפשר אחת לבנים ואחת לבנות. אפשר לבחור הקדשה מוכנה או לכתוב לבד." : "💌 *הקדשה:* מציעים לכם הקדשה מוכנה (אפשר לבקש אחרת), או כותבים לבד – עד 300 תווים בערך." },
+  names: { re: /אותו שם|שם זהה|שני ילדים עם|שמות זהים/, a: () => "👯 *שני ילדים עם אותו שם:* כותבים בכיתוב של התמונה \"יוסי 1\", \"יוסי 2\" – וכך לא מתבלבלים." },
+  ai: { re: /בינה מלאכותית|\bAI\b|דומה|דמיון|איור/, a: () => "🤖 *האיורים:* בינה מלאכותית אינה מצלמה – גם כשהדמיון גבוה מאוד (עד 99%), ייתכנו הבדלים קלים במראה או בפרופורציות. *כל ספר עובר בדיקה אנושית*, איור אחר איור, לפני ההדפסה." },
+  check: { re: /אישור הדפסה|סקיצ|לבדוק|תיקון|תיקונים|לשנות/, a: () => "🔍 *לפני ההדפסה* נשלח לכם את הספר לאישור – בודקים שכל הילדים נמצאים, שהשמות נכונים ושאין שגיאות בהקדשה. האישור נועד לבדיקת הפרטים, לא לסבבי תיקונים בדמות. טעות שלנו – מתוקנת מיד." },
+  size: { re: /מידות|גודל|אריזה|לארוז|מידה/, a: () => "📦 *מידות:* כריכה רכה 20×20 ס״מ · כריכה קשה 21×21 ס״מ. הספרים מגיעים בלי אריזה אישית – הכי יפה לארוז בצלופן שקוף ובסרט 🎀" },
+  edit: { re: /לערוך|עריכה של|צריך לעשות/, a: () => "✂️ *אין צורך לערוך שום דבר!* שולחים תמונה, שם והקדשה – ומקבלים ספר מושלם." },
+  extra: { re: /ספרים נוספים|עוד ספרים במהלך|קופון|GANIM50|הנחה/i, a: st => st.mode === "gan" ? "🎁 *ספרים נוספים במהלך השנה:* כל גן מקבל קופון *GANIM50* – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה. ו🌱 *גן מביא גן:* כל גן שיגיע דרככם ויסגור הזמנה – 50 ₪ הנחה או זיכוי." : "💰 ככל שמזמינים יותר ספרים – המחיר של כל ספר יורד. כתבו \"כמה זה עולה\" ותקבלו את המחירים." }
+};
+const qaOf = t => { for (const k of Object.keys(QA)) if (QA[k].re.test(t)) return k; return ""; };
+const QA_BTNS = [["qa:go", "▶️ ממשיכים"], ["human", "🙋 לא עזר – לשמש"]];
+const looksQuestion = t => /\?|^(מה|איך|כמה|למה|מתי|האם|אפשר|יש|איפה|מי|באיזה|באיזו|למי|רציתי לשאול|שאלה)[\s,]/.test(t);
+/* שלבים שבהם כל טקסט הוא שאלה (אין שם תשובה בכתב) */
+const BTN_STEPS = ["hi", "for", "book", "ver", "cover", "picsmore", "more", "ship", "phone", "pay", "consent", "g-book", "g-book2", "g-cover", "g-check", "g-consent"];
+/* מייל לשמש: לקוחה צריכה אותך (דרך הקוד בגוגל) */
+async function alertOwner(env, st, from, why, q){
+  await drivePost(env, { action: "alert", order: st.oid || "", who: st.who || st.profile || "", phone: from, why, q: q || "", step: st.step || "" });
+}
 const faqMsg = k => `${FAQ[k][0]} – לוחצים על הקישור, ובסוף חוזרים לכאן:\n${FAQ[k][1]}`;
 function faqOf(t){
   if (/^(שאלות|שאלה|\?|❓)$/.test(t)) return "menu";
@@ -202,6 +226,7 @@ async function ask(env, to, st, log, db){
     case "addr": return S(text("לאיזו כתובת לשלוח? 📍\nכותבים עיר, רחוב ומספר (ואם צריך – קומה ודירה)."));
     case "phone": return S(buttons(`📞 לאיזה טלפון השליח יתקשר? ${fmtPhone(st.from)}?`, [["ph:yes", "✅ כן, למספר הזה"], ["ph:other", "✍️ מספר אחר"]]));
     case "phoneown": return S(text("כתבו את מספר הטלפון לשליח 📞"));
+    case "pay": return S(list(`${st.mode === "gan" ? "💳 התשלום מתבצע מראש, לפני תחילת עריכת הספרים." : "💳 קודם רואים את כל הספר, ומשלמים רק אם אוהבים ❤️"}\n\nבאיזו דרך נוח לך לשלם? שמש תשלח לך את הפרטים.`, "בוחרים דרך תשלום", Object.keys(PAYS).map(k => ({ id: "pay:" + k, title: PAYS[k] })), "תשלום"));
 
     /* ---- גן ---- */
     case "g-name": return S(text("איזה כיף! 🏫 איך קוראים לגן? (ובאיזו עיר)"));
@@ -250,13 +275,13 @@ async function ask(env, to, st, log, db){
 function summary(st, links){
   const covs = st.list.map(c => c.cover), n = covs.length, t = orderTotal(covs);
   const lines = st.list.map((c, i) => `❤️ *ספר ${i + 1}: ${book(c.book).name}* (${kidW(st, c)})\n📕 ${COVERS[c.cover || "hard"]}\n👤 שם: *${c.name}*\n✍️ הקדשה: ${c.ded}\n📷 ${c.pics.length} ${c.pics.length === 1 ? "תמונה" : "תמונות"}${links && c.pics.some(p => p.link) ? ":\n" + c.pics.filter(p => p.link).map(p => p.link).join("\n") : ""}`);
-  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n${shipLine(st) || "🚚 משלוח עד הבית " + ils(SHIP)}\n*סה"כ ${ils(t + shipCost(st))}*\n\n✓ אישור ההורים לתמונות – התקבל`;
+  return `📋 *סיכום הזמנה ${st.oid}*\n👤 המזמין/ה: ${st.who} (${isP(st) ? "הורה" : "סבא/סבתא"})\n\n${lines.join("\n\n")}\n\n💰 ${priceLine(covs)}\n${shipLine(st) || "🚚 משלוח עד הבית " + ils(SHIP)}\n*סה"כ ${ils(t + shipCost(st))}*${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 async function ganSummary(st, db, owner){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
   const nb = realNames(P.b), ng = realNames(P.g);
   const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n");
-  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
+  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
 async function step(env, from, st, ev, log, db){
@@ -265,17 +290,30 @@ async function step(env, from, st, ev, log, db){
   const id = ev.id || "", txt = (ev.text || "").trim();
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
   if (!st.from) st.from = from;
-  if (id === "human" || (!id && HUMAN_TXT.test(txt))) { st.human = Date.now(); await S(buttons("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה – לוחצים כאן, וממשיכים בדיוק מאיפה שעצרנו 👇", RESUME_BTN)); return; }
-  /* שאלות: "שאלות" = תפריט; מילות שאלה בטקסט חופשי = תשובה עם קישור; ואז חוזרים לאותה שאלה */
-  const free = !["dedown", "g-dedown", "name", "g-name", "g-teacher", "whoown", "addr", "phoneown"].includes(st.step);
-  const fq = id.startsWith("q:") ? id.slice(2) : (!id && txt && free ? faqOf(txt) : "");
-  if (fq === "menu") { await S(list("❓ במה אפשר לעזור?\nבוחרים נושא – ומקבלים הסבר קצר עם קישור.", "בוחרים שאלה", Object.keys(FAQ).filter(k => k !== "price" || st.mode === "gan").map(k => ({ id: "q:" + k, title: FAQ[k][2], description: FAQ[k][0].replace(/^\S+ /, "").slice(0, 72) })), "שאלות")); return; }
-  if (fq && FAQ[fq]) {
-    if (fq === "know") { await sendLong(S, KNOW); return st.step === "hi" ? undefined : ask(env, from, st, log, db); }
-    if (fq === "price" && st.mode === "gan") { const n = G.kids || 25; await S(text(`💰 מחיר לספר${G.kids ? ` (ל-${n} ספרים)` : ""}:\n${COVERS.hard} – ${ils(ganP("hard", n))}\n${COVERS.soft} – ${ils(ganP("soft", n))}\n${COVERS.staple} – ${n >= STAPLE.from ? ils(STAPLE.p) : "מ-20 ספרים"}\n\n🚚 משלוח צ'יטה ${ils(SHIP)}, או איסוף עצמי בלי עלות.\nהמחירים לגנים כוללים הנחה משמעותית לפי הכמות.`)); return st.step === "hi" ? undefined : ask(env, from, st, log, db); }
-    if (fq === "price" && st.mode !== "gan") { const covs = st.list.map(x => x.cover).concat(c.cover || "hard"); await S(text(`💰 המחיר יורד ככל שמזמינים יותר ספרים:\nספר אחד – קשה ${ils(priceOf(1, "hard"))} · רכה ${ils(priceOf(1, "soft"))}\n2 ספרים – קשה ${ils(priceOf(2, "hard"))} · רכה ${ils(priceOf(2, "soft"))} לספר\n3 ספרים – קשה ${ils(priceOf(3, "hard"))} · רכה ${ils(priceOf(3, "soft"))} לספר\n🚚 + משלוח עד הבית ${ils(SHIP)}, או איסוף עצמי בלי עלות`)); }
-    else await S(text(faqMsg(fq)));
-    return st.step === "hi" ? undefined : ask(env, from, st, log, db);
+  if (id === "human" || (!id && HUMAN_TXT.test(txt))) {
+    st.human = Date.now();
+    await S(buttons("בשמחה ❤️ שמש תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה – לוחצים כאן, וממשיכים בדיוק מאיפה שעצרנו 👇", RESUME_BTN));
+    await alertOwner(env, st, from, st.lastQ ? "לא עזר – מבקשת את שמש" : "מבקשת לדבר עם שמש", st.lastQ || txt);
+    return;
+  }
+  if (id === "qa:go") { st.lastQ = ""; return ask(env, from, st, log, db); }
+  /* שאלות: "שאלות" = תפריט; שאלה חופשית בכל שלב = תשובה רק מתוך מה שיש בבוט, ואם אין – לשמש */
+  const free = !["dedown", "g-dedown", "addr"].includes(st.step);
+  const asking = !id && txt && free && (looksQuestion(txt) || BTN_STEPS.includes(st.step));
+  const fq = id.startsWith("q:") ? id.slice(2) : (asking || (!id && txt && free && faqOf(txt) === "menu") ? faqOf(txt) : "");
+  if (fq === "menu") { await S(list("❓ במה אפשר לעזור?\nבוחרים נושא – או פשוט כותבים את השאלה.", "בוחרים שאלה", Object.keys(FAQ).filter(k => k !== "price" || st.mode === "gan").map(k => ({ id: "q:" + k, title: FAQ[k][2], description: FAQ[k][0].replace(/^\S+ /, "").slice(0, 72) })), "שאלות")); return; }
+  let answer = "";
+  if (fq === "know") answer = KNOW;
+  else if (fq === "price" && st.mode === "gan") { const n = G.kids || 25; answer = `💰 מחיר לספר${G.kids ? ` (ל-${n} ספרים)` : ""}:\n${COVERS.hard} – ${ils(ganP("hard", n))}\n${COVERS.soft} – ${ils(ganP("soft", n))}\n${COVERS.staple} – ${n >= STAPLE.from ? ils(STAPLE.p) : "מ-20 ספרים"}\n\n🚚 משלוח צ'יטה ${ils(SHIP)}, או איסוף עצמי בלי עלות.\nהמחירים לגנים כוללים הנחה משמעותית לפי הכמות.`; }
+  else if (fq === "price") answer = `💰 המחיר יורד ככל שמזמינים יותר ספרים:\nספר אחד – קשה ${ils(priceOf(1, "hard"))} · רכה ${ils(priceOf(1, "soft"))}\n2 ספרים – קשה ${ils(priceOf(2, "hard"))} · רכה ${ils(priceOf(2, "soft"))} לספר\n3 ספרים – קשה ${ils(priceOf(3, "hard"))} · רכה ${ils(priceOf(3, "soft"))} לספר\n🚚 + משלוח עד הבית ${ils(SHIP)}, או איסוף עצמי בלי עלות`;
+  else if (fq && FAQ[fq]) answer = faqMsg(fq);
+  else if (asking) { const k = qaOf(txt); if (k) answer = QA[k].a(st); }
+  if (answer) { st.lastQ = txt || fq; await sendLong(S, answer); return S(buttons("עזר? 🙂", QA_BTNS)); }
+  if (asking) {                                                  /* לא יודע – לא מנחש: עובר לשמש */
+    st.human = Date.now();
+    await S(buttons("שאלה טובה 🙂 אני רוצה שתקבלי תשובה מדויקת – העברתי אותה לשמש, והיא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\n\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN));
+    await alertOwner(env, st, from, "שאלה שהבוט לא יודע לענות עליה", txt);
+    return;
   }
   if (id.startsWith("page:")) { st.page = +id.slice(5); if (st.step === "ver") st.step = "book"; return ask(env, from, st, log, db); }
   switch (st.step) {
@@ -311,17 +349,18 @@ async function step(env, from, st, ev, log, db){
       else if (id === "m:no") { st.list.push(c); st.cur = fresh(); st.step = "ship"; }
       break;
     case "ship":
-      if (id === "sh:pickup") { st.ship = { method: "pickup" }; st.step = st.mode === "gan" ? "g-consent" : "consent"; }
+      if (id === "sh:pickup") { st.ship = { method: "pickup" }; st.step = "pay"; }
       else if (id === "sh:ship") { st.ship = { method: "ship" }; st.step = "addr"; }
       break;
     case "addr": if (txt && !id) { st.ship.addr = txt.slice(0, 200); st.step = "phone"; } break;
     case "phone":
-      if (id === "ph:yes") { st.ship.phone = fmtPhone(st.from); st.step = st.mode === "gan" ? "g-consent" : "consent"; }
+      if (id === "ph:yes") { st.ship.phone = fmtPhone(st.from); st.step = "pay"; }
       else if (id === "ph:other") st.step = "phoneown";
       break;
-    case "phoneown": if (txt && /\d{7,}/.test(txt.replace(/\D/g, ""))) { st.ship.phone = txt.slice(0, 30); st.step = st.mode === "gan" ? "g-consent" : "consent"; } else if (txt) { await S(text("כתבו מספר טלפון, למשל 050-1234567 📞")); return; } break;
+    case "phoneown": if (txt && /\d{7,}/.test(txt.replace(/\D/g, ""))) { st.ship.phone = txt.slice(0, 30); st.step = "pay"; } else if (txt) { await S(text("כתבו מספר טלפון, למשל 050-1234567 📞")); return; } break;
+    case "pay": if (id.startsWith("pay:") && PAYS[id.slice(4)]) { st.pay = id.slice(4); st.step = st.mode === "gan" ? "g-consent" : "consent"; } break;
     case "consent":
-      if (id === "c:yes") return finish(env, from, st, log, db, summary(st, false), summary(st, false), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️", CONSENT);
+      if (id === "c:yes") return finish(env, from, st, log, db, summary(st, false), summary(st, false), "תודה רבה! 🎉 קיבלנו את ההזמנה.\nשמש תכין את הספר הדיגיטלי ותשלח לך אותו כאן לתצוגה – ומשלמים רק אם אוהבים ❤️ (את פרטי התשלום שמש תשלח אחרי שתאשרי)", CONSENT);
       break;
 
     /* ---- גן ---- */
@@ -366,16 +405,15 @@ async function step(env, from, st, ev, log, db){
       else if (id === "g:morepics") { G.r = 0; st.step = "g-pics"; }
       break;
     case "g-consent":
-      if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), await ganSummary(st, db, true), ganNext(env), CONSENT_GAN);
+      if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), await ganSummary(st, db, true), ganNext(env, st), CONSENT_GAN);
       break;
   }
   return ask(env, from, st, log, db);
 }
 
-/* גן – מה קורה עכשיו + תשלום. פרטי התשלום (בנק/ביט) רק כסוד ב-Cloudflare: PAY_TEXT – לא בקוד, כי המאגר ציבורי */
-function ganNext(env){
-  return "תודה רבה! 🎉 קיבלנו את ההזמנה.\n\n*מה קורה עכשיו:*\n1️⃣ *תשלום* – התשלום מתבצע מראש, לפני תחילת עריכת הספרים." +
-    (env.PAY_TEXT ? "\n" + env.PAY_TEXT : "\nשמש תשלח לך כאן את פרטי התשלום.") +
+/* גן – מה קורה עכשיו. פרטי התשלום שמש שולחת בעצמה (לפי הדרך שנבחרה) */
+function ganNext(env, st){
+  return "תודה רבה! 🎉 קיבלנו את ההזמנה.\n\n*מה קורה עכשיו:*\n1️⃣ *תשלום* – מראש, לפני תחילת עריכת הספרים. שמש תשלח לך כאן את הפרטים" + (st && st.pay ? " ל" + PAYS[st.pay].replace(/^\S+ /, "") : "") + "." +
     "\n2️⃣ *עריכה* – עד 3 ימי עסקים מהתשלום.\n3️⃣ *אישור הדפסה* – נשלח לך כאן את כל הספרים לבדיקה: שכל הילדים נמצאים, שהשמות נכונים ושההקדשה נכונה. *אין צורך לבדוק את הסיפור או את האיורים.*\n4️⃣ *הדפסה ואספקה* – לפי מה שבחרתם (משלוח או איסוף).\n\n🌱 *גן מביא גן:* כל גן שיגיע דרככם ויסגור הזמנה – 50 ₪ הנחה או זיכוי, גם אם זה יקרה בעוד שנה.\n🎁 *צריכים ספרים נוספים במהלך השנה?* קופון *GANIM50* – 50 ₪ הנחה לכל הזמנה, בתוקף לשנה.\n\nתודה שבחרתם בבוקלי למתנה לכל ילדי הגן! ❤️";
 }
 
@@ -386,7 +424,7 @@ async function finish(env, from, st, log, db, sum, ownerSum, thanks, consentText
   await sendLong(S, sum);
   await sendLong(S, thanks);
   const drive = await driveOrder(env, st, from, consentAt, ownerSum, consentText, db);
-  await db.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: st.oid, mode: st.mode || "private", role: st.role || "", who: st.who, ship: st.ship || null, at: consentAt, consentAt, consentText, drive, text: ownerSum,
+  await db.put("order:" + Date.now() + ":" + from, JSON.stringify({ from, id: st.oid, mode: st.mode || "private", role: st.role || "", who: st.who, ship: st.ship || null, pay: st.pay || "", at: consentAt, consentAt, consentText, drive, text: ownerSum,
     list: st.list.map(c => ({ book: c.book, ver: c.ver, cover: c.cover, name: c.name, ded: c.ded, pics: c.pics })), gan: st.mode === "gan" ? st.g : null }), 90 * 86400);
 }
 

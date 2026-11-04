@@ -17,6 +17,7 @@ function doPost(e) {
     if (!secret || q.key !== secret) return out_({ ok: false, error: "key" });
     if (q.action === "photo") return out_(savePhoto_(q));
     if (q.action === "order") return out_(saveOrder_(q));
+    if (q.action === "alert") return out_(alert_(q));
     if (q.action === "ping") return out_({ ok: true, folder: root_().getUrl() });
     return out_({ ok: false, error: "action" });
   } catch (err) {
@@ -86,6 +87,21 @@ function saveOrder_(q) {
       + "<pre style='white-space:pre-wrap;font-family:Arial,sans-serif'>" + esc_(String(q.summary || "").replace(/\*/g, "")) + "</pre></div>"
   });
   return { ok: true, folder: folder.getUrl(), doc: f.getUrl(), photos: count };
+}
+
+/* לקוחה צריכה את שמש: {phone, who, why, q, order, step} – מייל קצר עם קישור לשיחה */
+function alert_(q) {
+  var me = Session.getEffectiveUser().getEmail(), phone = String(q.phone || "").replace(/\D/g, "");
+  MailApp.sendEmail({
+    to: me,
+    subject: "🙋 צריכים אותך בוואטסאפ: " + (q.who || phone) + " – " + (q.why || ""),
+    htmlBody: "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px'>"
+      + "<p><b>" + esc_(q.why || "") + "</b></p>"
+      + (q.q ? "<p>השאלה: «" + esc_(q.q) + "»</p>" : "")
+      + "<p>👤 " + esc_(q.who || "") + " · 📞 <a href='https://wa.me/" + phone + "'>" + phone + "</a>" + (q.order ? " · הזמנה " + esc_(q.order) : "") + "</p>"
+      + "<p>הבוט שותק בשיחה הזאת עד שתכתבי \"נמשיך בהזמנה\" (או שהלקוחה תלחץ ▶️ להמשיך).</p></div>"
+  });
+  return { ok: true };
 }
 
 function countPhotos_(folder) {                                  /* כל התמונות בתיקיות שמתחת (גם נושא/בנים) */
