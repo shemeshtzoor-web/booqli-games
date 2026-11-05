@@ -76,6 +76,7 @@ async function mediaId(env, db, key, link, filename, mime){
 async function sendVideo(S, key, env, db, log){
   const V = VIDS[key]; if (!V) return;
   const link = V.url ? SITE + V.url : `${SITE}/kindergartens/video/${V.file}`;
+  if (!log) await typing(env);
   const mid = log ? "" : await mediaId(env, db, "vid-" + key, link, V.file, "video/mp4");
   await S({ type: "video", video: Object.assign(mid ? { id: mid } : { link }, { caption: V.cap }) });
   if (!log) await new Promise(r => setTimeout(r, mid ? 3000 : 8000));
@@ -84,6 +85,7 @@ async function readBook(S, bid, v, env, db, log){
   if (!(PAGES[bid] || {})[v]) return;
   const name = `${bname(bid, v)} – ${v === "g" ? "גרסת בת" : "גרסת בן"}`, link = `${SITE}/order/books/pdf/${bid}-${v}.pdf`;
   const filename = name.replace(/\//g, "-").replace(/[\\:*?"<>|]/g, "") + ".pdf";
+  if (!log) await typing(env);
   const mid = log ? "" : await mediaId(env, db, bid + "-" + v, link, filename);
   await S({ type: "document", document: Object.assign(mid ? { id: mid } : { link }, { filename, caption: `📖 ספר לדוגמה: "${name}"\nלוחצים על הקובץ כדי לקרוא – ובינתיים ממשיכים כאן 👇` }) });
   if (!log) await new Promise(r => setTimeout(r, mid ? 3000 : 7000));
@@ -248,6 +250,11 @@ const HI = "שלום ❤️ כאן סבאבוקלי מבוקלי!\nאני אעז
 
 /* ===== שליחה לוואטסאפ ===== */
 const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם בן אדם" } };
+/* "מקליד…" בוואטסאפ (וגם ✓✓ כחול): מיד כשהודעה מגיעה, ושוב לפני עבודה איטית (סרטון, PDF, תמונה לדרייב). נמשך עד 25 שנ' או עד התשובה */
+async function typing(env){
+  if (!env.MID || !env.WA_TOKEN) return;
+  try { await fetch(`${GRAPH}/${env.WA_PHONE_ID}/messages`, { method: "POST", headers: { "Authorization": "Bearer " + env.WA_TOKEN, "Content-Type": "application/json" }, body: JSON.stringify({ messaging_product: "whatsapp", status: "read", message_id: env.MID, typing_indicator: { type: "text" } }) }); } catch (e) {}
+}
 async function wa(env, to, msg, log){
   const body = Object.assign({ messaging_product: "whatsapp", to }, msg);
   if (log) { log.push(body); return; }                       /* בבדיקות – רק רושמים */
@@ -469,7 +476,7 @@ async function lastInBurst(db, from, log){
   if (log) return true;
   const me = Date.now() + ":" + Math.random().toString(36).slice(2, 8);
   await db.put("burst:" + from, me, 120);
-  await new Promise(r => setTimeout(r, 5000));
+  await new Promise(r => setTimeout(r, 3500));
   return (await db.get("burst:" + from)) === me;
 }
 /* גן – תמונה שעוד לא יודעים של מי (או שלשם הזה כבר יש תמונה): שואלים, עם ציטוט של התמונה */
@@ -823,6 +830,7 @@ async function drivePost(env, body){
 /* תמונה: מורידים ממטא ושומרים בדרייב בשם הילד. הדרייב לא זמין – גיבוי ב-KV (90 יום), ומנסים שוב בסוף ההזמנה */
 async function savePic(env, st, sub, name, img, from, db, topic){
   if (!env.WA_TOKEN) return img;                                    /* בבדיקות בלי מטא */
+  await typing(env);
   try {
     const m = await (await fetch(`${GRAPH}/${img.media}`, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } })).json();
     const r = await fetch(m.url, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } }); if (!r.ok) return { media: img.media };
@@ -940,7 +948,9 @@ export default {
             else if (m.type === "image") { ev.image = { media: m.image.id, sha: m.image.sha256 || "" }; ev.caption = m.image.caption || ""; ev.mid = m.id || ""; }
             else continue;
             console.log("in", m.type, ev.id || (ev.image ? "image" : "text"));   /* לבדיקת תקלות – בלי תוכן ההודעה */
-            await handle(env, m.from, name, ev);
+            const envM = Object.assign({}, env, { MID: m.id || "" });     /* מזהה ההודעה – ל"מקליד…" */
+            await typing(envM);
+            await handle(envM, m.from, name, ev);
           }
         }
       })());
