@@ -11,6 +11,8 @@
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
      WA_TOKEN, WA_PHONE_ID, VERIFY_TOKEN, APP_SECRET – מטא;  DRIVE_URL, DRIVE_KEY – הקוד בגוגל (worker/drive-saver.gs);
      ES_APP_SECRET – הסוד של האפליקציה BOOQLI Connect (חיבור המספר 055 דרך הכפתור ב-booqli.ai/whatsapp-connect);
+     055 דרך Kapso (ספק רשמי, שימוש כפול): KAPSO_API_KEY (סוד – מפתח הפרויקט ב-Kapso), KAPSO_WEBHOOK_SECRET (סוד – אותו secret שבהגדרת ה-webhook ב-Kapso),
+       KAPSO_PHONE_ID (משתנה רגיל – מזהה המספר 055 ב-Kapso/מטא). ה-webhook מסוג Meta ב-Kapso שולח ל-/wa באותו פורמט של מטא.
      ES_LIVE = "1" – רק כששמש מאשרת: הבוט מתחיל לענות במספר 055. עד אז ההודעות ב-055 עוברות בלי תשובה מהבוט.
    פרטי תשלום לא נמצאים בבוט: הבוט רק שואל איך נוח לשלם, ושמש שולחת את הפרטים בעצמה.
    שאלה חופשית בכל שלב: הבוט עונה רק מתוך התשובות שכאן (QA) + "▶️ ממשיכים" / "🙋 לא עזר – לשמש"; לא יודע – עובר לשמש + מייל אליה.
@@ -19,6 +21,10 @@
    KV בשם STATE. כתובות: GET/POST /wa (webhook), GET /p/<id>.jpg (גיבוי תמונות), GET /orders?k=ORDERS_KEY (סגור אם לא הוגדר). */
 
 const GRAPH = "https://graph.facebook.com/v23.0";
+/* 055 דרך Kapso (ספק רשמי של מטא, שימוש כפול): אותן בקשות של מטא, דרך הכתובת שלהם ועם X-API-Key. מספר הבדיקה – ישירות למטא */
+const KAPSO = "https://api.kapso.ai/meta/whatsapp/v24.0";
+const api = env => env.WA_KAPSO === "1" ? { base: KAPSO, h: { "X-API-Key": env.KAPSO_API_KEY } } : { base: GRAPH, h: { "Authorization": "Bearer " + env.WA_TOKEN } };
+const canSend = env => env.WA_KAPSO === "1" ? !!env.KAPSO_API_KEY : !!env.WA_TOKEN;
 const SITE = "https://games.booqli.ai";
 const TRIGGER = /נכד|סבתא|סבא|סבים|ספר אישי|להזמין|הזמנה|booqli|בוקלי|גן|גננת|ספר/i;
 const MAX = 10, PICS = 5, SHIP = 40, GANBOOKS = 1;   /* פיילוט (5.11): נושא אחד לגן. שני נושאים – שמש ידנית */
@@ -68,7 +74,7 @@ async function mediaId(env, db, key, link, filename, mime){
     const fd = new FormData();
     fd.append("messaging_product", "whatsapp"); fd.append("type", mime);
     fd.append("file", new Blob([await pdf.arrayBuffer()], { type: mime }), filename);
-    const r = await fetch(`${GRAPH}/${env.WA_PHONE_ID}/media`, { method: "POST", headers: { "Authorization": "Bearer " + env.WA_TOKEN }, body: fd });
+    const A = api(env), r = await fetch(`${A.base}/${env.WA_PHONE_ID}/media`, { method: "POST", headers: A.h, body: fd });
     const j = await r.json();
     if (!j.id) { console.log("media upload failed", JSON.stringify(j)); return ""; }
     await db.put(k, j.id, 20 * 86400); return j.id;
@@ -262,13 +268,13 @@ const HI = "שלום ❤️ כאן סבאבוקלי מבוקלי!\nאני אעז
 const HUMAN = { type: "reply", reply: { id: "human", title: "🙋 לדבר עם בן אדם" } };
 /* "מקליד…" בוואטסאפ (וגם ✓✓ כחול): מיד כשהודעה מגיעה, ושוב לפני עבודה איטית (סרטון, PDF, תמונה לדרייב). נמשך עד 25 שנ' או עד התשובה */
 async function typing(env){
-  if (!env.MID || !env.WA_TOKEN) return;
-  try { await fetch(`${GRAPH}/${env.WA_PHONE_ID}/messages`, { method: "POST", headers: { "Authorization": "Bearer " + env.WA_TOKEN, "Content-Type": "application/json" }, body: JSON.stringify({ messaging_product: "whatsapp", status: "read", message_id: env.MID, typing_indicator: { type: "text" } }) }); } catch (e) {}
+  if (!env.MID || !canSend(env)) return;
+  try { const A = api(env); await fetch(`${A.base}/${env.WA_PHONE_ID}/messages`, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, A.h), body: JSON.stringify({ messaging_product: "whatsapp", status: "read", message_id: env.MID, typing_indicator: { type: "text" } }) }); } catch (e) {}
 }
 async function wa(env, to, msg, log){
   const body = Object.assign({ messaging_product: "whatsapp", to }, msg);
   if (log) { log.push(body); return; }                       /* בבדיקות – רק רושמים */
-  const r = await fetch(`${GRAPH}/${env.WA_PHONE_ID}/messages`, { method: "POST", headers: { "Authorization": "Bearer " + env.WA_TOKEN, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const A = api(env), r = await fetch(`${A.base}/${env.WA_PHONE_ID}/messages`, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, A.h), body: JSON.stringify(body) });
   if (!r.ok) console.log("wa send failed", r.status, await r.text());
 }
 const text = t => ({ type: "text", text: { body: t } });
@@ -911,11 +917,11 @@ async function drivePost(env, body){
 }
 /* תמונה: מורידים ממטא ושומרים בדרייב בשם הילד. הדרייב לא זמין – גיבוי ב-KV (90 יום), ומנסים שוב בסוף ההזמנה */
 async function savePic(env, st, sub, name, img, from, db, topic){
-  if (!env.WA_TOKEN) return img;                                    /* בבדיקות בלי מטא */
+  if (!canSend(env)) return img;                                    /* בבדיקות בלי מטא */
   await typing(env);
   try {
-    const m = await (await fetch(`${GRAPH}/${img.media}`, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } })).json();
-    const r = await fetch(m.url, { headers: { "Authorization": "Bearer " + env.WA_TOKEN } }); if (!r.ok) return { media: img.media };
+    const A = api(env), m = await (await fetch(`${A.base}/${img.media}` + (env.WA_KAPSO === "1" ? `?phone_number_id=${env.WA_PHONE_ID}` : ""), { headers: A.h })).json();
+    const r = env.WA_KAPSO === "1" ? await fetch(m.download_url) : await fetch(m.url, { headers: A.h }); if (!r.ok) return { media: img.media };
     const buf = await r.arrayBuffer(), mime = m.mime_type || "image/jpeg";
     const d = await drivePost(env, { action: "photo", order: st.oid, title: title(st, from), topic: topic || "", sub, name, mime, b64: b64(buf) });
     if (d) return { media: img.media, drive: d.file };
@@ -1093,7 +1099,13 @@ export async function handle(env, from, profile, ev, opts){
 }
 
 async function verify(req, env, body){
-  if (!env.APP_SECRET && !env.ES_APP_SECRET) return true;
+  if (!env.APP_SECRET && !env.ES_APP_SECRET && !env.KAPSO_WEBHOOK_SECRET) return true;
+  const ks = req.headers.get("X-Webhook-Signature");                 /* Kapso: HMAC-SHA256 hex של הגוף, בלי sha256= */
+  if (ks && env.KAPSO_WEBHOOK_SECRET) {
+    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.KAPSO_WEBHOOK_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const mac = [...new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body)))].map(b => b.toString(16).padStart(2, "0")).join("");
+    if (mac === ks.trim().toLowerCase()) return true;
+  }
   const sig = (req.headers.get("X-Hub-Signature-256") || "").replace("sha256=", "");
   for (const sec of [env.APP_SECRET, env.ES_APP_SECRET]) {         /* שתי האפליקציות: הבוט (מספר הבדיקה) ו-BOOQLI Connect (055) */
     if (!sec) continue;
@@ -1162,6 +1174,15 @@ async function esSignup(req, env){
   console.log("es connected", rec.waba, rec.phone.slice(-4), subscribed, synced.join(","));
   return out({ ok: true, waba: rec.waba, phone: rec.phone, subscribed, synced });
 }
+async function kapsoSync(env, db){
+  await db.put("kapso:synced", "1", 3650 * 86400);
+  const A = api(env), out = [];
+  for (const sync_type of ["smb_app_state_sync", "history"]) {
+    const r = await (await fetch(`${A.base}/${env.WA_PHONE_ID}/smb_app_data`, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, A.h), body: JSON.stringify({ messaging_product: "whatsapp", sync_type }) })).json().catch(() => ({}));
+    out.push(sync_type + ":" + (r.request_id ? "ok" : ((r.error && r.error.message) || "?").slice(0, 60)));
+  }
+  console.log("kapso sync", out.join(", "));
+}
 /* אנשי קשר ושיחות שהיו לפני החיבור – "מוכרים": הבוט לא עונה להם (שמש ממשיכה איתם כרגיל). #בוט בשיחה – הבוט כן עונה; #ידני – לא */
 async function markKnown(db, v){
   const ids = [];
@@ -1188,8 +1209,10 @@ export default {
         for (const e of j.entry || []) for (const ch of e.changes || []) {
           const v = ch.value || {};
           /* איזה מספר: 055 (BOOQLI Connect) או מספר הבדיקה. ב-055 הבוט עונה רק אחרי ES_LIVE="1" */
-          const pid = digits(v.metadata && v.metadata.phone_number_id), real = !!(es && es.phone && pid === es.phone && es.phone !== digits(env.WA_PHONE_ID));   /* מספר הבדיקה אף פעם לא "אמיתי" */
-          const envC = real ? Object.assign({}, env, { WA_PHONE_ID: es.phone, WA_TOKEN: es.token }) : env, live = !real || env.ES_LIVE === "1";
+          const pid = digits(v.metadata && v.metadata.phone_number_id), kap = !!(env.KAPSO_PHONE_ID && pid === digits(env.KAPSO_PHONE_ID));
+          const real = kap || !!(es && es.phone && pid === es.phone && es.phone !== digits(env.WA_PHONE_ID));   /* מספר הבדיקה אף פעם לא "אמיתי" */
+          const envC = kap ? Object.assign({}, env, { WA_PHONE_ID: pid, WA_KAPSO: "1" }) : real ? Object.assign({}, env, { WA_PHONE_ID: es.phone, WA_TOKEN: es.token }) : env, live = !real || env.ES_LIVE === "1";
+          if (kap && !(await db.get("kapso:synced"))) await kapsoSync(envC, db);   /* פעם אחת: לבקש ממטא אנשי קשר + היסטוריה (חובה תוך 24 שעות מהחיבור) */
           if (ch.field === "history" || ch.field === "smb_app_state_sync") { const n = await markKnown(db, v); console.log("known", ch.field, n); continue; }
           /* שמש כתבה בעצמה מהאפליקציה – הבוט שותק בשיחה הזאת (או חוזר, אם כתבה #בוט). #ידני – הבוט לא יענה לאיש הקשר הזה בכלל */
           if (ch.field === "smb_message_echoes") for (const m of v.message_echoes || []) {
