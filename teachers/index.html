@@ -19,7 +19,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../site.css">
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
-<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
+<style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}.revs{display:block;max-width:720px;margin:0 auto}
+.rev{margin:0;background:#fff;border-radius:20px;padding:16px 18px;box-shadow:0 6px 22px rgba(33,51,48,.09);min-height:150px;display:flex;flex-direction:column;justify-content:center}
+.rev blockquote{margin:0;font-size:16.5px;line-height:1.6}.rev figcaption{margin-top:6px;font-weight:800;color:var(--sage-deep);font-size:14px}
+</style>
 <link rel="preload" href="../common.js" as="script">
 <style>
 .bday-mega{margin-top:16px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;text-decoration:none;color:#213330;background:linear-gradient(160deg,#FDE6F6,#FFF6DD 60%,#E1F0EA);border:3px solid #FFC2E6;border-radius:32px;padding:30px 30px 26px;box-shadow:0 10px 28px rgba(193,54,113,.12);position:relative;overflow:hidden;min-height:360px}
@@ -109,6 +112,10 @@
 </a>
 <div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
 <div id="zone"></div>
+<section class="c-sec" id="reviews">
+  <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2><p>מילים אמיתיות של גננות, באישורן</p></div>
+  <div class="revs" id="revs"></div>
+</section>
 <section class="panel" id="gan-booqli">
   <h2>🏫 לגן מ-BOOQLI</h2>
   <p>ספר אישי לכל ילד בגן, שהילד הוא הגיבור שלו: השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד. מחירים סיטונאיים לגנים, לחגים ולסוף השנה. ואפשר גם לעצב ספר של הגן בכריכה קשה.</p>
@@ -124,6 +131,11 @@
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
 <script>
+/* "מה גננות אומרות" (עבר לכאן מדף הבית, 5.11.2026) – רק מילים אמיתיות, באישור */
+(function(){ const rv = document.getElementById("revs"); if (!rv || !window.REVIEWS) return;
+  REVIEWS.forEach(r => { const f = document.createElement("figure"); f.className = "rev"; const bq = document.createElement("blockquote"); bq.textContent = r.text; const c = document.createElement("figcaption"); c.textContent = "— " + r.name; f.append(bq, c); rv.appendChild(f); });
+  if (typeof siteCarousel === "function") siteCarousel(rv, {every: 6000, label: "מה גננות אומרות"}); })();
+
 const LIST = CATALOG.filter(t => t.aud.includes("t") && !t.zone && !t.book);
 const OPT = {gift: true};
 const notSoon = t => CAT.state(t) !== "soon";
