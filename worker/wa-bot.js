@@ -333,6 +333,16 @@ const roundName = (G, r) => { const [b, sub] = rounds(G)[r]; return (G.books.len
 const grpName = (G, key) => { const [b, sub] = String(key).split("|"); return (G.books.length > 1 ? `"${book(b).name}" – ` : "") + sub; };
 const kidName = t => String(t || "").split("\n")[0].replace(/[.,!׳"'״:]+$/g, "").replace(/\s+/g, " ").trim();
 const badKid = n => !n || n.length > 25 || n.split(" ").length > 3 || /\d/.test(n.replace(/ ?\d+$/, "")) || junk(n);
+/* שם שנשמע של בת בקבוצת הבנים (או להפך) – שואלים לפני ששומרים. רק סימנים חזקים, ותמיד אפשר לאשר "כן" */
+const FEM = new Set("מרים תמר אביטל לין נעמי מאי רות אסתר יעל מיכל הדס רחל לאה אביגיל ענבל קרן גלית שירן שני ורד אילת כנרת יסמין מור דבורה שושנה ליבי אורין חן־לי".split(" "));
+const MASC = new Set("דוד יוסף יוסי משה אברהם יצחק יעקב יונתן יהונתן איתי עידו יואב אורי רועי עומר תומר אלון גיא אסף בן מיכאל ניר רון אדם איתן נדב עידן אלעד אמיר ארי בועז הראל חיים יאיר ינאי מתן עוז שגיא אביתר אלי נהוראי ראם רפאל שמעון שמואל ישראל אהרון נתנאל אריה שלמה יהודה".split(" "));
+const MASC_H = new Set("משה יונה אריה שלמה יהודה ישעיה זכריה נחמיה עובדיה טוביה אליה נוה".split(" "));
+function sexHint(n){
+  const w = String(n || "").split(" ")[0];
+  if (FEM.has(w) || /ית$/.test(w) || (/ה$/.test(w) && !MASC_H.has(w))) return "בנות";
+  if (MASC.has(w)) return "בנים";
+  return "";
+}
 const realNames = a => [...new Set(a.filter(x => x !== "ללא שם"))];
 const names = a => [...new Set(a)].join(", ");
 const cnt = (n, one, many) => n === 1 ? one : n + " " + many;
@@ -483,6 +493,9 @@ async function lastInBurst(db, from, log){
 function askPendF(S, st, pr, n){
   const G = st.g;
   st.gask = pr.k;
+  if (pr.sexAsk) { const [, sub] = String(G.grp).split("|"), girls = sub === "בנות";
+    return S(quote(buttons(`"${pr.name}" ב*${sub}*? 🤔\nהשם נשמע של ${girls ? "בן" : "בת"} – רק מוודאת שהתמונה בקבוצה הנכונה.`,
+      [["gs:keep", `✅ כן, ${sub}`], ["gs:move", girls ? "👦 להעביר לבנים" : "👧 להעביר לבנות"]]), pr.mid)); }
   if (pr.name) return S(quote(buttons(`ל*${pr.name}* כבר יש תמונה ב${grpName(G, G.grp)}.\nבגנים – תמונה אחת לכל ילד/ה. מה עושים עם התמונה הזו?`,
     [["gr:rep", "🔄 להחליף"], ["gr:new", "👯 ילד/ה אחר/ת"], ["gr:no", "❌ לא לשמור"]]), pr.mid));
   return S(quote(text(`עבור מי התמונה הזו? 📷\nכותבים רק את השם הפרטי 👇${n > 1 ? `\n(יש עוד ${n - 1} ${n - 1 === 1 ? "תמונה" : "תמונות"} בלי שם – נשאל על כל אחת)` : ""}`), pr.mid));
@@ -517,7 +530,9 @@ async function step(env, from, st, ev, log, db){
       if (!pr.name && pr.cap && !badKid(pr.cap)) pr.name = pr.cap;
       if (!pr.name && st.gname) { pr.name = st.gname; st.gname = ""; }
       if (!pr.name) { await db.put(pr.k, JSON.stringify(pr), 90 * 86400); st.gok = saved.join(", "); if (saved.length) await S(text(`📷 ${saved.join(", ")} ✓`)); return askPend(pr, P.pend.length - P.pend.indexOf(pr)); }
-      const [b, sub] = G.grp.split("|"), old = P.recs.filter(r => r.book === b && r.sub === sub && r.name === pr.name);
+      const [b, sub0] = G.grp.split("|"), sub = pr.sub || sub0;
+      if (!pr.sexOk && !pr.sub && sexHint(pr.name) && sexHint(pr.name) !== sub) { pr.sexAsk = 1; await db.put(pr.k, JSON.stringify(pr), 90 * 86400); if (saved.length) await S(text(`📷 ${saved.join(", ")} ✓`)); return askPend(pr, 1); }
+      const old = P.recs.filter(r => r.book === b && r.sub === sub && r.name === pr.name);
       if (old.length && !pr.rep) { await db.put(pr.k, JSON.stringify(pr), 90 * 86400); if (saved.length) await S(text(`📷 ${saved.join(", ")} ✓`)); return askPend(pr, 1); }
       for (const o of old) { if (o.drive) await drivePost(env, { action: "trash", file: o.drive }); await db.del(o.k); }   /* הוחלפה – הישנה לאשפה בדרייב */
       const topic = G.books.length > 1 ? book(b).name : "";
@@ -525,7 +540,7 @@ async function step(env, from, st, ev, log, db){
       await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: b, topic, sub, name: pr.name, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "", sha: pr.sha || "", media: pr.media, rep: old.length ? 1 : 0 }), 90 * 86400);
       await db.del(pr.k);
       if (pr.sha) shas.set(pr.sha, pr.name);
-      saved.push(pr.name + (old.length ? " (הוחלפה)" : ""));
+      saved.push(pr.name + (old.length ? " (הוחלפה)" : "") + (sub !== sub0 ? ` (ב${sub})` : ""));
     }
     st.gok = saved.join(", ");
     return ask(env, from, st, log, db);
@@ -743,6 +758,13 @@ async function step(env, from, st, ev, log, db){
       if (id.startsWith("gg:") && rounds(G).some(([b, sub]) => b + "|" + sub === id.slice(3))) { G.grp = id.slice(3); return ganFlush(); }
       if (id === "g:grp" || id === "g:rdone") { G.grp = ""; break; }
       if (id === "g:fin") { const P = await ganPics(db, st); if (P.pend.length) { await S(text("רגע 🙂 יש עוד תמונה שלא יודעים של מי:")); break; } if (!P.all) { await S(text("עוד לא קיבלנו תמונות 🙂")); break; } st.step = "g-check"; break; }
+      if (/^gs:(keep|move)$/.test(id) && st.gask) {                     /* בן/בת – אישור או העברה */
+        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; break; }
+        const sub0 = String(G.grp).split("|")[1]; pr.sexAsk = 0; pr.sexOk = 1;
+        if (id === "gs:move") pr.sub = sub0 === "בנים" ? "בנות" : "בנים";
+        await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
+        return ganFlush();
+      }
       if (/^gr:(rep|new|no)$/.test(id) && st.gask) {                    /* לשם הזה כבר יש תמונה */
         const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; break; }
         if (id === "gr:no") { await db.del(st.gask); st.gask = ""; await S(text("אין בעיה – לא שמרנו את התמונה הזו 👍")); return ganFlush(); }
@@ -754,6 +776,23 @@ async function step(env, from, st, ev, log, db){
       if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט כותבים \"להמשיך\".")); return; }
       if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
       if (txt && !id && !/^להמשיך$/.test(txt)) {
+        const mv = txt.match(/^(?:להעביר (?:את )?)?(.+?)\s+(?:ל|זו |זה |היא |הוא )?(בנות|בנים|בת|בן)[.!]?$/);
+        if (mv && G.grp && !badKid(kidName(mv[1]))) {
+          const who = kidName(mv[1]), to = /בנות|בת/.test(mv[2]) ? "בנות" : "בנים", [b] = G.grp.split("|");
+          const P = await ganPics(db, st), rec = P.recs.find(r => r.book === b && r.name === who && r.sub !== to);
+          if (rec) {                                                      /* כבר נשמרה בקבוצה הלא נכונה – מעבירים */
+            const topic = G.books.length > 1 ? book(b).name : "";
+            const p = await savePic(env, st, to, who, { media: rec.media }, from, db, topic);
+            if (rec.drive) await drivePost(env, { action: "trash", file: rec.drive });
+            await db.del(rec.k);
+            await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify(Object.assign({}, rec, { k: undefined, sub: to, drive: p.drive || "", pending: p.pending || "" })), 90 * 86400);
+            await S(text(`✓ העברתי את ${who} ל*${to}*`));
+            return ask(env, from, st, log, db);
+          }
+          G.grp = b + "|" + to; st.gname = who;                          /* עוד לא נשלחה – התמונה הבאה תיכנס לקבוצה הנכונה */
+          await S(text(`${to === "בנות" ? "👧" : "👦"} ${who} – ב*${grpName(G, G.grp)}* ✓`));
+          return ask(env, from, st, log, db);
+        }
         const nm = kidName(txt);
         if (badKid(nm)) { await S(text("כותבים רק את *השם הפרטי* של הילד/ה 🙂 למשל: נועה\n(שני ילדים עם אותו שם? נועה 1, נועה 2)")); break; }
         if (st.gask) {                                                  /* תשובה ל"עבור מי התמונה הזו?" */
