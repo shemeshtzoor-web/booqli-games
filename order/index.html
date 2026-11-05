@@ -60,6 +60,21 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .lead b{color:var(--ink)}
 .note{margin-top:12px;background:#F6FAF8;border-radius:14px;padding:10px 14px;font-size:16px}
 .warn{margin-top:12px;background:#FFF8E6;border:2px solid #FBE3A6;border-radius:14px;padding:10px 14px;font-size:16px}
+/* העלאת תמונות ישר לדרייב (5.11.2026) */
+.up{margin-top:12px;background:#fff;border:2px solid var(--pink-soft);border-radius:18px;padding:14px}
+.up .chk{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.45;margin:6px 0 12px}.up .chk input{width:22px;height:22px;flex-shrink:0;margin-top:2px;accent-color:var(--pink-btn)}
+.upcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:620px){.upcols{grid-template-columns:1fr}}
+.upcol{background:#FBF6F9;border-radius:14px;padding:10px}.upcol h4{font-size:18px;margin-bottom:8px}.upcol.boy{background:#F1F7FB}
+.uplist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.uplist li{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:6px}
+.uplist img{width:46px;height:46px;object-fit:cover;border-radius:10px;flex-shrink:0}
+.uplist input,.uplist select{flex:1;min-width:0;font:inherit;font-size:16px;border:1.5px solid #e6d6df;border-radius:10px;padding:7px 8px}
+.uplist select{flex:0 1 110px}
+.uplist .rm{border:0;background:none;font-size:18px;cursor:pointer;color:var(--muted);padding:4px}
+.uplist .s{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.up .st{font-weight:800;text-align:center;color:var(--sage-deep);margin-top:8px;min-height:22px}
+.up .cnt{font-weight:800;color:var(--magenta)}
+.up details{margin-top:12px}.up summary{cursor:pointer;font-weight:800;color:var(--sage-deep)}
 .btn{border:0;border-radius:999px;padding:13px 22px;font:800 18px Assistant,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-main{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}
 .btn-green{background:var(--wa);color:#fff;box-shadow:0 4px 0 #157a3d}
@@ -417,7 +432,25 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   </div>
 
   <div class="sub" id="d-folder">
-    <h3><span class="ck">4</span>התיקייה בדרייב והעלאת התמונות 📁</h3>
+    <h3><span class="ck">4</span>העלאת התמונות 📤</h3>
+    <div class="up" id="upBox">
+      <p><b>מעלים את התמונות כאן – הן נשמרות ישר אצלנו</b>, מסודרות לבנים ולבנות. לא צריך תיקייה ולא צריך לשנות שמות לקבצים.</p>
+      <label class="chk"><input type="checkbox" id="upConsent"> <span>קיבלנו אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים כדי ליצור מהן איורים לספר (גם בבינה מלאכותית), וקראנו את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונות נמחקות כ-3 חודשים אחרי ההזמנה.</span></label>
+      <div class="upcols">
+        <div class="upcol boy" data-sub="בנים"><h4>👦 בנים</h4><label class="btn btn-soft">➕ בוחרים תמונות<input type="file" accept="image/*" multiple hidden data-pick="בנים"></label><ul class="uplist" id="upL-בנים"></ul></div>
+        <div class="upcol" data-sub="בנות"><h4>👧 בנות</h4><label class="btn btn-soft">➕ בוחרים תמונות<input type="file" accept="image/*" multiple hidden data-pick="בנות"></label><ul class="uplist" id="upL-בנות"></ul></div>
+      </div>
+      <p class="note" style="font-size:15px">✏️ ליד כל תמונה כותבים את <b>השם הפרטי של הילד/ה</b> – כך הוא יודפס בספר.</p>
+      <div class="row"><button type="button" class="btn btn-main" id="upGo">⬆️ מעלים את התמונות</button></div>
+      <p class="st" id="upSt" aria-live="polite"></p>
+      <p id="upHave" hidden>✔️ כבר אצלנו: <span class="cnt" id="upCnt">0</span> תמונות. אפשר להוסיף עוד בכל רגע עד שלוחצים "סיימנו".</p>
+      <details id="upParentsBox"><summary>👪 מעדיפים שכל הורה יעלה בעצמו?</summary>
+        <p style="margin-top:8px">שולחים לקבוצת ההורים הודעה עם קישור. כל הורה מאשר את התקנון, כותב את שם הילד/ה ומעלה תמונה – והיא נכנסת לאותה הזמנה של הגן. אפשר לשלב: חלק מעלים כאן וחלק ההורים.</p>
+        <div class="row"><a class="btn btn-green" id="upParents" href="#" target="_blank" rel="noopener">📣 הודעה מוכנה להורים עם קישור</a></div>
+      </details>
+      <div class="row"><button type="button" class="btn btn-green" id="upFinish" disabled>✅ סיימנו – כל התמונות עלו</button></div>
+    </div>
+    <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--sage-deep)">מעדיפים להעלות לתיקייה בדרייב?</summary>
     <div id="folderHave" hidden>
       <p><b>התיקייה שלכם מוכנה!</b> מעלים לשם את כל התמונות.</p>
       <div class="row"><a class="btn btn-main" id="folderLink" href="#" target="_blank" rel="noopener">📁 לתיקייה שלנו בדרייב</a></div>
@@ -435,6 +468,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <p class="warn">⚠️ <b>חשוב:</b> לאחר סגירת התיקייה <b>לא ניתן להחליף תמונות או להוסיף ספרים</b>. כל שינוי או הוספה אחר כך ייחשבו כהזמנה חדשה.</p>
     <p class="wait-note" id="folderWait" hidden>⏳ שמש פותחת לכם תיקייה. הקישור יגיע אליכם בוואטסאפ – <b>פותחים אותו, והשלב ממשיך מכאן</b>.</p>
     <div class="row" id="folderDoneRow"><a class="btn btn-green" id="folderDone" href="#" target="_blank" rel="noopener">💬 העלינו את כל התמונות</a></div>
+    </details>
   </div>
 
   <div class="sub" id="d-ded">
@@ -667,6 +701,73 @@ $("parentsMsg").addEventListener("click", e => {
 });
 $("askFolder").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nחתמנו על התקנון ✍️ ונשמח לתיקייה בדרייב להעלאת התמונות 📁\n" + orderLine()); mark("folderAsk"); });
 $("folderDone").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 📁 כאן " + who() + ".\nהעלינו את כל התמונות לתיקייה ✅"); mark("folder"); });
+
+/* ---- העלאת תמונות ישר לדרייב של שמש (5.11.2026) – דרך השרת של הבוט (worker/wa-bot.js /up), אותו סדר כמו בבוט:
+   BOOQLI הזמנות / גן-XXXX · <גן> · <תאריך> / [נושא] / בנים|בנות / <שם>.jpg. ההזמנה (מפתח + קוד להורים) נשמרת בדפדפן (S.up). ---- */
+const UPAPI = (window.SITE && SITE.driveUpload) || "https://booqli-wa.shemeshtzoor.workers.dev/up/";
+const UQ = [];   /* תמונות שבחרו ועוד לא עלו: {sub, blob, url, name, topic, st} */
+S.up = S.up || null;
+const upJ = (path, body, tok) => fetch(UPAPI + path, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, tok ? { "X-Tok": tok } : {}), body: JSON.stringify(body) }).then(r => r.json());
+async function upStart(){
+  if (S.up && S.up.tok) return S.up;
+  if (!$("upConsent").checked) { $("upSt").textContent = "☝️ מסמנים קודם את האישור למעלה"; throw new Error("consent"); }
+  const j = await upJ("start", { kind: "gan", gan: gan() || "גן", who: S.name, book: S.topics[0] || "", consent: true });
+  if (!j.ok) throw new Error(j.error || "start");
+  S.up = { tok: j.tok, oid: j.oid, code: j.code, n: 0, names: [], at: today() }; save(); return S.up;
+}
+const fileName = f => f.name.replace(/\.[^.]+$/, "").replace(/[_\-]+/g, " ").replace(/\b(IMG|DSC|PXL|WhatsApp Image)\b.*$/i, "").replace(/\d{6,}/g, "").trim().slice(0, 30);
+function shrink(file){ return new Promise(res => { const img = new Image(), u = URL.createObjectURL(file);
+  img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    c.toBlob(b => { URL.revokeObjectURL(u); res(b); }, "image/jpeg", .88); };
+  img.onerror = () => { URL.revokeObjectURL(u); res(null); }; img.src = u; }); }
+function upDraw(){
+  const tops = S.topics.length > 1 ? S.topics : [];
+  ["בנים", "בנות"].forEach(sub => { $("upL-" + sub).innerHTML = UQ.map((x, i) => x.sub !== sub ? "" : `<li><img src="${x.url}" alt=""><input data-uname="${i}" value="${esc(x.name)}" placeholder="שם ה${sub === "בנים" ? "ילד" : "ילדה"}" maxlength="30" ${x.st === "ok" ? "disabled" : ""}>${tops.length ? `<select data-utop="${i}" ${x.st === "ok" ? "disabled" : ""}>${tops.map(t => `<option value="${t}" ${x.topic === t ? "selected" : ""}>${esc((BOOKS.find(b => b.id === t) || {}).name || t)}</option>`).join("")}</select>` : ""}<span class="s">${x.st === "ok" ? "✅" : x.st === "err" ? "⚠️" : x.st === "up" ? "⏳" : ""}</span>${x.st === "ok" ? "" : `<button type="button" class="rm" data-urm="${i}" aria-label="להוריד">✕</button>`}</li>`).join(""); });
+  const left = UQ.filter(x => x.st !== "ok").length;
+  $("upGo").textContent = left ? `⬆️ מעלים ${left === 1 ? "תמונה אחת" : left + " תמונות"}` : "⬆️ מעלים את התמונות"; $("upGo").disabled = !left;
+  $("upHave").hidden = !(S.up && S.up.n); $("upCnt").textContent = S.up ? S.up.n : 0;
+  $("upFinish").disabled = !(S.up && S.up.n) || UQ.some(x => x.st !== "ok");
+  if (S.up && S.up.n) $("upConsent").checked = true;
+}
+$("upBox").addEventListener("change", async e => {
+  const p = e.target.dataset.pick; if (!p || !e.target.files.length) return;
+  const fs = [...e.target.files]; e.target.value = "";
+  for (const f of fs) { const b = await shrink(f); if (!b) continue; UQ.push({ sub: p, blob: b, url: URL.createObjectURL(b), name: fileName(f), topic: S.topics[0] || "", st: "" }); }
+  try { siteEvent("order_up_pick", String(fs.length)); } catch (x) {} upDraw();
+});
+$("upBox").addEventListener("input", e => { const i = e.target.dataset.uname; if (i !== undefined) UQ[+i].name = e.target.value; });
+$("upBox").addEventListener("change", e => { const i = e.target.dataset.utop; if (i !== undefined) UQ[+i].topic = e.target.value; });
+$("upBox").addEventListener("click", e => { const i = e.target.dataset && e.target.dataset.urm; if (i !== undefined) { URL.revokeObjectURL(UQ[+i].url); UQ.splice(+i, 1); upDraw(); } });
+$("upGo").addEventListener("click", async () => {
+  const todo = UQ.filter(x => x.st !== "ok");
+  const noName = todo.find(x => !x.name.trim()); if (noName) { $("upSt").textContent = "✏️ חסר שם ליד אחת התמונות"; return; }
+  let u; try { u = await upStart(); } catch (e) { if (e.message !== "consent") $("upSt").textContent = "❌ לא הצלחנו להתחבר – נסו שוב בעוד רגע"; return; }
+  $("upGo").disabled = true; let k = 0, bad = 0;
+  for (const x of todo) { k++; x.st = "up"; upDraw(); $("upSt").textContent = `⏳ מעלים… ${k} מתוך ${todo.length}`;
+    const q = "photo?sub=" + encodeURIComponent(x.sub) + "&name=" + encodeURIComponent(x.name.trim()) + (S.topics.length > 1 ? "&topic=" + encodeURIComponent((BOOKS.find(b => b.id === x.topic) || {}).name || "") : "");
+    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { const r = await fetch(UPAPI + q, { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": u.tok }, body: x.blob }); ok = r.ok; } catch (e) {} }
+    x.st = ok ? "ok" : "err"; if (ok) { u.n++; u.names.push((x.sub === "בנות" ? "👧 " : "👦 ") + x.name.trim()); save(); } else bad++; }
+  $("upSt").textContent = bad ? `⚠️ ${bad} תמונות לא עלו – לוחצים שוב על "מעלים"` : "✅ כל התמונות עלו!";
+  try { siteEvent("order_up_done", String(todo.length - bad)); } catch (x) {} upDraw();
+});
+$("upParents").addEventListener("click", async e => {
+  const a = e.currentTarget; if (a.dataset.ready) return; e.preventDefault();
+  let u; try { u = await upStart(); } catch (x) { $("upParentsBox").open = true; return; }
+  const link = location.origin + "/order/up/?c=" + u.code;
+  const t = `הורים יקרים 💛\nאנחנו מכינים לכל ילד וילדה בגן ${gan()} ספר אישי מ-BOOQLI – והילד/ה הם הגיבורים של הסיפור 📖\nכדי שהדמות תהיה דומה, צריך תמונה אחת טובה:\n⚪ רקע בהיר · 🙂 מבט ישר למצלמה · פנים גלויות (בלי כובע/משקפי שמש) · ילד/ה אחד/ת בתמונה\n\n👈 מעלים כאן (דקה אחת): ${link}\nקוד הגן: ${u.code}\nתודה!`;
+  a.href = "https://wa.me/?text=" + encodeURIComponent(t); a.dataset.ready = "1"; try { siteEvent("order_up_parents", ""); } catch (x) {} a.click();
+});
+$("upFinish").addEventListener("click", async () => {
+  if (!S.up) return; $("upFinish").disabled = true; $("upSt").textContent = "⏳ שולחים לשמש סיכום…";
+  const boys = S.up.names.filter(x => x.startsWith("👦")).length, girls = S.up.n - boys;
+  const summary = `🏫 ${who()}\n${orderLine()}\n\n📷 הועלו בעמוד: ${S.up.n} (👦 ${boys} · 👧 ${girls})\n${S.up.names.join("\n")}\n\n✓ אישור הגן (${S.up.at}): קיבלנו אישור מההורים לשימוש בתמונות ליצירת איורים לספר, וקראנו את התקנון ומדיניות הפרטיות.`;
+  let ok = false; try { ok = (await upJ("done", { summary }, S.up.tok)).ok; } catch (e) {}
+  if (!ok) { $("upSt").textContent = "❌ לא נשלח – נסו שוב בעוד רגע"; $("upFinish").disabled = false; return; }
+  $("upSt").textContent = "✅ קיבלנו! שמש תעבור על התמונות ותחזור אליכם בוואטסאפ"; mark("folder");
+  const w = window.open(wa("היי שמש 📤 כאן " + who() + ".\nהעלינו בעמוד את כל התמונות (" + S.up.n + ") ✅ הזמנה " + S.up.oid), "_blank"); if (!w) location.href = wa("העלינו בעמוד את כל התמונות ✅ הזמנה " + S.up.oid);
+});
+upDraw();
 /* הקדשות */
 $("tB").value = S.dedB || ""; $("tG").value = S.dedG || "";
 function dedUi(){
@@ -743,7 +844,7 @@ const SUB_GATE = [
   ["d-terms", () => !!S.done.what, "🔒 נפתח אחרי צעד 1 – שליחת הפרטים לשמש"],
   ["d-photos", () => !!S.done.terms, "🔒 נפתח אחרי החתימה על התקנון"],
   ["d-folder", () => !!S.done.photos, "🔒 נפתח אחרי צעד 3 – בחירת התמונות"],
-  ["d-ded", () => !!S.done.folder, "🔒 נפתח אחרי שמעלים את כל התמונות לתיקייה"],
+  ["d-ded", () => !!S.done.folder, "🔒 נפתח אחרי שמעלים את כל התמונות"],
   ["d-pay", () => !!S.done.ded, "🔒 נפתח אחרי שליחת ההקדשות"]
 ];
 function lockBox(el, locked, msg){

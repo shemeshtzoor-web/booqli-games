@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>תמונה לספר של הגן · BOOQLI</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="מעלים תמונה של הילד/ה לספר האישי שהגן מכין עם BOOQLI – דקה אחת.">
+<meta property="og:title" content="📸 תמונה לספר האישי של הגן – דקה אחת">
+<meta property="og:description" content="מאשרים, כותבים את שם הילד/ה ומעלים תמונה. היא נכנסת ישר להזמנה של הגן.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#FF56C2;--pink-btn:#E0399F;--pink-soft:#FFE3F4;--sage:#6F988B;--sage-2:#7FA89B;--sage-deep:#4E8576;--magenta:#C13671;--wa:#1FA855;--ink:#2B1526;--muted:#5d4c58}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.6;font-size:18px;background:radial-gradient(800px 420px at 100% 0,var(--pink-soft),transparent 60%),linear-gradient(#F7FBF9,#EEF7F2);min-height:100vh;overflow-x:hidden}
+h1,h2{font-family:Fredoka,Assistant,sans-serif;margin:0;line-height:1.2;text-wrap:balance}
+p{margin:0}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-left,0px)) 40px}
+header{text-align:center;padding:10px 0 4px}header img{height:46px}
+.card{background:#fff;border-radius:22px;box-shadow:0 8px 30px rgba(43,21,38,.08);padding:18px;margin-top:14px}
+h1{font-size:clamp(24px,6vw,32px);color:var(--magenta);text-align:center}
+.sub{text-align:center;color:var(--muted);margin-top:6px}
+label.f{display:block;font-weight:800;margin:14px 0 6px}
+input[type=text]{width:100%;font:inherit;font-size:18px;border:2px solid #e6d6df;border-radius:14px;padding:10px 12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;font:800 18px Assistant,sans-serif;padding:12px 18px;cursor:pointer;text-decoration:none;width:100%}
+.btn-main{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 #A3216F}
+.btn-soft{background:#fff;color:var(--sage-deep);box-shadow:0 0 0 2px var(--sage) inset}
+.btn-soft.on{background:var(--sage-deep);color:#fff}
+.btn-wa{background:var(--wa);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.pics{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pics div{position:relative}.pics img{width:84px;height:84px;object-fit:cover;border-radius:14px}
+.pics button{position:absolute;top:-6px;left:-6px;width:28px;height:28px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.45;margin-top:14px}.chk input{width:24px;height:24px;flex-shrink:0;margin-top:2px;accent-color:var(--pink-btn)}
+.chk a{color:var(--magenta)}
+.tips{font-size:15.5px;margin-top:8px;padding-inline-start:20px}.tips li{margin:2px 0}
+details{margin-top:10px}summary{cursor:pointer;font-weight:800;color:var(--sage-deep)}
+video{width:100%;border-radius:14px;margin-top:8px;background:#000}
+.st{font-weight:800;text-align:center;color:var(--sage-deep);margin-top:10px;min-height:24px}
+.err{color:#b4235a;font-weight:700;margin-top:8px;min-height:22px}
+.done{text-align:center}.done .big{font-size:56px}
+.fine{font-size:14px;color:var(--muted);margin-top:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><a href="/"><img src="../../img/logo-dark.png" alt="BOOQLI" width="95" height="40"></a></header>
+
+  <div class="card" id="codeBox" hidden>
+    <h1>📸 תמונה לספר של הגן</h1>
+    <p class="sub">כותבים את קוד הגן (4 ספרות) מההודעה שקיבלתם</p>
+    <label class="f" for="cIn">קוד הגן</label><input type="text" id="cIn" inputmode="numeric" maxlength="4" placeholder="למשל 1234">
+    <p class="err" id="cErr"></p>
+    <button class="btn btn-main" id="cGo" style="margin-top:8px">ממשיכים ←</button>
+  </div>
+
+  <div class="card" id="form" hidden>
+    <h1 id="ttl">📸 תמונה לספר</h1>
+    <p class="sub" id="sub">דקה אחת – והתמונה נכנסת להזמנה של הגן</p>
+
+    <label class="f" for="kid">איך קוראים לילד/ה? <small style="font-weight:600;color:var(--muted)">(השם הפרטי, כמו שיודפס בספר)</small></label>
+    <input type="text" id="kid" maxlength="30" autocomplete="off" placeholder="למשל: נועה">
+    <div class="two" style="margin-top:10px"><button type="button" class="btn btn-soft" data-sub="בנים">👦 בן</button><button type="button" class="btn btn-soft" data-sub="בנות">👧 בת</button></div>
+
+    <label class="f">התמונה</label>
+    <ul class="tips">
+      <li>🙂 מבט ישר למצלמה, פנים גלויות (בלי כובע / משקפי שמש)</li>
+      <li>👤 רק הילד/ה בתמונה · ⚪ רקע בהיר</li>
+      <li>🟢 בנים עם כיפה – עם הכיפה · 🟣 בנות – רואים את התסרוקת</li>
+    </ul>
+    <details><summary>🎬 איזו תמונה מתאימה? (סרטון קצר)</summary><video src="../../kindergartens/video/photo.mp4" poster="../../kindergartens/video/photo.jpg" controls playsinline preload="none"></video></details>
+    <div class="pics" id="pics"></div>
+    <label class="btn btn-soft" id="pickL" style="margin-top:10px">📷 בוחרים תמונה מהטלפון<input type="file" accept="image/*" id="pick" multiple hidden></label>
+
+    <label class="f" for="who">השם שלכם <small style="font-weight:600;color:var(--muted)">(לא חובה)</small></label>
+    <input type="text" id="who" maxlength="40" autocomplete="name" placeholder="למשל: אמא של נועה">
+
+    <label class="chk"><input type="checkbox" id="ok"> <span>אני ההורה (או קיבלתי אישור מההורים) ומאשר/ת לשלוח ל-BOOQLI את התמונה כדי ליצור ממנה איורים לספר (גם בבינה מלאכותית), וקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת כ-3 חודשים אחרי ההזמנה.</span></label>
+    <p class="err" id="err"></p>
+    <button class="btn btn-main" id="send" style="margin-top:6px">⬆️ שולחים את התמונה</button>
+    <p class="st" id="st" aria-live="polite"></p>
+    <p class="fine">התמונה נשמרת רק אצל BOOQLI, לא מוצגת לאף אחד אחר ונמחקת אחרי ההזמנה.</p>
+  </div>
+
+  <div class="card done" id="done" hidden>
+    <div class="big">💛</div>
+    <h1>תודה! התמונה אצלנו</h1>
+    <p class="sub" id="doneTxt" style="margin-top:8px"></p>
+    <button class="btn btn-soft" id="again" style="margin-top:14px">➕ יש לי עוד ילד/ה בגן</button>
+  </div>
+</div>
+<script src="../../common.js"></script>
+<script>
+/* ===== הורה מעלה תמונה לספר של הגן (5.11.2026) =====
+   הקישור: games.booqli.ai/order/up/?c=<קוד הגן>. הקוד נוצר כשהגננת פותחת העלאה בעמוד ההזמנה (order/), והתמונה נשמרת
+   בדרייב של שמש באותה תיקייה של הגן: בנים|בנות / <שם>.jpg (דרך השרת של הבוט worker/wa-bot.js /up – כמו "מסלול ההורים" בבוט).
+   כל הורה מאשר תקנון + פרטיות + שימוש בתמונה; האישור נרשם ונכנס לסיכום של הגן. עד 3 תמונות לילד. */
+const API = (window.SITE && SITE.driveUpload) || "https://booqli-wa.shemeshtzoor.workers.dev/up/";
+const $ = id => document.getElementById(id);
+const ev = (k, n) => { try { siteEvent(k, n); } catch (e) {} };
+let CODE = (new URLSearchParams(location.search).get("c") || "").replace(/\D/g, "").slice(0, 4), GAN = null, SUB = "", PICS = [];
+async function loadGan(c){
+  try { const j = await (await fetch(API + "gan?code=" + c)).json(); return j.ok ? j : null; } catch (e) { return null; }
+}
+async function openGan(c){
+  const g = await loadGan(c);
+  if (!g) { $("codeBox").hidden = false; $("form").hidden = true; $("cErr").textContent = c ? "הקוד לא נמצא – בודקים שוב את ההודעה מהגן" : ""; return; }
+  CODE = c; GAN = g; $("codeBox").hidden = true; $("form").hidden = false;
+  $("ttl").textContent = "📸 תמונה לספר של " + g.name;
+  ev("gan_parent_open", "");
+}
+$("cGo").onclick = () => { const c = $("cIn").value.replace(/\D/g, ""); if (c.length !== 4) { $("cErr").textContent = "הקוד הוא 4 ספרות"; return; } openGan(c); };
+document.querySelectorAll("[data-sub]").forEach(b => b.onclick = () => { SUB = b.dataset.sub; document.querySelectorAll("[data-sub]").forEach(x => x.classList.toggle("on", x === b)); });
+function shrink(file){ return new Promise(res => { const img = new Image(), u = URL.createObjectURL(file);
+  img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    c.toBlob(b => { URL.revokeObjectURL(u); res(b); }, "image/jpeg", .88); };
+  img.onerror = () => { URL.revokeObjectURL(u); res(null); }; img.src = u; }); }
+function drawPics(){
+  $("pics").innerHTML = PICS.map((p, i) => `<div><img src="${p.url}" alt="תמונה ${i + 1}"><button type="button" data-rm="${i}" aria-label="להוריד">✕</button></div>`).join("");
+  $("pickL").hidden = PICS.length >= 3; $("pickL").firstChild.textContent = PICS.length ? "📷 עוד תמונה (לא חובה)" : "📷 בוחרים תמונה מהטלפון";
+}
+$("pick").onchange = async e => { for (const f of [...e.target.files].slice(0, 3 - PICS.length)) { const b = await shrink(f); if (b) PICS.push({ blob: b, url: URL.createObjectURL(b) }); } e.target.value = ""; drawPics(); };
+$("pics").onclick = e => { const i = e.target.dataset.rm; if (i !== undefined) { URL.revokeObjectURL(PICS[+i].url); PICS.splice(+i, 1); drawPics(); } };
+$("send").onclick = async () => {
+  const kid = $("kid").value.trim(), err = t => { $("err").textContent = t; };
+  if (!kid) return err("✏️ כותבים את שם הילד/ה");
+  if (!SUB) return err("👦👧 בוחרים בן או בת");
+  if (!PICS.length) return err("📷 בוחרים תמונה");
+  if (!$("ok").checked) return err("☑️ מסמנים את האישור");
+  err(""); $("send").disabled = true; $("st").textContent = "⏳ שולחים…";
+  try {
+    const s = await (await fetch(API + "start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "parent", code: CODE, who: $("who").value.trim(), kid, consent: true }) })).json();
+    if (!s.ok) throw new Error(s.error);
+    for (const p of PICS) { let ok = false;
+      for (let t = 0; t < 2 && !ok; t++) { try { ok = (await fetch(API + "photo?sub=" + encodeURIComponent(SUB) + "&name=" + encodeURIComponent(kid), { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": s.tok }, body: p.blob })).ok; } catch (e) {} }
+      if (!ok) throw new Error("photo"); }
+    ev("gan_parent_sent", String(PICS.length));
+    $("form").hidden = true; $("done").hidden = false;
+    $("doneTxt").textContent = `התמונה של ${kid} נכנסה להזמנה של ${GAN.name}. אין צורך לשלוח אותה שוב בוואטסאפ 💛`;
+  } catch (e) { $("st").textContent = ""; err("❌ לא נשלח – בודקים את האינטרנט ומנסים שוב"); $("send").disabled = false; ev("gan_parent_fail", String(e && e.message || e)); }
+};
+$("again").onclick = () => { PICS = []; SUB = ""; $("kid").value = ""; document.querySelectorAll("[data-sub]").forEach(x => x.classList.remove("on")); drawPics(); $("send").disabled = false; $("st").textContent = ""; $("done").hidden = true; $("form").hidden = false; window.scrollTo(0, 0); };
+drawPics(); openGan(CODE);
+</script>
+</body>
+</html>

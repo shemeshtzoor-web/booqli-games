@@ -1192,6 +1192,86 @@ async function markKnown(db, v){
   return ids.length;
 }
 
+
+/* ===== העלאת תמונות מהאתר games.booqli.ai (5.11.2026, לפי שמש: "כל התהליך באתר", בלי לחבר את 055 לשום מערכת) =====
+   הדף מעלה תמונות לכאן, וכאן שומרים בדרייב בדיוק כמו הבוט (BOOQLI הזמנות / <הזמנה> / בנים|בנות / <שם>.jpg) + סיכום + מייל לשמש.
+   הסיסמה לדרייב (DRIVE_KEY) נשארת כאן ולא בדף. הגנות: רק מ-games.booqli.ai, מפתח אקראי לכל הזמנה, הגבלת כמות וגודל, הגבלה לכל כתובת IP.
+   POST /up/start {kind:"private"|"gan"|"parent", who, gan, book, code, consent:true} → {oid, tok, code?, gan?}
+   POST /up/photo?sub=בנים|בנות&name=<שם>&topic=<נושא>  (X-Tok, גוף = JPEG/PNG עד 6MB)  → {ok, n}
+   POST /up/done {summary} (X-Tok) → {ok}   ·   GET /up/gan?code=1234 → {name, book} (בשביל הורים) */
+const UP_ORIGINS = ["https://games.booqli.ai", "http://localhost:8765"];
+const UP_MAX = { private: 50, gan: 300, parent: 5 };
+async function upload(req, env, url){
+  const o = req.headers.get("Origin") || "", ok = UP_ORIGINS.includes(o);
+  const cors = { "Access-Control-Allow-Origin": ok ? o : UP_ORIGINS[0], "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type, X-Tok", "Vary": "Origin" };
+  const out = (j, st) => Response.json(j, { status: st || 200, headers: cors });
+  if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+  if (!ok) return out({ ok: false, error: "origin" }, 403);
+  if (!env.DRIVE_URL || !env.DRIVE_KEY) return out({ ok: false, error: "drive" }, 503);
+  const db = store(env), ip = req.headers.get("CF-Connecting-IP") || "x", day = new Date().toISOString().slice(0, 10);
+  const path = url.pathname.slice(4);
+  if (path === "gan" && req.method === "GET") {
+    const L = JSON.parse(await db.get("code:" + digits(url.searchParams.get("code"))) || "null");
+    return L ? out({ ok: true, name: L.name, book: L.book }) : out({ ok: false, error: "code" }, 404);
+  }
+  if (req.method !== "POST") return out({ ok: false }, 405);
+  if (path === "start") {
+    const rl = "rl:" + ip + ":" + day, n = +(await db.get(rl) || 0);
+    if (n >= 30) return out({ ok: false, error: "limit" }, 429);
+    await db.put(rl, String(n + 1), 2 * 86400);
+    const b = await req.json().catch(() => ({}));
+    if (b.consent !== true) return out({ ok: false, error: "consent" }, 400);
+    const kind = ["private", "gan", "parent"].includes(b.kind) ? b.kind : "private", cut = (s, n) => String(s || "").replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n);
+    let rec;
+    if (kind === "parent") {
+      const L = JSON.parse(await db.get("code:" + digits(b.code)) || "null");
+      if (!L) return out({ ok: false, error: "code" }, 404);
+      rec = { kind, oid: L.oid, title: `${L.oid} · ${L.name} · ${L.day}`, topic: "", who: cut(b.who, 40) };
+      /* אישור של כל הורה (תקנון + פרטיות + שימוש בתמונה) – נרשם, ונכנס לסיכום של הגן */
+      const pk = "pc:" + L.oid, pc = JSON.parse(await db.get(pk) || "[]"); pc.push({ who: rec.who, kid: cut(b.kid, 30), at: new Date().toISOString() }); await db.put(pk, JSON.stringify(pc.slice(-200)), 120 * 86400);
+    } else {
+      const oid = newId(kind === "gan" ? "גן" : "סב"), who = cut(kind === "gan" ? b.gan : b.who, 50) || "אתר";
+      rec = { kind, oid, title: `${oid} · ${who} · ${dayStr()}`, topic: "", who: cut(b.who, 40) };
+      if (kind === "gan") {
+        let c = ""; for (let i = 0; i < 20 && !c; i++) { const t = String(1000 + Math.floor(Math.random() * 9000)); if (!(await db.get("code:" + t))) c = t; }
+        rec.code = c;
+        await db.put("code:" + c, JSON.stringify({ oid, name: who, book: cut(b.book, 40), teacher: "web", day: dayStr() }), 90 * 86400);
+      }
+    }
+    rec.n = 0; rec.max = UP_MAX[kind]; rec.at = Date.now();
+    const a = new Uint8Array(24); crypto.getRandomValues(a); const tok = [...a].map(x => x.toString(16).padStart(2, "0")).join("");
+    await db.put("web:" + tok, JSON.stringify(rec), 14 * 86400);
+    console.log("up start", kind, rec.oid);
+    return out({ ok: true, oid: rec.oid, tok, code: rec.code || undefined });
+  }
+  const tok = (req.headers.get("X-Tok") || "").replace(/[^a-f0-9]/g, ""), rec = tok.length === 48 ? JSON.parse(await db.get("web:" + tok) || "null") : null;
+  if (!rec) return out({ ok: false, error: "tok" }, 403);
+  if (path === "photo") {
+    if (rec.n >= rec.max) return out({ ok: false, error: "max" }, 429);
+    const type = (req.headers.get("Content-Type") || "").split(";")[0];
+    if (!/^image\/(jpeg|png)$/.test(type)) return out({ ok: false, error: "type" }, 415);
+    const buf = await req.arrayBuffer();
+    if (buf.byteLength < 2000 || buf.byteLength > 6e6) return out({ ok: false, error: "size" }, 413);
+    const q = url.searchParams, sub = q.get("sub") === "בנות" ? "בנות" : "בנים", name = String(q.get("name") || "ילד").slice(0, 40), topic = String(q.get("topic") || "").slice(0, 40);
+    const d = await drivePost(env, { action: "photo", order: rec.oid, title: rec.title, topic, sub, name, mime: type, b64: b64(buf) });
+    if (!d) return out({ ok: false, error: "drive" }, 502);
+    rec.n++; await db.put("web:" + tok, JSON.stringify(rec), 14 * 86400);
+    return out({ ok: true, n: rec.n });
+  }
+  if (path === "done") {
+    const b = await req.json().catch(() => ({}));
+    const pc = rec.kind === "gan" ? JSON.parse(await db.get("pc:" + rec.oid) || "[]") : [];
+    const pcs = pc.length ? "\n\n👪 הורים שהעלו בעצמם ואישרו תקנון, פרטיות ושימוש בתמונה (" + pc.length + "):\n" + pc.map(x => `• ${x.who || "הורה"}${x.kid ? " – " + x.kid : ""} · ${x.at.slice(0, 16).replace("T", " ")}`).join("\n") : "";
+    const summary = String(b.summary || "").slice(0, 8000) + pcs + `\n\n🌐 נשלח מהאתר games.booqli.ai · ${rec.kind === "gan" ? "גן" : rec.kind === "parent" ? "הורה" : "פרטי"}${rec.code ? " · קוד להורים: " + rec.code : ""}`;
+    const d = await drivePost(env, { action: "order", order: rec.oid, title: "🌐 " + rec.title, summary, expected: rec.n });
+    if (!d) return out({ ok: false, error: "drive" }, 502);
+    if (rec.kind !== "gan") await db.del("web:" + tok); else { rec.done = Date.now(); await db.put("web:" + tok, JSON.stringify(rec), 14 * 86400); }
+    console.log("up done", rec.kind, rec.oid, rec.n);
+    return out({ ok: true, photos: d.photos });
+  }
+  return out({ ok: false }, 404);
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
@@ -1246,6 +1326,7 @@ export default {
       return new Response("ok");
     }
     if (url.pathname === "/es") return esSignup(req, env);
+    if (url.pathname.startsWith("/up/")) return upload(req, env, url);
     const p = url.pathname.match(/^\/p\/([a-f0-9]{36}\.jpg)$/);
     if (p && req.method === "GET") {
       const { value, metadata } = await env.STATE.getWithMetadata(p[1], { type: "arrayBuffer" });

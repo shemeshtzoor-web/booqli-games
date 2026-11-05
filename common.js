@@ -9,6 +9,7 @@ window.SITE = {
   phone: "972555549331",
   /* שרת התמונות של עמוד הסבים (worker/photo-upload.js). ריק = בלי שרת: התמונות נשלחות בחלון השיתוף של הטלפון */
   photoUpload: "https://booqli-photos.shemeshtzoor.workers.dev/",
+  driveUpload: "https://booqli-wa.shemeshtzoor.workers.dev/up/",   /* שמירת תמונות ישר בדרייב של שמש (worker/wa-bot.js /up) – 5.11.2026 */
   // קוד המדידה מ-Cloudflare Web Analytics. להדביק כאן בין המירכאות כשיתקבל
   analyticsToken: "cd51ae95df984ed1b317d05f080dc9a3",
   // מצב בעלת האתר (שמש): רק "טביעת אצבע" של הקוד, הקוד עצמו לא נכתב כאן. ראו "מצב בעלת האתר" למטה

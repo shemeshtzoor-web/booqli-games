@@ -200,6 +200,7 @@ section.sv{margin-top:34px}
 .wz .sumr li{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;box-shadow:0 2px 8px rgba(78,133,118,.12)}
 .wz .fine{font-size:15px;color:var(--mute);margin-top:10px;line-height:1.5}.wz .fine a{color:var(--mag)}
 .wz .st{text-align:center;font-weight:800;color:var(--saged);margin-top:8px}
+.wz .vid{margin:10px 0;background:#fff;border:1px solid #f0dbe6;border-radius:14px;padding:8px 12px}.wz .vid summary{cursor:pointer;font-weight:800;color:var(--mag)}.wz .vid video{width:100%;max-width:420px;display:block;margin:8px auto 0;border-radius:12px;background:#000}
 @media (prefers-reduced-motion:reduce){.todo,.todo.now,.hop{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
 @media (max-width:760px){.send .btn{font-size:19px}.form{padding:14px}.item{padding:12px}.fl select{font-size:17px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.gets,.facts{grid-template-columns:minmax(0,1fr)}.float{display:flex}main.wrap{padding-bottom:90px}.promise .ar{display:none}.promise div,.promise .pgo{min-width:100%}}
 @media print{.float,.waDot{display:none}}
@@ -313,7 +314,7 @@ section.sv{margin-top:34px}
 <script>
 /* ===== עמוד הסבים =====
    הנתונים: הספרים מ-order/books/books.js · המחירים כמו בעמוד הגנים (TIERS) עד 10 ספרים · הטלפון מ-SITE.phone.
-   שום תמונה לא עולה לשום מקום מהעמוד: הבדיקה בטלפון עצמו, והשליחה דרך חלון השיתוף של הטלפון לוואטסאפ. */
+   התמונות נשמרות ישר בדרייב של שמש (5.11.2026, דרך השרת של הבוט /up). גיבוי: וואטסאפ עם קישורים / שיתוף התמונות. */
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const PHONE = (window.SITE && SITE.phone) || "972555549331";
@@ -352,6 +353,9 @@ document.addEventListener("click", e => {
    בסוף: התמונות עולות לשרת הקטן (SITE.photoUpload – Cloudflare Worker, worker/photo-upload.js), ונשלחת הודעת
    וואטסאפ אחת לשמש עם כל ספר: שם + הקדשה + קישור לתמונה. בלי בדיקות ובלי סימונים. */
 const UPLOAD = (window.SITE && SITE.photoUpload) || "";
+/* 5.11.2026: התמונות נשמרות ישר בדרייב של שמש (דרך השרת של הבוט, worker/wa-bot.js /up) – בדיוק כמו בבוט: הזמנה / בנים|בנות / שם.jpg + סיכום + מייל.
+   אם השמירה בדרייב לא עובדת – חוזרים לדרך הישנה (קישורים בוואטסאפ / שיתוף התמונות). */
+const DRIVE_UP = (window.SITE && SITE.driveUpload) || "https://booqli-wa.shemeshtzoor.workers.dev/up/";
 /* כל נושאי הספרים של BOOQLI (4.11.2026, לפי המדף באתר הראשי). לאלה שאינם ב-books.js עוד אין תצוגה מקדימה – רק ברשימה הנפתחת.
    כל הספרים יש גם לבנים וגם לבנות, ולכן תמיד שואלים נכד או נכדה (ver = "b" / "g"). */
 const EXTRA = [["sleep","רציתי לישון, אבל..."],["lucy","איפה לוסי?"],["dream","רגע לפני החלום"],["space","המסע לחלל"],["pacifier","ביי ביי מוצץ"],["diaper","ביי ביי חיתול"],["vikings","הוויקינגים"],["sibling","אח/ות גדול/ה"]];
@@ -418,6 +422,7 @@ function stepHTML(){
     <button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="ded">הבא ←</button></div>`; }
   if (STEP === "photo") { const n = it.pics.length;
     return `<div class="step"><h3>${SB}${n ? "תמונות של " : "תמונה של "}${esc(it.name)}</h3><p class="h">אפשר לשלוח כמה תמונות – ואנחנו נבחר את הטובה ביותר 💛</p>
+    <details class="vid"><summary>🎬 איזו תמונה מתאימה? (סרטון קצר)</summary><video src="../kindergartens/video/photo.mp4" poster="../kindergartens/video/photo.jpg" controls playsinline preload="none"></video></details>
     ${n ? `<div class="pics">${it.pics.map((x, k) => `<div><img src="${x.url}" alt="תמונה ${k + 1}"><button type="button" class="rm" data-rmpic="${k}" aria-label="להוריד את תמונה ${k + 1}">✕</button></div>`).join("")}</div>` : ""}
     ${n < PICS ? `<label class="${n ? "alt" : "btn btn-main pick"}" ${n ? 'style="display:block;text-align:center"' : ""}>📷 ${n ? "עוד תמונה" : "בוחרים תמונות מהטלפון"}<input type="file" accept="image/*" id="wFile" multiple hidden></label>` : ""}
     <p class="err" id="wErr"></p></div>${n ? '<div class="nav"><button type="button" class="btn btn-main nextb" data-next="photo">הבא ←</button></div>' : ""}`; }
@@ -434,9 +439,10 @@ function stepHTML(){
     <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
     <div class="prc" style="margin-top:10px"><div>📖 ${priceLine(n)}</div><div class="sh">🚚 משלוח עד הבית ${ils(SHIP)}</div><div class="tot">סה"כ ${ils(tot + SHIP)}</div></div>
     <p class="h" style="margin-top:8px"><b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
-    <button type="button" class="btn btn-wa go" id="wSend">💬 שולחים לנו בוואטסאפ</button>
+    <button type="button" class="btn btn-wa go" id="wSend">✅ שולחים לנו את ההזמנה</button>
     <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
     <p class="st" id="wSt"></p>
+    <p class="h" style="margin-top:6px">התמונות נשמרות אצלנו בצורה מאובטחת, ומיד אחר כך אפשר לעדכן אותנו בוואטסאפ.</p>
     <p class="fine">בשליחה אני מאשר/ת שקיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה שאשלח כאן או בוואטסאפ, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר, ושקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת אצלנו כ-3 חודשים אחרי ההזמנה.</p></div>`; }
   return "";
 }
@@ -472,8 +478,36 @@ function photo(file, done){
 }
 /* שליחה: מעלים כל תמונה לשרת הקטן, ואז הודעה אחת לשמש בוואטסאפ */
 async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {"Content-Type": "image/jpeg"}, body: bl}); if (!r.ok) throw new Error(r.status); return (await r.json()).url; }
+/* שליחה לדרייב: פותחים הזמנה, מעלים כל תמונה (2 ניסיונות), ושולחים סיכום. מחזיר את מספר ההזמנה, או "" אם לא הצליח */
+async function sendDrive(){
+  const J = (path, body, tok) => fetch(DRIVE_UP + path, {method: "POST", headers: Object.assign({"Content-Type": "application/json"}, tok ? {"X-Tok": tok} : {}), body: JSON.stringify(body)}).then(r => r.json());
+  const s = await J("start", {kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
+  const all = ORD.list.flatMap(it => it.pics.map(x => ({it, x}))); let k = 0;
+  for (const {it, x} of all) { k++; $("wSt").textContent = `⏳ שומרים את התמונות… ${all.length > 1 ? k + " מתוך " + all.length : ""}`;
+    const q = "photo?sub=" + encodeURIComponent(isGirl(it) ? "בנות" : "בנים") + "&name=" + encodeURIComponent(it.name);
+    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { const r = await fetch(DRIVE_UP + q, {method: "POST", headers: {"Content-Type": "image/jpeg", "X-Tok": s.tok}, body: x.blob}); ok = r.ok; } catch (e) {} }
+    if (!ok) throw new Error("photo"); }
+  const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}`);
+  const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
+  const summary = `👵 המזמין/ה: ${ORD.who}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים, ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\nמקור: " + SRC : ""}`;
+  const d = await J("done", {summary}, s.tok); if (!d.ok) throw new Error("done");
+  return s.oid;
+}
 async function send(){
   const b = $("wSend"); if (b.dataset.busy) return; b.dataset.busy = "1";
+  try { const oid = await sendDrive(); ORDER = oid; ev("savta-send", ORD.list.length + "-drive");
+    const t = `שלום BOOQLI 💛 שלחתי עכשיו באתר את הזמנה ${oid} (${ORD.list.length === 1 ? "ספר אחד" : ORD.list.length + " ספרים"}) · ${ORD.who}`;
+    $("wz").innerHTML = `<div class="step"><h3>${SB}✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+      <p class="h">התמונות וההקדשות כבר אצלנו. נבדוק הכל ונחזור אליכם בוואטסאפ <b>תוך יום עסקים</b> עם הספר לתצוגה – ומשלמים רק אם אוהבים 💛</p>
+      <a class="btn btn-wa go" id="wDoneWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a>
+      <p class="fine">אפשר לסגור את העמוד. שאלה? כותבים לנו בוואטסאפ בכל שלב.</p></div>`;
+    $("wDoneWa").onclick = () => ev("savta-done-wa", ""); $("wz").scrollIntoView({behavior: "smooth", block: "start"});
+    delete b.dataset.busy; return;
+  } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; }
+  sendWa(b);
+}
+/* הדרך הישנה (גיבוי): הודעת וואטסאפ עם קישורים לתמונות / שיתוף התמונות */
+async function sendWa(b){
   if (!ORDER) ORDER = "סב-" + String(Math.floor(1000 + Math.random() * 9000));
   let links = true;
   const all = ORD.list.flatMap(it => it.pics), tot = all.length; let k = 0;
