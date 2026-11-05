@@ -7,7 +7,7 @@ document.getElementById("homeLink").href=CONFIG.homeLink;
 function waIntl(n){let d=String(n||"").replace(/\D/g,"");if(d.startsWith("0"))d="972"+d.slice(1);return d}
 function waHref(){return "https://wa.me/"+waIntl(CONFIG.whatsapp)+"?text="+encodeURIComponent("היי BOOQLI, הגעתי מהמשחק של יום ההולדת 🎂")}
 document.getElementById("waLink").href=waHref();
-const ganHref=()=>"https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=book_game&utm_campaign=birthday#start";
+const ganHref=()=>"https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=book_game&utm_campaign=birthday";
 {const gl=document.getElementById("ganLink");if(gl)gl.href=ganHref()}
 document.getElementById("waNum").textContent=CONFIG.whatsapp;
 

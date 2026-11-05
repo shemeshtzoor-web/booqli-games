@@ -86,6 +86,18 @@
 .games-ban p b{color:#213330}
 @media (max-width:600px){.games-ban{flex-direction:column;text-align:center;padding:22px 16px 18px}.games-ban img{width:96px}}
 .home-hero .bubble{background:var(--pink-soft);border-radius:18px;padding:8px 14px;font-weight:800;display:table;margin:0 auto;font-size:17px}
+/* טלפון (שמש, 5.11.2026): שלבים קטנים יותר, ספרים גדולים יותר */
+@media (max-width:600px){
+  .steps{margin-top:22px}
+  .st-art{width:84px;height:84px}
+  .st-n{font-size:58px;margin-left:-20px;margin-bottom:8px}
+  .st h3{font-size:21px;margin-top:6px}
+  .st p{font-size:15.5px;margin-top:2px}
+  .st-ar{padding:6px 0 4px}.st-ar svg{width:30px;height:40px}
+  .shelf{margin-top:28px}
+  .covers{grid-auto-columns:42vw}
+  .cov b{font-size:16.5px}.cov span{font-size:14px}
+}
 .free-h{margin:34px 0 0;text-align:center}
 .free-h h2{font-size:clamp(24px,4vw,32px);color:#213330}
 .free-h p{color:var(--muted);font-weight:700;margin-top:4px}
@@ -150,7 +162,7 @@
 <header class="top">
   <div class="wrap brand">
     <a href="" aria-label="booqli Games – דף הבית"><img class="logo" src="img/logo.png" alt="BOOQLI" width="104" height="44"></a>
-    <a class="gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_header&utm_campaign=gan#start">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_header&utm_campaign=gan">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
     <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
   </div>
 </header>
@@ -167,7 +179,7 @@
     </ul>
     <div class="oh-cta">
       <a class="oh-go js-ord" data-w="hero" href="savta/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=order">להתחיל ←</a>
-      <a class="oh-gan js-ord" data-w="hero-gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=gan#start">🏫 מזמינים לכל ילדי הגן? ←</a>
+      <a class="oh-gan js-ord" data-w="hero-gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=gan">🏫 מזמינים לכל ילדי הגן? ←</a>
     </div>
   </div>
   <div class="oh-art" aria-hidden="true">
@@ -175,6 +187,19 @@
     <span class="ar">←</span>
     <figure class="bk"><img src="savta/img/c-druki-b.webp?v=2" alt="" width="388" height="373"><figcaption>מקבלים ספר!</figcaption></figure>
   </div>
+</section>
+
+<section class="steps" aria-labelledby="stT">
+  <h2 class="vh" id="stT">איך מזמינים</h2>
+  <ol>
+    <li class="st st-s1"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/1.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">01</span></div><h3>בחרו ספר</h3><p>מתוך קולקציית הספרים המותאמים אישית שלנו</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s2"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/2.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">02</span></div><h3>העלו תמונה</h3><p>בחרו תמונה ברורה של ילדכם</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="r" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s3"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/3.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">03</span></div><h3>קבלו סקיצה לאישור</h3><p>אנחנו מעצבים את הספר המותאם אישית לילדכם – ומשלמים רק אחרי שמאשרים</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s4"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/4.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">04</span></div><h3>קבלו את הספר</h3><p>עד לפתח ביתכם תוך 7–14 ימי עסקים</p></li>
+  </ol>
 </section>
 
 <section class="shelf" aria-labelledby="shT">
@@ -192,18 +217,7 @@
 </section>
 
 
-<section class="steps" aria-labelledby="stT">
-  <h2 class="vh" id="stT">איך מזמינים</h2>
-  <ol>
-    <li class="st st-s1"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/1.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">01</span></div><h3>בחרו ספר</h3><p>מתוך קולקציית הספרים המותאמים אישית שלנו</p></li>
-    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
-    <li class="st st-s2"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/2.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">02</span></div><h3>העלו תמונה</h3><p>בחרו תמונה ברורה של ילדכם</p></li>
-    <li class="st-ar" aria-hidden="true"><svg class="r" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
-    <li class="st st-s3"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/3.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">03</span></div><h3>קבלו סקיצה לאישור</h3><p>אנחנו מעצבים את הספר המותאם אישית לילדכם – ומשלמים רק אחרי שמאשרים</p></li>
-    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
-    <li class="st st-s4"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/4.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">04</span></div><h3>קבלו את הספר</h3><p>עד לפתח ביתכם תוך 7–14 ימי עסקים</p></li>
-  </ol>
-</section>
+
 
 <section class="c-sec" id="reviews">
   <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2></div>

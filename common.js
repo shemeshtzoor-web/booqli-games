@@ -624,9 +624,9 @@ function siteKidsPopup(css, st, save){
 function siteOrderLink(topic, medium, book){
   return "https://games.booqli.ai/savta/?" + (book ? "book=" + encodeURIComponent(book) + "&" : "") + "utm_source=booqli_games&utm_medium=" + (medium || "print_qr") + "&utm_campaign=" + (topic || "site");
 }
-/* הזמנה לכל ילדי הגן – kindergartens/#start */
+/* הזמנה לכל ילדי הגן – kindergartens/ */
 function siteGanLink(topic, medium){
-  return "https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=" + (medium || "gan_box") + "&utm_campaign=" + (topic || "site") + "#start";
+  return "https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=" + (medium || "gan_box") + "&utm_campaign=" + (topic || "site");
 }
 function siteQR(url){
   if (typeof qrcode !== "function") return "";
@@ -695,7 +695,7 @@ window.SITE.doors = [
 window.SITE.menu = [
   { h: "📚 להזמין ספר אישי", items: [
     { ic: "💛", t: "ספר אישי לילד (הורים, סבים, מתנה)", href: "/savta/", hot: true },
-    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/#start" },
+    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
     { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" } ] },
   { h: "🧭 ראשי", items: [
     { ic: "🏠", t: "דף הבית", href: "/" },
@@ -915,7 +915,7 @@ window.SITE.main = {
   home: "/",
   links: [
     { icon: "📚", label: "להזמין ספר אישי", short: "להזמין ספר", href: "/savta/?utm_source=booqli_games&utm_medium=top_bar&utm_campaign=order", main: true },
-    { icon: "🏫", label: "ספר לכל ילד בגן", short: "לכל הגן",    href: "/kindergartens/?utm_source=booqli_games&utm_medium=top_bar&utm_campaign=gan#start" }
+    { icon: "🏫", label: "ספר לכל ילד בגן", short: "לכל הגן",    href: "/kindergartens/?utm_source=booqli_games&utm_medium=top_bar&utm_campaign=gan" }
   ]
 };
 function siteIsLogo(img){
