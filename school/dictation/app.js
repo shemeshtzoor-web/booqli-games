@@ -206,7 +206,16 @@ let incoming = null, incomingCls = "", justLoaded = 0; /* רשימה (וכיתה
 let G1 = null;       /* המשחק הנוכחי */
 
 const applyFont = () => document.body.classList.toggle("cvmode", S.font !== "rd");
+/* (5.11.2026) רשת ביטחון: אם משהו נשבר בטלפון מסוים – לא משאירים מסך ריק, מראים כפתור רענון ורושמים את השגיאה במדידה */
 function route(){
+  try { route0(); }
+  catch (e) {
+    try { ev("dict-error", String(e && e.message || e).slice(0, 60) + " | " + navigator.userAgent.replace(/[^\w.]+/g, "_").slice(0, 80)); } catch (x) {}
+    app.hidden = false;
+    app.innerHTML = '<section class="card" style="text-align:center"><div class="emo" style="font-size:56px">🛠️</div><h2 style="color:#C13671">משהו לא נטען כמו שצריך</h2><p>נסו לרענן את העמוד. אם זה חוזר – ספרו לנו בוואטסאפ, ונתקן.</p><div class="row"><button type="button" class="btn" onclick="location.reload()">🔄 רענון</button></div></section>';
+  }
+}
+function route0(){
   applyFont();
   stopSound(); stopMic();
   const p = P();
