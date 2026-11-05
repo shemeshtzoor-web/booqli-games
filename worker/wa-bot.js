@@ -219,6 +219,14 @@ async function resume(env, to, st, log, db, who){                           /* �
 /* איך זה עובד – נשלח פעם אחת, אחרי שבוחרים פרטי/גן (לפי שמש, 4.11) */
 const PRICES_TXT = () => `💰 *המחירים* (לספר, לפי כמה ספרים בהזמנה):\n📕 ספר אחד – קשה ${ils(priceOf(1, "hard"))} · רכה ${ils(priceOf(1, "soft"))}\n📚 2 ספרים – קשה ${ils(priceOf(2, "hard"))} · רכה ${ils(priceOf(2, "soft"))} לספר\n📚 3 ספרים – קשה ${ils(priceOf(3, "hard"))} · רכה ${ils(priceOf(3, "soft"))} לספר\n🚚 משלוח עד הבית ${ils(SHIP)} · 🚗 איסוף עצמי – חינם`;
 const GAN_PRICES = n => `💰 *המחיר לספר* (ל-${n} ילדים):\n💗 קשה פרימיום – ${ils(ganP("hard", n))}\n💛 רכה פיג'מה – ${ils(ganP("soft", n))}\n💜 חוברת כרומו סיכות – ${n >= STAPLE.from ? ils(ganP("staple", n)) : "רק מ-" + STAPLE.from + " ספרים"}\n🚚 משלוח ${ils(SHIP)} · 🚗 איסוף עצמי – חינם\n(את סוג הכריכה בוחרים בסוף, אחרי התמונות)`;
+/* הודעה להעביר לקבוצת ההורים – עם קישור שפותח צ'אט עם בוקלי וקוד הגן כבר כתוב */
+const BIZ = env => env.WA_NUMBER || "15551771654";            /* מספר הבדיקה; אחרי החיבור ל-055 – WA_NUMBER ב-Cloudflare */
+function parentsMsg(env, st, remind){
+  const G = st.g, link = `https://wa.me/${BIZ(env)}?text=${encodeURIComponent("ספר לגן – קוד " + G.code)}`;
+  return remind
+    ? `תזכורת 💗 עוד לא קיבלנו תמונות של כל הילדים לספר האישי של ${G.name}.\nמי שעוד לא שלח – לוחצים כאן, לוקח דקה:\n👈 ${link}\n\nתודה! ${st.who || ""}`
+    : `הורים יקרים 💗\nכל ילד וילדה ב${G.name} יקבלו ספר אישי "${book(G.books[0]).name}" – עם השם, איורים בדמות הילד/ה והקדשה מהגן! 📖✨\n\nצריך רק תמונה אחת של הילד/ה. לוחצים על הקישור ושולחים בוואטסאפ (לוקח דקה):\n👈 ${link}\n\nתודה! ${st.who || ""}`;
+}
 /* גן – ההודעה המלהיבה של שמש (5.11), נשלחת אחרי שהגננת כתבה כמה ילדים, עם המחירים לכמות שלה */
 function GAN_PITCH(n){
   const q = n || 20;
@@ -355,7 +363,7 @@ const names = a => [...new Set(a)].join(", ");
 const cnt = (n, one, many) => n === 1 ? one : n + " " + many;
 
 async function ask(env, to, st, log, db){
-  const c = st.cur, n = st.list.length, G = st.g;
+  const c = st.cur || {}, n = (st.list || []).length, G = st.g;
   const S = m => wa(env, to, withRestart(m, st.step), log);
   switch (st.step) {
     case "hi": return S(buttons(HI, [["s:go", "❤️ ספר לילד או לנכד"], ["s:gan", "🏫 הזמנה לגן"], HUMAN]));
@@ -430,12 +438,24 @@ async function ask(env, to, st, log, db){
       return S(buttons(`${per ? `הקדשה לספר "${book(G.dedFor).name}" ❤️` : "הקדשה מהגן לכל הילדים ❤️"}\n(בלי שמות – השם של כל ילד כבר בספר. את ההתאמה לבנים ולבנות אנחנו עושים)\n\n${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
     }
     case "g-dedown": return S(text(`כתבו כאן את ההקדשה${G.dedFor && G.dedFor !== "all" ? ` לספר "${book(G.dedFor).name}"` : " של הגן"} ❤️ (עד 350 תווים בערך)\nכותבים פעם אחת – ואת ההתאמה לבנים ולבנות אנחנו עושים.`));
-    case "g-pics": case "g-picsmore": {
-      if (!st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
-      if (!G.picIntro) { G.picIntro = 1; await S(text(`עכשיו התמונות 📷 *תמונה אחת לכל ילד/ה.*\n\nשולחים כל תמונה *עם כיתוב*: השם הפרטי + בן או בת.\nלמשל: *נועה בת* · *דני בן*\n\nאפשר לשלוח כמה תמונות ביחד ובאיזה סדר שרוצים – כל אחת עם הכיתוב שלה.\n(בטלפון: בוחרים תמונה ← כותבים בשורה "הוספת כיתוב" ← שולחים)\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים "יוסי 1 בן", "יוסי 2 בן".`)); }
+    case "g-who": return S(buttons(`מי שולח את התמונות? 📷\n\n📷 *הגננת או הוועד* – שולחים כאן את כל התמונות.\n👨‍👩‍👧 *כל הורה בעצמו* – נכין לך הודעה עם קישור להעביר לקבוצת ההורים. כל הורה מאשר ושולח תמונה של הילד שלו.\n\nאפשר גם לשלב: חלק מההורים שולחים, ואת השאר משלימים כאן.`,
+      [["gw:me", "📷 גננת / ועד"], ["gw:par", "👪 כל הורה בעצמו"]]));
+    case "p-consent": return S(buttons(`שלום 💗 כאן BOOQLI.\nמכינים ספר אישי לכל ילדי *${G.name}* – "${book(G.books[0]).name}" 📖✨\n\nלפני ששולחים תמונה:\n${CONSENT_LINKS}בלחיצה על הכפתור אני מאשר/ת:\n☑️ קראתי את התקנון ואת מדיניות הפרטיות.\n☑️ אני ההורה של הילד/ה, ומאשר/ת לשלוח ל-BOOQLI את התמונה כדי ליצור ממנה איורים לספר האישי (גם באמצעות בינה מלאכותית – AI).`,
+      [["pc:yes", "☑️ קראתי ומאשר/ת"]]));
+    case "g-pics": case "g-picsmore": if (st.mode === "parent") {      /* הורה */
       const P = await ganPics(db, st);
-      if (P.pend.length) return askPendF(S, st, P.pend[0], P.pend.length);
+      if (P.pend.filter(x => x.by === st.from).length) return askPendF(S, st, P.pend.filter(x => x.by === st.from)[0], 1);
+      if (st.pdone) return S(text(`תודה רבה! 💗 התמונה התקבלה, והספר בדרך.\nיש עוד ילד/ה ב${G.name} (למשל תאומים)? שולחים עוד תמונה עם כיתוב שם + בן/בת.`));
+      if (!st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
+      return S(text(`📸 שלחו כאן *תמונה אחת* של הילד/ה, *עם כיתוב*: השם הפרטי + בן או בת.\nלמשל: *נועה בת* · *דני בן*\n(בטלפון: בוחרים תמונה ← כותבים בשורה "הוספת כיתוב" ← שולחים)\n\n${PHOTO_TIPS}`));
+    } else {
+      if (!G.par && !st.vidPhoto) { st.vidPhoto = 1; await sendVideo(S, "photo", env, db, log); }
+      if (!G.par && !G.picIntro) { G.picIntro = 1; await S(text(`עכשיו התמונות 📷 *תמונה אחת לכל ילד/ה.*\n\nשולחים כל תמונה *עם כיתוב*: השם הפרטי + בן או בת.\nלמשל: *נועה בת* · *דני בן*\n\nאפשר לשלוח כמה תמונות ביחד ובאיזה סדר שרוצים – כל אחת עם הכיתוב שלה.\n(בטלפון: בוחרים תמונה ← כותבים בשורה "הוספת כיתוב" ← שולחים)\n\n${PHOTO_TIPS}\n\n👯 שני ילדים עם אותו שם? כותבים "יוסי 1 בן", "יוסי 2 בן".`)); }
+      const P = await ganPics(db, st), mine = P.pend.filter(x => !x.by || x.by === st.from);
+      if (mine.length) return askPendF(S, st, mine[0], mine.length);
       const nb = realNames(P.b).length, ng = realNames(P.g).length;
+      if (G.par) return S(buttons(`👨‍👩‍👧 *ההורים שולחים* · קיבלנו עד עכשיו: 👧 ${cnt(ng, "בת אחת", "בנות")} · 👦 ${cnt(nb, "בן אחד", "בנים")}${G.kids ? ` (מתוך ${G.kids})` : ""}${P.all ? "\n👧 " + (realNames(P.g).join(", ") || "—") + "\n👦 " + (realNames(P.b).join(", ") || "—") : ""}\n\nאפשר גם לשלוח כאן בעצמך תמונות של מי שחסר (שם + בן/בת).\nלמצב מעודכן – כותבים *מצב* · להודעה להורים שוב – כותבים *קישור*`.slice(0, 1020),
+        [["g:fin", "✅ סיימנו"], ["g:remind", "📩 תזכורת להורים"], ["g:pause", "⏸️ נמשיך מחר"]]));
       return S(buttons(`*עד עכשיו:* 👧 ${cnt(ng, "בת אחת", "בנות")} · 👦 ${cnt(nb, "בן אחד", "בנים")}${G.kids ? ` (מתוך ${G.kids})` : ""}\n\n${st.gname ? `עכשיו שולחים את התמונה של *${st.gname}* 📷` : "ממשיכים לשלוח תמונות – כל אחת עם שם + בן/בת 👇"}`,
         P.all ? [["g:fin", "✅ סיימתי תמונות"], ["g:pause", "⏸️ נמשיך מחר"]] : [["g:pause", "⏸️ נמשיך מחר"], ["g:drive", "📁 אעדיף דרייב"]]));
     }
@@ -458,7 +478,8 @@ async function ganSummary(st, db, owner){
   const G = st.g, P = await ganPics(db, st), p = ganP(G.cover, G.kids);
   const nb = realNames(P.b), ng = realNames(P.g);
   const lines = rounds(G).map(([b, sub], i) => `${sub === "בנים" ? "👦" : "👧"} ${roundName(G, i)}: ${realNames((P.by[b + "|" + sub] || { names: [] }).names).join(", ") || "—"}`).join("\n") + (owner && P.recs.some(r => r.rep) ? `\n🔄 הוחלפה תמונה: ${P.recs.filter(r => r.rep).map(r => r.name).join(", ")} (בדרייב – החדשה היא האחרונה)` : "");
-  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת: ${st.who}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
+  const byPar = P.recs.filter(r => r.parent).length;
+  return `📋 *סיכום הזמנה ${st.oid}*\n🏫 ${G.name} · הגננת/הוועד: ${st.who}${byPar ? `\n👨‍👩‍👧 ${byPar} תמונות נשלחו ע"י ההורים (כל הורה אישר את התקנון ואת השימוש בתמונה)` : ""}\n📚 ${G.books.map(id => book(id).name).join(" + ")}\n📕 ${COVERS[G.cover]}\n👧👦 ${G.kids} ספרים · ${cnt(nb.length, "בן אחד", "בנים")}, ${cnt(ng.length, "בת אחת", "בנות")}\n\n${lines}${P.nameless ? `\n⚠️ ${cnt(P.nameless, "תמונה אחת", "תמונות")} בלי שם` : ""}\n\n✍️ הקדשה: ${G.ded}${shipLine(st) ? "\n\n" + shipLine(st) : ""}${st.pay ? "\n💳 תשלום: " + PAYS[st.pay] : ""}${owner ? `\n\n💰 לפי המחירון: ${G.kids} × ${p} ₪ = ${ils(G.kids * p)}${shipCost(st) ? " + משלוח " + ils(SHIP) : ""} = ${ils(G.kids * p + shipCost(st))}` : ""}\n\n✓ אישור ההורים לתמונות – התקבל`;
 }
 
 /* תשובה בכתב לשאלה עם כפתורים: "בת", "קשה", "ביט", "חיבוקים", "כן"... ← הכפתור המתאים */
@@ -495,6 +516,8 @@ async function lastInBurst(db, from, log){
 /* גן – תמונה שעוד לא יודעים של מי (או שלשם הזה כבר יש תמונה): שואלים, עם ציטוט של התמונה */
 function askPendF(S, st, pr, n){
   st.gask = pr.k;
+  if (pr.dup && pr.dupOther) return S(quote(buttons(`כבר קיבלנו תמונה של *${pr.name}* (${pr.sub === "בנות" ? "בת" : "בן"}) מהורה אחר 🙂\nזה ילד/ה אחר/ת עם אותו שם?`,
+    [["gr:new", "👯 כן, ילד/ה אחר/ת"], ["gr:no", "❌ לא, לא לשמור"]]), pr.mid));
   if (pr.dup) return S(quote(buttons(`ל*${pr.name}* (${pr.sub === "בנות" ? "בת" : "בן"}) כבר יש תמונה.\nבגנים – תמונה אחת לכל ילד/ה. מה עושים עם התמונה הזו?`,
     [["gr:rep", "🔄 להחליף"], ["gr:new", "👯 ילד/ה אחר/ת"], ["gr:no", "❌ לא לשמור"]]), pr.mid));
   if (pr.name && !pr.sub) return S(quote(buttons(`*${pr.name}* – בן או בת?`, [["gx:b", "👦 בן"], ["gx:g", "👧 בת"]]), pr.mid));
@@ -517,7 +540,7 @@ async function step(env, from, st, ev, log, db){
     const bi = G.books.indexOf(G.dedFor);
     if (G.dedFor && G.dedFor !== "all" && bi >= 0 && bi + 1 < G.books.length) { G.dedFor = G.books[bi + 1]; G.dedI = 0; st.step = "g-ded"; return; }
     G.ded = G.deds.all ? G.deds.all.t : G.books.map(b => `📚 ${book(b).name}:\n${(G.deds[b] || {}).t || ""}`).join("\n\n");
-    G.grp = ""; st.step = "g-pics";
+    G.grp = ""; st.step = "g-who";
   };
   const askPend = (pr, n) => askPendF(S, st, pr, n);
   /* גן – משייכים תמונות שממתינות: שם בכיתוב / שם שנכתב קודם / תשובה לשאלה. כפילות (אותה תמונה בדיוק) – מזהים לפי חתימת הקובץ */
@@ -525,6 +548,7 @@ async function step(env, from, st, ev, log, db){
     const P = await ganPics(db, st), shas = new Map(P.recs.filter(r => r.sha).map(r => [r.sha, r.name])), b = G.books[0];
     st.gask = "";
     for (const pr of P.pend) {
+      if (pr.by && pr.by !== from) continue;                         /* כל שולח (גננת / כל הורה) מטפל רק בתמונות שלו */
       if (pr.sha && shas.has(pr.sha)) { await db.del(pr.k); await S(quote(text(`את התמונה הזו כבר קיבלתי (${shas.get(pr.sha)}) ✓`), pr.mid)); continue; }
       const c = parseKid(pr.cap);
       if (!pr.name && c.name) pr.name = c.name;
@@ -532,18 +556,83 @@ async function step(env, from, st, ev, log, db){
       if (!pr.name && st.gname) { pr.name = st.gname; if (!pr.sub && st.gsex) pr.sub = st.gsex; st.gname = ""; st.gsex = ""; }
       if (!pr.name || !pr.sub) { await db.put(pr.k, JSON.stringify(pr), 90 * 86400); return askPend(pr, P.pend.length - P.pend.indexOf(pr)); }
       const sub = pr.sub, old = P.recs.filter(r => r.sub === sub && r.name === pr.name);
-      if (old.length && !pr.rep) { pr.dup = 1; await db.put(pr.k, JSON.stringify(pr), 90 * 86400); return askPend(pr, 1); }
+      if (old.length && !pr.rep) { pr.dup = 1; pr.dupOther = st.mode === "parent" && old.some(o => o.by !== from) ? 1 : 0; await db.put(pr.k, JSON.stringify(pr), 90 * 86400); return askPend(pr, 1); }
       for (const o of old) { if (o.drive) await drivePost(env, { action: "trash", file: o.drive }); await db.del(o.k); }   /* הוחלפה – הישנה לאשפה בדרייב */
       const p = await savePic(env, st, sub, pr.name, { media: pr.media }, from, db, "");
-      await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: b, topic: "", sub, name: pr.name, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "", sha: pr.sha || "", media: pr.media, rep: old.length ? 1 : 0 }), 90 * 86400);
+      await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ book: b, topic: "", sub, name: pr.name, drive: p.drive || "", pending: p.pending || "", mime: p.mime || "", sha: pr.sha || "", media: pr.media, rep: old.length ? 1 : 0, by: from, parent: st.mode === "parent" ? 1 : 0, cons: st.consentAt || "" }), 90 * 86400);
       await db.del(pr.k);
       if (pr.sha) shas.set(pr.sha, pr.name);
-      await S(quote(text(`📷 ${pr.name} · ${sub === "בנות" ? "בת 👧" : "בן 👦"} ✓${old.length ? " (הוחלפה)" : ""}`), pr.mid));   /* שם ליד התמונה – לבדיקה */
+      await S(quote(text(`📷 ${pr.name} · ${sub === "בנות" ? "בת 👧" : "בן 👦"} ✓${old.length ? " (הוחלפה)" : ""}`), pr.mid));
+      if (st.mode === "parent") st.pdone = (st.pdone || 0) + 1;   /* שם ליד התמונה – לבדיקה */
     }
     return ask(env, from, st, log, db);
   };
   let id = ev.id || "";
   const txt = (ev.text || "").trim();
+  const picsStep = async () => {                                /* תמונות בגן – הגננת/הוועד וגם הורה (אותו קוד) */
+      st.step = "g-pics";
+      if (ev.image) {                                                  /* קודם "בהמתנה" – ורק כשיודעים של מי ובן/בת, מעלים לדרייב */
+        await db.put("gq:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ media: ev.image.media, sha: ev.image.sha || "", cap: ev.caption || "", mid: ev.mid || "", ts: Date.now(), by: from }), 90 * 86400);
+        if (!(await lastInBurst(db, from, log))) return;             /* הרבה תמונות ברצף – עונים אחרי האחרונה */
+        return ganFlush();
+      }
+      if (/^gx:[bg]$/.test(id) && st.gask) {                          /* בן או בת לתמונה שממתינה */
+        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; return ask(env, from, st, log, db); }
+        pr.sub = id === "gx:g" ? "בנות" : "בנים"; await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
+        return ganFlush();
+      }
+      if (id === "g:fin") { const P = await ganPics(db, st); if (P.pend.some(x => !x.by || x.by === from)) { await S(text("רגע 🙂 יש עוד תמונה שלא יודעים של מי:")); return ask(env, from, st, log, db); } if (!P.all) { await S(text("עוד לא קיבלנו תמונות 🙂")); return ask(env, from, st, log, db); } st.step = "g-check"; return ask(env, from, st, log, db); }
+      if (/^gr:(rep|new|no)$/.test(id) && st.gask) {                    /* לשם הזה כבר יש תמונה */
+        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; return ask(env, from, st, log, db); }
+        if (id === "gr:no") { await db.del(st.gask); st.gask = ""; await S(text("אין בעיה – לא שמרנו את התמונה הזו 👍")); return ganFlush(); }
+        if (id === "gr:rep" && pr.dupOther) return ask(env, from, st, log, db);   /* הורה לא מחליף תמונה של הורה אחר */
+        pr.dup = 0;
+        if (id === "gr:new") { const P = await ganPics(db, st), have = new Set(P.recs.filter(r => r.sub === pr.sub).map(r => r.name)); let n = 2; while (have.has(pr.name + " " + n)) n++; pr.name = pr.name + " " + n; }
+        else pr.rep = 1;
+        await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
+        return ganFlush();
+      }
+      if (id === "g:remind" || (G.par && /^(קישור|הקישור|ההודעה להורים)$/.test(txt))) { await S(text("📩 מעבירים לקבוצת ההורים 👇")); await S(text(parentsMsg(env, st, id === "g:remind"))); return ask(env, from, st, log, db); }
+      if (/^(מצב|סטטוס|מה המצב)[?!.]*$/.test(txt)) return ask(env, from, st, log, db);
+      if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
+      if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
+      if (txt && !id && !/^להמשיך$/.test(txt)) {
+        const c = parseKid(txt);
+        if (st.gask) {                                                  /* תשובה ל"של מי התמונה?" */
+          const pr = JSON.parse(await db.get(st.gask) || "null");
+          if (pr && (c.name || c.sub)) { if (c.name) pr.name = c.name; if (c.sub) pr.sub = c.sub; await db.put(st.gask, JSON.stringify(pr), 90 * 86400); return ganFlush(); }
+          await S(text("כותבים שם + בן/בת 🙂 למשל: *נועה בת*")); return ask(env, from, st, log, db);
+        }
+        const mv = txt.match(/^(?:להעביר (?:את )?)?(.+?)\s+(?:ל|זו |זה |היא |הוא )?(בנות|בנים|בת|בן)[.!]?$/);
+        if (mv && !badKid(kidName(mv[1]))) {                            /* "מרים לבנות" – תמונה שכבר נשמרה בבן/בת הלא נכון */
+          const who = kidName(mv[1]), to = /בנות|בת/.test(mv[2]) ? "בנות" : "בנים";
+          const P = await ganPics(db, st), rec = P.recs.find(r => r.name === who && r.sub !== to && (st.mode !== "parent" || r.by === from));
+          if (rec && !P.recs.some(r => r.name === who && r.sub === to)) {
+            const p = await savePic(env, st, to, who, { media: rec.media }, from, db, "");
+            if (rec.drive) await drivePost(env, { action: "trash", file: rec.drive });
+            await db.del(rec.k);
+            await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify(Object.assign({}, rec, { k: undefined, sub: to, drive: p.drive || "", pending: p.pending || "" })), 90 * 86400);
+            await S(text(`✓ העברתי את ${who} ל*${to}*`));
+            return ask(env, from, st, log, db);
+          }
+        }
+        if (!c.name) { await S(text("כותבים שם + בן/בת 🙂 למשל: *נועה בת*\n(או שולחים תמונה עם הכיתוב הזה)")); return ask(env, from, st, log, db); }
+        st.gname = c.name; st.gsex = c.sub;                             /* שם לפני התמונה – גם בסדר */
+      }
+      return ask(env, from, st, log, db);
+        return ask(env, from, st, log, db);
+  };
+  if (st.mode === "parent") {                                      /* הורה: אישור ← תמונה עם כיתוב. כל שאר הדברים – לשמש */
+    if (st.step === "p-consent") { if (id === "pc:yes") { st.consentAt = new Date().toISOString(); st.step = "g-pics"; } return ask(env, from, st, log, db); }
+    const c = txt ? parseKid(txt) : {};
+    if (ev.image || /^(gx:|gr:)/.test(id) || (txt && (st.gask || (c.name && c.sub) || /^להעביר /.test(txt)))) return picsStep();
+    if (txt || id) {
+      if (txt) await logQA(env, st, from, "q", "הורה – " + G.name, txt);
+      return S(text(`תודה 💗 ${txt ? "העברתי לשמש, והיא תענה לך כאן בהקדם." : ""}\nלשליחת תמונה: שולחים תמונה עם כיתוב *שם + בן/בת*.`));
+    }
+    return;
+  }
+
   if (!st.oid) { st.oid = newId("סב"); st.day = dayStr(); }
   if (!st.from) st.from = from;
   if (!id && st.mode === "gan" && /^(דוגמה|דוגמא|דוגמה בחינם|רוצה דוגמה|רוצה דוגמא)[.!]?$/.test(txt)) {   /* גננת מבקשת דוגמה ראשונית בחינם */
@@ -745,55 +834,18 @@ async function step(env, from, st, ev, log, db){
       if (txt) { await S(text("הקדשה יפה ❤️")); dedDone(txt.slice(0, 600)); }
       else if (id === "gd:done" && G.ded) st.step = "g-pics";             /* כפתור ישן */
       break;
-    case "g-pics": case "g-picsmore": {
-      st.step = "g-pics";
-      if (ev.image) {                                                  /* קודם "בהמתנה" – ורק כשיודעים של מי ובן/בת, מעלים לדרייב */
-        await db.put("gq:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify({ media: ev.image.media, sha: ev.image.sha || "", cap: ev.caption || "", mid: ev.mid || "", ts: Date.now() }), 90 * 86400);
-        if (!(await lastInBurst(db, from, log))) return;             /* הרבה תמונות ברצף – עונים אחרי האחרונה */
-        return ganFlush();
-      }
-      if (/^gx:[bg]$/.test(id) && st.gask) {                          /* בן או בת לתמונה שממתינה */
-        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; break; }
-        pr.sub = id === "gx:g" ? "בנות" : "בנים"; await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
-        return ganFlush();
-      }
-      if (id === "g:fin") { const P = await ganPics(db, st); if (P.pend.length) { await S(text("רגע 🙂 יש עוד תמונה שלא יודעים של מי:")); break; } if (!P.all) { await S(text("עוד לא קיבלנו תמונות 🙂")); break; } st.step = "g-check"; break; }
-      if (/^gr:(rep|new|no)$/.test(id) && st.gask) {                    /* לשם הזה כבר יש תמונה */
-        const pr = JSON.parse(await db.get(st.gask) || "null"); if (!pr) { st.gask = ""; break; }
-        if (id === "gr:no") { await db.del(st.gask); st.gask = ""; await S(text("אין בעיה – לא שמרנו את התמונה הזו 👍")); return ganFlush(); }
-        pr.dup = 0;
-        if (id === "gr:new") { const P = await ganPics(db, st), have = new Set(P.recs.filter(r => r.sub === pr.sub).map(r => r.name)); let n = 2; while (have.has(pr.name + " " + n)) n++; pr.name = pr.name + " " + n; }
-        else pr.rep = 1;
-        await db.put(st.gask, JSON.stringify(pr), 90 * 86400);
-        return ganFlush();
-      }
-      if (id === "g:pause") { await S(text("אין בעיה ❤️ שמרנו הכל.\nכשתרצו להמשיך – פשוט שולחים עוד תמונות, או כותבים \"להמשיך\".")); return; }
-      if (id === "g:drive") { st.human = Date.now(); await S(buttons("אין בעיה ❤️ שמש תשלח לך כאן קישור לתיקייה בדרייב בהקדם (א׳–ה׳ 8:00–18:00).\n\nכשתרצו לחזור להזמנה כאן – לוחצים 👇", RESUME_BTN)); return; }
-      if (txt && !id && !/^להמשיך$/.test(txt)) {
-        const c = parseKid(txt);
-        if (st.gask) {                                                  /* תשובה ל"של מי התמונה?" */
-          const pr = JSON.parse(await db.get(st.gask) || "null");
-          if (pr && (c.name || c.sub)) { if (c.name) pr.name = c.name; if (c.sub) pr.sub = c.sub; await db.put(st.gask, JSON.stringify(pr), 90 * 86400); return ganFlush(); }
-          await S(text("כותבים שם + בן/בת 🙂 למשל: *נועה בת*")); break;
-        }
-        const mv = txt.match(/^(?:להעביר (?:את )?)?(.+?)\s+(?:ל|זו |זה |היא |הוא )?(בנות|בנים|בת|בן)[.!]?$/);
-        if (mv && !badKid(kidName(mv[1]))) {                            /* "מרים לבנות" – תמונה שכבר נשמרה בבן/בת הלא נכון */
-          const who = kidName(mv[1]), to = /בנות|בת/.test(mv[2]) ? "בנות" : "בנים";
-          const P = await ganPics(db, st), rec = P.recs.find(r => r.name === who && r.sub !== to) ;
-          if (rec && !P.recs.some(r => r.name === who && r.sub === to)) {
-            const p = await savePic(env, st, to, who, { media: rec.media }, from, db, "");
-            if (rec.drive) await drivePost(env, { action: "trash", file: rec.drive });
-            await db.del(rec.k);
-            await db.put("gp:" + st.oid + ":" + Date.now() + Math.random().toString(36).slice(2, 6), JSON.stringify(Object.assign({}, rec, { k: undefined, sub: to, drive: p.drive || "", pending: p.pending || "" })), 90 * 86400);
-            await S(text(`✓ העברתי את ${who} ל*${to}*`));
-            return ask(env, from, st, log, db);
-          }
-        }
-        if (!c.name) { await S(text("כותבים שם + בן/בת 🙂 למשל: *נועה בת*\n(או שולחים תמונה עם הכיתוב הזה)")); break; }
-        st.gname = c.name; st.gsex = c.sub;                             /* שם לפני התמונה – גם בסדר */
+    case "g-who":                                                     /* מי שולח את התמונות – הגננת/הוועד, או כל הורה בעצמו */
+      if (id === "gw:me") { G.par = 0; st.step = "g-pics"; }
+      else if (id === "gw:par") {
+        G.par = 1;
+        if (!G.code) { let c = ""; for (let t = 0; t < 6 && !c; t++) { const n = String(1000 + Math.floor(Math.random() * 9000)); if (!(await db.get("code:" + n))) c = n; } G.code = c;
+          await db.put("code:" + c, JSON.stringify({ oid: st.oid, name: G.name, book: G.books[0], teacher: from, day: st.day || dayStr() }), 90 * 86400); }
+        await S(text("📩 הנה הודעה מוכנה – מעבירים אותה לקבוצת ההורים (לחיצה ארוכה על ההודעה ← העברה) 👇"));
+        await S(text(parentsMsg(env, st)));
+        st.step = "g-pics";
       }
       break;
-    }
+    case "g-pics": case "g-picsmore": return picsStep();
     case "g-check":
       if (id === "g:ok") st.step = G.cover ? "ship" : "g-cover";
       else if (id === "g:morepics") { G.grp = ""; st.step = "g-pics"; }
@@ -846,7 +898,7 @@ async function finish(env, from, st, log, db, sum, ownerSum, thanks, consentText
 
 /* ===== דרייב ===== */
 function dayStr(){ const d = new Date(Date.now() + 2 * 3600e3); return String(d.getUTCDate()).padStart(2, "0") + "." + String(d.getUTCMonth() + 1).padStart(2, "0"); }
-const title = (st, from) => `${st.oid} · ${(st.mode === "gan" ? st.g.name : "") || st.who || st.profile || from || ""} · ${st.day || dayStr()}`;
+const title = (st, from) => `${st.oid} · ${(st.mode === "gan" || st.mode === "parent" ? st.g.name : "") || st.who || st.profile || from || ""} · ${st.day || dayStr()}`;
 function b64(buf){ const u = new Uint8Array(buf); let s = ""; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
 async function drivePost(env, body){
   if (!env.DRIVE_URL || !env.DRIVE_KEY) return null;
@@ -899,6 +951,26 @@ async function driveOrder(env, st, from, consentAt, sum, consentText, db){
 export async function handle(env, from, profile, ev, opts){
   opts = opts || {};
   const db = store(env, opts.mem), log = opts.log;
+  /* ===== הורה שהגיע מהקישור של הגן ("ספר לגן – קוד 1234") ===== */
+  const pk = "pst:" + from;
+  let pst = JSON.parse(await db.get(pk) || "null");
+  const cm = (ev.text || "").match(/קוד\s*(\d{4,6})/);
+  if (cm) {
+    const L = JSON.parse(await db.get("code:" + cm[1]) || "null");
+    if (L) {
+      const tst = JSON.parse(await db.get("st:" + L.teacher) || "null");
+      if (tst && tst.oid === L.oid && tst.step === "done") { await wa(env, from, text(`שלום 💗 ההזמנה של ${L.name} כבר נסגרה, ואי אפשר להוסיף אליה תמונות.\nמשהו חסר? כדאי לפנות לגננת או לוועד 🙂`), log); return; }
+      pst = { mode: "parent", oid: L.oid, day: L.day, g: { name: L.name, books: [L.book], kids: 0 }, teacher: L.teacher, step: "p-consent", from, pdone: 0, who: "", profile: profile || "" };
+      await ask(env, from, pst, log, db); await db.put(pk, JSON.stringify(pst), 90 * 86400); return;
+    }
+  }
+  if (pst && !/^(מחדש|להתחיל מחדש)[.!]?$/.test((ev.text || "").trim())) {
+    const traw = await db.get("st:" + from), tst = traw ? JSON.parse(traw) : null;
+    const teacherBusy = tst && tst.step && tst.step !== "done" && tst.mode === "gan";      /* אותו טלפון גם גננת (בדיקות) */
+    if (!teacherBusy || pst.step === "p-consent" || pst.gask || ev.image || /^(pc:|gx:|gr:)/.test(ev.id || "")) {
+      await step(env, from, pst, ev, log, db); pst.ts = Date.now(); await db.put(pk, JSON.stringify(pst), 90 * 86400); return;
+    }
+  } else if (pst) await db.del(pk);
   const k = "st:" + from, raw = await db.get(k);
   let st = raw ? JSON.parse(raw) : null;
   if (ev.id === "restart:yes" || /^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) { st = null; if (ev.id) ev = { text: "מחדש" }; }   /* מתחילים הזמנה חדשה מההתחלה */
