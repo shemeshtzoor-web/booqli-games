@@ -374,11 +374,11 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
         <li>😀 והכי חשוב – <b>חיוך!</b></li>
       </ul>
     </div>
-    <p class="note">💳 תשלום באתר: אשראי, Bit, PayPal או Google Pay. לאחר שליחת ההזמנה תקבלו את הספרים המלאים לאישורכם לפני ההדפסה.</p>
+    <p class="note">💳 אחרי שליחת ההזמנה תקבלו סקיצה לאישור, ורק אחרי האישור – תשלום. לפני ההדפסה תקבלו את הספרים המלאים לאישורכם.</p>
     <div class="done-box">
-      <h3>זהו, ממשיכים באתר 🛒</h3>
-      <p>מכאן ההזמנה נמשכת באתר של BOOQLI. כשהספרים יהיו מוכנים לאישור – נשלח לכם הודעה, ותחזרו לכאן לשלב 4.</p>
-      <a class="btn" id="goSite" href="https://www.booqli.ai/he" target="_blank" rel="noopener">לבחירת הספר באתר ←</a>
+      <h3>זהו, ממשיכים בעמוד ההזמנה לגנים 🛒</h3>
+      <p>מכאן ההזמנה נמשכת בעמוד ההזמנה לגנים שלנו. כשהספרים יהיו מוכנים לאישור – נשלח לכם הודעה, ותחזרו לכאן לשלב 4.</p>
+      <a class="btn" id="goSite" href="../kindergartens/?utm_source=games&utm_medium=order_page&utm_campaign=gan#start" target="_blank" rel="noopener">להזמנה לגן ←</a>
     </div>
   </div>
   <div class="next" id="routeNext" hidden><button class="btn btn-main" type="button" data-go="drive">המשך לשלבי הדרייב ←</button></div>
@@ -517,7 +517,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
   <p class="lockmsg" id="apLock" hidden></p>
   <p class="lead">כשהספרים מוכנים, שמש שולחת לכם הודעה. <b>אנא החזירו אישור הדפסה בתוך יום עסקים אחד</b>, כדי לא לעכב את הייצור.</p>
   <div class="mode" id="apMode"><button type="button" data-m="site">הזמנתי באתר</button><button type="button" data-m="drive">הזמנה בדרייב</button></div>
-  <div class="row" id="apSite"><a class="btn btn-soft" href="https://www.booqli.ai/he/my-books" target="_blank" rel="noopener">📚 לספרים שלי באתר</a></div>
+  <div class="row" id="apSite"><a class="btn btn-soft js-apwa" target="_blank" rel="noopener">💬 לאישור בוואטסאפ</a></div>
   <div id="apDrive" hidden>
     <p class="note">📁 הספרים מחכים לכם בתיקייה שלכם בדרייב – אותה תיקייה שאליה העליתם את התמונות.</p>
     <div class="row" id="apFolderRow" hidden><a class="btn btn-soft" id="apFolder" href="#" target="_blank" rel="noopener">📁 לתיקייה שלנו</a></div>
@@ -677,7 +677,7 @@ document.querySelectorAll('input[name="route"]').forEach(i => i.addEventListener
 if (D.k) { $("couponCode").textContent = D.k; $("couponBox").hidden = false; } else $("couponMissing").hidden = false;
 $("couponCopy").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(D.k); $("couponCopy").textContent = "✔️ הועתק"; });
 $("askCoupon").addEventListener("click", e => { e.currentTarget.href = wa("היי שמש 👋 כאן " + who() + ".\nאנחנו מזמינים לבד באתר 🛒 ואשמח לקוד הקופון ל-5% הנחה:\n" + orderLine()); if (window.siteEvent) siteEvent("click", "order_ask_coupon"); });
-$("goSite").href += "?utm_source=games&utm_medium=order_page&utm_campaign=gan";
+document.querySelectorAll(".js-apwa").forEach(x => { x.href = wa("היי BOOQLI, ראיתי את הספרים של הגן ואני רוצה לאשר הדפסה ✅" + (gan() ? " – " + gan() : "")); });
 $("goSite").addEventListener("click", () => { mark("site"); if (window.siteEvent) siteEvent("click", "order_go_site"); });
 
 /* ---- דרייב 1: מה מזמינים ולאן ---- */

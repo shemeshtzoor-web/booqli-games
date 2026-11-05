@@ -498,7 +498,7 @@ a.gcard{text-decoration:none;color:inherit}
     <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
     <p>החרוזים והאיורים מתוך הספר "ילד/ת יום הולדת" של BOOQLI · כל השאר מקורי · אתר בטוח להורים ולילדים</p>
-    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+    <p><a id="siteLink" target="_blank" rel="noopener">📚 להזמין ספר אישי ←</a></p>
   </div>
 </footer>
 
@@ -517,10 +517,10 @@ a.gcard{text-decoration:none;color:inherit}
 const TOPIC = "birthday_party";
 const TOPIC_URL = "https://games.booqli.ai/topics/birthday-party/";
 const CONFIG = {
-  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=" + TOPIC,
-  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=" + TOPIC,
-  orderWin: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=win&utm_campaign=" + TOPIC,
-  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+  site:  "/savta/?utm_source=booqli_games&utm_medium=site&utm_campaign=" + TOPIC,
+  order: "/savta/?book=birthday&utm_source=booqli_games&utm_medium=book_box&utm_campaign=" + TOPIC,
+  orderWin: "/savta/?book=birthday&utm_source=booqli_games&utm_medium=win&utm_campaign=" + TOPIC,
+  gan: "/kindergartens/?utm_source=booqli_games&utm_medium=gan_box&utm_campaign=" + TOPIC + "#start"
 };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

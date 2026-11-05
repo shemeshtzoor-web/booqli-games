@@ -169,7 +169,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
     <p>אתר בטוח להורים ולילדים</p>
-    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+    <p><a id="siteLink" target="_blank" rel="noopener">📚 להזמין ספר אישי ←</a></p>
   </div>
 </footer>
 
@@ -177,9 +177,9 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 <script src="suppliers.js"></script>
 <script>
 const CONFIG = {
-  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=suppliers",
+  site:  "/savta/?utm_source=booqli_games&utm_medium=site&utm_campaign=suppliers",
   books: "https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=suppliers&utm_campaign=suppliers",
-  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+  gan: "/kindergartens/?utm_source=booqli_games&utm_medium=gan_box&utm_campaign=suppliers#start"
 };
 const PAGE = "https://games.booqli.ai/topics/suppliers/";
 const $ = id => document.getElementById(id);
@@ -223,7 +223,7 @@ function bqCard(o){
   return `<article class="sup bq"><span class="tag">⭐ מבית BOOQLI</span>
     <h3>📖 ספר אישי לכל ילד בגן</h3>
     <p class="sells">ספר שהילד הוא הגיבור שלו: השם שלו לאורך העלילה ואיורים אישיים. מתנה ל${esc(o.name)} שנשארת לשנים, במחירים סיטונאיים לגנים.</p>
-    <div class="btns"><a class="btn-main" href="${CONFIG.gan}" target="_blank" rel="noopener">💬 הצעת מחיר</a><a class="btn-sec" href="${CONFIG.books}" target="_blank" rel="noopener">לפרטים ←</a></div></article>`;
+    <div class="btns"><a class="btn-main" href="${CONFIG.gan}" target="_blank" rel="noopener">🏫 להזמנה לגן</a><a class="btn-sec" href="${CONFIG.books}" target="_blank" rel="noopener">לפרטים ←</a></div></article>`;
 }
 function freeCard(o){
   return `<article class="sup free"><h3>✨ מקום פנוי לספקית</h3><p>מוכרת מתנות ל${esc(o.name)}? כאן גננות וועדי הורים יראו אותך.</p>

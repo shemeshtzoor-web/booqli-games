@@ -221,7 +221,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
     <p>התאריכים לפי לוח החופשות של משרד החינוך · אתר בטוח להורים ולילדים</p>
-    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+    <p><a id="siteLink" target="_blank" rel="noopener">📚 להזמין ספר אישי ←</a></p>
   </div>
 </footer>
 <div id="modal" class="modal" hidden></div>
@@ -232,11 +232,11 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 <script src="vacations.js"></script>
 <script>
 const CONFIG = {
-  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=calendar",
-  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=calendar",
-  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+  site:  "/savta/?utm_source=booqli_games&utm_medium=site&utm_campaign=calendar",
+  order: "/savta/?utm_source=booqli_games&utm_medium=book_box&utm_campaign=calendar",
+  gan: "/kindergartens/?utm_source=booqli_games&utm_medium=gan_box&utm_campaign=calendar#start"
 };
-const GAMES = "https://games.booqli.ai/", MAIN = "https://www.booqli.ai/he";
+const GAMES = "https://games.booqli.ai/", MAIN = "https://games.booqli.ai/savta/";
 const V = window.VACATIONS;
 const $ = id => document.getElementById(id);
 
@@ -287,7 +287,7 @@ function verify(v){
 /* ---------- טקסטים ---------- */
 const pLink = (v, med) => GAMES + v.practice.href + "?utm_source=whatsapp&utm_medium=" + med + "&utm_campaign=vacation_" + v.id;
 const calLink = med => GAMES + "topics/calendar/?utm_source=whatsapp&utm_medium=" + med + "&utm_campaign=calendar";
-const SPON = `🎁 booqli Games – משחקים ופעילויות לגיל הרך, בחינם, בחסות BOOQLI ❤️\n${MAIN}`;
+const SPON = `🎁 booqli Games – משחקים ופעילויות לגיל הרך, בחינם, בחסות BOOQLI ❤️\n📚 ספר אישי שהילד הוא הגיבור: ${MAIN}`;
 function parentsMsg(v){
   const ld = lastDay(v);
   const lines = [`📅 תזכורת מהגן: ${v.summer ? "יוצאים לחופש הגדול!" : "חופשת " + v.name}`, ""];
@@ -380,7 +380,7 @@ async function makeImage(){
   const logo = await loadImg("../../img/logo.png");
   if (logo){ const lh = 74, lw = logo.width * lh / logo.height; c.drawImage(logo, 60, H-108, lw, lh); }
   c.fillStyle = "#fff"; c.font = "700 40px Fredoka, Assistant"; c.fillText("בחסות BOOQLI ❤️  ·  בחינם", W-60, H-82, 640);
-  c.font = "800 30px Assistant"; c.fillText("games.booqli.ai  ·  booqli.ai", W-60, H-34, 640);
+  c.font = "800 30px Assistant"; c.fillText("games.booqli.ai", W-60, H-34, 640);
   return new Promise(r => cv.toBlob(b => { imgBlob = b; try { $("imgPrev").src = URL.createObjectURL(b); } catch(e){} r(b); }, "image/png"));
 }
 async function sendImage(){
@@ -402,7 +402,7 @@ function sheetHTML(){
   <div class="s-body"><table class="p-tab"><thead><tr><th>חופשה</th><th>יום גן אחרון</th><th>ימי החופשה</th><th>חוזרים לגן</th></tr></thead><tbody>${rows}</tbody></table>
   <div class="p-box"><h2>📌 ימי גן רגילים</h2><ul>${V.regular.map(r => `<li>${r}</li>`).join("")}</ul></div>
   <div class="p-box" style="font-size:9.5pt">מקור: ${V.source}, נבדק ${dmy(D(V.checked))}. ייתכנו שינויים מקומיים – בדקו מול הגן. לוח מעודכן והודעה לפני כל חופשה: games.booqli.ai</div>
-  <div class="p-spon">🎁 booqli Games – משחקים ופעילויות לגיל הרך, בחינם, בחסות BOOQLI · www.booqli.ai</div></div>
+  <div class="p-spon">🎁 booqli Games – משחקים ופעילויות לגיל הרך, בחינם, בחסות BOOQLI · games.booqli.ai</div></div>
   ${sitePrintFooter("calendar", "", "../../img/logo.png")}</div>`;
 }
 let printed = false; addEventListener("beforeprint", () => printed = true);

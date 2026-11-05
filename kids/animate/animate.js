@@ -980,7 +980,7 @@ $("shareVid").onclick = async () => {
 $("dlVid").addEventListener("click", () => ev("animate", "download-video"));
 $("again").onclick = () => { show("sMain"); step(3); };
 $("newPic").onclick = $("newPic2").onclick = () => { show("s1"); step(1); };
-$("bookL").href = typeof siteOrderLink === "function" ? siteOrderLink("kids-animate", "video") : "https://www.booqli.ai/he";
+$("bookL").href = typeof siteOrderLink === "function" ? siteOrderLink("kids-animate", "video") : "https://games.booqli.ai/savta/";
 
 /* ---------- הציור המגניב / כרטיס לזיכרון (1080×1350) ---------- */
 async function poster(){

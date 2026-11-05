@@ -1,13 +1,13 @@
 /* ===== הגדרות (נקראות מתוך העמוד) ===== */
-const CONFIG_DEFAULT={"coupon": "BYEBYE", "couponText": "קוד הנחה לספר האישי \"ביי ביי חיתול!\"", "link": "https://www.booqli.ai/he/create-a-book?utm_source=diaper_game&utm_medium=game&utm_campaign=bye_bye_diaper", "homeLink": "https://www.booqli.ai/he?utm_source=diaper_game&utm_medium=game", "whatsapp": "055-5549331", "gameLink": "https://claude.ai/artifact/6M7X92rFxXigBGmiSNQYbo", "returnLink": "https://www.booqli.ai/he/articles/potty-training-guide?utm_source=whatsapp&utm_medium=returning_player&utm_campaign=bye_bye_diaper"};
+const CONFIG_DEFAULT={"coupon": "", "couponText": "", "link": "https://games.booqli.ai/savta/?utm_source=booqli_games&utm_medium=book_game&utm_campaign=bye_bye_diaper", "homeLink": "https://games.booqli.ai/", "whatsapp": "055-5549331", "gameLink": "https://claude.ai/artifact/6M7X92rFxXigBGmiSNQYbo", "returnLink": ""};
 let CONFIG=Object.assign({},CONFIG_DEFAULT);
 try{CONFIG=Object.assign(CONFIG,JSON.parse(document.getElementById("booqli-config").textContent))}catch(e){}
-const PAGE_TEMPLATE="<title>ביי ביי חיתול של BOOQLI</title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Assistant:wght@400;600;700&display=swap\">\n<link rel=\"stylesheet\" href=\"game.css\">\n<script id=\"booqli-config\" type=\"application/json\">__CONFIG__</script>\n<div class=\"wrap\">\n  <header class=\"brand\">\n    <a id=\"homeLink\" class=\"logo\" href=\"https://www.booqli.ai/he\" target=\"_blank\" rel=\"noopener\"><img src=\"img/logo.png\" alt=\"BOOQLI\" width=\"150\" height=\"61\"></a>\n    <a id=\"ganLink\" class=\"gan\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><b>🏫 ספר אישי לכל ילד בגן</b><span>מחירים סיטונאיים לגנים ←</span></a>\n    <a id=\"waLink\" class=\"wa\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z\"/></svg><span><span class=\"lbl\">וואטסאפ </span><b id=\"waNum\" dir=\"ltr\">055-5549331</b></span></a>\n  </header>\n  <main id=\"app\"></main>\n  <footer>הסיפור \"ביי ביי חיתול!\" · כתיבה: שמש צור · עריכה לשונית: גילת עירון-בהר · © 2026 BOOQLI · וואטסאפ <span dir=\"ltr\">055-5549331</span></footer>\n</div>\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script>\n<script src=\"game.js\"></script>\n";
+const PAGE_TEMPLATE="<title>ביי ביי חיתול של BOOQLI</title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Assistant:wght@400;600;700&display=swap\">\n<link rel=\"stylesheet\" href=\"game.css\">\n<script id=\"booqli-config\" type=\"application/json\">__CONFIG__</script>\n<div class=\"wrap\">\n  <header class=\"brand\">\n    <a id=\"homeLink\" class=\"logo\" href=\"https://games.booqli.ai/\" target=\"_blank\" rel=\"noopener\"><img src=\"img/logo.png\" alt=\"BOOQLI\" width=\"150\" height=\"61\"></a>\n    <a id=\"ganLink\" class=\"gan\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><b>🏫 ספר אישי לכל ילד בגן</b><span>מחירים סיטונאיים לגנים ←</span></a>\n    <a id=\"waLink\" class=\"wa\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z\"/></svg><span><span class=\"lbl\">וואטסאפ </span><b id=\"waNum\" dir=\"ltr\">055-5549331</b></span></a>\n  </header>\n  <main id=\"app\"></main>\n  <footer>הסיפור \"ביי ביי חיתול!\" · כתיבה: שמש צור · עריכה לשונית: גילת עירון-בהר · © 2026 BOOQLI · וואטסאפ <span dir=\"ltr\">055-5549331</span></footer>\n</div>\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script>\n<script src=\"game.js\"></script>\n";
 document.getElementById("homeLink").href=CONFIG.homeLink;
 function waIntl(n){let d=String(n||"").replace(/\D/g,"");if(d.startsWith("0"))d="972"+d.slice(1);return d}
 function waHref(){return "https://wa.me/"+waIntl(CONFIG.whatsapp)+"?text="+encodeURIComponent("היי BOOQLI, הגעתי מהמשחק ביי ביי חיתול 🐥")}
 document.getElementById("waLink").href=waHref();
-const ganHref=()=>"https://wa.me/"+waIntl(CONFIG.whatsapp)+"?text="+encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫");
+const ganHref=()=>"https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=book_game&utm_campaign=bye_bye_diaper#start";
 {const gl=document.getElementById("ganLink");if(gl)gl.href=ganHref()}
 document.getElementById("waNum").textContent=CONFIG.whatsapp;
 
@@ -241,16 +241,11 @@ function offerHTML(noSave){
       <li><b>ספר מודפס באיכות גבוהה</b> – מתנה אמיתית ששומרים לשנים</li>
       <li>שולחים תמונה אחת – ואנחנו עושים את כל השאר</li>
       <li>הקדשה אישית מהמשפחה בעמוד הראשון</li>
-      <li>סיפור מחורז ומנוקד שעוזר להיפרד מהחיתול בלי לחץ ובלי בושה</li>
+      <li>בוחרים מתוך ספרי BOOQLI: יום הולדת, הולך/ת לגן, גיבור/ת על ועוד</li>
     </ul>
-    <div class="lockbox">
-      <span class="lock" aria-hidden="true">🎟️</span>
-      <p><b>רוצים קופון הנחה לספר המודפס ש${n} ${g("היא הגיבורה","הוא הגיבור")} שלו?</b><br>שחקו ונצחו באחד המשחקים – והקופון יקפוץ לכם על המסך!</p>
-      <button type="button" class="btn small playwin" data-go="signals">לשחק ולזכות בקופון</button>
-    </div>
-    <a class="btn offer-cta" href="${esc(CONFIG.link)}" target="_blank" rel="noopener">להזמנת הספר של ${n} ←</a>
+    <a class="btn offer-cta" href="${esc(CONFIG.link)}" target="_blank" rel="noopener">לבחירת ספר ל${n} ←</a>
     <a class="wa-line" href="${esc(waHref())}" target="_blank" rel="noopener">שאלות? כתבו לנו בוואטסאפ <b dir="ltr">${esc(CONFIG.whatsapp)}</b></a>
-    <a class="ganbox" href="${esc(ganHref())}" target="_blank" rel="noopener"><span class="gi" aria-hidden="true">🏫</span><span><b>גננות וועדי הורים:</b> ספר אישי לכל ילד בגן, במחירים סיטונאיים מעולים. <u>לקבלת הצעת מחיר ←</u></span></a>
+    <a class="ganbox" href="${esc(ganHref())}" target="_blank" rel="noopener"><span class="gi" aria-hidden="true">🏫</span><span><b>גננות וועדי הורים:</b> ספר אישי לכל ילד בגן, במחירים סיטונאיים מעולים. <u>להזמנה לכל הגן ←</u></span></a>
   </section>`;
 }
 function bindOffer(){
@@ -273,28 +268,27 @@ function couponPopup(title){
     <div class="confetti" aria-hidden="true">${["🎉","⭐","🎈","✨","🐥","🌈","🎉","⭐","🎈","✨"].map((c,i)=>`<i style="--x:${(i*37)%100}%;--d:${(i%5)*.12}s">${c}</i>`).join("")}</div>
     <img class="kidthumb hi" src="${kidPic()}" alt="">
     <p class="pop-kick">${esc(title)}</p>
-    <h2 id="popT">${g("ניצחת","ניצחת")}, ${n}! הנה הקופון שלך 🎁</h2>
-    <p>קופון הנחה לספר המודפס "ביי ביי חיתול!" ש${n} ${g("היא הגיבורה","הוא הגיבור")} שלו – עם השם ${g("שלה","שלו")} לאורך כל העלילה, איורים אישיים בכל עמוד, מודפס באיכות גבוהה</p>
-    <div class="coupon big"><code id="pcc">${esc(CONFIG.coupon)}</code><button type="button" id="pcopy">העתקה</button></div>
-    <small>${esc(CONFIG.couponText)}</small>
-    <a class="btn offer-cta" href="${esc(CONFIG.link)}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a>
-    <a class="btn sv-wa" href="${esc((intlPhone(savedPhone())?"https://wa.me/"+intlPhone(savedPhone())+"?text=":"https://wa.me/?text=")+encodeURIComponent(`🎁 הקופון שלי לספר "ביי ביי חיתול!": ${CONFIG.coupon}\nלהזמנת הספר: ${CONFIG.link}\n\n🐥 לשחק שוב במשחק: ${returnURL()}`))}" target="_blank" rel="noopener">📲 עסוקים עכשיו? שלחו לעצמכם את הקופון בוואטסאפ</a>
+    <h2 id="popT">${g("ניצחת","ניצחת")}, ${n}! כל הכבוד! 🏆</h2>
+    <p>🎁 יש גם ספרים מודפסים ש${n} ${g("היא הגיבורה","הוא הגיבור")} שלהם – עם השם ${g("שלה","שלו")} לאורך כל העלילה, איורים אישיים בכל עמוד, מודפס באיכות גבוהה</p>
+    <a class="btn offer-cta" href="${esc(CONFIG.link)}" target="_blank" rel="noopener">לבחירת ספר ל${n} ←</a>
+    <a class="btn sv-wa" href="${esc((intlPhone(savedPhone())?"https://wa.me/"+intlPhone(savedPhone())+"?text=":"https://wa.me/?text=")+encodeURIComponent(`📚 ספר אישי מ-BOOQLI
+להזמנת הספר: ${CONFIG.link}\n\n🐥 לשחק שוב במשחק: ${returnURL()}`))}" target="_blank" rel="noopener">📲 עסוקים עכשיו? שלחו לעצמכם את הקישור בוואטסאפ</a>
     <a class="wa-line" href="${esc(waHref())}" target="_blank" rel="noopener">שאלות? וואטסאפ <b dir="ltr">${esc(CONFIG.whatsapp)}</b></a>
     <button type="button" class="btn ghost" id="popK">להמשיך לשחק</button>
   </div>`;
   document.body.appendChild(POP);document.body.classList.add("popopen");
-  const b=document.getElementById("pcopy");
+  const b=document.getElementById("pcopy")||{};
   b.onclick=()=>{const done=()=>{b.textContent="הועתק ✓";setTimeout(()=>{if(b.isConnected)b.textContent="העתקה"},1800)};
     const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("pcc"));const x=getSelection();x.removeAllRanges();x.addRange(r);b.textContent="מסומן – העתיקו"};
     try{navigator.clipboard.writeText(CONFIG.coupon).then(done,sel)}catch(e){sel()}};
   document.getElementById("popX").onclick=document.getElementById("popK").onclick=closePopup;
   POP.onclick=e=>{if(e.target===POP)closePopup()};
-  document.getElementById("pcopy").focus({preventScroll:true});
+  (document.getElementById("pcopy")||document.getElementById("popK")).focus({preventScroll:true});
 }
 function closePopup(){if(POP){POP.remove();POP=null;document.body.classList.remove("popopen")}}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closePopup()});
 function winLater(title){setTimeout(()=>{if(document.body.contains(app))couponPopup(title)},1100)}
-const tryAgain=t=>`<p class="needwin">🎟️ ${t}</p>`;
+const tryAgain=t=>`<p class="needwin">🏆 ${t}</p>`;
 function videoHTML(){return `<div class="vid"><video controls playsinline preload="metadata" poster="img/video-poster.jpg"><source src="video/demo.mp4" type="video/mp4"></video></div>`}
 
 /* ===== פתיחה ===== */
@@ -377,7 +371,7 @@ function home(){
   <section class="hello">
     ${S.photo?`<img class="kidthumb hi" src="${S.photo}" alt="">`:""}
     <h1>${g("שלום","שלום")} ${esc(N())}! ${g("מוכנה","מוכן")} להיפרד מהחיתול?</h1>
-    <p>מה עושים קודם? <span class="winhint">כל ניצחון במשחק = קופון לספר 🎟️</span></p>
+    <p>מה עושים קודם?</p>
   </section>
   ${saveHTML()}
   <nav class="menu" aria-label="מה עושים">
@@ -562,7 +556,7 @@ function bsEnd(){
         ${avg?`<div><b>${(avg/1000).toFixed(1)}</b><span>שניות בממוצע</span></div><div><b>${(fast/1000).toFixed(1)}</b><span>הכי מהיר</span></div>`:""}
       </div>
       ${rec?`<p class="record">🏆 שיא חדש!</p>`:BEST?`<p class="note">השיא: ${(BEST/1000).toFixed(1)} שניות בממוצע. אפשר לשבור אותו?</p>`:""}
-      ${n>=5?"":tryAgain("כדי לזכות בקופון צריך לפחות 5 כוכבים. עוד ניסיון?")}
+      ${n>=5?"":tryAgain("כדי לנצח צריך לפחות 5 כוכבים. עוד ניסיון?")}
       <div class="row"><button class="btn" id="again">עוד פעם – יותר מהר!</button><button class="btn ghost" id="st">לטבלת המדבקות</button></div>
     </section>
     ${offerHTML()}
@@ -632,7 +626,7 @@ function quizEnd(total){
       <img class="kidthumb hi" src="${kidPic()}" alt="">
       <h2>${g("יודעת הכול!","יודע הכול!")}</h2>
       <p style="font-size:20px">${esc(N())} ${g("ענתה","ענה")} נכון בניסיון הראשון על <b>${s}</b> מתוך ${total} שאלות.</p>
-      ${s>=4?"":tryAgain("כדי לזכות בקופון צריך 4 תשובות נכונות בניסיון הראשון. עוד פעם?")}
+      ${s>=4?"":tryAgain("כדי לנצח צריך 4 תשובות נכונות בניסיון הראשון. עוד פעם?")}
       <div class="row"><button class="btn" id="again">עוד פעם</button><button class="btn ghost" id="mem">לזיכרון התחתונים</button></div>
     </section>
     ${offerHTML()}
@@ -775,9 +769,9 @@ async function drawChart(name,gender){
   const fy=H-170;x.fillStyle="#2B1526";rrect(x,40,fy,W-80,130,30);x.fill();
   if(logo){const lh=86,lw=logo.width*lh/logo.height;x.drawImage(logo,W-80-lw,fy+22,lw,lh)}
   x.fillStyle="#fff";x.font=`700 30px ${UI}`;x.textAlign="left";x.direction="rtl";
-  x.fillText(`ספר אישי "ביי ביי חיתול!" – שחקו במשחק וזכו בקופון`,80,fy+56);
+  x.fillText(`ספרים אישיים מ-BOOQLI – הילד הוא הגיבור`,80,fy+56);
   x.font=`400 28px ${UI}`;x.fillStyle="#FBD9E8";
-  x.direction="ltr";x.textAlign="left";x.fillText("booqli.ai",80,fy+100);const bw=x.measureText("booqli.ai").width;
+  x.direction="ltr";x.textAlign="left";x.fillText("games.booqli.ai",80,fy+100);const bw=x.measureText("games.booqli.ai").width;
   x.direction="rtl";x.textAlign="left";x.fillText(`וואטסאפ ${CONFIG.whatsapp}  ·`,80+bw+14,fy+100);
   return cv;
 }
@@ -926,7 +920,6 @@ function settings(){
     st.className="status";
     if(bad){st.className="status err";st.textContent=`${bad[1]} צריך להתחיל ב-https:// ובלי רווחים.`;return}
     if(waIntl(c.whatsapp).length<11){st.className="status err";st.textContent="מספר הוואטסאפ לא נראה תקין.";return}
-    if(!c.coupon){st.className="status err";st.textContent="כתבי קוד קופון.";return}
     const btn=document.getElementById("s_save");btn.disabled=true;st.textContent="שומרת…";
     try{
       const a=await window.claude.use("artifact");

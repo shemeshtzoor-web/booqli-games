@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>booqli Games – משחקים ופעילויות לגן</title>
-<meta name="description" content="משחקים, דפי עבודה, מערכים ופעילויות חינוכיים לגיל הרך, לגן ולבית, לפי לוח השנה. לגננות, להורים ולילדים. בחינם, בחסות BOOQLI.">
+<title>BOOQLI – ספרי ילדים בהתאמה אישית · משחקים ופעילויות לגן בחינם</title>
+<meta name="description" content="ספר אישי לכל ילד – הילד שלכם הוא הגיבור. תמונה אחת ושם, כריכה קשה ומשלוח עד הבית. ובאתר גם משחקים, דפי עבודה ומערכים לגיל הרך בחינם.">
 <link rel="canonical" href="https://games.booqli.ai/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="booqli Games">
-<meta property="og:title" content="booqli Games – משחקים ופעילויות לגן">
-<meta property="og:description" content="משחקים, דפי עבודה, מערכים ופעילויות חינוכיים לגיל הרך, לגן ולבית, לפי לוח השנה. לגננות, להורים ולילדים. בחינם, בחסות BOOQLI.">
+<meta property="og:title" content="BOOQLI – ספרי ילדים בהתאמה אישית · משחקים ופעילויות לגן בחינם">
+<meta property="og:description" content="ספר אישי לכל ילד – הילד שלכם הוא הגיבור. תמונה אחת ושם, כריכה קשה ומשלוח עד הבית. ובאתר גם משחקים, דפי עבודה ומערכים לגיל הרך בחינם.">
 <meta property="og:url" content="https://games.booqli.ai/">
 <meta property="og:image" content="https://games.booqli.ai/img/og-home.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,12 +19,48 @@
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-.home-hero{margin-top:18px;background:#fff;border-radius:30px;padding:24px 22px;box-shadow:0 6px 0 #d9e9e1;position:relative;overflow:hidden}
+/* ===== באנר ההזמנה (5.11.2026): הדבר הראשון בדף הבית ===== */
+.order-hero{margin-top:16px;background:linear-gradient(135deg,#FFE3F4 0%,#FFF6FB 55%,#E1F0EA 100%);border-radius:30px;padding:26px 26px 22px;box-shadow:0 6px 0 #F5C6E4;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:center;position:relative;overflow:hidden}
+.oh-brand{font-family:Fredoka,Assistant,sans-serif;font-weight:700;color:var(--magenta);font-size:clamp(40px,7vw,62px);line-height:1;letter-spacing:1px;margin:0}
+.oh-brand small{display:block;font-size:clamp(21px,3.4vw,30px);color:var(--sage-deep);letter-spacing:0;margin-top:6px}
+.oh-lead{font-size:clamp(19px,2.6vw,23px);font-weight:800;margin:14px 0 0;color:var(--ink);line-height:1.35}
+.oh-ticks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
+.oh-ticks li{background:#fff;border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px;color:var(--sage-deep);box-shadow:0 2px 0 #e3d3dd}
+.oh-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px}
+.oh-go{display:inline-flex;align-items:center;gap:8px;background:var(--pink-btn,#E0399F);color:#fff;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:26px;text-decoration:none;border-radius:999px;padding:12px 34px;box-shadow:0 5px 0 #A8236F;transition:transform .12s}
+.oh-go:hover{transform:translateY(-2px)}.oh-go:active{transform:translateY(2px);box-shadow:0 2px 0 #A8236F}
+.oh-go:focus-visible{outline:4px solid var(--sage-deep);outline-offset:3px}
+.oh-gan{font-weight:800;color:var(--sage-deep);font-size:16.5px}
+.oh-art{display:flex;align-items:center;justify-content:center;gap:6px}
+.oh-art figure{margin:0;text-align:center}
+.oh-art img{display:block;width:100%;height:auto;border-radius:16px}
+.oh-art .ph{width:min(150px,38%);transform:rotate(-4deg)}.oh-art .ph img{border:5px solid #fff;box-shadow:0 6px 18px rgba(193,54,113,.18);aspect-ratio:4/5;object-fit:cover}
+.oh-art .bk{width:min(230px,55%)}.oh-art .bk img{filter:drop-shadow(0 8px 14px rgba(43,21,38,.18))}
+.oh-art figcaption{font-weight:800;font-size:14px;color:var(--magenta);margin-top:6px}
+.oh-art .ar{font-size:30px;color:var(--pink);font-weight:800}
+@media (max-width:720px){.order-hero{grid-template-columns:minmax(0,1fr);padding:20px 16px 18px;text-align:center}.oh-ticks,.oh-cta{justify-content:center}.oh-art .ph{width:96px}.oh-art .bk{width:150px}.oh-art figcaption{font-size:12.5px}.oh-go{font-size:23px;padding:11px 30px}.oh-lead{margin-top:10px}}
+@media (max-width:720px){.top .gan{display:none}.oh-art .ph{width:78px}.oh-art .bk{width:122px}.oh-art .ar{font-size:24px}.oh-brand{font-size:40px}.oh-ticks li{font-size:14px;padding:3px 10px}.oh-cta{margin-top:14px}}
+.shelf{margin-top:22px}
+.shelf .c-sec-h{margin-bottom:10px}
+.covers{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(132px,17vw,170px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;-webkit-overflow-scrolling:touch}
+.cov{scroll-snap-align:start;background:#fff;border-radius:20px;padding:8px 8px 10px;text-decoration:none;color:var(--ink);text-align:center;box-shadow:0 4px 0 #d9e9e1;border:3px solid transparent;transition:transform .15s,border-color .15s;display:flex;flex-direction:column;gap:4px}
+.cov:hover,.cov:focus-visible{transform:translateY(-3px);border-color:var(--pink);outline:none}
+.cov img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block}
+.cov b{font-size:15px;line-height:1.25}.cov span{font-size:13px;font-weight:800;color:var(--magenta)}
+.how{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:how}
+.how li{background:#fff;border-radius:22px;padding:16px;box-shadow:0 4px 0 #d9e9e1;display:flex;gap:12px;align-items:flex-start;counter-increment:how}
+.how li::before{content:counter(how);flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--pink-soft);color:var(--magenta);font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:21px;display:grid;place-items:center}
+.how b{display:block;font-size:17.5px}.how small{display:block;color:var(--muted);font-size:14.5px;font-weight:600;margin-top:2px;line-height:1.4}
+@media (max-width:720px){.how{grid-template-columns:minmax(0,1fr)}}
+.free-h{margin:34px 0 0;text-align:center}
+.free-h h2{font-size:clamp(24px,4vw,32px);color:var(--sage-deep)}
+.free-h p{color:var(--muted);font-weight:700;margin-top:4px}
+.home-hero{margin-top:14px;background:#fff;border-radius:30px;padding:24px 22px;box-shadow:0 6px 0 #d9e9e1;position:relative;overflow:hidden}
 .home-hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--pink),#3AA7F0,var(--sage))}
 .hh-top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
 .hh-top img{width:140px;height:auto;display:block}
-.hh-top h1{font-size:clamp(36px,7vw,58px);line-height:1;color:var(--magenta)}
-.hh-top h1 span{color:var(--sage-deep)}
+.hh-top .gname{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;color:var(--magenta)}
+.hh-top .gname span{color:var(--sage-deep)}
 .hh-top p{font-size:18px;margin-top:8px;max-width:640px}
 .hh-top .bubble{background:var(--pink-soft);border-radius:18px;padding:8px 14px;font-weight:800;display:inline-block;margin-top:12px;font-size:17px}
 .doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
@@ -80,18 +116,55 @@
 <header class="top">
   <div class="wrap brand">
     <a href="" aria-label="booqli Games – דף הבית"><img class="logo" src="img/logo.png" alt="BOOQLI" width="104" height="44"></a>
-    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_header&utm_campaign=gan#start">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
     <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
   </div>
 </header>
-<div class="sponsor">🎁 כל התכנים באתר מוענקים בחינם, בחסות BOOQLI ❤️</div>
+<div class="sponsor">📚 BOOQLI – ספרי ילדים בהתאמה אישית · 🎁 המשחקים והתכנים באתר בחינם ❤️</div>
 <main class="wrap">
+
+<section class="order-hero" aria-labelledby="ohT">
+  <div class="oh-txt">
+    <h1 class="oh-brand" id="ohT">BOOQLI<small>ספרי ילדים בהתאמה אישית</small></h1>
+    <p class="oh-lead">ספר אישי לכל ילד – הילד שלכם הוא הגיבור 💛</p>
+    <ul class="oh-ticks">
+      <li>📷 תמונה אחת ושם</li><li>📖 כריכה קשה</li><li>🚚 משלוח עד הבית</li>
+    </ul>
+    <div class="oh-cta">
+      <a class="oh-go js-ord" data-w="hero" href="savta/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=order">להתחיל ←</a>
+      <a class="oh-gan js-ord" data-w="hero-gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=gan#start">🏫 מזמינים לכל ילדי הגן? ←</a>
+    </div>
+  </div>
+  <div class="oh-art" aria-hidden="true">
+    <figure class="ph"><img src="savta/img/p-druki-b.webp?v=2" alt="" width="480" height="600" fetchpriority="high"><figcaption>שולחים תמונה</figcaption></figure>
+    <span class="ar">←</span>
+    <figure class="bk"><img src="savta/img/c-druki-b.webp?v=2" alt="" width="388" height="373"><figcaption>מקבלים ספר!</figcaption></figure>
+  </div>
+</section>
+
+<section class="shelf" aria-labelledby="shT">
+  <div class="c-sec-h"><h2 id="shT">📚 בוחרים ספר</h2><p>לוחצים על ספר – וההזמנה מתחילה</p></div>
+  <div class="covers" id="covers"></div>
+</section>
+
+<ol class="how" aria-label="איך מזמינים">
+  <li><span><b>בוחרים ספר</b><small>יום הולדת, גן, כיתה א', הרפתקה ועוד</small></span></li>
+  <li><span><b>שם ותמונה אחת</b><small>והקדשה אישית, אם רוצים</small></span></li>
+  <li><span><b>שולחים – ואנחנו חוזרים אליכם</b><small>עם סקיצה לאישור. משלמים רק אחרי שמאשרים</small></span></li>
+</ol>
+
+<section class="c-sec" id="reviews">
+  <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2></div>
+  <div class="revs" id="revs"></div>
+</section>
+
+<div class="free-h"><h2>🎁 ובחינם באתר</h2><p>משחקים, דפי עבודה, מערכים ופעילויות לגיל הרך – לגן ולבית</p></div>
 
 <section class="home-hero">
   <div class="hh-top">
-    <img src="img/family/booqli.webp" alt="בוקלי, החד־קרן של booqli Games" width="140" height="145">
+    <img src="img/family/booqli.webp" alt="בוקלי, החד־קרן של booqli Games" width="140" height="145" loading="lazy">
     <div>
-      <h1>booqli <span>Games</span></h1>
+      <p class="gname">booqli <span>Games</span></p>
       <p>משחקים, דפי עבודה, מערכים ופעילויות חינוכיים לגיל הרך. לגננות בגן, להורים בבית ולילדים. בחינם, בחסות BOOQLI.</p>
       <div class="bubble">שָׁלוֹם! אני בּוּקְלִי. מי אתם? 👇</div>
     </div>
@@ -173,10 +246,6 @@
   <span class="cp-go">לפרטים ←</span>
 </a>
 
-<section class="c-sec" id="reviews">
-  <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2></div>
-  <div class="revs" id="revs"></div>
-</section>
 </main>
 <footer class="foot">
   <div class="wrap">
@@ -186,6 +255,7 @@
 </footer>
 <script src="common.js"></script>
 <script src="catalog.js"></script>
+<script src="order/books/books.js"></script>
 <script>
 
 // כתובות ישנות: חיפוש מדף הבית עובר לספרייה
@@ -219,6 +289,14 @@ const render = () => {
 };
 CAT.refresh = render;
 render();
+// באנר ההזמנה: מדף הכריכות (מ-order/books/books.js) + מדידה של כל לחיצה
+(function(){
+  const box = document.getElementById("covers"), B = window.BQ_BOOKS || [];
+  box.innerHTML = B.map(b => '<a class="cov js-ord" data-w="cover-' + b.id + '" href="savta/?book=' + b.id + '&utm_source=booqli_games&utm_medium=home_cover&utm_campaign=' + b.id + '">' +
+    '<img src="order/books/' + b.img + '" alt="" width="800" height="800" loading="lazy"><b>' + b.name + '</b><span>להזמנה ←</span></a>').join("");
+  if (!B.length) box.closest(".shelf").hidden = true;
+  document.querySelectorAll(".js-ord").forEach(a => a.addEventListener("click", () => { if (window.siteEvent) siteEvent("home-order", a.dataset.w); }));
+})();
 // ביקורות – רק מילים אמיתיות של גננות, באישורן
 const rv = document.getElementById("revs");
 REVIEWS.forEach(r => { const f = document.createElement("figure"); f.className = "rev"; const bq = document.createElement("blockquote"); bq.textContent = r.text; const c = document.createElement("figcaption"); c.textContent = "— " + r.name; f.append(bq, c); rv.appendChild(f); });

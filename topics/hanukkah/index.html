@@ -411,7 +411,7 @@ footer a{color:#fff;font-weight:700}
     <img class="logo" src="../../img/logo.png" alt="BOOQLI" width="95" height="40">
     <p><b>booqli Games</b> · כל התכנים מוענקים בחינם, בחסות BOOQLI</p>
     <p>כל התכנים, האיורים והטקסטים באתר מקוריים · אתר בטוח להורים ולילדים</p>
-    <p><a id="siteLink" target="_blank" rel="noopener">לאתר BOOQLI ←</a></p>
+    <p><a id="siteLink" target="_blank" rel="noopener">📚 להזמין ספר אישי ←</a></p>
   </div>
 </footer>
 
@@ -458,10 +458,10 @@ const CONFIG = {
   topicName: "חנוכה",
   // קוד הקופון לספר לילד. כשיהיה קוד – לכתוב אותו כאן בין המירכאות (למשל "HANUKKAH10")
   coupon: "",
-  site:  "https://www.booqli.ai/he?utm_source=booqli_games&utm_medium=site&utm_campaign=hanukkah",
-  order: "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=coupon&utm_campaign=hanukkah",
+  site:  "/savta/?utm_source=booqli_games&utm_medium=site&utm_campaign=hanukkah",
+  order: "/savta/?utm_source=booqli_games&utm_medium=coupon&utm_campaign=hanukkah",
   // קישור לקבוצת הוואטסאפ, קוד המדידה ומספר הדיווח נמצאים בקובץ common.js שבתיקייה הראשית
-  gan: "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫")
+  gan: "/kindergartens/?utm_source=booqli_games&utm_medium=gan_box&utm_campaign=hanukkah#start"
 };
 
 /* ======================== איורים מקוריים (SVG) ========================
@@ -568,10 +568,10 @@ const $ = id => document.getElementById(id);
 /* ======================== מסך ניצחון ======================== */
 function couponHTML(print){
   if (CONFIG.coupon) return print
-    ? `🎁 קופון לספר אישי לילד: <b>${CONFIG.coupon}</b> · booqli.ai`
+    ? `🎁 קופון לספר אישי לילד: <b>${CONFIG.coupon}</b> · games.booqli.ai`
     : `<p>🎁 מתנה מ-BOOQLI: קופון הנחה לספר אישי שהילד הוא הגיבור שלו</p><b>${CONFIG.coupon}</b><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת הספר עם הקופון ←</a></p>`;
   return print
-    ? `🎁 ספר אישי שהילד הוא הגיבור שלו · <b>booqli.ai</b>`
+    ? `🎁 ספר אישי שהילד הוא הגיבור שלו · <b>games.booqli.ai</b>`
     : `<p>🎁 ספר אמיתי שהילד הוא הגיבור שלו, עם השם שלו לאורך כל העלילה ואיורים אישיים בכל עמוד</p><p><a href="${CONFIG.order}" target="_blank" rel="noopener">להזמנת ספר אישי ←</a></p>`;
 }
 let winAgain = null;

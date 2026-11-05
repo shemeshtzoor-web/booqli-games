@@ -1,13 +1,13 @@
 /* ===== הגדרות (נקראות מתוך העמוד) ===== */
-const CONFIG_DEFAULT={"coupon": "SAFARI", "couponText": "קוד הנחה לספר אישי ראשון", "link": "https://www.booqli.ai/he/create-a-book?utm_source=savanna_game&utm_medium=game&utm_campaign=savanna", "homeLink": "https://www.booqli.ai/he?utm_source=savanna_game&utm_medium=game", "whatsapp": "055-5549331", "gameLink": "https://claude.ai/artifact/XSvHEmwNkDcydb1Kbqk9Sb", "returnLink": "https://www.booqli.ai/he/articles/savanna-game?utm_source=whatsapp&utm_medium=returning_player&utm_campaign=savanna"};
+const CONFIG_DEFAULT={"coupon": "", "couponText": "", "link": "https://games.booqli.ai/savta/?book=savanna&utm_source=booqli_games&utm_medium=book_game&utm_campaign=savanna", "homeLink": "https://games.booqli.ai/", "whatsapp": "055-5549331", "gameLink": "https://claude.ai/artifact/XSvHEmwNkDcydb1Kbqk9Sb", "returnLink": ""};
 let CONFIG=Object.assign({},CONFIG_DEFAULT);
 try{CONFIG=Object.assign(CONFIG,JSON.parse(document.getElementById("booqli-config").textContent))}catch(e){}
-const PAGE_TEMPLATE="<title>הסוואנה של BOOQLI</title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Secular+One&family=Assistant:wght@400;600;700&display=swap\">\n<link rel=\"stylesheet\" href=\"game.css\">\n<script id=\"booqli-config\" type=\"application/json\">__CONFIG__</script>\n<div class=\"wrap\">\n  <header class=\"brand\">\n    <a id=\"homeLink\" class=\"logo\" href=\"https://www.booqli.ai/he\" target=\"_blank\" rel=\"noopener\"><img src=\"img/logo.png\" alt=\"BOOQLI\" width=\"150\" height=\"61\"></a>\n    <a id=\"ganLink\" class=\"gan\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><b>🏫 ספר אישי לכל ילד בגן</b><span>מחירים סיטונאיים לגנים ←</span></a>\n    <a id=\"waLink\" class=\"wa\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z\"/></svg><span><span class=\"lbl\">וואטסאפ </span><b id=\"waNum\" dir=\"ltr\">055-5549331</b></span></a>\n  </header>\n  <main id=\"app\"></main>\n  <footer>הסיפור \"בסוואנה\" · כתיבה: שמש צור · עריכה לשונית: גילת עירון-בהר · © 2026 BOOQLI · וואטסאפ <span dir=\"ltr\">055-5549331</span></footer>\n</div>\n<script src=\"game.js\"></script>\n";
+const PAGE_TEMPLATE="<title>הסוואנה של BOOQLI</title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Secular+One&family=Assistant:wght@400;600;700&display=swap\">\n<link rel=\"stylesheet\" href=\"game.css\">\n<script id=\"booqli-config\" type=\"application/json\">__CONFIG__</script>\n<div class=\"wrap\">\n  <header class=\"brand\">\n    <a id=\"homeLink\" class=\"logo\" href=\"https://games.booqli.ai/\" target=\"_blank\" rel=\"noopener\"><img src=\"img/logo.png\" alt=\"BOOQLI\" width=\"150\" height=\"61\"></a>\n    <a id=\"ganLink\" class=\"gan\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><b>🏫 ספר אישי לכל ילד בגן</b><span>מחירים סיטונאיים לגנים ←</span></a>\n    <a id=\"waLink\" class=\"wa\" href=\"https://wa.me/972555549331\" target=\"_blank\" rel=\"noopener\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z\"/></svg><span><span class=\"lbl\">וואטסאפ </span><b id=\"waNum\" dir=\"ltr\">055-5549331</b></span></a>\n  </header>\n  <main id=\"app\"></main>\n  <footer>הסיפור \"בסוואנה\" · כתיבה: שמש צור · עריכה לשונית: גילת עירון-בהר · © 2026 BOOQLI · וואטסאפ <span dir=\"ltr\">055-5549331</span></footer>\n</div>\n<script src=\"game.js\"></script>\n";
 document.getElementById("homeLink").href=CONFIG.homeLink;
 function waIntl(n){let d=String(n||"").replace(/\D/g,"");if(d.startsWith("0"))d="972"+d.slice(1);return d}
 function waHref(){return "https://wa.me/"+waIntl(CONFIG.whatsapp)+"?text="+encodeURIComponent("היי BOOQLI, הגעתי מהמשחק בסוואנה 🦓")}
 document.getElementById("waLink").href=waHref();
-const ganHref=()=>"https://wa.me/"+waIntl(CONFIG.whatsapp)+"?text="+encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫");
+const ganHref=()=>"https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=book_game&utm_campaign=savanna#start";
 {const gl=document.getElementById("ganLink");if(gl)gl.href=ganHref()}
 document.getElementById("waNum").textContent=CONFIG.whatsapp;
 
@@ -219,12 +219,11 @@ function offerHTML(){
       <li>סיפור מחורז ומנוקד, עם הזברות, הג'ירפה ונילה הפילה</li>
       <li>נשלח עד הבית תוך 7–14 ימי עסקים</li>
     </ul>
-    <div class="coupon"><code id="cc">${esc(CONFIG.coupon)}</code><button type="button" id="copy">העתקה</button></div>
-    <small>${esc(CONFIG.couponText)}</small>
     <a class="btn offer-cta" href="${esc(CONFIG.link)}" target="_blank" rel="noopener">להזמנת הספר של ${n} ←</a>
-    <a class="btn sv-wa" href="${esc((intlPhone(savedPhone())?"https://wa.me/"+intlPhone(savedPhone())+"?text=":"https://wa.me/?text=")+encodeURIComponent(`🎁 הקופון שלי לספר "${N()} בסוואנה": ${CONFIG.coupon}\nלהזמנת הספר: ${CONFIG.link}\n\n🦓 לשחק שוב במשחק: ${returnURL()}`))}" target="_blank" rel="noopener">📲 עסוקים עכשיו? שלחו לעצמכם את הקופון בוואטסאפ</a>
+    <a class="btn sv-wa" href="${esc((intlPhone(savedPhone())?"https://wa.me/"+intlPhone(savedPhone())+"?text=":"https://wa.me/?text=")+encodeURIComponent(`📚 ספר אישי "${N()} בסוואנה"
+להזמנת הספר: ${CONFIG.link}\n\n🦓 לשחק שוב במשחק: ${returnURL()}`))}" target="_blank" rel="noopener">📲 עסוקים עכשיו? שלחו לעצמכם את הקישור בוואטסאפ</a>
     <a class="wa-line" href="${esc(waHref())}" target="_blank" rel="noopener">שאלות? כתבו לנו בוואטסאפ <b dir="ltr">${esc(CONFIG.whatsapp)}</b></a>
-    <a class="ganbox" href="${esc(ganHref())}" target="_blank" rel="noopener"><span class="gi" aria-hidden="true">🏫</span><span><b>גננות וועדי הורים:</b> ספר אישי לכל ילד בגן, במחירים סיטונאיים מעולים. <u>לקבלת הצעת מחיר ←</u></span></a>
+    <a class="ganbox" href="${esc(ganHref())}" target="_blank" rel="noopener"><span class="gi" aria-hidden="true">🏫</span><span><b>גננות וועדי הורים:</b> ספר אישי לכל ילד בגן, במחירים סיטונאיים מעולים. <u>להזמנה לכל הגן ←</u></span></a>
   </section>`;
 }
 function bindOffer(){bindSave();
@@ -554,7 +553,6 @@ function settings(){
     st.className="status";
     if(bad){st.className="status err";st.textContent=`${bad[1]} צריך להתחיל ב-https:// ובלי רווחים.`;return}
     if(waIntl(c.whatsapp).length<11){st.className="status err";st.textContent="מספר הוואטסאפ לא נראה תקין.";return}
-    if(!c.coupon){st.className="status err";st.textContent="כתבי קוד קופון.";return}
     const btn=document.getElementById("s_save");btn.disabled=true;st.textContent="שומרת…";
     try{
       const a=await window.claude.use("artifact");

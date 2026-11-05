@@ -397,7 +397,7 @@
   voiceUi();
 
   // קישורים קבועים
-  var ORDER_URL = "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=book_box&utm_campaign=game-maker";
+  var ORDER_URL = "https://games.booqli.ai/savta/?utm_source=booqli_games&utm_medium=book_box&utm_campaign=game-maker";
   var GAN_URL = "https://wa.me/" + SITE.phone + "?text=" + encodeURIComponent("היי BOOQLI, אני מגן ילדים ורוצה הצעת מחיר לספר אישי לכל ילד בגן 🏫");
   $("orderLink").href = ORDER_URL; $("ganBtn").href = GAN_URL; $("ganLink").href = GAN_URL;
   siteJoinLinks(); siteDevBar(); siteBackBar("../../");

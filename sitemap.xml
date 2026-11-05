@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://games.booqli.ai/</loc><lastmod>2026-11-01</lastmod></url>
+  <url><loc>https://games.booqli.ai/</loc><lastmod>2026-11-05</lastmod><priority>1.0</priority></url>
+  <url><loc>https://games.booqli.ai/savta/</loc><lastmod>2026-11-05</lastmod><priority>1.0</priority></url>
+  <url><loc>https://games.booqli.ai/kindergartens/</loc><lastmod>2026-11-05</lastmod><priority>1.0</priority></url>
   <url><loc>https://games.booqli.ai/topics/hanukkah/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://games.booqli.ai/games/superhero/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://games.booqli.ai/games/birthday/</loc><lastmod>2026-10-30</lastmod></url>
@@ -36,8 +38,6 @@
   <url><loc>https://games.booqli.ai/terms/</loc><lastmod>2026-11-01</lastmod></url>
   <url><loc>https://games.booqli.ai/accessibility/</loc><lastmod>2026-11-01</lastmod></url>
   <url><loc>https://games.booqli.ai/course/</loc><lastmod>2026-11-01</lastmod></url>
-  <url><loc>https://games.booqli.ai/kindergartens/</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://games.booqli.ai/map/</loc><lastmod>2026-11-03</lastmod></url>
-  <url><loc>https://games.booqli.ai/savta/</loc><lastmod>2026-11-03</lastmod></url>
   <url><loc>https://games.booqli.ai/topics/game-maker/</loc><lastmod>2026-11-03</lastmod></url>
 </urlset>

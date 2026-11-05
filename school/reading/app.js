@@ -550,7 +550,7 @@ function winGame(L, g){
   const line = passed(n) ? "אֶת הַשָּׁלָב הַזֶּה כְּבָר עֲבַרְתֶּם ✔️" : ready ? "🏁 אֶתְגַּר הַשָּׁלָב פָּתוּחַ! מוּכָנִים?" : "עוֹד " + (GOAL - st) + " " + (GOAL - st === 1 ? "נִצָּחוֹן" : "נִצְחוֹנוֹת") + " וְהָאֶתְגָּר נִפְתָּח";
   modal('<div class="big" aria-hidden="true">⭐</div><h2>כָּל הַכָּבוֹד' + (S.name ? ", " + esc(S.name) : "") + '!</h2><p>עוֹד כּוֹכָב! סַךְ הַכֹּל ⭐ ' + S.wins + '</p><p class="hl">' + line + '</p>' +
     '<div class="row">' + (ready ? '<button type="button" class="btn" data-a="test">🏁 לָאֶתְגָּר</button>' : "") + '<button type="button" class="btn ' + (ready ? "alt" : "") + '" data-a="again">🔁 עוֹד פַּעַם</button><button type="button" class="btn alt" data-a="back">🎮 מִשְׂחָק אַחֵר</button></div>' +
-    '<a class="bookad bq-teach" target="_blank" rel="noopener" href="' + (typeof siteOrderLink === "function" ? siteOrderLink("school-reading", "win") : "https://www.booqli.ai/he") + '">📖 ספר אמיתי שהילד הוא הגיבור שלו – מ-BOOQLI ←</a>',
+    '<a class="bookad bq-teach" target="_blank" rel="noopener" href="' + (typeof siteOrderLink === "function" ? siteOrderLink("school-reading", "win") : "https://games.booqli.ai/savta/") + '">📖 ספר אמיתי שהילד הוא הגיבור שלו – מ-BOOQLI ←</a>',
     {test: () => go("?lvl=" + n + "&g=test"), again: () => game(n, g), back: () => go("?lvl=" + n)});
 }
 function test(L){

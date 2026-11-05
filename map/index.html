@@ -26,7 +26,7 @@
 <header class="top">
   <div class="wrap brand">
     <a href="../" aria-label="booqli Games – דף הבית"><img class="logo" src="../img/logo.png" alt="BOOQLI" width="104" height="44"></a>
-    <a class="gan" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%92%D7%9F%20%D7%99%D7%9C%D7%93%D7%99%D7%9D%20%D7%95%D7%A8%D7%95%D7%A6%D7%94%20%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%9C%D7%A1%D7%A4%D7%A8%20%D7%90%D7%99%D7%A9%D7%99%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93%20%D7%91%D7%92%D7%9F%20%F0%9F%8F%AB" target="_blank" rel="noopener">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
+    <a class="gan" href="../kindergartens/?utm_source=booqli_games&utm_medium=header&utm_campaign=map#start">🏫 ספר אישי לכל ילד בגן <span class="pill">מחירים סיטונאיים לגנים ←</span></a>
     <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
   </div>
 </header>
@@ -133,6 +133,7 @@
 </footer>
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
+<script src="../order/books/books.js"></script>
 <script>
 /* ===== מפת האתר: נבנית מ-CATALOG + KIDS_GAMES, כך שכל נושא חדש מופיע בה לבד =====
    עמוד קבוע חדש (לא בקטלוג) = תחנה חדשה ב-FIXED למטה. */
@@ -148,6 +149,12 @@ const bookGames = KIDS_GAMES.filter(g => CATALOG.some(t => t.book && t.id === g.
 const playN = kidsN("play");
 
 const LINES = [
+  /* הקו הראשון (5.11.2026, בקשת שמש): להזמין ספר אישי – לכל ספר תחנה, ההזמנה מתחילה כשהספר כבר בחור */
+  {id:"order", c:"#E0399F", ic:"📚", name:"להזמין ספר אישי", sub:"ספר שהילד הוא הגיבור · כריכה קשה · משלוח עד הבית", items:[
+    fx("💛","ספר אישי לילד – הורים, סבים, מתנה","savta/","tp","הזמנה ספר אישי מתנה סבתא סבא נכדים הורים יום הולדת"),
+    fx("🏫","ספר אישי לכל ילד בגן + מחשבון מחיר","kindergartens/#start","tp","גן מחירים הזמנה ספר אישי סיטונאי מחשבון ועד הורים")]
+    .concat((window.BQ_BOOKS || []).map(b => fx("📖", b.name, "savta/?book=" + b.id, "tp", "ספר אישי הזמנה " + b.name + " " + (b.d || ""))))
+    .concat([fx("📖","הספר שלכם בכריכה קשה","book-maker/","tp","עורך ספר כריכה קשה הדפסה")])},
   {id:"doors", c:"#2B1526", ic:"🚪", name:"הכניסות לפי קהל", sub:"כל אחד נכנס מהדלת שלו", items:[
     fx("👩‍🏫","לגננות: לוח השנה, מערכים ודפים","teachers/","t","גננת מערך לוח השנה"),
     fx("👨‍👩‍👧","להורים: מה למדו בגן וממשיכים בבית","parents/","p","הורים בית"),
@@ -175,14 +182,10 @@ const LINES = [
       fx("✏️","מאמן ההכתבה: מילות השבוע","school/dictation/","tpks","הכתבה מילים כתיב כתיבה כתב יד מילות השבוע שיעורי בית כיתה ב", {games: KIDS_GAMES.filter(g => g.topic === "school-dictation").length}),
       fx("🖨️","דף הכתבה להדפסה","school/dictation/?sheet=1","tps","הכתבה דף עבודה הדפסה")]
       .concat(CATALOG.filter(t => !t.book && !t.zone && !t.href && isSchoolOnly(t)).map(fromCat))},
-  {id:"booqli", c:"#FF56C2", ic:"🎁", name:"מ-BOOQLI", sub:"ספרים, מתנות ושירותים", items:[
-    fx("🏫","ספר אישי לכל ילד בגן + מחשבון מחיר","kindergartens/","tp","גן מחירים הזמנה ספר אישי סיטונאי מחשבון ועד הורים"),
-    fx("💛","ספר אישי לנכדים – לסבים, בוואטסאפ","savta/","p","סבתא סבא נכדים נכד מתנה ספר אישי וואטסאפ"),
+  {id:"more", c:"#B0478A", ic:"🎁", name:"עוד מ-BOOQLI", sub:"מתנות, קורס ואפליקציה", items:[
     fx("🎁","מתנות וספקיות לגן לפי עונות","gifts/","tp","מתנות ספקיות ועד חנוכה סוף שנה יום הולדת"),
-    fx("📖","הספר שלכם בכריכה קשה","book-maker/","tp","עורך ספר כריכה קשה הדפסה"),
     fx("✍️","קורס: כל אחד יכול להיות סופר","course/","tp","קורס זום כתיבה איור AI"),
-    fx("📲","האפליקציה לטלפון","app/","tpk","אפליקציה התקנה בלי אינטרנט"),
-    fx("🌐","האתר הראשי של BOOQLI","https://www.booqli.ai/he","tp","ספרים אישיים בנים בנות גלריה מאמרים", {ext:true})]},
+    fx("📲","האפליקציה לטלפון","app/","tpk","אפליקציה התקנה בלי אינטרנט")]},
   {id:"prep", c:"#B9A9B5", ic:"🛠️", name:"נושאים שאנחנו מכינים", sub:"לוחצים ו\"ספרו לי\" – ונודיע כשמוכן", closed:true,
     items: CATALOG.filter(t => !t.season && !t.book && !t.zone && !t.href && !isSchoolOnly(t) && prep(t)).map(fromCat)},
   {id:"info", c:"#6F988B", ic:"ℹ️", name:"מידע ועזרה", sub:"קבוצה, מסמכים ויצירת קשר", items:[

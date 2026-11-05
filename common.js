@@ -614,11 +614,16 @@ function siteKidsPopup(css, st, save){
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", siteJoinPopup); else siteJoinPopup();
 })();
 
-/* ======================== קוד QR לדפי הדפסה ========================
+/* ======================== קישור להזמנת ספר (וקוד QR לדפי הדפסה) ========================
    כלל קבוע: בכל דף שמדפיסים יש קוד לסריקה להורים, שמוביל להזמנת ספר אישי.
-   topic = שם הנושא באנגלית (למעקב: מאיזה דף הגיעו) */
-function siteOrderLink(topic, medium){
-  return "https://www.booqli.ai/he/create-a-book?utm_source=booqli_games&utm_medium=" + (medium || "print_qr") + "&utm_campaign=" + (topic || "site");
+   מ-5.11.2026 מזמינים רק כאן, בעמוד ההזמנה savta/ (לא באתר הראשי booqli.ai).
+   topic = שם הנושא באנגלית (למעקב: מאיזה דף הגיעו) · book = מזהה ספר מ-order/books/books.js (לא חובה – אז ההזמנה מתחילה כשהספר כבר בחור) */
+function siteOrderLink(topic, medium, book){
+  return "https://games.booqli.ai/savta/?" + (book ? "book=" + encodeURIComponent(book) + "&" : "") + "utm_source=booqli_games&utm_medium=" + (medium || "print_qr") + "&utm_campaign=" + (topic || "site");
+}
+/* הזמנה לכל ילדי הגן – kindergartens/#start */
+function siteGanLink(topic, medium){
+  return "https://games.booqli.ai/kindergartens/?utm_source=booqli_games&utm_medium=" + (medium || "gan_box") + "&utm_campaign=" + (topic || "site") + "#start";
 }
 function siteQR(url){
   if (typeof qrcode !== "function") return "";
@@ -685,6 +690,10 @@ window.SITE.doors = [
 ];
 /* התפריט המלא (☰ תפריט, 2.11.2026): כל הנושאים המרכזיים בקבוצות. נושא עם id מקבל לבד "נפתח ב-..." / "נסגר" לפי SITE.opens / SITE.closes. */
 window.SITE.menu = [
+  { h: "📚 להזמין ספר אישי", items: [
+    { ic: "💛", t: "ספר אישי לילד (הורים, סבים, מתנה)", href: "/savta/", hot: true },
+    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/#start" },
+    { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" } ] },
   { h: "🧭 ראשי", items: [
     { ic: "🏠", t: "דף הבית", href: "/" },
     { ic: "🗺️", t: "מפת האתר – כל מה שיש", href: "/map/", hot: true },
@@ -718,11 +727,8 @@ window.SITE.menu = [
     { ic: "📖", t: "מסלול הקריאה: מהאותיות ועד קריאה מלאה", href: "/school/reading/", hot: true },
     { ic: "✏️", t: "מאמן ההכתבה: מילות השבוע", href: "/school/dictation/", hot: true },
     { ic: "🎒", t: "כל התכנים לכיתות", href: "/school/" } ] },
-  { h: "🎁 מ-BOOQLI", items: [
-    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
-    { ic: "💛", t: "ספר אישי לנכדים (לסבים)", href: "/savta/" },
+  { h: "🎁 עוד מ-BOOQLI", items: [
     { ic: "🎁", t: "מתנות וספקיות לגן", href: "/gifts/" },
-    { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" },
     { ic: "✍️", t: "קורס: כותבים ספר ילדים", href: "/course/" },
     { ic: "📲", t: "האפליקציה", href: "/app/" } ] }
 ];
@@ -788,15 +794,15 @@ function siteDoorsNav(){
     p.textContent = "© " + Math.max(2026, new Date().getFullYear()) + " BOOQLI. כל הזכויות שמורות. מותר ומומלץ לשתף את האתר ואת דפי ההדפסה עם גננות, הורים וחברים, בחינם וכמו שהם (עם הקרדיט של BOOQLI). אסור להשתמש בתכנים לשימוש מסחרי: למכור אותם, לגבות עליהם כסף, לשלב אותם במוצר או בשירות בתשלום, או לפרסם אותם בשם אחר, ללא אישור בכתב מ-BOOQLI.";
     var f = document.querySelector("footer");
     (f || document.body).appendChild(p);
-    /* תחתית קבועה (מ-1.11.2026): מסמכים, יצירת קשר ושייכות לאתר הראשי */
+    /* תחתית קבועה (מ-1.11.2026): הזמנת ספר, מסמכים ויצירת קשר. בלי קישור לאתר הראשי (5.11.2026) */
     if (/[?&]sheet=/.test(location.search) || document.querySelector(".site-legal")) return;
     var l = document.createElement("p");
     l.className = "site-legal";
     l.style.cssText = "margin:0 auto;padding:0 16px 18px;max-width:900px;text-align:center;font-size:13.5px;line-height:1.9";
     var lk = "color:inherit;font-weight:800;text-decoration:underline;display:inline-block;margin:0 5px;white-space:nowrap";
-    l.innerHTML = '<a style="' + lk + '" href="/map/">🗺️ מפת האתר</a> · <a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
+    l.innerHTML = '<a style="' + lk + '" href="/savta/?utm_source=booqli_games&utm_medium=footer&utm_campaign=order">📚 להזמין ספר אישי</a> · <a style="' + lk + '" href="/map/">🗺️ מפת האתר</a> · <a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
       '<a style="' + lk + '" href="https://wa.me/' + SITE.phone + '" target="_blank" rel="noopener">יצירת קשר</a><br>' +
-      '<span>games.booqli.ai מופעל על ידי BOOQLI (עוסק מורשה 558577037) והוא חלק מ-<a style="color:inherit;font-weight:800" href="https://www.booqli.ai/he" target="_blank" rel="noopener">booqli.ai</a> · בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
+      '<span>games.booqli.ai מופעל על ידי BOOQLI (עוסק מורשה 558577037) · ספרי ילדים בהתאמה אישית · המשחקים והתכנים בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
     (f || document.body).appendChild(l);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
@@ -885,18 +891,14 @@ function siteCloseBar(id, name, homeHref){
   tick(); setInterval(tick, 30000);
 }
 
-/* ======================== חיבור לאתר הראשי של BOOQLI ========================
-   כלל קבוע: בכל עמוד יש פס עליון עם קישורים לאתר הראשי (בעברית), ולחיצה על כל לוגו
-   של BOOQLI מובילה לעמוד הבית של האתר הראשי. הכל נפתח בחלון חדש, כדי שאתר המשחקים יישאר פתוח.
-   הכתובות נבדקו באתר החי (31.10.2026). משנים כתובת – רק כאן. */
+/* ======================== פס ההזמנה העליון (עד 5.11.2026: פס קישורים לאתר הראשי) ========================
+   כלל קבוע (שמש, 5.11.2026): לא שולחים לקוחות לאתר הראשי booqli.ai. בכל עמוד יש למעלה פס "להזמין ספר אישי",
+   וכל לוגו של BOOQLI מוביל לדף הבית של האתר הזה (שם הבאנר הגדול של ההזמנה). משנים כתובת – רק כאן. */
 window.SITE.main = {
-  home: "https://www.booqli.ai/he",
+  home: "/",
   links: [
-    { icon: "👦", label: "ספרים לבנים", short: "לבנים",   href: "https://www.booqli.ai/he/choose-book/boys-hebrew" },
-    { icon: "👧", label: "ספרים לבנות", short: "לבנות",   href: "https://www.booqli.ai/he/choose-book/girls-hebrew" },
-    { icon: "🖼️", label: "גלריה",       short: "גלריה",   href: "https://www.booqli.ai/he/gallery" },
-    { icon: "📝", label: "מאמרים",      short: "מאמרים",  href: "https://www.booqli.ai/he/articles" },
-    { icon: "🏫", label: "גני ילדים",   short: "גנים",    href: "https://games.booqli.ai/kindergartens/" }
+    { icon: "📚", label: "להזמין ספר אישי", short: "להזמין ספר", href: "/savta/?utm_source=booqli_games&utm_medium=top_bar&utm_campaign=order", main: true },
+    { icon: "🏫", label: "ספר לכל ילד בגן", short: "לכל הגן",    href: "/kindergartens/?utm_source=booqli_games&utm_medium=top_bar&utm_campaign=gan#start" }
   ]
 };
 function siteIsLogo(img){
@@ -916,11 +918,11 @@ function siteLogoLinks(){
       var cs = getComputedStyle(img);
       if (cs.display === "block") a.style.display = "block";
     }
-    a.href = SITE.main.home; a.target = "_blank"; a.rel = "noopener";
-    a.setAttribute("aria-label", "BOOQLI – לאתר הראשי (נפתח בחלון חדש)");
+    a.href = SITE.main.home; a.removeAttribute("target");
+    a.setAttribute("aria-label", "BOOQLI – לדף הבית");
   });
 }
-/* לוגו שנוצר אחר כך (למשל בתוך חלונית) – גם לחיצה עליו מובילה לאתר הראשי */
+/* לוגו שנוצר אחר כך (למשל בתוך חלונית) – נפתח דף הבית בחלון חדש, כדי לא לאבד את מה שעושים בעמוד */
 document.addEventListener("click", function(e){
   var img = e.target;
   if (!siteIsLogo(img) || img.closest("a") || img.closest(".s-foot")) return;
@@ -941,28 +943,28 @@ function siteMainNav(){
     ".bq-nav .s{display:none}" +
     "@media (min-width:761px){.bq-nav{position:sticky;top:0;box-shadow:0 2px 10px rgba(193,54,113,.10)}html{scroll-padding-top:56px}}" +
     "@media (min-width:761px){.bq-nav .home .t{display:none}}@media (min-width:761px) and (max-width:960px){.bq-nav .f{display:none}.bq-nav .s{display:inline}}" +
-    /* טלפון: חמישה כפתורים בשורה אחת, אייקון מעל מילה – נוח לאצבע */
+    /* טלפון: הכפתורים בשורה אחת, אייקון מעל מילה – נוח לאצבע */
     "@media (max-width:760px){.bq-nav .in{padding:5px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));flex-direction:column;align-items:stretch;gap:4px}" +
     ".bq-nav .home{justify-content:center;font-size:13px}.bq-nav .home .t{display:inline}" +
-    ".bq-nav ul{margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}" +
+    ".bq-nav ul{margin:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}" +
     ".bq-nav li a{display:flex;flex-direction:column;gap:0;justify-content:center;width:100%;min-height:44px;padding:3px 2px;border-radius:12px;font-size:12.5px;border-width:1.5px}" +
     ".bq-nav li a .i{font-size:17px;line-height:1.1}.bq-nav .f{display:none}.bq-nav .s{display:inline}}" +
     "@media (max-width:420px){.bq-nav .home .t{display:none}}" +
     ".bq-nav li.sh a{background:#1FA855;border-color:#1FA855;color:#fff}.bq-nav li.sh a:hover,.bq-nav li.sh a:focus-visible{background:#168a45;border-color:#168a45}" +
-    "@media (max-width:760px){.bq-nav ul.w6{grid-template-columns:repeat(6,1fr)}}" +
+    ".bq-nav li.or a{background:#E0399F;border-color:#E0399F;color:#fff}.bq-nav li.or a:hover,.bq-nav li.or a:focus-visible{background:#C13671;border-color:#C13671}" +
     "@media print{.bq-nav{display:none!important}}";
   document.head.appendChild(css);
   var nav = document.createElement("nav");
-  nav.className = "bq-nav"; nav.setAttribute("aria-label", "האתר הראשי של BOOQLI");
+  nav.className = "bq-nav"; nav.setAttribute("aria-label", "הזמנת ספר אישי מ-BOOQLI");
   var items = SITE.main.links.map(function(l){
-    return '<li><a href="' + l.href + '" target="_blank" rel="noopener" title="' + l.label + ' – באתר BOOQLI (נפתח בחלון חדש)">' +
+    return '<li' + (l.main ? ' class="or"' : '') + '><a href="' + l.href + '" title="' + l.label + '">' +
       '<span class="i" aria-hidden="true">' + l.icon + '</span><span class="f">' + l.label + '</span><span class="s">' + l.short + '</span></a></li>';
   }).join("");
   var share = siteShareOk();
   if (share) items += '<li class="sh"><a href="#" target="_blank" rel="noopener" title="שתפו את העמוד: וואטסאפ או העתקת קישור">' +
     '<span class="i" aria-hidden="true">📤</span><span class="f">שתפו עם חברים</span><span class="s">שתפו</span></a></li>';
-  nav.innerHTML = '<div class="in"><a class="home" href="' + SITE.main.home + '" target="_blank" rel="noopener" title="לאתר הראשי של BOOQLI (נפתח בחלון חדש)">' +
-    '📚 <span>לאתר <b>BOOQLI</b></span><span class="t">· ספרים אישיים שהילד הוא הגיבור ↖</span></a><ul' + (share ? ' class="w6"' : '') + '>' + items + '</ul></div>';
+  nav.innerHTML = '<div class="in"><a class="home" href="' + SITE.main.home + '" title="BOOQLI – לדף הבית">' +
+    '📚 <span><b>BOOQLI</b></span><span class="t">· ספרים אישיים שהילד הוא הגיבור</span></a><ul>' + items + '</ul></div>';
   var sh = nav.querySelector(".sh a");
   if (sh) {
     sh.href = siteShareHref();
