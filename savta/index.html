@@ -199,6 +199,7 @@ section.sv{margin-top:34px}
 .wz .sumr{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .wz .sumr li{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;box-shadow:0 2px 8px rgba(78,133,118,.12)}
 .wz .fine{font-size:15px;color:var(--mute);margin-top:10px;line-height:1.5}.wz .fine a{color:var(--mag)}
+.wz .chk{display:flex;gap:10px;align-items:flex-start;font-size:16px;line-height:1.45;margin-top:12px}.wz .chk input{width:24px;height:24px;flex-shrink:0;margin-top:2px;accent-color:var(--mag)}.wz .chk a{color:var(--mag)}
 .wz .st{text-align:center;font-weight:800;color:var(--saged);margin-top:8px}
 .wz .vid{margin:10px 0;background:#fff;border:1px solid #f0dbe6;border-radius:14px;padding:8px 12px}.wz .vid summary{cursor:pointer;font-weight:800;color:var(--mag)}.wz .vid video{width:100%;max-width:420px;display:block;margin:8px auto 0;border-radius:12px;background:#000}
 @media (prefers-reduced-motion:reduce){.todo,.todo.now,.hop{animation:none;box-shadow:0 0 0 4px rgba(255,86,194,.35)}}
@@ -439,11 +440,12 @@ function stepHTML(){
     <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
     <div class="prc" style="margin-top:10px"><div>📖 ${priceLine(n)}</div><div class="sh">🚚 משלוח עד הבית ${ils(SHIP)}</div><div class="tot">סה"כ ${ils(tot + SHIP)}</div></div>
     <p class="h" style="margin-top:8px"><b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
+    <label class="chk"><input type="checkbox" id="wOk"> <span>קראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
     <button type="button" class="btn btn-wa go" id="wSend">✅ שולחים לנו את ההזמנה</button>
     <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
     <p class="st" id="wSt"></p>
     <p class="h" style="margin-top:6px">התמונות נשמרות אצלנו בצורה מאובטחת, ומיד אחר כך אפשר לעדכן אותנו בוואטסאפ.</p>
-    <p class="fine">בשליחה אני מאשר/ת שקיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים – כל תמונה שאשלח כאן או בוואטסאפ, עכשיו או בהמשך (גם לספר נוסף, או במקום תמונה שלא מתאימה) – כדי ליצור מהן איורים לספר, ושקראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונה נמחקת אצלנו כ-3 חודשים אחרי ההזמנה.</p></div>`; }
+</div>`; }
   return "";
 }
 const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
@@ -489,12 +491,14 @@ async function sendDrive(){
     if (!ok) throw new Error("photo"); }
   const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}`);
   const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
-  const summary = `👵 המזמין/ה: ${ORD.who}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קיבלתי אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים, ליצירת איורים לספר, וקראתי את התקנון ומדיניות הפרטיות.${SRC ? "\nמקור: " + SRC : ""}`;
+  const summary = `👵 המזמין/ה: ${ORD.who}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
   const d = await J("done", {summary}, s.tok); if (!d.ok) throw new Error("done");
   return s.oid;
 }
 async function send(){
-  const b = $("wSend"); if (b.dataset.busy) return; b.dataset.busy = "1";
+  const b = $("wSend"); if (b.dataset.busy) return;
+  if (!$("wOk").checked) { $("wSt").textContent = "☑️ מסמנים קודם שקראתם את התקנון ומדיניות הפרטיות"; return; }
+  b.dataset.busy = "1";
   try { const oid = await sendDrive(); ORDER = oid; ev("savta-send", ORD.list.length + "-drive");
     const t = `שלום BOOQLI 💛 שלחתי עכשיו באתר את הזמנה ${oid} (${ORD.list.length === 1 ? "ספר אחד" : ORD.list.length + " ספרים"}) · ${ORD.who}`;
     $("wz").innerHTML = `<div class="step"><h3>${SB}✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>

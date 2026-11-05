@@ -271,7 +271,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <div class="hello">
   <span class="k">📚 ההזמנה של הגן – הכל במקום אחד</span>
   <h1 id="hi">שלום! איזה כיף שבחרתם בבוקלי ❤️</h1>
-  <a class="btn btn-main upcta" id="upCta" href="#upBox" hidden>📤 מעלים כאן את תמונות הילדים ←</a>
+  <a class="btn btn-main upcta" id="upCta" href="#upBox" hidden>📤 מעלים כאן את תמונות הילדים</a>
 </div>
 
 <div class="howbox">
@@ -440,7 +440,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <div class="up" id="upBox">
       <p><b>מעלים את התמונות כאן – הן נשמרות ישר אצלנו</b>, מסודרות לבנים ולבנות. לא צריך תיקייה ולא צריך לשנות שמות לקבצים.</p>
       <ol class="upsteps"><li>מסמנים את האישור ☑️</li><li>לוחצים <b>"➕ בוחרים תמונות"</b> – בבנים ובבנות</li><li>כותבים את השם ליד כל תמונה ✏️</li><li>לוחצים <b>"⬆️ מעלים"</b> – ובסוף <b>"✅ סיימנו"</b></li></ol>
-      <label class="chk"><input type="checkbox" id="upConsent"> <span>קיבלנו אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים כדי ליצור מהן איורים לספר (גם בבינה מלאכותית), וקראנו את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונות נמחקות כ-3 חודשים אחרי ההזמנה.</span></label>
+      <label class="chk"><input type="checkbox" id="upConsent"> <span>קראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
       <div class="upcols">
         <div class="upcol boy" data-sub="בנים"><h4>👦 בנים</h4><label class="btn btn-soft">➕ בוחרים תמונות<input type="file" accept="image/*" multiple hidden data-pick="בנים"></label><ul class="uplist" id="upL-בנים"></ul></div>
         <div class="upcol" data-sub="בנות"><h4>👧 בנות</h4><label class="btn btn-soft">➕ בוחרים תמונות<input type="file" accept="image/*" multiple hidden data-pick="בנות"></label><ul class="uplist" id="upL-בנות"></ul></div>
@@ -766,7 +766,7 @@ $("upParents").addEventListener("click", async e => {
 $("upFinish").addEventListener("click", async () => {
   if (!S.up) return; $("upFinish").disabled = true; $("upSt").textContent = "⏳ שולחים לשמש סיכום…";
   const boys = S.up.names.filter(x => x.startsWith("👦")).length, girls = S.up.n - boys;
-  const summary = `🏫 ${who()}\n${orderLine()}\n\n📷 הועלו בעמוד: ${S.up.n} (👦 ${boys} · 👧 ${girls})\n${S.up.names.join("\n")}\n\n✓ אישור הגן (${S.up.at}): קיבלנו אישור מההורים לשימוש בתמונות ליצירת איורים לספר, וקראנו את התקנון ומדיניות הפרטיות.`;
+  const summary = `🏫 ${who()}\n${orderLine()}\n\n📷 הועלו בעמוד: ${S.up.n} (👦 ${boys} · 👧 ${girls})\n${S.up.names.join("\n")}\n\n✓ אישור הגן (${S.up.at}): קראתי את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`;
   let ok = false; try { ok = (await upJ("done", { summary }, S.up.tok)).ok; } catch (e) {}
   if (!ok) { $("upSt").textContent = "❌ לא נשלח – נסו שוב בעוד רגע"; $("upFinish").disabled = false; return; }
   $("upSt").textContent = "✅ קיבלנו! שמש תעבור על התמונות ותחזור אליכם בוואטסאפ"; mark("folder");
