@@ -76,6 +76,16 @@
 .acc[open]>summary::after{transform:rotate(135deg)}
 .acc>.acc-in{padding:4px 0 8px}
 .acc>.acc-in>.home-hero:first-child,.acc>.acc-in>.c-sec:first-child{margin-top:12px}
+.games-ban{margin-top:36px;display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.85);border-radius:28px;padding:20px 24px;box-shadow:0 6px 22px rgba(33,51,48,.08);position:relative;overflow:hidden}
+.games-ban::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:linear-gradient(90deg,#FA57C4,#7ABEF0,#6DAFA1)}
+.games-ban img{width:110px;height:auto;flex-shrink:0}
+.games-ban h2{font-family:'Varela Round',Assistant,sans-serif;font-size:clamp(30px,5vw,42px);color:#C5309A;line-height:1.1}
+.games-ban h2 span{color:#2F6F63}
+.games-ban .gb-what{font-weight:700;font-size:clamp(16.5px,2.2vw,19px);color:#213330;margin-top:6px}
+.games-ban p{color:var(--muted);margin-top:4px;line-height:1.55}
+.games-ban p b{color:#213330}
+@media (max-width:600px){.games-ban{flex-direction:column;text-align:center;padding:22px 16px 18px}.games-ban img{width:96px}}
+.home-hero .bubble{background:var(--pink-soft);border-radius:18px;padding:8px 14px;font-weight:800;display:table;margin:0 auto;font-size:17px}
 .free-h{margin:34px 0 0;text-align:center}
 .free-h h2{font-size:clamp(24px,4vw,32px);color:#213330}
 .free-h p{color:var(--muted);font-weight:700;margin-top:4px}
@@ -172,6 +182,16 @@
   <div class="covers" id="covers"></div>
 </section>
 
+<section class="mb-promo" id="make-book" aria-labelledby="mbT">
+  <img src="book-maker/img/books-fan.webp" alt="ספרים בכריכה קשה שעוצבו בעורך" loading="lazy" width="1100" height="520">
+  <div>
+    <h2 id="mbT">✍️ כתבתם ספר? עיצבתם ספר?<br>בואו להדפיס אותו!</h2>
+    <p>הדפיסו את הספר שלכם בכריכה קשה: ספר של הגן, ספר יום הולדת, סיפור שהילדים כתבו או ספר שעיצבתם בעצמכם. מעלים את העמודים והתמונות לעורך שלנו – ו-BOOQLI מדפיסה.</p>
+    <a href="book-maker/?utm_source=booqli_games&utm_medium=home_banner&utm_campaign=book_maker" class="js-ord" data-w="book-maker">📖 לעורך ההדפסה ←</a>
+  </div>
+</section>
+
+
 <section class="steps" aria-labelledby="stT">
   <h2 class="vh" id="stT">איך מזמינים</h2>
   <ol>
@@ -190,7 +210,14 @@
   <div class="revs" id="revs"></div>
 </section>
 
-<div class="free-h"><h2>🎁 ובחינם באתר</h2><p>משחקים, דפי עבודה, מערכים ופעילויות לגיל הרך – לגן ולבית</p></div>
+<section class="games-ban" aria-labelledby="gbT">
+  <img src="img/family/booqli.webp" alt="" width="140" height="145" loading="lazy">
+  <div>
+    <h2 id="gbT">booqli <span>Games</span></h2>
+    <p class="gb-what">משחקים · מערכים לגננת · דפי עבודה להדפסה · פעילויות לגיל הרך</p>
+    <p>אתר התכנים של BOOQLI לגן ולבית – לגננות, להורים, לילדים ולכיתות א'–ג'. <b>הכל בחינם.</b></p>
+  </div>
+</section>
 
 <div id="ready"></div>
 
@@ -204,14 +231,7 @@
   <summary><span class="ai" aria-hidden="true">👋</span><span><b>גננות · הורים · ילדים · כיתות</b><small>בּוּקְלִי שואל: מי אתם?</small></span></summary>
   <div class="acc-in">
 <section class="home-hero">
-  <div class="hh-top">
-    <img src="img/family/booqli.webp" alt="בוקלי, החד־קרן של booqli Games" width="140" height="145" loading="lazy">
-    <div>
-      <p class="gname">booqli <span>Games</span></p>
-      <p>משחקים, דפי עבודה, מערכים ופעילויות חינוכיים לגיל הרך. לגננות בגן, להורים בבית ולילדים. בחינם, בחסות BOOQLI.</p>
-      <div class="bubble">שָׁלוֹם! אני בּוּקְלִי. מי אתם? 👇</div>
-    </div>
-  </div>
+  <div class="bubble">שָׁלוֹם! אני בּוּקְלִי. מי אתם? 👇</div>
   <nav class="doors" aria-label="בוחרים דלת">
     <a class="door" href="teachers/" style="--dc:#C5309A;--db:#FDE6F6"><span class="i" aria-hidden="true">👩‍🏫</span><b>לגננות</b><span>מערכים, לוח השנה, דפים להדפסה</span></a>
     <a class="door" href="parents/" style="--dc:#2F6FC4;--db:#DCEBFF"><span class="i" aria-hidden="true">👨‍👩‍👧</span><b>להורים</b><span>מה למדו בגן, ואיך ממשיכים בבית</span></a>
@@ -274,16 +294,9 @@
   </div>
 </details>
 <details class="acc" id="accMore">
-  <summary><span class="ai" aria-hidden="true">📖</span><span><b>עוד מ-BOOQLI</b><small>הספר שלכם בכריכה קשה · קורס כתיבה</small></span></summary>
+  <summary><span class="ai" aria-hidden="true">✍️</span><span><b>עוד מ-BOOQLI</b><small>קורס: כותבים ספר ילדים משלכם</small></span></summary>
   <div class="acc-in">
-<section class="mb-promo" id="make-book">
-  <img src="book-maker/img/books-fan.webp" alt="ספרים בכריכה קשה שעוצבו בעורך" loading="lazy" width="1100" height="520">
-  <div>
-    <h2>📖 הספר שלכם בכריכה קשה</h2>
-    <p>ספר של הגן, ספר יום הולדת או סיפור שהילדים כתבו. מעצבים במחשב, ו-BOOQLI מדפיסה בכריכה קשה פרימיום.</p>
-    <a href="book-maker/">בואו לעצב את הספר שלכם ←</a>
-  </div>
-</section>
+
 <a class="course-promo" href="course/?utm_source=games_home&utm_medium=banner&utm_campaign=course">
   <span class="cp-ic">✍️</span>
   <span><b>כל אחד יכול להיות סופר</b><br>קורס בזום למבוגרים: כותבים, מאיירים עם AI ומדפיסים ספר ילדים משלכם</span>
