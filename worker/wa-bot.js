@@ -1120,7 +1120,9 @@ async function esSignup(req, env){
   const ex = r => fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}` + (r === null ? "" : `&redirect_uri=${encodeURIComponent(r)}`)).then(x => x.json()).catch(() => ({}));
   let t = {};
   /* קוד מ-FB.login (SDK) – כמו ה-SDK הרשמי של מטא: redirect_uri ריק. אחר כך כתובות דף החיבור */
-  for (const r of ["", null, ES_ORIGIN + "/whatsapp-connect", ES_ORIGIN + "/whatsapp-connect/", ES_ORIGIN + "/"]) {
+  /* חלון שנפתח ידנית (לא FB.login) חוזר לדף החיבור – אז ה-redirect_uri ידוע ומדויק */
+  const cb = ES_ORIGIN + "/whatsapp-connect", list = b.redirect_uri === cb ? [cb] : ["", null, cb, cb + "/", ES_ORIGIN + "/"];
+  for (const r of list) {
     t = await ex(r);
     if (t.access_token) { console.log("es exchange ok, redirect:", r === null ? "none" : r || "empty"); break; }
     const em = (t.error && t.error.message) || "";
@@ -1129,6 +1131,19 @@ async function esSignup(req, env){
   }
   if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
   const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
+  /* אם מטא לא שלחה לדף איזה חשבון ומספר נבחרו – מבררים מהמפתח עצמו */
+  if (!digits(b.waba_id)) {
+    const d = await (await fetch(`${GRAPH}/debug_token?input_token=${encodeURIComponent(t.access_token)}&access_token=${ES_APP}|${encodeURIComponent(env.ES_APP_SECRET)}`)).json().catch(() => ({}));
+    const sc = ((d.data && d.data.granular_scopes) || []).find(g => g.scope === "whatsapp_business_management");
+    b.waba_id = sc && sc.target_ids && sc.target_ids[0];
+    console.log("es waba from token:", b.waba_id || "none");
+  }
+  if (digits(b.waba_id) && !digits(b.phone_number_id)) {
+    const ph = await (await fetch(`${GRAPH}/${digits(b.waba_id)}/phone_numbers?fields=id,display_phone_number`, { headers: auth })).json().catch(() => ({}));
+    const arr = ph.data || [], m = arr.find(x => digits(x.display_phone_number).endsWith("555549331")) || (arr.length === 1 ? arr[0] : null);
+    b.phone_number_id = m && m.id;
+    console.log("es phone from waba:", b.phone_number_id ? "found" : "none", arr.length);
+  }
   /* אבטחה: מחברים רק חשבון וואטסאפ של העסק שלנו – אחרת זר היה יכול לחבר מספר שלו ולדרוס את החיבור של 055 */
   const own = digits(b.waba_id) ? await (await fetch(`${GRAPH}/${digits(b.waba_id)}?fields=owner_business_info`, { headers: auth })).json().catch(() => ({})) : {};
   if (!own.owner_business_info || String(own.owner_business_info.id) !== OWNER_BIZ) { console.log("es refused – not our business"); return out({ ok: false, error: "החשבון הזה לא שייך לעסק של BOOQLI" }, 403); }

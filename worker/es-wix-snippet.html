@@ -1,6 +1,8 @@
 <!-- BOOQLI – כפתור "חיבור הוואטסאפ לבוט" (Embedded Signup של מטא, coexistence), 5.11.2026
      מודבק בוויקס: הגדרות ← קוד מותאם אישית ← Body – end ← רק בדף "whatsapp-connect" (דף נסתר). סוג קוד: Essential.
-     שולח את הקוד מפייסבוק לבוט (booqli-wa/es), שם מחליפים אותו במפתח ושומרים. אין כאן שום סוד. -->
+     גרסה 2: בלי FB.login (ה-SDK קושר את הקוד לכתובת פנימית אקראית, ואז אי אפשר להחליף אותו).
+     החלון נפתח ידנית עם redirect_uri = הדף הזה עצמו (מאושר במטא: Valid OAuth Redirect URIs). מטא מחזירה את החלון לכאן עם ?code=…&state=…,
+     והדף שולח את הקוד לבוט (booqli-wa/es) עם אותה כתובת בדיוק. אין כאן שום סוד. -->
 <div id="bq-es" dir="rtl" style="position:fixed;inset:0;z-index:2147483000;background:#fdf6fa;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;padding:16px">
   <div style="max-width:520px;width:100%;background:#fff;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.08);padding:28px;text-align:center;color:#2b2b2b">
     <div style="font-size:44px">🦄</div>
@@ -12,30 +14,46 @@
   </div>
 </div>
 <script>
-window.fbAsyncInit = function () { FB.init({ appId: "2539020683273159", autoLogAppEvents: true, xfbml: false, version: "v23.0" }); };
 (function () {
-  var s = document.createElement("script"); s.async = true; s.defer = true; s.crossOrigin = "anonymous";
-  s.src = "https://connect.facebook.net/en_US/sdk.js"; document.head.appendChild(s);
-  var info = {}, msg = function (t) { document.getElementById("bq-es-msg").textContent = t; };
+  var APP = "2539020683273159", CONFIG = "1148560434189574", CB = "https://www.booqli.ai/whatsapp-connect", BOT = "https://booqli-wa.shemeshtzoor.workers.dev/es";
+  var msg = function (t) { document.getElementById("bq-es-msg").textContent = t; };
+  var ls = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  /* מידע שמטא שולחת לחלון הראשי (איזה חשבון ומספר נבחרו) – נשמר, כדי שהדף שבחלון יוכל לשלוח אותו לבוט */
   window.addEventListener("message", function (e) {
-    try { if (!/(^|\.)facebook\.com$/.test(new URL(e.origin).hostname)) return; var d = JSON.parse(e.data);
-      if (d.type === "WA_EMBEDDED_SIGNUP") { info = d.data || {}; info.event = d.event || ""; if (d.event === "CANCEL") msg("החיבור בוטל – אפשר לנסות שוב."); } } catch (x) {}
+    try {
+      if (e.origin === location.origin && e.data && e.data.bqEs) { msg(e.data.bqEs); return; }
+      if (!/(^|\.)facebook\.com$/.test(new URL(e.origin).hostname)) return;
+      var d = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+      if (d && d.type === "WA_EMBEDDED_SIGNUP") { var i = d.data || {}; i.event = d.event || ""; ls.set("bq-es-info", JSON.stringify(i)); if (d.event === "CANCEL") msg("החיבור בוטל – אפשר לנסות שוב."); }
+    } catch (x) {}
   });
-  function send(code) {
-    msg("רגע, מחברים את המספר לבוט…");
-    setTimeout(function () {
-      fetch("https://booqli-wa.shemeshtzoor.workers.dev/es", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: code, waba_id: info.waba_id, phone_number_id: info.phone_number_id, business_id: info.business_id, event: info.event }) })
-        .then(function (r) { return r.json(); })
-        .then(function (j) { msg(j.ok ? "✅ המספר מחובר! הבוט עוד לא עונה בו – שמש תפעיל אותו כשהכל מוכן." : "❌ משהו לא עבד: " + (j.error || "") + " " + (j.detail || "")); })
-        .catch(function () { msg("❌ אין חיבור לבוט – נסו שוב בעוד רגע."); });
-    }, 1500);
+  var q = new URLSearchParams(location.search);
+  if (q.get("code") || q.get("error")) {
+    /* חזרנו ממטא (בתוך החלון הקטן) */
+    var done = function (t) { msg(t); try { if (window.opener) window.opener.postMessage({ bqEs: t }, location.origin); } catch (x) {} };
+    history.replaceState(null, "", location.pathname);
+    if (q.get("error")) { done("החיבור לא הושלם: " + (q.get("error_description") || q.get("error"))); }
+    else if (!q.get("state") || q.get("state") !== ls.get("bq-es-state")) { done("❌ הקישור לא תקין – לוחצים שוב על הכפתור."); }
+    else {
+      msg("רגע, מחברים את המספר לבוט…");
+      setTimeout(function () {
+        var info = {}; try { info = JSON.parse(ls.get("bq-es-info") || "{}"); } catch (x) {}
+        fetch(BOT, { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: q.get("code"), redirect_uri: CB, waba_id: info.waba_id, phone_number_id: info.phone_number_id, business_id: info.business_id, event: info.event }) })
+          .then(function (r) { return r.json(); })
+          .then(function (j) { done(j.ok ? "✅ המספר מחובר! הבוט עוד לא עונה בו – שמש תפעיל אותו כשהכל מוכן." : "❌ משהו לא עבד: " + (j.error || "") + " " + (j.detail || "")); })
+          .catch(function () { done("❌ אין חיבור לבוט – נסו שוב בעוד רגע."); });
+      }, 2000);
+    }
   }
   document.getElementById("bq-es-btn").addEventListener("click", function () {
-    if (!window.FB) { msg("עוד רגע… פייסבוק נטען. נסו שוב."); return; }
-    FB.login(function (r) { if (r.authResponse && r.authResponse.code) send(r.authResponse.code); else msg("החיבור לא הושלם."); },
-      { config_id: "1148560434189574", response_type: "code", override_default_response_type: true,
-        extras: { setup: {}, featureType: "whatsapp_business_app_onboarding", sessionInfoVersion: "3" } });
+    var st = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    ls.set("bq-es-state", st); ls.set("bq-es-info", "{}");
+    var extras = { setup: {}, featureType: "whatsapp_business_app_onboarding", sessionInfoVersion: "3" };
+    var u = "https://www.facebook.com/v23.0/dialog/oauth?client_id=" + APP + "&config_id=" + CONFIG + "&response_type=code&override_default_response_type=true"
+      + "&redirect_uri=" + encodeURIComponent(CB) + "&state=" + st + "&extras=" + encodeURIComponent(JSON.stringify(extras));
+    var w = window.open(u, "bq-es", "width=620,height=760");
+    msg(w ? "החלון של פייסבוק נפתח – ממשיכים שם." : "הדפדפן חסם את החלון – מאפשרים חלונות קופצים לאתר ולוחצים שוב.");
   });
 })();
 </script>
