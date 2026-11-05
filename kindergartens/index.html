@@ -608,16 +608,16 @@ section{margin-top:64px}
     <p>החל מהספר הראשון ועד לאלפי ספרים, בוקלי מנגישה תהליך קל, מהנה ופשוט.</p>
   </div>
   <div class="steps">
-    <div class="step"><div class="n">1</div><h3>בוחרים נושא</h3><p>בחירה של נושא מתוך קולקציית הספרים.</p></div>
-    <div class="step"><div class="n">2</div><h3>מעלים תמונה אחת</h3><p>רק תמונה אחת של הילד/ה. הילדים בספר יוצאים אחד לאחד – במדויק לתמונה שהועלתה!</p></div>
-    <div class="step"><div class="n">3</div><h3>שולחים את ההזמנה</h3><p>וזהו! לפני ההדפסה מקבלים תצוגה מקדימה לאישור.</p></div>
+    <div class="step"><div class="n">1</div><h3>מעלים תמונות</h3><p>תמונה אחת לכל ילד/ה, בנים ובנות בנפרד, עם שם פרטי. הילדים בספר יוצאים אחד לאחד – במדויק לתמונה!</p></div>
+    <div class="step"><div class="n">2</div><h3>בוחרים נושא</h3><p>נושא אחד לכל הגן, מתוך קולקציית הספרים.</p></div>
+    <div class="step"><div class="n">3</div><h3>שולחים את ההזמנה</h3><p>וזהו! לפני ההדפסה מקבלים סקיצות לאישור.</p></div>
   </div>
   <p class="then">✨ מכאן העבודה שלנו</p>
 
   <div class="bulk">
     <div>
-      <h3>מזמינים מעל 20 ספרים? יש לכם עוד אפשרות</h3>
-      <p>אפשר להתאים אישית ולהעלות את הפרטים של כל ילד ישירות באתר שלנו, או לשלוח לנו את כל התמונות במרוכז <b>בתיקייה בדרייב</b> – עם השמות והפרטים – ואנחנו נכין עבורכם את הספרים האישיים.</p>
+      <h3>כל התמונות של הגן – במקום אחד</h3>
+      <p>מעלים כאן בעמוד את כל התמונות במרוכז – בנים ובנות, עם שם לכל ילד – ואנחנו נכין עבורכם את הספרים האישיים. נוח לכם יותר בדרייב? כתבו לנו ונשלח <b>קישור לתיקייה</b>.</p>
       <a class="btn btn-main" href="#start" data-ev="bulk_start">יאללה מתחילים</a>
     </div>
     <div class="pics">
@@ -816,11 +816,11 @@ section{margin-top:64px}
         <div class="per" id="rPer"></div>
         <ul class="lines" id="rLines"></ul>
         <div class="msg" id="rMsg" hidden></div>
-        <p class="note" id="rNote">המחיר הסופי נקבע בעגלת הקניות. משלוח לפי הכתובת.</p>
+        <p class="note" id="rNote">המחיר הרגיל לפי הכמות. משלוח לפי הכתובת.</p>
         <div class="go2">
           <p class="go2h">מוכנים? מתחילים עכשיו 👇</p>
-          <a class="gobtn site" id="goSiteBtn" href="../order/">🛒 מעלים לבד באתר<span class="noedit">✂️ ללא צורך בעריכה! רק תמונה, שם והקדשה</span><small id="goSiteSm">5% הנחה · מתאים לכל כמות</small></a>
-          <a class="gobtn drive" id="goDriveBtn" href="../order/">📁 שולחים במרוכז לדרייב<small id="goDriveSm">אנחנו עושים הכל בשבילכם · מעל 20 ספרים</small></a>
+          <a class="gobtn drive" id="goSiteBtn" href="#start">📤 מעלים כאן את כל התמונות<small id="goSiteSm">בנים ובנות, שם לכל ילד, נושא אחד לכל הגן</small></a>
+          <a class="gobtn site" id="goDriveBtn" href="https://wa.me/972555549331?text=%D7%94%D7%99%D7%99%20BOOQLI%20%F0%9F%91%8B%20%D7%A0%D7%95%D7%97%20%D7%9C%D7%A0%D7%95%20%D7%99%D7%95%D7%AA%D7%A8%20%D7%9C%D7%A9%D7%9C%D7%95%D7%97%20%D7%90%D7%AA%20%D7%94%D7%AA%D7%9E%D7%95%D7%A0%D7%95%D7%AA%20%D7%A9%D7%9C%20%D7%94%D7%92%D7%9F%20%D7%91%D7%93%D7%A8%D7%99%D7%99%D7%91.%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A7%D7%99%D7%A9%D7%95%D7%A8%20%D7%9C%D7%AA%D7%99%D7%A7%D7%99%D7%99%D7%94%3F" target="_blank" rel="noopener">📁 מעדיפים דרייב? כתבו לנו<small id="goDriveSm">נשלח לכם קישור לתיקייה</small></a>
         </div>
         <a class="wa-small" id="rWa" href="https://wa.me/972555549331" target="_blank" rel="noopener">💬 שאלה? וואטסאפ 055-5549331</a>
       </div>
@@ -1205,7 +1205,6 @@ if (/^#q\d+$/.test(location.hash)) { const d = document.querySelector(location.h
 const TIERS = [[1,132,149],[2,106,123],[3,94,111],[4,88,105],[6,80,97],[8,66,83],[20,60,77],[50,59,76],[100,57,74]];
 const STAPLE = { p:50, from:20 };
 const NAMES = { staple:"כריכה רכה סיכות", soft:"כריכה רכה בהדבקה", hard:"כריכה קשה" };
-const UP_FROM = 21; /* "אנחנו נעלה את התמונות" – רק להזמנות מעל 20 ספרים, בלי מחיר באתר (שמש, 2.11.2026) */
 const ils = n => n.toLocaleString("he-IL") + " ₪";
 const cKids = document.getElementById("cKids");
 function priceFor(cover, books){
@@ -1247,14 +1246,6 @@ function calc(){
     "📕 " + NAMES[cover] + "\n" + (up ? "📁 אתם מעלים את התמונות בשבילנו\n" : "") +
     "💰 " + sum + "\n\nאשמח להתקדם ולקבל קופון הנחה 🙂";
   document.getElementById("rWa").href = "https://wa.me/972555549331?text=" + encodeURIComponent(text.replace("אשמח להתקדם ולקבל קופון הנחה 🙂", "יש לי שאלה:"));
-  /* שני הכפתורים: מתחילים את התהליך בעמוד ההזמנה, עם מה שחישבו כאן */
-  const link = r => "../order/#d=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({ n: kids, p: per, v: cover, r, s: "route" })))));
-  const gs = document.getElementById("goSiteBtn"), gd = document.getElementById("goDriveBtn");
-  gs.href = link("site"); gd.href = link("drive");
-  document.getElementById("goSiteSm").textContent = p ? "עוד 5% הנחה: " + ils(Math.round(books * p * 0.95)) + " במקום " + ils(books * p) + " + משלוח 40 ₪" : "5% הנחה · מתאים לכל כמות";
-  const dOk = books >= UP_FROM;
-  gd.classList.toggle("off", !dOk); gd.setAttribute("aria-disabled", String(!dOk));
-  document.getElementById("goDriveSm").textContent = dOk ? (p ? ils(books * p) + " + משלוח 40 ₪ · " : "") + "אנחנו עושים הכל" : "להזמנות של מעל 20 ספרים";
 }
 /* המחירון המלא – נבנה מאותו TIERS */
 document.getElementById("ptBody").innerHTML = TIERS.map((r, i) => {
