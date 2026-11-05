@@ -1,6 +1,7 @@
 /* BOOQLI – שומר את ההזמנות מהבוט בדרייב של שמש (Google Apps Script), 4.11.2026
    מדביקים את כל הקובץ הזה ב-script.google.com (פרויקט חדש), ואז:
-   1. ⚙️ הגדרות הפרויקט ← מאפייני סקריפט ← מוסיפים: SECRET = אותה מילה סודית שמודבקת ב-Cloudflare (DRIVE_KEY).
+   1. ⚙️ הגדרות הפרויקט ← מאפייני סקריפט ← מוסיפים: SECRET = אותה מילה סודית שמודבקת ב-Cloudflare (DRIVE_KEY),
+      ו-NOTIFY = המייל שאליו נשלחות ההתראות על הזמנות.
    2. פריסה ← פריסה חדשה ← סוג: אפליקציית אינטרנט ← הפעלה בתור: אני ← גישה: כל אחד ← פריסה ← מאשרים את ההרשאות.
    3. את הכתובת שמתקבלת (מסתיימת ב-/exec) מדביקים ב-Cloudflare בשם DRIVE_URL.
    מה נשמר:  BOOQLI הזמנות / "סב-1234 · רחל כהן · 04.11" / בנים|בנות / "דנה.jpg", "דנה (2).jpg" ...
@@ -29,6 +30,10 @@ function doPost(e) {
     return out_({ ok: false, error: String(err) });
   }
 }
+
+/* לאן נשלחים המיילים: מאפיין הסקריפט NOTIFY (המייל הרגיל של שמש), ואם אין – החשבון שבו הקוד רץ.
+   (5.11.2026: הקוד עובר לחשבון נפרד booqliphotos – רק תמונות הזמנות, בלי שום דבר אחר – והמיילים ממשיכים להגיע לשמש) */
+function notify_() { return PropertiesService.getScriptProperties().getProperty("NOTIFY") || Session.getEffectiveUser().getEmail(); }
 
 function out_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 
@@ -207,7 +212,7 @@ function erase_(q) {
     var qa = root.getFoldersByName("שאלות-לקוחות");
     while (qa.hasNext()) { var fs = qa.next().searchFiles("fullText contains '" + phone + "'"); while (fs.hasNext()) { fs.next().setTrashed(true); notes++; } }
   }
-  var me = Session.getEffectiveUser().getEmail(), gans = (q.gans || []).join(", ");
+  var me = notify_(), gans = (q.gans || []).join(", ");
   MailApp.sendEmail({
     to: me,
     subject: "🗑️ בקשת מחיקה בוואטסאפ: " + (q.who || phone),
@@ -239,7 +244,7 @@ function saveOrder_(q) {
   doc.saveAndClose();
   var f = DriveApp.getFileById(doc.getId()); f.moveTo(folder);
 
-  var me = Session.getEffectiveUser().getEmail();
+  var me = notify_();
   var warn = q.expected && q.expected !== count ? "<p style='color:#c2410c'>⚠️ הבוט קיבל " + q.expected + " תמונות, ובתיקייה יש " + count + ".</p>" : "";
   MailApp.sendEmail({
     to: me,
@@ -255,7 +260,7 @@ function saveOrder_(q) {
 
 /* לקוחה צריכה את שמש: {phone, who, why, q, order, step} – מייל קצר עם קישור לשיחה */
 function alert_(q) {
-  var me = Session.getEffectiveUser().getEmail(), phone = String(q.phone || "").replace(/\D/g, "");
+  var me = notify_(), phone = String(q.phone || "").replace(/\D/g, "");
   MailApp.sendEmail({
     to: me,
     subject: "🙋 צריכים אותך בוואטסאפ: " + (q.who || phone) + " – " + (q.why || ""),
@@ -279,6 +284,6 @@ function esc_(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
 /* לבדיקה מתוך העורך: בוחרים את הפונקציה testSetup ולוחצים "הפעלה" – נוצרת התיקייה הראשית ונשלח מייל ניסיון */
 function testSetup() {
   var r = root_();
-  MailApp.sendEmail(Session.getEffectiveUser().getEmail(), "BOOQLI – החיבור לדרייב עובד ✓", "התיקייה הראשית: " + r.getUrl());
+  MailApp.sendEmail(notify_(), "BOOQLI – החיבור לדרייב עובד ✓", "התיקייה הראשית: " + r.getUrl());
   Logger.log(r.getUrl());
 }
