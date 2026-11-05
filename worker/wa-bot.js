@@ -1116,7 +1116,14 @@ async function esSignup(req, env){
   const b = await req.json().catch(() => ({})), out = (o, st) => Response.json(o, { status: st || 200, headers: cors });
   if (!env.ES_APP_SECRET) return out({ ok: false, error: "חסר ES_APP_SECRET בקלאודפלר" });
   if (!b.code) return out({ ok: false, error: "חסר קוד מפייסבוק" });
-  const t = await (await fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}`)).json();
+  /* מטא לפעמים דורשת redirect_uri זהה לזה שה-SDK השתמש בו בחלון – מנסים בלי, ואז את הכתובות האפשריות (שגיאת redirect לא "שורפת" את הקוד) */
+  const ex = r => fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}` + (r === null ? "" : `&redirect_uri=${encodeURIComponent(r)}`)).then(x => x.json()).catch(() => ({}));
+  let t = {};
+  for (const r of [null, String(b.page || "").split("#")[0] || null, ES_ORIGIN + "/whatsapp-connect", ES_ORIGIN + "/whatsapp-connect/", ES_ORIGIN + "/", ES_ORIGIN, "https://www.facebook.com/connect/login_success.html", ""].filter((r, i, a) => a.indexOf(r) === i)) {
+    t = await ex(r);
+    if (t.access_token) { console.log("es exchange ok, redirect:", r === null ? "none" : r || "empty"); break; }
+    if (!/redirect_uri/i.test((t.error && t.error.message) || "")) break;
+  }
   if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
   const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
   /* אבטחה: מחברים רק חשבון וואטסאפ של העסק שלנו – אחרת זר היה יכול לחבר מספר שלו ולדרוס את החיבור של 055 */
