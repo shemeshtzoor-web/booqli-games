@@ -49,11 +49,33 @@
 .cov img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block;filter:drop-shadow(0 8px 10px rgba(33,51,48,.18));position:relative;z-index:1;margin-bottom:-12px}
 .cov .sb{display:block;height:14px;margin:0 -8px;background:linear-gradient(180deg,#F1EBE3,#D8CCBD);border-bottom:5px solid #FA57C4;box-shadow:0 8px 12px rgba(33,51,48,.14)}
 .cov b{font-size:15px;line-height:1.3;margin-top:4px;font-weight:700}.cov span{font-size:13px;font-weight:700;color:#C5309A}
-.how{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:how}
-.how li{background:rgba(255,255,255,.8);border-radius:24px;padding:18px;box-shadow:0 6px 22px rgba(33,51,48,.08);display:flex;gap:14px;align-items:center;counter-increment:how}
-.how li::before{content:counter(how,decimal-leading-zero);flex-shrink:0;font-family:Assistant,sans-serif;font-weight:300;font-size:46px;line-height:1;color:#213330;opacity:.85;direction:ltr}
-.how b{display:block;font-family:'Varela Round',Assistant,sans-serif;font-size:19px;font-weight:700}.how small{display:block;color:var(--muted);font-size:15px;font-weight:400;margin-top:3px;line-height:1.5}
-@media (max-width:720px){.how{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){}
+/* השלבים – כמו בעמוד הבית של booqli.ai (5.11.2026): מספר גדול ודק, איור צמוד, כותרת מודגשת, חץ ורוד מצויר */
+.steps{margin-top:30px}
+.steps ol{list-style:none;margin:0 auto;padding:0;max-width:620px;text-align:center}
+.st{display:flex;flex-direction:column;align-items:center}
+.st-top{display:flex;align-items:flex-end;justify-content:center;direction:ltr;gap:0}
+.st-n{font-family:Assistant,sans-serif;font-weight:300;font-size:clamp(76px,10vw,104px);line-height:.85;color:#213330;letter-spacing:-.02em;position:relative;z-index:1;margin-left:-26px}
+.st-art{width:clamp(118px,15vw,150px);height:clamp(100px,13vw,128px);display:grid;place-items:center;font-size:clamp(60px,8vw,76px);background:radial-gradient(closest-side,rgba(250,87,196,.18),rgba(122,190,240,.14) 55%,transparent 100%);border-radius:50%}
+.st-art img{width:100%;height:100%;object-fit:contain;display:block}
+.st h3{font-family:'Varela Round',Assistant,sans-serif;font-weight:700;font-size:clamp(26px,3.6vw,34px);color:#213330;margin-top:10px}
+.st p{font-size:clamp(18px,2.2vw,21px);color:#213330;margin-top:4px;max-width:460px;line-height:1.45}
+.st-ar{display:flex;justify-content:center;padding:18px 0 14px}
+.st-ar svg.l{transform:translateX(40px) rotate(12deg)}.st-ar svg.r{transform:translateX(-40px) scaleX(-1) rotate(12deg)}
+@media (min-width:800px){.st-s1,.st-s3{transform:translateX(90px)}.st-s2,.st-s4{transform:translateX(-90px)}}
+/* "ובחינם באתר" – לשוניות שנפתחות בלחיצה (שמש, 5.11.2026: "נפתח בלחיצה ולא הכל פתוח") */
+.acc{margin-top:12px}
+.acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.85);border-radius:22px;padding:14px 18px;box-shadow:0 6px 22px rgba(33,51,48,.08);transition:box-shadow .15s}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary:hover{box-shadow:0 8px 26px rgba(33,51,48,.13)}
+.acc>summary:focus-visible{outline:3px solid #FA57C4;outline-offset:2px}
+.acc>summary .ai{font-size:30px;line-height:1;flex-shrink:0}
+.acc>summary b{display:block;font-family:'Varela Round',Assistant,sans-serif;font-size:clamp(19px,2.6vw,23px);color:#213330}
+.acc>summary small{display:block;color:var(--muted);font-size:15px;margin-top:2px}
+.acc>summary::after{content:"";margin-inline-start:auto;flex-shrink:0;width:12px;height:12px;border-left:3px solid #2F6F63;border-bottom:3px solid #2F6F63;transform:rotate(-45deg);transition:transform .2s}
+.acc[open]>summary::after{transform:rotate(135deg)}
+.acc>.acc-in{padding:4px 0 8px}
+.acc>.acc-in>.home-hero:first-child,.acc>.acc-in>.c-sec:first-child{margin-top:12px}
 .free-h{margin:34px 0 0;text-align:center}
 .free-h h2{font-size:clamp(24px,4vw,32px);color:#213330}
 .free-h p{color:var(--muted);font-weight:700;margin-top:4px}
@@ -150,11 +172,18 @@
   <div class="covers" id="covers"></div>
 </section>
 
-<ol class="how" aria-label="איך מזמינים">
-  <li><span><b>בוחרים ספר</b><small>יום הולדת, גן, כיתה א', הרפתקה ועוד</small></span></li>
-  <li><span><b>שם ותמונה אחת</b><small>והקדשה אישית, אם רוצים</small></span></li>
-  <li><span><b>שולחים – ואנחנו חוזרים אליכם</b><small>עם סקיצה לאישור. משלמים רק אחרי שמאשרים</small></span></li>
-</ol>
+<section class="steps" aria-labelledby="stT">
+  <h2 class="vh" id="stT">איך מזמינים</h2>
+  <ol>
+    <li class="st st-s1"><div class="st-top"><span class="st-art" aria-hidden="true">📚</span><span class="st-n">01</span></div><h3>בחרו ספר</h3><p>מתוך קולקציית הספרים המותאמים אישית שלנו</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s2"><div class="st-top"><span class="st-art" aria-hidden="true">🤳</span><span class="st-n">02</span></div><h3>העלו תמונה</h3><p>בחרו תמונה ברורה של ילדכם</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="r" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s3"><div class="st-top"><span class="st-art" aria-hidden="true">📖</span><span class="st-n">03</span></div><h3>קבלו סקיצה לאישור</h3><p>אנחנו מעצבים את הספר המותאם אישית לילדכם – ומשלמים רק אחרי שמאשרים</p></li>
+    <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+    <li class="st st-s4"><div class="st-top"><span class="st-art" aria-hidden="true">🚗</span><span class="st-n">04</span></div><h3>קבלו את הספר</h3><p>עד לפתח ביתכם תוך 7–14 ימי עסקים</p></li>
+  </ol>
+</section>
 
 <section class="c-sec" id="reviews">
   <div class="c-sec-h"><h2>💗 מה גננות אומרות</h2></div>
@@ -163,6 +192,17 @@
 
 <div class="free-h"><h2>🎁 ובחינם באתר</h2><p>משחקים, דפי עבודה, מערכים ופעילויות לגיל הרך – לגן ולבית</p></div>
 
+<div id="ready"></div>
+
+<form class="find" action="library/" role="search">
+  <label for="hq" class="vh">חיפוש באתר</label>
+  <input id="hq" name="q" type="search" placeholder="מה מחפשים? סביבון, צבעים, רגשות, חורף..." autocomplete="off">
+  <button type="submit">🔍 חיפוש</button>
+</form>
+
+<details class="acc" id="accDoors">
+  <summary><span class="ai" aria-hidden="true">👋</span><span><b>גננות · הורים · ילדים · כיתות</b><small>בּוּקְלִי שואל: מי אתם?</small></span></summary>
+  <div class="acc-in">
 <section class="home-hero">
   <div class="hh-top">
     <img src="img/family/booqli.webp" alt="בוקלי, החד־קרן של booqli Games" width="140" height="145" loading="lazy">
@@ -179,21 +219,21 @@
     <a class="door" href="school/" style="--dc:#6B2FA3;--db:#F1E3FF"><span class="i" aria-hidden="true">🎒</span><b>כיתות א'–ג'</b><span>חשבון, רגשות, ועוד בדרך</span></a>
   </nav>
 </section>
-
+  </div>
+</details>
+<details class="acc" id="accOpen">
+  <summary><span class="ai" aria-hidden="true">✨</span><span><b>פתוח עכשיו</b><small>מה שאפשר לשחק ולעשות כבר היום</small></span></summary>
+  <div class="acc-in">
 <a class="calm-ban" href="topics/safety/">
   <span class="i" aria-hidden="true">🚨</span>
   <span><b>אזעקה? פחד? "מה אתה עושה כאן, פחד?"</b><small>הספר עם הקראה · נשימת פרח ונר · מה עושים באזעקה · פתוח תמיד לכולם, גם בלי אינטרנט</small></span>
   <span class="go">לעמוד ←</span>
 </a>
-
 <a class="calm-ban anim-ban" href="kids/animate/">
   <span class="i" aria-hidden="true">🪄</span>
   <span><b>חדש! מנפישים את הציור של הילד 🎬</b><small>מצלמים ציור – והוא קופץ, רוקד, עף ושר · ציור מגניב + סרטון לשלוח בוואטסאפ · בחינם</small></span>
   <span class="go">לנסות ←</span>
 </a>
-
-<div id="ready"></div>
-
 <section class="keybox" id="keybox" hidden aria-labelledby="kbT">
   <div class="ic" aria-hidden="true">🔑</div>
   <div>
@@ -209,31 +249,33 @@
     <p class="wn">בהצטרפות לקבוצה שאר החברות יכולות לראות את המספר שלך. BOOQLI לא מעבירה ולא מפרסמת אותו.</p>
   </div>
 </section>
-
-<form class="find" action="library/" role="search">
-  <label for="hq" class="vh">חיפוש באתר</label>
-  <input id="hq" name="q" type="search" placeholder="מה מחפשים? סביבון, צבעים, רגשות, חורף..." autocomplete="off">
-  <button type="submit">🔍 חיפוש</button>
-</form>
-
 <section class="c-sec" id="open">
-  <div class="c-sec-h"><h2>✨ פתוח עכשיו</h2><p>מה שאפשר לשחק ולעשות כבר היום</p></div>
   <div id="openGrid"></div>
   <a class="more-link" href="library/">לכל התכנים, עם חיפוש וסינון ←</a> <a class="more-link" href="map/" style="margin-inline-start:14px">🗺️ מפת האתר: כל מה שיש באתר ←</a>
 </section>
-
+  </div>
+</details>
+<details class="acc" id="accSoon">
+  <summary><span class="ai" aria-hidden="true">⏳</span><span><b>נפתח בקרוב</b><small>התכנים נפתחים לפי עונות השנה</small></span></summary>
+  <div class="acc-in">
 <section class="c-sec" id="soon">
-  <div class="c-sec-h"><h2>⏳ נפתח בקרוב</h2><p>התכנים באתר נפתחים לפי עונות השנה. לוחצים על "ספרו לי" ונציג לך כשזה נפתח.</p></div>
   <div class="next" id="next" hidden></div>
   <details class="c-more" id="soonMore" style="margin-top:14px"><summary><h2 id="soonSum">כל מה שבדרך</h2></summary><div id="soonGrid"></div></details>
   <p class="season">רוצים שנפתח לכם תוכן מסוים? <a id="askLink" target="_blank" rel="noopener">כתבו לנו ←</a></p>
 </section>
-
+  </div>
+</details>
+<details class="acc" id="accBooks">
+  <summary><span class="ai" aria-hidden="true">🎮</span><span><b>משחקי ספרי BOOQLI</b><small>משחקים לפי הספרים שלנו – פתוחים תמיד</small></span></summary>
+  <div class="acc-in">
 <section class="c-sec" id="books">
-  <div class="c-sec-h"><h2>📚 ספרי BOOQLI</h2><p>משחקים לפי הספרים שלנו, שבהם הילד הוא הגיבור. פתוחים תמיד</p></div>
   <div id="booksGrid"></div>
 </section>
-
+  </div>
+</details>
+<details class="acc" id="accMore">
+  <summary><span class="ai" aria-hidden="true">📖</span><span><b>עוד מ-BOOQLI</b><small>הספר שלכם בכריכה קשה · קורס כתיבה</small></span></summary>
+  <div class="acc-in">
 <section class="mb-promo" id="make-book">
   <img src="book-maker/img/books-fan.webp" alt="ספרים בכריכה קשה שעוצבו בעורך" loading="lazy" width="1100" height="520">
   <div>
@@ -242,12 +284,13 @@
     <a href="book-maker/">בואו לעצב את הספר שלכם ←</a>
   </div>
 </section>
-
 <a class="course-promo" href="course/?utm_source=games_home&utm_medium=banner&utm_campaign=course">
   <span class="cp-ic">✍️</span>
   <span><b>כל אחד יכול להיות סופר</b><br>קורס בזום למבוגרים: כותבים, מאיירים עם AI ומדפיסים ספר ילדים משלכם</span>
   <span class="cp-go">לפרטים ←</span>
 </a>
+  </div>
+</details>
 
 </main>
 <footer class="foot">
@@ -299,6 +342,12 @@ render();
     '<img src="order/books/' + b.img + '" alt="" width="800" height="800" loading="lazy"><i class="sb" aria-hidden="true"></i><b>' + b.name + '</b><span>להזמנה ←</span></a>').join("");
   if (!B.length) box.closest(".shelf").hidden = true;
   document.querySelectorAll(".js-ord").forEach(a => a.addEventListener("click", () => { if (window.siteEvent) siteEvent("home-order", a.dataset.w); }));
+})();
+// לשוניות "ובחינם באתר": קישור ישיר (#open, #books…) פותח את הלשונית, ומדידה של כל פתיחה
+(function(){
+  const openFor = () => { const h = location.hash && document.querySelector(location.hash); const d = h && h.closest("details.acc"); if (d && !d.open) { d.open = true; setTimeout(() => h.scrollIntoView({block:"start"}), 50); } };
+  openFor(); window.addEventListener("hashchange", openFor);
+  document.querySelectorAll("details.acc").forEach(d => d.addEventListener("toggle", () => { if (d.open && window.siteEvent) siteEvent("home-acc", d.id); }));
 })();
 // ביקורות – רק מילים אמיתיות של גננות, באישורן
 const rv = document.getElementById("revs");
