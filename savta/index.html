@@ -494,12 +494,12 @@ async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {
 /* שליחה לדרייב: פותחים הזמנה, מעלים כל תמונה (2 ניסיונות), ושולחים סיכום. מחזיר את מספר ההזמנה, או "" אם לא הצליח */
 async function sendDrive(){
   const s = await bqUp.start({kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
-  const all = ORD.list.flatMap(it => it.pics.map(x => ({it, x}))); let k = 0;
-  for (const {it, x} of all) { k++; prog(k, all.length);
-    const q = "photo?sub=" + encodeURIComponent(isGirl(it) ? "בנות" : "בנים") + "&name=" + encodeURIComponent(it.name);
-    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, x.blob, isGirl(it) ? "בנות" : "בנים", it.name)).ok; } catch (e) {} }
+  /* כל ספר בתיקייה משלו: "ספר 1 · <שם הספר> · <שם הילד/ה>" / בנים|בנות / <שם>.jpg (שמש: "ספר, שם הילד, הקדשה – שיהיה לי הכל מסודר") */
+  const all = ORD.list.flatMap((it, i) => it.pics.map(x => ({it, x, f: `ספר ${i + 1} · ${book(it.book).name} · ${it.name}`}))); let k = 0;
+  for (const {it, x, f} of all) { k++; prog(k, all.length);
+    let ok = false; for (let t = 0; t < 3 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, x.blob, isGirl(it) ? "בנות" : "בנים", it.name, f)).ok; } catch (e) {} }
     if (!ok) throw new Error("photo"); }
-  const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}`);
+  const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "בת" : "בן"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"} – בתיקייה "ספר ${i + 1} · ${book(it.book).name} · ${it.name}"`);
   const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
   const D = ORD.d;
   const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
@@ -537,8 +537,13 @@ async function send(){
       <button type="button" class="alt" id="mClose">סגירה</button>`);
     $("mWa").onclick = () => ev("savta-done-wa", "modal"); $("mClose").onclick = closeModal;
     delete b.dataset.busy; return;
-  } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; closeModal(); }
-  sendWa(b);
+  } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; delete b.dataset.busy;
+    /* בלי גיבוי של תמונות בוואטסאפ (שמש, 5.11.2026: "בוואטסאפ לא יודעים מה שייך למה") – מנסים שוב */
+    modal(`${SB}<h3>😕 משהו לא נשלח</h3><p class="h">בודקים שיש אינטרנט ולוחצים "לנסות שוב". שום דבר לא נמחק – הכל נשאר כאן.</p>
+      <button type="button" class="btn btn-main go" id="mRetry">🔄 לנסות שוב</button>
+      <a class="btn btn-wa go" href="https://wa.me/${PHONE}?text=${encodeURIComponent("היי BOOQLI, ניסיתי לשלוח הזמנה באתר וזה לא עבר 🙏")}">💬 זה חוזר? כתבו לנו</a>
+      <p class="fine" dir="ltr">(${esc(String(e && e.message || e).slice(0, 60))})</p><button type="button" class="alt" id="mClose">חזרה</button>`);
+    $("mRetry").onclick = () => { closeModal(); send(); }; $("mClose").onclick = closeModal; }
 }
 /* הדרך הישנה (גיבוי): הודעת וואטסאפ עם קישורים לתמונות / שיתוף התמונות */
 async function sendWa(b){
