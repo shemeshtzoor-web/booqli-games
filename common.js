@@ -491,6 +491,8 @@ function siteJoinPopup(){
   var qs = location.search || "";
   if (/[?&]sheet=/.test(qs) || document.querySelector(".bq-join") || /\/(offline\.html|app\/)/.test(location.pathname)) return;
   var force = /[?&]join=1/.test(qs), st = null;
+  /* רק באזורי התכנים: מערכים, משחקים, נושאים (שמש, 5.11.2026). לא בדף הבית ולא בעמודי ההזמנה – שם רואים קודם את הספר */
+  if (!force && !/^\/(teachers|parents|kids|school|topics|games|library|my|g)\//.test(location.pathname)) return;
   var kids = /\/(kids|school\/(reading|dictation))\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
   try { kidsOk = localStorage.getItem("booqli_kids_ok") === "1"; } catch (e) { kidsOk = true; }
   try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
