@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../site.css">
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
@@ -40,7 +40,7 @@
 <div id="seasons"></div>
 </div>
 <div id="viewOcc" hidden>
-  <div class="occ-top"><div class="e" id="oIc"></div><div><small style="font-weight:800;color:#C13671" id="oWhen"></small><h1 id="oName"></h1><p id="oDesc"></p></div></div>
+  <div class="occ-top"><div class="e" id="oIc"></div><div><small style="font-weight:800;color:#C5309A" id="oWhen"></small><h1 id="oName"></h1><p id="oDesc"></p></div></div>
   <section class="c-sec"><div class="c-sec-h"><h2>🤝 הספקיות למועד הזה</h2><p class="note">הספקיות מפרסמות כאן את העסק שלהן ואינן מטעם BOOQLI. כדאי לבדוק מחיר, זמני אספקה והתאמה לגיל הגן לפני הזמנה.</p></div><div class="sgrid" id="oList"></div></section>
   <div class="quick"><button type="button" class="btn-wa-big" id="oShare" style="border:0;cursor:pointer">💬 לשלוח לוועד ההורים</button></div>
   <h2 class="season-h">🗓️ מועדים נוספים</h2>
@@ -52,26 +52,26 @@
   <div class="quick"><a class="btn-wa-big" id="joinBtn" target="_blank" rel="noopener">💬 להצטרפות לרשימה</a> <span class="note" id="spots" hidden></span></div>
 </section><style>
 .occ-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
-.occ-card{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:22px;padding:16px;text-decoration:none;color:inherit;box-shadow:0 4px 0 #d9e9e1;border:2px solid transparent;min-height:150px}
+.occ-card{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:22px;padding:16px;text-decoration:none;color:inherit;box-shadow:0 6px 22px rgba(33,51,48,.09);border:2px solid transparent;min-height:150px}
 .occ-card:hover{border-color:#1E7F45}
 .occ-card .e{font-size:34px;line-height:1}
 .occ-card b{font-family:Fredoka,Assistant,sans-serif;font-size:21px;color:#1E7F45}
-.occ-card .w{font-weight:800;color:#C13671;font-size:14px}
-.occ-card .d{font-size:14.5px;color:#6b5a66}
-.occ-card .n{margin-top:auto;font-weight:800;font-size:14px;color:#4E8576}
-.occ-card.next{border-color:#FF56C2}
-.season-h{margin-top:26px;font-size:22px;color:#4E8576}
-.occ-top{margin-top:16px;background:#fff;border-radius:28px;padding:20px;box-shadow:0 6px 0 #d9e9e1;border-top:10px solid #1E7F45;display:flex;gap:16px;align-items:center}
+.occ-card .w{font-weight:800;color:#C5309A;font-size:14px}
+.occ-card .d{font-size:14.5px;color:#566B67}
+.occ-card .n{margin-top:auto;font-weight:800;font-size:14px;color:#2F6F63}
+.occ-card.next{border-color:#FA57C4}
+.season-h{margin-top:26px;font-size:22px;color:#2F6F63}
+.occ-top{margin-top:16px;background:#fff;border-radius:28px;padding:20px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:10px solid #1E7F45;display:flex;gap:16px;align-items:center}
 .occ-top .e{font-size:56px;line-height:1}
 .occ-top h1{color:#1E7F45;font-size:clamp(28px,6vw,42px)}
 .occ-top p{margin-top:4px}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:14px}
-.sup{background:#fff;border-radius:22px;padding:16px;box-shadow:0 4px 0 #d9e9e1;display:flex;flex-direction:column;gap:6px}
-.sup h3{font-size:19px;color:#2B1526}
-.sup .sells{font-size:15px}.sup .city{font-size:14px;color:#6b5a66;font-weight:700}
+.sup{background:#fff;border-radius:22px;padding:16px;box-shadow:0 6px 22px rgba(33,51,48,.09);display:flex;flex-direction:column;gap:6px}
+.sup h3{font-size:19px;color:#213330}
+.sup .sells{font-size:15px}.sup .city{font-size:14px;color:#566B67;font-weight:700}
 .sup .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
-.sup.bq{background:#FFE3F4}.sup.bq .tag{font-weight:800;color:#C13671;font-size:13.5px}
-.sup.free{border:2px dashed #6F988B;box-shadow:none;background:#F4FAF7}
+.sup.bq{background:#FDE6F6}.sup.bq .tag{font-weight:800;color:#C5309A;font-size:13.5px}
+.sup.free{border:2px dashed #6DAFA1;box-shadow:none;background:#F4FAF7}
 .occ-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 @media (max-width:520px){.occ-top{flex-direction:column;text-align:center}.occ-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.occ-card{padding:12px;min-height:0}.occ-card b{font-size:18px}.occ-card .d{font-size:13.5px}}
 </style>

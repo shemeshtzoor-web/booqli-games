@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../site.css">
 <style>
 /* ===== חדר המשחקים (1.11.2026) ===== */
@@ -24,34 +24,34 @@
 .agechips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
 .agechips b{font-weight:800;color:#7A4600;margin-inline-end:4px}
 .agechips button{font:inherit;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:19px;min-width:52px;min-height:48px;padding:4px 12px;border-radius:16px;border:3px solid #FFD98A;background:#FFF8E6;color:#7A4600;cursor:pointer}
-.agechips button[aria-pressed=true]{background:#FF56C2;border-color:#E0399F;color:#fff}
+.agechips button[aria-pressed=true]{background:#FA57C4;border-color:#E33BAE;color:#fff}
 .kg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:16px}
-.kg-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;background:#fff;border-radius:24px;padding:16px 12px 14px;text-decoration:none;color:#2B1526;box-shadow:0 5px 0 #d9e9e1;border:3px solid transparent;cursor:pointer;font:inherit}
-.kg-card:hover{border-color:#FFC8EA}.kg-card:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
+.kg-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;background:#fff;border-radius:24px;padding:16px 12px 14px;text-decoration:none;color:#213330;box-shadow:0 6px 22px rgba(33,51,48,.09);border:3px solid transparent;cursor:pointer;font:inherit}
+.kg-card:hover{border-color:#FFC8EA}.kg-card:focus-visible{outline:3px solid #FA57C4;outline-offset:2px}
 .kg-card .ic{width:78px;height:78px;border-radius:24px;display:grid;place-items:center;font-size:44px;background:var(--b,#FFF1C9)}
 .kg-card b{font-family:Fredoka,Assistant,sans-serif;font-size:20px;line-height:1.2}
-.kg-card small{color:#6b5a66;font-size:14px;line-height:1.35}
-.kg-card .age{font-weight:800;color:#4E8576;background:#E1F0EA;border-radius:999px;padding:1px 10px;font-size:13px}
+.kg-card small{color:#566B67;font-size:14px;line-height:1.35}
+.kg-card .age{font-weight:800;color:#2F6F63;background:#E1F0EA;border-radius:999px;padding:1px 10px;font-size:13px}
 .kg-card.dim{opacity:.55}
 /* מסך משחק */
-.kg-view{margin-top:16px;background:#fff;border-radius:28px;padding:16px;box-shadow:0 6px 0 #d9e9e1;position:relative}
+.kg-view{margin-top:16px;background:#fff;border-radius:28px;padding:16px;box-shadow:0 6px 22px rgba(33,51,48,.09);position:relative}
 .kg-top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
 .kg-top h1{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(24px,5vw,34px);color:#9A5800;line-height:1.15;display:flex;align-items:center;gap:8px}
-.kg-back{font:inherit;font-weight:800;background:#fff;color:#4E8576;border:2px solid #CDE7DC;border-radius:999px;padding:8px 14px;cursor:pointer;text-decoration:none}
-.kg-learn{margin:8px 0 0;background:#F4FAF7;border-radius:16px;padding:8px 12px;font-size:15px;color:#2B1526}
-.kg-learn b{color:#4E8576}
+.kg-back{font:inherit;font-weight:800;background:#fff;color:#2F6F63;border:2px solid #CDE7DC;border-radius:999px;padding:8px 14px;cursor:pointer;text-decoration:none}
+.kg-learn{margin:8px 0 0;background:#F4FAF7;border-radius:16px;padding:8px 12px;font-size:15px;color:#213330}
+.kg-learn b{color:#2F6F63}
 .kg-say{border:0;background:#FFF1C9;border-radius:999px;width:46px;height:46px;font-size:22px;cursor:pointer;box-shadow:0 2px 0 #F3DFA6;flex-shrink:0}
 .kg-stage{margin-top:14px;min-height:300px;position:relative}
 .kg-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
-.kg-btn{font:inherit;font-weight:800;font-size:17px;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;background:#E0399F;color:#fff;box-shadow:0 3px 0 #A3216F}
-.kg-btn.alt{background:#fff;color:#4E8576;border:2px solid #CDE7DC;box-shadow:none}
-.kg-btn[aria-pressed=true]{background:#4E8576;color:#fff;box-shadow:0 3px 0 #2E5E52}
+.kg-btn{font:inherit;font-weight:800;font-size:17px;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;background:#E33BAE;color:#fff;box-shadow:0 3px 0 #B5288A}
+.kg-btn.alt{background:#fff;color:#2F6F63;border:2px solid #CDE7DC;box-shadow:none}
+.kg-btn[aria-pressed=true]{background:#2F6F63;color:#fff;box-shadow:0 3px 0 #2E5E52}
 .kg-q{display:flex;align-items:center;justify-content:center;gap:10px;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(21px,4.5vw,28px);text-align:center;margin:6px 0 14px;line-height:1.3}
 .kg-dots{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
-.kg-dots i{width:12px;height:12px;border-radius:50%;background:#E1F0EA}.kg-dots i.on{background:#FF56C2}
+.kg-dots i{width:12px;height:12px;border-radius:50%;background:#E1F0EA}.kg-dots i.on{background:#FA57C4}
 .kg-opts{display:grid;gap:12px;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));max-width:620px;margin:0 auto}
-.kg-opt{font:inherit;border:3px solid #E1F0EA;background:#fff;border-radius:24px;min-height:110px;display:grid;place-items:center;cursor:pointer;font-size:clamp(44px,11vw,64px);padding:8px;transition:transform .12s;color:#2B1526}
-.kg-opt:active{transform:scale(.96)}.kg-opt:focus-visible{outline:3px solid #FF56C2;outline-offset:2px}
+.kg-opt{font:inherit;border:3px solid #E1F0EA;background:#fff;border-radius:24px;min-height:110px;display:grid;place-items:center;cursor:pointer;font-size:clamp(44px,11vw,64px);padding:8px;transition:transform .12s;color:#213330}
+.kg-opt:active{transform:scale(.96)}.kg-opt:focus-visible{outline:3px solid #FA57C4;outline-offset:2px}
 .kg-opt.txt{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(34px,9vw,52px);font-weight:700}
 .kg-opt.ok{border-color:#46C46E;background:#E9F9EE;animation:kgPop .4s}
 .kg-opt.shake{animation:kgShake .4s}
@@ -62,11 +62,11 @@
 /* ניצחון */
 .kg-win{position:fixed;inset:0;z-index:150;background:rgba(43,21,38,.5);display:flex;align-items:center;justify-content:center;padding:16px}
 .kg-win .in{background:#fff;border-radius:28px;max-width:420px;width:100%;padding:24px 20px;text-align:center;position:relative;overflow:hidden;animation:kgPop .45s}
-.kg-win .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,#FF56C2,#FFC93C,#6F988B)}
+.kg-win .in::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,#FA57C4,#FFC93C,#6DAFA1)}
 .kg-win .big{font-size:64px;line-height:1.1}
-.kg-win h2{font-family:Fredoka,Assistant,sans-serif;color:#C13671;font-size:30px;margin:4px 0}
-.kg-win p{color:#6b5a66;margin:4px 0 12px}
-.kg-win .book{display:block;margin-top:14px;background:#FFE3F4;border-radius:16px;padding:10px;color:#C13671;font-weight:800;text-decoration:none;font-size:15px}
+.kg-win h2{font-family:Fredoka,Assistant,sans-serif;color:#C5309A;font-size:30px;margin:4px 0}
+.kg-win p{color:#566B67;margin:4px 0 12px}
+.kg-win .book{display:block;margin-top:14px;background:#FDE6F6;border-radius:16px;padding:10px;color:#C5309A;font-weight:800;text-decoration:none;font-size:15px}
 .kg-conf{position:fixed;inset:0;pointer-events:none;z-index:160;overflow:hidden}
 .kg-conf i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:kgFall 1.6s linear forwards}
 @keyframes kgFall{to{transform:translateY(110vh) rotate(540deg)}}
@@ -136,7 +136,7 @@ const SND = {
   win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, "triangle", .2, i * .13))
 };
 const toast = (stage, msg, ms = 1500) => { const t = document.createElement("div"); t.className = "kg-toast"; t.textContent = msg; stage.appendChild(t); setTimeout(() => t.remove(), ms); };
-const confetti = () => { const c = document.createElement("div"); c.className = "kg-conf"; const cols = ["#FF56C2","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
+const confetti = () => { const c = document.createElement("div"); c.className = "kg-conf"; const cols = ["#FA57C4","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
   for (let i = 0; i < 40; i++) { const p = document.createElement("i"); p.style.left = rnd(100) + "%"; p.style.background = cols[i % 5]; p.style.animationDelay = (rnd(60) / 100) + "s"; c.appendChild(p); }
   document.body.appendChild(c); setTimeout(() => c.remove(), 2600); };
 let CUR = null;

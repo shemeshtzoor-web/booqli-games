@@ -95,7 +95,7 @@ window.GM = (function(){
   function confetti(host){
     if (reduced() || !host) return;
     var box = document.createElement("div"); box.className = "gm-confetti"; box.setAttribute("aria-hidden", "true");
-    var cols = ["#FF56C2", "#3AA7F0", "#FFD84D", "#6F988B", "#B05BE8", "#FF9A2E"];
+    var cols = ["#FA57C4", "#3AA7F0", "#FFD84D", "#6DAFA1", "#B05BE8", "#FF9A2E"];
     for (var i = 0; i < 70; i++) {
       var p = document.createElement("i");
       p.style.left = Math.random() * 100 + "%"; p.style.background = pick(cols);

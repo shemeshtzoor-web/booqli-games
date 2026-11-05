@@ -11,9 +11,9 @@
 <meta property="og:image" content="https://static.wixstatic.com/media/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png/v1/fit/w_2500,h_1330,al_c/ce5bca_309026cfe00244fe92831f087af5c15f%7Emv2.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--pink:#FF56C2;--pink-btn:#E0399F;--pink-shadow:#A3216F;--pink-soft:#FFE3F4;--mint:#E1F0EA;--mint-2:#CDE7DC;--sage:#6F988B;--sage-2:#7FA89B;--sage-deep:#4E8576;--magenta:#C13671;--wa:#1FA855;--ink:#2B1526;--muted:#5d4c58;--gold:#F5B93B}
+:root{--pink:#FA57C4;--pink-btn:#E33BAE;--pink-shadow:#B5288A;--pink-soft:#FDE6F6;--mint:#E1F0EA;--mint-2:#CDE7DC;--sage:#6DAFA1;--sage-2:#8CC5B9;--sage-deep:#2F6F63;--magenta:#C5309A;--wa:#1FA855;--ink:#213330;--muted:#5d4c58;--gold:#F5B93B}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:20px}
 body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.6;font-size:18px;background:radial-gradient(800px 420px at 100% 0,var(--pink-soft),transparent 60%),linear-gradient(#F7FBF9,#EEF7F2);min-height:100vh;overflow-x:hidden}
@@ -76,7 +76,7 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .up .cnt{font-weight:800;color:var(--magenta)}
 .upcta{display:flex;margin:16px auto 0;max-width:420px;font-size:20px;padding:14px 20px;text-decoration:none}
 .upsteps{margin:4px 0 12px;padding-inline-start:22px;font-size:16px}.upsteps li{margin:2px 0}
-.upcol .btn{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 #A3216F;width:100%;justify-content:center}
+.upcol .btn{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 #B5288A;width:100%;justify-content:center}
 .up details{margin-top:12px}.up summary{cursor:pointer;font-weight:800;color:var(--sage-deep)}
 .btn{border:0;border-radius:999px;padding:13px 22px;font:800 18px Assistant,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-main{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}
@@ -230,7 +230,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 .saved{margin-top:8px;font-weight:800;color:#23784A;font-size:15.5px}
 /* הקדשה – תצוגה */
 .dedcol{display:flex;flex-direction:column;gap:6px}
-.dprev{background:linear-gradient(135deg,#FFE3F4,#E8F4FF);border-radius:16px;padding:12px}
+.dprev{background:linear-gradient(135deg,#FDE6F6,#E8F4FF);border-radius:16px;padding:12px}
 .dprev.boy{background:linear-gradient(135deg,#DDEEFF,#EAF7F2)}
 .dprev .card{background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:12px 14px;text-align:center;font-size:14px;line-height:1.55;color:#24406b;white-space:pre-line;min-height:120px}
 .dprev .card b{display:block;font-size:15.5px;margin-bottom:6px}
@@ -964,7 +964,7 @@ function refresh(){
 document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { const t = $("s-" + b.dataset.go); if (t) t.scrollIntoView(); }));
 function toast(t){
   let el = document.getElementById("toast");
-  if (!el) { el = document.createElement("div"); el.id = "toast"; el.style.cssText = "position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:300;background:#2B1526;color:#fff;font-weight:800;border-radius:999px;padding:10px 18px;max-width:90vw;text-align:center"; document.body.appendChild(el); }
+  if (!el) { el = document.createElement("div"); el.id = "toast"; el.style.cssText = "position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:300;background:#213330;color:#fff;font-weight:800;border-radius:999px;padding:10px 18px;max-width:90vw;text-align:center"; document.body.appendChild(el); }
   el.textContent = t; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, 3200);
 }
 

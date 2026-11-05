@@ -1,20 +1,21 @@
 /* booqli Games – עיצוב משותף לדף הבית, הדלתות, הספרייה, המועדפים ועמודי המידע.
    (עמודי הנושאים ב-topics/ עדיין עם עיצוב משלהם) */
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  /* צבעי BOOQLI כמו באתר הראשי (5.11.2026). common.js (siteBrand) קובע אותם גם בעמודים בלי site.css */
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E4F3EF; --mint-2:#CDE8E1; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.5;
-  background:radial-gradient(900px 500px at 100% -10%, var(--pink-soft) 0%, transparent 60%),
-    radial-gradient(800px 500px at -10% 110%, var(--mint-2) 0%, transparent 60%),
-    linear-gradient(#F4FAF7, var(--mint));
-  background-color:var(--mint);min-height:100vh}
+body{margin:0;font-family:Assistant,Arial,sans-serif;color:var(--ink);line-height:1.6;
+  background:radial-gradient(1000px 640px at -5% 105%, #F9D3EE 0%, transparent 62%),
+    radial-gradient(900px 560px at 105% -5%, #E5E0FA 0%, transparent 58%),
+    linear-gradient(#F1F9F6, var(--mint));
+  background-color:var(--mint);background-attachment:fixed;min-height:100vh}
 a{color:inherit}
-h1,h2,h3{font-family:Fredoka,Assistant,sans-serif;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:'Varela Round',Fredoka,Assistant,sans-serif;font-weight:700;margin:0;text-wrap:balance;letter-spacing:.01em}
 p{margin:0}
 [hidden]{display:none!important}
 button,input,select{font:inherit;color:inherit}
@@ -39,12 +40,12 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .crumbs a:hover{text-decoration:underline}
 
 /* פתיח של דלת */
-.zone-hero{margin-top:16px;background:#fff;border-radius:28px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;box-shadow:0 6px 0 #d9e9e1;border-top:10px solid var(--zc,#FF56C2)}
+.zone-hero{margin-top:16px;background:#fff;border-radius:28px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:10px solid var(--zc,#FA57C4)}
 .zone-hero img{width:120px;height:auto;display:block}
-.zone-hero small{font-weight:800;color:var(--zc,#C13671)}
-.zone-hero h1{font-size:clamp(30px,6vw,46px);line-height:1.05;color:var(--zc,#C13671)}
+.zone-hero small{font-weight:800;color:var(--zc,#C5309A)}
+.zone-hero h1{font-size:clamp(30px,6vw,46px);line-height:1.05;color:var(--zc,#C5309A)}
 .zone-hero p{font-size:17.5px;margin-top:8px;max-width:640px}
-.zone-hero .bubble{position:relative;background:var(--zb,#FFE3F4);border-radius:18px;padding:8px 14px;font-weight:700;margin-top:10px;display:inline-block}
+.zone-hero .bubble{position:relative;background:var(--zb,#FDE6F6);border-radius:18px;padding:8px 14px;font-weight:700;margin-top:10px;display:inline-block}
 @media (max-width:600px){.zone-hero{grid-template-columns:minmax(0,1fr);text-align:center;padding:18px}.zone-hero img{width:96px;margin:0 auto}}
 
 /* שורת קישורים מהירים (צ'יפים) */
@@ -53,7 +54,7 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .quick a:hover,.quick button:hover{border-color:var(--sage-deep)}
 
 /* סידור וסינון */
-.tools{margin-top:22px;background:#fff;border-radius:22px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;box-shadow:0 4px 0 #d9e9e1}
+.tools{margin-top:22px;background:#fff;border-radius:22px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .tools label{font-weight:800;color:var(--sage-deep);display:flex;align-items:center;gap:6px;font-size:15px}
 .tools select,.tools input[type=search]{border:2px solid var(--mint-2);border-radius:12px;padding:7px 10px;background:#fff;font-weight:700;min-height:42px}
 .tools input[type=search]{flex:1;min-width:200px}
@@ -67,13 +68,13 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .btn-wa-big{background:var(--wa);color:#fff;border-radius:999px;padding:11px 20px;font-weight:800;font-size:16px;text-decoration:none;display:inline-flex;gap:6px;box-shadow:0 3px 0 #13773A}
 
 /* קופסת מידע */
-.panel{margin-top:26px;background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 0 #d9e9e1}
+.panel{margin-top:26px;background:#fff;border-radius:24px;padding:20px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .panel h2{color:var(--sage-deep);font-size:24px}
 .panel p{margin-top:6px}
 .note{font-size:14px;color:var(--muted)}
 
 /* עמודי מסמכים (פרטיות, תקנון, נגישות) */
-.doc{margin-top:18px;background:#fff;border-radius:24px;padding:26px clamp(18px,4vw,40px) 30px;box-shadow:0 4px 0 #d9e9e1;max-width:860px;margin-inline:auto}
+.doc{margin-top:18px;background:#fff;border-radius:24px;padding:26px clamp(18px,4vw,40px) 30px;box-shadow:0 6px 22px rgba(33,51,48,.09);max-width:860px;margin-inline:auto}
 .doc h1{color:var(--magenta);font-size:clamp(28px,5vw,40px)}
 .doc .upd{color:var(--muted);font-weight:700;margin-top:6px}
 .doc h2{color:var(--sage-deep);font-size:21px;margin-top:24px}
@@ -88,12 +89,12 @@ footer.foot p{margin:4px 0}footer.foot .logo{height:40px;margin:0 auto 10px;disp
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* באנר אזעקות ("מה אתה עושה כאן, פחד?") – דף הבית, מ-1.11.2026 */
-.calm-ban{margin-top:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#FFE6E8,#EFE8FF);border:2px solid #F6D3D7;border-radius:22px;padding:12px 16px;text-decoration:none;color:#2B1526;box-shadow:0 4px 0 #EBD3E0}
+.calm-ban{margin-top:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#FFE6E8,#EFE8FF);border:2px solid #F6D3D7;border-radius:22px;padding:12px 16px;text-decoration:none;color:#213330;box-shadow:0 4px 0 #EBD3E0}
 .calm-ban .i{font-size:34px;flex-shrink:0}
 .calm-ban b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:19px;color:#8E1F2C;line-height:1.2}
-.calm-ban small{display:block;font-size:14px;color:#6b5a66;font-weight:700}
+.calm-ban small{display:block;font-size:14px;color:#566B67;font-weight:700}
 .calm-ban .go{margin-inline-start:auto;background:#D4384A;color:#fff;border-radius:999px;padding:8px 14px;font-weight:800;white-space:nowrap;flex-shrink:0}
-.anim-ban{background:linear-gradient(90deg,#FFE3F4,#EDE3FF,#DFF1FF);border-color:#F7C4E3;box-shadow:0 4px 0 #E7CBF0}.anim-ban b{color:#A3216F}.anim-ban .go{background:linear-gradient(90deg,#E0399F,#9B5DE5)}
+.anim-ban{background:linear-gradient(90deg,#FDE6F6,#EDE3FF,#DFF1FF);border-color:#F7C4E3;box-shadow:0 4px 0 #E7CBF0}.anim-ban b{color:#B5288A}.anim-ban .go{background:linear-gradient(90deg,#E33BAE,#9B5DE5)}
 @media (max-width:520px){.calm-ban .go{display:none}.calm-ban b{font-size:17px}}
-.calm-ban.read-ban{background:linear-gradient(90deg,#F1E3FF,#FFE3F4);border-color:#E7D6FA;box-shadow:0 4px 0 #E2D2F0}
+.calm-ban.read-ban{background:linear-gradient(90deg,#F1E3FF,#FDE6F6);border-color:#E7D6FA;box-shadow:0 4px 0 #E2D2F0}
 .calm-ban.read-ban b{color:#6B2FA3}.calm-ban.read-ban .go{background:#6B2FA3}

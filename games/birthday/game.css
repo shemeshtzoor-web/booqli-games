@@ -9,7 +9,7 @@
   --sky:#5BA7D9;        /* butterfly blue */
   --clay:#E77FA3;       /* pink of the bow and the teddy */
   --brand:#C33B79;      /* BOOQLI magenta */
-  --plum:#2B1526;       /* dark ground the white logo sits on */
+  --plum:#213330;       /* dark ground the white logo sits on */
   --wa:#1FA855;
   --ink:#33273A;
   --ink-soft:#6A5C70;
@@ -397,10 +397,10 @@ body.g-m{--bgimg:url(img/bg_b.jpg)}
 .parents-safe{background:#fff;border:2px solid #CDE8D6}
 
 /* ===== צבעי המותג BOOQLI: ורוד ומנטה + פס גנים ===== */
-:root{--pink:#FF56C2;--mint:#E1F0EA;--sage:#6F988B;--plum:#6F988B;--acacia:#4E8576;--clay:#E0399F;--sand:#E1F0EA;--line:#CFE5DB;--ink:#2B1526}
+:root{--pink:#FA57C4;--mint:#E1F0EA;--sage:#6DAFA1;--plum:#6DAFA1;--acacia:#2F6F63;--clay:#E33BAE;--sand:#E1F0EA;--line:#CFE5DB;--ink:#213330}
 html,body{background:var(--mint)}
-body{background:radial-gradient(90% 50% at 85% 0%,#FFE3F4 0%,rgba(255,227,244,0) 70%),radial-gradient(90% 60% at 0% 100%,#CDE7DC 0%,rgba(205,231,220,0) 70%),linear-gradient(180deg,#F4FAF7,#E1F0EA) fixed}
-.brand{background:linear-gradient(90deg,#6F988B,#7FA89B);box-shadow:0 8px 20px -12px rgba(46,90,78,.7);flex-wrap:nowrap}
+body{background:radial-gradient(90% 50% at 85% 0%,#FDE6F6 0%,rgba(255,227,244,0) 70%),radial-gradient(90% 60% at 0% 100%,#CDE7DC 0%,rgba(205,231,220,0) 70%),linear-gradient(180deg,#F4FAF7,#E1F0EA) fixed}
+.brand{background:linear-gradient(90deg,#6DAFA1,#8CC5B9);box-shadow:0 8px 20px -12px rgba(46,90,78,.7);flex-wrap:nowrap}
 .gan{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;text-decoration:none;line-height:1.25;padding:4px 8px;border-radius:12px}
 .gan b{font-family:var(--f-head);font-weight:600;font-size:clamp(15px,2.6vw,20px)}
 .gan span{font-size:clamp(12.5px,2vw,15px);background:var(--pink);border-radius:999px;padding:1px 12px;margin-top:3px;font-weight:700;box-shadow:0 2px 0 #C4318E}
@@ -408,11 +408,11 @@ body{background:radial-gradient(90% 50% at 85% 0%,#FFE3F4 0%,rgba(255,227,244,0)
 @media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex-basis:100%;background:rgba(255,255,255,.14)}}
 .card{background:#fff;box-shadow:0 4px 0 #CFE5DB}
 .panel,.why article,.settings{background:#fff}
-.btn.go{box-shadow:0 5px 0 #A3216F}.btn.go:active{box-shadow:0 2px 0 #A3216F}
+.btn.go{box-shadow:0 5px 0 #B5288A}.btn.go:active{box-shadow:0 2px 0 #B5288A}
 .seg button[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
 .winhint{background:var(--pink)}
-.ganbox{display:flex;align-items:center;gap:10px;width:100%;max-width:440px;text-align:right;background:#E1F0EA;color:#2B1526;border-radius:16px;padding:10px 14px;text-decoration:none;font-size:15px;line-height:1.4;border:2px solid #fff}
+.ganbox{display:flex;align-items:center;gap:10px;width:100%;max-width:440px;text-align:right;background:#E1F0EA;color:#213330;border-radius:16px;padding:10px 14px;text-decoration:none;font-size:15px;line-height:1.4;border:2px solid #fff}
 .ganbox .gi{font-size:30px}
-.ganbox u{color:#C13671;font-weight:700}
+.ganbox u{color:#C5309A;font-weight:700}
 footer{color:#4E6B62}
 [hidden]{display:none!important}

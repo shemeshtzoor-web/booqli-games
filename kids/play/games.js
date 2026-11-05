@@ -12,20 +12,20 @@ var css = function(txt){ var s = document.createElement("style"); s.textContent 
 var NOTES = [
   {n:"דו", s:"דּוֹ", f:261.63, c:"#E5484D"}, {n:"רה", s:"רֶה", f:293.66, c:"#FF8A1F"}, {n:"מי", s:"מִי", f:329.63, c:"#FFC93C"},
   {n:"פה", s:"פָה", f:349.23, c:"#46C46E"}, {n:"סול", s:"סוֹל", f:392.00, c:"#3AA7F0"}, {n:"לה", s:"לָה", f:440.00, c:"#5B6CF0"},
-  {n:"סי", s:"סִי", f:493.88, c:"#9B5DE5"}, {n:"דו", s:"דּוֹ", f:523.25, c:"#E0399F"}
+  {n:"סי", s:"סִי", f:493.88, c:"#9B5DE5"}, {n:"דו", s:"דּוֹ", f:523.25, c:"#E33BAE"}
 ];
 css(
   ".xo-board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:12px auto;direction:ltr}" +
-  ".xo-board button{aspect-ratio:1;font:inherit;font-size:clamp(48px,14vw,72px);border:0;border-radius:20px;background:#F4FAF7;cursor:pointer;box-shadow:0 4px 0 #d9e9e1;line-height:1;color:#2B1526}" +
-  ".xo-board button.w{background:#FFE3F4}" +
+  ".xo-board button{aspect-ratio:1;font:inherit;font-size:clamp(48px,14vw,72px);border:0;border-radius:20px;background:#F4FAF7;cursor:pointer;box-shadow:0 6px 22px rgba(33,51,48,.09);line-height:1;color:#213330}" +
+  ".xo-board button.w{background:#FDE6F6}" +
   ".xo-msg{text-align:center;font-family:Fredoka,Assistant,sans-serif;font-size:22px;min-height:32px;margin:6px 0}" +
-  ".c4{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:470px;margin:10px auto;background:#4E8576;padding:8px;border-radius:20px;direction:ltr}" +
+  ".c4{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:470px;margin:10px auto;background:#2F6F63;padding:8px;border-radius:20px;direction:ltr}" +
   ".c4 button{aspect-ratio:1;border:0;border-radius:50%;background:#fff;cursor:pointer;padding:0;transition:background .15s}" +
-  ".c4 button.p1{background:#FF56C2}.c4 button.p2{background:#FFC93C}.c4 button.w{box-shadow:0 0 0 4px #fff inset,0 0 0 7px #2B1526 inset}" +
+  ".c4 button.p1{background:#FA57C4}.c4 button.p2{background:#FFC93C}.c4 button.w{box-shadow:0 0 0 4px #fff inset,0 0 0 7px #213330 inset}" +
   ".xyl{display:flex;gap:6px;justify-content:center;align-items:flex-end;margin:10px auto;max-width:620px;direction:ltr}" +
   ".xyl button{flex:1;border:0;border-radius:14px;color:#fff;font:inherit;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:clamp(14px,3.6vw,20px);cursor:pointer;padding:8px 0;box-shadow:0 5px 0 rgba(0,0,0,.18);transition:transform .08s;text-shadow:0 1px 2px rgba(0,0,0,.3)}" +
   ".xyl button:active,.xyl button.hit{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.18)}" +
-  ".xyl button.next{outline:5px solid #2B1526;outline-offset:3px;animation:kgPop .8s infinite}" +
+  ".xyl button.next{outline:5px solid #213330;outline-offset:3px;animation:kgPop .8s infinite}" +
   ".simon{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:12px auto}" +
   ".simon button{aspect-ratio:1;border:0;border-radius:28px;cursor:pointer;opacity:.55;transition:opacity .1s,transform .1s;font-size:44px}" +
   ".simon button.lit{opacity:1;transform:scale(1.05)}" +
@@ -39,14 +39,14 @@ css(
   ".sz-area button{border:0;background:none;cursor:pointer;line-height:1;padding:4px;border-radius:14px}" +
   ".sz-line{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:10px;min-height:120px;margin-top:12px;border-bottom:4px dashed #CDE7DC;direction:ltr}" +
   ".mz-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}" +
-  ".mz{display:grid;direction:ltr;background:#fff;border:4px solid #4E8576;border-radius:10px;touch-action:none;width:min(92vw,420px)}" +
+  ".mz{display:grid;direction:ltr;background:#fff;border:4px solid #2F6F63;border-radius:10px;touch-action:none;width:min(92vw,420px)}" +
   ".mz div{aspect-ratio:1;display:grid;place-items:center;font-size:var(--fs,26px);line-height:1;box-sizing:border-box}" +
   ".mz-pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,64px);gap:6px;direction:ltr}" +
   ".mz-pad button{font-size:30px;border:0;border-radius:18px;background:#FFF1C9;cursor:pointer;box-shadow:0 3px 0 #F3DFA6}" +
   ".sp{position:relative;width:100%;aspect-ratio:1;max-width:150px;container-type:inline-size}" +
   ".sp span{position:absolute;line-height:1}" +
   ".lt-word{text-align:center;font-family:Fredoka,Assistant,sans-serif;font-size:30px;letter-spacing:2px;margin:-6px 0 10px}" +
-  ".lt-word b{color:#E0399F}"
+  ".lt-word b{color:#E33BAE}"
 );
 /* מסגרת קטנה למשחקים עם בחירת מצב */
 var modes = function(stage, title, list, cb){
@@ -58,7 +58,7 @@ var modes = function(stage, title, list, cb){
 var KG = window.KG = [];
 
 /* ===== 1. איקס עיגול ===== */
-KG.push({id:"xo", name:"איקס עיגול", ic:"❌", bg:"#FFE3F4", ages:[4,8], kind:"game",
+KG.push({id:"xo", name:"איקס עיגול", ic:"❌", bg:"#FDE6F6", ages:[4,8], kind:"game",
   learn:"חשיבה קדימה, תכנון ומשחק בתורות",
   intro:"איקס עיגול. אתם האיקס, ובּוּקְלִי הוא העיגול. מי שמסדר שלוש בשורה – מנצח!",
   run: function(stage, api){
@@ -178,7 +178,7 @@ KG.push({id:"notes", name:"מה התו?", ic:"🎵", bg:"#E3E6FF", ages:[4,8], k
           n: Math.min(set.length, 4),
           opts: set.map(function(k){ return {html: NOTES[k].n, cls: "txt", ok: k === t, name: NOTES[k].n}; }).map(function(o, i){ o.html = '<span style="color:' + NOTES[set[i]].c + '">' + o.html + '</span>'; return o; }),
           okSay: "נָכוֹן! זֶה " + NOTES[t].s,
-          extra: '<div class="xyl" style="max-width:' + (set.length * 70) + 'px">' + set.map(function(k){ return '<button type="button" data-n="' + k + '" style="background:' + NOTES[k].c + ';height:' + (90 - k * 6) + 'px" aria-label="להקשיב ל' + NOTES[k].n + '">' + NOTES[k].n + '</button>'; }).join("") + '</div><p style="text-align:center;color:#6b5a66;margin:-4px 0 10px;font-size:14px">👆 לוחצים כדי להקשיב · ואז בוחרים למטה</p>',
+          extra: '<div class="xyl" style="max-width:' + (set.length * 70) + 'px">' + set.map(function(k){ return '<button type="button" data-n="' + k + '" style="background:' + NOTES[k].c + ';height:' + (90 - k * 6) + 'px" aria-label="להקשיב ל' + NOTES[k].n + '">' + NOTES[k].n + '</button>'; }).join("") + '</div><p style="text-align:center;color:#566B67;margin:-4px 0 10px;font-size:14px">👆 לוחצים כדי להקשיב · ואז בוחרים למטה</p>',
           after: function(st){ st.querySelectorAll(".xyl button").forEach(function(b){ b.onclick = function(){ api.tone(NOTES[+b.dataset.n].f, .6, "triangle", .3); }; }); } }; }});
     });
     api.say(self.intro);
@@ -342,7 +342,7 @@ KG.push({id:"maze", name:"המבוך של הצב", ic:"🐢", bg:"#DDF5E5", ages
       var n = sizes[lv], W = build(n), pos = 0, goal = n * n - 1;
       stage.innerHTML = '<div class="kg-dots">' + sizes.map(function(_, k){ return '<i class="' + (k < lv ? "on" : "") + '"></i>'; }).join("") + '</div><div class="mz-wrap"><div class="mz" id="mz" style="grid-template-columns:repeat(' + n + ',1fr);--fs:' + Math.round(160 / n) + 'px" aria-label="מבוך"></div>' +
         '<div class="mz-pad"><span></span><button type="button" data-d="t" aria-label="למעלה">⬆️</button><span></span><button type="button" data-d="l" aria-label="שמאלה">⬅️</button><button type="button" data-d="b" aria-label="למטה">⬇️</button><button type="button" data-d="r" aria-label="ימינה">➡️</button></div></div>';
-      var M = stage.querySelector("#mz"), B = "3px solid #4E8576";
+      var M = stage.querySelector("#mz"), B = "3px solid #2F6F63";
       M.innerHTML = W.map(function(w, i){ return '<div style="border-top:' + (w.t ? B : "0") + ';border-right:' + (w.r ? B : "0") + ';border-bottom:' + (w.b ? B : "0") + ';border-left:' + (w.l ? B : "0") + '">' + (i === goal ? "🏠" : "") + '</div>'; }).join("");
       var cells = M.children, turtle = document.createElement("span"); turtle.textContent = "🐢"; cells[0].appendChild(turtle);
       var SAY = {t:"לְמַעְלָה", b:"לְמַטָּה", r:"יָמִינָה", l:"שְׂמֹאלָה"};
@@ -389,7 +389,7 @@ var WORDS = [
   ["🐈","חתול","חָתוּל"],["🦚","טווס","טַוָּס"],["👦","ילד","יֶלֶד"],["🐕","כלב","כֶּלֶב"],["🍋","לימון","לִימוֹן"],["☂️","מטרייה","מִטְרִיָּה"],["🐅","נמר","נָמֵר"],
   ["🐎","סוס","סוּס"],["🐭","עכבר","עַכְבָּר"],["🐘","פיל","פִּיל"],["🐢","צב","צָב"],["🐒","קוף","קוֹף"],["🚂","רכבת","רַכֶּבֶת"],["☀️","שמש","שֶׁמֶשׁ"],["🍎","תפוח","תַּפּוּחַ"]
 ];
-KG.push({id:"letters", name:"באיזו אות מתחילה?", ic:"🔤", bg:"#FFE3F4", ages:[5,7], kind:"game",
+KG.push({id:"letters", name:"באיזו אות מתחילה?", ic:"🔤", bg:"#FDE6F6", ages:[5,7], kind:"game",
   learn:"מודעות פונולוגית: הצליל הראשון במילה והאותיות א'–ת'",
   intro:"באיזו אות מתחילה? מקשיבים למילה, ובוחרים את האות שהיא מתחילה בה.",
   run: function(stage, api){

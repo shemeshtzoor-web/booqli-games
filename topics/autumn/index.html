@@ -16,13 +16,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ===== צבעי המותג של BOOQLI + צבעי הסתיו ===== */
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --a1:#F2B33D; --a2:#E8762B; --a3:#D9432B; --a4:#B5651D; --a5:#7BAE3E;
   --au:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a4));
   --ok:#22A55B; --bad:#E5484D;
@@ -183,11 +183,11 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .bird-pic{background:linear-gradient(#EAF4FB,#FFF8F0);border-radius:22px;padding:8px}
 .bird-pic svg{width:100%;height:auto;display:block}
 .mk circle{transition:transform .2s;transform-box:fill-box;transform-origin:center}
-.mk.on circle{fill:#E0399F;transform:scale(1.35)}
+.mk.on circle{fill:#E33BAE;transform:scale(1.35)}
 .facts{display:grid;gap:8px}
 .facts button{display:flex;gap:10px;align-items:flex-start;text-align:right;background:#fff;border:2px solid #E3E9ED;border-radius:16px;padding:8px 12px;cursor:pointer;font-size:16px;line-height:1.35}
-.facts button .n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FF56C2;color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
-.facts button .n.g{background:#6F988B}
+.facts button .n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FA57C4;color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
+.facts button .n.g{background:#6DAFA1}
 .facts button.on{border-color:var(--pink);background:var(--pink-soft)}
 .facts b{color:#4E5C66}
 
@@ -216,7 +216,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 4px}
-.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
 .bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
 .bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
 @media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
@@ -241,12 +241,12 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* ===== דף הדפסה ===== */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
 .sheet:last-child{page-break-after:auto;break-after:auto}
 .sheet h1,.sheet h2{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
-.s-head h1{font-size:22pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-head h1{font-size:22pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
 .s-au{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#F2B33D,#E8762B,#D9432B,#B5651D);margin-bottom:4mm}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
 .p-box{border:2px solid #F6E2CC;border-radius:5mm;padding:3mm 5mm}
@@ -485,9 +485,9 @@ const LEAF_D = [
 ];
 const LEAF_V = ["M20 32 L20 9 M20 24 L30 17 M20 24 L10 17", "M20 33 L20 7 M20 20 L27 14 M20 25 L13 19", "M20 33 L20 9 M20 21 L27 15 M20 21 L13 15"];
 function leafG(t, c, outline){
-  return `<path d="M20 31 L20 39" stroke="${outline ? "#2B1526" : "#7A3E12"}" stroke-width="${outline ? 1.4 : 2}" stroke-linecap="round"/>` +
-    `<path d="${LEAF_D[t]}" fill="${outline ? "#fff" : c}" stroke="${outline ? "#2B1526" : "rgba(80,30,5,.45)"}" stroke-width="${outline ? 1.4 : 1.2}" stroke-linejoin="round"/>` +
-    `<path d="${LEAF_V[t]}" fill="none" stroke="${outline ? "#2B1526" : "rgba(80,30,5,.35)"}" stroke-width="${outline ? .9 : 1.2}" stroke-linecap="round"/>`;
+  return `<path d="M20 31 L20 39" stroke="${outline ? "#213330" : "#7A3E12"}" stroke-width="${outline ? 1.4 : 2}" stroke-linecap="round"/>` +
+    `<path d="${LEAF_D[t]}" fill="${outline ? "#fff" : c}" stroke="${outline ? "#213330" : "rgba(80,30,5,.45)"}" stroke-width="${outline ? 1.4 : 1.2}" stroke-linejoin="round"/>` +
+    `<path d="${LEAF_V[t]}" fill="none" stroke="${outline ? "#213330" : "rgba(80,30,5,.35)"}" stroke-width="${outline ? .9 : 1.2}" stroke-linecap="round"/>`;
 }
 const leafSVG = (t, c) => `<svg viewBox="0 0 40 40" aria-hidden="true">${leafG(t, c)}</svg>`;
 const leafAt = (t, c, x, y, s, r, outline) => `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s}) translate(-20 -20)">${leafG(t, c, outline)}</g>`;
@@ -620,7 +620,7 @@ function speak(list){
 if ("speechSynthesis" in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); } catch(e){} }
 
 /* ======================== זיקוקים ======================== */
-const FW_COLS = ["#F2B33D","#E8762B","#D9432B","#FFD23F","#7BAE3E","#FF56C2","#3AA7F0","#fff"];
+const FW_COLS = ["#F2B33D","#E8762B","#D9432B","#FFD23F","#7BAE3E","#FA57C4","#3AA7F0","#fff"];
 function burstAt(el){
   [0, 240].forEach((delay, k) => setTimeout(() => {
     const b = document.createElement("span"); b.className = "burst";
@@ -859,7 +859,7 @@ const BIRD_MORE = [
   {t:"הגודל", f:"הנחליאלי הוא ציפור קטנה, בערך באורך של כף יד של מבוגר."},
   {t:"מתי הוא מגיע?", f:"בקיץ הוא גר בארצות קרות ורחוקות, ובסתיו הוא עף אלינו לישראל, בדרך כלל יחד עם הגשמים הראשונים."}
 ];
-$("birdPic").innerHTML = `<svg viewBox="0 0 240 150" role="img" aria-label="ציור של נחליאלי עם מספרים על חלקי הגוף" xmlns="http://www.w3.org/2000/svg">${birdG()}${BIRD.map(b => `<g class="mk" id="mk${b.n}"><circle cx="${b.x}" cy="${b.y}" r="9" fill="#FF56C2" stroke="#fff" stroke-width="2"/><text x="${b.x}" y="${b.y + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Assistant,Arial">${b.n}</text></g>`).join("")}</svg>`;
+$("birdPic").innerHTML = `<svg viewBox="0 0 240 150" role="img" aria-label="ציור של נחליאלי עם מספרים על חלקי הגוף" xmlns="http://www.w3.org/2000/svg">${birdG()}${BIRD.map(b => `<g class="mk" id="mk${b.n}"><circle cx="${b.x}" cy="${b.y}" r="9" fill="#FA57C4" stroke="#fff" stroke-width="2"/><text x="${b.x}" y="${b.y + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Assistant,Arial">${b.n}</text></g>`).join("")}</svg>`;
 $("birdFacts").innerHTML = BIRD.map(b => `<button type="button" data-n="${b.n}"><span class="n">${b.n}</span><span><b>${b.t}:</b> ${b.f}</span></button>`).join("") +
   BIRD_MORE.map((b, k) => `<button type="button" data-m="${k}"><span class="n g">${k ? "✈️" : "📏"}</span><span><b>${b.t}</b> ${b.f}</span></button>`).join("");
 $("birdFacts").querySelectorAll("button").forEach(btn => btn.onclick = () => {
@@ -871,7 +871,7 @@ $("birdFacts").querySelectorAll("button").forEach(btn => btn.onclick = () => {
 $("birdAll").onclick = () => speak(["הנחליאלי, הציפור של הסתיו.", ...BIRD.map(b => b.t + ". " + b.f), ...BIRD_MORE.map(b => b.t + " " + b.f)]);
 
 /* ======================== 3. מציירים סתיו ======================== */
-const DCOLS = [["#D9432B","אדום"],["#E8762B","כתום"],["#F2B33D","צהוב כתום"],["#FFD23F","צהוב"],["#B5651D","חום"],["#6B3E1E","חום כהה"],["#7BAE3E","ירוק"],["#3E7D3A","ירוק כהה"],["#3AA7F0","כחול"],["#9AA3A8","אפור"],["#2B1526","שחור"],["#FF56C2","ורוד"]];
+const DCOLS = [["#D9432B","אדום"],["#E8762B","כתום"],["#F2B33D","צהוב כתום"],["#FFD23F","צהוב"],["#B5651D","חום"],["#6B3E1E","חום כהה"],["#7BAE3E","ירוק"],["#3E7D3A","ירוק כהה"],["#3AA7F0","כחול"],["#9AA3A8","אפור"],["#213330","שחור"],["#FA57C4","ורוד"]];
 const cv = $("dCv"), cx = cv.getContext("2d");
 const D = {col:"#E8762B", size:18, tool:"pen", undo:[], drawing:false, last:null};
 $("dCols").innerHTML = DCOLS.map(([c, n]) => `<button type="button" style="background:${c}" data-c="${c}" aria-label="${n}" class="${c === D.col ? "on" : ""}"></button>`).join("");
@@ -933,7 +933,7 @@ dClear();
 
 /* ======================== 4. דף צביעה להדפסה ======================== */
 function treeSheetSVG(){
-  const L = "#2B1526";
+  const L = "#213330";
   let g = `<path d="M6 186 H194" stroke="${L}" stroke-width="1.4" stroke-linecap="round"/>`;
   g += `<path d="M88 186 C92 160 93 140 92 124 C86 110 76 98 66 90 L70 86 C80 92 90 102 95 110 C96 92 96 78 97 62 L104 62 C104 80 104 92 104 104 C112 96 120 88 128 80 L132 85 C122 96 112 108 106 122 C105 145 107 165 112 186 Z" fill="#fff" stroke="${L}" stroke-width="1.4" stroke-linejoin="round"/>`;
   g += `<path d="M73 90 L58 78 M97 64 L88 48 M103 64 L114 46 M128 83 L146 74 M128 83 L134 66" stroke="${L}" stroke-width="1.4" stroke-linecap="round" fill="none"/>`;

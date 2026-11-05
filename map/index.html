@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../site.css">
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
@@ -34,7 +34,7 @@
 <main class="wrap">
 <style>
 /* מפת האתר (3.11.2026) – "מפת רכבת": כל אזור הוא קו צבעוני, כל עמוד הוא תחנה. הכל נבנה מהקטלוג, כך שהמפה תמיד מעודכנת. */
-.mp-hero{margin-top:16px;position:relative;overflow:hidden;border-radius:30px;padding:24px 22px 20px;color:#fff;background:radial-gradient(circle at 15% 20%,rgba(255,255,255,.18) 0 60px,transparent 61px),radial-gradient(circle at 85% 80%,rgba(255,255,255,.12) 0 90px,transparent 91px),linear-gradient(135deg,#4E8576,#6F988B 45%,#C13671)}
+.mp-hero{margin-top:16px;position:relative;overflow:hidden;border-radius:30px;padding:24px 22px 20px;color:#fff;background:radial-gradient(circle at 15% 20%,rgba(255,255,255,.18) 0 60px,transparent 61px),radial-gradient(circle at 85% 80%,rgba(255,255,255,.12) 0 90px,transparent 91px),linear-gradient(135deg,#2F6F63,#6DAFA1 45%,#C5309A)}
 .mp-hero small{font-weight:800;opacity:.9}
 .mp-hero h1{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(32px,6.5vw,52px);line-height:1.05;margin:2px 0 6px}
 .mp-hero p{font-size:17.5px;max-width:640px;margin:0}
@@ -45,31 +45,31 @@
 /* כלים */
 .mp-tools{position:sticky;top:0;z-index:30;margin-top:14px;background:rgba(244,250,247,.94);backdrop-filter:blur(6px);border-radius:0 0 22px 22px;padding:10px 0 8px}
 .mp-find{display:flex;gap:8px;align-items:center;background:#fff;border:2.5px solid #CDE7DC;border-radius:999px;padding:4px 6px 4px 14px}
-.mp-find:focus-within{border-color:#FF56C2}
+.mp-find:focus-within{border-color:#FA57C4}
 .mp-find span{font-size:20px;padding-inline-start:8px}
 .mp-find input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:17px;padding:8px 0;background:none}
-.mp-find button{border:0;background:#F2EEF1;color:#6b5a66;border-radius:999px;width:36px;height:36px;font-size:16px;cursor:pointer}
+.mp-find button{border:0;background:#F2EEF1;color:#566B67;border-radius:999px;width:36px;height:36px;font-size:16px;cursor:pointer}
 .mp-who{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
-.mp-who b{font-size:14.5px;color:#4E8576;margin-inline-end:2px}
-.mp-who button{font:inherit;font-weight:800;font-size:14.5px;border:2px solid #CDE7DC;background:#fff;color:#2B1526;border-radius:999px;padding:5px 12px;cursor:pointer}
-.mp-who button[aria-pressed=true]{background:#4E8576;border-color:#4E8576;color:#fff}
-.mp-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:13.5px;font-weight:700;color:#6b5a66}
-.mp-legend i{display:inline-block;width:13px;height:13px;border-radius:50%;vertical-align:-2px;margin-inline-end:4px;border:3px solid #4E8576;background:#4E8576}
+.mp-who b{font-size:14.5px;color:#2F6F63;margin-inline-end:2px}
+.mp-who button{font:inherit;font-weight:800;font-size:14.5px;border:2px solid #CDE7DC;background:#fff;color:#213330;border-radius:999px;padding:5px 12px;cursor:pointer}
+.mp-who button[aria-pressed=true]{background:#2F6F63;border-color:#2F6F63;color:#fff}
+.mp-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:13.5px;font-weight:700;color:#566B67}
+.mp-legend i{display:inline-block;width:13px;height:13px;border-radius:50%;vertical-align:-2px;margin-inline-end:4px;border:3px solid #2F6F63;background:#2F6F63}
 .mp-legend i.lk{background:#fff}.mp-legend i.sn{background:#fff;border-style:dashed;border-color:#B9A9B5}
-.mp-count{font-size:14px;font-weight:800;color:#C13671;margin-inline-start:auto}
+.mp-count{font-size:14px;font-weight:800;color:#C5309A;margin-inline-start:auto}
 /* התחנה המרכזית */
 .mp-hub{display:flex;justify-content:center;margin-top:18px;position:relative}
-.mp-hub a{position:relative;z-index:2;display:inline-flex;align-items:center;gap:10px;background:#fff;border:4px solid #2B1526;border-radius:999px;padding:8px 20px 8px 10px;text-decoration:none;color:#2B1526;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:20px;box-shadow:0 5px 0 #2B1526}
+.mp-hub a{position:relative;z-index:2;display:inline-flex;align-items:center;gap:10px;background:#fff;border:4px solid #213330;border-radius:999px;padding:8px 20px 8px 10px;text-decoration:none;color:#213330;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:20px;box-shadow:0 5px 0 #213330}
 .mp-hub img{width:44px;height:auto}
-.mp-rails{height:22px;margin:0 8%;border:4px solid #2B1526;border-bottom:0;border-radius:22px 22px 0 0;margin-top:-4px}
+.mp-rails{height:22px;margin:0 8%;border:4px solid #213330;border-bottom:0;border-radius:22px 22px 0 0;margin-top:-4px}
 /* הקווים */
 .mp-lines{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;align-items:start}
-.mp-line{--lc:#4E8576;background:#fff;border-radius:24px;box-shadow:0 6px 22px rgba(78,133,118,.12);border-top:8px solid var(--lc);overflow:hidden}
+.mp-line{--lc:#2F6F63;background:#fff;border-radius:24px;box-shadow:0 6px 22px rgba(78,133,118,.12);border-top:8px solid var(--lc);overflow:hidden}
 .mp-line>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px 10px}
 .mp-line>summary::-webkit-details-marker{display:none}
 .mp-line .badge{flex-shrink:0;width:46px;height:46px;border-radius:14px;background:var(--lc);color:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
-.mp-line h2{font-family:Fredoka,Assistant,sans-serif;font-size:21px;line-height:1.15;margin:0;color:#2B1526}
-.mp-line h2 small{display:block;font-family:Assistant,sans-serif;font-size:13.5px;font-weight:700;color:#6b5a66;margin-top:2px}
+.mp-line h2{font-family:Fredoka,Assistant,sans-serif;font-size:21px;line-height:1.15;margin:0;color:#213330}
+.mp-line h2 small{display:block;font-family:Assistant,sans-serif;font-size:13.5px;font-weight:700;color:#566B67;margin-top:2px}
 .mp-line .tg{margin-inline-start:auto;font-size:13px;font-weight:800;color:var(--lc);white-space:nowrap}
 .mp-line .tg::after{content:" ▾"}.mp-line:not([open]) .tg::after{content:" ◂"}
 .mp-line>a.go{display:block;margin:0 16px 4px;font-weight:800;font-size:14px;color:var(--lc)}
@@ -79,20 +79,20 @@
 .mp-st li::before{content:"";position:absolute;inset-inline-start:4px;top:50%;width:14px;height:14px;margin-top:-10px;border-radius:50%;background:var(--lc);border:3px solid #fff;box-shadow:0 0 0 3px var(--lc)}
 .mp-st li.lk::before{background:#fff}
 .mp-st li.sn::before{background:#fff;box-shadow:0 0 0 3px #B9A9B5;border-style:dashed}
-.mp-st a{flex:1;display:flex;align-items:center;gap:8px;text-decoration:none;color:#2B1526;font-weight:700;font-size:16px;padding:6px 8px;border-radius:12px;line-height:1.25}
+.mp-st a{flex:1;display:flex;align-items:center;gap:8px;text-decoration:none;color:#213330;font-weight:700;font-size:16px;padding:6px 8px;border-radius:12px;line-height:1.25}
 .mp-st a:hover,.mp-st a:focus-visible{background:#F4FAF7;outline:none}
 .mp-st a .i{flex-shrink:0;font-size:19px;width:24px;text-align:center}
 .mp-st a .t{flex:1}
-.mp-st .ch{flex-shrink:0;font-size:12px;font-weight:800;border-radius:999px;padding:1px 8px;white-space:nowrap;background:#F4FAF7;color:#4E8576}
-.mp-st .ch.lk{background:#F1E3FF;color:#6B2FA3}.mp-st .ch.sn{background:#F2EEF1;color:#6b5a66}.mp-st .ch.g{background:#FFF1C9;color:#8A5A00}
+.mp-st .ch{flex-shrink:0;font-size:12px;font-weight:800;border-radius:999px;padding:1px 8px;white-space:nowrap;background:#F4FAF7;color:#2F6F63}
+.mp-st .ch.lk{background:#F1E3FF;color:#6B2FA3}.mp-st .ch.sn{background:#F2EEF1;color:#566B67}.mp-st .ch.g{background:#FFF1C9;color:#8A5A00}
 .mp-st li.dim{opacity:.28}
 .mp-st li.hit a{background:#FFF0F9;box-shadow:inset 0 0 0 2px #FF8FD4}
 .mp-line.empty{display:none}
-.mp-none{text-align:center;font-weight:800;color:#6b5a66;padding:20px 0}
-.mp-foot{margin-top:22px;background:#fff;border-radius:22px;padding:16px;text-align:center;box-shadow:0 4px 0 #d9e9e1}
+.mp-none{text-align:center;font-weight:800;color:#566B67;padding:20px 0}
+.mp-foot{margin-top:22px;background:#fff;border-radius:22px;padding:16px;text-align:center;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .mp-foot p{margin:0 0 10px;font-weight:700}
 .mp-foot a{display:inline-block;margin:4px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:10px 18px}
-.mp-foot a.alt{background:#FF56C2}
+.mp-foot a.alt{background:#FA57C4}
 @media (max-width:600px){.mp-hero{padding:20px 16px 16px;text-align:center}.mp-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mp-lines{grid-template-columns:minmax(0,1fr);gap:12px}.mp-rails{margin:0 14%}.mp-hub a{font-size:18px}.mp-count{margin-inline-start:0;width:100%}}
 @media (prefers-reduced-motion:no-preference){.mp-st li{animation:mpIn .35s ease both}@keyframes mpIn{from{opacity:0;transform:translateX(-8px)}}}
 @media print{.mp-tools,.mp-foot{display:none}.mp-line{break-inside:avoid;box-shadow:none;border:1px solid #ccc}}
@@ -150,12 +150,12 @@ const playN = kidsN("play");
 
 const LINES = [
   /* הקו הראשון (5.11.2026, בקשת שמש): להזמין ספר אישי – לכל ספר תחנה, ההזמנה מתחילה כשהספר כבר בחור */
-  {id:"order", c:"#E0399F", ic:"📚", name:"להזמין ספר אישי", sub:"ספר שהילד הוא הגיבור · כריכה קשה · משלוח עד הבית", items:[
+  {id:"order", c:"#E33BAE", ic:"📚", name:"להזמין ספר אישי", sub:"ספר שהילד הוא הגיבור · כריכה קשה · משלוח עד הבית", items:[
     fx("💛","ספר אישי לילד – הורים, סבים, מתנה","savta/","tp","הזמנה ספר אישי מתנה סבתא סבא נכדים הורים יום הולדת"),
     fx("🏫","ספר אישי לכל ילד בגן + מחשבון מחיר","kindergartens/#start","tp","גן מחירים הזמנה ספר אישי סיטונאי מחשבון ועד הורים")]
     .concat((window.BQ_BOOKS || []).map(b => fx("📖", b.name, "savta/?book=" + b.id, "tp", "ספר אישי הזמנה " + b.name + " " + (b.d || ""))))
     .concat([fx("📖","הספר שלכם בכריכה קשה","book-maker/","tp","עורך ספר כריכה קשה הדפסה")])},
-  {id:"doors", c:"#2B1526", ic:"🚪", name:"הכניסות לפי קהל", sub:"כל אחד נכנס מהדלת שלו", items:[
+  {id:"doors", c:"#213330", ic:"🚪", name:"הכניסות לפי קהל", sub:"כל אחד נכנס מהדלת שלו", items:[
     fx("👩‍🏫","לגננות: לוח השנה, מערכים ודפים","teachers/","t","גננת מערך לוח השנה"),
     fx("👨‍👩‍👧","להורים: מה למדו בגן וממשיכים בבית","parents/","p","הורים בית"),
     fx("🧒","לילדים: משחקים עם משפחת הבוקלים","kids/","k","ילדים משחקים"),
@@ -164,7 +164,7 @@ const LINES = [
     fx("❤️","המועדפים שלי","my/","tpks","מועדפים שמורים ספרו לי")]},
   {id:"seasons", c:"#E07A1F", ic:"📅", name:"חגים ועונות", sub:"לפי לוח השנה של הגן", go:"teachers/",
     items: CATALOG.filter(t => t.season).map(fromCat)},
-  {id:"corners", c:"#C13671", ic:"🧩", name:"פינות קבועות ונושאים", sub:"פתוחים כל השנה",
+  {id:"corners", c:"#C5309A", ic:"🧩", name:"פינות קבועות ונושאים", sub:"פתוחים כל השנה",
     items: CATALOG.filter(t => !t.season && !t.book && !t.zone && !t.href && !isSchoolOnly(t) && !prep(t)).sort(CAT.sorters.open).map(fromCat)},
   {id:"kids", c:"#E8A100", ic:"🧒", name:"משחקים לילדים", sub: gamesOpen + " משחקים פתוחים עכשיו", go:"kids/", items:[
     fx("📂","המשחקים לפי נושא","kids/","k","ילדים משחקים נושא", {games: gamesOpen}),
@@ -173,7 +173,7 @@ const LINES = [
     fx("🪄","מנפישים את הציור שלי","kids/animate/","tpk","הנפשה ציור סרטון מצלמה"),
     fx("🌈","עונות וחגים לילדים","kids/?g=seasons","k","סתיו חורף חנוכה פורים פסח"),
     fx("🔒","מצב ילדים נעול (להורים)","app/","p","נעילה קוד ילדים בטוח")]},
-  {id:"books", c:"#4E8576", ic:"📚", name:"ספרי BOOQLI", sub:"משחקים לפי הספרים, שבהם הילד הוא הגיבור",
+  {id:"books", c:"#2F6F63", ic:"📚", name:"ספרי BOOQLI", sub:"משחקים לפי הספרים, שבהם הילד הוא הגיבור",
     items: CATALOG.filter(t => t.book).map(fromCat)},
   {id:"school", c:"#6B2FA3", ic:"🎒", name:"כיתות א'–ג'", sub:"מסלול הקריאה ומאמן ההכתבה פתוחים · עוד מקצועות בדרך", go:"school/",
     items: [fx("📖","מסלול הקריאה: 18 שלבים","school/reading/","tpks","קריאה אותיות ניקוד מילים משפטים סיפורים כתב יד כתיב דפי עבודה צביעה כיתה א", {games: KIDS_GAMES.filter(g => g.topic === "school-reading").length}),
@@ -188,7 +188,7 @@ const LINES = [
     fx("📲","האפליקציה לטלפון","app/","tpk","אפליקציה התקנה בלי אינטרנט")]},
   {id:"prep", c:"#B9A9B5", ic:"🛠️", name:"נושאים שאנחנו מכינים", sub:"לוחצים ו\"ספרו לי\" – ונודיע כשמוכן", closed:true,
     items: CATALOG.filter(t => !t.season && !t.book && !t.zone && !t.href && !isSchoolOnly(t) && prep(t)).map(fromCat)},
-  {id:"info", c:"#6F988B", ic:"ℹ️", name:"מידע ועזרה", sub:"קבוצה, מסמכים ויצירת קשר", items:[
+  {id:"info", c:"#6DAFA1", ic:"ℹ️", name:"מידע ועזרה", sub:"קבוצה, מסמכים ויצירת קשר", items:[
     fx("💬","קבוצת העדכונים בוואטסאפ",SITE.whatsappGroup,"tp","וואטסאפ קבוצה מספר סודי עדכונים", {ext:true}),
     fx("📞","יצירת קשר","https://wa.me/" + SITE.phone,"tp","טלפון שאלה עזרה", {ext:true}),
     fx("🔒","מדיניות פרטיות","privacy/","tp","פרטיות"),

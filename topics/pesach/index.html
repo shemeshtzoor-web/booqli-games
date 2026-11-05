@@ -17,13 +17,13 @@
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"איך מספרים לילדי הגן את סיפור יציאת מצרים?","acceptedAnswer":{"@type":"Answer","text":"בעמוד יש את סיפור יציאת מצרים בשפה של ילדים, ב-11 עמודים עם איור מקורי לכל עמוד, טקסט גדול להקרנה והקראה בקול. הסיפור נכתב על פי ספר שמות, ובסופו יש שאלות הבנה ושאלות לשיחה במעגל."}},{"@type":"Question","name":"מה יש בקערת הסדר?","acceptedAnswer":{"@type":"Answer","text":"שישה דברים: זרוע, ביצה, מרור, חרוסת, כרפס וחזרת. בעמוד יש משחק שבו הילדים מניחים כל דבר במקום שלו בקערה ושומעים מה הוא מזכיר."}},{"@type":"Question","name":"איך מכינים הגדה לילדי הגן?","acceptedAnswer":{"@type":"Answer","text":"בעמוד יש הגדה של 6 עמודים להדפסה: כריכה עם השם והתמונה של הילד, סדר ליל הסדר, מה נשתנה, סיפור יציאת מצרים לצביעה, קערת הסדר ועמוד האפיקומן."}},{"@type":"Question","name":"האם הפעילויות בחינם?","acceptedAnswer":{"@type":"Answer","text":"כן. כל הפעילויות מוענקות בחינם בחסות BOOQLI, באתר בטוח להורים ולילדים."}}]},{"@context":"https://schema.org","@type":"LearningResource","name":"פסח בגן","inLanguage":"he","url":"https://games.booqli.ai/topics/pesach/","isAccessibleForFree":true,"educationalLevel":"גן ילדים (גילאי 3–6)","learningResourceType":["מערך שיעור","סיפור","משחק","הגדה להדפסה","דף עבודה","דף צביעה"],"publisher":{"@type":"Organization","name":"BOOQLI","url":"https://www.booqli.ai/he"}}]</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== צבעי המותג של BOOQLI ===== */
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --ok:#22A55B; --bad:#E5484D; --blue:#3AA7F0; --blue-soft:#DCEBFF;
   color-scheme:light;
 }
@@ -60,7 +60,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 
 /* ===== פתיח ===== */
-.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--pink),var(--blue),var(--sage))}
 .hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .hero small{font-weight:800;color:var(--magenta)}
@@ -82,7 +82,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
 .agepick{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.agepick{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.agebtn b{font-size:16px}}
-.agebtn{background:#fff;border:3px solid transparent;border-radius:22px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 4px 0 #d9e9e1;transition:transform .15s}
+.agebtn{background:#fff;border:3px solid transparent;border-radius:22px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 6px 22px rgba(33,51,48,.09);transition:transform .15s}
 .agebtn:hover{transform:translateY(-3px)}
 .agebtn .e{font-size:30px;line-height:1.1}
 .agebtn b{font-family:Fredoka,sans-serif;font-size:19px;line-height:1.1;white-space:nowrap}
@@ -90,7 +90,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .agebtn[aria-pressed="true"]{border-color:var(--c);background:var(--b);transform:translateY(-3px)}
 
 /* ===== לוח הגיל ===== */
-.agehead{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);display:flex;gap:14px;align-items:center}
+.agehead{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c);display:flex;gap:14px;align-items:center}
 .agehead .e{font-size:40px;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
 .agehead small{display:block;font-weight:800;color:var(--c)}
 .agehead h2{font-size:clamp(24px,4.6vw,32px);line-height:1.1}
@@ -99,11 +99,11 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .screen-note a{font-weight:800;color:var(--magenta)}
 .amenu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
 @media (max-width:560px){.amenu{grid-template-columns:1fr 1fr 1fr;gap:6px}}
-.amenu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 0 #d9e9e1;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
+.amenu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 6px 22px rgba(33,51,48,.09);display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
 .amenu a span{font-size:26px}
 
 /* ===== קופסת משחק ===== */
-.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
+.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
 .act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
 .act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
 .act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
@@ -172,11 +172,11 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 4px}
-.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 4px 0 #d9e9e1}
+.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .peek .e{font-size:40px}
 .peek b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
 .peek span{display:block;color:var(--muted);font-size:15px}
-.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
 .bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
 .bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
 @media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
@@ -198,25 +198,25 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* ===== דפי הדפסה ===== */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
 .sheet:last-child{page-break-after:auto;break-after:auto}
 .sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:3mm}
-.s-head h1{font-size:21pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
-.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FF56C2,#3AA7F0,#6F988B);margin-bottom:4mm}
+.s-head h1{font-size:21pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
+.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FA57C4,#3AA7F0,#6DAFA1);margin-bottom:4mm}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
 .p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:2.5mm 5mm}
-.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:.5mm}
+.p-box h2{font-size:13pt;color:#2F6F63;margin-bottom:.5mm}
 .p-box p{margin:0}
-.s-tip{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700;margin:0}
+.s-tip{font-size:10pt;color:#566B67;text-align:center;font-weight:700;margin:0}
 .s-row{display:flex;align-items:center;justify-content:space-between;gap:6mm;border-bottom:1.5px dashed #E1F0EA;padding:1mm 0}
 .s-row:last-child{border-bottom:0}
 .s-nums{display:flex;gap:4mm;direction:ltr;font-family:Fredoka,sans-serif;font-size:24pt}
 .s-nums span{width:13mm;height:13mm;border:1.5px solid #CDE7DC;border-radius:50%;display:grid;place-items:center;line-height:1}
 .s-ex{display:grid;gap:3.5mm 8mm;font-family:Fredoka,sans-serif;direction:ltr}
 .s-ex div{display:flex;align-items:center;gap:2mm;white-space:nowrap}
-.s-ex i{display:inline-block;width:16mm;height:10mm;border:1.5px solid #6b5a66;border-radius:2mm}
+.s-ex i{display:inline-block;width:16mm;height:10mm;border:1.5px solid #566B67;border-radius:2mm}
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff!important;margin:0;padding:0}
@@ -239,8 +239,8 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .mcard{aspect-ratio:1;border:0;padding:0;background:none;cursor:pointer;perspective:600px;touch-action:manipulation}
 .mcard .in{display:block;position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
 .mcard.open .in,.mcard.done .in{transform:rotateY(180deg)}
-.mcard .fc,.mcard .bk{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;box-shadow:0 4px 0 #d9e9e1}
-.mcard .bk{background:linear-gradient(135deg,#FF56C2,#9B5DE5);color:#fff;font-family:Fredoka,sans-serif;font-size:clamp(26px,7vw,40px)}
+.mcard .fc,.mcard .bk{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;box-shadow:0 6px 22px rgba(33,51,48,.09)}
+.mcard .bk{background:linear-gradient(135deg,#FA57C4,#9B5DE5);color:#fff;font-family:Fredoka,sans-serif;font-size:clamp(26px,7vw,40px)}
 .mcard .bk::after{content:"";position:absolute;inset:6px;border:2px dashed rgba(255,255,255,.6);border-radius:13px}
 .mcard .fc{background:#fff;transform:rotateY(180deg);border:3px solid var(--mint-2)}
 .mcard.done .fc{border-color:var(--ok);background:#EFFAF2}
@@ -312,7 +312,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .sw{width:38px;height:38px;border-radius:50%!important;padding:0!important}
 .saved-img{max-width:220px;width:100%;margin:10px auto 0;display:block;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.15)}
 .small{font-size:14px;color:var(--muted);text-align:center;margin:6px 0 0}
-.haman{background:#FFE3F4;color:var(--magenta);border-radius:8px;padding:0 5px;cursor:pointer;display:inline-block}
+.haman{background:#FDE6F6;color:var(--magenta);border-radius:8px;padding:0 5px;cursor:pointer;display:inline-block}
 /* מערך */
 .plan-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
 .plan-head div{background:var(--b);border-radius:16px;padding:10px;text-align:center}
@@ -341,7 +341,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .sheets3>div{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .sheets3 h3{font-size:19px;color:var(--sage-deep)}
 /* ===== פסח – תוספות ===== */
-.hero::before{background:linear-gradient(90deg,#D99A4E,#FF56C2,#4C8FE0,#6F988B)}
+.hero::before{background:linear-gradient(90deg,#D99A4E,#FA57C4,#4C8FE0,#6DAFA1)}
 .real{display:inline-flex;align-items:center;gap:6px;background:#FFF1DE;color:#8A5326;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px}
 .st-pic .realpic{width:100%;height:100%;object-fit:contain;display:block;background:#EEF3F7}
 /* הקרטונים */
@@ -392,27 +392,27 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .sheets4 h3{font-size:19px;color:var(--sage-deep)}
 /* הדפסה – ההגדה */
 .hg-cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6mm;text-align:center;border:3px solid #E1F0EA;border-radius:8mm;padding:8mm;background:linear-gradient(#FFF6D6,#fff)}
-.hg-cover h1{font-size:34pt;color:#C13671;line-height:1.15}
-.hg-cover .yr{font-family:Fredoka,Assistant,sans-serif;font-size:16pt;color:#4E8576;font-weight:700}
+.hg-cover h1{font-size:34pt;color:#C5309A;line-height:1.15}
+.hg-cover .yr{font-family:Fredoka,Assistant,sans-serif;font-size:16pt;color:#2F6F63;font-weight:700}
 .hg-frame{width:95mm;height:95mm;border-radius:10mm;border:3px dashed #D99A4E;display:grid;place-items:center;overflow:hidden;background:#fff;color:#a08c7a;font-weight:700;font-size:12pt;padding:4mm}
 .hg-frame img{width:100%;height:100%;object-fit:cover;border-radius:7mm}
 .seder15{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4mm;flex:1;grid-auto-rows:1fr}
 .seder15>div{border:2px solid #E1F0EA;border-radius:4mm;padding:3mm;display:flex;gap:3mm;align-items:flex-start;min-height:0}
 .seder15>div>div{flex:1;min-width:0}
-.seder15 .n{font-family:Fredoka,sans-serif;font-weight:700;color:#fff;background:#6F988B;border-radius:50%;width:9mm;height:9mm;display:grid;place-items:center;flex-shrink:0;font-size:12pt}
-.seder15 b{font-family:Fredoka,Assistant,sans-serif;font-size:18pt;color:#C13671;display:block;line-height:1.1}
+.seder15 .n{font-family:Fredoka,sans-serif;font-weight:700;color:#fff;background:#6DAFA1;border-radius:50%;width:9mm;height:9mm;display:grid;place-items:center;flex-shrink:0;font-size:12pt}
+.seder15 b{font-family:Fredoka,Assistant,sans-serif;font-size:18pt;color:#C5309A;display:block;line-height:1.1}
 .seder15 span.t{font-size:12pt;line-height:1.3;display:block;margin-top:1mm}
 .seder15 .e{font-size:16pt;line-height:1}
 .mn{font-family:"Frank Ruhl Libre",Assistant,serif;font-size:16pt;line-height:1.75;display:grid;gap:3mm}
 .mn p{margin:0;display:flex;gap:4mm;align-items:center;border-bottom:1.5px dashed #E1F0EA;padding-bottom:2mm}
 .mn p svg{width:18mm;height:18mm;flex-shrink:0}
-.mn h2{font-family:"Frank Ruhl Libre",serif;font-size:24pt;color:#C13671;text-align:center}
+.mn h2{font-family:"Frank Ruhl Libre",serif;font-size:24pt;color:#C5309A;text-align:center}
 .wline{border-bottom:1.5px solid #b9aab4;height:11mm}
 .ex4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4mm;flex:1}
 .ex4 div{border:2px solid #E1F0EA;border-radius:5mm;padding:2mm;display:flex;flex-direction:column;gap:1.5mm;text-align:center;font-weight:700;font-size:11pt}
 .ex4 svg{width:100%;height:auto;border-radius:3mm}
 .wk{display:grid;gap:4mm;flex:1}
-.wk h2{font-size:14pt;color:#4E8576}
+.wk h2{font-size:14pt;color:#2F6F63}
 </style>
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
@@ -454,11 +454,11 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <a href="#g-boxes" style="border-top:5px solid #BF8B4A"><span aria-hidden="true">📦</span>קרטונים</a>
     <a href="#exodus" style="border-top:5px solid #4C8FE0"><span aria-hidden="true">📜</span>יציאת מצרים</a>
     <a href="#g-plate" style="border-top:5px solid #3AA7F0"><span aria-hidden="true">🍽️</span>קערת הסדר</a>
-    <a href="#g-diff" style="border-top:5px solid #FF56C2"><span aria-hidden="true">❓</span>מה נשתנה</a>
-    <a href="#haggadah" style="border-top:5px solid #C13671"><span aria-hidden="true">📖</span>ההגדה שלי</a>
-    <a href="#plan" style="border-top:5px solid #6F988B"><span aria-hidden="true">👩‍🏫</span>מערך</a>
+    <a href="#g-diff" style="border-top:5px solid #FA57C4"><span aria-hidden="true">❓</span>מה נשתנה</a>
+    <a href="#haggadah" style="border-top:5px solid #C5309A"><span aria-hidden="true">📖</span>ההגדה שלי</a>
+    <a href="#plan" style="border-top:5px solid #6DAFA1"><span aria-hidden="true">👩‍🏫</span>מערך</a>
     <a href="#offline" style="border-top:5px solid #9B5DE5"><span aria-hidden="true">🏡</span>בלי מסך</a>
-    <a href="#sheetBox" style="border-top:5px solid #E0399F"><span aria-hidden="true">🖨️</span>להדפסה</a>
+    <a href="#sheetBox" style="border-top:5px solid #E33BAE"><span aria-hidden="true">🖨️</span>להדפסה</a>
     <a href="#seder" style="border-top:5px solid #46C46E"><span aria-hidden="true">🌸</span>מה זה פסח</a>
   </nav>
 
@@ -489,14 +489,14 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <div class="stage" id="s-plate"></div>
   </section>
 
-  <section class="act" id="g-diff" style="--c:#FF56C2;--b:#FFE3F4">
+  <section class="act" id="g-diff" style="--c:#FA57C4;--b:#FDE6F6">
     <div class="act-h"><span class="e" aria-hidden="true">❓</span><div><small>משחק 3 · מוצאים 5 הבדלים · עם הקראה</small><h2>מה נשתנה הלילה הזה?</h2></div></div>
     <p class="intro">מימין ארוחה רגילה, ומשמאל ליל הסדר. מה השתנה? לוחצים על כל הבדל שמוצאים.</p>
     <div class="stage" id="s-diff"></div>
     <p class="why"><b>הידעתם?</b> בליל הסדר הילדים שואלים "מה נשתנה?" – כי הכל מתחיל בשאלה. לכן חשוב לעודד את הילדים לשאול.</p>
   </section>
 
-  <section class="act" id="haggadah" style="--c:#C13671;--b:#FFE3F4">
+  <section class="act" id="haggadah" style="--c:#C5309A;--b:#FDE6F6">
     <div class="act-h"><span class="e" aria-hidden="true">📖</span><div><small>להדפסה · 6 עמודים · עם השם והתמונה של הילד</small><h2>ההגדה שלי</h2></div></div>
     <p class="intro">הגדה לילדים, להדפסה ולצביעה, עם השם והתמונה של הילד בכריכה. מביאים אותה לשולחן בליל הסדר!</p>
     <div class="hg">
@@ -515,7 +515,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     </div>
   </section>
 
-  <section class="act" id="plan" style="--c:#6F988B;--b:#E1F0EA">
+  <section class="act" id="plan" style="--c:#6DAFA1;--b:#E1F0EA">
     <div class="act-h"><span class="e" aria-hidden="true">👩‍🏫</span><div><small>לגננת · מערך מוכן</small><h2>מערך 45 דקות: מחפשים את מצה – ההגדה שלי</h2></div></div>
     <div class="plan-head"><div><b>45 דק'</b><span>8 שלבים</span></div><div><b>3–6</b><span>גילאים</span></div><div><b>💜 🦻</b><span>התאמות</span></div></div>
     <div class="prep"><b>🧺 מה מכינים:</b> מקרן או מסך גדול · קרטון סגור עם בובת חתול (או התמונה של מצה) · מצה אחת ומפית לאפיקומן · קערת סדר אמיתית או מפלסטיק · ההגדה המודפסת לכל ילד (עם תמונה בכריכה, אם רוצים) · צבעים, מדבקות ודבק · ⚠️ לפני טעימות – לבדוק אלרגיות עם ההורים</div>
@@ -527,7 +527,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <div class="offgrid" id="offBox"></div>
   </section>
 
-  <section class="act" id="sheetBox" style="--c:#E0399F;--b:#FFE3F4">
+  <section class="act" id="sheetBox" style="--c:#E33BAE;--b:#FDE6F6">
     <div class="act-h"><span class="e" aria-hidden="true">🖨️</span><div><small>להדפסה · A4</small><h2>דף עבודה ודפים להדפסה</h2></div></div>
     <div class="sheets4">
       <div><h3>✏️ דף עבודה לפסח</h3><div class="pv-box" id="pv1"></div><button class="btn-main" type="button" id="print1">🖨️ להדפיס</button></div>
@@ -963,7 +963,7 @@ function hgAfi(){
     <p class="s-tip">מצה התחבא בקרטון עם האפיקומן! צובעים אותו – ומציירים איפה אתם תחביאו את האפיקומן.</p>
     <div style="width:110mm;margin:0 auto">${lines(() => svg(PS.catInBox(100, 172, 1, {label: "מַצּוֹת", afi: true}) + PS.matza(28, 40, .6, -10) + PS.matza(176, 34, .5, 12), "0 0 200 180"))}</div>
     <div class="p-box" style="flex:1;display:flex;flex-direction:column"><h2>✏️ איפה אני אחביא את האפיקומן?</h2><div style="flex:1;border:2px dashed #CDE7DC;border-radius:4mm;margin-top:2mm"></div></div>
-    <p class="s-tip" style="font-size:13pt;color:#C13671">חַג פֶּסַח שָׂמֵחַ! 🍷</p>
+    <p class="s-tip" style="font-size:13pt;color:#C5309A">חַג פֶּסַח שָׂמֵחַ! 🍷</p>
   </div>${foot()}</div>`;
 }
 const hgAll = () => hgCover() + hgSeder() + hgMah() + hgStory() + hgPlate() + hgAfi();
@@ -1091,7 +1091,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("win").
 
 /* ======================== זיקוקים ======================== */
 function burstAt(el){
-  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FA57C4"];
   const b = document.createElement("span"); b.className = "burst";
   for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2, r = 36 + Math.random()*30, d = document.createElement("i");
     d.style.setProperty("--x", (Math.cos(a)*r).toFixed(0) + "px"); d.style.setProperty("--y", (Math.sin(a)*r).toFixed(0) + "px"); d.style.setProperty("--c", cols[i % cols.length]); b.appendChild(d); }
@@ -1102,7 +1102,7 @@ function bigFireworks(ms = 4000){
   const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
   const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
-  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FA57C4"];
   const P = [], R = []; const start = performance.now(); let last = 0;
   function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(cols)}); }
   function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(cols) : r.c}); } }

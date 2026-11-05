@@ -281,11 +281,11 @@ function buildSticker(ex, look){
     /* צל */
     o.save(); o.shadowColor = "rgba(43,21,38,.35)"; o.shadowBlur = 12; o.shadowOffsetY = 6; o.drawImage(silC, 0, 0); o.restore();
     const col = mk(SW, SH), cx = col.getContext("2d");
-    if (look === "comic") cx.fillStyle = "#2B1526";
-    else if (look === "magic") { const gg = cx.createLinearGradient(0, 0, SW, SH); ["#FF56C2", "#FFC93C", "#46C46E", "#3AA7F0", "#9B5DE5"].forEach((c, n) => gg.addColorStop(n / 4, c)); cx.fillStyle = gg; }
+    if (look === "comic") cx.fillStyle = "#213330";
+    else if (look === "magic") { const gg = cx.createLinearGradient(0, 0, SW, SH); ["#FA57C4", "#FFC93C", "#46C46E", "#3AA7F0", "#9B5DE5"].forEach((c, n) => gg.addColorStop(n / 4, c)); cx.fillStyle = gg; }
     else cx.fillStyle = "#fff";
     cx.fillRect(0, 0, SW, SH); cx.globalCompositeOperation = "destination-in"; cx.drawImage(silC, 0, 0);
-    if (look === "magic") { o.save(); o.shadowColor = "#FF56C2"; o.shadowBlur = 22; o.drawImage(col, 0, 0); o.restore(); }
+    if (look === "magic") { o.save(); o.shadowColor = "#FA57C4"; o.shadowBlur = 22; o.drawImage(col, 0, 0); o.restore(); }
     o.drawImage(col, 0, 0);
     if (look === "comic") { /* קו לבן דק בין הדמות לקו השחור */
       const wc = mk(SW, SH), wx = wc.getContext("2d"), wi = wx.createImageData(SW, SH), wd = wi.data, inner = Math.max(2, border * .35);
@@ -342,7 +342,7 @@ function drawScene(c, name, t){
     }
     c.fillStyle = name === "forest" ? "#5BA35A" : "#6CC067"; c.fillRect(0, g, W, H - g);
     c.fillStyle = name === "forest" ? "#4E9450" : "#5DB258"; for (let x = 0; x < W; x += 24) { c.beginPath(); c.moveTo(x, g + 2); c.lineTo(x + 8, g - 14 - Math.sin(t * 2 + x) * 3); c.lineTo(x + 16, g + 2); c.fill(); }
-    if (name === "garden") { const F = ["#FF56C2", "#FFC93C", "#FFFFFF", "#9B5DE5"]; for (let k = 0; k < 9; k++) { const x = 30 + k * 82, y = g + 40 + (k % 3) * 34; c.fillStyle = F[k % 4]; for (let p = 0; p < 5; p++) blob(c, x + Math.cos(p * TAU / 5) * 9, y + Math.sin(p * TAU / 5) * 9, 7, 7); c.fillStyle = "#FFD23F"; blob(c, x, y, 6, 6); } }
+    if (name === "garden") { const F = ["#FA57C4", "#FFC93C", "#FFFFFF", "#9B5DE5"]; for (let k = 0; k < 9; k++) { const x = 30 + k * 82, y = g + 40 + (k % 3) * 34; c.fillStyle = F[k % 4]; for (let p = 0; p < 5; p++) blob(c, x + Math.cos(p * TAU / 5) * 9, y + Math.sin(p * TAU / 5) * 9, 7, 7); c.fillStyle = "#FFD23F"; blob(c, x, y, 6, 6); } }
   } else if (name === "sea") {
     gr = c.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, "#5FD3F3"); gr.addColorStop(1, "#1C6FB8"); c.fillStyle = gr; c.fillRect(0, 0, W, H);
     c.fillStyle = "rgba(255,255,255,.12)"; for (let k = 0; k < 5; k++) { const x = 80 + k * 150 + Math.sin(t * .6 + k) * 30; c.beginPath(); c.moveTo(x, 0); c.lineTo(x + 50, 0); c.lineTo(x - 60, H); c.lineTo(x - 130, H); c.fill(); }
@@ -367,8 +367,8 @@ function drawScene(c, name, t){
     for (let k = 0; k < 3; k++) { const a = Math.sin(t * 1.3 + k * 2) * .35, x = 120 + k * 240;
       c.save(); c.translate(x, -20); c.rotate(a); const lg = c.createLinearGradient(0, 0, 0, g); const col = ["255,86,194", "255,201,60", "58,167,240"][k];
       lg.addColorStop(0, "rgba(" + col + ",.55)"); lg.addColorStop(1, "rgba(" + col + ",.05)"); c.fillStyle = lg; c.beginPath(); c.moveTo(-14, 0); c.lineTo(14, 0); c.lineTo(150, g + 40); c.lineTo(-150, g + 40); c.fill(); c.restore(); }
-    c.fillStyle = "#C13671"; for (const side of [0, 1]) { c.beginPath(); const x0 = side ? W : 0, dir = side ? -1 : 1; c.moveTo(x0, 0); c.lineTo(x0 + dir * 120, 0); c.quadraticCurveTo(x0 + dir * 60, H * .5, x0 + dir * 90, g); c.lineTo(x0, g); c.fill(); }
-    c.fillStyle = "#E0399F"; c.fillRect(0, 0, W, 46); for (let x = 0; x < W; x += 60) blob(c, x + 30, 46, 30, 18);
+    c.fillStyle = "#C5309A"; for (const side of [0, 1]) { c.beginPath(); const x0 = side ? W : 0, dir = side ? -1 : 1; c.moveTo(x0, 0); c.lineTo(x0 + dir * 120, 0); c.quadraticCurveTo(x0 + dir * 60, H * .5, x0 + dir * 90, g); c.lineTo(x0, g); c.fill(); }
+    c.fillStyle = "#E33BAE"; c.fillRect(0, 0, W, 46); for (let x = 0; x < W; x += 60) blob(c, x + 30, 46, 30, 18);
     c.fillStyle = "#8A4B2C"; c.fillRect(0, g, W, H - g); c.fillStyle = "#A35D38"; for (let x = 0; x < W; x += 90) c.fillRect(x, g, 4, H - g);
     const N = ["♪", "♫", "★"]; c.font = "700 34px Fredoka, Assistant, sans-serif"; for (let k = 0; k < 6; k++) { const ph = (t * .3 + k / 6) % 1; c.fillStyle = "rgba(255,255,255," + (1 - ph) * .8 + ")"; c.fillText(N[k % 3], 60 + k * 115, g - ph * 420); }
   } else { /* night */
@@ -524,7 +524,7 @@ function drawChar(c, P, feetX, feetY, scale){
   const cs = Math.cos(P.rot), sn = Math.sin(P.rot);
   const X = feetX + P.x * W, Y = feetY + P.y * ch * s;
   /* צל על הרצפה */
-  c.save(); c.globalAlpha = .22 * (1 - .6 * clamp(P.lift, 0, 1)); c.fillStyle = "#2B1526";
+  c.save(); c.globalAlpha = .22 * (1 - .6 * clamp(P.lift, 0, 1)); c.fillStyle = "#213330";
   c.beginPath(); c.ellipse(X, feetY + 6, cw * .32 * s * (1 - .35 * clamp(P.lift, 0, 1)), 12 * s, 0, 0, TAU); c.fill(); c.restore();
   const map = (u, v) => {
     let lx = (u - .5) * cw * s, ly = (v - 1) * ch * s;
@@ -548,7 +548,7 @@ function caption(c, txt, y, size, bg){
   c.save(); c.font = "700 " + size + "px Fredoka, Assistant, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.direction = "rtl";
   const w = c.measureText(txt).width + size * 1.2, h = size * 1.55;
   c.fillStyle = bg || "rgba(255,255,255,.95)"; c.beginPath(); c.roundRect ? c.roundRect(W / 2 - w / 2, y - h / 2, w, h, h / 2) : c.rect(W / 2 - w / 2, y - h / 2, w, h); c.fill();
-  c.fillStyle = "#C13671"; c.fillText(txt, W / 2, y + 2); c.restore();
+  c.fillStyle = "#C5309A"; c.fillText(txt, W / 2, y + 2); c.restore();
 }
 let lastFx = {};
 function fx(act, t, top, X, dt){
@@ -557,7 +557,7 @@ function fx(act, t, top, X, dt){
   const r = Math.random;
   if (act === "sleep" && Math.floor(t * 4) % 3 === 0) spawn("Z", X + 60, top + 30, {vx: 30, vy: -45, size: 30 + r() * 20, text: true, life: 2.2});
   else if (act === "laugh" && Math.floor(t * 4) % 2 === 0) spawn(r() < .5 ? "חחח" : "😂", X + (r() - .5) * 220, top + 20, {vx: (r() - .5) * 60, vy: -70, size: 36, text: true});
-  else if (act === "sing" || act === "dance") { if (Math.floor(t * 4) % 2 === 0) spawn(r() < .5 ? "♪" : "♫", X + (r() - .5) * 200, top + 10, {vx: (r() - .5) * 40, vy: -80, size: 44, text: true, color: ["#FF56C2", "#FFC93C", "#3AA7F0"][Math.floor(r() * 3)]}); }
+  else if (act === "sing" || act === "dance") { if (Math.floor(t * 4) % 2 === 0) spawn(r() < .5 ? "♪" : "♫", X + (r() - .5) * 200, top + 10, {vx: (r() - .5) * 40, vy: -80, size: 44, text: true, color: ["#FA57C4", "#FFC93C", "#3AA7F0"][Math.floor(r() * 3)]}); }
   else if (act === "fly") spawn("✨", X - 120 + r() * 240, top + 120 + r() * 60, {vx: 0, vy: 30, size: 26, life: 1});
   else if (act === "spin" || act === "grow") spawn("⭐", X + (r() - .5) * 300, top + r() * 200, {vx: (r() - .5) * 80, vy: -40, size: 26, life: 1.2});
   else if (act === "wave" && Math.floor(t * 4) % 4 === 0) spawn("💗", X + 110, top + 20, {vx: 20, vy: -60, size: 34});
@@ -610,7 +610,7 @@ function frame(c, T, dt, mode){
   if (phase === "outro") {
     c.save(); c.globalAlpha = sstep(0, .3, outK);
     const gg = c.createLinearGradient(0, 0, 0, 260); gg.addColorStop(0, "rgba(255,227,244,.97)"); gg.addColorStop(1, "rgba(255,227,244,0)"); c.fillStyle = gg; c.fillRect(0, 0, W, 300);
-    c.font = "700 46px Fredoka, Assistant, sans-serif"; c.textAlign = "center"; c.direction = "rtl"; c.fillStyle = "#C13671";
+    c.font = "700 46px Fredoka, Assistant, sans-serif"; c.textAlign = "center"; c.direction = "rtl"; c.fillStyle = "#C5309A";
     c.fillText(nm ? nm + " ✨" : "הַצִּיּוּר שֶׁלִּי ✨", W / 2, 84);
     const kn = kidName(); if (kn) { c.font = "700 30px Assistant, sans-serif"; c.fillStyle = "#6F3A60"; c.fillText("צִיֵּר/ה: " + kn, W / 2, 134); }
     const gl = ganLine(); if (gl) { c.font = "700 26px Assistant, sans-serif"; c.fillStyle = "#6F3A60"; c.fillText(gl, W / 2, kn ? 174 : 134); }
@@ -627,7 +627,7 @@ function footer(c, big){
   c.fillText("🎁 נוצר בחינם באתר games.booqli.ai", W / 2, H - h + 34 + 4 * big);
   if (big > .05) { c.globalAlpha = big; c.font = "600 20px Assistant, sans-serif"; c.fillText("משחקים ופעילויות לגיל הרך · בחסות BOOQLI", W / 2, H - 18); }
   c.restore();
-  if (S.logo && big > .05) { c.save(); c.globalAlpha = big; const lw = 150, lh = lw * S.logo.height / S.logo.width; c.fillStyle = "#4E8576"; c.beginPath(); c.roundRect ? c.roundRect(W / 2 - lw / 2 - 14, H - h - lh - 26, lw + 28, lh + 16, 22) : c.rect(W / 2 - lw / 2 - 14, H - h - lh - 26, lw + 28, lh + 16); c.fill(); c.drawImage(S.logo, W / 2 - lw / 2, H - h - lh - 18, lw, lh); c.restore(); }
+  if (S.logo && big > .05) { c.save(); c.globalAlpha = big; const lw = 150, lh = lw * S.logo.height / S.logo.width; c.fillStyle = "#2F6F63"; c.beginPath(); c.roundRect ? c.roundRect(W / 2 - lw / 2 - 14, H - h - lh - 26, lw + 28, lh + 16, 22) : c.rect(W / 2 - lw / 2 - 14, H - h - lh - 26, lw + 28, lh + 16); c.fill(); c.drawImage(S.logo, W / 2 - lw / 2, H - h - lh - 18, lw, lh); c.restore(); }
 }
 
 /* לולאת הבמה */
@@ -710,8 +710,8 @@ function drawCrop(){
   c.fillStyle = "rgba(43,21,38,.45)";
   c.fillRect(0, 0, cv.width, r.y * k); c.fillRect(0, (r.y + r.h) * k, cv.width, cv.height - (r.y + r.h) * k);
   c.fillRect(0, r.y * k, r.x * k, r.h * k); c.fillRect((r.x + r.w) * k, r.y * k, cv.width - (r.x + r.w) * k, r.h * k);
-  c.strokeStyle = "#FF56C2"; c.lineWidth = 4 * dpr; c.setLineDash([12 * dpr, 8 * dpr]); c.strokeRect(r.x * k, r.y * k, r.w * k, r.h * k); c.setLineDash([]);
-  c.fillStyle = "#FF56C2"; c.strokeStyle = "#fff"; c.lineWidth = 3 * dpr;
+  c.strokeStyle = "#FA57C4"; c.lineWidth = 4 * dpr; c.setLineDash([12 * dpr, 8 * dpr]); c.strokeRect(r.x * k, r.y * k, r.w * k, r.h * k); c.setLineDash([]);
+  c.fillStyle = "#FA57C4"; c.strokeStyle = "#fff"; c.lineWidth = 3 * dpr;
   for (const [x, y] of [[r.x, r.y], [r.x + r.w, r.y], [r.x, r.y + r.h], [r.x + r.w, r.y + r.h]]) { c.beginPath(); c.arc(x * k, y * k, 13 * dpr, 0, TAU); c.fill(); c.stroke(); }
 }
 (() => {
@@ -789,9 +789,9 @@ function sampleDrawing(){
   /* פנים */
   x.fillStyle = "#fff"; x.beginPath(); x.ellipse(300, 370, 48, 54, 0, 0, TAU); x.ellipse(405, 370, 48, 54, 0, 0, TAU); x.fill();
   wob(ell(300, 370, 48, 54, 26), "#3A2A5C", 7, true); wob(ell(405, 370, 48, 54, 26), "#3A2A5C", 7, true);
-  x.fillStyle = "#2B1526"; x.beginPath(); x.arc(312, 382, 18, 0, TAU); x.arc(392, 382, 18, 0, TAU); x.fill();
+  x.fillStyle = "#213330"; x.beginPath(); x.arc(312, 382, 18, 0, TAU); x.arc(392, 382, 18, 0, TAU); x.fill();
   x.fillStyle = "#FF6FA5"; x.globalAlpha = .7; x.beginPath(); x.ellipse(250, 470, 26, 16, 0, 0, TAU); x.ellipse(452, 470, 26, 16, 0, 0, TAU); x.fill(); x.globalAlpha = 1;
-  x.fillStyle = "#E0399F"; x.beginPath(); x.moveTo(290, 480); x.quadraticCurveTo(352, 570, 414, 480); x.closePath(); x.fill();
+  x.fillStyle = "#E33BAE"; x.beginPath(); x.moveTo(290, 480); x.quadraticCurveTo(352, 570, 414, 480); x.closePath(); x.fill();
   wob([[290, 480], [320, 520], [352, 532], [384, 520], [414, 480], [290, 480]], "#3A2A5C", 8);
   /* צל של טלפון */
   const sh = x.createRadialGradient(560, 160, 10, 560, 160, 420); sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(60,40,20,.10)"); x.fillStyle = sh; x.fillRect(0, 0, w, h);
@@ -800,7 +800,7 @@ function sampleDrawing(){
 $("bSample").onclick = () => { const c = sampleDrawing(); S.img = c; c.naturalWidth = c.width; c.naturalHeight = c.height; S.crop = {x: 0, y: 0, w: c.width, h: c.height}; S.src = "sample"; ev("animate", "sample"); if (!$("nmChar").value) $("nmChar").value = "פִּיצִי"; process(); };
 
 /* ---------- לוח ציור ---------- */
-const PAL = ["#2B1526", "#E0399F", "#FF8A1F", "#FFC93C", "#46C46E", "#3AA7F0", "#9B5DE5", "#8A5A3C"];
+const PAL = ["#213330", "#E33BAE", "#FF8A1F", "#FFC93C", "#46C46E", "#3AA7F0", "#9B5DE5", "#8A5A3C"];
 const pad = {c: $("padC"), x: $("padC").getContext("2d"), col: PAL[0], size: 14, er: false, hist: [], drawing: false, last: null, dirty: false};
 function padReset(){ pad.x.fillStyle = "#fff"; pad.x.fillRect(0, 0, 800, 800); pad.hist = []; pad.dirty = false; }
 padReset();
@@ -992,7 +992,7 @@ async function poster(){
   x.font = "700 64px Fredoka, Assistant, sans-serif"; x.textAlign = "center"; x.direction = "rtl";
   const t = (charName() || "הַצִּיּוּר שֶׁלִּי") + " ✨", tw = Math.min(1040, x.measureText(t).width + 80);
   x.fillStyle = "rgba(255,255,255,.95)"; x.beginPath(); x.roundRect ? x.roundRect(540 - tw / 2, 50, tw, 104, 52) : x.rect(540 - tw / 2, 50, tw, 104); x.fill();
-  x.fillStyle = "#C13671"; x.fillText(t, 540, 126, 1000);
+  x.fillStyle = "#C5309A"; x.fillText(t, 540, 126, 1000);
   const lines = []; if (kidName()) lines.push("צִיֵּר/ה: " + kidName()); if (ganLine()) lines.push(ganLine());
   x.font = "700 42px Assistant, sans-serif"; x.lineWidth = 9; x.strokeStyle = "rgba(43,21,38,.6)"; x.fillStyle = "#fff";
   lines.forEach((l, i) => { x.strokeText(l, 540, 214 + i * 56, 1000); x.fillText(l, 540, 214 + i * 56, 1000); });

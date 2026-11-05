@@ -143,7 +143,7 @@
       talk("שלום גן! אני סבאבוקלי, וכבר מאה שנה אני ממציא משחקים. היום כל ילד יגיד מילה, ואני אבנה מזה משחק של כל הגן! מוכנים?");
       BODY.innerHTML = '<div class="gm-center"><div class="gm-row" style="justify-content:center"><button type="button" class="gm-btn big" id="iGo">🎉 מוכנים! מתחילים</button>' +
         (cont ? '<button type="button" class="gm-btn sec" id="iCont">↩️ להמשיך מאיפה שעצרנו</button>' : "") + '</div>' +
-        '<p style="color:#6b5a66;font-size:.8em">איך זה עובד: בוחרים נושא, כל ילד בתורו אומר מילה או משפט, הגננת מקלידה – וסבאבוקלי בונה מזה משחק. טיפ: "⛶ מסך מלא" מתאים להקרנה.</p></div>';
+        '<p style="color:#566B67;font-size:.8em">איך זה עובד: בוחרים נושא, כל ילד בתורו אומר מילה או משפט, הגננת מקלידה – וסבאבוקלי בונה מזה משחק. טיפ: "⛶ מסך מלא" מתאים להקרנה.</p></div>';
       $("iGo").onclick = function(){ var g = S.g; S = fresh(); S.g = g; GM.pickVoice(); GM.sound.pop(); siteEvent("gm-start", "new"); go("topic"); };
       if (cont) $("iCont").onclick = function(){ S = d; if (S.k !== "x") { S.k = "x"; S.step = "ideas"; } siteEvent("gm-start", "continue"); go(S.step === "build" || S.step === "play" ? "build" : S.step); };
     },
@@ -173,7 +173,7 @@
       talk(S.ideas.length ? "ממשיכים! מי הבא בתור?" : "כל ילד אומר מילה או משפט על " + tp.n + ". מי מתחיל?");
       BODY.innerHTML = '<div class="gm-kids" id="iKids" aria-live="polite"></div><div class="gm-ideas" id="iList"></div><div id="iIn"></div><div id="iEmo"></div>' +
         '<div class="gm-row"><button type="button" class="gm-btn sec" id="iHelp">💡 אין רעיון? סבאבוקלי עוזר</button><button type="button" class="gm-btn big" id="iDone">✅ כולם אמרו – סבאבוקלי בונה משחק!</button></div>' +
-        '<p style="color:#6b5a66;font-size:.75em;margin:0">כל ילד בתורו. אפשר מילה אחת ("גלים") או משפט ("הגלים קופצים"). לוחצים על רעיון כדי להחליף ציור או למחוק.</p>';
+        '<p style="color:#566B67;font-size:.75em;margin:0">כל ילד בתורו. אפשר מילה אחת ("גלים") או משפט ("הגלים קופצים"). לוחצים על רעיון כדי להחליף ציור או למחוק.</p>';
       $("iIn").appendChild(inputRow({ label: "", ph: "מה הילד אומר? למשל: " + (tp.i > -1 ? TOPICS[tp.i].s[0] : "מילה או משפט"), max: 60,
         onSubmit: function(v, inp){ addIdea(v); inp.value = ""; inp.focus(); } }));
       $("iHelp").onclick = function(){

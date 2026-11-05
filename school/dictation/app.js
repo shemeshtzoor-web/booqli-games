@@ -123,7 +123,7 @@ const SND = {
   win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, "triangle", .2, i * .13))
 };
 const confetti = () => { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const c = document.createElement("div"); c.className = "conf"; const cols = ["#FF56C2","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
+  const c = document.createElement("div"); c.className = "conf"; const cols = ["#FA57C4","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
   for (let i = 0; i < 46; i++) { const p = document.createElement("i"); p.style.left = rnd(100) + "%"; p.style.background = cols[i % 5]; p.style.animationDelay = (rnd(70) / 100) + "s"; c.appendChild(p); }
   document.body.appendChild(c); setTimeout(() => c.remove(), 2800); };
 const shake = b => { b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); };
@@ -212,7 +212,7 @@ function route(){
   catch (e) {
     try { ev("dict-error", String(e && e.message || e).slice(0, 60) + " | " + navigator.userAgent.replace(/[^\w.]+/g, "_").slice(0, 80)); } catch (x) {}
     app.hidden = false;
-    app.innerHTML = '<section class="card" style="text-align:center"><div class="emo" style="font-size:56px">🛠️</div><h2 style="color:#C13671">משהו לא נטען כמו שצריך</h2><p>נסו לרענן את העמוד. אם זה חוזר – ספרו לנו בוואטסאפ, ונתקן.</p><div class="row"><button type="button" class="btn" onclick="location.reload()">🔄 רענון</button></div></section>';
+    app.innerHTML = '<section class="card" style="text-align:center"><div class="emo" style="font-size:56px">🛠️</div><h2 style="color:#C5309A">משהו לא נטען כמו שצריך</h2><p>נסו לרענן את העמוד. אם זה חוזר – ספרו לנו בוואטסאפ, ונתקן.</p><div class="row"><button type="button" class="btn" onclick="location.reload()">🔄 רענון</button></div></section>';
   }
 }
 function route0(){
@@ -486,7 +486,7 @@ function makePad(){
   const cv = document.createElement("canvas"), hint = document.createElement("div"); hint.className = "padhint"; hint.textContent = G("כתוב כאן באצבע ✍️", "כתבי כאן באצבע ✍️", "כותבים כאן באצבע ✍️");
   wrap.append(cv, hint);
   const strokes = []; let cur = null; const ctx = cv.getContext("2d");
-  const ink = (c, lw) => { c.strokeStyle = "#2B1526"; c.lineWidth = lw; c.lineCap = "round"; c.lineJoin = "round"; };
+  const ink = (c, lw) => { c.strokeStyle = "#213330"; c.lineWidth = lw; c.lineCap = "round"; c.lineJoin = "round"; };
   const line = (c, s) => { if (!s.length) return; c.beginPath(); c.moveTo(s[0][0], s[0][1]); if (s.length === 1) c.lineTo(s[0][0] + .1, s[0][1]); for (let i = 1; i < s.length; i++) c.lineTo(s[i][0], s[i][1]); c.stroke(); };
   function draw(){ const r = cv.getBoundingClientRect(), w = r.width, h = r.height; ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = "#D6E4F5"; ctx.lineWidth = 2; [h * .3, h * .72].forEach(y => { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); });
@@ -588,7 +588,7 @@ function test(w){
 function finish(){
   const t = G1.type;
   if (t !== "test") {
-    app.innerHTML = '<section class="card end"><div class="emo">🏆</div><h2 style="font-size:30px;color:#C13671">' + PRAISE() + '</h2>' +
+    app.innerHTML = '<section class="card end"><div class="emo">🏆</div><h2 style="font-size:30px;color:#C5309A">' + PRAISE() + '</h2>' +
       '<p class="note">' + G("אספת", "אספת", "אספתם") + ' בסיבוב הזה</p><div class="bigscore">⭐ ' + G1.earned + '</div>' +
       '<div class="row"><button type="button" class="btn green" id="again">עוד סיבוב</button><button type="button" class="btn alt" id="home">לכל המשחקים</button></div>' +
       (t === "build" ? '<p class="note" style="margin-top:12px">הבא בתור: 🔍 מי כתובה נכון?</p>' : t === "pick" ? '<p class="note" style="margin-top:12px">הבא בתור: 🎈 מפוצצים בלונים</p>' : t === "balloon" ? '<p class="note" style="margin-top:12px">הבא בתור: 👀 מסתכלים, מסתירים, כותבים</p>' : '<p class="note" style="margin-top:12px">מוכנים? 📝 הכתבה אמיתית</p>') + '</section>';
@@ -596,7 +596,7 @@ function finish(){
     SND.win(); confetti(); return;
   }
   const R = G1.res, game = G1;
-  app.innerHTML = '<section class="card"><h2 style="font-size:28px;color:#C13671;text-align:center">תוצאות ההכתבה</h2><div id="score" style="text-align:center;margin:8px 0"></div>' + (R.some(r => r.img) ? '<div class="parentcheck">👨‍👩‍👧 <b>אבא ואמא:</b> בדקו אם המילים שנכתבו ביד כתובות נכון, וסמנו <b>✓</b> ליד מילה נכונה או <b>✗</b> ליד מילה עם טעות.</div>' : '') + '<div id="rows"></div>' +
+  app.innerHTML = '<section class="card"><h2 style="font-size:28px;color:#C5309A;text-align:center">תוצאות ההכתבה</h2><div id="score" style="text-align:center;margin:8px 0"></div>' + (R.some(r => r.img) ? '<div class="parentcheck">👨‍👩‍👧 <b>אבא ואמא:</b> בדקו אם המילים שנכתבו ביד כתובות נכון, וסמנו <b>✓</b> ליד מילה נכונה או <b>✗</b> ליד מילה עם טעות.</div>' : '') + '<div id="rows"></div>' +
     '<div class="row"><button type="button" class="btn green" id="again">עוד הכתבה</button><button type="button" class="btn alt" id="home">לכל המשחקים</button></div></section>';
   $("again").onclick = () => start("test"); $("home").onclick = () => go("");
   const rows = $("rows");
@@ -611,7 +611,7 @@ function finish(){
       box.innerHTML = '<button type="button" class="y" aria-label="נכון" aria-pressed="false">✓</button><button type="button" class="n" aria-label="לא נכון" aria-pressed="false">✗</button>';
       const set = v => { if (game.done) return; it.ok = v; box.children[0].setAttribute("aria-pressed", v); box.children[1].setAttribute("aria-pressed", !v); paintScore(); };
       box.children[0].onclick = () => set(true); box.children[1].onclick = () => set(false); m.appendChild(box);
-    } else if (!it.ok) d.querySelector("small").innerHTML = 'נכתב: <span class="wrong" style="color:#C13671">' + esc(it.typed) + '</span>';
+    } else if (!it.ok) d.querySelector("small").innerHTML = 'נכתב: <span class="wrong" style="color:#C5309A">' + esc(it.typed) + '</span>';
   });
   function paintScore(){
     const good = R.filter(r => r.ok).length, left = R.filter(r => r.ok === null).length;

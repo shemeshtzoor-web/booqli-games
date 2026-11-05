@@ -16,14 +16,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 
 /* ===== צבעי המותג של BOOQLI ===== */
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --ok:#22A55B; --bad:#E5484D; --blue:#3AA7F0; --blue-soft:#DCEBFF;
   color-scheme:light;
 }
@@ -60,7 +60,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 
 /* ===== פתיח ===== */
-.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--pink),var(--blue),var(--sage))}
 .hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .hero small{font-weight:800;color:var(--magenta)}
@@ -82,7 +82,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
 .agepick{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.agepick{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.agebtn b{font-size:16px}}
-.agebtn{background:#fff;border:3px solid transparent;border-radius:22px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 4px 0 #d9e9e1;transition:transform .15s}
+.agebtn{background:#fff;border:3px solid transparent;border-radius:22px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 6px 22px rgba(33,51,48,.09);transition:transform .15s}
 .agebtn:hover{transform:translateY(-3px)}
 .agebtn .e{font-size:30px;line-height:1.1}
 .agebtn b{font-family:Fredoka,sans-serif;font-size:19px;line-height:1.1;white-space:nowrap}
@@ -90,7 +90,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .agebtn[aria-pressed="true"]{border-color:var(--c);background:var(--b);transform:translateY(-3px)}
 
 /* ===== לוח הגיל ===== */
-.agehead{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);display:flex;gap:14px;align-items:center}
+.agehead{margin-top:22px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c);display:flex;gap:14px;align-items:center}
 .agehead .e{font-size:40px;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
 .agehead small{display:block;font-weight:800;color:var(--c)}
 .agehead h2{font-size:clamp(24px,4.6vw,32px);line-height:1.1}
@@ -99,11 +99,11 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .screen-note a{font-weight:800;color:var(--magenta)}
 .amenu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
 @media (max-width:560px){.amenu{grid-template-columns:1fr 1fr 1fr;gap:6px}}
-.amenu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 0 #d9e9e1;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
+.amenu a{background:#fff;border-radius:18px;padding:10px 6px;text-align:center;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 6px 22px rgba(33,51,48,.09);display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
 .amenu a span{font-size:26px}
 
 /* ===== קופסת משחק ===== */
-.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
+.act{margin-top:24px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c);scroll-margin-top:12px;position:relative;overflow:hidden}
 .act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
 .act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
 .act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
@@ -172,11 +172,11 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 4px}
-.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 4px 0 #d9e9e1}
+.peek{margin-top:22px;background:#fff;border-radius:24px;padding:16px 18px;display:flex;gap:14px;align-items:center;text-decoration:none;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .peek .e{font-size:40px}
 .peek b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--magenta)}
 .peek span{display:block;color:var(--muted);font-size:15px}
-.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
 .bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
 .bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
 @media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
@@ -198,25 +198,25 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* ===== דפי הדפסה ===== */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page;text-align:right}
 .sheet:last-child{page-break-after:auto;break-after:auto}
 .sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:3mm}
-.s-head h1{font-size:21pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
-.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FF56C2,#3AA7F0,#6F988B);margin-bottom:4mm}
+.s-head h1{font-size:21pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
+.s-strip{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FA57C4,#3AA7F0,#6DAFA1);margin-bottom:4mm}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
 .p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:2.5mm 5mm}
-.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:.5mm}
+.p-box h2{font-size:13pt;color:#2F6F63;margin-bottom:.5mm}
 .p-box p{margin:0}
-.s-tip{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700;margin:0}
+.s-tip{font-size:10pt;color:#566B67;text-align:center;font-weight:700;margin:0}
 .s-row{display:flex;align-items:center;justify-content:space-between;gap:6mm;border-bottom:1.5px dashed #E1F0EA;padding:1mm 0}
 .s-row:last-child{border-bottom:0}
 .s-nums{display:flex;gap:4mm;direction:ltr;font-family:Fredoka,sans-serif;font-size:24pt}
 .s-nums span{width:13mm;height:13mm;border:1.5px solid #CDE7DC;border-radius:50%;display:grid;place-items:center;line-height:1}
 .s-ex{display:grid;gap:3.5mm 8mm;font-family:Fredoka,sans-serif;direction:ltr}
 .s-ex div{display:flex;align-items:center;gap:2mm;white-space:nowrap}
-.s-ex i{display:inline-block;width:16mm;height:10mm;border:1.5px solid #6b5a66;border-radius:2mm}
+.s-ex i{display:inline-block;width:16mm;height:10mm;border:1.5px solid #566B67;border-radius:2mm}
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff!important;margin:0;padding:0}
@@ -245,7 +245,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .ex-card .say-btn{flex-shrink:0}
 
 /* סרטון */
-.player{background:#2B1526;border-radius:22px;padding:10px;color:#fff}
+.player{background:#213330;border-radius:22px;padding:10px;color:#fff}
 .player:fullscreen{display:flex;flex-direction:column;justify-content:center;border-radius:0;padding:2vh 2vw}
 .player:fullscreen .scr{max-height:76vh;aspect-ratio:16/9;width:auto;margin:0 auto}
 .player:fullscreen .cap{font-size:clamp(22px,3.4vw,40px)}
@@ -288,7 +288,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* משחק הצב */
 .drill{display:flex;flex-direction:column;align-items:center;gap:12px}
-.dcard{width:min(420px,100%);background:#fff;border:4px solid var(--c);border-radius:28px;padding:18px;text-align:center;box-shadow:0 5px 0 #d9e9e1;animation:pop .4s}
+.dcard{width:min(420px,100%);background:#fff;border:4px solid var(--c);border-radius:28px;padding:18px;text-align:center;box-shadow:0 6px 22px rgba(33,51,48,.09);animation:pop .4s}
 .dcard .e{font-size:72px;line-height:1}
 .dcard h3{font-size:clamp(32px,8vw,48px);color:var(--magenta)}
 .dcard p{margin:4px 0 0;font-size:18px;font-weight:700;color:var(--muted)}
@@ -303,7 +303,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .st-card .say-btn{align-self:flex-start;margin:0}
 
 /* תוכן כתוב */
-.textbox{background:#fff;border-radius:24px;padding:18px 20px;margin-top:24px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c)}
+.textbox{background:#fff;border-radius:24px;padding:18px 20px;margin-top:24px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c)}
 .textbox h2{font-size:24px;color:var(--sage-deep);margin-bottom:6px}
 .textbox ul,.textbox ol{margin:6px 0 0;padding-inline-start:22px;display:grid;gap:6px;font-size:17px}
 .textbox .tip{background:#FFF6CF;border-radius:14px;padding:8px 12px;margin-top:12px;font-size:15px}
@@ -325,7 +325,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .st-p svg{width:100%;height:auto;border-radius:2mm}
 .c4{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
 .c4>div{border:2.5px solid #CDE7DC;border-radius:5mm;padding:3mm;text-align:center}
-.c4 b{display:block;font-family:Fredoka,sans-serif;font-size:17pt;color:#C13671;margin-top:1.5mm}
+.c4 b{display:block;font-family:Fredoka,sans-serif;font-size:17pt;color:#C5309A;margin-top:1.5mm}
 .c4 span{font-size:11pt;font-weight:700}
 .c4 svg{width:100%;height:auto;border-radius:3mm}
 </style>
@@ -365,11 +365,11 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
   <nav class="amenu six" aria-label="מה יש בעמוד" style="margin-top:16px">
     <a href="#explain" style="border-top:5px solid #3AA7F0"><span aria-hidden="true">💡</span>מה זה?</a>
-    <a href="#video" style="border-top:5px solid #FF56C2"><span aria-hidden="true">🎬</span>הסרטון</a>
+    <a href="#video" style="border-top:5px solid #FA57C4"><span aria-hidden="true">🎬</span>הסרטון</a>
     <a href="#g-what" style="border-top:5px solid #46C46E"><span aria-hidden="true">🤔</span>מה עושים?</a>
     <a href="#g-park" style="border-top:5px solid #FF9A2E"><span aria-hidden="true">🌳</span>איפה בטוח?</a>
     <a href="#g-turtle" style="border-top:5px solid #9B5DE5"><span aria-hidden="true">🐢</span>משחק הצב</a>
-    <a href="#story" style="border-top:5px solid #6F988B"><span aria-hidden="true">📖</span>סיפור והדפסה</a>
+    <a href="#story" style="border-top:5px solid #6DAFA1"><span aria-hidden="true">📖</span>סיפור והדפסה</a>
   </nav>
 
   <section class="act" id="explain" style="--c:#3AA7F0;--b:#DCEBFF">
@@ -378,7 +378,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <div class="explain" id="explainBox"></div>
   </section>
 
-  <section class="act" id="video" style="--c:#FF56C2;--b:#FFE3F4">
+  <section class="act" id="video" style="--c:#FA57C4;--b:#FDE6F6">
     <div class="act-h"><span class="e" aria-hidden="true">🎬</span><div><small>סרטון מצויר עם הקראה · כ-2 דקות</small><h2>צבי הצב: כשהאדמה רועדת</h2></div></div>
     <p class="intro">צבי הצב מסביר לילדים מה עושים, צעד אחרי צעד. אפשר להקרין על מסך גדול (⛶), לעצור בכל רגע ולדבר על מה שראינו.</p>
     <div class="player" id="player">
@@ -418,14 +418,14 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     <div class="stage"><div class="drill" id="drill"></div></div>
   </section>
 
-  <section class="act" id="story" style="--c:#6F988B;--b:#E1F0EA">
+  <section class="act" id="story" style="--c:#6DAFA1;--b:#E1F0EA">
     <div class="act-h"><span class="e" aria-hidden="true">📖</span><div><small>סיפור חברתי · 💜 מתאים במיוחד לחינוך המיוחד</small><h2>כשהאדמה רועדת – הסיפור שלי</h2></div></div>
     <p class="intro">8 משפטים קצרים בגוף ראשון, עם ציור לכל משפט. קוראים יחד כמה פעמים לפני תרגיל, ואפשר להדפיס.</p>
     <div class="gender" id="gender" role="group" aria-label="בן או בת"><span>הסיפור בלשון:</span><button type="button" data-g="m" aria-pressed="true">👦 ילד</button><button type="button" data-g="f" aria-pressed="false">👧 ילדה</button></div>
     <div class="story" id="storyBox" style="margin-top:12px"></div>
   </section>
 
-  <section class="act" id="sheetBox" style="--c:#C13671;--b:#FFE3F4">
+  <section class="act" id="sheetBox" style="--c:#C5309A;--b:#FDE6F6">
     <div class="act-h"><span class="e" aria-hidden="true">🖨️</span><div><small>להדפסה · A4</small><h2>דפים להדפסה</h2></div></div>
     <div class="sheets2">
       <div><h3>📖 הסיפור החברתי (9 ציורים)</h3><div class="pv-box" id="pv1"></div><button class="btn-main" type="button" id="print1">🖨️ להדפיס</button></div>
@@ -433,7 +433,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     </div>
   </section>
 
-  <section class="textbox" style="--c:#4E8576">
+  <section class="textbox" style="--c:#2F6F63">
     <h2>👩‍🏫 לגננת: מפגש של 20 דקות</h2>
     <ol>
       <li><b>פתיחה (3 דק'):</b> "היום נלמד איך שומרים על עצמנו אם האדמה רועדת." קוראים יחד את ההסבר הפשוט.</li>
@@ -478,7 +478,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
     </ul>
   </section>
 
-  <section class="textbox" style="--c:#6F988B">
+  <section class="textbox" style="--c:#6DAFA1">
     <h2>📚 מקורות</h2>
     <p class="srcs">ההנחיות בעמוד נבדקו מול: <a href="https://www.oref.org.il/" target="_blank" rel="noopener">פיקוד העורף</a> (הנחיות רעידת אדמה כפי שפורסמו ברשויות המקומיות, למשל <a href="https://www.shoham.muni.il/_2026/uploads/n/1509263268.6775.pdf" target="_blank" rel="noopener">מועצת שוהם</a> ו<a href="https://www.qbialik.org.il/upload/QA_Earthquake.pdf" target="_blank" rel="noopener">קריית ביאליק</a>) · <a href="https://meyda.education.gov.il/files/hozermankal/arc/sd7bk5_4_6_12.htm" target="_blank" rel="noopener">משרד החינוך – חוזר מנכ"ל, נוהל היערכות לרעידות אדמה</a> · <a href="https://nj.gov/humanservices/emergency/Parents_talk_to_children_earthquakes.pdf" target="_blank" rel="noopener">איך מדברים עם ילדים על רעידת אדמה (מחלקת השירותים של ניו ג'רזי)</a>. בכל מקרה אמיתי – פועלים לפי הנחיות פיקוד העורף העדכניות.</p>
   </section>
@@ -598,7 +598,7 @@ function turtle(x, y, s = 1, pose = "stand", cls = ""){
 function adult(x, y, s = 1, cls = ""){
   return `<g class="${cls}"><g transform="translate(${x} ${y}) scale(${s})">
     <rect x="-14" y="-46" width="10" height="46" rx="4" fill="#F6C9A8" stroke="${INK}" stroke-width="3"/><rect x="4" y="-46" width="10" height="46" rx="4" fill="#F6C9A8" stroke="${INK}" stroke-width="3"/>
-    <path d="M-16 -130 L16 -130 L34 -40 L-34 -40Z" fill="#FF56C2" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-16 -130 L16 -130 L34 -40 L-34 -40Z" fill="#FA57C4" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
     <path d="M-16 -126 Q-36 -96 -40 -70 M16 -126 Q36 -96 40 -70" fill="none" stroke="#F6C9A8" stroke-width="9" stroke-linecap="round"/>
     <path d="M-24 -170 Q-30 -196 0 -200 Q30 -196 24 -170 L26 -150 L-26 -150Z" fill="#7A4A2A" stroke="${INK}" stroke-width="3"/>
     <circle cx="0" cy="-160" r="21" fill="#F6C9A8" stroke="${INK}" stroke-width="3.5"/>
@@ -641,7 +641,7 @@ const SC = {
   open:    () => sky() + grass(270) + building(10, 270, 140, 210) + tree(560, 270, .95) + pole(220, 270, 190) + no(80, 120) + no(560, 120) + no(220, 70) + `<ellipse cx="390" cy="315" rx="120" ry="30" fill="#E7F7D8" stroke="#22A55B" stroke-width="4" stroke-dasharray="10 8"/>` + turtle(390, 320, .8, "cheer") + ok(470, 230),
   stairs:  () => room() + elevator(90, 290) + no(145, 105) + stairs(370, 290) + turtle(425, 242, .65) + ok(520, 120),
   wait:    () => sky() + sun(80, 60) + grass() + adult(300, 305, 1) + turtle(370, 305, .9) + `<rect x="430" y="180" width="170" height="70" rx="20" fill="#fff" stroke="${INK}" stroke-width="3"/><path d="M450 250 L440 272 L470 250" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><text x="515" y="222" text-anchor="middle" font-family="Fredoka,Assistant,Arial" font-weight="700" font-size="22" fill="${INK}">מחכים יחד</text>`,
-  bravo:   () => `<rect width="640" height="360" fill="#FFE3F4"/>` + stars() + turtle(320, 320, 1.4, "cheer", "bob"),
+  bravo:   () => `<rect width="640" height="360" fill="#FDE6F6"/>` + stars() + turtle(320, 320, 1.4, "cheer", "bob"),
   draw:    () => `<rect width="640" height="360" fill="#fff"/><rect x="20" y="20" width="600" height="320" rx="24" fill="none" stroke="#CDE7DC" stroke-width="6" stroke-dasharray="18 12"/><text x="320" y="196" text-anchor="middle" font-family="Fredoka,Assistant,Arial" font-weight="700" font-size="40" fill="#9BB8AE">✏️ ציור שלי</text>`
 };
 
@@ -831,7 +831,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("win").
 
 /* ======================== זיקוקים ======================== */
 function burstAt(el){
-  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FA57C4"];
   const b = document.createElement("span"); b.className = "burst";
   for (let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2, r = 36 + Math.random()*30, d = document.createElement("i");
     d.style.setProperty("--x", (Math.cos(a)*r).toFixed(0) + "px"); d.style.setProperty("--y", (Math.sin(a)*r).toFixed(0) + "px"); d.style.setProperty("--c", cols[i % cols.length]); b.appendChild(d); }
@@ -842,7 +842,7 @@ function bigFireworks(ms = 4000){
   const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
   const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
-  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FA57C4"];
   const P = [], R = []; const start = performance.now(); let last = 0;
   function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(cols)}); }
   function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(cols) : r.c}); } }

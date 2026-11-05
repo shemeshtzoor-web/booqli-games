@@ -16,13 +16,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ===== צבעי המותג של BOOQLI + צבעי הקשת של עולם הרגשות ===== */
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --r1:#FF4D5E; --r2:#FF9A2E; --r3:#FFD23F; --r4:#46C46E; --r5:#3AA7F0; --r6:#5B6CF0; --r7:#B05BE8;
   --rainbow:linear-gradient(90deg,var(--r1),var(--r2),var(--r3),var(--r4),var(--r5),var(--r6),var(--r7));
   --ok:#22A55B; --bad:#E5484D;
@@ -60,7 +60,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 
 /* ===== פתיח בצבעי הקשת ===== */
-.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 0 #d9e9e1}
+.hero{margin-top:22px;background:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:var(--rainbow)}
 .hero .grid{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .hero small{font-weight:800;color:var(--magenta)}
@@ -81,7 +81,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title h2{font-size:28px;color:var(--sage-deep)}
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
 .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.menu a{background:#fff;border-radius:22px;padding:14px 10px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 0 #d9e9e1;border-top:6px solid var(--c);transition:transform .15s}
+.menu a{background:#fff;border-radius:22px;padding:14px 10px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:6px solid var(--c);transition:transform .15s}
 .menu a:hover{transform:translateY(-3px)}
 .menu .e{font-size:38px;line-height:1.1}
 .menu b{font-family:Fredoka,sans-serif;font-size:17px;line-height:1.2}
@@ -92,7 +92,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .menu a.main b{font-size:22px}
 
 /* ===== קופסת פעילות ===== */
-.act{margin-top:30px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 5px 0 #d9e9e1;border-top:8px solid var(--c);scroll-margin-top:12px}
+.act{margin-top:30px;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--c);scroll-margin-top:12px}
 .act-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}
 .act-h .e{font-size:34px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--b);flex-shrink:0}
 .act-h small{display:block;font-weight:800;color:var(--c);font-size:13px}
@@ -134,7 +134,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 /* ===== בונים פרצוף ===== */
 .builder{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:18px;align-items:start}
 @media (max-width:760px){.builder{grid-template-columns:minmax(0,1fr)}}
-.stagebox{background:linear-gradient(160deg,#FFF6CF,#FFE3F4);border-radius:24px;padding:12px;text-align:center;position:sticky;top:8px}
+.stagebox{background:linear-gradient(160deg,#FFF6CF,#FDE6F6);border-radius:24px;padding:12px;text-align:center;position:sticky;top:8px}
 @media (max-width:760px){.stagebox{position:static}}
 .stagebox svg.big{width:min(240px,70vw);height:auto;display:block;margin:0 auto}
 .target{font-family:Fredoka,sans-serif;font-size:21px;margin-bottom:6px}
@@ -181,7 +181,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .share{margin-top:30px;background:#fff;border-radius:24px;padding:20px;text-align:center;border:2px dashed var(--wa)}
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 4px}
-.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox{margin-top:22px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
 .bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
 .bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
 @media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
@@ -203,25 +203,25 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* ===== דפי הדפסה ===== */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always;break-after:page}
 .sheet:last-child{page-break-after:auto;break-after:auto}
 .sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:6mm;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
-.s-head h1{font-size:22pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-head h1{font-size:22pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
 .s-rb{height:3mm;border-radius:2mm;background:linear-gradient(90deg,#FF4D5E,#FF9A2E,#FFD23F,#46C46E,#3AA7F0,#5B6CF0,#B05BE8);margin-bottom:4mm}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
 .p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:3mm 5mm}
-.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:1mm}
+.p-box h2{font-size:13pt;color:#2F6F63;margin-bottom:1mm}
 .p-box ol{margin:0;padding-inline-start:6mm}
 .p-box li{margin:.4mm 0}
 .lines{display:grid;gap:5mm;margin-top:2mm}
-.lines div{border-bottom:1.5px dotted #6b5a66;height:7mm;font-weight:700}
+.lines div{border-bottom:1.5px dotted #566B67;height:7mm;font-weight:700}
 .legend{display:grid;gap:2.2mm}
 .legend div{display:flex;align-items:center;gap:3mm;font-weight:800;font-size:13pt}
 .legend svg{width:13mm;height:13mm}
-.legend i{width:11mm;height:11mm;border:2px solid #2B1526;border-radius:2mm;display:block;margin-inline-start:auto}
-.cutnote{font-size:10pt;color:#6b5a66;text-align:center;font-weight:700}
+.legend i{width:11mm;height:11mm;border:2px solid #213330;border-radius:2mm;display:block;margin-inline-start:auto}
+.cutnote{font-size:10pt;color:#566B67;text-align:center;font-weight:700}
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff!important;margin:0;padding:0}
@@ -541,7 +541,7 @@ const EMO = [
    how:"פותחים עיניים גדולות, מרימים גבות ומכווצים את הכתפיים."},
   {id:"surprised", w:"מופתע",  c:"#E2741B", b:"#FFEBD2", f:{eyes:"big",   brows:"up",    mouth:"o",     extra:"none"},
    how:"מרימים את הגבות הכי גבוה שאפשר ופותחים את הפה כמו O."},
-  {id:"shy",       w:"מתבייש", c:"#D63C8E", b:"#FFE3F4", f:{eyes:"down",  brows:"none",  mouth:"small", extra:"blush2"},
+  {id:"shy",       w:"מתבייש", c:"#D63C8E", b:"#FDE6F6", f:{eyes:"down",  brows:"none",  mouth:"small", extra:"blush2"},
    how:"מסתכלים למטה, מחייכים חיוך קטן, ומסתירים קצת את הפנים בידיים."},
   {id:"jealous",   w:"מקנא",   c:"#2E9A55", b:"#DDF5E5", f:{eyes:"side",  brows:"mixed", mouth:"pout",  extra:"none"},
    how:"מסתכלים הצידה, משרבבים את השפתיים ומכווצים גבה אחת."}
@@ -595,7 +595,7 @@ function bigFireworks(ms = 4200){
   const cv = $("fw"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   cv.hidden = false; const dpr = Math.min(2, window.devicePixelRatio || 1);
   const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr, x = cv.getContext("2d");
-  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FF56C2"];
+  const cols = ["#FF4D5E","#FF9A2E","#FFD23F","#46C46E","#3AA7F0","#5B6CF0","#B05BE8","#FA57C4"];
   const P = [], R = []; const start = performance.now(); let last = 0;
   function rocket(){ R.push({x: W*(.15 + Math.random()*.7), y: H, vy: -H*(.016 + Math.random()*.006), ty: H*(.15 + Math.random()*.35), c: pick(cols)}); }
   function explode(r){ const n = 60 + Math.random()*30; for (let i = 0; i < n; i++){ const a = Math.random()*Math.PI*2, s = (2 + Math.random()*5) * dpr; P.push({x: r.x, y: r.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s, l: 1, c: Math.random() < .3 ? pick(cols) : r.c}); } }
@@ -760,10 +760,10 @@ wRender();
 
 /* ======================== דפי ההדפסה ======================== */
 const F = (id, x, y, size) => `<g transform="translate(${x - size/2} ${y - size/2}) scale(${size/200})">${faceG(E[id].f)}</g>`;
-const LINE = "#2B1526";
+const LINE = "#213330";
 
 function jarSVG(){
-  let g = `<rect x="22" y="6" width="76" height="14" rx="4" fill="#FFE3F4" stroke="${LINE}" stroke-width="1.2"/><rect x="26" y="20" width="68" height="11" rx="2" fill="#fff" stroke="${LINE}" stroke-width="1.2"/>`;
+  let g = `<rect x="22" y="6" width="76" height="14" rx="4" fill="#FDE6F6" stroke="${LINE}" stroke-width="1.2"/><rect x="26" y="20" width="68" height="11" rx="2" fill="#fff" stroke="${LINE}" stroke-width="1.2"/>`;
   g += `<path d="M24 31 Q12 33 12 46 V136 Q12 150 28 150 H92 Q108 150 108 136 V46 Q108 33 96 31 Z" fill="#fff" stroke="${LINE}" stroke-width="1.4"/>`;
   for (let y = 48; y <= 138; y += 10) g += `<line x1="15" y1="${y}" x2="105" y2="${y}" stroke="#C9B8C5" stroke-width=".5" stroke-dasharray="2 1.6"/>`;
   g += `<path d="M20 50 Q18 80 20 110" fill="none" stroke="#E1F0EA" stroke-width="3" stroke-linecap="round"/>`;
@@ -778,13 +778,13 @@ function monsterSVG(withWheel){
   g += `<ellipse cx="68" cy="186" rx="20" ry="9" fill="#fff" stroke="${LINE}" stroke-width="1.3"/><ellipse cx="122" cy="186" rx="20" ry="9" fill="#fff" stroke="${LINE}" stroke-width="1.3"/>`;
   g += `<path d="M38 62 Q38 30 70 32 Q95 16 120 32 Q152 30 152 62 L160 150 Q164 182 128 182 L62 182 Q26 182 30 150 Z" fill="${withWheel ? "#8FD0F7" : "#fff"}" stroke="${LINE}" stroke-width="1.4"/>`;
   g += `<circle cx="60" cy="150" r="7" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="132" cy="160" r="5" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="140" cy="138" r="3.5" fill="none" stroke="${LINE}" stroke-width="1"/><circle cx="48" cy="128" r="4" fill="none" stroke="${LINE}" stroke-width="1"/>`;
-  g += withWheel ? `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="none" stroke="${LINE}" stroke-width="1.4"/>` : `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="#fff" stroke="${LINE}" stroke-width="1" stroke-dasharray="2.4 1.6"/><text x="${Wc.x}" y="${Wc.y - 2}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#6b5a66" font-family="Assistant,Arial">✂️ גוזרים את</text><text x="${Wc.x}" y="${Wc.y + 4}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#6b5a66" font-family="Assistant,Arial">חלון הפנים</text>`;
-  g += `<circle cx="${P.x}" cy="${P.y}" r="2" fill="${LINE}"/>` + (withWheel ? "" : `<text x="${P.x}" y="${P.y + 7}" font-size="4" text-anchor="middle" fill="#6b5a66" font-family="Assistant,Arial">נקודת חיבור</text>`);
+  g += withWheel ? `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="none" stroke="${LINE}" stroke-width="1.4"/>` : `<circle cx="${Wc.x}" cy="${Wc.y}" r="20.5" fill="#fff" stroke="${LINE}" stroke-width="1" stroke-dasharray="2.4 1.6"/><text x="${Wc.x}" y="${Wc.y - 2}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#566B67" font-family="Assistant,Arial">✂️ גוזרים את</text><text x="${Wc.x}" y="${Wc.y + 4}" font-size="4.6" text-anchor="middle" font-weight="700" fill="#566B67" font-family="Assistant,Arial">חלון הפנים</text>`;
+  g += `<circle cx="${P.x}" cy="${P.y}" r="2" fill="${LINE}"/>` + (withWheel ? "" : `<text x="${P.x}" y="${P.y + 7}" font-size="4" text-anchor="middle" fill="#566B67" font-family="Assistant,Arial">נקודת חיבור</text>`);
   return `<svg viewBox="0 0 190 200" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
 }
 function wheelG(){
   const n = EMO.length, R = 70; let g = "";
-  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FFE3F4","#DDF5E5"];
+  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FDE6F6","#DDF5E5"];
   EMO.forEach((e, k) => {
     const a0 = (k - .5) / n * Math.PI * 2 - Math.PI/2, a1 = (k + .5) / n * Math.PI * 2 - Math.PI/2;
     g += `<path d="M0 0 L${(R*Math.cos(a0)).toFixed(2)} ${(R*Math.sin(a0)).toFixed(2)} A${R} ${R} 0 0 1 ${(R*Math.cos(a1)).toFixed(2)} ${(R*Math.sin(a1)).toFixed(2)} Z" fill="${cols[k]}" stroke="${LINE}" stroke-width=".8"/>`;
@@ -795,7 +795,7 @@ function wheelG(){
 }
 function meterSVG(){
   const cx = 90, cy = 92, R = 86, r = 30, n = EMO.length; let g = "";
-  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FFE3F4","#DDF5E5"];
+  const cols = ["#FFF6CF","#DCEFFD","#FFE0E3","#F1E3FF","#FFEBD2","#FDE6F6","#DDF5E5"];
   const pt = (rad, a) => `${(cx + rad*Math.cos(a)).toFixed(2)} ${(cy + rad*Math.sin(a)).toFixed(2)}`;
   EMO.forEach((e, k) => {
     const a0 = Math.PI + k / n * Math.PI, a1 = Math.PI + (k + 1) / n * Math.PI, am = (a0 + a1) / 2;
@@ -809,7 +809,7 @@ function meterSVG(){
   return `<svg viewBox="0 0 180 98" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
 }
 function arrowSVG(){
-  return `<svg viewBox="0 0 22 82" xmlns="http://www.w3.org/2000/svg"><path d="M11 2 L20 18 L14 18 L14 70 Q14 79 11 79 Q8 79 8 70 L8 18 L2 18 Z" fill="#FF56C2" stroke="${LINE}" stroke-width="1" stroke-dasharray="2 1.4" stroke-linejoin="round"/><circle cx="11" cy="70" r="1.6" fill="${LINE}"/></svg>`;
+  return `<svg viewBox="0 0 22 82" xmlns="http://www.w3.org/2000/svg"><path d="M11 2 L20 18 L14 18 L14 70 Q14 79 11 79 Q8 79 8 70 L8 18 L2 18 Z" fill="#FA57C4" stroke="${LINE}" stroke-width="1" stroke-dasharray="2 1.4" stroke-linejoin="round"/><circle cx="11" cy="70" r="1.6" fill="${LINE}"/></svg>`;
 }
 
 const head = (t) => `<div class="s-head"><h1>${t}</h1><span class="nm">השם שלי: ____________</span></div><div class="s-rb"></div>`;
@@ -818,7 +818,7 @@ function sheetJar(){
     <div class="p-box"><h2>איך עושים?</h2><ol><li>בוחרים צבע לכל רגש וצובעים את הריבוע שלידו.</li><li>כמה הרגשתי היום מכל רגש? צובעים בצנצנת שכבות, כל רגש בצבע שלו.</li><li>מספרים: מה גרם לי להרגיש ככה?</li></ol></div>
     <div style="display:flex;gap:8mm;align-items:center;flex:1;min-height:0">
       <div style="width:108mm;flex-shrink:0">${jarSVG()}</div>
-      <div class="legend" style="flex:1">${EMO.map(e => `<div><svg viewBox="0 0 200 200">${faceG(e.f)}</svg><span>${e.w}</span><i></i></div>`).join("")}<div style="font-size:10pt;color:#6b5a66;justify-content:flex-end">הצבע שלי ↑</div></div>
+      <div class="legend" style="flex:1">${EMO.map(e => `<div><svg viewBox="0 0 200 200">${faceG(e.f)}</svg><span>${e.w}</span><i></i></div>`).join("")}<div style="font-size:10pt;color:#566B67;justify-content:flex-end">הצבע שלי ↑</div></div>
     </div>
     <div class="p-box"><h2>✏️ לגדולים (או שההורה כותב)</h2><div class="lines"><div>היום הרגשתי הכי הרבה:</div><div>כי:</div></div></div>
   </div>${sitePrintFooter("feelings", "", "../../img/logo.png")}</div>`;

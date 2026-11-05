@@ -2,15 +2,15 @@
 
 /* ===== הסטודיו (מסך הגן) ===== */
 .gm-stage{margin-top:18px;background:#fff;border-radius:30px;padding:16px clamp(12px,2.4vw,28px) 24px;box-shadow:0 10px 30px rgba(78,133,118,.18);position:relative;overflow:hidden;font-size:clamp(17px,1.6vw,24px)}
-.gm-stage::before{content:"";position:absolute;inset:0 0 auto 0;height:9px;background:linear-gradient(90deg,#FF56C2,#FFD84D,#3AA7F0,#6F988B)}
+.gm-stage::before{content:"";position:absolute;inset:0 0 auto 0;height:9px;background:linear-gradient(90deg,#FA57C4,#FFD84D,#3AA7F0,#6DAFA1)}
 .gm-stage:fullscreen{border-radius:0;overflow:auto;padding:24px 4vw;font-size:clamp(20px,2vw,30px);background:#fff}
 .gm-stage:-webkit-full-screen{border-radius:0;overflow:auto;padding:24px 4vw;background:#fff}
 .gm-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;margin-top:6px}
 .gm-steps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px}
 .gm-steps li{font-size:13px;font-weight:800;color:#9a8f97;background:#F3F0F2;border-radius:999px;padding:3px 10px}
-.gm-steps li.on{background:#FF56C2;color:#fff}.gm-steps li.done{background:#E1F0EA;color:#4E8576}
+.gm-steps li.on{background:#FA57C4;color:#fff}.gm-steps li.done{background:#E1F0EA;color:#2F6F63}
 .gm-tools{display:flex;gap:6px}
-.gm-tools button{font:inherit;font-size:14px;font-weight:800;background:#fff;border:2px solid #CDE7DC;color:#4E8576;border-radius:999px;padding:5px 11px;cursor:pointer}
+.gm-tools button{font:inherit;font-size:14px;font-weight:800;background:#fff;border:2px solid #CDE7DC;color:#2F6F63;border-radius:999px;padding:5px 11px;cursor:pointer}
 .gm-tools button.off{opacity:.5;text-decoration:line-through}
 @media (max-width:520px){.gm-tools button span{display:none}}
 
@@ -22,15 +22,15 @@
 @keyframes gmJoy{50%{transform:translateY(-22px) rotate(-6deg)}}
 .gm-bubble{flex:1;background:#FFF6DD;border:3px solid #FFD98A;border-radius:28px 28px 28px 6px;padding:clamp(10px,1.4vw,18px) clamp(14px,2vw,24px);position:relative;min-height:70px}
 .gm-bubble p{margin:0}
-#bubble{font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(21px,2.5vw,40px);line-height:1.25;color:#2B1526}
-.gm-wait{margin-top:8px!important;background:#fff;border:2px dashed #FF56C2;border-radius:16px;padding:6px 12px;font-weight:800;color:#C13671;font-size:clamp(16px,1.6vw,24px);animation:gmPop .4s ease}
+#bubble{font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(21px,2.5vw,40px);line-height:1.25;color:#213330}
+.gm-wait{margin-top:8px!important;background:#fff;border:2px dashed #FA57C4;border-radius:16px;padding:6px 12px;font-weight:800;color:#C5309A;font-size:clamp(16px,1.6vw,24px);animation:gmPop .4s ease}
 @keyframes gmPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 
 .gm-body{min-height:200px}
-.gm-btn{font:inherit;font-weight:800;font-size:clamp(17px,1.6vw,24px);background:#E0399F;color:#fff;border:0;border-radius:999px;padding:.55em 1.3em;box-shadow:0 5px 0 #A3216F;cursor:pointer}
+.gm-btn{font:inherit;font-weight:800;font-size:clamp(17px,1.6vw,24px);background:#E33BAE;color:#fff;border:0;border-radius:999px;padding:.55em 1.3em;box-shadow:0 5px 0 #B5288A;cursor:pointer}
 .gm-btn:disabled{opacity:.45;cursor:default}
-.gm-btn:not(:disabled):active{transform:translateY(3px);box-shadow:0 2px 0 #A3216F}
-.gm-btn.sec{background:#fff;color:#4E8576;border:3px solid #4E8576;box-shadow:0 4px 0 #CDE7DC}
+.gm-btn:not(:disabled):active{transform:translateY(3px);box-shadow:0 2px 0 #B5288A}
+.gm-btn.sec{background:#fff;color:#2F6F63;border:3px solid #2F6F63;box-shadow:0 4px 0 #CDE7DC}
 .gm-btn.wa{background:#1FA855;box-shadow:0 5px 0 #13773A}
 .gm-btn.big{font-size:clamp(20px,2.2vw,32px)}
 .gm-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
@@ -38,62 +38,62 @@
 
 /* כרטיסי בחירה (נושא, סוג משחק) */
 .gm-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(130px,14vw,190px),1fr));gap:12px}
-.gm-tile{font:inherit;font-weight:800;background:#F4FAF7;border:3px solid #CDE7DC;border-radius:22px;padding:14px 8px;cursor:pointer;color:#2B1526;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:clamp(16px,1.6vw,24px);transition:transform .15s}
+.gm-tile{font:inherit;font-weight:800;background:#F4FAF7;border:3px solid #CDE7DC;border-radius:22px;padding:14px 8px;cursor:pointer;color:#213330;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:clamp(16px,1.6vw,24px);transition:transform .15s}
 .gm-tile b{font-size:clamp(38px,4.4vw,64px);line-height:1}
-.gm-tile small{font-weight:600;color:#6b5a66;font-size:.7em}
-.gm-tile:hover,.gm-tile:focus-visible{transform:translateY(-3px);border-color:#FF56C2}
-.gm-tile.pick{background:#FFE3F4;border-color:#FF56C2}
+.gm-tile small{font-weight:600;color:#566B67;font-size:.7em}
+.gm-tile:hover,.gm-tile:focus-visible{transform:translateY(-3px);border-color:#FA57C4}
+.gm-tile.pick{background:#FDE6F6;border-color:#FA57C4}
 .gm-tiles.types{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
 
 /* שורת הקלדה לגננת */
 .gm-in{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;margin:10px 0}
-.gm-in input{flex:1;min-width:0;width:100%;font:inherit;font-size:clamp(20px,2.2vw,32px);border:3px solid #CDE7DC;border-radius:18px;padding:.35em .6em;background:#fff;color:#2B1526}
-.gm-in input:focus{outline:none;border-color:#FF56C2}
+.gm-in input{flex:1;min-width:0;width:100%;font:inherit;font-size:clamp(20px,2.2vw,32px);border:3px solid #CDE7DC;border-radius:18px;padding:.35em .6em;background:#fff;color:#213330}
+.gm-in input:focus{outline:none;border-color:#FA57C4}
 .gm-in .gm-btn{flex-shrink:0}
 @media (max-width:520px){.gm-in{flex-direction:column}.gm-in .gm-btn{width:100%}}
-.gm-label{font-weight:800;color:#4E8576;font-size:.85em;margin-top:8px}
+.gm-label{font-weight:800;color:#2F6F63;font-size:.85em;margin-top:8px}
 .gm-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
-.gm-chips button{font:inherit;font-size:clamp(14px,1.3vw,19px);font-weight:800;background:#fff;border:2px solid #FFC2E6;color:#C13671;border-radius:999px;padding:4px 12px;cursor:pointer}
+.gm-chips button{font:inherit;font-size:clamp(14px,1.3vw,19px);font-weight:800;background:#fff;border:2px solid #FFC2E6;color:#C5309A;border-radius:999px;padding:4px 12px;cursor:pointer}
 .gm-chips button.fun{border-color:#FFD84D;color:#9A5800;background:#FFF6DD}
 
 /* בועות הרעיונות */
 .gm-ideas{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;min-height:60px}
-.gm-idea{font:inherit;font-weight:800;font-size:clamp(18px,2vw,30px);background:#fff;border:3px solid #FFC2E6;border-radius:999px;padding:.25em .8em .25em .5em;display:inline-flex;align-items:center;gap:.3em;cursor:pointer;color:#2B1526;animation:gmIdea .5s cubic-bezier(.3,1.6,.5,1);transition:transform .9s cubic-bezier(.5,0,.3,1),opacity .3s}
+.gm-idea{font:inherit;font-weight:800;font-size:clamp(18px,2vw,30px);background:#fff;border:3px solid #FFC2E6;border-radius:999px;padding:.25em .8em .25em .5em;display:inline-flex;align-items:center;gap:.3em;cursor:pointer;color:#213330;animation:gmIdea .5s cubic-bezier(.3,1.6,.5,1);transition:transform .9s cubic-bezier(.5,0,.3,1),opacity .3s}
 .gm-idea b{font-size:1.25em}
 .gm-idea.off{opacity:.35;border-style:dashed}
 .gm-idea.on{border-color:#1FA855;background:#EAF8EF}
 @keyframes gmIdea{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:scale(1);opacity:1}}
-.gm-count{font-weight:800;color:#4E8576}
+.gm-count{font-weight:800;color:#2F6F63}
 .gm-meter{height:14px;background:#F3F0F2;border-radius:999px;overflow:hidden;margin:6px 0}
-.gm-meter i{display:block;height:100%;background:linear-gradient(90deg,#FF56C2,#FFD84D);border-radius:999px;transition:width .4s}
+.gm-meter i{display:block;height:100%;background:linear-gradient(90deg,#FA57C4,#FFD84D);border-radius:999px;transition:width .4s}
 
 /* כל ילד אומר – מי בתור */
 .gm-kids{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:#F4FAF7;border-radius:18px;padding:8px 14px;font-weight:800}
-.gm-kn{color:#4E8576}
+.gm-kn{color:#2F6F63}
 .gm-kdots{display:flex;flex-wrap:wrap;gap:4px;flex:1;min-width:120px}
-.gm-kdots i{width:16px;height:16px;border-radius:50%;background:#FF56C2;display:inline-block}
+.gm-kdots i{width:16px;height:16px;border-radius:50%;background:#FA57C4;display:inline-block}
 .gm-kdots i.nx{width:auto;min-width:26px;height:26px;padding:0 6px;border-radius:999px;background:#FFD84D;color:#7A4600;font-style:normal;font-size:14px;display:grid;place-items:center;animation:gmPulse 1.2s ease-in-out infinite}
 @keyframes gmPulse{50%{transform:scale(1.15)}}
 .gm-turn{background:#FFD84D;color:#7A4600;border-radius:999px;padding:4px 14px;font-size:clamp(16px,1.7vw,26px)}
 .gm-sent{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(26px,3.4vw,52px);margin:6px 0 10px;line-height:1.3}
-.gm-blank{display:inline-block;min-width:2.6em;border-bottom:5px dashed #FF56C2;color:#FF56C2;text-align:center}
+.gm-blank{display:inline-block;min-width:2.6em;border-bottom:5px dashed #FA57C4;color:#FA57C4;text-align:center}
 @media (prefers-reduced-motion:reduce){.gm-kdots i.nx{animation:none}}
 
 /* בוחר אימוג'י */
 .gm-emo{display:flex;flex-wrap:wrap;gap:4px;background:#F4FAF7;border-radius:16px;padding:8px;margin:6px 0}
 .gm-emo button{font-size:clamp(24px,2.4vw,34px);background:#fff;border:2px solid transparent;border-radius:12px;width:1.7em;height:1.7em;cursor:pointer;line-height:1}
-.gm-emo button:hover{border-color:#FF56C2}
+.gm-emo button:hover{border-color:#FA57C4}
 
 /* כרטיס מילוי (שאלה / רמזים) */
 .gm-fill{background:#F4FAF7;border-radius:24px;padding:clamp(12px,1.6vw,22px);margin-top:8px}
 .gm-fill-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .gm-fill-h b{font-size:clamp(40px,4.6vw,70px);line-height:1}
 .gm-fill-h h3{margin:0;font-size:clamp(24px,2.8vw,42px)}
-.gm-fill-h span{background:#fff;border-radius:999px;padding:3px 12px;font-weight:800;color:#4E8576;font-size:.75em}
+.gm-fill-h span{background:#fff;border-radius:999px;padding:3px 12px;font-weight:800;color:#2F6F63;font-size:.75em}
 .gm-done{list-style:none;padding:0;margin:10px 0;display:grid;gap:6px}
 .gm-done li{background:#fff;border-radius:14px;padding:6px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.gm-done li small{color:#4E8576;font-weight:800}
-.gm-done li button{margin-inline-start:auto;font:inherit;font-size:.75em;background:none;border:0;color:#C13671;font-weight:800;cursor:pointer}
+.gm-done li small{color:#2F6F63;font-weight:800}
+.gm-done li button{margin-inline-start:auto;font:inherit;font-size:.75em;background:none;border:0;color:#C5309A;font-weight:800;cursor:pointer}
 
 /* אזהרה עדינה */
 .gm-warn{background:#FFF1C9;border:3px solid #FFD98A;border-radius:20px;padding:12px 16px;margin:10px 0;font-weight:700}
@@ -101,64 +101,64 @@
 
 /* בונים את המשחק */
 .gm-build{text-align:center;padding:10px 0}
-.gm-build .act{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(26px,3.4vw,52px);margin:6px 0;color:#C13671}
+.gm-build .act{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(26px,3.4vw,52px);margin:6px 0;color:#C5309A}
 .gm-build .num{font-family:Fredoka,sans-serif;font-size:clamp(80px,12vw,180px);line-height:1;color:#3AA7F0;min-height:1em}
 .gm-build .num.pop{animation:gmPop .35s ease}
-.gm-build .line{font-weight:800;color:#4E8576;min-height:1.5em}
+.gm-build .line{font-weight:800;color:#2F6F63;min-height:1.5em}
 .gm-bar2{height:22px;background:#F3F0F2;border-radius:999px;overflow:hidden;max-width:620px;margin:12px auto}
-.gm-bar2 i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#FF56C2 0 16px,#FF8AD6 16px 32px);border-radius:999px;transition:width .3s linear}
+.gm-bar2 i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#FA57C4 0 16px,#FF8AD6 16px 32px);border-radius:999px;transition:width .3s linear}
 
 /* סיום */
 .gm-finish{display:grid;gap:12px}
 .gm-finish label{font-weight:800}
-.gm-finish .hint{font-size:.8em;color:#6b5a66;margin:2px 0 0}
+.gm-finish .hint{font-size:.8em;color:#566B67;margin:2px 0 0}
 .gm-ok{display:flex;gap:10px;align-items:flex-start;background:#F4FAF7;border-radius:16px;padding:10px 12px;font-size:.85em;cursor:pointer}
-.gm-ok input{width:24px;height:24px;flex-shrink:0;margin-top:2px;accent-color:#E0399F}
+.gm-ok input{width:24px;height:24px;flex-shrink:0;margin-top:2px;accent-color:#E33BAE}
 .gm-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
 .gm-act{background:#fff;border:3px solid #CDE7DC;border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:8px}
 .gm-act h4{margin:0;font-family:Fredoka,Assistant,sans-serif;font-size:1.1em}
-.gm-act p{margin:0;font-size:.8em;color:#6b5a66;flex:1}
+.gm-act p{margin:0;font-size:.8em;color:#566B67;flex:1}
 .gm-copied{color:#1FA855;font-weight:800;min-height:1.3em;font-size:.85em}
 
 /* ===== המשחק עצמו (גם בעמוד ההורים) ===== */
 .gm-play{position:relative;overflow:hidden}
 .gm-phead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between;background:#F4FAF7;border-radius:18px;padding:8px 14px;font-weight:800}
-.gm-pt{font-family:Fredoka,Assistant,sans-serif;color:#C13671;font-size:1.05em}
-.gm-pg{color:#4E8576}.gm-pp{color:#6b5a66}
+.gm-pt{font-family:Fredoka,Assistant,sans-serif;color:#C5309A;font-size:1.05em}
+.gm-pg{color:#2F6F63}.gm-pp{color:#566B67}
 .gm-area{padding:14px 0}
 .gm-q,.gm-w{text-align:center}
 .gm-q-e,.gm-w-q{font-size:clamp(60px,8vw,120px);line-height:1}
 .gm-q-t,.gm-w h3{font-size:clamp(26px,3.4vw,52px);margin:8px 0}
 .gm-say{display:none!important}
-.gm-say,.gm-more{font:inherit;font-weight:800;font-size:.85em;background:#fff;border:2px solid #CDE7DC;color:#4E8576;border-radius:999px;padding:5px 14px;cursor:pointer;margin:2px}
+.gm-say,.gm-more{font:inherit;font-weight:800;font-size:.85em;background:#fff;border:2px solid #CDE7DC;color:#2F6F63;border-radius:999px;padding:5px 14px;cursor:pointer;margin:2px}
 .gm-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:16px 0 8px}
-.gm-opt{font:inherit;font-weight:800;font-size:clamp(20px,2.4vw,36px);background:#fff;border:4px solid #CDE7DC;border-radius:24px;padding:.6em .5em;cursor:pointer;color:#2B1526;display:flex;align-items:center;justify-content:center;gap:.4em;min-height:2.6em;box-shadow:0 5px 0 #CDE7DC;transition:transform .15s}
+.gm-opt{font:inherit;font-weight:800;font-size:clamp(20px,2.4vw,36px);background:#fff;border:4px solid #CDE7DC;border-radius:24px;padding:.6em .5em;cursor:pointer;color:#213330;display:flex;align-items:center;justify-content:center;gap:.4em;min-height:2.6em;box-shadow:0 5px 0 #CDE7DC;transition:transform .15s}
 .gm-opt:hover{transform:translateY(-2px)}
 .gm-opt b{font-size:1.4em}
-.gm-ol{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:#FFE3F4;color:#C13671;font-size:.75em;flex-shrink:0}
+.gm-ol{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:#FDE6F6;color:#C5309A;font-size:.75em;flex-shrink:0}
 .gm-opt.ok{border-color:#1FA855;background:#EAF8EF;box-shadow:0 5px 0 #9ED9B4;animation:gmJoy .5s}
 .gm-opt.no{opacity:.4;animation:gmShake .4s}
 @keyframes gmShake{25%,75%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
-.gm-fb{min-height:1.6em;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,2.6vw,40px);color:#C13671}
+.gm-fb{min-height:1.6em;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,2.6vw,40px);color:#C5309A}
 .gm-big{font-size:1.6em;vertical-align:middle}
 .gm-clues{list-style:none;padding:0;margin:8px auto;display:grid;gap:8px;max-width:760px}
 .gm-clues li{background:#FFF6DD;border:3px solid #FFD98A;border-radius:18px;padding:.4em .8em;font-weight:800;font-size:clamp(20px,2.4vw,34px);animation:gmPop .4s ease}
-.gm-w-ask{font-weight:800;color:#4E8576;margin:10px 0 0}
-.gm-m-help{text-align:center;font-weight:800;color:#4E8576;margin:4px 0 10px}
+.gm-w-ask{font-weight:800;color:#2F6F63;margin:10px 0 0}
+.gm-m-help{text-align:center;font-weight:800;color:#2F6F63;margin:4px 0 10px}
 .gm-grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr);gap:clamp(6px,1vw,14px);max-width:min(100%,calc(var(--cols,4) * 170px));margin:0 auto}
 @media (max-width:520px){.gm-grid{grid-template-columns:repeat(min(var(--cols,4),4),1fr)}}
 @supports not (grid-template-columns:repeat(min(4,4),1fr)){@media (max-width:520px){.gm-grid{grid-template-columns:repeat(4,1fr)}}}
 .gm-card{aspect-ratio:3/4;border:0;padding:0;border-radius:18px;cursor:pointer;position:relative;background:none;font:inherit;perspective:600px}
 .gm-card>span{position:absolute;inset:0;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .45s}
-.gm-back{background:linear-gradient(135deg,#FF56C2,#B05BE8);color:#fff;font-size:clamp(26px,3vw,44px);box-shadow:0 4px 0 #A3216F}
+.gm-back{background:linear-gradient(135deg,#FA57C4,#B05BE8);color:#fff;font-size:clamp(26px,3vw,44px);box-shadow:0 4px 0 #B5288A}
 .gm-front{background:#fff;border:3px solid #CDE7DC;transform:rotateY(180deg);padding:4px}
 .gm-front b{font-size:clamp(32px,4.4vw,66px);line-height:1.1}
-.gm-front small{font-weight:800;font-size:clamp(12px,1.4vw,20px);text-align:center;line-height:1.1;color:#2B1526;word-break:break-word}
+.gm-front small{font-weight:800;font-size:clamp(12px,1.4vw,20px);text-align:center;line-height:1.1;color:#213330;word-break:break-word}
 .gm-card.up .gm-back{transform:rotateY(180deg)}.gm-card.up .gm-front{transform:rotateY(360deg)}
 .gm-card.got .gm-front{border-color:#1FA855;background:#EAF8EF}
 .gm-win{text-align:center;padding:10px 0}
 .gm-win-e{font-size:clamp(70px,9vw,140px);animation:gmJoy .7s ease 2}
-.gm-win h3{font-size:clamp(28px,4vw,60px);margin:6px 0;color:#C13671}
+.gm-win h3{font-size:clamp(28px,4vw,60px);margin:6px 0;color:#C5309A}
 .gm-win-x{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
 .gm-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
 .gm-confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:gmFall linear forwards}
@@ -167,12 +167,12 @@
 
 /* ===== המשחקים האמיתיים (arcade.js) ===== */
 .gma-title{text-align:center;margin:0 0 8px}
-.gma-title b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(24px,3vw,44px);color:#C13671}
-.gma-title span{font-weight:700;color:#4E8576}
+.gma-title b{display:block;font-family:Fredoka,Assistant,sans-serif;font-size:clamp(24px,3vw,44px);color:#C5309A}
+.gma-title span{font-weight:700;color:#2F6F63}
 .gma-wrap{position:relative}
 .gma-cv{display:block;width:100%;height:auto;margin:0 auto;border-radius:22px;border:4px solid #CDE7DC;touch-action:none;background:#fff;outline:none}
-.gma-cv:focus-visible{border-color:#FF56C2}
-.gma-pop{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:2;background:#fff;border:3px solid #FF56C2;border-radius:999px;padding:.2em .9em;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(18px,2.4vw,36px);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none;box-shadow:0 6px 16px rgba(193,54,113,.2)}
+.gma-cv:focus-visible{border-color:#FA57C4}
+.gma-pop{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:2;background:#fff;border:3px solid #FA57C4;border-radius:999px;padding:.2em .9em;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(18px,2.4vw,36px);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none;box-shadow:0 6px 16px rgba(193,54,113,.2)}
 .gma-pop.on{animation:gmaPop 2.6s ease forwards}
 @keyframes gmaPop{0%{opacity:0;transform:translateX(-50%) scale(.6)}10%{opacity:1;transform:translateX(-50%) scale(1.06)}20%{transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0}}
 .gma-ctrl{display:flex;gap:12px;justify-content:center;margin-top:10px}
@@ -180,20 +180,20 @@
 .gma-pad{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px}
 .gma-pad div{display:flex;gap:6px}
 .gma-pad button{font-size:30px;width:64px;height:58px;border-radius:16px;border:3px solid #CDE7DC;background:#fff;cursor:pointer;touch-action:manipulation}
-.gma-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-top:14px;font-weight:800;color:#4E8576;font-size:.8em}
-.gma-bar button{font:inherit;font-weight:800;background:#fff;border:2px solid #CDE7DC;color:#2B1526;border-radius:999px;padding:5px 12px;cursor:pointer}
-.gma-bar button.on{border-color:#FF56C2;background:#FFE3F4}
+.gma-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-top:14px;font-weight:800;color:#2F6F63;font-size:.8em}
+.gma-bar button{font:inherit;font-weight:800;background:#fff;border:2px solid #CDE7DC;color:#213330;border-radius:999px;padding:5px 12px;cursor:pointer}
+.gma-bar button.on{border-color:#FA57C4;background:#FDE6F6}
 .gma-wheel{text-align:center;padding:20px 0}
-.gma-wl{font-weight:800;color:#4E8576;font-size:1.1em}
-.gma-wi{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(28px,3.6vw,54px);margin-top:10px;color:#C13671}
+.gma-wl{font-weight:800;color:#2F6F63;font-size:1.1em}
+.gma-wi{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(28px,3.6vw,54px);margin-top:10px;color:#C5309A}
 .gma-wi b{display:block;font-size:2.4em;line-height:1.1}
 .gma-lotto{text-align:center}
-.gma-ball{margin:0 auto 10px;max-width:640px;min-height:170px;background:radial-gradient(circle at 30% 25%,#fff,#FFE3F4);border:5px solid #FF56C2;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px}
+.gma-ball{margin:0 auto 10px;max-width:640px;min-height:170px;background:radial-gradient(circle at 30% 25%,#fff,#FDE6F6);border:5px solid #FA57C4;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px}
 .gma-ball.on{animation:gmJoy .6s ease}
 .gma-q{font-size:clamp(64px,8vw,120px);line-height:1.05}
 .gma-ball b{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(26px,3.4vw,52px)}
-.gma-ball small{font-weight:700;color:#6b5a66}
-.gma-tip{font-size:.75em;color:#6b5a66;max-width:720px;margin:6px auto}
+.gma-ball small{font-weight:700;color:#566B67}
+.gma-tip{font-size:.75em;color:#566B67;max-width:720px;margin:6px auto}
 .gma-drawn{justify-content:center}
 .gma-drawn .gm-idea{font-size:clamp(14px,1.4vw,20px);cursor:default}
 @media (prefers-reduced-motion:reduce){.gma-pop.on{animation:none;opacity:1}.gma-ball.on{animation:none}}
@@ -201,37 +201,37 @@
 /* החידון של סבאבוקלי */
 .gma-count{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:8px auto;max-width:720px}
 .gma-count i{font-style:normal;font-size:clamp(34px,4.4vw,64px);line-height:1}
-.gma-op{font-family:Fredoka,sans-serif;font-size:clamp(34px,4vw,60px);color:#C13671;margin:0 6px}
+.gma-op{font-family:Fredoka,sans-serif;font-size:clamp(34px,4vw,60px);color:#C5309A;margin:0 6px}
 .gma-math{font-family:Fredoka,sans-serif;font-size:clamp(30px,3.6vw,54px);direction:ltr;margin:4px 0}
 .gma-rows{flex-direction:column;gap:10px}
 .gma-rows div{display:flex;align-items:center;gap:6px;background:#F4FAF7;border-radius:16px;padding:6px 14px}
-.gma-rows b{font-family:Fredoka,sans-serif;font-size:24px;color:#4E8576;margin-inline-end:8px}
+.gma-rows b{font-family:Fredoka,sans-serif;font-size:24px;color:#2F6F63;margin-inline-end:8px}
 .gma-line{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:12px 0}
 .gma-line b{font-size:clamp(34px,4vw,56px)}
 .gma-slot{min-width:3em;min-height:1.6em;border:4px dashed #FF8AD6;border-radius:16px;background:#FFF0F8;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(24px,3vw,44px);padding:0 .35em;display:inline-flex;align-items:center;justify-content:center}
-.gma-slot.on{border-style:solid;border-color:#1FA855;background:#EAF8EF;color:#2B1526}
+.gma-slot.on{border-style:solid;border-color:#1FA855;background:#EAF8EF;color:#213330}
 .gma-tiles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0}
 .gma-tile{font:inherit;font-family:Fredoka,Assistant,sans-serif;font-weight:600;font-size:clamp(22px,2.8vw,40px);background:#FFF6DD;border:4px solid #FFD98A;border-radius:18px;padding:.25em .7em;cursor:pointer;box-shadow:0 5px 0 #FFE7B0}
 .gma-tile.used{opacity:.25}
 .gma-tile.no{animation:gmShake .4s}
 
 /* כרטיסי לוטו להדפסה – 4 בעמוד */
-.s-lotto{display:grid;grid-template-columns:1fr 1fr;gap:6mm;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#2B1526}
+.s-lotto{display:grid;grid-template-columns:1fr 1fr;gap:6mm;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#213330}
 .s-lotto.s-break{break-before:page;page-break-before:always}
-.s-lcard{border:2.5px solid #FF56C2;border-radius:5mm;padding:3mm;break-inside:avoid;height:128mm;display:flex;flex-direction:column}
-.s-lh{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:12pt;color:#C13671;display:flex;justify-content:space-between;gap:2mm;margin-bottom:2mm}
-.s-lh span{color:#4E8576;font-size:10pt}
+.s-lcard{border:2.5px solid #FA57C4;border-radius:5mm;padding:3mm;break-inside:avoid;height:128mm;display:flex;flex-direction:column}
+.s-lh{font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:12pt;color:#C5309A;display:flex;justify-content:space-between;gap:2mm;margin-bottom:2mm}
+.s-lh span{color:#2F6F63;font-size:10pt}
 .s-lg{display:grid;gap:2mm;flex:1}
 .s-lg div{border:1.5px solid #CDE7DC;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1mm}
 .s-lg b{font-size:26pt;line-height:1.1}
 .s-lg small{font-weight:700;font-size:10pt;line-height:1.15}
-.s-lf{text-align:center;font-size:8pt;color:#4E8576;margin-top:1.5mm}
+.s-lf{text-align:center;font-size:8pt;color:#2F6F63;margin-top:1.5mm}
 
 /* ===== סיכום להדפסה ===== */
-.s-page{font-family:Assistant,Arial,sans-serif;color:#2B1526;direction:rtl;font-size:12pt}
-.s-top{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #FF56C2;padding-bottom:3mm;font-weight:800;font-size:13pt;color:#4E8576}
-.s-page h1{font-family:Fredoka,Assistant,sans-serif;font-size:26pt;margin:5mm 0 1mm;color:#C13671}
-.s-page h3{font-family:Fredoka,Assistant,sans-serif;font-size:15pt;margin:5mm 0 2mm;color:#4E8576}
+.s-page{font-family:Assistant,Arial,sans-serif;color:#213330;direction:rtl;font-size:12pt}
+.s-top{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #FA57C4;padding-bottom:3mm;font-weight:800;font-size:13pt;color:#2F6F63}
+.s-page h1{font-family:Fredoka,Assistant,sans-serif;font-size:26pt;margin:5mm 0 1mm;color:#C5309A}
+.s-page h3{font-family:Fredoka,Assistant,sans-serif;font-size:15pt;margin:5mm 0 2mm;color:#2F6F63}
 .s-sub{margin:0;font-size:12.5pt}
 .s-ideas,.s-cards{display:flex;flex-wrap:wrap;gap:2.5mm}
 .s-ideas span{border:1.5px solid #FFC2E6;border-radius:999px;padding:1mm 3.5mm;font-weight:700}
@@ -239,8 +239,8 @@
 .s-cards b{font-size:22pt}
 .s-list{margin:0;padding-inline-start:7mm}.s-list li{margin:0 0 2.5mm;line-height:1.4}
 .s-kids{columns:2;column-gap:8mm}.s-kids li{break-inside:avoid;margin-bottom:1.5mm}
-.s-w{color:#6b5a66;font-size:10.5pt}
+.s-w{color:#566B67;font-size:10.5pt}
 .s-home{display:flex;gap:5mm;align-items:center;background:#E1F0EA;border-radius:5mm;padding:4mm;margin-top:6mm;font-size:12pt;break-inside:avoid}
-.s-home b{font-size:14pt;color:#C13671}
+.s-home b{font-size:14pt;color:#C5309A}
 .s-qr{width:30mm;height:30mm;flex-shrink:0}
 .s-qr svg{width:100%;height:100%}

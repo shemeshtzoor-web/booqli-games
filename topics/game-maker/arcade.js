@@ -54,7 +54,7 @@ window.GMA = (function(){
     var w = g.measureText(t).width + 14;
     g.fillStyle = "rgba(255,255,255,.92)"; g.strokeStyle = "#FFC2E6"; g.lineWidth = 2;
     g.beginPath(); if (g.roundRect) g.roundRect(x - w / 2, y - 11, w, 22, 11); else g.rect(x - w / 2, y - 11, w, 22); g.fill(); g.stroke();
-    g.fillStyle = "#2B1526"; g.fillText(t, x, y + 1); g.restore();
+    g.fillStyle = "#213330"; g.fillText(t, x, y + 1); g.restore();
   }
   // מקשים רק כשהמשחק על המסך (ובלי לגלול את העמוד עם רווח/חצים)
   function keys(cv, fn){
@@ -95,12 +95,12 @@ window.GMA = (function(){
       g.fillStyle = sky; g.fillRect(0, 0, W, H);
       g.fillStyle = "#fff"; clouds.forEach(function(k){ g.beginPath(); g.arc(k[0], k[1], 22, 0, 7); g.arc(k[0] + 24, k[1] + 6, 18, 0, 7); g.arc(k[0] - 24, k[1] + 6, 16, 0, 7); g.fill(); });
       g.fillStyle = "#BFE3C9"; g.beginPath(); g.moveTo(0, GROUND); for (var i = 0; i <= W; i += 40) g.lineTo(i, GROUND - 30 - 18 * Math.sin((i + dist * 0.3) / 90)); g.lineTo(W, GROUND); g.fill();
-      g.fillStyle = "#6F988B"; g.fillRect(0, GROUND, W, H - GROUND);
-      g.fillStyle = "#4E8576"; for (var j = -((dist) % 60); j < W; j += 60) g.fillRect(j, GROUND + 18, 30, 6);
+      g.fillStyle = "#6DAFA1"; g.fillRect(0, GROUND, W, H - GROUND);
+      g.fillStyle = "#2F6F63"; for (var j = -((dist) % 60); j < W; j += 60) g.fillRect(j, GROUND + 18, 30, 6);
       if (flag) { emoji(g, "🏁", flag, GROUND - 40, 64); }
       things.forEach(function(o){
         if (o.rock) emoji(g, o.rock, o.x, o.y, 44);
-        else { g.fillStyle = "#fff"; g.strokeStyle = "#FF56C2"; g.lineWidth = 4; g.beginPath(); g.arc(o.x, o.y, 30, 0, 7); g.fill(); g.stroke(); emoji(g, o.idea.e, o.x, o.y + 2, 36); label(g, short(o.idea.x, 16), o.x, o.y + 46); }
+        else { g.fillStyle = "#fff"; g.strokeStyle = "#FA57C4"; g.lineWidth = 4; g.beginPath(); g.arc(o.x, o.y, 30, 0, 7); g.fill(); g.stroke(); emoji(g, o.idea.e, o.x, o.y + 2, 36); label(g, short(o.idea.x, 16), o.x, o.y + 46); }
       });
       var bob = y >= GROUND - 1 ? Math.abs(Math.sin(t / 90)) * 6 : 0;
       g.save(); if (hurt > 0 && Math.floor(hurt / 120) % 2) g.globalAlpha = 0.35;
@@ -157,7 +157,7 @@ window.GMA = (function(){
       var sky = g.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, "#E3F4FF"); sky.addColorStop(1, "#FFF6DD");
       g.fillStyle = sky; g.fillRect(0, 0, W, H); g.fillStyle = "#CDE7DC"; g.fillRect(0, H - 30, W, 30);
       items.forEach(function(o){
-        if (o.idea) { g.fillStyle = "#fff"; g.strokeStyle = "#FF56C2"; g.lineWidth = 3; g.beginPath(); g.arc(o.x, o.y, 28, 0, 7); g.fill(); g.stroke(); emoji(g, o.idea.e, o.x, o.y + 2, 34); label(g, short(o.idea.x, 14), o.x, o.y + 42); }
+        if (o.idea) { g.fillStyle = "#fff"; g.strokeStyle = "#FA57C4"; g.lineWidth = 3; g.beginPath(); g.arc(o.x, o.y, 28, 0, 7); g.fill(); g.stroke(); emoji(g, o.idea.e, o.x, o.y + 2, 34); label(g, short(o.idea.x, 14), o.x, o.y + 42); }
         else { emoji(g, o.j[0], o.x, o.y, 44); }
       });
       emoji(g, "🧺", bx, H - 62, 78);
@@ -207,10 +207,10 @@ window.GMA = (function(){
     var draw = function(){
       g.fillStyle = "#F4FAF7"; g.fillRect(0, 0, W, W);
       g.fillStyle = "#E7F3ED"; for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) if ((i + j) % 2) g.fillRect(i * C, j * C, C, C);
-      if (food) { g.fillStyle = "#fff"; g.strokeStyle = "#FF56C2"; g.lineWidth = 3; g.beginPath(); g.arc(food.x * C + C / 2, food.y * C + C / 2, C / 2 - 1, 0, 7); g.fill(); g.stroke(); emoji(g, food.idea.e, food.x * C + C / 2, food.y * C + C / 2 + 2, C - 12); }
-      snake.forEach(function(s, k){ g.fillStyle = k ? (k % 2 ? "#FF8AD6" : "#FF56C2") : "#E0399F"; g.beginPath(); if (g.roundRect) g.roundRect(s[0] * C + 2, s[1] * C + 2, C - 4, C - 4, 10); else g.rect(s[0] * C + 2, s[1] * C + 2, C - 4, C - 4); g.fill(); });
+      if (food) { g.fillStyle = "#fff"; g.strokeStyle = "#FA57C4"; g.lineWidth = 3; g.beginPath(); g.arc(food.x * C + C / 2, food.y * C + C / 2, C / 2 - 1, 0, 7); g.fill(); g.stroke(); emoji(g, food.idea.e, food.x * C + C / 2, food.y * C + C / 2 + 2, C - 12); }
+      snake.forEach(function(s, k){ g.fillStyle = k ? (k % 2 ? "#FF8AD6" : "#FA57C4") : "#E33BAE"; g.beginPath(); if (g.roundRect) g.roundRect(s[0] * C + 2, s[1] * C + 2, C - 4, C - 4, 10); else g.rect(s[0] * C + 2, s[1] * C + 2, C - 4, C - 4); g.fill(); });
       var h = snake[0]; g.fillStyle = "#fff"; g.beginPath(); g.arc(h[0] * C + C * .33, h[1] * C + C * .38, 5, 0, 7); g.arc(h[0] * C + C * .67, h[1] * C + C * .38, 5, 0, 7); g.fill();
-      g.fillStyle = "#2B1526"; g.beginPath(); g.arc(h[0] * C + C * .33, h[1] * C + C * .38, 2.5, 0, 7); g.arc(h[0] * C + C * .67, h[1] * C + C * .38, 2.5, 0, 7); g.fill();
+      g.fillStyle = "#213330"; g.beginPath(); g.arc(h[0] * C + C * .33, h[1] * C + C * .38, 2.5, 0, 7); g.arc(h[0] * C + C * .67, h[1] * C + C * .38, 2.5, 0, 7); g.fill();
     };
     var step = function(){
       if (ctx.stopped() || !cv.isConnected) { clearInterval(timer); return; }

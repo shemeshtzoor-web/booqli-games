@@ -20,7 +20,7 @@ RS.ch = (name, x, y, h, o = {}) => {
   return `<g${tr}>${g}</g>`;
 };
 // קסדה על הראש (עם חור לקרן 😊)
-RS.helmetOn = (x, y, h, c = "#FF56C2") => {
+RS.helmetOn = (x, y, h, c = "#FA57C4") => {
   const s = h / 330, cx = x, cy = y - 290 * s;
   return `<g transform="translate(${cx} ${cy}) scale(${s})"><path d="M-112 26 Q-110 -58 -16 -64 L-12 -40 L12 -40 L16 -64 Q110 -58 112 26 Q0 6 -112 26Z" fill="${F(c)}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-80 -14 Q-50 -44 -20 -48 M80 -14 Q50 -44 20 -48" fill="none" stroke="${F("#fff")}" stroke-width="9" stroke-linecap="round" opacity=".8"/><path d="M-96 22 Q-104 64 -82 86 M96 22 Q104 64 82 86" fill="none" stroke="${INK}" stroke-width="6"/></g>`;
 };
@@ -73,8 +73,8 @@ RS.car = (x, y, col = "#3AA7F0", s = 1, dir = 1, extra = "") => `<g transform="t
   <circle cx="-52" cy="-6" r="20" fill="${F("#2B2F36")}" stroke="${INK}" stroke-width="4"/><circle cx="-52" cy="-6" r="8" fill="${F("#C9CED6")}" stroke="${INK}" stroke-width="3"/>
   <circle cx="62" cy="-6" r="20" fill="${F("#2B2F36")}" stroke="${INK}" stroke-width="4"/><circle cx="62" cy="-6" r="8" fill="${F("#C9CED6")}" stroke="${INK}" stroke-width="3"/>
   <rect x="88" y="-40" width="12" height="9" rx="3" fill="${F("#FFE066")}" stroke="${INK}" stroke-width="2.5"/></g>`;
-RS.ball = (x, y, r = 16) => `<g><circle cx="${x}" cy="${y}" r="${r}" fill="${F("#FF56C2")}" stroke="${INK}" stroke-width="3.5"/><path d="M${x - r} ${y} Q${x} ${y - r * .6} ${x + r} ${y} M${x} ${y - r} Q${x + r * .5} ${y} ${x} ${y + r}" fill="none" stroke="${RS.COLOR ? "#fff" : INK}" stroke-width="3"/></g>`;
-RS.bike = (x, y, s = 1, col = "#FF56C2") => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+RS.ball = (x, y, r = 16) => `<g><circle cx="${x}" cy="${y}" r="${r}" fill="${F("#FA57C4")}" stroke="${INK}" stroke-width="3.5"/><path d="M${x - r} ${y} Q${x} ${y - r * .6} ${x + r} ${y} M${x} ${y - r} Q${x + r * .5} ${y} ${x} ${y + r}" fill="none" stroke="${RS.COLOR ? "#fff" : INK}" stroke-width="3"/></g>`;
+RS.bike = (x, y, s = 1, col = "#FA57C4") => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="-48" cy="-30" r="30" fill="${F("#fff")}"/><circle cx="48" cy="-30" r="30" fill="${F("#fff")}"/><circle cx="-48" cy="-30" r="5" fill="${INK}"/><circle cx="48" cy="-30" r="5" fill="${INK}"/>
   <path d="M-48 -30 L-10 -30 L20 -74 L-22 -74 Z M-10 -30 L-22 -74 M20 -74 L48 -30 M14 -88 L20 -74 M8 -90 H26" stroke="${F(col)}" stroke-width="7"/>
   <path d="M-48 -30 L-10 -30 L20 -74 L-22 -74 Z M-10 -30 L-22 -74 M20 -74 L48 -30" stroke="${INK}" stroke-width="2" opacity="${RS.COLOR ? 0 : 1}"/>
@@ -82,7 +82,7 @@ RS.bike = (x, y, s = 1, col = "#FF56C2") => `<g transform="translate(${x} ${y}) 
 RS.scooter = (x, y, s = 1, col = "#3AA7F0") => `<g transform="translate(${x} ${y}) scale(${s})" stroke="${INK}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
   <rect x="-60" y="-26" width="100" height="12" rx="6" fill="${F(col)}"/><path d="M36 -20 L52 -110 M38 -112 H66" fill="none" stroke-width="7"/><path d="M36 -20 L52 -110" fill="none" stroke="${F(col)}" stroke-width="3"/>
   <circle cx="-50" cy="-10" r="13" fill="${F("#2B2F36")}"/><circle cx="46" cy="-10" r="13" fill="${F("#2B2F36")}"/></g>`;
-RS.helmet = (x, y, s = 1, c = "#FF56C2") => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-60 10 Q-60 -54 0 -56 Q60 -54 60 10 Q0 -4 -60 10Z" fill="${F(c)}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-36 -26 Q-20 -44 0 -46 M36 -26 Q20 -44 0 -46" fill="none" stroke="${RS.COLOR ? "#fff" : INK}" stroke-width="${RS.COLOR ? 7 : 2}" stroke-linecap="round" opacity=".85"/><path d="M-50 8 Q-56 38 -36 50 Q0 60 36 50 Q56 38 50 8" fill="none" stroke="${INK}" stroke-width="4"/><rect x="-10" y="44" width="20" height="10" rx="3" fill="${F("#2B2F36")}" stroke="${INK}" stroke-width="3"/></g>`;
+RS.helmet = (x, y, s = 1, c = "#FA57C4") => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-60 10 Q-60 -54 0 -56 Q60 -54 60 10 Q0 -4 -60 10Z" fill="${F(c)}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-36 -26 Q-20 -44 0 -46 M36 -26 Q20 -44 0 -46" fill="none" stroke="${RS.COLOR ? "#fff" : INK}" stroke-width="${RS.COLOR ? 7 : 2}" stroke-linecap="round" opacity=".85"/><path d="M-50 8 Q-56 38 -36 50 Q0 60 36 50 Q56 38 50 8" fill="none" stroke="${INK}" stroke-width="4"/><rect x="-10" y="44" width="20" height="10" rx="3" fill="${F("#2B2F36")}" stroke="${INK}" stroke-width="3"/></g>`;
 RS.seat = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"><path d="M-40 0 V-100 Q-40 -126 -14 -126 H14 Q40 -126 40 -100 V0Z" fill="${F("#9B5DE5")}"/><path d="M-52 -40 Q-52 -60 -40 -62 V0 H-52Z M52 -40 Q52 -60 40 -62 V0 H52Z" fill="${F("#7C3FD0")}"/><path d="M-22 -96 L0 -40 L22 -96" fill="none" stroke="${F("#FFD23F")}" stroke-width="8"/><rect x="-10" y="-46" width="20" height="14" rx="3" fill="${F("#C9CED6")}"/></g>`;
 RS.sign = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="-96" width="8" height="96" fill="${F("#7A8290")}" stroke="${INK}" stroke-width="3"/><path d="M-36 -164 L36 -164 L36 -92 L-36 -92Z" fill="${F("#2F6FD6")}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M-26 -102 L26 -102 L0 -154Z" fill="${F("#fff")}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><g transform="translate(0 -122) scale(.7)" fill="${INK}"><circle cx="2" cy="-18" r="6"/><path d="M-2 -10 L8 -10 L10 4 L18 16 L12 19 L4 8 L-4 20 L-11 16 L-3 2 L-12 -2 L-10 -8Z"/></g><path d="M-22 -100 h44" stroke="${INK}" stroke-width="3"/></g>`;
 RS.slide = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})" stroke="${INK}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M-40 0 V-110 M-10 0 V-110" fill="none"/><path d="M-40 -20 H-10 M-40 -50 H-10 M-40 -80 H-10" fill="none"/><rect x="-46" y="-118" width="42" height="12" rx="4" fill="${F("#FFD23F")}"/><path d="M-4 -112 Q30 -100 50 -40 Q60 -10 90 -4 L90 6 Q50 10 38 -34 Q24 -86 -4 -98Z" fill="${F("#FF9A2E")}"/></g>`;
@@ -97,7 +97,7 @@ RS.page = {
   // 2. הולכים על המדרכה, רחוק מהכביש
   2: () => RS.sky(W, H) + RS.cloud(120, 60, .7) + RS.house(110, 200, 1) + RS.tree(320, 200, .9) + RS.house(520, 200, 1, "#9ED6FF") + RS.road(W, 200, null, {walk: 120, road: 160, noBottom: 1})
      + RS.car(150, 440, "#3AA7F0", 1, 1) + RS.ch("saba", 470, 312, 120) + RS.ch("garb", 380, 312, 100) + RS.ch("hesh", 300, 312, 100) + RS.ch("shomer", 210, 312, 110)
-     + `<path d="M80 326 H600" stroke="${RS.COLOR ? "#FF56C2" : INK}" stroke-width="4" stroke-dasharray="10 10"/>`,
+     + `<path d="M80 326 H600" stroke="${RS.COLOR ? "#FA57C4" : INK}" stroke-width="4" stroke-dasharray="10 10"/>`,
   // 3. יד ביד
   3: () => RS.sky(W, H) + RS.tree(90, 300, 1.1) + RS.tree(560, 300, 1) + RS.grass(W, 300, H)
      + RS.ch("saba", 250, 440, 230) + RS.ch("lev", 400, 440, 160)
@@ -129,13 +129,13 @@ RS.page = {
   11: () => RS.sky(W, H) + RS.sun(560, 70) + RS.slide(520, 330, 1) + RS.tree(90, 330, 1.1) + RS.grass(W, 330, H)
      + ["garb", "hesh", "alef", "lev", "ona"].map((n, i) => RS.ch(n, 140 + i * 72, 450, 100)).join("") + RS.ch("shomer", 290, 360, 110) + RS.ch("booqli", 400, 360, 110) + confetti()
 };
-function heart(){ return `<path d="M0 12 C-30 -10 -18 -34 0 -20 C18 -34 30 -10 0 12Z" fill="${F("#FF56C2")}" stroke="${INK}" stroke-width="3"/>`; }
+function heart(){ return `<path d="M0 12 C-30 -10 -18 -34 0 -20 C18 -34 30 -10 0 12Z" fill="${F("#FA57C4")}" stroke="${INK}" stroke-width="3"/>`; }
 function stopHand(){ return `<circle r="44" fill="${F("#FF4D5E")}" stroke="${INK}" stroke-width="4"/><text direction="rtl" y="16" text-anchor="middle" font-size="46">✋</text>`; }
 function eyes(x, y, dir){ return `<g transform="translate(${x} ${y})"><circle r="38" fill="${F("#fff")}" stroke="${INK}" stroke-width="3"/><text direction="rtl" y="14" text-anchor="middle" font-size="40">👀</text><path d="M${dir * 46} 0 l${dir * 22} 0 m${-dir * 10} -10 l${dir * 10} 10 l${-dir * 10} 10" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></g>`; }
 function stars(){ return RS.COLOR ? [[60,50],[150,110],[260,40],[380,90],[440,30],[600,160],[90,180]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#FFF6B0"/>`).join("") : ""; }
 function lightBeam(){ return RS.COLOR ? `<path d="M470 384 L250 330 L250 450 Z" fill="#FFF6B0" opacity=".25"/>` : ""; }
 function bubble(t){ return `<path d="M-60 -30 H60 Q74 -30 74 -16 V14 Q74 28 60 28 H10 L-6 46 L-4 28 H-60 Q-74 28 -74 14 V-16 Q-74 -30 -60 -30Z" fill="${F("#fff")}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><text direction="rtl" y="10" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="28" font-weight="700" fill="${INK}">${t}</text>`; }
-function confetti(){ return RS.COLOR ? Array.from({length: 26}, (_, i) => `<rect x="${(i * 97) % 620 + 10}" y="${(i * 53) % 220 + 10}" width="10" height="16" rx="2" fill="${["#FF56C2","#3AA7F0","#FFD23F","#46C46E","#9B5DE5"][i % 5]}" transform="rotate(${(i * 37) % 90} ${(i * 97) % 620 + 15} ${(i * 53) % 220 + 18})"/>`).join("") : ""; }
+function confetti(){ return RS.COLOR ? Array.from({length: 26}, (_, i) => `<rect x="${(i * 97) % 620 + 10}" y="${(i * 53) % 220 + 10}" width="10" height="16" rx="2" fill="${["#FA57C4","#3AA7F0","#FFD23F","#46C46E","#9B5DE5"][i % 5]}" transform="rotate(${(i * 37) % 90} ${(i * 97) % 620 + 15} ${(i * 53) % 220 + 18})"/>`).join("") : ""; }
 function carInside(){
   // מכונית גדולה בחתך, ובפנים מושב בטיחות עם חֶשְׁבּוּקְלִי וחגורה
   let g = `<rect y="400" width="${W}" height="80" fill="${F("#5C6370")}" stroke="${INK}" stroke-width="3"/>`;

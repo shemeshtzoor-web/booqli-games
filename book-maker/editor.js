@@ -23,8 +23,8 @@ var FONTS = [
   ["Amatic SC","כתב יד"],["Karantina","צר ועליז"],["Bellefair","עדין"],
   ["Pacifico","English script"],["Patrick Hand","English hand"]
 ];
-var COLORS = ["#33263D","#000000","#FFFFFF","#C13671","#E0399F","#FF56C2","#F22A91","#7A5CFF","#2E7DD7","#073763","#4E8576","#1FA855","#F5A623","#FFDD55","#E53935","#8D6E63","#FFE3F4","#E1F0EA","#FFF7D6","#E3F0FF","#F1E6FF"];
-var BG_COLORS = ["#FFFFFF","#FFF7FB","#FFE3F4","#E1F0EA","#FFF7D6","#E3F0FF","#F1E6FF","#FFEDE0","#FFD1EC","#C9E8DA","#FFE9A8","#BFD9FF","#D9C6FF","#FF56C2","#6F988B","#33263D"];
+var COLORS = ["#33263D","#000000","#FFFFFF","#C5309A","#E33BAE","#FA57C4","#F22A91","#7A5CFF","#2E7DD7","#073763","#2F6F63","#1FA855","#F5A623","#FFDD55","#E53935","#8D6E63","#FDE6F6","#E1F0EA","#FFF7D6","#E3F0FF","#F1E6FF"];
+var BG_COLORS = ["#FFFFFF","#FFF7FB","#FDE6F6","#E1F0EA","#FFF7D6","#E3F0FF","#F1E6FF","#FFEDE0","#FFD1EC","#C9E8DA","#FFE9A8","#BFD9FF","#D9C6FF","#FA57C4","#6DAFA1","#33263D"];
 
 // ---------- מצב ----------
 var P = null;            // הפרויקט
@@ -80,16 +80,16 @@ function emptyPages(){ var o = {}; for (var i = 1; i <= NPAGES; i++) o[i] = { bg
 function brandItem(){ return { type: "brand", x: 316, y: 196, w: 60, h: 20, rot: 0, locked: true }; }
 function withIds(items){ return items.map(function(it){ it = clone(it); it.id = uid(); return it; }); }
 function newSample(){
-  var S = window.BOOK_SAMPLE, p = { v: 1, title: "הספר שלי", cover: { bg: "#FFE3F4", items: withIds(S.cover) }, pages: emptyPages() };
+  var S = window.BOOK_SAMPLE, p = { v: 1, title: "הספר שלי", cover: { bg: "#FDE6F6", items: withIds(S.cover) }, pages: emptyPages() };
   for (var k in S.pages) p.pages[k].items = withIds(S.pages[k]);
   return p;
 }
 function newBlank(){
-  var p = { v: 1, title: "הספר שלי", cover: { bg: "#FFE3F4", items: [] }, pages: emptyPages() };
+  var p = { v: 1, title: "הספר שלי", cover: { bg: "#FDE6F6", items: [] }, pages: emptyPages() };
   p.cover.items = withIds([
-    { type: "text", x: 35, y: 90, w: 170, h: 30, size: 40, text: "שם הספר", font: "Secular One", color: "#C13671", align: "center", rot: 0, hint: "text" },
+    { type: "text", x: 35, y: 90, w: 170, h: 30, size: 40, text: "שם הספר", font: "Secular One", color: "#C5309A", align: "center", rot: 0, hint: "text" },
     { type: "img", x: 45, y: 135, w: 150, h: 75, src: "", rot: 0, clip: "round", hint: "photo" },
-    { type: "text", x: 266, y: 90, w: 160, h: 20, size: 16, text: "הספר נוצר באהבה\nעל ידי: ___", font: "Varela Round", bold: true, color: "#C13671", align: "center", rot: 0, hint: "text" },
+    { type: "text", x: 266, y: 90, w: 160, h: 20, size: 16, text: "הספר נוצר באהבה\nעל ידי: ___", font: "Varela Round", bold: true, color: "#C5309A", align: "center", rot: 0, hint: "text" },
     brandItem()
   ]);
   p.pages[1].items = withIds([{ type: "text", x: 23, y: 80, w: 160, h: 20, size: 20, text: "הַסֵּפֶר הַזֶּה שַׁיָּךְ לְ...", font: "Varela Round", color: "#33263D", align: "center", rot: 0, hint: "text" }]);
@@ -259,7 +259,7 @@ function drawItem(ctx, it, opt){
     });
   } else if (it.type === "shape") {
     ctx.globalAlpha = it.opacity == null ? 1 : it.opacity;
-    ctx.fillStyle = it.fill || "#FFE3F4";
+    ctx.fillStyle = it.fill || "#FDE6F6";
     shapePath(ctx, it.shape, x0, y0, w, h); ctx.fill();
   } else if (it.type === "img") {
     var c = getImg(it.src);
@@ -276,8 +276,8 @@ function drawItem(ctx, it, opt){
       }
     } else if (!opt.print) {
       ctx.fillStyle = "rgba(255,227,244,.85)"; ctx.fill();
-      ctx.setLineDash([3, 2]); ctx.strokeStyle = "#E0399F"; ctx.lineWidth = 0.6; ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = "#C13671"; ctx.font = "700 " + Math.min(w, h) * 0.22 + "px Assistant";
+      ctx.setLineDash([3, 2]); ctx.strokeStyle = "#E33BAE"; ctx.lineWidth = 0.6; ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "#C5309A"; ctx.font = "700 " + Math.min(w, h) * 0.22 + "px Assistant";
       ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("📷", 0, -Math.min(w, h) * 0.08);
     }
   } else if (it.type === "sticker") {
@@ -340,7 +340,7 @@ function spreadGuides(ctx, sp){
   ctx.setLineDash([4 / ppm * 2, 3 / ppm * 2]); ctx.strokeStyle = "#8a7a90";
   ctx.beginPath(); ctx.moveTo(PG - BL, 0); ctx.lineTo(PG - BL, PG); ctx.stroke();
   // אזור בטוח לטקסט
-  ctx.strokeStyle = "#FF56C2"; ctx.lineWidth = lw;
+  ctx.strokeStyle = "#FA57C4"; ctx.lineWidth = lw;
   if (pageOn(sp.left)) ctx.strokeRect(BL + SAFE, BL + SAFE, TRIM - 2 * SAFE, TRIM - 2 * SAFE);
   if (pageOn(sp.right)) ctx.strokeRect(PG - BL + SAFE, BL + SAFE, TRIM - 2 * SAFE, TRIM - 2 * SAFE);
   ctx.setLineDash([]);
@@ -355,7 +355,7 @@ function coverGuides(ctx){
   ctx.strokeStyle = "rgba(229,57,53,.35)"; ctx.lineWidth = lw;
   for (var y = -30; y < CH + 30; y += 6) { ctx.beginPath(); ctx.moveTo(SPINE0, y); ctx.lineTo(SPINE1, y + 26); ctx.stroke(); }
   ctx.restore();
-  ctx.setLineDash([4 / ppm * 2, 3 / ppm * 2]); ctx.strokeStyle = "#FF56C2"; ctx.lineWidth = lw;
+  ctx.setLineDash([4 / ppm * 2, 3 / ppm * 2]); ctx.strokeStyle = "#FA57C4"; ctx.lineWidth = lw;
   ctx.strokeRect(CBL + SAFE, CBL + SAFE, SPINE0 - CBL - 2 * SAFE, CH - 2 * CBL - 2 * SAFE);
   ctx.strokeRect(SPINE1 + SAFE, CBL + SAFE, CW - CBL - SPINE1 - 2 * SAFE, CH - 2 * CBL - 2 * SAFE);
   ctx.setLineDash([]);
@@ -661,7 +661,7 @@ function addItem(it){
 }
 function addText(isTitle){
   var it = addItem({ type: "text", w: isTitle ? 150 : 120, h: 20, size: isTitle ? 32 : 18, text: isTitle ? "כותרת" : "כתבו כאן את הטקסט שלכם",
-    font: isTitle ? "Secular One" : "Varela Round", bold: false, color: isTitle ? "#C13671" : "#33263D", align: "center" });
+    font: isTitle ? "Secular One" : "Varela Round", bold: false, color: isTitle ? "#C5309A" : "#33263D", align: "center" });
   startEdit(sel.pg, it);
 }
 function pickPhoto(target){ replaceTarget = target || null; $("filePhoto").value = ""; $("filePhoto").click(); }
@@ -712,7 +712,7 @@ function addShape(kind){
     var it = addItem({ type: "shape", shape: "rect", w: pageW(pg), h: 40, fill: "#FFFFFF", opacity: 0.8 });
     it.x = 0; commit(); requestDraw(); return;
   }
-  addItem({ type: "shape", shape: kind, w: 60, h: 60, fill: "#FFE3F4", opacity: 1 });
+  addItem({ type: "shape", shape: kind, w: 60, h: 60, fill: "#FDE6F6", opacity: 1 });
 }
 
 // ---------- פעולות על הפריט הנבחר ----------
@@ -825,7 +825,7 @@ function renderProps(){
     var lr = lowRes(it, sel.pg);
     if (lr) { var lw = document.createElement("div"); lw.className = "lowres"; lw.textContent = "⚠️ התמונה קטנה לגודל הזה ועלולה לצאת מטושטשת בהדפסה. כדאי להקטין אותה או להעלות תמונה באיכות גבוהה יותר."; box.appendChild(lw); }
   } else if (it.type === "shape") {
-    var fc = document.createElement("input"); fc.type = "color"; fc.value = it.fill || "#FFE3F4"; fc.oninput = function(){ setProp("fill", fc.value); };
+    var fc = document.createElement("input"); fc.type = "color"; fc.value = it.fill || "#FDE6F6"; fc.oninput = function(){ setProp("fill", fc.value); };
     box.appendChild(row("צבע", fc));
     box.appendChild(swatchRow(COLORS.concat(BG_COLORS.slice(4, 12)), it.fill, function(c){ setProp("fill", c, true); renderProps(); }));
     var op = document.createElement("input"); op.type = "range"; op.min = 0.1; op.max = 1; op.step = 0.05; op.value = it.opacity == null ? 1 : it.opacity;
@@ -879,7 +879,7 @@ function renderLabels(){
     var sp = spreadPages(view);
     l.innerHTML = "<span>" + (pageOn(sp.left) ? "עמוד " + sp.left : "פנים הכריכה האחורית") + "</span><span>" + (pageOn(sp.right) ? "עמוד " + sp.right : "פנים הכריכה") + "</span>";
   }
-  $("legend").innerHTML = '<i style="border-top:2px solid #E53935"></i>קו החיתוך · <i style="border-top:2px dashed #FF56C2"></i>אזור בטוח לטקסט (1 ס"מ)<br>האזור הבהיר בקצוות ייחתך – תמונות רקע כן צריכות להגיע עד אליו';
+  $("legend").innerHTML = '<i style="border-top:2px solid #E53935"></i>קו החיתוך · <i style="border-top:2px dashed #FA57C4"></i>אזור בטוח לטקסט (1 ס"מ)<br>האזור הבהיר בקצוות ייחתך – תמונות רקע כן צריכות להגיע עד אליו';
   $("prevSp").disabled = view === 0; $("nextSp").disabled = view === NSPREADS;
 }
 var thumbT = null;

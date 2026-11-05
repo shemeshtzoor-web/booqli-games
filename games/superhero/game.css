@@ -4,13 +4,13 @@
   --paper:#FFFFFF;      /* cream center of the book's pages */
   --sand:#E1F0EA;       /* warm butter wash */
   --grass:#E0A93B;      /* chick yellow */
-  --acacia:#4E8576;     /* leaf green from the trees */
+  --acacia:#2F6F63;     /* leaf green from the trees */
   --sky:#3E6FA8;        /* butterfly blue */
-  --clay:#E0399F;       /* pink of the bow and the teddy */
+  --clay:#E33BAE;       /* pink of the bow and the teddy */
   --brand:#C33B79;      /* BOOQLI magenta */
-  --plum:#6F988B;       /* dark ground the white logo sits on */
+  --plum:#6DAFA1;       /* dark ground the white logo sits on */
   --wa:#1FA855;
-  --ink:#2B1526;
+  --ink:#213330;
   --ink-soft:#5E5560;
   --line:#CFE5DB;
   --good:#3F8A3C; --bad:#C2453A;
@@ -141,8 +141,8 @@ body.splash footer{display:none}
 .kicker{font-family:var(--f-head);letter-spacing:.06em;color:var(--acacia);font-size:17px}
 .title-story.big{font-size:clamp(40px,11vw,68px);line-height:1.05;animation:rise .7s ease-out both}
 @keyframes rise{from{transform:translateY(12px) scale(.97)}to{transform:none}}
-.btn.go{font-size:22px;padding:14px 22px;margin-top:4px;box-shadow:0 5px 0 #A3216F}
-.btn.go:active{transform:translateY(3px);box-shadow:0 2px 0 #A3216F}
+.btn.go{font-size:22px;padding:14px 22px;margin-top:4px;box-shadow:0 5px 0 #B5288A}
+.btn.go:active{transform:translateY(3px);box-shadow:0 2px 0 #B5288A}
 .hello{text-align:center;display:flex;flex-direction:column;gap:4px}
 .hello h1{font-size:clamp(26px,6.5vw,36px);color:var(--ink)}
 .hello p{color:var(--ink-soft);font-size:19px}
@@ -454,10 +454,10 @@ body.popopen{overflow:hidden}
 [hidden]{display:none!important}
 
 /* ===== צבעי המותג BOOQLI: ורוד ומנטה + פס גנים ===== */
-:root{--pink:#FF56C2;--mint:#E1F0EA;--sage:#6F988B}
+:root{--pink:#FA57C4;--mint:#E1F0EA;--sage:#6DAFA1}
 html,body{background:var(--mint)}
-body{background:radial-gradient(90% 50% at 85% 0%,#FFE3F4 0%,rgba(255,227,244,0) 70%),radial-gradient(90% 60% at 0% 100%,#CDE7DC 0%,rgba(205,231,220,0) 70%),linear-gradient(180deg,#F4FAF7,#E1F0EA) fixed}
-.brand{background:linear-gradient(90deg,#6F988B,#7FA89B);box-shadow:0 8px 20px -12px rgba(46,90,78,.7);flex-wrap:nowrap}
+body{background:radial-gradient(90% 50% at 85% 0%,#FDE6F6 0%,rgba(255,227,244,0) 70%),radial-gradient(90% 60% at 0% 100%,#CDE7DC 0%,rgba(205,231,220,0) 70%),linear-gradient(180deg,#F4FAF7,#E1F0EA) fixed}
+.brand{background:linear-gradient(90deg,#6DAFA1,#8CC5B9);box-shadow:0 8px 20px -12px rgba(46,90,78,.7);flex-wrap:nowrap}
 .gan{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;text-decoration:none;line-height:1.25;padding:4px 8px;border-radius:12px}
 .gan b{font-family:var(--f-head);font-weight:600;font-size:clamp(15px,2.6vw,20px)}
 .gan span{font-size:clamp(12.5px,2vw,15px);background:var(--pink);border-radius:999px;padding:1px 12px;margin-top:3px;font-weight:700;box-shadow:0 2px 0 #C4318E}
@@ -465,11 +465,11 @@ body{background:radial-gradient(90% 50% at 85% 0%,#FFE3F4 0%,rgba(255,227,244,0)
 @media (max-width:620px){.brand{flex-wrap:wrap}.gan{order:3;flex-basis:100%;background:rgba(255,255,255,.14)}}
 .card{background:#fff;box-shadow:0 4px 0 #CFE5DB}
 .panel,.why article,.settings{background:#fff}
-.title-story.big{color:#C13671;text-shadow:0 2px 0 #FFD1EE}
-.kicker{color:#4E8576}
+.title-story.big{color:#C5309A;text-shadow:0 2px 0 #FFD1EE}
+.kicker{color:#2F6F63}
 .seg button[aria-pressed="true"]{background:var(--pink);border-color:var(--pink)}
 .winhint{background:var(--pink)}
-.ganbox{display:flex;align-items:center;gap:10px;width:100%;max-width:440px;text-align:right;background:#E1F0EA;color:#2B1526;border-radius:16px;padding:10px 14px;text-decoration:none;font-size:15px;line-height:1.4;border:2px solid #fff}
+.ganbox{display:flex;align-items:center;gap:10px;width:100%;max-width:440px;text-align:right;background:#E1F0EA;color:#213330;border-radius:16px;padding:10px 14px;text-decoration:none;font-size:15px;line-height:1.4;border:2px solid #fff}
 .ganbox .gi{font-size:30px}
-.ganbox u{color:#C13671;font-weight:700}
+.ganbox u{color:#C5309A;font-weight:700}
 footer{color:#4E6B62}

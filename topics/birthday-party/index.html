@@ -16,12 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --sky:#DCEBFF; --sun:#FFF3CF;
   color-scheme:light;
 }
@@ -57,13 +57,13 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title{text-align:center;margin:38px 0 14px}
 .sec-title h2{font-size:28px;color:var(--sage-deep)}
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:660px}
-.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 0 #d9e9e1}
+.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
 footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 
 /* פתיח */
-.hero{margin-top:22px;background:linear-gradient(160deg,#FFE3F4,#FFF6DD 60%,#E1F0EA);border-radius:28px;padding:24px 22px;border:3px solid #FFC2E6;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.hero{margin-top:22px;background:linear-gradient(160deg,#FDE6F6,#FFF6DD 60%,#E1F0EA);border-radius:28px;padding:24px 22px;border:3px solid #FFC2E6;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
 .hero small{color:var(--magenta);font-weight:800}
 .hero h1{font-size:clamp(32px,6.4vw,54px);line-height:1.08;margin-top:4px}
 .hero h1 span{color:var(--magenta)}
@@ -87,7 +87,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* המערך */
 .timeline{display:grid;gap:14px}
-.stage{background:#fff;border-radius:24px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.1);display:grid;grid-template-columns:200px 1fr;overflow:hidden;border-inline-start:8px solid var(--c)}
+.stage{background:#fff;border-radius:24px;box-shadow:0 6px 22px rgba(33,51,48,.09),0 8px 22px rgba(78,133,118,.1);display:grid;grid-template-columns:200px 1fr;overflow:hidden;border-inline-start:8px solid var(--c)}
 .stage img{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}
 .stage .in{padding:16px 18px;display:flex;flex-direction:column;gap:8px}
 .stage .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -109,7 +109,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 /* משחקים */
 .games{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 @media (max-width:900px){.games{grid-template-columns:repeat(2,1fr)}}
-.gcard{background:#fff;border:0;border-radius:22px;padding:16px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 4px 0 #d9e9e1,0 8px 22px rgba(78,133,118,.12);transition:transform .15s}
+.gcard{background:#fff;border:0;border-radius:22px;padding:16px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 22px rgba(33,51,48,.09),0 8px 22px rgba(78,133,118,.12);transition:transform .15s}
 .gcard:hover{transform:translateY(-3px)}
 .gcard .e{font-size:44px;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--b)}
 .gcard h3{font-size:19px}
@@ -170,7 +170,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .maker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
 @media (max-width:820px){.maker{grid-template-columns:minmax(0,1fr)}}
 .tools,.preview{min-width:0}
-.preview{background:#fff;border-radius:24px;padding:10px;box-shadow:0 4px 0 #d9e9e1;position:sticky;top:10px}
+.preview{background:#fff;border-radius:24px;padding:10px;box-shadow:0 6px 22px rgba(33,51,48,.09);position:sticky;top:10px}
 @media (max-width:820px){.preview{position:static}}
 #card{width:100%;height:auto;display:block;border-radius:14px;touch-action:none;cursor:grab;background:#fff}
 .tools{display:flex;flex-direction:column;gap:14px}
@@ -200,7 +200,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .sh-card h3{font-size:19px;color:var(--magenta)}
 .sh-card p{margin:0;font-size:14px;color:var(--muted);flex:1}
 
-.bookbox{margin-top:20px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:20px;align-items:center}
+.bookbox{margin-top:20px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:20px;align-items:center}
 .bookbox img{width:min(200px,40vw);display:block;flex-shrink:0;filter:drop-shadow(0 8px 16px rgba(0,0,0,.25))}
 .bookbox h2{font-size:26px}
 .bookbox ul{margin:8px 0 12px;padding-inline-start:20px;display:grid;gap:3px}
@@ -214,13 +214,13 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 12px}
 .share .row-btns{margin-top:0}
-.next{margin-top:16px;display:flex;align-items:center;gap:14px;text-decoration:none;background:#fff;border-radius:22px;padding:14px 18px;box-shadow:0 4px 0 #d9e9e1}
+.next{margin-top:16px;display:flex;align-items:center;gap:14px;text-decoration:none;background:#fff;border-radius:22px;padding:14px 18px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .next .e{font-size:40px}
 .next b{font-family:Fredoka,sans-serif;font-size:20px;color:var(--sage-deep);display:block}
 
 
 /* הספר המלא להקראה */
-.bookread{margin-top:16px;display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#FFF6DD,#FFE3F4);border:3px solid #FFC2E6;border-radius:26px;padding:18px 20px}
+.bookread{margin-top:16px;display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#FFF6DD,#FDE6F6);border:3px solid #FFC2E6;border-radius:26px;padding:18px 20px}
 .bookread img{width:150px;flex-shrink:0;filter:drop-shadow(0 8px 14px rgba(163,33,111,.25))}
 .bookread h2{font-size:26px;color:var(--magenta)}
 .bookread p{margin:4px 0 12px}
@@ -250,10 +250,10 @@ a.gcard{text-decoration:none;color:inherit}
 .lp-cov{position:absolute;width:38%;left:31%;bottom:-26px;filter:drop-shadow(0 12px 18px rgba(120,30,80,.35))}
 .lp-wa{text-decoration:none;display:inline-flex;align-items:center}
 @media (max-width:760px){.lp-hero{grid-template-columns:1fr!important}.lp-art{height:280px;max-width:400px;width:100%;margin:0 auto;order:-1}}
-.lp-books{margin-top:22px;background:#fff;border-radius:28px;padding:22px;display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center;box-shadow:0 6px 0 #d9e9e1;border-top:8px solid var(--pink)}
+.lp-books{margin-top:22px;background:#fff;border-radius:28px;padding:22px;display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:8px solid var(--pink)}
 .lp-gal{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lp-gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;display:block}
-.lp-gal img.cov{object-fit:contain;background:linear-gradient(160deg,#FFE3F4,#FFF6DD)}
+.lp-gal img.cov{object-fit:contain;background:linear-gradient(160deg,#FDE6F6,#FFF6DD)}
 .lp-info h2{font-size:30px;color:var(--magenta)}
 .lp-info .lead{font-size:17.5px;margin:6px 0 10px}
 .ticks{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:6px}
@@ -275,18 +275,18 @@ a.gcard{text-decoration:none;color:inherit}
 .kit-grid i{font-style:normal;font-size:36px;line-height:1.1}
 .kit-grid b{font-family:Fredoka,Assistant,sans-serif;font-size:17.5px;line-height:1.2}
 .kit-grid span{font-size:13.5px;color:var(--muted);line-height:1.3}
-.kit-grid a.go{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}.kit-grid a.go span{color:#FFE3F4}
+.kit-grid a.go{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}.kit-grid a.go span{color:#FDE6F6}
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;page-break-after:always;break-after:page}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4;page-break-after:always;break-after:page}
 .sheet:last-child{page-break-after:auto;break-after:auto}
 .sheet h1,.sheet h2{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
-.s-head h1{font-size:21pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-head h1{font-size:21pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
 .s-body svg{display:block;width:100%;height:auto}
 .s-frame{flex:1;border:3px dashed #F3A6D3;border-radius:6mm;display:flex;align-items:flex-end;justify-content:center;padding:3mm;color:#C9B8C4;font-size:11pt}
-.s-lines{display:grid;gap:7mm;font-size:13pt;font-weight:700;color:#4E8576}
+.s-lines{display:grid;gap:7mm;font-size:13pt;font-weight:700;color:#2F6F63}
 .s-lines span{border-bottom:1.5px solid #CDE7DC;display:block;height:8mm}
 .s-tip{background:#FFF6DD;border-radius:4mm;padding:2.5mm 4mm;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .s-photo{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
@@ -406,7 +406,7 @@ a.gcard{text-decoration:none;color:inherit}
 
   <div class="sec-title" id="games"><h2>🎮 משחקים ליום ההולדת</h2><p>מתאימים להקרנה ולמסך מגע בגן, וגם לטלפון בבית.</p></div>
   <div class="games">
-    <button class="gcard" type="button" data-play="chair" style="--b:#FFE3F4"><span class="e">🪑</span><h3>מרימים את הכיסא!</h3><p>סופרים יחד כל הרמה, עד הגיל ועוד אחד לשנה הבאה</p><span class="tag">ספירה</span></button>
+    <button class="gcard" type="button" data-play="chair" style="--b:#FDE6F6"><span class="e">🪑</span><h3>מרימים את הכיסא!</h3><p>סופרים יחד כל הרמה, עד הגיל ועוד אחד לשנה הבאה</p><span class="tag">ספירה</span></button>
     <button class="gcard" type="button" data-play="cake" style="--b:#FFF3CF"><span class="e">🕯️</span><h3>נרות על העוגה</h3><p>שמים על העוגה בדיוק את מספר הנרות, ונושפים</p><span class="tag">חשבון</span></button>
     <button class="gcard" type="button" data-play="sort" style="--b:#E1F0EA"><span class="e">🎈</span><h3>מה מביאים למסיבה?</h3><p>מה שייך ליום הולדת, ומה ממש לא?</p><span class="tag">מיון</span></button>
     <button class="gcard" type="button" data-play="quiz" style="--b:#DCEBFF"><span class="e">📖</span><h3>מי זוכר את הסיפור?</h3><p>7 שאלות על הספר "ילד/ת יום הולדת", עם האיורים</p><span class="tag">חידון</span></button>
@@ -551,11 +551,11 @@ const WORDS_F = ["אפס","אחת","שתיים","שלוש","ארבע","חמש","
 function stages(){
   const n = esc(NAME()), k = KID(), a = S.age, he = g("היא","הוא");
   return [
-    {c:"#C13671", img:"05", min:"5 דק׳", title:"👑 הכתרה",
+    {c:"#C5309A", img:"05", min:"5 דק׳", title:"👑 הכתרה",
      verse:["נָעַלְתִּי אֶת הַנַּעֲלַיִם הַחֲדָשׁוֹת,","זֵר פְּרָחִים הֵנַחְתִּי עַל הָרֹאשׁ,",`לָבַשְׁתִּי אֶת ${g("הַשִּׂמְלָה","הַחֻלְצָה")} הַלְּבָנָה –`,"כַּמָּה נִפְלָא לִגְדֹּל בְּשָׁנָה!"],
      steps:[`${n} ${g("יושבת","יושב")} על כיסא מקושט מול כל הילדים`, `מניחים על הראש זר פרחים או את הכתר (להדפסה למטה)`, `כולם קוראים יחד בקול: "מזל טוב, ${n}!" ומוחאים כפיים`],
      say:`"היום ${n} ${g("חוגגת","חוגג")} יום הולדת ${a}! מי רוצה לספר מה הכי אוהבים ב${g("ה","ו")}?"`, link:["book","📖 להקרנה: הספר המלא עם השם"]},
-    {c:"#4E8576", img:"07", min:"5 דק׳", title:"🌉 מנהרת החברים",
+    {c:"#2F6F63", img:"07", min:"5 דק׳", title:"🌉 מנהרת החברים",
      verse:[`לַגַּן מִהַרְתִּי, ${g("מִתְרַגֶּשֶׁת","מִתְרַגֵּשׁ")} עַד הַגַּג,`,"כִּי הַיּוֹם בִּשְׁבִילִי הוּא יוֹם שֶׁל חַג!","הַיְּלָדִים וְהַיְּלָדוֹת כְּבָר חִכּוּ לִי בַּדֶּלֶת –",`כֵּיף לִהְיוֹת ${k} יוֹם הֻלֶּדֶת!`],
      steps:["הילדים עומדים בזוגות, פנים אל פנים, ומרימים ידיים מחוברות – כמו גשר", `${n} ${g("עוברת","עובר")} לאט בתוך המנהרה, וכולם מוחאים כפיים בקצב`, `בסוף המנהרה ${n} ${g("מקבלת","מקבל")} חיבוק קבוצתי (רק מי שרוצה)`],
      say:`חרוז קצר לקריאה יחד: "מִי עוֹבֵר בַּמִּנְהָרָה? ${k} יוֹם הֻלֶּדֶת ${g("יָפָה","נֶהְדָּר")}!"`},
@@ -571,11 +571,11 @@ function stages(){
      verse:["הִגִּיעַ הָרֶגַע, הִגִּיעָה הַשָּׁעָה,","שֶׁאֵשֵׁב עַל כִּסֵּא הַמְּלוּכָה,","וְשֶׁיָּרִימוּ אוֹתִי כִּמְעַט עַד הַתִּקְרָה –","וְעוֹד אֶחָד לַשָּׁנָה הַבָּאָה."],
      steps:[`${n} ${g("יושבת","יושב")} על הכיסא, וארבעה מבוגרים מחזיקים את הרגליים`, `מרימים נמוך ולאט, וכל הילדים סופרים בקול: אחת, שתיים… עד ${WORDS_F[a] || a}`, "ובסוף – ועוד אחת, לשנה הבאה! 🎉"],
      say:"רוצים שכולם יספרו על המסך? משחק \"מרימים את הכיסא\" כאן למטה, להקרנה.", link:["chair","🪑 להקרנה: מרימים את הכיסא"]},
-    {c:"#C13671", img:"15", min:"7 דק׳", title:"🎂 העוגה והמשאלה",
+    {c:"#C5309A", img:"15", min:"7 דק׳", title:"🎂 העוגה והמשאלה",
      verse:["וְעַכְשָׁו הִגִּיעַ הַתּוֹר שֶׁל הָעוּגָה.","עָצַמְתִּי אֶת הָעֵינַיִם בִּשְׁתִיקָה,","כִּבִּיתִי הַנֵּרוֹת וְהִבַּעְתִּי מִשְׁאָלָה:",`"הַלְוַאי וּלְכָל הַיְּלָדִים תִּהְיֶה כָּזֹאת חֲגִיגָה".`],
      steps:[`סופרים יחד את הנרות על העוגה: ${a} ועוד אחד`, `מבוגר מדליק, ${n} ${g("עוצמת","עוצם")} עיניים ו${g("מביעה","מביע")} משאלה בשקט – ואז ${g("נושפת","נושף")}`, `סבב משאלות: כל ילד אומר משאלה אחת קצרה ל${n}`],
      say:`כמו בספר: "המשאלה של ${n} הייתה גם בשביל כל הילדים. מה אתם מאחלים לחברים?"`, link:["cake","🕯️ להקרנה: נרות על העוגה"]},
-    {c:"#4E8576", img:"17", min:"7 דק׳", title:"🎁 מתנה ופרידה",
+    {c:"#2F6F63", img:"17", min:"7 דק׳", title:"🎁 מתנה ופרידה",
      verse:["קִבַּלְתִּי הַיּוֹם מַתָּנָה מְיֻחֶדֶת –",`סֵפֶר יְפֵהפֶה בְּשֵׁם "${k} יוֹם הֻלֶּדֶת".`,"אֶשְׁמֹר עָלָיו מִכָּל מִשְׁמָר וְאוּלַי","אַרְאֶה אוֹתוֹ יוֹם אֶחָד לִנְכָדַי."],
      steps:[`מעניקים ל${n} את חוברת הברכות מהחברים`, `מצלמים את ${n} עם הזר, ויוצרים כאן כרטיס ברכה עם התמונה – מתנה להורים להדפיס בבית`, `שולחים להורים הודעה מוכנה: מה עשינו היום (כפתור למטה)`],
      say:`לסיום, כולם יחד: "מזל טוב ${n}, עד מאה ועשרים!" 🎉`, link:["#card-maker","📸 לכרטיס הברכה"]}
@@ -724,9 +724,9 @@ function chairSVG(){
   const ph = photoURL ? `<clipPath id="cf"><circle cx="160" cy="92" r="56"/></clipPath><image href="${photoURL}" x="104" y="36" width="112" height="112" preserveAspectRatio="xMidYMid slice" clip-path="url(#cf)"/>` : `<text x="160" y="118" font-size="84" text-anchor="middle">${S.g === "f" ? "👧" : "👦"}</text>`;
   return `<svg viewBox="0 0 320 340" aria-hidden="true">
     <text x="160" y="34" font-size="40" text-anchor="middle">👑</text>
-    <circle cx="160" cy="92" r="60" fill="#FFE3F4" stroke="#FF56C2" stroke-width="6"/>${ph}
+    <circle cx="160" cy="92" r="60" fill="#FDE6F6" stroke="#FA57C4" stroke-width="6"/>${ph}
     <path d="M70 170 Q70 140 100 140 H220 Q250 140 250 170 V230 H70Z" fill="#F7C948" stroke="#C9971C" stroke-width="5"/>
-    <rect x="58" y="226" width="204" height="30" rx="12" fill="#FF56C2" stroke="#A3216F" stroke-width="5"/>
+    <rect x="58" y="226" width="204" height="30" rx="12" fill="#FA57C4" stroke="#B5288A" stroke-width="5"/>
     <rect x="72" y="254" width="16" height="70" rx="6" fill="#C9971C"/><rect x="232" y="254" width="16" height="70" rx="6" fill="#C9971C"/>
     <text x="160" y="200" font-size="26" text-anchor="middle" fill="#7a4d00" font-family="Fredoka,sans-serif" font-weight="700">${esc(NAME()).slice(0,14)}</text></svg>`;
 }
@@ -754,7 +754,7 @@ function cakeSVG(n, lit){
   let cs = "";
   for (let i = 0; i < n; i++){
     const x = x0 + (i + .5) * (w / Math.max(n,1));
-    const col = ["#FF56C2","#3AA7F0","#46C46E","#FFB020","#B05BE8"][i % 5];
+    const col = ["#FA57C4","#3AA7F0","#46C46E","#FFB020","#B05BE8"][i % 5];
     cs += `<rect x="${x-7}" y="70" width="14" height="60" rx="4" fill="${col}"/><rect x="${x-7}" y="80" width="14" height="6" fill="#fff" opacity=".6"/><rect x="${x-7}" y="100" width="14" height="6" fill="#fff" opacity=".6"/>`;
     cs += lit ? `<path d="M${x} 38 Q${x+10} 56 ${x} 66 Q${x-10} 56 ${x} 38Z" fill="#FFB020"><animate attributeName="opacity" values="1;.7;1" dur=".6s" repeatCount="indefinite"/></path><path d="M${x} 50 Q${x+4} 58 ${x} 64 Q${x-4} 58 ${x} 50Z" fill="#FFF3CF"/>` : `<path d="M${x} 64 q6 -10 0 -18 q-6 -8 2 -16" stroke="#bbb" stroke-width="3" fill="none" opacity=".7"/>`;
   }
@@ -762,7 +762,7 @@ function cakeSVG(n, lit){
     <ellipse cx="210" cy="270" rx="190" ry="16" fill="#CDE7DC"/>
     <rect x="50" y="130" width="320" height="130" rx="22" fill="#FFF6DD" stroke="#E8C67A" stroke-width="5"/>
     <path d="M50 160 Q90 190 130 160 T210 160 T290 160 T370 160 V150 Q370 130 348 130 H72 Q50 130 50 150Z" fill="#FFB3DE"/>
-    ${[90,150,210,270,330].map(x => `<circle cx="${x}" cy="215" r="9" fill="#FF56C2"/>`).join("")}
+    ${[90,150,210,270,330].map(x => `<circle cx="${x}" cy="215" r="9" fill="#FA57C4"/>`).join("")}
     ${cs}</svg>`;
 }
 function gCake(){
@@ -862,7 +862,7 @@ function gQuiz(){
 /* זיקוקים */
 function confetti(){
   const c = $("confetti"); c.hidden = false; c.width = innerWidth; c.height = innerHeight;
-  const x = c.getContext("2d"), cols = ["#FF56C2","#FFB020","#46C46E","#3AA7F0","#B05BE8","#C13671"];
+  const x = c.getContext("2d"), cols = ["#FA57C4","#FFB020","#46C46E","#3AA7F0","#B05BE8","#C5309A"];
   const P = Array.from({length:140}, () => ({x:Math.random()*c.width, y:-20 - Math.random()*c.height*.5, r:4+Math.random()*6, vy:2+Math.random()*4, vx:-2+Math.random()*4, c:cols[Math.floor(Math.random()*6)], a:Math.random()*6}));
   let t = 0;
   (function f(){ x.clearRect(0,0,c.width,c.height); P.forEach(p => { p.y += p.vy; p.x += p.vx; p.a += .1; x.fillStyle = p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6); x.restore(); }); if (++t < 150) requestAnimationFrame(f); else c.hidden = true; })();
@@ -871,10 +871,10 @@ function confetti(){
 /* ---------- כרטיס ברכה עם תמונה ---------- */
 const CV = $("card"), CX = CV.getContext("2d"), W = 1000, H = 1414;
 const THEMES = [
-  {id:"pink", a:"#FFE3F4", b:"#FFF6DD", main:"#C13671", acc:"#FF56C2"},
+  {id:"pink", a:"#FDE6F6", b:"#FFF6DD", main:"#C5309A", acc:"#FA57C4"},
   {id:"sky",  a:"#DCEBFF", b:"#F4FAFF", main:"#2F5FA0", acc:"#3AA7F0"},
-  {id:"mint", a:"#E1F0EA", b:"#FFF9EC", main:"#3F7466", acc:"#6F988B"},
-  {id:"sun",  a:"#FFF1C9", b:"#FFE3F4", main:"#B0571A", acc:"#FFB020"}
+  {id:"mint", a:"#E1F0EA", b:"#FFF9EC", main:"#3F7466", acc:"#6DAFA1"},
+  {id:"sun",  a:"#FFF1C9", b:"#FDE6F6", main:"#B0571A", acc:"#FFB020"}
 ];
 let theme = THEMES[0], photo = null, photoURL = "", zoom = 1, stickers = [], selected = -1, drag = null;
 const GREETS = () => [
@@ -923,7 +923,7 @@ function drawCard(selBox){
   const gr = CX.createLinearGradient(0,0,0,H); gr.addColorStop(0,t.a); gr.addColorStop(1,t.b);
   CX.fillStyle = gr; CX.fillRect(0,0,W,H);
   // נקודות קונפטי (קבועות)
-  const cols = ["#FF56C2","#FFB020","#46C46E","#3AA7F0","#B05BE8"];
+  const cols = ["#FA57C4","#FFB020","#46C46E","#3AA7F0","#B05BE8"];
   for (let i = 0; i < 70; i++){ const x = (i*137.5) % W, y = (i*251.3) % H; CX.fillStyle = cols[i%5]; CX.globalAlpha = .35; CX.beginPath(); CX.arc(x,y,6 + (i%4)*2,0,7); CX.fill(); }
   CX.globalAlpha = 1;
   // מסגרת
@@ -949,13 +949,13 @@ function drawCard(selBox){
   CX.restore();
   CX.lineWidth = 12; CX.strokeStyle = "#fff"; rr(px,py,pw,ph,60); CX.stroke();
   // ברכה
-  CX.fillStyle = "#2B1526"; CX.font = "700 46px Assistant, sans-serif";
+  CX.fillStyle = "#213330"; CX.font = "700 46px Assistant, sans-serif";
   const lines = wrap($("greet").value || "", W - 200).slice(0,4);
   lines.forEach((l,i) => CX.fillText(l, W/2, 1100 + i*60));
   CX.fillStyle = t.main; CX.font = "800 40px Assistant, sans-serif";
   CX.fillText($("from").value, W/2, 1100 + lines.length*60 + 30, W - 160);
   // תחתית
-  CX.fillStyle = "#6b5a66"; CX.font = "600 24px Assistant, sans-serif";
+  CX.fillStyle = "#566B67"; CX.font = "600 24px Assistant, sans-serif";
   CX.fillText("נוצר ב-booqli Games · games.booqli.ai · בחסות BOOQLI", W/2, H - 58);
   // מדבקות
   CX.textBaseline = "middle";
@@ -998,12 +998,12 @@ function crownSheet(){
   const pts = "10,230 10,90 95,160 180,40 265,160 350,20 435,160 520,40 605,160 690,90 690,230";
   return `<div class="sheet">${head("👑 כתר יום הולדת")}<div class="s-body">
     <div class="s-tip">✂️ צובעים, גוזרים לאורך הקו השחור, ומחברים מאחור פס נייר באורך שמתאים לראש.</div>
-    ${[0,1].map(() => `<svg viewBox="0 0 700 250"><polygon points="${pts}" fill="#fff" stroke="#2B1526" stroke-width="4" stroke-linejoin="round"/>
-      ${[[180,70],[350,52],[520,70]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="14" fill="none" stroke="#2B1526" stroke-width="3"/>`).join("")}
-      ${[[60,200],[640,200]].map(([x,y]) => `<path d="M${x} ${y-16} l5 11 12 2 -9 8 2 12 -10 -6 -10 6 2 -12 -9 -8 12 -2z" fill="none" stroke="#2B1526" stroke-width="2.5"/>`).join("")}
-      <text x="350" y="212" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="44" font-weight="700" fill="none" stroke="#2B1526" stroke-width="2">${n}</text>
-      <text x="350" y="150" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="64" font-weight="700" fill="none" stroke="#2B1526" stroke-width="2.5">${a}</text></svg>
-    <svg viewBox="0 0 700 56"><rect x="10" y="8" width="680" height="40" rx="6" fill="#fff" stroke="#2B1526" stroke-width="3" stroke-dasharray="10 6"/><text x="350" y="35" text-anchor="middle" font-size="18" font-family="Assistant,sans-serif" fill="#6b5a66">פס לחיבור מאחור</text></svg>`).join('<div style="text-align:center;color:#6b5a66;font-size:10pt">✂ · · · כתר נוסף: לגיבוי, לאח/ות או לחבר/ה הכי טוב/ה · · · ✂</div>')}
+    ${[0,1].map(() => `<svg viewBox="0 0 700 250"><polygon points="${pts}" fill="#fff" stroke="#213330" stroke-width="4" stroke-linejoin="round"/>
+      ${[[180,70],[350,52],[520,70]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="14" fill="none" stroke="#213330" stroke-width="3"/>`).join("")}
+      ${[[60,200],[640,200]].map(([x,y]) => `<path d="M${x} ${y-16} l5 11 12 2 -9 8 2 12 -10 -6 -10 6 2 -12 -9 -8 12 -2z" fill="none" stroke="#213330" stroke-width="2.5"/>`).join("")}
+      <text x="350" y="212" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="44" font-weight="700" fill="none" stroke="#213330" stroke-width="2">${n}</text>
+      <text x="350" y="150" text-anchor="middle" font-family="Fredoka,Assistant,sans-serif" font-size="64" font-weight="700" fill="none" stroke="#213330" stroke-width="2.5">${a}</text></svg>
+    <svg viewBox="0 0 700 56"><rect x="10" y="8" width="680" height="40" rx="6" fill="#fff" stroke="#213330" stroke-width="3" stroke-dasharray="10 6"/><text x="350" y="35" text-anchor="middle" font-size="18" font-family="Assistant,sans-serif" fill="#566B67">פס לחיבור מאחור</text></svg>`).join('<div style="text-align:center;color:#566B67;font-size:10pt">✂ · · · כתר נוסף: לגיבוי, לאח/ות או לחבר/ה הכי טוב/ה · · · ✂</div>')}
   </div>${FOOT()}</div>`;
 }
 function wishSheet(){
@@ -1016,16 +1016,16 @@ function wishSheet(){
 function countSheet(){
   const a = S.age, c = a + 1;
   let candles = "";
-  for (let i = 0; i < c; i++){ const x = 150 + (i + .5) * (400 / c); candles += `<rect x="${x-9}" y="120" width="18" height="80" rx="4" fill="#fff" stroke="#2B1526" stroke-width="3"/><path d="M${x} 82 Q${x+13} 104 ${x} 116 Q${x-13} 104 ${x} 82Z" fill="#fff" stroke="#2B1526" stroke-width="3"/>`; }
+  for (let i = 0; i < c; i++){ const x = 150 + (i + .5) * (400 / c); candles += `<rect x="${x-9}" y="120" width="18" height="80" rx="4" fill="#fff" stroke="#213330" stroke-width="3"/><path d="M${x} 82 Q${x+13} 104 ${x} 116 Q${x-13} 104 ${x} 82Z" fill="#fff" stroke="#213330" stroke-width="3"/>`; }
   const balloons = [[90,90],[600,70],[640,190],[70,230],[620,320]].slice(0, Math.min(5, a));
   return `<div class="sheet">${head(`🎂 צובעים וסופרים · יום הולדת ${a}`)}<div class="s-body">
     <svg viewBox="0 0 700 520">
       ${candles}
-      <rect x="130" y="200" width="440" height="200" rx="26" fill="#fff" stroke="#2B1526" stroke-width="4"/>
-      <path d="M130 250 Q185 290 240 250 T350 250 T460 250 T570 250" fill="none" stroke="#2B1526" stroke-width="3"/>
-      ${[190,270,350,430,510].map(x => `<circle cx="${x}" cy="330" r="14" fill="#fff" stroke="#2B1526" stroke-width="3"/>`).join("")}
-      <rect x="100" y="400" width="500" height="22" rx="10" fill="#fff" stroke="#2B1526" stroke-width="3"/>
-      ${balloons.map(([x,y]) => `<ellipse cx="${x}" cy="${y}" rx="34" ry="42" fill="#fff" stroke="#2B1526" stroke-width="3"/><path d="M${x} ${y+42} q8 30 -4 60" fill="none" stroke="#2B1526" stroke-width="2"/>`).join("")}
+      <rect x="130" y="200" width="440" height="200" rx="26" fill="#fff" stroke="#213330" stroke-width="4"/>
+      <path d="M130 250 Q185 290 240 250 T350 250 T460 250 T570 250" fill="none" stroke="#213330" stroke-width="3"/>
+      ${[190,270,350,430,510].map(x => `<circle cx="${x}" cy="330" r="14" fill="#fff" stroke="#213330" stroke-width="3"/>`).join("")}
+      <rect x="100" y="400" width="500" height="22" rx="10" fill="#fff" stroke="#213330" stroke-width="3"/>
+      ${balloons.map(([x,y]) => `<ellipse cx="${x}" cy="${y}" rx="34" ry="42" fill="#fff" stroke="#213330" stroke-width="3"/><path d="M${x} ${y+42} q8 30 -4 60" fill="none" stroke="#213330" stroke-width="2"/>`).join("")}
     </svg>
     <div class="s-lines"><div>🕯️ כמה נרות יש על העוגה? ______  (כמו הגיל, ועוד אחד לשנה הבאה!)</div><div>🎈 כמה בלונים? ______</div><div>✏️ כתבו או ציירו את המספר ${a}: ____________________</div></div>
   </div>${FOOT()}</div>`;

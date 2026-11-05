@@ -59,7 +59,7 @@ const dots = (n, i) => '<div class="dots">' + Array.from({length: n}, (_, k) => 
 const shake = b => { b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); };
 const toast = (box, msg, ms = 1500) => { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; box.appendChild(t); setTimeout(() => t.remove(), ms); };
 const almost = box => { SND.soft(); toast(box, "כִּמְעַט! נַסּוּ שׁוּב 🙂"); };
-const confetti = () => { const c = document.createElement("div"); c.className = "conf"; const cols = ["#FF56C2","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
+const confetti = () => { const c = document.createElement("div"); c.className = "conf"; const cols = ["#FA57C4","#FFC93C","#46C46E","#3AA7F0","#9B5DE5"];
   for (let i = 0; i < 46; i++) { const p = document.createElement("i"); p.style.left = rnd(100) + "%"; p.style.background = cols[i % 5]; p.style.animationDelay = (rnd(70) / 100) + "s"; c.appendChild(p); }
   document.body.appendChild(c); setTimeout(() => c.remove(), 2800); };
 const modal = (html, on) => {
@@ -301,7 +301,7 @@ function gTrace(stage, L, done){
     const drawGlyph = (ctx, how) => { ctx.font = font; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.direction = "rtl";
       const y = size * dpr * (mode === "cur" ? .5 : .54);
       if (how === "fill") ctx.fillText(t, size * dpr / 2, y); else ctx.strokeText(t, size * dpr / 2, y); };
-    const gc = g.getContext("2d"); gc.fillStyle = "#F6E9F1"; drawGlyph(gc, "fill"); gc.setLineDash([7 * dpr, 7 * dpr]); gc.lineWidth = 3 * dpr; gc.strokeStyle = "#E0399F"; drawGlyph(gc, "stroke");
+    const gc = g.getContext("2d"); gc.fillStyle = "#F6E9F1"; drawGlyph(gc, "fill"); gc.setLineDash([7 * dpr, 7 * dpr]); gc.lineWidth = 3 * dpr; gc.strokeStyle = "#E33BAE"; drawGlyph(gc, "stroke");
     const ic = ink.getContext("2d"); ic.lineCap = ic.lineJoin = "round"; ic.lineWidth = size * dpr * .075; ic.strokeStyle = "rgba(78,133,118,.85)";
     let down = false, last = null, drawn = 0;
     const P = e => { const r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * dpr, (e.clientY - r.top) * dpr]; };

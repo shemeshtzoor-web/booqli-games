@@ -16,12 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --sun:#FFB020; --sun-soft:#FFF3CF;
   color-scheme:light;
 }
@@ -55,12 +55,12 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title{text-align:center;margin:36px 0 14px}
 .sec-title h2{font-size:28px;color:var(--sage-deep)}
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
-.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 0 #d9e9e1}
+.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 footer{margin-top:40px;background:var(--sage-deep);color:#fff;padding-block:24px 30px;text-align:center;font-size:14px}
 footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color:#fff;font-weight:700}
 .toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;border-radius:14px;padding:10px 16px;max-width:calc(100% - 32px);font-weight:700;text-align:center}
 
-.hero{margin-top:22px;background:linear-gradient(160deg,#FFF3CF,#FFE3F4);border-radius:28px;padding:26px 22px;border:3px solid #FFD98A}
+.hero{margin-top:22px;background:linear-gradient(160deg,#FFF3CF,#FDE6F6);border-radius:28px;padding:26px 22px;border:3px solid #FFD98A}
 .hero small{color:var(--magenta);font-weight:800}
 .hero h1{font-size:clamp(30px,6.4vw,52px);line-height:1.08;margin-top:4px}
 .hero h1 span{color:var(--magenta)}
@@ -72,7 +72,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .daysw button[aria-pressed="true"]{background:var(--sage-deep);color:#fff}
 
 /* החופשה הבאה */
-.next{background:#fff;border-radius:28px;padding:22px;box-shadow:0 5px 0 #d9e9e1,0 10px 28px rgba(78,133,118,.12);border-top:8px solid var(--pink)}
+.next{background:#fff;border-radius:28px;padding:22px;box-shadow:0 6px 22px rgba(33,51,48,.09),0 10px 28px rgba(78,133,118,.12);border-top:8px solid var(--pink)}
 .next .tag{display:inline-block;background:var(--pink-soft);color:var(--magenta);border-radius:999px;padding:3px 12px;font-weight:800;font-size:14px}
 .next h2{font-size:clamp(28px,5.4vw,40px);margin:8px 0 2px}
 .next .cnt{color:var(--muted);font-weight:700}
@@ -85,7 +85,7 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* הטבלה */
 .vlist{display:grid;gap:10px}
-.vrow{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 3px 0 #d9e9e1;display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center}
+.vrow{background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 6px 22px rgba(33,51,48,.09);display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center}
 .vrow .e{font-size:34px;width:54px;height:54px;border-radius:50%;background:var(--mint);display:grid;place-items:center}
 .vrow h3{font-size:21px}
 .vrow .d{font-size:15px;color:var(--ink)}
@@ -120,28 +120,28 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 .share{margin-top:16px;border:2px dashed var(--wa);text-align:center}
 .share h3{color:var(--wa);font-size:22px}
 .share p{color:var(--muted);margin:6px 0 12px}
-.bookbox{margin-top:20px;background:linear-gradient(135deg,#C33B79,#E0399F);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
+.bookbox{margin-top:20px;background:linear-gradient(135deg,#C33B79,#E33BAE);color:#fff;border-radius:26px;padding:22px;display:flex;gap:18px;align-items:center}
 .bookbox h2{font-size:24px}.bookbox p{margin:6px 0 12px}
 .bookbox a{background:#fff;color:var(--magenta);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
 @media (max-width:560px){.bookbox{flex-direction:column;text-align:center}}
 
 /* דף ההדפסה */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4}
 .sheet h1,.sheet h2{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
-.s-head h1{font-size:24pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;text-align:left}
+.s-head h1{font-size:24pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;text-align:left}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:3.5mm}
 .p-tab{width:100%;border-collapse:separate;border-spacing:0 2mm;font-size:12pt}
-.p-tab th{text-align:right;color:#4E8576;font-size:10.5pt;padding:0 3mm}
+.p-tab th{text-align:right;color:#2F6F63;font-size:10.5pt;padding:0 3mm}
 .p-tab td{background:#F4FAF7;padding:3mm;border-top:1.5px solid #CDE7DC;border-bottom:1.5px solid #CDE7DC;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .p-tab td:first-child{border-right:1.5px solid #CDE7DC;border-radius:0 4mm 4mm 0;font-family:Fredoka,sans-serif;font-weight:600;font-size:14pt;white-space:nowrap}
-.p-tab td:last-child{border-left:1.5px solid #CDE7DC;border-radius:4mm 0 0 4mm;font-weight:800;color:#C13671}
+.p-tab td:last-child{border-left:1.5px solid #CDE7DC;border-radius:4mm 0 0 4mm;font-weight:800;color:#C5309A}
 .p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:3mm 5mm;font-size:10.5pt}
-.p-box h2{font-size:13pt;color:#4E8576;margin-bottom:1mm}
+.p-box h2{font-size:13pt;color:#2F6F63;margin-bottom:1mm}
 .p-box ul{margin:0;padding-inline-start:6mm}
-.p-spon{text-align:center;font-weight:800;color:#4E8576;font-size:11pt}
+.p-spon{text-align:center;font-weight:800;color:#2F6F63;font-size:11pt}
 @media print{
   @page{size:A4;margin:0}
   html,body{background:#fff!important;margin:0;padding:0}
@@ -360,23 +360,23 @@ async function makeImage(){
   const W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
   const c = cv.getContext("2d"); c.direction = "rtl"; c.textAlign = "right";
   const g = c.createLinearGradient(0,0,0,H); g.addColorStop(0,"#FFF6DD"); g.addColorStop(1,"#E1F0EA"); c.fillStyle = g; c.fillRect(0,0,W,H);
-  c.fillStyle = "#C13671"; c.font = "700 72px Fredoka, Assistant"; c.fillText("לוח חופשות תשפ״ז", W-60, 120, W-120);
-  c.fillStyle = "#4E8576"; c.font = "800 34px Assistant"; c.fillText("גני ילדים · לפי לוח החופשות של משרד החינוך", W-60, 172, W-120);
+  c.fillStyle = "#C5309A"; c.font = "700 72px Fredoka, Assistant"; c.fillText("לוח חופשות תשפ״ז", W-60, 120, W-120);
+  c.fillStyle = "#2F6F63"; c.font = "800 34px Assistant"; c.fillText("גני ילדים · לפי לוח החופשות של משרד החינוך", W-60, 172, W-120);
   const rows = V.list, top = 206, rh = 106, gap = 10;
   rows.forEach((v,i) => {
     const y = top + i*(rh+gap), st = status(v);
     c.globalAlpha = st === "past" ? .45 : 1;
     rr(c,50,y,W-100,rh,26); c.fillStyle = "#fff"; c.fill();
-    if (st !== "past"){ c.fillStyle = "#FF56C2"; rr(c,W-62,y+16,12,rh-32,6); c.fill(); }
-    c.fillStyle = "#2B1526"; c.font = "600 40px Fredoka, Assistant"; c.fillText(v.name, W-85, y+47, 420);
-    c.fillStyle = "#6b5a66"; c.font = "700 29px Assistant"; c.fillText(offText(v), W-85, y+88, 560);
-    c.textAlign = "left"; c.fillStyle = "#4E8576"; c.font = "800 25px Assistant"; c.fillText("חוזרים", 85, y+44);
-    c.fillStyle = "#C13671"; c.font = "800 31px Assistant"; c.fillText(v.summer ? "בספטמבר" : backText(v), 85, y+85, 330);
+    if (st !== "past"){ c.fillStyle = "#FA57C4"; rr(c,W-62,y+16,12,rh-32,6); c.fill(); }
+    c.fillStyle = "#213330"; c.font = "600 40px Fredoka, Assistant"; c.fillText(v.name, W-85, y+47, 420);
+    c.fillStyle = "#566B67"; c.font = "700 29px Assistant"; c.fillText(offText(v), W-85, y+88, 560);
+    c.textAlign = "left"; c.fillStyle = "#2F6F63"; c.font = "800 25px Assistant"; c.fillText("חוזרים", 85, y+44);
+    c.fillStyle = "#C5309A"; c.font = "800 31px Assistant"; c.fillText(v.summer ? "בספטמבר" : backText(v), 85, y+85, 330);
     c.textAlign = "right"; c.globalAlpha = 1;
   });
   const ny = top + rows.length*(rh+gap) + 22;
-  c.fillStyle = "#4E8576"; c.font = "700 27px Assistant"; c.fillText("ימי גן רגילים: תענית אסתר (22.3) · ל״ג בעומר (25.5)", W-60, ny+12, W-120);
-  c.fillStyle = "#4E8576"; c.fillRect(0, H-140, W, 140);
+  c.fillStyle = "#2F6F63"; c.font = "700 27px Assistant"; c.fillText("ימי גן רגילים: תענית אסתר (22.3) · ל״ג בעומר (25.5)", W-60, ny+12, W-120);
+  c.fillStyle = "#2F6F63"; c.fillRect(0, H-140, W, 140);
   const logo = await loadImg("../../img/logo.png");
   if (logo){ const lh = 74, lw = logo.width * lh / logo.height; c.drawImage(logo, 60, H-108, lw, lh); }
   c.fillStyle = "#fff"; c.font = "700 40px Fredoka, Assistant"; c.fillText("בחסות BOOQLI ❤️  ·  בחינם", W-60, H-82, 640);

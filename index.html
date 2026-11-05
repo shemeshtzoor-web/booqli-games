@@ -16,19 +16,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 /* ===== באנר ההזמנה (5.11.2026): הדבר הראשון בדף הבית ===== */
-.order-hero{margin-top:16px;background:linear-gradient(135deg,#FFE3F4 0%,#FFF6FB 55%,#E1F0EA 100%);border-radius:30px;padding:26px 26px 22px;box-shadow:0 6px 0 #F5C6E4;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:center;position:relative;overflow:hidden}
-.oh-brand{font-family:Fredoka,Assistant,sans-serif;font-weight:700;color:var(--magenta);font-size:clamp(40px,7vw,62px);line-height:1;letter-spacing:1px;margin:0}
-.oh-brand small{display:block;font-size:clamp(21px,3.4vw,30px);color:var(--sage-deep);letter-spacing:0;margin-top:6px}
-.oh-lead{font-size:clamp(19px,2.6vw,23px);font-weight:800;margin:14px 0 0;color:var(--ink);line-height:1.35}
+.order-hero{margin-top:18px;background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.9);border-radius:32px;padding:30px 30px 26px;box-shadow:0 10px 34px rgba(33,51,48,.10);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:center;position:relative;overflow:hidden}
+.oh-brand{font-family:'Varela Round',Assistant,sans-serif;font-weight:700;color:#213330;font-size:clamp(42px,7vw,64px);line-height:1.05;letter-spacing:.03em;margin:0}
+.oh-brand small{display:block;font-size:clamp(23px,3.6vw,32px);color:#FA57C4;letter-spacing:.01em;margin-top:8px}
+.oh-lead{font-size:clamp(18px,2.4vw,21px);font-weight:600;margin:16px 0 0;color:#213330;line-height:1.55;word-spacing:.05em}
 .oh-ticks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
-.oh-ticks li{background:#fff;border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px;color:var(--sage-deep);box-shadow:0 2px 0 #e3d3dd}
+.oh-ticks li{background:#fff;border-radius:999px;padding:5px 13px;font-weight:600;font-size:15px;color:#2F6F63;box-shadow:0 2px 10px rgba(33,51,48,.08)}
 .oh-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px}
-.oh-go{display:inline-flex;align-items:center;gap:8px;background:var(--pink-btn,#E0399F);color:#fff;font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:26px;text-decoration:none;border-radius:999px;padding:12px 34px;box-shadow:0 5px 0 #A8236F;transition:transform .12s}
-.oh-go:hover{transform:translateY(-2px)}.oh-go:active{transform:translateY(2px);box-shadow:0 2px 0 #A8236F}
+.oh-go{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg,#FA57C4,#E33BAE);color:#fff;font-family:'Varela Round',Assistant,sans-serif;font-weight:700;font-size:25px;letter-spacing:.02em;text-decoration:none;border-radius:999px;padding:13px 38px;box-shadow:0 0 10px rgba(95,91,205,.5),0 6px 16px rgba(227,59,174,.28);transition:transform .12s,box-shadow .12s}
+.oh-go:hover{transform:translateY(-2px)}.oh-go:active{transform:translateY(1px)}
 .oh-go:focus-visible{outline:4px solid var(--sage-deep);outline-offset:3px}
 .oh-gan{font-weight:800;color:var(--sage-deep);font-size:16.5px}
 .oh-art{display:flex;align-items:center;justify-content:center;gap:6px}
@@ -42,20 +42,21 @@
 @media (max-width:720px){.top .gan{display:none}.oh-art .ph{width:78px}.oh-art .bk{width:122px}.oh-art .ar{font-size:24px}.oh-brand{font-size:40px}.oh-ticks li{font-size:14px;padding:3px 10px}.oh-cta{margin-top:14px}}
 .shelf{margin-top:22px}
 .shelf .c-sec-h{margin-bottom:10px}
-.covers{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(132px,17vw,170px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;-webkit-overflow-scrolling:touch}
-.cov{scroll-snap-align:start;background:#fff;border-radius:20px;padding:8px 8px 10px;text-decoration:none;color:var(--ink);text-align:center;box-shadow:0 4px 0 #d9e9e1;border:3px solid transparent;transition:transform .15s,border-color .15s;display:flex;flex-direction:column;gap:4px}
-.cov:hover,.cov:focus-visible{transform:translateY(-3px);border-color:var(--pink);outline:none}
-.cov img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block}
-.cov b{font-size:15px;line-height:1.25}.cov span{font-size:13px;font-weight:800;color:var(--magenta)}
-.how{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:how}
-.how li{background:#fff;border-radius:22px;padding:16px;box-shadow:0 4px 0 #d9e9e1;display:flex;gap:12px;align-items:flex-start;counter-increment:how}
-.how li::before{content:counter(how);flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--pink-soft);color:var(--magenta);font-family:Fredoka,Assistant,sans-serif;font-weight:700;font-size:21px;display:grid;place-items:center}
-.how b{display:block;font-size:17.5px}.how small{display:block;color:var(--muted);font-size:14.5px;font-weight:600;margin-top:2px;line-height:1.4}
+.covers{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(132px,17vw,170px);gap:0;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;-webkit-overflow-scrolling:touch}
+.cov{scroll-snap-align:start;background:none;padding:0 8px;text-decoration:none;color:var(--ink);text-align:center;display:flex;flex-direction:column;gap:6px;transition:transform .15s}
+.cov:hover,.cov:focus-visible{transform:translateY(-4px);outline:none}.cov:focus-visible img{outline:3px solid #FA57C4;outline-offset:2px;border-radius:8px}
+.cov img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block;filter:drop-shadow(0 8px 10px rgba(33,51,48,.18));position:relative;z-index:1;margin-bottom:-12px}
+.cov .sb{display:block;height:14px;margin:0 -8px;background:linear-gradient(180deg,#F1EBE3,#D8CCBD);border-bottom:5px solid #FA57C4;box-shadow:0 8px 12px rgba(33,51,48,.14)}
+.cov b{font-size:15px;line-height:1.3;margin-top:4px;font-weight:700}.cov span{font-size:13px;font-weight:700;color:#C5309A}
+.how{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:how}
+.how li{background:rgba(255,255,255,.8);border-radius:24px;padding:18px;box-shadow:0 6px 22px rgba(33,51,48,.08);display:flex;gap:14px;align-items:center;counter-increment:how}
+.how li::before{content:counter(how,decimal-leading-zero);flex-shrink:0;font-family:Assistant,sans-serif;font-weight:300;font-size:46px;line-height:1;color:#213330;opacity:.85;direction:ltr}
+.how b{display:block;font-family:'Varela Round',Assistant,sans-serif;font-size:19px;font-weight:700}.how small{display:block;color:var(--muted);font-size:15px;font-weight:400;margin-top:3px;line-height:1.5}
 @media (max-width:720px){.how{grid-template-columns:minmax(0,1fr)}}
 .free-h{margin:34px 0 0;text-align:center}
 .free-h h2{font-size:clamp(24px,4vw,32px);color:var(--sage-deep)}
 .free-h p{color:var(--muted);font-weight:700;margin-top:4px}
-.home-hero{margin-top:14px;background:#fff;border-radius:30px;padding:24px 22px;box-shadow:0 6px 0 #d9e9e1;position:relative;overflow:hidden}
+.home-hero{margin-top:14px;background:#fff;border-radius:30px;padding:24px 22px;box-shadow:0 6px 22px rgba(33,51,48,.09);position:relative;overflow:hidden}
 .home-hero::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--pink),#3AA7F0,var(--sage))}
 .hh-top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
 .hh-top img{width:140px;height:auto;display:block}
@@ -80,30 +81,30 @@
 .keybox .msg{min-height:22px;font-weight:800;margin-top:6px}.keybox .msg.ok{color:#1FA855}.keybox .msg.bad{color:#E5484D}
 .keybox .wn{font-size:12.5px;color:var(--muted);margin-top:6px}
 @media (max-width:520px){.keybox{flex-direction:column;align-items:stretch;text-align:center}.keybox form{justify-content:center}}
-.find{margin-top:22px;display:flex;gap:8px;background:#fff;border-radius:999px;padding:6px 6px 6px 8px;box-shadow:0 4px 0 #d9e9e1}
+.find{margin-top:22px;display:flex;gap:8px;background:#fff;border-radius:999px;padding:6px 6px 6px 8px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .find input{flex:1;min-width:0;border:0;font-size:17px;padding:8px 14px;background:transparent}
 .find input:focus{outline:none}
 .find button{background:var(--sage-deep);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer;white-space:nowrap}
-.next{margin-top:14px;background:linear-gradient(135deg,#F1E3FF,#FFE3F4);border-radius:22px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.next{margin-top:14px;background:linear-gradient(135deg,#F1E3FF,#FDE6F6);border-radius:22px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
 .next .ic{font-size:40px}.next b{font-family:Fredoka,Assistant,sans-serif;font-size:20px;color:#6B2FA3}
 .next .cd{display:flex;gap:6px;margin-inline-start:auto}.next .cd span{background:#fff;border-radius:12px;padding:4px 10px;font-weight:800;color:#6B2FA3}
 .more-link{display:inline-block;margin-top:12px;font-weight:800;color:var(--sage-deep)}
-.mb-promo{margin-top:30px;background:linear-gradient(135deg,#4E8576,#6F988B);color:#fff;border-radius:26px;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:center}
+.mb-promo{margin-top:30px;background:linear-gradient(135deg,#2F6F63,#6DAFA1);color:#fff;border-radius:26px;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:center}
 .mb-promo img{width:100%;height:auto;display:block;border-radius:16px}
 .mb-promo h2{font-size:26px}.mb-promo p{margin:8px 0 12px}
-.mb-promo a{background:#fff;color:#C13671;border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
-.course-promo{margin-top:14px;display:flex;align-items:center;gap:14px;background:#fff;border:3px solid #FF56C2;border-radius:22px;padding:14px 18px;text-decoration:none;color:#2B1526;box-shadow:0 6px 20px rgba(193,54,113,.12)}
-.course-promo b{font-family:Fredoka,Assistant,sans-serif;font-size:21px;color:#C13671}
+.mb-promo a{background:#fff;color:#C5309A;border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-block}
+.course-promo{margin-top:14px;display:flex;align-items:center;gap:14px;background:#fff;border:3px solid #FA57C4;border-radius:22px;padding:14px 18px;text-decoration:none;color:#213330;box-shadow:0 6px 20px rgba(193,54,113,.12)}
+.course-promo b{font-family:Fredoka,Assistant,sans-serif;font-size:21px;color:#C5309A}
 .course-promo .cp-ic{font-size:34px;flex-shrink:0}
-.course-promo .cp-go{margin-inline-start:auto;background:#E0399F;color:#fff;border-radius:999px;padding:8px 16px;font-weight:800;white-space:nowrap;flex-shrink:0}
+.course-promo .cp-go{margin-inline-start:auto;background:#E33BAE;color:#fff;border-radius:999px;padding:8px 16px;font-weight:800;white-space:nowrap;flex-shrink:0}
 @media (max-width:520px){.course-promo{flex-wrap:wrap}.course-promo .cp-go{margin-inline-start:0}}
 @media (max-width:700px){.mb-promo{grid-template-columns:minmax(0,1fr)}}
 .revs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.rev{margin:0;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 #d9e9e1}
+.rev{margin:0;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .rev blockquote{margin:0;font-size:16px}.rev figcaption{margin-top:6px;font-weight:800;color:var(--sage-deep);font-size:14px}
 .season{margin-top:10px;font-size:14.5px;color:var(--muted);text-align:center}
 .season a{color:var(--magenta);font-weight:800}
-.show-more{display:block;margin:14px auto 0;font:inherit;font-weight:800;font-size:16px;border:2px solid #CDE7DC;background:#fff;color:#4E8576;border-radius:999px;padding:10px 22px;cursor:pointer}
+.show-more{display:block;margin:14px auto 0;font:inherit;font-weight:800;font-size:16px;border:2px solid #CDE7DC;background:#fff;color:#2F6F63;border-radius:999px;padding:10px 22px;cursor:pointer}
 .c-tile[hidden]{display:none}
 #revs[data-car]{display:block;max-width:720px;margin:0 auto}#revs[data-car] .rev{margin:0;min-height:150px;display:flex;flex-direction:column;justify-content:center}
 </style>
@@ -170,7 +171,7 @@
     </div>
   </div>
   <nav class="doors" aria-label="בוחרים דלת">
-    <a class="door" href="teachers/" style="--dc:#C13671;--db:#FFE3F4"><span class="i" aria-hidden="true">👩‍🏫</span><b>לגננות</b><span>מערכים, לוח השנה, דפים להדפסה</span></a>
+    <a class="door" href="teachers/" style="--dc:#C5309A;--db:#FDE6F6"><span class="i" aria-hidden="true">👩‍🏫</span><b>לגננות</b><span>מערכים, לוח השנה, דפים להדפסה</span></a>
     <a class="door" href="parents/" style="--dc:#2F6FC4;--db:#DCEBFF"><span class="i" aria-hidden="true">👨‍👩‍👧</span><b>להורים</b><span>מה למדו בגן, ואיך ממשיכים בבית</span></a>
     <a class="door" href="kids/" style="--dc:#9A5800;--db:#FFF1C9"><span class="i" aria-hidden="true">🧒</span><b>לילדים</b><span>משחקים עם משפחת הבוקלים</span></a>
     <a class="door" href="school/" style="--dc:#6B2FA3;--db:#F1E3FF"><span class="i" aria-hidden="true">🎒</span><b>כיתות א'–ג'</b><span>חשבון, רגשות, ועוד בדרך</span></a>
@@ -293,7 +294,7 @@ render();
 (function(){
   const box = document.getElementById("covers"), B = window.BQ_BOOKS || [];
   box.innerHTML = B.map(b => '<a class="cov js-ord" data-w="cover-' + b.id + '" href="savta/?book=' + b.id + '&utm_source=booqli_games&utm_medium=home_cover&utm_campaign=' + b.id + '">' +
-    '<img src="order/books/' + b.img + '" alt="" width="800" height="800" loading="lazy"><b>' + b.name + '</b><span>להזמנה ←</span></a>').join("");
+    '<img src="order/books/' + b.img + '" alt="" width="800" height="800" loading="lazy"><i class="sb" aria-hidden="true"></i><b>' + b.name + '</b><span>להזמנה ←</span></a>').join("");
   if (!B.length) box.closest(".shelf").hidden = true;
   document.querySelectorAll(".js-ord").forEach(a => a.addEventListener("click", () => { if (window.siteEvent) siteEvent("home-order", a.dataset.w); }));
 })();

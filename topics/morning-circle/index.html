@@ -20,12 +20,12 @@
 {"@type":"Question","name":"איך עושים מפגש בוקר שלא משעמם?","acceptedAnswer":{"@type":"Answer","text":"לכל יום בשבוע יש סוג פעילות קבוע (ראשון רגשות, שני תנועה, שלישי שפה, רביעי חשבון וגילוי, חמישי דמיון, שישי ביחד). כל רעיון חוזר רק כל 5 שבועות, ובכל פעם בגרסה אחרת."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pink:#FF56C2; --pink-btn:#E0399F; --pink-shadow:#A3216F; --pink-soft:#FFE3F4;
-  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6F988B; --sage-2:#7FA89B; --sage-deep:#4E8576;
-  --magenta:#C13671; --wa:#1FA855; --ink:#2B1526; --muted:#6b5a66; --card:#fff;
+  --pink:#FA57C4; --pink-btn:#E33BAE; --pink-shadow:#B5288A; --pink-soft:#FDE6F6;
+  --mint:#E1F0EA; --mint-2:#CDE7DC; --sage:#6DAFA1; --sage-2:#8CC5B9; --sage-deep:#2F6F63;
+  --magenta:#C5309A; --wa:#1FA855; --ink:#213330; --muted:#566B67; --card:#fff;
   --sun:#FFB020; --sun-soft:#FFF3CF;
   color-scheme:light;
 }
@@ -54,7 +54,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sponsor{background:#fff;color:var(--sage-deep);text-align:center;font-weight:700;font-size:14px;padding:6px 16px;border-bottom:1px solid #e7efe9}
 
 /* פתיח */
-.hero{margin-top:22px;background:linear-gradient(160deg,#FFF6DD,#FFE3F4);border-radius:28px;padding:26px 22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;overflow:hidden;box-shadow:0 6px 0 #F3D9C2}
+.hero{margin-top:22px;background:linear-gradient(160deg,#FFF6DD,#FDE6F6);border-radius:28px;padding:26px 22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;overflow:hidden;box-shadow:0 6px 0 #F3D9C2}
 .hero small{color:var(--magenta);font-weight:800}
 .hero h1{font-size:clamp(34px,7vw,58px);line-height:1.05;color:var(--ink)}
 .hero h1 span{color:var(--magenta)}
@@ -70,12 +70,12 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .sec-title{text-align:center;margin:36px 0 14px}
 .sec-title h2{font-size:28px;color:var(--sage-deep)}
 .sec-title p{margin:4px auto 0;color:var(--muted);max-width:640px}
-.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 4px 0 #d9e9e1}
+.box{background:#fff;border-radius:24px;padding:20px;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 
 /* היום */
 .today{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
 @media (max-width:820px){.today{grid-template-columns:1fr}}
-.t-main{border-radius:24px;padding:20px;background:#fff;box-shadow:0 4px 0 #d9e9e1;border-top:10px solid var(--fam,#FFE3F4)}
+.t-main{border-radius:24px;padding:20px;background:#fff;box-shadow:0 6px 22px rgba(33,51,48,.09);border-top:10px solid var(--fam,#FDE6F6)}
 .t-date{font-weight:800;color:var(--muted)}
 .t-fam{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:3px 12px;font-weight:800;font-size:14px;margin-top:6px}
 .t-name{font-size:clamp(26px,4.5vw,36px);margin-top:6px;display:flex;gap:10px;align-items:center}
@@ -83,7 +83,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .t-round{font-weight:700;color:var(--sage-deep);margin-top:4px}
 .t-ver{background:var(--sun-soft);border-radius:14px;padding:10px 14px;margin-top:10px;font-weight:700}
 .t-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.t-set{background:#fff;border-radius:24px;padding:16px;box-shadow:0 4px 0 #d9e9e1;display:grid;gap:12px}
+.t-set{background:#fff;border-radius:24px;padding:16px;box-shadow:0 6px 22px rgba(33,51,48,.09);display:grid;gap:12px}
 .t-set h3{font-size:18px;color:var(--sage-deep)}
 .t-set label{font-weight:700;font-size:14px;display:grid;gap:4px}
 .t-set input[type=date]{border:2px solid var(--mint-2);border-radius:12px;padding:8px;background:#fff;width:100%}
@@ -106,7 +106,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 /* כמה זמן */
 .time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media (max-width:700px){.time-grid{grid-template-columns:1fr}}
-.tg{background:#fff;border-radius:20px;padding:16px;text-align:center;box-shadow:0 4px 0 #d9e9e1}
+.tg{background:#fff;border-radius:20px;padding:16px;text-align:center;box-shadow:0 6px 22px rgba(33,51,48,.09)}
 .tg .age{font-weight:800;color:var(--muted)}
 .tg b{display:block;font-family:Fredoka,sans-serif;font-size:34px;color:var(--magenta);line-height:1.15}
 .tg p{margin:6px 0 0;font-size:14.5px}
@@ -115,7 +115,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 /* מבנה */
 .flow{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:12px}
 @media (max-width:760px){.flow{grid-template-columns:1fr}}
-.fl{background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 0 #d9e9e1;position:relative}
+.fl{background:#fff;border-radius:20px;padding:16px;box-shadow:0 6px 22px rgba(33,51,48,.09);position:relative}
 .fl .min{position:absolute;top:12px;left:14px;background:var(--pink-soft);color:var(--magenta);border-radius:999px;padding:2px 10px;font-weight:800;font-size:13px}
 .fl h3{font-size:20px;color:var(--sage-deep);padding-left:70px}
 .fl.mid{background:var(--sun-soft)}
@@ -140,7 +140,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 .fchip{background:#fff;border:2px solid var(--mint-2);border-radius:999px;padding:6px 14px;font-weight:800;cursor:pointer;font-size:14px}
 .fchip[aria-pressed=true]{background:var(--pink);border-color:var(--pink);color:#fff}
 .ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px}
-.ic{background:#fff;border:0;border-radius:20px;padding:14px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 0 #d9e9e1;transition:transform .15s;position:relative}
+.ic{background:#fff;border:0;border-radius:20px;padding:14px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 6px 22px rgba(33,51,48,.09);transition:transform .15s;position:relative}
 .ic:hover{transform:translateY(-3px)}
 .ic .num{position:absolute;top:8px;right:10px;font-family:Fredoka,sans-serif;font-weight:700;color:var(--muted);font-size:14px}
 .ic .e{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:34px}
@@ -149,7 +149,7 @@ header{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#fff;bo
 
 /* חוברת */
 .booklet{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
-.booklet .cover{width:150px;aspect-ratio:210/297;border-radius:10px;background:linear-gradient(160deg,#FFF6DD,#FFE3F4);box-shadow:0 6px 18px rgba(0,0,0,.12);display:grid;place-items:center;text-align:center;padding:10px;font-family:Fredoka,sans-serif;color:var(--magenta);font-size:18px;line-height:1.2}
+.booklet .cover{width:150px;aspect-ratio:210/297;border-radius:10px;background:linear-gradient(160deg,#FFF6DD,#FDE6F6);box-shadow:0 6px 18px rgba(0,0,0,.12);display:grid;place-items:center;text-align:center;padding:10px;font-family:Fredoka,sans-serif;color:var(--magenta);font-size:18px;line-height:1.2}
 .booklet .cover i{font-style:normal;font-size:42px;display:block}
 .booklet ul{margin:8px 0 12px;padding-inline-start:20px;display:grid;gap:3px}
 @media (max-width:560px){.booklet{grid-template-columns:1fr}.booklet .cover{margin:0 auto}}
@@ -201,24 +201,24 @@ footer p{margin:4px 0}footer .logo{height:40px;margin:0 auto 10px}footer a{color
 
 /* ===== הדפסה ===== */
 #print{display:none}
-.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#2B1526;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4}
+.sheet{width:210mm;height:297mm;padding:11mm 13mm 9mm;background:#fff;color:#213330;display:flex;flex-direction:column;font-family:Assistant,Arial,sans-serif;direction:rtl;overflow:hidden;font-size:11pt;line-height:1.4}
 .sheet h1,.sheet h2,.sheet h3{font-family:Fredoka,Assistant,sans-serif;margin:0}
 .s-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #CDE7DC;padding-bottom:3mm;margin-bottom:4mm}
-.s-head h1{font-size:20pt;color:#C13671;line-height:1.1}
-.s-head .nm{font-size:11pt;font-weight:700;color:#4E8576;white-space:nowrap}
+.s-head h1{font-size:20pt;color:#C5309A;line-height:1.1}
+.s-head .nm{font-size:11pt;font-weight:700;color:#2F6F63;white-space:nowrap}
 .s-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:4mm}
-.p-cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6mm;background:linear-gradient(160deg,#FFF6DD,#FFE3F4);border-radius:8mm;padding:12mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.p-cover h1{font-size:44pt;color:#C13671;line-height:1.05}
+.p-cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6mm;background:linear-gradient(160deg,#FFF6DD,#FDE6F6);border-radius:8mm;padding:12mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.p-cover h1{font-size:44pt;color:#C5309A;line-height:1.05}
 .p-cover p{font-size:15pt;margin:0;max-width:150mm}
 .p-cover .sun svg{width:70mm;height:auto}
-.p-cover .gan-name{border-bottom:2px dashed #C13671;width:110mm;height:12mm;font-size:13pt;color:#6b5a66;display:flex;align-items:flex-end;justify-content:center}
+.p-cover .gan-name{border-bottom:2px dashed #C5309A;width:110mm;height:12mm;font-size:13pt;color:#566B67;display:flex;align-items:flex-end;justify-content:center}
 .p-box{border:2px solid #E1F0EA;border-radius:5mm;padding:3.5mm 5mm}
-.p-box h2{font-size:15pt;color:#4E8576;margin-bottom:1.5mm}
+.p-box h2{font-size:15pt;color:#2F6F63;margin-bottom:1.5mm}
 .p-box ol,.p-box ul{margin:0;padding-inline-start:6mm}
 .p-box li{margin:.6mm 0}
 .p-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3mm}
-.p-cols>div{border-radius:4mm;padding:3mm;text-align:center;background:#FFE3F4;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.p-cols b{display:block;font-family:Fredoka,sans-serif;font-size:20pt;color:#C13671}
+.p-cols>div{border-radius:4mm;padding:3mm;text-align:center;background:#FDE6F6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.p-cols b{display:block;font-family:Fredoka,sans-serif;font-size:20pt;color:#C5309A}
 .p-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10pt}
 .p-table th,.p-table td{border:1.5px solid #CDE7DC;padding:2mm 1.5mm;text-align:center;vertical-align:middle}
 .p-table th{font-family:Fredoka,sans-serif;font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -492,10 +492,10 @@ const verText = (idea, v) => v === 0 ? "עושים את הרעיון כמו שה
 const SUN = `<svg viewBox="0 0 220 200" aria-hidden="true"><g transform="translate(110 96)">
   ${Array.from({length:12},(_,i)=>`<rect x="-6" y="-92" width="12" height="28" rx="6" fill="#FFB020" transform="rotate(${i*30})"/>`).join("")}
   <circle r="58" fill="#FFD25A" stroke="#FFB020" stroke-width="5"/>
-  <circle cx="-20" cy="-8" r="6" fill="#2B1526"/><circle cx="20" cy="-8" r="6" fill="#2B1526"/>
+  <circle cx="-20" cy="-8" r="6" fill="#213330"/><circle cx="20" cy="-8" r="6" fill="#213330"/>
   <circle cx="-34" cy="12" r="9" fill="#FF8FC9" opacity=".7"/><circle cx="34" cy="12" r="9" fill="#FF8FC9" opacity=".7"/>
-  <path d="M-20 18 Q0 38 20 18" stroke="#2B1526" stroke-width="5" fill="none" stroke-linecap="round"/></g>
-  ${[[30,182,"#FF56C2"],[70,186,"#6F988B"],[110,188,"#FFB020"],[150,186,"#7FA6E0"],[190,182,"#B48BE0"]].map(([x,y,c])=>`<circle cx="${x}" cy="${y-14}" r="9" fill="${c}"/><rect x="${x-9}" y="${y-4}" width="18" height="16" rx="8" fill="${c}"/>`).join("")}</svg>`;
+  <path d="M-20 18 Q0 38 20 18" stroke="#213330" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+  ${[[30,182,"#FA57C4"],[70,186,"#6DAFA1"],[110,188,"#FFB020"],[150,186,"#7FA6E0"],[190,182,"#B48BE0"]].map(([x,y,c])=>`<circle cx="${x}" cy="${y-14}" r="9" fill="${c}"/><rect x="${x-9}" y="${y-4}" width="18" height="16" rx="8" fill="${c}"/>`).join("")}</svg>`;
 $("heroArt").innerHTML = SUN;
 
 /* ---------- היום ---------- */
