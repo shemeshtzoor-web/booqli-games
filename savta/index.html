@@ -645,6 +645,10 @@ document.querySelectorAll("[data-start]").forEach(a => a.addEventListener("click
 (() => { const u = new URLSearchParams(location.search), c = u.get("utm_content"), q = c && book(c) ? c : u.get("book");
   CUR = fresh(); if (q && book(q)) { CUR.book = q; STEP = "ver"; }
   draw(false);
+  /* מגיעים מדף הבית (#order, 5.11.2026): כבר ראו שם את השלבים ואת הספרים – נוחתים ישר ב"ההזמנה שלי", בלי כפילות */
+  if (location.hash === "#order") { let moved = false; const land = () => { if (!moved) $("order").scrollIntoView({block: "start"}); };
+    addEventListener("wheel", () => moved = true, {once: true, passive: true}); addEventListener("touchmove", () => moved = true, {once: true, passive: true});
+    land(); setTimeout(land, 400); addEventListener("load", () => setTimeout(land, 50), {once: true}); }
   if (window.bqDraft) bqDraft.load("savta").then(v => { LOADED = true; if (!v || !v.ORD || DONE) return;
     try { Object.assign(ORD, v.ORD, {list: (v.ORD.list || []).map(unstrip)}); CUR = unstrip(v.CUR) || (v.STEP === "send" ? null : fresh()); STEP = v.STEP || "book";
       if (STEP !== "send" && !CUR) CUR = fresh(); RESTORED = true; ev("savta-draft", "restore"); draw(false); } catch (e) {} }); })();

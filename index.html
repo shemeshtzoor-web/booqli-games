@@ -178,7 +178,7 @@
       <li>📷 תמונה אחת ושם</li><li>📖 כריכה קשה</li><li>🚚 משלוח עד הבית</li>
     </ul>
     <div class="oh-cta">
-      <a class="oh-go js-ord" data-w="hero" href="savta/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=order">להתחיל ←</a>
+      <a class="oh-go js-ord" data-w="hero" href="savta/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=order#order">להתחיל ←</a>
       <a class="oh-gan js-ord" data-w="hero-gan" href="kindergartens/?utm_source=booqli_games&utm_medium=home_hero&utm_campaign=gan">🏫 מזמינים לכל ילדי הגן? ←</a>
     </div>
   </div>
@@ -365,7 +365,7 @@ render();
 // באנר ההזמנה: מדף הכריכות (מ-order/books/books.js) + מדידה של כל לחיצה
 (function(){
   const box = document.getElementById("covers"), B = window.BQ_BOOKS || [];
-  box.innerHTML = B.map(b => '<a class="cov js-ord" data-w="cover-' + b.id + '" href="savta/?book=' + b.id + '&utm_source=booqli_games&utm_medium=home_cover&utm_campaign=' + b.id + '">' +
+  box.innerHTML = B.map(b => '<a class="cov js-ord" data-w="cover-' + b.id + '" href="savta/?book=' + b.id + '&utm_source=booqli_games&utm_medium=home_cover&utm_campaign=' + b.id + '#order">' +
     '<img src="order/books/' + b.img + '" alt="" width="800" height="800" loading="lazy"><i class="sb" aria-hidden="true"></i><b>' + b.name + '</b><span>להזמנה ←</span></a>').join("");
   if (!B.length) box.closest(".shelf").hidden = true;
   document.querySelectorAll(".js-ord").forEach(a => a.addEventListener("click", () => { if (window.siteEvent) siteEvent("home-order", a.dataset.w); }));
