@@ -979,6 +979,18 @@ async function eraseAll(env, from, profile, db){
   return d;
 }
 
+/* ===== מי שכותב באנגלית: שמש עונה לו בעצמה (בשביל מטא ולקוחות מחו"ל); אפשר להמשיך עם הבוט בעברית ===== */
+const HEB = /[\u0590-\u05FF]/;
+const EN_SHORT = /^(ok|okay|k|thanks|thank you|thx|ty|yes|no|hi|hello|hey|bye|lol|sure|great|cool)[.!\s]*$/i;
+const isEn = (t, first) => !!t && !HEB.test(t) && /[a-z]{2,}/i.test(t) && (first || (!EN_SHORT.test(t) && t.split(/\s+/).length >= 3));
+const EN_BTN = [["en:he", "▶️ להמשיך בעברית"]];
+const EN_MSG = "Hi! 👋 Thanks for writing to BOOQLI.\nShemesh will reply to you here in English soon (Sun–Thu, 8:00–18:00).\nTo stop messages write STOP · to delete your data write DELETE.\n\nרוצים להמשיך עם הבוט בעברית? לוחצים 👇";
+async function enStart(env, from, st, tx, log){
+  st.en = 1; st.human = Date.now();
+  await wa(env, from, buttons(EN_MSG, EN_BTN), log);
+  if (!log) { await alertOwner(env, st, from, "כתב/ה באנגלית – מחכה לתשובה שלך", tx); await logQA(env, st, from, "q", "באנגלית – מחכה לשמש", tx); }
+}
+
 export async function handle(env, from, profile, ev, opts){
   opts = opts || {};
   const db = store(env, opts.mem), log = opts.log;
@@ -1031,10 +1043,20 @@ export async function handle(env, from, profile, ev, opts){
   const k = "st:" + from, raw = await db.get(k);
   let st = raw ? JSON.parse(raw) : null;
   if (ev.id === "restart:yes" || /^(מחדש|להתחיל מחדש|התחלה מחדש|מתחילים מחדש)[.!]?$/.test((ev.text || "").trim())) { st = null; if (ev.id) ev = { text: "מחדש" }; }   /* מתחילים הזמנה חדשה מההתחלה */
+  if (ev.id === "en:he") {                                         /* כתב באנגלית ← בחר להמשיך עם הבוט בעברית */
+    if (!st) return;
+    st.human = 0; st.owner = 0; st.en = 0;
+    if (st.step === "hi") await ask(env, from, st, log, db); else await resume(env, from, st, log, db);
+    st.ts = Date.now(); await db.put(k, JSON.stringify(st), 30 * 86400); return;
+  }
   if (st && st.human && !st.owner && ev.id && ev.id !== "human") st.human = 0;   /* כששמש כותבת בעצמה – הבוט חוזר רק כשהיא כותבת #בוט */  /* לחצו על כפתור של הבוט – רוצים את הבוט, ממשיכים בלי לחכות */
   if (st && st.human) {                                            /* מצב "בן אדם" */
     if (!log && !ev.id && !RESUME_TXT.test((ev.text || "").trim())) await logQA(env, st, from, "q", st.owner ? "בשיחה עם שמש" : "מחכה לשמש", ev.text || (ev.image ? "(תמונה)" : ""));
-    if (!st.owner && (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || Date.now() - st.human > 48 * 3600e3)) await resume(env, from, st, log, db);
+    if (!st.owner && (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim()) || (!st.en && Date.now() - st.human > 48 * 3600e3))) await resume(env, from, st, log, db);
+    else if (!st.owner && st.en) {                                 /* באנגלית – מחכה לשמש */
+      await wa(env, from, buttons("📩 Got it – Shemesh will reply here soon (Sun–Thu, 8:00–18:00).\n\nלהמשיך עם הבוט בעברית? 👇", EN_BTN), log);
+      if (Date.now() - (st.alertAt || 0) > 10 * 60e3) { st.alertAt = Date.now(); await alertOwner(env, st, from, "כתב/ה שוב באנגלית – מחכה לך", ev.text || (ev.image ? "(תמונה)" : "")); }
+    }
     else if (!st.owner) {                                          /* שמש עוד לא כתבה – לא שותקים: מעבירים לה ומציעים להמשיך */
       await wa(env, from, buttons("📩 קיבלתי, והעברתי גם את זה לשמש – היא תענה לך כאן בהקדם (א׳–ה׳ 8:00–18:00).\nבינתיים אפשר להמשיך בהזמנה 👇", RESUME_BTN), log);
       if (Date.now() - (st.alertAt || 0) > 10 * 60e3) { st.alertAt = Date.now(); await alertOwner(env, st, from, "כתבה שוב בזמן שמחכה לך", ev.text || (ev.image ? "(תמונה)" : "")); }
@@ -1056,10 +1078,12 @@ export async function handle(env, from, profile, ev, opts){
     }
     st = { from, step: "hi", page: 0, list: [], cur: fresh(), who: "", profile: profile || "", human: 0, oid: newId("סב"), day: dayStr(), role: "g", mode: "private", g: { name: "", kids: 0, books: [], cover: "", ded: "", dedI: 0 } };
     if (ev.id === "human" || HUMAN_TXT.test(ev.text || "")) await step(env, from, st, { id: "human" }, log, db);
+    else if (!ev.id && isEn((ev.text || "").trim(), true)) await enStart(env, from, st, (ev.text || "").trim(), log);
     else if (ev.id === "s:go" || ev.id === "s:gan") await step(env, from, st, ev, log, db);
     else await ask(env, from, st, log, db);
   } else {
     if (ev.id === "resume" || RESUME_TXT.test((ev.text || "").trim())) await resume(env, from, st, log, db);
+    else if (!ev.id && !st.en && isEn((ev.text || "").trim(), false)) await enStart(env, from, st, (ev.text || "").trim(), log);
     else await step(env, from, st, ev, log, db);
   }
   st.ts = Date.now();
