@@ -11,7 +11,7 @@ window.SITE = {
   photoUpload: "https://booqli-photos.shemeshtzoor.workers.dev/",
   driveUpload: "https://booqli-wa.shemeshtzoor.workers.dev/up/",   /* (ישן – חסום בסינונים, לא בשימוש) */
   /* שמירת תמונות ישר בדרייב של שמש – הקוד בגוגל (worker/drive-saver.gs, פעולות web*). גוגל לא חסום בסינונים, workers.dev כן (5.11.2026) */
-  driveScript: "https://script.google.com/macros/s/AKfycbw8ZvVe-MF785NNR0Mf5_-JEgCfAg0flx7MxmxczcEH7AxcgXDMYtGZv_bpnepzf4nH/exec",
+  driveScript: "https://script.google.com/macros/s/AKfycbx67vfPc5N6ry77InqUckoz25HsJf2pnWr_4F7ErpDAIwd2idMkNQYbMSaSAgTSzPLVAQ/exec",
   // קוד המדידה מ-Cloudflare Web Analytics. להדביק כאן בין המירכאות כשיתקבל
   analyticsToken: "cd51ae95df984ed1b317d05f080dc9a3",
   // מצב בעלת האתר (שמש): רק "טביעת אצבע" של הקוד, הקוד עצמו לא נכתב כאן. ראו "מצב בעלת האתר" למטה
