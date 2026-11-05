@@ -24,10 +24,29 @@ window.bqUp = (function () {
   return {
     start: function (o) { return post(Object.assign({ action: "webstart" }, o)); },
     photo: function (tok, blob, sub, name, topic) { return b64(blob).then(function (d) { return post({ action: "webphoto", tok: tok, sub: sub, name: name, topic: topic || "", mime: blob.type === "image/png" ? "image/png" : "image/jpeg", b64: d }); }); },
-    done: function (tok, summary) { return post({ action: "webdone", tok: tok, summary: summary }); },
+    done: function (tok, summary, cust) { return post({ action: "webdone", tok: tok, summary: summary, cust: cust || null }); },
     gan: function (code) { return post({ action: "webgan", code: code }); }
   };
 })();
+/* טיוטה של הזמנה בטלפון (שמש, 5.11.2026: "אם התחלתי הזמנה – שזה יישמר"). IndexedDB – גם התמונות. רק במכשיר ובדפדפן הזה, 30 יום. */
+window.bqDraft = (function () {
+  var db = null;
+  function open() { if (!db) db = new Promise(function (res, rej) { var r = indexedDB.open("booqli-drafts", 1); r.onupgradeneeded = function () { r.result.createObjectStore("d"); }; r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); return db; }
+  function tx(mode, fn) { return open().then(function (d) { return new Promise(function (res, rej) { var t = d.transaction("d", mode), q = fn(t.objectStore("d")); t.oncomplete = function () { res(q && q.result); }; t.onerror = t.onabort = function () { rej(t.error); }; }); }); }
+  var timers = {};
+  return {
+    save: function (k, v) { clearTimeout(timers[k]); timers[k] = setTimeout(function () { tx("readwrite", function (s) { return s.put({ v: v, at: Date.now() }, k); }).catch(function () {}); }, 500); },
+    load: function (k) { try { return tx("readonly", function (s) { return s.get(k); }).then(function (r) { return r && Date.now() - r.at < 30 * 864e5 ? r.v : null; }).catch(function () { return null; }); } catch (e) { return Promise.resolve(null); } },
+    clear: function (k) { clearTimeout(timers[k]); return tx("readwrite", function (s) { return s.delete(k); }).catch(function () {}); }
+  };
+})();
+/* סיכום הזמנה להורדה כ-PDF: מעתיקים את הסיכום לאזור הדפסה ופותחים את חלון ההדפסה ("שמירה כ-PDF") */
+window.bqPrint = function (el) {
+  var box = document.getElementById("bqPrint");
+  if (!box) { box = document.createElement("div"); box.id = "bqPrint"; document.body.appendChild(box);
+    var st = document.createElement("style"); st.textContent = "#bqPrint{display:none}@media print{body>*:not(#bqPrint){display:none!important}#bqPrint{display:block;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#222}#bqPrint .noprint{display:none!important}#bqPrint img{max-width:120px}}"; document.head.appendChild(st); }
+  box.innerHTML = el.outerHTML; setTimeout(function () { window.print(); }, 50);
+};
 
 
 /* ======================== מצב בעלת האתר (מ-1.11.2026) ========================

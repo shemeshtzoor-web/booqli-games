@@ -46,6 +46,12 @@ function dedIdeas(){
   return Object.values(set).map(v => (v.b || "").replace(/\{sig\}/g, sig)).filter(Boolean);
 }
 
+/* ---- טיוטה בטלפון (שמש, 5.11.2026: "אם התחלתי הזמנה – שזה יישמר") ---- */
+let DONE = false, RESTORED = false, LOADED = !window.bqDraft;
+function saveDraft(){ if (DONE || !LOADED || !window.bqDraft || !(G.pics.length || G.topic)) return;
+  bqDraft.save("gan", {G: Object.assign({}, G, {pics: G.pics.map(p => ({sub: p.sub, blob: p.blob, name: p.name, id: p.id}))}), STEP}); }
+function resetAll(){ if (window.bqDraft) bqDraft.clear("gan"); G.pics.forEach(p => URL.revokeObjectURL(p.url));
+  Object.assign(G, {pics: [], topic: "", ded: "", dedI: 0, cover: "", d: {}, mkWa: false, mkMail: false}); STEP = "pics"; RESTORED = false; ev("gan_fast_draft", "reset"); draw(true); }
 /* ---- ציור ---- */
 function win(sub){
   const L = G.pics.map((p, i) => [p, i]).filter(([p]) => p.sub === sub), boy = sub === "בנים";
@@ -64,8 +70,10 @@ function draw(scroll){
   if (STEP !== "pics" && kids()) h.push(doneLine(`<b>${kids()} תמונות</b> · 👦 ${boys()} · 👧 ${girls()}`, "pics"));
   if (G.topic && !["pics", "topic", "check"].includes(STEP)) h.push(doneLine(`הנושא: <b>${esc(b.name)}</b>`, "topic"));
   if (G.ded && STEP === "details") h.push(doneLine("ההקדשה מוכנה", "ded"));
+  if (RESTORED) h.unshift(`<div class="gdraft">💾 המשכנו מאיפה שעצרתם<button type="button" data-reset="1">להתחיל מחדש</button></div>`);
   h.push(stepHTML());
   box.innerHTML = h.join("");
+  saveDraft();
   if (scroll) box.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 function stepHTML(){
@@ -130,16 +138,20 @@ function readDetails(){ ["gan", "first", "last", "phone", "email", "street", "ci
 /* ---- אירועים ---- */
 box.addEventListener("change", e => {
   const p = e.target.dataset.pick; if (p && e.target.files.length) { addFiles(p, e.target.files); e.target.value = ""; return; }
-  if (e.target.name === "gCov") { readDetails(); draw(); }
+  if (e.target.name === "gCov") { readDetails(); draw(); return; }
+  if (STEP === "details") { readDetails(); saveDraft(); }
 });
 box.addEventListener("input", e => {
   const i = e.target.dataset.name; if (i !== undefined) { const v = cleanName(e.target.value); if (v !== e.target.value) e.target.value = v; G.pics[+i].name = v; }
   if (e.target.id === "gDed") G.ded = e.target.value;
+  if (STEP === "details") readDetails();
+  saveDraft();
 });
 box.addEventListener("click", e => {
   const lab = e.target.closest(".gpick"); if (lab && !tipsSeen) { e.preventDefault(); tips(lab.querySelector("input")); return; }
   const t = e.target.closest("button,[data-go]"); if (!t) return;
   if (t.dataset.tips) { tips(); return; }
+  if (t.dataset.reset) { resetAll(); return; }
   if (t.dataset.go) { readDetails(); STEP = t.dataset.go; draw(true); return; }
   if (t.dataset.rm !== undefined) { const x = G.pics.splice(+t.dataset.rm, 1)[0]; if (x) URL.revokeObjectURL(x.url); draw(); return; }
   if (t.dataset.mv !== undefined) { const x = G.pics[+t.dataset.mv]; x.sub = x.sub === "בנים" ? "בנות" : "בנים"; draw(); return; }
@@ -168,6 +180,19 @@ function modal(html){ let m = $("gModal"); if (!m) { m = document.createElement(
   m.innerHTML = `<div class="gcard">${html}</div>`; m.hidden = false; document.body.style.overflow = "hidden"; }
 function closeModal(){ const m = $("gModal"); if (m) m.hidden = true; document.body.style.overflow = ""; }
 const NEXT = `<ol class="gnextl"><li>🎨 <b>מכינים את הסקיצות</b> – בין כמה דקות ליום עסקים אחד – ושולחים לכם בוואטסאפ קישור לתיקייה לצפייה</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>`;
+/* סיכום ההזמנה על המסך: כל התמונות עם השמות, הנושא, ההקדשה והפרטים. שמירה כ-PDF + שמירה בוואטסאפ */
+function sumHTML(oid, mailed){ const d = G.d, b = book(G.topic), n = kids(), p = price(G.cover, n);
+  const grid = sub => { const L = G.pics.filter(x => x.sub === sub); return L.length ? `<p class="gsl">${sub === "בנים" ? "👦 בנים" : "👧 בנות"} (${L.length})</p><div class="gsg">${L.map(x => `<figure><img src="${x.url}" alt=""><figcaption>${esc(x.name.trim())}</figcaption></figure>`).join("")}</div>` : ""; };
+  return `<div class="gsum" id="gSum"><h3>📄 סיכום ההזמנה ${esc(oid)}</h3><p class="gsd">${new Date().toLocaleDateString("he-IL")} · 🏫 ${esc(d.gan)} · ${esc(d.first)} ${esc(d.last)} · ${esc(d.phone)} · <span dir="ltr">${esc(d.email)}</span><br>🏠 ${esc(d.street)}, ${esc(d.city)}</p>
+    <p><b>📖 הנושא:</b> ${esc(b.name)} · <b>📕</b> ${esc(COVERS.find(c => c[0] === G.cover)[1])}${p ? ` · ${n} × ${ils(p)} = <b>${ils(n * p)}</b> + משלוח` : ""}</p>
+    <p><b>✍️ ההקדשה:</b></p><p class="gded">${esc(G.ded)}</p>${grid("בנים")}${grid("בנות")}
+    <p class="gfine">📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>
+    ${mailed ? `<p class="gh">📧 הסיכום נשלח גם למייל שלכם.</p>` : ""}
+    <div class="gsb noprint"><button type="button" class="btn btn-main" id="gPdf">📄 שמירה כ-PDF</button><a class="btn btn-wa" id="gSWa" target="_blank" rel="noopener" href="#">💬 לשמור את הסיכום בוואטסאפ</a></div></div>`; }
+function wireSum(oid){ const d = G.d, b = book(G.topic);
+  const t = `סיכום ההזמנה ${oid} · BOOQLI 💛\n🏫 ${d.gan} · ${d.first} ${d.last} · ${d.phone}\n📖 ${b.name}\n\n✍️ ${G.ded}\n\n👦 בנים: ${G.pics.filter(x => x.sub === "בנים").map(x => x.name.trim()).join(", ") || "—"}\n👧 בנות: ${G.pics.filter(x => x.sub === "בנות").map(x => x.name.trim()).join(", ") || "—"}`;
+  $("gPdf").onclick = () => { ev("gan_fast_sum", "pdf"); bqPrint($("gSum")); };
+  $("gSWa").href = "https://wa.me/?text=" + encodeURIComponent(t); $("gSWa").onclick = () => ev("gan_fast_sum", "wa"); }
 async function send(){
   readDetails(); const d = G.d;
   const need = [["gan", "שם הגן"], ["first", "שם פרטי"], ["last", "שם משפחה"], ["phone", "טלפון"], ["email", "מייל"], ["street", "כתובת"], ["city", "עיר"]].find(([k]) => !d[k]);
@@ -196,13 +221,16 @@ async function send(){
       `📣 דיוור בוואטסאפ: ${G.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${G.mkMail ? "מאשר/ת ✔️" : "לא"}`,
       `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (AI אינה מצלמה, אין החלפת תמונה אחרי השליחה, שינוי לפי טעם אישי – 20 ₪ לתיקון), את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
       SRC ? "מקור: " + SRC : ""].join("\n");
-    const r = await bqUp.done(s.tok, summary); if (!r.ok) throw new Error("done");
-    ev("gan_fast_done", String(n));
+    const cust = {email: d.email, first: d.first, gan: d.gan, ded: G.ded, items: G.pics.map(x => ({book: b.name, name: x.name.trim()}))};
+    const r = await bqUp.done(s.tok, summary, cust); if (!r.ok) throw new Error("done");
+    ev("gan_fast_done", String(n)); DONE = true; if (window.bqDraft) bqDraft.clear("gan");
     const t = `שלום BOOQLI 💛 שלחנו עכשיו באתר את הזמנה ${s.oid} · ${d.gan} (${n} ילדים, ${b.name})`;
-    modal(`<div class="gbig2">✅</div><h3>קיבלנו את ההזמנה של ${esc(d.gan)}!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${NEXT}
+    modal(`<div class="gbig2">✅</div><h3>קיבלנו את ההזמנה של ${esc(d.gan)}!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${r.mailed ? `<p class="gh">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(d.email)}</b></p>` : ""}${NEXT}
+      <button type="button" class="btn btn-main gsend" id="gSumGo">📄 לסיכום ההזמנה</button>
       <a class="btn btn-wa gsend" id="gWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a><button type="button" class="galt" id="gClose">סגירה</button>`);
     $("gWa").onclick = () => ev("gan_fast_wa", ""); $("gClose").onclick = closeModal;
-    box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} אצלנו</h3><p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ. אפשר לסגור את העמוד.</p></div>`;
+    box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} אצלנו</h3><p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ. אפשר לסגור את העמוד.</p></div>${sumHTML(s.oid, r.mailed)}`;
+    wireSum(s.oid); $("gSumGo").onclick = () => { closeModal(); $("gSum").scrollIntoView({ behavior: "smooth", block: "start" }); };
   } catch (e) {
     ev("gan_fast_fail", String(e && e.message || e)); delete btn.dataset.busy;
     const code = String(e && e.message || e).slice(0, 60);
@@ -212,4 +240,7 @@ async function send(){
   }
 }
 draw();
+if (window.bqDraft) bqDraft.load("gan").then(v => { LOADED = true; if (!v || !v.G || DONE || G.pics.length) return;
+  try { Object.assign(G, v.G, {pics: (v.G.pics || []).filter(p => p && p.blob).map(p => Object.assign(p, {url: URL.createObjectURL(p.blob)}))});
+    STEP = v.STEP || "pics"; RESTORED = true; ev("gan_fast_draft", "restore"); draw(); } catch (e) {} });
 })();

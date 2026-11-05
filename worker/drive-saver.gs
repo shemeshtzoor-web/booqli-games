@@ -69,7 +69,7 @@ function savePhotoIn_(q) {
     while (dir.getFilesByName(name).hasNext()) { n++; name = base + " (" + n + ")" + ext; }   /* עוד תמונה של אותו ילד: "יוסי 1 (2).jpg" */
     var blob = Utilities.newBlob(Utilities.base64Decode(q.b64), q.mime || "image/jpeg", name);
     var file = dir.createFile(blob);
-    return { ok: true, file: file.getUrl(), folder: folder.getUrl(), name: name };
+    return { ok: true, id: file.getId(), file: file.getUrl(), folder: folder.getUrl(), name: name };
   }
 }
 
@@ -78,7 +78,8 @@ function savePhotoIn_(q) {
    הדף שולח POST (text/plain, בלי preflight) עם JSON:
      webstart {kind:"private"|"gan"|"parent", who, gan, book, code, kid, consent:true} → {ok, oid, tok, code?}
      webphoto {tok, sub:"בנים"|"בנות", name, topic, mime, b64}                       → {ok, n}
-     webdone  {tok, summary}                                                         → {ok, photos}
+     webdone  {tok, summary, cust}                                                   → {ok, photos, mailed}
+              cust = {email, first, gan, items:[{book, name, ded}], total} – סיכום ההזמנה נשלח ללקוח במייל (נבנה כאן, לא מהדף)
      webgan   {code}                                                                 → {ok, name, book}
    הגנות: אישור תקנון חובה, מפתח אקראי לכל הזמנה (14 יום), עד 50/300/5 תמונות (פרטי/גן/הורה), עד ~6MB לתמונה,
    עד 300 הזמנות חדשות ביום לכל האתר. האישורים של ההורים נשמרים ונכנסים לסיכום של הגן. */
@@ -127,8 +128,11 @@ function web_(q) {
     try {
       var R = get(tk); if (!R || Date.now() - R.at > 14 * 864e5) return { ok: false, error: "tok" };
       if (R.n >= R.max) return { ok: false, error: "max" };
-      var f = savePhotoIn_({ order: R.oid, title: R.title, topic: cut(q.topic, 40), sub: q.sub === "בנות" ? "בנות" : "בנים", name: cut(q.name, 40) || "ילד", mime: q.mime, b64: q.b64 });
-      R.n++; P.setProperty(tk, JSON.stringify(R));
+      var f = savePhotoIn_({ order: R.oid, title: R.title, topic: cut(q.topic, 60), sub: q.sub === "בנות" ? "בנות" : "בנים", name: cut(q.name, 40) || "ילד", mime: q.mime, b64: q.b64 });
+      R.n++;
+      /* התמונה הראשונה של כל ספר – לתמונה הקטנה במייל ללקוח (רק בפרטי) */
+      if (R.kind === "private" && f && f.id) { R.f = R.f || {}; var fk = cut(q.topic, 60) || cut(q.name, 40); if (!R.f[fk] && Object.keys(R.f).length < 10) R.f[fk] = f.id; }
+      P.setProperty(tk, JSON.stringify(R));
       return { ok: true, n: R.n };
     } finally { lock.releaseLock(); }
   }
@@ -138,10 +142,38 @@ function web_(q) {
     var extra = pcs.length ? "\n\n👪 הורים שהעלו בעצמם ואישרו תקנון ופרטיות (" + pcs.length + "):\n" + pcs.map(function (x) { return "• " + (x.who || "הורה") + (x.kid ? " – " + x.kid : "") + " · " + x.at; }).join("\n") : "";
     var sum = String(q.summary || "").slice(0, 8000) + extra + "\n\n🌐 נשלח מהאתר games.booqli.ai · " + (D.kind === "gan" ? "גן" : D.kind === "parent" ? "הורה" : "פרטי") + (D.code ? " · קוד להורים: " + D.code : "");
     var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n });
+    var mailed = false; try { if (q.cust && r.photos > 0) mailed = custMail_(D, q.cust, P); } catch (e) { mailed = false; }
     if (D.kind !== "gan") P.deleteProperty(tk);
-    return { ok: true, photos: r.photos };
+    return { ok: true, photos: r.photos, mailed: mailed };
   }
   return { ok: false, error: "action" };
+}
+/* סיכום ההזמנה ללקוח במייל (שמש, 5.11.2026: "הם חייבים לראות את זה"). נבנה כאן מתבנית קבועה – הדף שולח רק נתונים,
+   וכל הטקסט עובר escape. עד 80 מיילים ללקוחות ביום, ורק אם נשמרה לפחות תמונה אחת. */
+function custMail_(D, c, P) {
+  var em = String(c.email || "").trim();
+  if (!/^[^@\s<>"]+@[^@\s<>"]+\.[^@\s<>"]+$/.test(em) || em.length > 80) return false;
+  var mk = "web_mail_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd"), mn = +(P.getProperty(mk) || 0);
+  if (mn >= 80 || MailApp.getRemainingDailyQuota() < 10) return false;
+  P.setProperty(mk, String(mn + 1));
+  var h = function (s, n) { return String(s == null ? "" : s).slice(0, n || 400).replace(/[&<>"']/g, function (x) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[x]; }).replace(/\n/g, "<br>"); };
+  var items = (c.items || []).slice(0, 60), gan = D.kind === "gan", imgs = {}, rows = [];
+  items.forEach(function (it, i) {
+    var id = D.f && D.f[String(it.folder || "").trim().slice(0, 60)], img = "";
+    if (!gan && id) { try { imgs["p" + i] = DriveApp.getFileById(id).getBlob(); img = "<img src='cid:p" + i + "' width='90' style='width:90px;height:auto;border-radius:10px;float:left;margin-right:10px'>"; } catch (e) {} }
+    rows.push(gan ? "<li>" + h(it.name, 30) + "</li>"
+      : "<div style='border:1px solid #f0dbe6;border-radius:14px;padding:10px 12px;margin:10px 0;overflow:hidden'>" + img + "<b>📖 ספר " + (i + 1) + ": " + h(it.book, 40) + "</b><br>👤 " + h(it.name, 30) + "<br><span style='color:#5d4c58'>✍️ " + h(it.ded, 600) + "</span></div>");
+  });
+  var body = "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#2b2b2b;max-width:560px'>"
+    + "<h2 style='color:#C13671;margin:0 0 6px'>💛 קיבלנו את ההזמנה שלכם!</h2>"
+    + "<p style='margin:0 0 10px'>שלום " + h(c.first, 30) + ", זה סיכום ההזמנה <b>" + h(D.oid, 20) + "</b> מ-BOOQLI. שמרו את המייל הזה.</p>"
+    + (gan ? "<p>🏫 <b>" + h(c.gan, 50) + "</b> · 📖 " + h(items[0] && items[0].book, 40) + "</p><p>✍️ ההקדשה:<br>" + h(c.ded, 700) + "</p><p>👧👦 " + items.length + " ילדים:</p><ul>" + rows.join("") + "</ul>" : rows.join(""))
+    + (c.total ? "<p>💰 " + h(c.total, 120) + "</p>" : "")
+    + "<p style='background:#EAF6F1;border-radius:12px;padding:10px 12px'><b>מה הלאה?</b><br>🎨 מכינים סקיצות – בין כמה דקות ליום עסקים אחד, ושולחים לכם לאישור.<br>😍 אהבתם? ממשיכים לתשלום ולהדפסה.<br>🤝 לא אהבתם? נפרדים כידידים – בלי לשלם.</p>"
+    + "<p style='font-size:13px;color:#5d4c58'>📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים במראה ובפרופורציות. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים מיד בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>"
+    + "<p>שאלה? כתבו לנו בוואטסאפ: <a href='https://wa.me/972555549331'>055-5549331</a></p><p style='color:#C13671'><b>BOOQLI</b></p></div>";
+  MailApp.sendEmail({ to: em, name: "BOOQLI", subject: "סיכום ההזמנה " + D.oid + " · BOOQLI 💛", htmlBody: body, inlineImages: imgs });
+  return true;
 }
 /* ניקוי: מפתחות של יותר מ-14 יום, קודי גן של יותר מ-90 יום, ספירות יומיות ישנות */
 function webClean_(P) {
@@ -150,7 +182,7 @@ function webClean_(P) {
     try {
       if (k.indexOf("web_t_") === 0 && now - JSON.parse(all[k]).at > 14 * 864e5) P.deleteProperty(k);
       else if (k.indexOf("web_code_") === 0 && now - (JSON.parse(all[k]).at || 0) > 90 * 864e5) P.deleteProperty(k);
-      else if (k.indexOf("web_day_") === 0 && k !== today) P.deleteProperty(k);
+      else if ((k.indexOf("web_day_") === 0 || k.indexOf("web_mail_") === 0) && k.slice(-8) !== today.slice(-8)) P.deleteProperty(k);
     } catch (e) {}
   });
 }
