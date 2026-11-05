@@ -63,7 +63,7 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 /* העלאת תמונות ישר לדרייב (5.11.2026) */
 .up{margin-top:12px;background:#fff;border:2px solid var(--pink-soft);border-radius:18px;padding:14px}
 .up .chk{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.45;margin:6px 0 12px}.up .chk input{width:22px;height:22px;flex-shrink:0;margin-top:2px;accent-color:var(--pink-btn)}
-.upcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:620px){.upcols{grid-template-columns:1fr}}
+.upcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}@media(max-width:620px){.upcols{grid-template-columns:minmax(0,1fr)}}.upcol,.uplist li{min-width:0}.uplist input{width:100%}
 .upcol{background:#FBF6F9;border-radius:14px;padding:10px}.upcol h4{font-size:18px;margin-bottom:8px}.upcol.boy{background:#F1F7FB}
 .uplist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
 .uplist li{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:6px}
@@ -715,7 +715,7 @@ async function upStart(){
   if (!j.ok) throw new Error(j.error || "start");
   S.up = { tok: j.tok, oid: j.oid, code: j.code, n: 0, names: [], at: today() }; save(); return S.up;
 }
-const fileName = f => f.name.replace(/\.[^.]+$/, "").replace(/[_\-]+/g, " ").replace(/\b(IMG|DSC|PXL|WhatsApp Image)\b.*$/i, "").replace(/\d{6,}/g, "").trim().slice(0, 30);
+const fileName = f => !/[\u0590-\u05FF]/.test(f.name) ? "" : f.name.replace(/\.[^.]+$/, "").replace(/[_\-]+/g, " ").replace(/\b(IMG|DSC|PXL|WhatsApp Image)\b.*$/i, "").replace(/\d{6,}/g, "").trim().slice(0, 30);
 function shrink(file){ return new Promise(res => { const img = new Image(), u = URL.createObjectURL(file);
   img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
     c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);

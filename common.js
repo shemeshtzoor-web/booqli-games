@@ -763,7 +763,7 @@ function siteDoorsNav(){
     var lk = "color:inherit;font-weight:800;text-decoration:underline;display:inline-block;margin:0 5px;white-space:nowrap";
     l.innerHTML = '<a style="' + lk + '" href="/map/">🗺️ מפת האתר</a> · <a style="' + lk + '" href="/privacy/">מדיניות פרטיות</a> · <a style="' + lk + '" href="/terms/">תקנון</a> · <a style="' + lk + '" href="/accessibility/">הצהרת נגישות</a> · ' +
       '<a style="' + lk + '" href="https://wa.me/' + SITE.phone + '" target="_blank" rel="noopener">יצירת קשר</a><br>' +
-      '<span>games.booqli.ai מופעל על ידי BOOQLI (ח.פ 558577037) והוא חלק מ-<a style="color:inherit;font-weight:800" href="https://www.booqli.ai/he" target="_blank" rel="noopener">booqli.ai</a> · בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
+      '<span>games.booqli.ai מופעל על ידי BOOQLI (עוסק מורשה 558577037) והוא חלק מ-<a style="color:inherit;font-weight:800" href="https://www.booqli.ai/he" target="_blank" rel="noopener">booqli.ai</a> · בחינם · מתאים לגיל הרך · השימוש של ילדים באחריות מבוגר</span>';
     (f || document.body).appendChild(l);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add); else add();
