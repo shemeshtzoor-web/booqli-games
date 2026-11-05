@@ -455,7 +455,7 @@ css.textContent =
 ".c-act button+button{border-inline-start:1px solid #EEF4F1}" +
 ".c-act button:hover{background:#F4FAF7}.c-act .c-fav[aria-pressed=true]{color:#C5309A}.c-act .c-bell[aria-pressed=true]{color:#6B2FA3;background:#F8F2FF}" +
 ".c-act button:focus-visible{outline:3px solid #FA57C4;outline-offset:-3px}" +
-".c-sec{margin-top:30px}.c-sec-h h2,.c-more summary h2{font-family:Fredoka,Assistant,sans-serif;font-size:clamp(22px,3.4vw,28px);color:#2F6F63;margin:0}" +
+".c-sec{margin-top:30px}.c-sec-h h2,.c-more summary h2{font-family:'Varela Round',Fredoka,Assistant,sans-serif;font-size:clamp(22px,3.4vw,30px);color:#213330;margin:0}" +
 ".c-sec-h p,.c-more summary p{margin:4px 0 12px;color:#566B67}" +
 ".c-tile[hidden]{display:none}.c-showmore{display:block;margin:12px auto 0;font:inherit;font-weight:800;font-size:15.5px;border:2px solid #CDE7DC;background:#fff;color:#2F6F63;border-radius:999px;padding:9px 20px;cursor:pointer}" +
 ".c-more{background:#F7FBF9;border-radius:22px;padding:12px 16px}.c-more summary{cursor:pointer;list-style:none}.c-more summary::-webkit-details-marker{display:none}" +
