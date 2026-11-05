@@ -74,7 +74,7 @@ async function mediaId(env, db, key, link, filename, mime){
 /* סרטון בתוך השיחה (מועלה פעם אחת), ומחכים רגע כדי שההודעה הבאה תגיע אחריו */
 async function sendVideo(S, key, env, db, log){
   const V = VIDS[key]; if (!V) return;
-  const link = `${SITE}/kindergartens/video/${V.file}`;
+  const link = V.url ? SITE + V.url : `${SITE}/kindergartens/video/${V.file}`;
   const mid = log ? "" : await mediaId(env, db, "vid-" + key, link, V.file, "video/mp4");
   await S({ type: "video", video: Object.assign(mid ? { id: mid } : { link }, { caption: V.cap }) });
   if (!log) await new Promise(r => setTimeout(r, mid ? 3000 : 8000));
@@ -100,7 +100,8 @@ const COVER_INFO = { hard: "21×21 ס״מ, בסגנון אלבום, דפים כ�
 const VIDS = {
   covers: { file: "covers.mp4", cap: "📕 ההבדל בין הכריכות – סרטון קצר" },
   photo: { file: "photo.mp4", cap: "📸 איך בוחרים תמונה טובה – סרטון קצר" },
-  guide: { file: "guide-wa.mp4", cap: "🎬 סרטון הסבר של שמש" }
+  guide: { file: "guide-wa.mp4", cap: "🎬 סרטון הסבר של שמש" },
+  kit: { url: "/marketing/media/kinder-book/booqli-gan-birthday-kit-4x5.mp4", file: "booqli-gan-birthday-kit-4x5.mp4", cap: "🎉 ספר יום הולדת אישי + קיט חגיגה מוכן לגן במתנה" }
 };
 /* הנחיות לתמונה (מהמדריך של שמש) */
 const PHOTO_TIPS = "⚠️ *חשוב:* שולחים תמונת פנים ברורה – האחריות לתמונה טובה היא שלכם. לא בטוחים? צפו בסרטון 👆\n\n📸 *תמונה טובה = איור טוב:*\n🔵 ילד/ה אחד/ת בלבד – בלי אנשים או חיות, גם לא ברקע\n🔴 מבט ישיר למצלמה – לא הצידה ולא מלמעלה\n🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים, כתרים או פלסטרים\n🟢 בנים עם כיפה – שהכיפה תופיע בתמונה\n🟣 בנות – התסרוקת באיור תהיה כמו בתמונה\n⚪ אם מצלמים במיוחד – רקע לבן וחולצה לבנה\n😀 והכי חשוב – חיוך!";
@@ -217,12 +218,13 @@ const PRICES_TXT = () => `💰 *המחירים* (לספר, לפי כמה ספר�
 const GAN_PRICES = n => `💰 *המחיר לספר* (ל-${n} ילדים):\n💗 קשה פרימיום – ${ils(ganP("hard", n))}\n💛 רכה פיג'מה – ${ils(ganP("soft", n))}\n💜 חוברת כרומו סיכות – ${n >= STAPLE.from ? ils(ganP("staple", n)) : "רק מ-" + STAPLE.from + " ספרים"}\n🚚 משלוח ${ils(SHIP)} · 🚗 איסוף עצמי – חינם\n(את סוג הכריכה בוחרים בסוף, אחרי התמונות)`;
 /* גן – ההודעה המלהיבה של שמש (5.11), נשלחת אחרי שהגננת כתבה כמה ילדים, עם המחירים לכמות שלה */
 function GAN_PITCH(n){
-  const line = (k, e, nm) => ganP(k, n) ? `${e} ${nm} – ${ils(ganP(k, n))} לספר` : `${e} ${nm} – רק מ-${STAPLE.from} ספרים`;
+  const q = n || 20;
+  const line = (k, e, nm) => ganP(k, q) ? `${e} ${nm} – ${ils(ganP(k, q))} לספר` : `${e} ${nm} – רק מ-${STAPLE.from} ספרים`;
   return `🎉 *בבוקלי כל ילד וילדה בגן הופכים לגיבורים של ספר יום הולדת אישי ומרגש!*\nזה לא עוד ספר מהמדף – זו חגיגה שלמה שמתחילה בספר 📖✨\n\n` +
     `*מה יש בכל ספר?*\n✨ השם של הילד/ה על הכריכה ולאורך כל העלילה\n🎨 איורים בדמות הילד/ה – לפי התמונה, על הכריכה ובכל עמוד\n💌 הקדשה אישית מטעם הגן או הוועד, מודפסת בעמוד השער\n👌 אין צורך לערוך כלום – מעלים תמונה אחת ומקבלים ספר מושלם!\n\n` +
     `🎁 *ובמתנה לגננת – קיט חגיגת יום הולדת מוכן!*\n👑 כתר עם השם של הילד/ה להדפסה\n💌 כרטיס ברכה עם התמונה שלו/ה\n🎈 מערך חגיגה שלב אחר שלב: הכתרה, מצעד החברים, כיסא המלך/המלכה\n🖍️ דפי צביעה ודף ברכה מכל חבר\nכל יום הולדת בגן הופך לחגיגה – בלי להכין כלום מראש!\n\n` +
     `📲 *ועוד מתנה: האפליקציה booqli Games* – משחקים, דפי עבודה ומערכים לפי לוח השנה, לגננת ולהורים, באייקון אחד בטלפון 🎮\n\n` +
-    `💰 *המחירים ל-${n} ספרים:*\n${line("hard", "💗", "כריכה קשה פרימיום")}\n${line("soft", "💛", "כריכה רכה פיג'מה (כמו ספריית פיג'מה)")}\n${line("staple", "💜", "חוברת כרומו סיכות")}\n` +
+    `💰 *המחירים ${n ? "ל-" + n + " ספרים" : "להזמנה של 20–49 ספרים"}:*\n${line("hard", "💗", "כריכה קשה פרימיום")}\n${line("soft", "💛", "כריכה רכה פיג'מה (כמו ספריית פיג'מה)")}\n${line("staple", "💜", "חוברת כרומו סיכות")}\n` +
     `המחירים לגנים כבר כוללים הנחה משמעותית לפי הכמות וסוג הכריכה, ונקבעו מתוך התחשבות בתקציבים של הגנים – ולכן הם סופיים.\n\n` +
     `📦 *איך הספרים מגיעים?*\n🚗 איסוף עצמי מבית הדפוס (ליד עפולה) – בלי עלות, כשבוע מאישור ההדפסה (מומלץ!)\n🚚 משלוח צ'יטה – ${ils(SHIP)}, עד 14 ימי עסקים מאישור ההדפסה\n\n` +
     `🎁 *רוצים לראות קודם?* כותבים כאן *דוגמה*, ושמש תכין לכם דוגמה ראשונית – בלי עלות ובלי התחייבות 💗\n(את סוג הכריכה בוחרים בסוף, אחרי התמונות)`;
@@ -598,7 +600,13 @@ async function step(env, from, st, ev, log, db){
   switch (st.step) {
     case "hi":
       if (id === "s:go") { await S(text(PROCESS(false) + "\n\n" + priceCalc(false, 0))); st.step = "for"; }
-      else if (id === "s:gan") { st.mode = "gan"; st.oid = newId("גן"); await S(text(PROCESS(true) + "\n\n" + priceCalc(true, 0))); st.step = "g-name"; }
+      else if (id === "s:gan") {                                    /* פתיחה מלהיבה לגנים: סרטון הקיט + ההודעה של שמש + איך זה עובד */
+        st.mode = "gan"; st.oid = newId("גן"); st.intro = 1;
+        await sendVideo(S, "kit", env, db, log);
+        await sendLong(S, GAN_PITCH(0) + "\n\n🧮 רוצים מחיר לכמות אחרת? כותבים \"מחיר\" ומספר, למשל: *מחיר 35*");
+        await S(text(PROCESS(true)));
+        st.step = "g-name";
+      }
       break;
     case "for": {
       const m = id.match(/^f:(g|p)(?::(b|g))?$/);
@@ -689,7 +697,7 @@ async function step(env, from, st, ev, log, db){
     /* ---- גן ---- */
     case "g-name": if (txt && !id) { if (junk(txt)) await S(text("כתבו את שם הגן 🙂 (למשל: גן רימון, חיפה)")); else { G.name = txt.slice(0, 50); st.step = "g-teacher"; } } break;
     case "g-teacher": if (txt && !id) { if (junk(txt)) await S(text("כתבו את השם שלך 🙂")); else { st.who = txt.slice(0, 40); st.step = "g-kids"; } } break;
-    case "g-kids": { const k = parseInt(txt.replace(/[^\d]/g, ""), 10); if (k > 0 && k < 1000) { G.kids = k; st.page = 0; st.step = "g-book"; await sendLong(S, GAN_PITCH(k)); st.intro = 1; } else if (txt) { await S(text("כתבו רק מספר, למשל 25 🙂")); return; } break; }
+    case "g-kids": { const k = parseInt(txt.replace(/[^\d]/g, ""), 10); if (k > 0 && k < 1000) { G.kids = k; st.page = 0; st.step = "g-book"; await S(text(priceCalc(true, k).split("\n\n🧮")[0] + "\n(את סוג הכריכה בוחרים בסוף, אחרי התמונות)")); st.intro = 1; } else if (txt) { await S(text("כתבו רק מספר, למשל 25 🙂")); return; } break; }
     case "g-book": if (id.startsWith("gb:") && book(id.slice(3))) { const nb = id.slice(3); if (!G.books.includes(nb)) { G.books.push(nb); for (const v of ["b", "g"]) if ((PAGES[nb] || {})[v]) await RB(nb, v); } if (G.books.length >= GANBOOKS) toDed(); else st.step = "g-book2"; } break;
     case "g-book2":
       if (id === "g:one") toDed();
