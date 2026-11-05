@@ -535,6 +535,12 @@ async function step(env, from, st, ev, log, db){
     await S(text("אין בעיה ❤️ חוזרים להקדשה שהצענו:"));
     return ask(env, from, st, log, db);
   }
+  /* מספר לבד, בשלב שלא מצפה למספר ("100") – לא מתעלמים: שואלים למה הכוונה ומכוונים לתשובה שהבוט יודע */
+  if (!id && /^\d{1,4}$/.test(txt) && !["g-kids", "phone", "phoneown"].includes(st.step)) {
+    const n = +txt;
+    return S(buttons(`כתבת "${txt}" 🙂 למה הכוונה?`, [["calc:" + n, `💰 מחיר ל-${n} ספרים`.slice(0, 20)], ["qa:go", "▶️ להמשיך בהזמנה"], ["human", "🙋 לדבר עם שמש"]]));
+  }
+  if (id.startsWith("calc:")) { const n = +id.slice(5); st.lastQ = "מחיר ל-" + n; await sendLong(S, priceCalc(st.mode === "gan" || n >= STAPLE.from, n > 0 && n < 1000 ? n : 0)); return S(buttons("עזר? 🙂", QA_BTNS)); }
   /* כתבו תשובה במקום ללחוץ על כפתור */
   const SHORT_OK = ["ded", "g-ded", "who"];                                  /* שם אפשר גם לכתוב טקסט חופשי – רק תשובה קצרה נחשבת לכפתור */
   if (!id && txt && (BTN_STEPS.includes(st.step) || (SHORT_OK.includes(st.step) && txt.length <= 12)) && !looksQuestion(txt)) id = await matchBtn(env, from, st, txt, db);
