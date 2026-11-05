@@ -42,6 +42,7 @@ const RESTART_BTN = ["restart", "↩️ להתחלה"], RESTART_NOTE = "↩️ �
 const TEXT_Q = ["name", "dedown", "pics", "who", "whoown", "addr", "phoneown", "email", "g-name", "g-teacher", "g-kids", "g-dedown", "g-pics"];
 /* כפתור/שורה "להתחלה" בכל שאלה (חוץ מהפתיחה). אין מקום לכפתור (3 כפתורים / 10 שורות) – שורה קטנה בתחתית */
 function withRestart(m, stp){
+  return m;   /* לפי שמש (5.11): בלי כפתור/שורת "להתחלה" בכל הודעה – מבלבל. "מחדש" עדיין עובד, ובלבול חוזר מקבל הצעה */
   if (stp === "hi") return m;
   const i = m.interactive;
   if (!i) { if (m.type === "text" && TEXT_Q.includes(stp)) m.text.body += "\n\n" + RESTART_NOTE; return m; }
@@ -481,6 +482,7 @@ function askPendF(S, st, pr, n){
 }
 
 async function step(env, from, st, ev, log, db){
+  const stepBefore = st.step;
   const S = m => wa(env, from, m, log);
   const RB = (bid, v) => readBook(S, bid, v, env, db, log);
   const sample = async () => {                                     /* ספר לדוגמה אוטומטי, בגרסה שבחרו (אם יש) */
@@ -579,7 +581,9 @@ async function step(env, from, st, ev, log, db){
   else if (fq && FAQ[fq]) answer = faqMsg(fq);
   else if (asking) { const k = qaOf(txt); if (k) answer = QA[k].a(st); }
   if (answer) { st.lastQ = txt || fq; await sendLong(S, answer); return S(buttons("עזר? 🙂", QA_BTNS)); }
-  if (asking && !isQ) {                                           /* לא שאלה ולא כפתור – מסבירים ושואלים שוב */
+  if (asking && !isQ) {                                           /* לא שאלה ולא כפתור – מסבירים ושואלים שוב; בפעם השנייה – מציעים דרכים */
+    st.miss = (st.miss || 0) + 1;
+    if (st.miss >= 2) { st.miss = 0; return S(buttons("לא הצלחתי להבין 🙂 מה נעשה?", [["qa:go", "▶️ להמשיך"], ["restart", "↩️ להתחיל מחדש"], ["human", "🙋 לדבר עם שמש"]])); }
     await S(text("לא בטוח שהבנתי 🙂 בוחרים באחת האפשרויות למטה 👇\n(ואם יש שאלה – פשוט כותבים אותה)"));
     return ask(env, from, st, log, db);
   }
@@ -763,6 +767,7 @@ async function step(env, from, st, ev, log, db){
       if (id === "gc:yes") return finish(env, from, st, log, db, await ganSummary(st, db), await ganSummary(st, db, true), ganNext(env, st), CONSENT_GAN);
       break;
   }
+  if (st.step !== stepBefore) st.miss = 0;                      /* התקדמו – מאפסים את ספירת הבלבול */
   return ask(env, from, st, log, db);
 }
 
