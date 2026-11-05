@@ -202,7 +202,7 @@ const GAMES = {
   write: {ic:"👀", t:"מסתכלים, מסתירים, כותבים", s:"זוכרים את המילה וכותבים מהזיכרון", c:"g3"},
   test:  {ic:"📝", t:"הכתבה אמיתית", s:"כמו בכיתה: שומעים, כותבים, ובסוף מקבלים ציון", c:"g4 wide"}
 };
-let incoming = null, incomingCls = ""; /* רשימה (וכיתה) שהגיעו בקישור */
+let incoming = null, incomingCls = "", justLoaded = 0; /* רשימה (וכיתה) שהגיעו בקישור */
 let G1 = null;       /* המשחק הנוכחי */
 
 const applyFont = () => document.body.classList.toggle("cvmode", S.font !== "rd");
@@ -230,19 +230,20 @@ function home(){
   if (incoming) h += '<section class="newlist" aria-live="polite"><h2>📬 קיבלתם את מילות ההכתבה' + (incomingCls ? ' של ' + esc(clsName(incomingCls)) : '') + ' (' + incoming.length + ' מילים)</h2><div class="ws">' + incoming.map(esc).join(" · ") + '</div>' +
     '<div class="row start"><button type="button" class="btn purple" id="inYes">לשמור ולהתחיל</button><button type="button" class="btn alt sm" id="inNo">לא עכשיו</button></div>' +
     (S.example ? "" : '<p class="note">הרשימה החדשה תחליף את המילים שיש עכשיו. הכוכבים נשמרים.</p>') + '</section>';
-  else if (S.example) h += '<div class="exnote">✋ זו <b>רשימה לדוגמה</b>. הורים: מכניסים את המילים של השבוע ב"אזור ההורים" למטה.</div>';
+  else if (justLoaded) h += '<div class="exnote okn">✔️ נטענו ' + justLoaded + ' מילות ההכתבה' + (S.cls ? ' של ' + esc(clsName(S.cls)) : '') + '. אפשר להתחיל לשחק!</div>';
+  else if (S.example) h += '<div class="exnote">✋ זו <b>רשימה לדוגמה</b>. הורים או המורה: מכניסים את המילים של השבוע ב"אזור ההורים והמורה" למטה.</div>';
   h += '<section class="card words"><h2>המילים של השבוע <small>' + S.words.length + ' מילים · 🌱 מתחילים · 🌿 משתפרים · 🌸 יודעים</small></h2>' +
     '<div class="garden">' + S.words.map((w, i) => '<button type="button" class="chip" data-i="' + i + '" aria-label="לשמוע: ' + esc(w) + '"><span class="rd wd">' + esc(w) + '</span><span class="lv">' + stage(w) + '</span></button>').join("") + '</div>' +
     '<div class="fontsw"><span>איך כותבים את המילים?</span><div class="modes" role="group" aria-label="סוג הכתב"><button type="button" data-f="cv" aria-pressed="' + (S.font !== "rd") + '">✍️ כתב יד</button><button type="button" data-f="rd" aria-pressed="' + (S.font === "rd") + '">🔤 דפוס</button></div></div>' +
     '<p class="note" style="margin-top:8px">' + (hasSound(S.words[0] || "") ? "לוחצים על מילה כדי לשמוע אותה." : "") + '</p></section>';
   h += '<div class="games">' + Object.keys(GAMES).map(k => { const g = GAMES[k];
     return '<button type="button" class="game ' + g.c + '" data-g="' + k + '"' + (S.words.length ? "" : " disabled") + '><span class="emo">' + g.ic + '</span><b>' + g.t + '</b><small>' + g.s + '</small></button>'; }).join("") + '</div>';
-  h += '<div class="adultrow bq-teach"><button type="button" class="btn purple" id="toP">👩‍👧 אזור ההורים: המילים של השבוע</button><a class="btn alt" href="?sheet=1" id="toSheet">🖨️ דף הכתבה להדפסה</a></div>';
+  h += '<div class="adultrow bq-teach"><button type="button" class="btn purple" id="toP">👩‍🏫 אזור ההורים והמורה: המילים של השבוע</button><a class="btn alt" href="?sheet=1" id="toSheet">🖨️ דף הכתבה להדפסה</a></div>';
   app.innerHTML = h;
   app.querySelectorAll(".chip").forEach(b => b.onclick = () => { if (!speak(S.words[+b.dataset.i])) peek(S.words[+b.dataset.i], 1600); });
   app.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { ac(); go("?g=" + b.dataset.g); });
   app.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { S.font = b.dataset.f; save(); applyFont(); app.querySelectorAll("[data-f]").forEach(x => x.setAttribute("aria-pressed", x === b)); ev("dict-font", S.font); });
-  $("toP").onclick = () => { if (typeof siteKidLock === "function" && siteKidLock()) adult("אזור ההורים: כאן משנים את המילים.", () => go("?p=1")); else go("?p=1"); };
+  $("toP").onclick = () => { if (typeof siteKidLock === "function" && siteKidLock()) adult("אזור ההורים והמורה: כאן משנים את המילים.", () => go("?p=1")); else go("?p=1"); };
   $("toSheet").onclick = e => { e.preventDefault(); go("?sheet=1"); };
   if (incoming) {
     $("inYes").onclick = () => { S.words = incoming; S.example = false; if (incomingCls) S.cls = incomingCls; save(); ev("dict-received", incoming.length); incoming = null; home(); };
@@ -257,7 +258,7 @@ const listLink = ws => "https://games.booqli.ai/school/dictation/?w=" + encodeUR
 function parents(){
   const ws = S.example ? [] : S.words;
   app.innerHTML = '<section class="card pz">' +
-    '<div class="pbar2"><button type="button" class="x" id="pBack" aria-label="חזרה">→</button><h2>👩‍👧 אזור ההורים</h2></div>' +
+    '<div class="pbar2"><button type="button" class="x" id="pBack" aria-label="חזרה">→</button><h2>👩‍🏫 אזור ההורים והמורה</h2></div>' +
     '<div class="field"><label for="pCls">הכיתה</label><input type="text" id="pCls" maxlength="24" autocomplete="off" placeholder="למשל: ב\'2" value="' + esc(S.cls) + '"><span class="note">יופיע במשחק ("שלום ילדי כיתה ב\'2!") ובהודעה להורים. לא כותבים את שם הילד.</span></div>' +
     '<div class="field"><label for="pWords">מילות ההכתבה של השבוע</label>' +
     '<textarea id="pWords" placeholder="מילה אחת בכל שורה, למשל:&#10;שמש&#10;כיתה&#10;תפוח">' + esc(ws.join("\n")) + '</textarea>' +
@@ -651,7 +652,9 @@ window.addEventListener("afterprint", fit);
   if (w) {
     const list = parseWords(w.replace(/,/g, "\n"));
     const c = (p.get("c") || "").replace(/[<>"]/g, "").trim().slice(0, 24);
-    if (list.length && (list.join(",") !== S.words.join(",") || S.example)) { incoming = list; incomingCls = c; }
+    /* (5.11.2026, לפי שמש) פעם ראשונה במכשיר – המילים מהקישור נטענות לבד, בלי ללחוץ. כבר יש רשימה אחרת – שואלים לפני שמחליפים */
+    if (list.length && S.example) { S.words = list; S.example = false; if (c) S.cls = c; save(); justLoaded = list.length; ev("dict-received", "auto" + list.length); }
+    else if (list.length && list.join(",") !== S.words.join(",")) { incoming = list; incomingCls = c; }
     else if (c && !S.cls) { S.cls = c; save(); }
     p.delete("w"); p.delete("c"); ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(k => p.delete(k));
     const qs = p.toString();
