@@ -180,6 +180,14 @@ function modal(html){ let m = $("gModal"); if (!m) { m = document.createElement(
   m.innerHTML = `<div class="gcard">${html}</div>`; m.hidden = false; document.body.style.overflow = "hidden"; }
 function closeModal(){ const m = $("gModal"); if (m) m.hidden = true; document.body.style.overflow = ""; }
 const NEXT = `<ol class="gnextl"><li>🎨 <b>מכינים את הסקיצות</b> – בין כמה דקות ליום עסקים אחד – ושולחים לכם בוואטסאפ קישור לתיקייה לצפייה</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>`;
+/* הודעת הוואטסאפ הראשונה – חובה (שמש, 5.11.2026): כל הפרטים בהודעה, כדי שתיפתח שיחה בלי לחפש כלום */
+function waMsg(oid){ const d = G.d, b = book(G.topic), n = kids(), p = price(G.cover, n);
+  const nm = sub => G.pics.filter(x => x.sub === sub).map(x => x.name.trim()).join(", ") || "—";
+  let names = `👦 בנים (${boys()}): ${nm("בנים")}\n👧 בנות (${girls()}): ${nm("בנות")}`; if (names.length > 1500) names = `👦 ${boys()} בנים · 👧 ${girls()} בנות (השמות בסיכום ההזמנה)`;
+  return `שלום BOOQLI 💛\nשלחנו הזמנה לגן מהאתר: *${oid}*\n\n🏫 ${d.gan}\n👤 המזמין/ה: ${d.first} ${d.last}\n📞 ${d.phone}\n✉️ ${d.email}\n🏠 כתובת למשלוח: ${d.street}, ${d.city}\n\n📖 הנושא: *${b.name}*\n📕 ${COVERS.find(c => c[0] === G.cover)[1]}\n📚 ${n} ספרים${p ? ` · ${n} × ${ils(p)} = ${ils(n * p)} + משלוח` : ""}\n\n✍️ ההקדשה:\n${G.ded.slice(0, 700)}\n\n📷 השמות:\n${names}`; }
+const waMust = (href, id) => `<div class="gwam"><p class="t">📲 שלב אחרון – חובה</p><p>שולחים לנו את ההזמנה בוואטסאפ. ההודעה כבר כתובה – רק לוחצים שם <b>➤ שליחה</b>. בלי ההודעה הזו לא נוכל להתחיל.</p>
+  <a class="btn btn-wa gsend" id="${id}" href="${href}" target="_blank" rel="noopener">💬 שליחת ההזמנה בוואטסאפ</a>
+  <p class="ph">אין וואטסאפ? <a href="tel:+${PHONE}">📞 <span dir="ltr">055-5549331</span></a></p></div>`;
 /* סיכום ההזמנה על המסך: כל התמונות עם השמות, הנושא, ההקדשה והפרטים. שמירה כ-PDF + שמירה בוואטסאפ */
 function sumHTML(oid, mailed){ const d = G.d, b = book(G.topic), n = kids(), p = price(G.cover, n);
   const grid = sub => { const L = G.pics.filter(x => x.sub === sub); return L.length ? `<p class="gsl">${sub === "בנים" ? "👦 בנים" : "👧 בנות"} (${L.length})</p><div class="gsg">${L.map(x => `<figure><img src="${x.url}" alt=""><figcaption>${esc(x.name.trim())}</figcaption></figure>`).join("")}</div>` : ""; };
@@ -224,12 +232,13 @@ async function send(){
     const cust = {email: d.email, first: d.first, gan: d.gan, ded: G.ded, items: G.pics.map(x => ({book: b.name, name: x.name.trim()}))};
     const r = await bqUp.done(s.tok, summary, cust); if (!r.ok) throw new Error("done");
     ev("gan_fast_done", String(n)); DONE = true; if (window.bqDraft) bqDraft.clear("gan");
-    const t = `שלום BOOQLI 💛 שלחנו עכשיו באתר את הזמנה ${s.oid} · ${d.gan} (${n} ילדים, ${b.name})`;
-    modal(`<div class="gbig2">✅</div><h3>קיבלנו את ההזמנה של ${esc(d.gan)}!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${r.mailed ? `<p class="gh">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(d.email)}</b></p>` : ""}${NEXT}
-      <button type="button" class="btn btn-main gsend" id="gSumGo">📄 לסיכום ההזמנה</button>
-      <a class="btn btn-wa gsend" id="gWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a><button type="button" class="galt" id="gClose">סגירה</button>`);
-    $("gWa").onclick = () => ev("gan_fast_wa", ""); $("gClose").onclick = closeModal;
-    box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} אצלנו</h3><p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ. אפשר לסגור את העמוד.</p></div>${sumHTML(s.oid, r.mailed)}`;
+    const t = waMsg(s.oid), wa = `https://wa.me/${PHONE}?text=${encodeURIComponent(t)}`;
+    modal(`<div class="gbig2">✅</div><h3>ההזמנה של ${esc(d.gan)} נשמרה!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${waMust(wa, "gWa")}
+      <div id="gAfter" hidden>${r.mailed ? `<p class="gh">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(d.email)}</b></p>` : ""}${NEXT}
+      <button type="button" class="btn btn-main gsend" id="gSumGo">📄 לסיכום ההזמנה</button><button type="button" class="galt" id="gClose">סגירה</button></div>`);
+    $("gWa").onclick = () => { ev("gan_fast_wa", "modal"); setTimeout(() => { const a = $("gAfter"); if (a) a.hidden = false; }, 600); }; $("gClose").onclick = closeModal;
+    box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} נשמרה</h3>${waMust(wa, "gWa2")}<p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ.</p></div>${sumHTML(s.oid, r.mailed)}`;
+    $("gWa2").onclick = () => ev("gan_fast_wa", "page");
     wireSum(s.oid); $("gSumGo").onclick = () => { closeModal(); $("gSum").scrollIntoView({ behavior: "smooth", block: "start" }); };
   } catch (e) {
     ev("gan_fast_fail", String(e && e.message || e)); delete btn.dataset.busy;

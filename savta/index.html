@@ -181,6 +181,7 @@ section.sv{margin-top:34px}
 .wz .nextb{font-size:23px;padding:14px 34px;min-width:150px;justify-content:center;box-shadow:0 5px 0 #B0237A}
 .wz .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
 .wz .two .btn{justify-content:center;font-size:21px;padding:18px 10px}
+.wamust{background:#E9F9EF;border:3px solid #25D366;border-radius:20px;padding:12px 14px;margin:12px 0;text-align:center}.wamust .t{font-weight:800;font-size:20px;color:#1E7F45;margin:0 0 4px}.wamust p{margin:4px 0}.wamust .btn{white-space:normal;max-width:100%;box-sizing:border-box;width:100%;justify-content:center;text-align:center}.wamust .ph{font-size:16px}.wamust .ph a{color:var(--mag);font-weight:800;text-decoration:none}
 .wz .drafted{background:#EAF6F1;border:2px dashed var(--mint);border-radius:16px;padding:8px 12px;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.wz .drafted button{margin-inline-start:auto;border:0;background:none;color:var(--mag);font:800 15px Assistant,sans-serif;text-decoration:underline;cursor:pointer}
 .know{background:#FFF8E6;border:2px solid #FBE3A6;border-radius:16px;padding:10px 14px;margin-top:12px}.know p{font-weight:800;margin:0 0 4px}.know ul{list-style:none;padding:0;margin:0;font-size:15.5px;line-height:1.5}.know li{margin:4px 0}
 .osum{background:#fff;border:3px solid var(--mint);border-radius:22px;padding:16px;margin-top:12px;text-align:right}.osum h3{color:var(--mag);margin:0 0 4px;font-size:22px}.osum .sd{color:var(--mute);font-size:15px;margin:0 0 8px}
@@ -544,6 +545,16 @@ function sumHTML(oid, mailed){ const D = ORD.d, n = ORD.list.length;
     <div class="btns noprint"><button type="button" class="btn btn-main" id="oPdf">📄 שמירה כ-PDF</button><a class="btn btn-wa" id="oWa" target="_blank" rel="noopener" href="#">💬 לשמור את הסיכום בוואטסאפ</a></div></div>`; }
 function wireSum(oid){ $("oPdf").onclick = () => { ev("savta-sum", "pdf"); bqPrint($("oSum")); };
   $("oWa").href = "https://wa.me/?text=" + encodeURIComponent(sumText(oid)); $("oWa").onclick = () => ev("savta-sum", "wa"); }
+/* הודעת הוואטסאפ הראשונה – חובה (שמש, 5.11.2026: "שתיפתח לי שיחה איתם, עם כל הפרטים בהודעה הראשונה") */
+let WA_SENT = false;
+function waMsg(oid){ const D = ORD.d, n = ORD.list.length, me = (D.first + " " + D.last).trim();
+  const dl = ORD.list.reduce((a, it) => a + it.ded.length, 0), withDed = dl <= 1200;
+  return `שלום BOOQLI 💛\nשלחתי הזמנה מהאתר: *${oid}*\n\n👤 המזמין/ה: ${me}${ORD.who && ORD.who !== me ? " (" + ORD.who + ")" : ""}\n📞 ${D.phone}\n✉️ ${D.email}\n🏠 כתובת למשלוח: ${D.street}, ${D.city}\n\n📚 ${n === 1 ? "ספר אחד" : n + " ספרים"}:\n`
+    + ORD.list.map((it, i) => `${i + 1}. *${book(it.book).name}* – ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})` + (withDed ? `\n✍️ ${it.ded}` : "")).join("\n\n")
+    + (withDed ? "" : "\n\n✍️ ההקדשות – בסיכום ההזמנה") + `\n\n💰 סה"כ ${ils(n * priceOf(n, "hard") + SHIP)} (כולל משלוח)`; }
+const waMust = (href, id) => `<div class="wamust"><p class="t">📲 שלב אחרון – חובה</p><p>שולחים לנו את ההזמנה בוואטסאפ. ההודעה כבר כתובה – רק לוחצים שם <b>➤ שליחה</b>. בלי ההודעה הזו לא נוכל להתחיל.</p>
+  <a class="btn btn-wa go" id="${id}" href="${href}" target="_blank" rel="noopener">💬 שליחת ההזמנה בוואטסאפ</a>
+  <p class="ph">אין וואטסאפ? <a href="tel:+${PHONE}">📞 <span dir="ltr">055-5549331</span></a></p></div>`;
 /* טיוטה: כל מה שהכניסו נשמר בטלפון (בלי ה-URL הזמני של התמונות), וחוזרים לאותו מקום */
 let DONE = false, RESTORED = false, LOADED = !window.bqDraft;
 const strip = it => it && Object.assign({}, it, {pics: it.pics.map(x => ({blob: x.blob}))});
@@ -570,21 +581,18 @@ async function send(){
     <ol class="wnext"><li>🎨 <b>מכינים לכם סקיצה</b> של הספר ושולחים לכם לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>
     <div class="wprog"><span id="mBar"></span></div><p class="st" id="mSt">⏳ שולחים…</p><p class="fine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
   try { const res = await sendDrive(), oid = res.oid; ORDER = oid; ev("savta-send", ORD.list.length + "-drive"); if (window.bqDraft) bqDraft.clear("savta"); DONE = true;
-    const t = `שלום BOOQLI 💛 שלחתי עכשיו באתר את הזמנה ${oid} (${ORD.list.length === 1 ? "ספר אחד" : ORD.list.length + " ספרים"}) · ${ORD.who}`;
-    $("wz").innerHTML = `<div class="step"><h3>${SB}✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
-      <p class="h">התמונות וההקדשות כבר אצלנו. נבדוק הכל ונחזור אליכם בוואטסאפ <b>תוך יום עסקים</b> עם הספר לתצוגה – ומשלמים רק אם אוהבים 💛</p>
-      <a class="btn btn-wa go" id="wDoneWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a>
-      <p class="fine">אפשר לסגור את העמוד. שאלה? כותבים לנו בוואטסאפ בכל שלב.</p></div>${sumHTML(oid, res.mailed)}`;
-    wireSum(oid);
-    $("wDoneWa").onclick = () => ev("savta-done-wa", ""); $("wz").scrollIntoView({behavior: "smooth", block: "start"});
-    modal(`${SB}<h3>✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
-      ${res.mailed ? `<p class="h">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(ORD.d.email)}</b></p>` : ""}
-      <ol class="wnext"><li>🎨 עכשיו מכינים לכם סקיצה${ORD.list.length ? " של הספר עבור " + esc(names()) : ""} ושולחים לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 אהבתם? ממשיכים לתשלום</li><li>🤝 לא אהבתם? נפרדים כידידים</li></ol>
-      <a class="btn btn-wa go" id="mWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a>
+    const t = waMsg(oid), wa = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(t);
+    $("wz").innerHTML = `<div class="step"><h3>${SB}✅ ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+      ${waMust(wa, "wDoneWa")}</div>${sumHTML(oid, res.mailed)}`;
+    wireSum(oid); $("wDoneWa").onclick = () => { ev("savta-done-wa", "page"); WA_SENT = true; };
+    modal(`${SB}<h3>✅ ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+      ${waMust(wa, "mWa")}
+      <div class="afterwa" id="mAfter" hidden>${res.mailed ? `<p class="h">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(ORD.d.email)}</b></p>` : ""}
+      <ol class="wnext"><li>🎨 מכינים לכם סקיצה${ORD.list.length ? " של הספר עבור " + esc(names()) : ""} ושולחים לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 אהבתם? ממשיכים לתשלום</li><li>🤝 לא אהבתם? נפרדים כידידים</li></ol>
       <button type="button" class="btn btn-main go" id="mSum">📄 לסיכום ההזמנה</button>
-      <button type="button" class="alt" id="mClose">סגירה</button>`);
+      <button type="button" class="alt" id="mClose">סגירה</button></div>`);
     $("mSum").onclick = () => { closeModal(); $("oSum").scrollIntoView({behavior: "smooth", block: "start"}); };
-    $("mWa").onclick = () => ev("savta-done-wa", "modal"); $("mClose").onclick = closeModal;
+    $("mWa").onclick = () => { ev("savta-done-wa", "modal"); WA_SENT = true; setTimeout(() => { const a = $("mAfter"); if (a) a.hidden = false; }, 600); }; $("mClose").onclick = closeModal;
     delete b.dataset.busy; return;
   } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; delete b.dataset.busy;
     /* בלי גיבוי של תמונות בוואטסאפ (שמש, 5.11.2026: "בוואטסאפ לא יודעים מה שייך למה") – מנסים שוב */
