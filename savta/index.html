@@ -199,6 +199,12 @@ section.sv{margin-top:34px}
 .wz .sumr{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .wz .sumr li{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;box-shadow:0 2px 8px rgba(78,133,118,.12)}
 .wz .fine{font-size:15px;color:var(--mute);margin-top:10px;line-height:1.5}.wz .fine a{color:var(--mag)}
+.wmodal{position:fixed;inset:0;z-index:2147483000;background:rgba(43,21,38,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.wmodal .wcard{background:#fff;border-radius:22px;max-width:460px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:20px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.wmodal .wcard>img{width:64px;height:64px}.wmodal h3{font-size:22px;color:var(--mag);margin:6px 0 10px}
+.wnext{text-align:start;margin:8px 0;padding-inline-start:4px;list-style:none;font-size:17px;line-height:1.5}.wnext li{margin:6px 0}
+.wprog{height:10px;background:#f6e4ee;border-radius:99px;overflow:hidden;margin-top:12px}.wprog span{display:block;height:100%;width:5%;background:var(--mag);transition:width .4s}
+.wmodal .st{font-weight:800;color:var(--saged);margin-top:8px}.wmodal .fine{font-size:14px;color:var(--mute);margin-top:6px}.wmodal .alt{margin-top:10px;width:100%;border:2px dashed var(--pink);background:#fff;color:var(--mag);border-radius:999px;padding:11px;font:800 17px Assistant,sans-serif;cursor:pointer}.wmodal .go{width:100%;margin-top:12px;justify-content:center;font-size:20px;padding:14px}
 .wz .chk{display:flex;gap:10px;align-items:flex-start;font-size:16px;line-height:1.45;margin-top:12px}.wz .chk input{width:24px;height:24px;flex-shrink:0;margin-top:2px;accent-color:var(--mag)}.wz .chk a{color:var(--mag)}
 .wz .st{text-align:center;font-weight:800;color:var(--saged);margin-top:8px}
 .wz .vid{margin:10px 0;background:#fff;border:1px solid #f0dbe6;border-radius:14px;padding:8px 12px}.wz .vid summary{cursor:pointer;font-weight:800;color:var(--mag)}.wz .vid video{width:100%;max-width:420px;display:block;margin:8px auto 0;border-radius:12px;background:#000}
@@ -485,7 +491,7 @@ async function sendDrive(){
   const J = (path, body, tok) => fetch(DRIVE_UP + path, {method: "POST", headers: Object.assign({"Content-Type": "application/json"}, tok ? {"X-Tok": tok} : {}), body: JSON.stringify(body)}).then(r => r.json());
   const s = await J("start", {kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
   const all = ORD.list.flatMap(it => it.pics.map(x => ({it, x}))); let k = 0;
-  for (const {it, x} of all) { k++; $("wSt").textContent = `⏳ שומרים את התמונות… ${all.length > 1 ? k + " מתוך " + all.length : ""}`;
+  for (const {it, x} of all) { k++; prog(k, all.length);
     const q = "photo?sub=" + encodeURIComponent(isGirl(it) ? "בנות" : "בנים") + "&name=" + encodeURIComponent(it.name);
     let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { const r = await fetch(DRIVE_UP + q, {method: "POST", headers: {"Content-Type": "image/jpeg", "X-Tok": s.tok}, body: x.blob}); ok = r.ok; } catch (e) {} }
     if (!ok) throw new Error("photo"); }
@@ -495,10 +501,19 @@ async function sendDrive(){
   const d = await J("done", {summary}, s.tok); if (!d.ok) throw new Error("done");
   return s.oid;
 }
+/* חלון שקופץ מיד בלחיצה על "שולחים" (שמש, 5.11.2026): מה קורה עכשיו ומה הלאה, עם התקדמות ההעלאה. בסוף הופך ל"✅ קיבלנו" */
+const names = () => { const n = ORD.list.map(it => it.name); return n.length < 2 ? n.join("") : n.slice(0, -1).join(", ") + " ו" + n[n.length - 1]; };
+function modal(html){ let m = $("wModal"); if (!m) { m = document.createElement("div"); m.id = "wModal"; m.className = "wmodal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); document.body.appendChild(m); }
+  m.innerHTML = `<div class="wcard">${html}</div>`; m.hidden = false; document.body.style.overflow = "hidden"; }
+function closeModal(){ const m = $("wModal"); if (m) m.hidden = true; document.body.style.overflow = ""; }
+function prog(k, n){ const e = $("mSt"), bar = $("mBar"); if (e) e.textContent = `⏳ שומרים את התמונות… ${n > 1 ? k + " מתוך " + n : ""}`; if (bar) bar.style.width = Math.round(100 * (k - .5) / n) + "%"; }
 async function send(){
   const b = $("wSend"); if (b.dataset.busy) return;
   if (!$("wOk").checked) { $("wSt").textContent = "☑️ מסמנים קודם שקראתם את התקנון ומדיניות הפרטיות"; return; }
   b.dataset.busy = "1";
+  modal(`${SB}<h3>💛 ברגעים אלו אנחנו מקבלים את ההזמנה שלכם${ORD.list.length ? " עבור " + esc(names()) : ""}</h3>
+    <ol class="wnext"><li>🎨 <b>מכינים לכם סקיצה</b> של הספר ושולחים לכם לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>
+    <div class="wprog"><span id="mBar"></span></div><p class="st" id="mSt">⏳ שולחים…</p><p class="fine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
   try { const oid = await sendDrive(); ORDER = oid; ev("savta-send", ORD.list.length + "-drive");
     const t = `שלום BOOQLI 💛 שלחתי עכשיו באתר את הזמנה ${oid} (${ORD.list.length === 1 ? "ספר אחד" : ORD.list.length + " ספרים"}) · ${ORD.who}`;
     $("wz").innerHTML = `<div class="step"><h3>${SB}✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
@@ -506,8 +521,13 @@ async function send(){
       <a class="btn btn-wa go" id="wDoneWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a>
       <p class="fine">אפשר לסגור את העמוד. שאלה? כותבים לנו בוואטסאפ בכל שלב.</p></div>`;
     $("wDoneWa").onclick = () => ev("savta-done-wa", ""); $("wz").scrollIntoView({behavior: "smooth", block: "start"});
+    modal(`${SB}<h3>✅ קיבלנו את ההזמנה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+      <ol class="wnext"><li>🎨 עכשיו מכינים לכם סקיצה${ORD.list.length ? " של הספר עבור " + esc(names()) : ""} ושולחים לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 אהבתם? ממשיכים לתשלום</li><li>🤝 לא אהבתם? נפרדים כידידים</li></ol>
+      <a class="btn btn-wa go" id="mWa" href="https://wa.me/${PHONE}?text=${encodeURIComponent(t)}">💬 לעדכן אותנו בוואטסאפ</a>
+      <button type="button" class="alt" id="mClose">סגירה</button>`);
+    $("mWa").onclick = () => ev("savta-done-wa", "modal"); $("mClose").onclick = closeModal;
     delete b.dataset.busy; return;
-  } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; }
+  } catch (e) { ev("savta-drive-fail", String(e && e.message || e)); $("wSt").textContent = ""; closeModal(); }
   sendWa(b);
 }
 /* הדרך הישנה (גיבוי): הודעת וואטסאפ עם קישורים לתמונות / שיתוף התמונות */
