@@ -60,8 +60,8 @@ section.sv{margin-top:34px}
 .ba .ar{flex:0 0 auto;font-size:36px;color:var(--pink);font-family:Fredoka,sans-serif}
 /* איך זה עובד */
 .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px;counter-reset:s}
-.steps div{background:#fff;border-radius:22px;padding:16px 14px;box-shadow:0 4px 16px rgba(78,133,118,.12);text-align:center}
-.steps i{font-style:normal;font-size:40px;display:block}
+.steps>div{background:#fff;border-radius:22px;padding:16px 14px;box-shadow:0 4px 16px rgba(78,133,118,.12);text-align:center}
+.steps i{font-style:normal;font-size:40px;display:block}.steps i img{width:96px;height:96px;object-fit:contain;display:block;margin:0 auto 4px}
 .steps b{display:block;font-size:20px;margin-top:4px}
 .steps span{display:block;color:var(--mute);font-size:16.5px;font-weight:700;line-height:1.4;margin-top:4px}
 /* ספרים */
@@ -121,8 +121,8 @@ section.sv{margin-top:34px}
 .done[hidden]{display:none}
 /* מה מקבלים */
 .gets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
-.gets div{background:#fff;border-radius:22px;padding:16px;box-shadow:0 4px 16px rgba(78,133,118,.12);display:flex;gap:12px;align-items:flex-start}
-.gets i{font-style:normal;font-size:40px;line-height:1}
+.gets>div{background:#fff;border-radius:22px;padding:16px;box-shadow:0 4px 16px rgba(78,133,118,.12);display:flex;gap:14px;align-items:center}
+.gets i{font-style:normal;font-size:40px;line-height:1;flex-shrink:0}.gets i img{width:84px;height:84px;object-fit:contain;display:block}
 .gets b{display:block;font-size:20px}
 .gets span{display:block;color:var(--mute);font-weight:700;font-size:16.5px;line-height:1.45}
 .appbox{margin-top:16px;background:linear-gradient(135deg,#FDE6F6,#E1F0EA);border-radius:26px;padding:18px;text-align:center}
@@ -252,10 +252,10 @@ section.sv{margin-top:34px}
 <section class="sv" id="how">
   <h2>איך זה עובד?</h2>
   <div class="steps">
-    <div><i>📚</i><b>1. בוחרים ספר</b><span>אפשר לקרוא כל ספר עד הסוף</span></div>
-    <div><i>✍️</i><b>2. ממלאים שם והקדשה</b><span>ומעלים תמונה – נבדוק שהיא טובה</span></div>
-    <div><i>💬</i><b>3. שולחים בוואטסאפ</b><span>ואנחנו מכינים את הספר</span></div>
-    <div><i>📖</i><b>4. רואים את כל הספר</b><span>אוהבים? משלמים ושולחים להדפסה</span></div>
+    <div><i aria-hidden="true"><img src="../img/icons/books-rainbow.webp" alt="" width="160" height="160" loading="lazy"></i><b>1. בוחרים ספר</b><span>אפשר לקרוא כל ספר עד הסוף</span></div>
+    <div><i aria-hidden="true"><img src="../img/icons/kid-tablet-point.webp" alt="" width="160" height="160" loading="lazy"></i><b>2. ממלאים שם והקדשה</b><span>ומעלים תמונה – נבדוק שהיא טובה</span></div>
+    <div><i aria-hidden="true"><img src="../img/icons/kid-tablet-book.webp" alt="" width="160" height="160" loading="lazy"></i><b>3. שולחים בוואטסאפ</b><span>ואנחנו מכינים את הספר</span></div>
+    <div><i aria-hidden="true"><img src="../img/icons/kids-reading.webp" alt="" width="160" height="160" loading="lazy"></i><b>4. רואים את כל הספר</b><span>אוהבים? משלמים ושולחים להדפסה</span></div>
   </div>
 </section>
 
@@ -274,10 +274,10 @@ section.sv{margin-top:34px}
 <section class="sv" id="gets">
   <h2>מה מקבלים?</h2>
   <div class="gets">
-    <div><i>📖</i><div><b>תצוגה מקדימה של כל הספר</b><span>לפני שמשלמים שקל. אוהבים? רק אז שולחים להדפסה.</span></div></div>
-    <div><i>📚</i><div><b>ספר מודפס שבו הילד/ה הוא הגיבור</b><span>עם השם, האיורים וההקדשה שלכם. כריכה רכה או קשה.</span></div></div>
-    <div><i>📲</i><div><b>במתנה: אפליקציה בטוחה לילדים</b><span>המון תכנים ומשחקים בחינם, עובדת גם בלי אינטרנט.</span></div></div>
-    <div><i>🤝</i><div><b>ליווי מלא בוואטסאפ</b><span>מהשאלה הראשונה ועד שהספר אצלכם בבית.</span></div></div>
+    <div><i aria-hidden="true"><img src="../img/icons/boy-reading.webp" alt="" width="160" height="160" loading="lazy"></i><div><b>תצוגה מקדימה של כל הספר</b><span>לפני שמשלמים שקל. אוהבים? רק אז שולחים להדפסה.</span></div></div>
+    <div><i aria-hidden="true"><img src="../img/icons/girl-reading.webp" alt="" width="160" height="160" loading="lazy"></i><div><b>ספר מודפס שבו הילד/ה הוא הגיבור</b><span>עם השם, האיורים וההקדשה שלכם. כריכה רכה או קשה.</span></div></div>
+    <div><i aria-hidden="true"><img src="../img/icons/dragon-book.webp" alt="" width="160" height="160" loading="lazy"></i><div><b>במתנה: אפליקציה בטוחה לילדים</b><span>המון תכנים ומשחקים בחינם, עובדת גם בלי אינטרנט.</span></div></div>
+    <div><i aria-hidden="true"><img src="../img/icons/two-girls.webp" alt="" width="160" height="160" loading="lazy"></i><div><b>ליווי מלא בוואטסאפ</b><span>מהשאלה הראשונה ועד שהספר אצלכם בבית.</span></div></div>
   </div>
   <div class="facts">
     <div>🚚 <b>אספקה:</b> 7–14 ימי עסקים מהתשלום</div>

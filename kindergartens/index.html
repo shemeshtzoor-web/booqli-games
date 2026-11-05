@@ -250,7 +250,7 @@ section{margin-top:64px}
 .bi.main{background:linear-gradient(160deg,var(--sage-deep),var(--sage));color:#fff}
 .bi.main p{color:#fff;opacity:.95}
 .bi:not(.main){border-color:var(--pink-soft)}
-.bi .ic{font-size:40px;line-height:1}
+.bi .ic{font-size:40px;line-height:1}.bi .ic img{width:96px;height:96px;object-fit:contain;display:block}
 .bi h3{font-size:20px}
 .bi p{color:var(--muted);font-size:16px;flex:1}
 .bi a{font-weight:800;color:var(--pink-btn);font-size:15.5px;text-decoration:none}
@@ -261,7 +261,8 @@ section{margin-top:64px}
 .anchor b{color:var(--magenta)}
 .safe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .safe div{background:#fff;border-radius:22px;padding:18px;box-shadow:0 4px 16px rgba(78,133,118,.11)}
-.safe span{font-size:32px;display:block;line-height:1.1}
+.safe span{font-size:32px;display:block;line-height:1.1}.safe span img{width:84px;height:84px;object-fit:contain;display:block}
+.sec-pic{display:block;width:120px;height:120px;object-fit:contain;margin:0 auto 6px;border-radius:50%}
 .safe h3{font-size:19px;margin-top:8px;color:var(--sage-deep)}
 .safe p{color:var(--muted);font-size:16px;margin-top:4px}
 .urgent{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:center;background:#FFF8E6;border:3px solid #FBE3A6;border-radius:26px;padding:20px 22px}
@@ -607,9 +608,9 @@ section{margin-top:64px}
     <p>הספר הוא רק ההתחלה. יחד איתו הגן מקבל במתנה כלים שממשיכים את החוויה – בגן ובבית.</p>
   </div>
   <div class="bundle">
-    <div class="bi main"><span class="ic">📚</span><h3>ספר אישי מודפס לכל ילד</h3><p>עם השם, איורים מדויקים של הילד והקדשה אישית מטעם הגן או הוועד. מזכרת לכל החיים.</p></div>
-    <div class="bi"><span class="free">מתנה</span><span class="ic">📲</span><h3>האפליקציה לגננת ולהורים</h3><p>booqli Games בטלפון, עם משחקים, דפי עבודה ומערכים לפי לוח השנה – באייקון אחד.</p><a href="../app/" data-ev="gift_app">איך מתקינים ←</a></div>
-    <div class="bi"><span class="free">מתנה</span><span class="ic">🎮</span><h3>משחק אישי לספר</h3><p>בספרים שיש להם משחק: הילד משחק עם השם והתמונה שלו, שומע את הסיפור בהקראה ומתרגל בדרך.</p>
+    <div class="bi main"><span class="ic"><img src="../img/icons/books-ribbon.webp" alt="" width="160" height="160" loading="lazy"></span><h3>ספר אישי מודפס לכל ילד</h3><p>עם השם, איורים מדויקים של הילד והקדשה אישית מטעם הגן או הוועד. מזכרת לכל החיים.</p></div>
+    <div class="bi"><span class="free">מתנה</span><span class="ic"><img src="../img/icons/kid-tablet-book.webp" alt="" width="160" height="160" loading="lazy"></span><h3>האפליקציה לגננת ולהורים</h3><p>booqli Games בטלפון, עם משחקים, דפי עבודה ומערכים לפי לוח השנה – באייקון אחד.</p><a href="../app/" data-ev="gift_app">איך מתקינים ←</a></div>
+    <div class="bi"><span class="free">מתנה</span><span class="ic"><img src="../img/icons/dragon-book.webp" alt="" width="160" height="160" loading="lazy"></span><h3>משחק אישי לספר</h3><p>בספרים שיש להם משחק: הילד משחק עם השם והתמונה שלו, שומע את הסיפור בהקראה ומתרגל בדרך.</p>
       <p class="gl">יש משחק לספרים: <a href="../games/birthday/" data-ev="gift_game_birthday">ילד/ת יום הולדת</a> · <a href="../games/superhero/" data-ev="gift_game_super">גיבור/ת על</a> · <a href="../games/bye-bye-diaper/" data-ev="gift_game_diaper">ביי ביי חיתול!</a> · <a href="../games/savanna/" data-ev="gift_game_savanna">בסוואנה</a></p></div>
   </div>
   <p class="bundle-sum">📚 ספר לכל ילד <b>+</b> 📲 אפליקציה לגננת ולהורים <b>+</b> 🎮 משחק אישי לספר <b>=</b> מתנה שהילדים לא שוכחים</p>
@@ -762,6 +763,7 @@ section{margin-top:64px}
 
 <section id="prices">
   <div class="sec-h">
+    <img class="sec-pic" src="../img/icons/best-price.webp" alt="ילדה מחזיקה שלט: המחיר הכי טוב" width="160" height="160" loading="lazy">
     <span class="eyebrow">💰 מחירי ספרי ילדים אישיים לגנים ולכמויות</span>
     <h2>המחירים שלנו להזמנות של <span dir="ltr">20–49</span> ספרים</h2>
   </div>
@@ -857,12 +859,12 @@ section{margin-top:64px}
     <p>מזמינים לגן שלם? הכל נבדק ומאושר על ידכם לפני שמשהו יוצא לדפוס.</p>
   </div>
   <div class="safe">
-    <div><span>🎁</span><h3>ספר דיגיטלי ראשון בחינם</h3><p>רואים ספר אישי אמיתי לפני ההזמנה הגדולה, ללא התחייבות.</p></div>
-    <div><span>👀</span><h3>תצוגה מקדימה לכל ספר</h3><p>מקבלים תצוגה מקדימה של כל ספר. ההדפסה מתחילה רק אחרי האישור שלכם.</p></div>
-    <div><span>✅</span><h3>100% בדיקה אנושית</h3><p>כל ספר נבדק לפני ההדפסה, כך שאין צורך לעבור על כל עמוד בעצמכם.</p></div>
-    <div><span>🛠️</span><h3>טעות? אנחנו מטפלים</h3><p>במקרה של טעות בהדפסה, BOOQLI מטפלת בתיקון ובהחלפה בהתאם למדיניות החברה.</p></div>
-    <div><span>💬</span><h3>אדם אמיתי איתכם</h3><p>שירות אישי בטלפון ובוואטסאפ – לפני, במהלך ואחרי ההזמנה.</p></div>
-    <div><span>🧾</span><h3>חשבונית לגן או לוועד</h3><p>חשבוניות לגנים, בתי ספר, צהרונים, ארגונים ועמותות.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/books-gift.webp" alt="" width="160" height="160" loading="lazy"></span><h3>ספר דיגיטלי ראשון בחינם</h3><p>רואים ספר אישי אמיתי לפני ההזמנה הגדולה, ללא התחייבות.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/girl-reading.webp" alt="" width="160" height="160" loading="lazy"></span><h3>תצוגה מקדימה לכל ספר</h3><p>מקבלים תצוגה מקדימה של כל ספר. ההדפסה מתחילה רק אחרי האישור שלכם.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/boy-reading.webp" alt="" width="160" height="160" loading="lazy"></span><h3>100% בדיקה אנושית</h3><p>כל ספר נבדק לפני ההדפסה, כך שאין צורך לעבור על כל עמוד בעצמכם.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/girl-thinking.webp" alt="" width="160" height="160" loading="lazy"></span><h3>טעות? אנחנו מטפלים</h3><p>במקרה של טעות בהדפסה, BOOQLI מטפלת בתיקון ובהחלפה בהתאם למדיניות החברה.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/two-girls.webp" alt="" width="160" height="160" loading="lazy"></span><h3>אדם אמיתי איתכם</h3><p>שירות אישי בטלפון ובוואטסאפ – לפני, במהלך ואחרי ההזמנה.</p></div>
+    <div><span aria-hidden="true"><img src="../img/icons/book-ribbon.webp" alt="" width="160" height="160" loading="lazy"></span><h3>חשבונית לגן או לוועד</h3><p>חשבוניות לגנים, בתי ספר, צהרונים, ארגונים ועמותות.</p></div>
   </div>
 </section>
 
