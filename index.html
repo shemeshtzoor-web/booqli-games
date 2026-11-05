@@ -98,6 +98,15 @@
   .oh-pic img{height:auto;aspect-ratio:16/10;object-fit:cover;object-position:center 30%}
   .oh-txt{max-width:none;margin:-34px 12px 0;width:auto;padding:20px 16px 18px;background:rgba(255,255,255,.92)}
 }
+/* טלפון: השלבים בסליידר הצידה (שמש, 5.11.2026: "יתפוס פחות אורך") */
+@media (max-width:600px){
+  .steps ol{display:grid;grid-auto-flow:column;grid-auto-columns:72vw;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;max-width:none;padding:4px 16px 12px;margin:0 -16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .steps ol::-webkit-scrollbar{display:none}
+  .st{scroll-snap-align:center;background:rgba(255,255,255,.82);border-radius:22px;padding:14px 12px 16px;box-shadow:0 6px 18px rgba(33,51,48,.08)}
+  .st-ar{display:none}
+  .steps-hint{display:block}
+}
+.steps-hint{display:none;text-align:center;font-size:13.5px;color:#566B67;margin-top:2px}
 /* טלפון (שמש, 5.11.2026): שלבים קטנים יותר, ספרים גדולים יותר */
 @media (max-width:600px){
   .steps{margin-top:22px}
@@ -179,14 +188,12 @@
     <a class="btn-wa js-wa" target="_blank" rel="noopener">💬 עדכונים בוואטסאפ</a>
   </div>
 </header>
-<div class="sponsor">📚 BOOQLI – ספרי ילדים בהתאמה אישית · 🎁 המשחקים והתכנים באתר בחינם ❤️</div>
 <main class="wrap">
 
 <section class="order-hero" aria-labelledby="ohT">
   <div class="oh-pic" id="ohPic" aria-hidden="true"></div>
-  <script>/* תמונת הבאנר (5.11.2026, התמונות של שמש): במחשב – באנר רחב כמו באתר הראשי, בטלפון – תמונה קלה (~25KB). כל ביקור – אחת משתיים */
-  (function(){ var k = Math.random() < .5 ? "unicorn" : "dragon", m = k === "unicorn" ? "girl" : "dragon";
-    document.getElementById("ohPic").innerHTML = '<picture><source media="(min-width:761px)" srcset="img/home/banner-' + k + '.webp"><img src="img/home/m-' + m + '.webp" alt="" width="720" height="576" fetchpriority="high"></picture>'; })();</script>
+  <script>/* תמונת הבאנר (5.11.2026): במחשב – הבאנר הרחב (חד־קרן + ילדה), בטלפון – תמונה קלה (~25KB) של הילדה. הדרקון והילד ירדו (שמש: "לא נראה טוב") */
+  document.getElementById("ohPic").innerHTML = '<picture><source media="(min-width:761px)" srcset="img/home/banner-unicorn.webp"><img src="img/home/m-girl.webp" alt="" width="720" height="576" fetchpriority="high"></picture>';</script>
   <div class="oh-txt">
     <p class="oh-kick">BOOQLI · ספרי ילדים בהתאמה אישית</p>
     <h1 class="oh-brand" id="ohT">בספרים שלנו ילדכם<small>גיבורי הסיפור</small></h1>
@@ -213,6 +220,7 @@
     <li class="st-ar" aria-hidden="true"><svg class="l" viewBox="0 0 60 80" width="46" height="62"><path d="M30 4 C 36 26, 42 44, 22 66" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round"/><path d="M12 54 L 21 69 L 37 62" fill="none" stroke="#FA57C4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
     <li class="st st-s4"><div class="st-top"><span class="st-art" aria-hidden="true"><img src="img/steps/4.webp" alt="" width="200" height="200" loading="lazy"></span><span class="st-n">04</span></div><h3>קבלו את הספר</h3><p>עד לפתח ביתכם תוך 7–14 ימי עסקים</p></li>
   </ol>
+  <p class="steps-hint" aria-hidden="true">← מחליקים לשלב הבא</p>
 </section>
 
 <section class="shelf" aria-labelledby="shT">

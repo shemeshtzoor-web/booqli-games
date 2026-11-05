@@ -693,10 +693,9 @@ window.SITE.doors = [
 ];
 /* התפריט המלא (☰ תפריט, 2.11.2026): כל הנושאים המרכזיים בקבוצות. נושא עם id מקבל לבד "נפתח ב-..." / "נסגר" לפי SITE.opens / SITE.closes. */
 window.SITE.menu = [
-  { h: "📚 להזמין ספר אישי", items: [
-    { ic: "💛", t: "ספר אישי לילד (הורים, סבים, מתנה)", href: "/savta/", hot: true },
-    { ic: "🏫", t: "ספר אישי לכל ילד בגן", href: "/kindergartens/" },
-    { ic: "📖", t: "הספר שלכם בכריכה קשה", href: "/book-maker/" } ] },
+  { h: "📖 ספרי BOOQLI", items: [
+    { ic: "📚", t: "כל הספרים – לקרוא ולבחור", href: "/savta/#books" },
+    { ic: "✍️", t: "הדפיסו את הספר שלכם", href: "/book-maker/" } ] },
   { h: "🧭 ראשי", items: [
     { ic: "🏠", t: "דף הבית", href: "/" },
     { ic: "🗺️", t: "מפת האתר – כל מה שיש", href: "/map/", hot: true },
@@ -735,6 +734,11 @@ window.SITE.menu = [
     { ic: "✍️", t: "קורס: כותבים ספר ילדים", href: "/course/" },
     { ic: "📲", t: "האפליקציה", href: "/app/" } ] }
 ];
+/* תפריט ☰ (שמש, 5.11.2026: "הכי חשוב הספרים וההזמנה לגנים, כל השאר בתת־תפריטים"): שני כפתורים גדולים למעלה, וכל קבוצה נפתחת בלחיצה */
+window.SITE.menuTop = [
+  { ic: "📚", t: "להזמין ספר אישי", s: "לילד, לנכד, מתנה", href: "/savta/?utm_source=booqli_games&utm_medium=menu&utm_campaign=order#order" },
+  { ic: "🏫", t: "ספר אישי לכל ילד בגן", s: "מחירים לגנים", href: "/kindergartens/?utm_source=booqli_games&utm_medium=menu&utm_campaign=gan" }
+];
 window.SITE.more = SITE.menu.reduce(function(a, g){ return a.concat(g.items); }, []);
 function siteDoorsNav(){
   if (document.querySelector(".bq-doors") || /[?&]sheet=/.test(location.search) || /\/offline\.html$/.test(location.pathname)) return;
@@ -747,10 +751,18 @@ function siteDoorsNav(){
     ".bq-doors a.d:hover,.bq-doors .mb:hover{border-color:#CDE7DC}" +
     ".bq-doors a.d[aria-current=page]{background:#2F6F63;color:#fff}" +
     ".bq-doors .mb{margin-inline-start:auto;background:#fff;border-color:#CDE7DC}" +
-    ".bq-doors .menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(1068px,calc(100% - 32px));max-height:min(78vh,640px);overflow:auto;overscroll-behavior:contain;background:#fff;border-radius:22px;box-shadow:0 16px 40px rgba(43,21,38,.22);padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;z-index:60}" +
+    ".bq-doors .menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(560px,calc(100% - 32px));max-height:min(78vh,640px);overflow:auto;overscroll-behavior:contain;background:#fff;border-radius:22px;box-shadow:0 16px 40px rgba(43,21,38,.22);padding:14px;display:flex;flex-direction:column;gap:8px;z-index:60}" +
     ".bq-doors .menu[hidden]{display:none}" +
-    ".bq-doors .mg{background:#F7FBF9;border-radius:16px;padding:8px}" +
-    ".bq-doors .mg h4{margin:2px 6px 4px;font-family:Fredoka,Assistant,sans-serif;font-size:16px;color:#2F6F63}" +
+    ".bq-doors .mtop{display:grid;gap:8px;margin-bottom:4px}" +
+    ".bq-doors .menu a.mt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:#fff;border:2px solid #CDE8E1;box-shadow:0 4px 14px rgba(33,51,48,.08)}" +
+    ".bq-doors .menu a.mt .i{font-size:28px}.bq-doors .menu a.mt b{display:block;font-size:17px}.bq-doors .menu a.mt small{display:block;font-size:13.5px;color:#566B67;font-weight:600}" +
+    ".bq-doors .menu a.mt.or{background:linear-gradient(180deg,#FA57C4,#E33BAE);border-color:#FA57C4;color:#fff;box-shadow:0 0 10px rgba(95,91,205,.45)}.bq-doors .menu a.mt.or small{color:#fff}" +
+    ".bq-doors .mg{background:#F7FBF9;border-radius:16px;padding:0}" +
+    ".bq-doors .mg summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;font-family:'Varela Round',Assistant,sans-serif;font-weight:700;font-size:16px;color:#213330;border-radius:16px}" +
+    ".bq-doors .mg summary::-webkit-details-marker{display:none}" +
+    ".bq-doors .mg summary::after{content:'';width:9px;height:9px;border-left:2.5px solid #2F6F63;border-bottom:2.5px solid #2F6F63;transform:rotate(-45deg);transition:transform .2s}" +
+    ".bq-doors .mg[open] summary::after{transform:rotate(135deg)}" +
+    ".bq-doors .mg[open]{padding-bottom:6px}.bq-doors .mg a{margin:0 6px}" +
     ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;text-decoration:none;color:#213330;font-weight:700;font-size:15.5px}" +
     ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#fff;box-shadow:0 2px 0 #CDE7DC}" +
     ".bq-doors .menu a.hot{background:linear-gradient(90deg,#FDE6F6,#E1F0EA);color:#C5309A;font-weight:800}" +
@@ -760,7 +772,7 @@ function siteDoorsNav(){
     "@media (max-width:600px){.bq-doors .in{padding:6px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));gap:4px}" +
     ".bq-doors a.d,.bq-doors .mb{flex:1;flex-direction:column;gap:0;padding:4px 2px;border-radius:12px;font-size:12.5px;min-height:46px;justify-content:center}" +
     ".bq-doors .i{font-size:18px;line-height:1.1}.bq-doors .f{display:none}.bq-doors .s{display:inline}.bq-doors .mb{flex:0 0 auto;padding:4px 10px}" +
-    ".bq-doors .menu{width:calc(100% - 16px);grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}}" +
+    ".bq-doors .menu{width:calc(100% - 16px);gap:8px;padding:10px}}" +
     "@media print{.bq-doors{display:none!important}}" +
     /* דף הבית (שמש, 5.11.2026): בלי שורת הדלתות – הן כבר מופיעות בדף. התפריט ☰ עובר לפס ההזמנה הוורוד */
     ".bq-doors.solo{border:0}.bq-doors.solo .in{display:none}";
@@ -773,12 +785,14 @@ function siteDoorsNav(){
       return '<a class="d" href="' + x.href + '"' + cur(x.href) + '><span class="i" aria-hidden="true">' + x.ic + '</span><span class="f">' + x.t + '</span><span class="s">' + (x.s || x.t) + '</span></a>';
     }).join("") +
     '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>תפריט</span></button></div>' +
-    '<div class="menu" id="bqMore" hidden>' + SITE.menu.map(function(g){
-      return '<div class="mg"><h4>' + g.h + '</h4>' + g.items.map(function(x){
+    '<div class="menu" id="bqMore" hidden><div class="mtop">' + SITE.menuTop.map(function(x, i){
+      return '<a class="mt' + (i ? '' : ' or') + '" href="' + x.href + '"><span class="i" aria-hidden="true">' + x.ic + '</span><span><b>' + x.t + '</b><small>' + x.s + '</small></span></a>';
+    }).join("") + '</div>' + SITE.menu.map(function(g){
+      return '<details class="mg"><summary>' + g.h + '</summary>' + g.items.map(function(x){
         var w = "";
         try { if (x.id && siteIsClosed(x.id)) w = '<span class="when cl">נסגר</span>'; else if (x.id && siteIsSoon(x.id)) { var d = siteOpenDate(x.id); w = '<span class="when">נפתח ' + d.getDate() + "." + (d.getMonth() + 1) + '</span>'; } } catch (e) {}
         return '<a href="' + x.href + '"' + cur(x.href) + (x.hot ? ' class="hot"' : '') + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
-      }).join("") + '</div>'; }).join("") + '</div>';
+      }).join("") + '</details>'; }).join("") + '</div>';
   var top = document.querySelector(".bq-nav");
   /* מתחת לפס הלוגו (5.11.2026), כך שהפס הטורקיז למעלה הוא חטיבה אחת – כמו באתר הראשי */
   var hdr = document.querySelector("body > header, header.top");
@@ -1022,7 +1036,9 @@ function siteMainNav(){
     /* הפס עם הלוגו – כמו בראש האתר הראשי */
     "html.bq-brand body>header,html.bq-brand header.top{background:linear-gradient(90deg,#6DAFA1,#8CC5B9)!important;box-shadow:0 2px 14px rgba(33,51,48,.10)!important;text-shadow:0 1px 2px rgba(33,51,48,.25)}" +
     "html.bq-brand header .pill,html.bq-brand header .btn-wa{text-shadow:none}" +
-    "@media print{html.bq-brand body>header{text-shadow:none}}";
+    "@media print{html.bq-brand body>header{text-shadow:none}}" +
+    /* בלי כפילות למעלה (5.11.2026): "לכל הגן" כבר בפס ההזמנה, והלוגו כבר מוביל לדף הבית */
+    "html.bq-brand header .gan{display:none!important}html.bq-brand .bq-nav .home{display:none}html.bq-brand .bq-nav ul{margin:0 auto}";
   (document.head || html).appendChild(css);
 })();
 

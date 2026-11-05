@@ -1,6 +1,6 @@
 {
- "version": "4b630402e6a5",
- "bytes": 17744462,
+ "version": "c55920254c62",
+ "bytes": 17749851,
  "fonts": [
   "https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap",
@@ -143,7 +143,7 @@
   "/img/family/shomer.webp",
   "/img/home/boy-wave.webp",
   "/img/home/girl-point.webp",
-  "/img/home/m-dragon.webp",
+  "/img/home/m-girl.webp",
   "/img/logo-dark.png",
   "/img/logo.png",
   "/img/steps/1.webp",
