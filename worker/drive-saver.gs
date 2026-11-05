@@ -21,6 +21,7 @@ function doPost(e) {
     if (q.action === "ded") return out_(saveDed_(q));
     if (q.action === "note") return out_(saveNote_(q));
     if (q.action === "trash") return out_(trash_(q));
+    if (q.action === "erase") return out_(erase_(q));
     if (q.action === "ping") return out_({ ok: true, folder: root_().getUrl() });
     return out_({ ok: false, error: "action" });
   } catch (err) {
@@ -103,6 +104,38 @@ function trash_(q) {
     level = next;
   }
   return { ok: false, error: "outside" };
+}
+
+/* לקוח ביקש מחיקה בוואטסאפ: {phone, who, orders:[...], gans:[...], files:[...], kids, sums}
+   תיקיות ההזמנות הפרטיות + התמונות שהמספר שלח לגן + ההודעות שלו בחלון השאלות – לאשפה (אפשר לשחזר 30 יום),
+   ומייל לשמש עם פרטי ההזמנה, כדי שתמחק גם באתר / במערכת ההדפסה. רק בתוך "BOOQLI הזמנות". */
+function erase_(q) {
+  var root = root_(), folders = [], photos = 0, notes = 0, phone = String(q.phone || "").replace(/\D/g, "");
+  (q.orders || []).forEach(function (o) {
+    o = String(o || "").replace(/'/g, ""); if (!o) return;
+    var it = root.searchFolders("title contains '" + o + "'");
+    while (it.hasNext()) { var f = it.next(); if (f.getName().indexOf(o) === 0) { folders.push(f.getName()); f.setTrashed(true); } }
+  });
+  (q.files || []).forEach(function (u) { try { if (trash_({ file: u }).ok) photos++; } catch (e) {} });
+  if (phone) {
+    var qa = root.getFoldersByName("שאלות-לקוחות");
+    while (qa.hasNext()) { var fs = qa.next().searchFiles("fullText contains '" + phone + "'"); while (fs.hasNext()) { fs.next().setTrashed(true); notes++; } }
+  }
+  var me = Session.getEffectiveUser().getEmail(), gans = (q.gans || []).join(", ");
+  MailApp.sendEmail({
+    to: me,
+    subject: "🗑️ בקשת מחיקה בוואטסאפ: " + (q.who || phone),
+    htmlBody: "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px'>"
+      + "<p><b>" + esc_(q.who || "") + " · 📞 <a href='https://wa.me/" + phone + "'>" + phone + "</a> ביקש/ה למחוק את המידע שלו/ה.</b></p>"
+      + "<p>✅ הבוט כבר מחק את מה שהוא זוכר, והעביר לאשפה בדרייב (אפשר לשחזר 30 יום):</p><ul>"
+      + "<li>תיקיות הזמנה: " + (folders.length ? esc_(folders.join(" · ")) : "אין") + "</li>"
+      + (gans ? "<li>גן " + esc_(gans) + ": " + photos + " תמונות שהמספר הזה שלח (תמונות של הורים אחרים נשארו)</li>" : "")
+      + "<li>הודעות בחלון השאלות: " + notes + "</li></ul>"
+      + "<p><b>מה נשאר לך:</b> אם כבר הכנת ספר – למחוק גם באתר, במערכת ההדפסה ובמסד הנתונים, תוך 30 יום (כך כתוב במדיניות הפרטיות).</p>"
+      + (q.sums ? "<p>פרטי ההזמנה, כדי שתמצאי אותה:</p><pre style='white-space:pre-wrap;font-family:Arial,sans-serif'>" + esc_(String(q.sums).replace(/\*/g, "")) + "</pre>" : "")
+      + "</div>"
+  });
+  return { ok: true, folders: folders.length, photos: photos, notes: notes };
 }
 
 /* סוף ההזמנה: {order, title, summary, expected} – מסמך סיכום + מייל */

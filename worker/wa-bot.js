@@ -948,9 +948,66 @@ async function driveOrder(env, st, from, consentAt, sum, consentText, db){
 }
 
 /* הודעה אחת שנכנסה. ev = {id, text, image, caption}. opts: {mem, log} בבדיקות */
+/* ===== הסרה ומחיקה (מדיניות הפרטיות, סעיף וואטסאפ): רק כשזו כל ההודעה – "מחק את התמונה של דני" לא נחשב ===== */
+const STOP_TXT = /^(stop|unsubscribe|הסר|הסירו|הסירו אותי|תסירו|תסירו אותי|להסיר|להסיר אותי|הסרה|תפסיקו|תפסיקו לשלוח|להפסיק|הפסק|הפסיקו|די להודעות)[.!\s]*$/i;
+const START_TXT = /^(start|התחל|להתחיל|חזרה|לחזור)[.!\s]*$/i;
+const ERASE_TXT = /^((תמחקו|מחקו|תמחק|מחק|למחוק|למחוק את|תמחקו את|מחקו את)( את)?( כל)?( (הפרטים|המידע|התמונות|הכל|הכול))?( שלי| שלנו)?|מחיקה|תמחקו אותי|מחקו אותי|delete|delete my data|erase)[.!\s]*$/i;
+const ERASE_BTN = [["erase:yes", "🗑️ כן, למחוק"], ["erase:no", "↩️ לא, טעות"]];
+/* מוחקים כל מה שהבוט קיבל מהמספר הזה: זיכרון הבוט + התמונות והמסמכים בדרייב (לאשפה), ומייל לשמש עם פרטי ההזמנה –
+   כדי שתמחק גם באתר / במערכת ההדפסה. בגן: רק מה שהמספר הזה שלח (תמונות של הורים אחרים נשארות). */
+async function eraseAll(env, from, profile, db){
+  const st = JSON.parse(await db.get("st:" + from) || "null"), pst = JSON.parse(await db.get("pst:" + from) || "null");
+  const own = new Set(), gans = new Set(), files = [], sums = [], blobs = [];
+  if (st && st.oid && st.step && st.step !== "hi") (st.mode === "gan" ? gans : own).add(st.oid);
+  if (pst && pst.oid) gans.add(pst.oid);
+  for (const k of await db.list("order:")) if (k.endsWith(":" + from)) {
+    const o = JSON.parse(await db.get(k) || "{}"); if (o.id) (o.mode === "gan" ? gans : own).add(o.id); if (o.text) sums.push(o.text); await db.del(k);
+  }
+  if (st && st.list) for (const c of st.list.concat(st.cur ? [st.cur] : [])) for (const p of c.pics || []) if (p.pending) blobs.push(p.pending);
+  for (const oid of own) for (const k of await db.list("pp:" + oid + ":")) { const p = JSON.parse(await db.get(k) || "{}"); if (p.pending) blobs.push(p.pending); await db.del(k); }
+  let kids = 0;
+  for (const oid of gans) for (const pre of ["gp:", "gq:"]) for (const k of await db.list(pre + oid + ":")) {
+    const v = JSON.parse(await db.get(k) || "{}"); if (v.by !== from) continue;
+    if (v.drive) files.push(v.drive); if (v.pending) blobs.push(v.pending); if (pre === "gp:") kids++; await db.del(k);
+  }
+  for (const k of await db.list("code:")) { const L = JSON.parse(await db.get(k) || "{}"); if (L.teacher === from) await db.del(k); }   /* גננת שמחקה – הקישור להורים נסגר */
+  for (const b of blobs) { try { if (env.STATE && env.STATE.delete) await env.STATE.delete(b); } catch (e) {} }
+  for (const k of ["st:", "pst:", "burst:", "erasek:"]) await db.del(k + from);
+  const who = (st && st.who) || (pst && pst.who) || profile || "";
+  const d = await drivePost(env, { action: "erase", phone: from, who, orders: [...own], gans: [...gans], files, kids, sums: sums.join("\n\n———\n\n") });
+  if (!d || !d.ok) console.log("erase drive failed", from.slice(-4));
+  return d;
+}
+
 export async function handle(env, from, profile, ev, opts){
   opts = opts || {};
   const db = store(env, opts.mem), log = opts.log;
+  const tx = (ev.text || "").trim();
+  if (ev.id === "erase:yes" || ev.id === "erase:no") {
+    if (!(await db.get("erasek:" + from))) return;                  /* כפתור ישן */
+    await db.del("erasek:" + from);
+    if (ev.id === "erase:no") { await wa(env, from, buttons("אין בעיה – לא מחקנו כלום 👍", RESUME_BTN), log); return; }
+    await eraseAll(env, from, profile, db);
+    await wa(env, from, text("✅ מחקנו את כל מה שקיבלנו ממך בוואטסאפ – הפרטים והתמונות.\nאם כבר התחלנו להכין ספר, נמחק גם משם תוך 30 יום.\nתודה 💗"), log);
+    return;
+  }
+  if (ERASE_TXT.test(tx)) {
+    await db.put("erasek:" + from, "1", 86400);
+    await wa(env, from, buttons("🗑️ למחוק את כל הפרטים והתמונות שקיבלנו ממך בוואטסאפ?\nאחרי המחיקה אי אפשר לשחזר, והזמנה שעוד לא הסתיימה תתבטל.", ERASE_BTN), log);
+    return;
+  }
+  if (STOP_TXT.test(tx)) {
+    await db.put("stop:" + from, String(Date.now()), 365 * 86400);
+    await wa(env, from, text("בסדר 💗 לא נשלח לך יותר הודעות.\nאם תרצו לחזור – פשוט כתבו \"התחל\"."), log);
+    if (!log) { const s0 = JSON.parse(await db.get("st:" + from) || "null") || { profile }; await alertOwner(env, s0, from, "ביקשו להפסיק לקבל הודעות (הסרה)", tx); }
+    return;
+  }
+  if (await db.get("stop:" + from)) {                               /* אחרי "הסר" – שותקים עד "התחל" (ההודעות מגיעות לחלון של שמש) */
+    if (!START_TXT.test(tx)) { if (!log) await logQA(env, { profile }, from, "q", "אחרי הסרה – הבוט שותק", tx || (ev.image ? "(תמונה)" : "")); return; }
+    await db.del("stop:" + from);
+    const s0 = JSON.parse(await db.get("st:" + from) || "null");
+    if (s0 && s0.step && s0.step !== "done" && !s0.human) { await resume(env, from, s0, log, db); s0.ts = Date.now(); await db.put("st:" + from, JSON.stringify(s0), 30 * 86400); return; }
+  }
   /* ===== הורה שהגיע מהקישור של הגן ("ספר לגן – קוד 1234") ===== */
   const pk = "pst:" + from;
   let pst = JSON.parse(await db.get(pk) || "null");
