@@ -760,10 +760,13 @@ function siteDoorsNav(){
     ".bq-doors a.d,.bq-doors .mb{flex:1;flex-direction:column;gap:0;padding:4px 2px;border-radius:12px;font-size:12.5px;min-height:46px;justify-content:center}" +
     ".bq-doors .i{font-size:18px;line-height:1.1}.bq-doors .f{display:none}.bq-doors .s{display:inline}.bq-doors .mb{flex:0 0 auto;padding:4px 10px}" +
     ".bq-doors .menu{width:calc(100% - 16px);grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}}" +
-    "@media print{.bq-doors{display:none!important}}";
+    "@media print{.bq-doors{display:none!important}}" +
+    /* דף הבית (שמש, 5.11.2026): בלי שורת הדלתות – הן כבר מופיעות בדף. התפריט ☰ עובר לפס ההזמנה הוורוד */
+    ".bq-doors.solo{border:0}.bq-doors.solo .in{display:none}";
   document.head.appendChild(css);
+  var solo = path === "/" || path === "/index.html";
   var nav = document.createElement("nav");
-  nav.className = "bq-doors"; nav.setAttribute("aria-label", "אזורי האתר");
+  nav.className = "bq-doors" + (solo ? " solo" : ""); nav.setAttribute("aria-label", "אזורי האתר");
   var cur = function(h){ return h !== "/" && path.indexOf(h) === 0 ? ' aria-current="page"' : (h === "/" && (path === "/" || /\/index\.html$/.test(path) && path.split("/").length < 3) ? ' aria-current="page"' : ""); };
   nav.innerHTML = '<div class="in">' + SITE.doors.map(function(x){
       return '<a class="d" href="' + x.href + '"' + cur(x.href) + '><span class="i" aria-hidden="true">' + x.ic + '</span><span class="f">' + x.t + '</span><span class="s">' + (x.s || x.t) + '</span></a>';
@@ -780,6 +783,14 @@ function siteDoorsNav(){
   var mb = nav.querySelector(".mb"), menu = nav.querySelector(".menu");
   var close = function(){ menu.hidden = true; mb.setAttribute("aria-expanded", "false"); };
   mb.onclick = function(e){ e.stopPropagation(); menu.hidden = !menu.hidden; mb.setAttribute("aria-expanded", String(!menu.hidden)); };
+  var ul = solo && top && top.querySelector("ul");
+  if (ul) {
+    var li = document.createElement("li"); li.className = "mn";
+    li.innerHTML = '<a href="#bqMore" role="button" aria-expanded="false" aria-controls="bqMore" title="כל מה שיש באתר"><span class="i" aria-hidden="true">☰</span><span class="f">תפריט</span><span class="s">תפריט</span></a>';
+    ul.appendChild(li);
+    var mb2 = li.querySelector("a");
+    mb2.onclick = function(e){ e.preventDefault(); mb.onclick(e); mb2.setAttribute("aria-expanded", String(!menu.hidden)); };
+  }
   document.addEventListener("click", function(e){ if (!nav.contains(e.target)) close(); });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") close(); });
   nav.addEventListener("click", function(e){ var a = e.target.closest("a"); if (a) siteEvent("nav", (a.getAttribute("href") || "").replace(/\//g, "") || "home"); });
