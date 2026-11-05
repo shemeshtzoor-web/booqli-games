@@ -1181,6 +1181,8 @@ export default {
             else if (m.type === "button") ev.text = m.button.text;
             else if (m.type === "image") { ev.image = { media: m.image.id, sha: m.image.sha256 || "" }; ev.caption = m.image.caption || ""; ev.mid = m.id || ""; }
             else continue;
+            /* אותה הודעה פעמיים (מטא שולחת שוב, או שתי אפליקציות על אותו מספר) – עונים רק פעם אחת */
+            if (m.id) { if (await db.get("seen:" + m.id)) { console.log("dup – skip"); continue; } await db.put("seen:" + m.id, "1", 2 * 86400); }
             console.log("in", m.type, ev.id || (ev.image ? "image" : "text"));   /* לבדיקת תקלות – בלי תוכן ההודעה */
             if (real && (await db.get("known:" + m.from))) continue;   /* חברים, משפחה, לקוחות ותיקים – הבוט לא עונה ולא שומר כלום */
             const envM = Object.assign({}, envC, { MID: m.id || "" });     /* מזהה ההודעה – ל"מקליד…" */

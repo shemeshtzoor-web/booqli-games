@@ -54,4 +54,11 @@ check("/es – החשבון של BOOQLI מתחבר", r.j.ok === true && JSON.par
 let o = await worker.fetch(new Request("https://x/orders?k=TEST"), Object.assign({}, base, { VERIFY_TOKEN: "TEST" }), { waitUntil: () => {} });
 check("/orders עם VERIFY_TOKEN – סגור", o.status !== 200 || !(await o.text()).includes("order"));
 
+/* אותה הודעה מגיעה פעמיים (מטא שולחת שוב / שתי אפליקציות) – הבוט עונה רק פעם אחת */
+globalThis.fetch = async (u, o) => { u = String(u); if (u.includes("/messages") && o && o.body) { const b = JSON.parse(o.body); if (b.to) sent.push({ to: b.to }); } return { ok: true, json: async () => ({}) }; };
+const twice = { metadata: { phone_number_id: "111" }, contacts: [{ profile: { name: "x" } }], messages: [{ from: "972500000099", id: "SAME1", type: "text", text: { body: "היי" } }] };
+sent.length = 0; await hook(base, "messages", twice); const once = sent.length;
+sent.length = 0; await hook(base, "messages", twice);
+check("הודעה כפולה – עונים רק פעם אחת", once > 0 && sent.length === 0);
+
 console.log(fail ? `\n✗ ${fail} בעיות` : "\nאין בעיות ✓"); process.exit(fail ? 1 : 0);
