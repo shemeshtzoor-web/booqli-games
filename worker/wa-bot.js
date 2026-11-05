@@ -1119,10 +1119,13 @@ async function esSignup(req, env){
   /* מטא לפעמים דורשת redirect_uri זהה לזה שה-SDK השתמש בו בחלון – מנסים בלי, ואז את הכתובות האפשריות (שגיאת redirect לא "שורפת" את הקוד) */
   const ex = r => fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}` + (r === null ? "" : `&redirect_uri=${encodeURIComponent(r)}`)).then(x => x.json()).catch(() => ({}));
   let t = {};
-  for (const r of [null, String(b.page || "").split("#")[0] || null, ES_ORIGIN + "/whatsapp-connect", ES_ORIGIN + "/whatsapp-connect/", ES_ORIGIN + "/", ES_ORIGIN, "https://www.facebook.com/connect/login_success.html", ""].filter((r, i, a) => a.indexOf(r) === i)) {
+  /* קוד מ-FB.login (SDK) – כמו ה-SDK הרשמי של מטא: redirect_uri ריק. אחר כך כתובות דף החיבור */
+  for (const r of ["", null, ES_ORIGIN + "/whatsapp-connect", ES_ORIGIN + "/whatsapp-connect/", ES_ORIGIN + "/"]) {
     t = await ex(r);
     if (t.access_token) { console.log("es exchange ok, redirect:", r === null ? "none" : r || "empty"); break; }
-    if (!/redirect_uri/i.test((t.error && t.error.message) || "")) break;
+    const em = (t.error && t.error.message) || "";
+    console.log("es exchange try", r === null ? "none" : r || "empty", "→", (t.error && t.error.code) || "", em.slice(0, 80));
+    if (!/redirect_uri|domain of this URL|#191|#100/i.test(em + " #" + ((t.error && t.error.code) || ""))) break;
   }
   if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
   const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
