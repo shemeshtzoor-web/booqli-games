@@ -71,9 +71,11 @@ function draw(scroll){
 function stepHTML(){
   const b = book(G.topic);
   if (STEP === "pics") return `<div class="gs"><h3><span class="gn">1</span>מעלים תמונות של הילדים</h3>
+    <p class="gone">☝️ <b>תמונה אחת לכל ילד/ה בלבד</b></p>
+    <button type="button" class="gtipsb" data-tips="1"><span class="garr" aria-hidden="true">👈</span> 📸 איזה תמונות לשלוח? <u>סרטון קצר והסבר</u></button>
     <p class="gwarn">⚠️ <b>שימו לב לא להתבלבל:</b> תמונות של בנים – לחלון הבנים, ושל בנות – לחלון הבנות. טעיתם? לוחצים ⇄ ומעבירים.</p>
     <div class="gws">${win("בנים")}${win("בנות")}</div>
-    <p class="gtip">✏️ ליד כל תמונה כותבים את <b>השם הפרטי</b> של הילד/ה – רק השם, כמו שיודפס בספר. · 📸 תמונה טובה: מבט ישר, פנים גלויות, ילד/ה אחד/ת, רקע בהיר. <a href="#photos">עוד טיפים ↓</a></p>
+    <p class="gtip">✏️ ליד כל תמונה כותבים את <b>השם הפרטי</b> של הילד/ה – רק השם, כמו שיודפס בספר. · <button type="button" class="glink" data-tips="1">📸 איזה תמונות לשלוח?</button></p>
     <p class="gerr" id="gErr"></p>
     <button type="button" class="btn btn-main gnext" data-next="pics">הבא: בוחרים נושא ←</button></div>`;
   if (STEP === "topic") return `<div class="gs"><h3><span class="gn">2</span>בוחרים נושא אחד לכל הגן</h3>
@@ -97,12 +99,29 @@ function stepHTML(){
     ${G.cover && price(G.cover, n) ? `<p class="gtot">💰 ${n} ספרים × ${ils(price(G.cover, n))} = <b>${ils(n * price(G.cover, n))}</b> <small>+ משלוח 40 ₪ (או איסוף עצמי)</small></p>` : ""}
     <label class="gchk"><input type="checkbox" id="mkWa" ${G.mkWa ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI בוואטסאפ (לא חובה)</span></label>
     <label class="gchk"><input type="checkbox" id="mkMail" ${G.mkMail ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI במייל (לא חובה)</span></label>
-    <label class="gchk"><input type="checkbox" id="gOk"> <span>קראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
+    ${KNOW}
+    <label class="gchk"><input type="checkbox" id="gOk"> <span>קראתי את "חשוב לדעת", את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
     <p class="gerr" id="gErr"></p>
     <button type="button" class="btn btn-wa gsend" id="gSend">✅ שולחים את ההזמנה</button>
     <p class="gh" style="text-align:center">משלמים רק אחרי שרואים את הסקיצות ואוהבים 💛</p></div>`; }
   return "";
 }
+/* חשוב לדעת – לפני ששולחים (שמש, 5.11.2026) */
+const KNOW = `<div class="gknow"><p class="gkh">📌 חשוב לדעת לפני ששולחים</p><ul>
+  <li>🤖 <b>בינה מלאכותית אינה מצלמה</b> – גם כשהדמיון גבוה מאוד, ייתכנו הבדלים קלים במראה ובפרופורציות. כל ספר עובר בדיקה אנושית.</li>
+  <li>📷 <b>אחרי השליחה לא ניתן להחליף תמונה</b> – בודקים עכשיו שכל התמונות נכונות.</li>
+  <li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li></ul></div>`;
+/* חלון "איזה תמונות לשלוח?" – נפתח בלחיצה, ופעם אחת אוטומטית לפני שבוחרים תמונות */
+const TIPS = `<h3>📸 איזה תמונות לשלוח?</h3><p class="gone" style="margin:0 0 10px">☝️ <b>תמונה אחת לכל ילד/ה בלבד</b></p>
+  <video class="gvid" src="video/photo.mp4" poster="video/photo.jpg" controls playsinline preload="metadata"></video>
+  <ul class="gtl"><li>🔵 ילד/ה אחד/ת בלבד בתמונה – בלי אנשים או חיות, גם לא ברקע</li><li>🔴 מבט ישיר למצלמה – לא הצידה ולא מלמעלה</li>
+  <li>🟠 פנים גלויות – בלי כובע, משקפי שמש, סרטים, כתרים או פלסטרים</li><li>🟢 בנים עם כיפה – שהכיפה תופיע בתמונה</li>
+  <li>🟣 בנות – התסרוקת באיור תהיה כמו בתמונה</li><li>⚪ אם מצלמים במיוחד – רקע לבן וחולצה לבנה</li><li>😀 והכי חשוב – חיוך!</li></ul>
+  <p class="gfine">⚠️ שולחים תמונת פנים ברורה – האחריות לתמונה טובה היא שלכם. אחרי השליחה לא ניתן להחליף תמונה.</p>`;
+let tipsSeen = false;
+function tips(then){ tipsSeen = true; ev("gan_fast_tips", then ? "auto" : "click");
+  modal(TIPS + `<button type="button" class="btn btn-main gsend" id="gTipsOk">${then ? "הבנתי, בוחרים תמונות 📷" : "הבנתי 👍"}</button>`);
+  $("gTipsOk").onclick = () => { const v = document.querySelector("#gModal video"); if (v) v.pause(); closeModal(); if (then) then.click(); }; }
 const err = t => { const e = $("gErr"); if (e) e.textContent = t; };
 function readDetails(){ ["gan", "first", "last", "phone", "email", "street", "city"].forEach(k => { const e = $(k); if (e) G.d[k] = e.value.trim(); });
   const c = box.querySelector("input[name=gCov]:checked"); if (c) G.cover = c.value;
@@ -118,7 +137,9 @@ box.addEventListener("input", e => {
   if (e.target.id === "gDed") G.ded = e.target.value;
 });
 box.addEventListener("click", e => {
+  const lab = e.target.closest(".gpick"); if (lab && !tipsSeen) { e.preventDefault(); tips(lab.querySelector("input")); return; }
   const t = e.target.closest("button,[data-go]"); if (!t) return;
+  if (t.dataset.tips) { tips(); return; }
   if (t.dataset.go) { readDetails(); STEP = t.dataset.go; draw(true); return; }
   if (t.dataset.rm !== undefined) { const x = G.pics.splice(+t.dataset.rm, 1)[0]; if (x) URL.revokeObjectURL(x.url); draw(); return; }
   if (t.dataset.mv !== undefined) { const x = G.pics[+t.dataset.mv]; x.sub = x.sub === "בנים" ? "בנות" : "בנים"; draw(); return; }
@@ -154,7 +175,7 @@ async function send(){
   { const dg = d.phone.replace(/\D/g, ""); if (dg.length < 9 || dg.length > 12) { err("📞 בודקים את מספר הטלפון"); $("phone").focus(); return; } }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) { err("✉️ בודקים את כתובת המייל"); $("email").focus(); return; }
   if (!G.cover) return err("📕 בוחרים כריכה");
-  if (!$("gOk").checked) return err("☑️ מסמנים שקראתם את התקנון ומדיניות הפרטיות");
+  if (!$("gOk").checked) return err("☑️ מסמנים שקראתם את \"חשוב לדעת\", התקנון ומדיניות הפרטיות");
   const btn = $("gSend"); if (btn.dataset.busy) return; btn.dataset.busy = "1"; err("");
   modal(`<div class="gbig2">💛</div><h3>ברגעים אלו אנחנו מקבלים את ההזמנה של ${esc(d.gan)}</h3>${NEXT}
     <div class="gprog"><span id="gBar"></span></div><p class="gst" id="gSt">⏳ שולחים…</p><p class="gfine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
@@ -173,7 +194,7 @@ async function send(){
       `📖 הנושא: ${b.name}`, `👧👦 ${n} ילדים (👦 ${boys()} · 👧 ${girls()})`, `📕 ${COVERS.find(c => c[0] === G.cover)[1]}${p ? ` · ${n} × ${p} ₪ = ${n * p} ₪ (+ משלוח 40 ₪ או איסוף עצמי)` : ""}`, "",
       "💌 ההקדשה:", G.ded, "", "📷 השמות:", ...G.pics.map(x => (x.sub === "בנות" ? "👧 " : "👦 ") + x.name.trim()), "",
       `📣 דיוור בוואטסאפ: ${G.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${G.mkMail ? "מאשר/ת ✔️" : "לא"}`,
-      `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
+      `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (AI אינה מצלמה, אין החלפת תמונה אחרי השליחה, שינוי לפי טעם אישי – 20 ₪ לתיקון), את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
       SRC ? "מקור: " + SRC : ""].join("\n");
     const r = await bqUp.done(s.tok, summary); if (!r.ok) throw new Error("done");
     ev("gan_fast_done", String(n));
