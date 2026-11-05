@@ -10,6 +10,8 @@
    או בלחיצה על כפתור שלו. הזמנה מלאה מהאתר ("הזמנה סב-") – לא נוגע.
    סודות (Cloudflare → Worker → Settings → Variables, כ-Secret – שמש מדביקה בעצמה, לא בצ'אט ולא במאגר):
      WA_TOKEN, WA_PHONE_ID, VERIFY_TOKEN, APP_SECRET – מטא;  DRIVE_URL, DRIVE_KEY – הקוד בגוגל (worker/drive-saver.gs);
+     ES_APP_SECRET – הסוד של האפליקציה BOOQLI Connect (חיבור המספר 055 דרך הכפתור ב-booqli.ai/whatsapp-connect);
+     ES_LIVE = "1" – רק כששמש מאשרת: הבוט מתחיל לענות במספר 055. עד אז ההודעות ב-055 עוברות בלי תשובה מהבוט.
    פרטי תשלום לא נמצאים בבוט: הבוט רק שואל איך נוח לשלם, ושמש שולחת את הפרטים בעצמה.
    שאלה חופשית בכל שלב: הבוט עונה רק מתוך התשובות שכאן (QA) + "▶️ ממשיכים" / "🙋 לא עזר – לשמש"; לא יודע – עובר לשמש + מייל אליה.
    דרייב: כל תמונה נשמרת מיד ב"BOOQLI הזמנות / <מספר> · <שם> · <תאריך> / בנים|בנות / <שם הילד>.jpg";
@@ -1091,11 +1093,50 @@ export async function handle(env, from, profile, ev, opts){
 }
 
 async function verify(req, env, body){
-  if (!env.APP_SECRET) return true;
+  if (!env.APP_SECRET && !env.ES_APP_SECRET) return true;
   const sig = (req.headers.get("X-Hub-Signature-256") || "").replace("sha256=", "");
-  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.APP_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const mac = [...new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body)))].map(b => b.toString(16).padStart(2, "0")).join("");
-  return mac === sig;
+  for (const sec of [env.APP_SECRET, env.ES_APP_SECRET]) {         /* שתי האפליקציות: הבוט (מספר הבדיקה) ו-BOOQLI Connect (055) */
+    if (!sec) continue;
+    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(sec), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const mac = [...new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body)))].map(b => b.toString(16).padStart(2, "0")).join("");
+    if (mac === sig) return true;
+  }
+  return false;
+}
+
+/* ===== חיבור המספר האמיתי (055) – כפתור החיבור של מטא בדף booqli.ai/whatsapp-connect (קוד מותאם בוויקס) =====
+   הדף שולח לכאן את הקוד שחוזר מפייסבוק; מחליפים אותו במפתח, שומרים ב-DB (לא במאגר), מחברים את ה-webhooks,
+   ומבקשים ממטא את אנשי הקשר וההיסטוריה (חייבים תוך 24 שעות) – כדי שהבוט לא יענה לחברים ולמשפחה. */
+const ES_APP = "2539020683273159", ES_ORIGIN = "https://www.booqli.ai";
+const digits = s => String(s || "").replace(/\D/g, "");
+async function esSignup(req, env){
+  const cors = { "Access-Control-Allow-Origin": ES_ORIGIN, "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
+  if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+  if (req.method !== "POST" || req.headers.get("Origin") !== ES_ORIGIN) return new Response("no", { status: 403 });
+  const b = await req.json().catch(() => ({})), out = (o, st) => Response.json(o, { status: st || 200, headers: cors });
+  if (!env.ES_APP_SECRET) return out({ ok: false, error: "חסר ES_APP_SECRET בקלאודפלר" });
+  if (!b.code) return out({ ok: false, error: "חסר קוד מפייסבוק" });
+  const t = await (await fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}`)).json();
+  if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
+  const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
+  const rec = { waba: digits(b.waba_id), phone: digits(b.phone_number_id), business: digits(b.business_id), event: String(b.event || "").slice(0, 60), at: Date.now(), token: t.access_token };
+  await db.put("es:conn", JSON.stringify(rec), 3650 * 86400);
+  let subscribed = false, synced = [];
+  if (rec.waba) { const s = await (await fetch(`${GRAPH}/${rec.waba}/subscribed_apps`, { method: "POST", headers: auth })).json().catch(() => ({})); subscribed = !!s.success; }
+  if (rec.phone) for (const sync_type of ["smb_app_state_sync", "history"]) {
+    const r = await (await fetch(`${GRAPH}/${rec.phone}/smb_app_data`, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, auth), body: JSON.stringify({ messaging_product: "whatsapp", sync_type }) })).json().catch(() => ({}));
+    synced.push(sync_type + ":" + (r.request_id ? "ok" : ((r.error && r.error.message) || "?")));
+  }
+  console.log("es connected", rec.waba, rec.phone.slice(-4), subscribed, synced.join(","));
+  return out({ ok: true, waba: rec.waba, phone: rec.phone, subscribed, synced });
+}
+/* אנשי קשר ושיחות שהיו לפני החיבור – "מוכרים": הבוט לא עונה להם (שמש ממשיכה איתם כרגיל). #בוט בשיחה – הבוט כן עונה; #ידני – לא */
+async function markKnown(db, v){
+  const ids = [];
+  for (const h of v.history || []) for (const th of h.threads || []) ids.push(th.id);
+  for (const s of v.state_sync || []) { const c = s.contact || {}; if (s.action !== "remove") ids.push(c.phone_number || c.wa_id); }
+  for (const id of ids) { const d = digits(id); if (d.length >= 8 && !(await db.get("botok:" + d))) await db.put("known:" + d, "1", 3650 * 86400); }
+  return ids.length;
 }
 
 export default {
@@ -1111,15 +1152,24 @@ export default {
       env.SELF_URL = url.origin;
       ctx.waitUntil((async () => {
         const db = store(env);
+        const es = JSON.parse(await db.get("es:conn") || "null");
         for (const e of j.entry || []) for (const ch of e.changes || []) {
           const v = ch.value || {};
-          /* שמש כתבה בעצמה מהאפליקציה – הבוט שותק בשיחה הזאת (או חוזר, אם כתבה #בוט) */
+          /* איזה מספר: 055 (BOOQLI Connect) או מספר הבדיקה. ב-055 הבוט עונה רק אחרי ES_LIVE="1" */
+          const pid = digits(v.metadata && v.metadata.phone_number_id), real = !!(es && es.phone && pid === es.phone);
+          const envC = real ? Object.assign({}, env, { WA_PHONE_ID: es.phone, WA_TOKEN: es.token }) : env, live = !real || env.ES_LIVE === "1";
+          if (ch.field === "history" || ch.field === "smb_app_state_sync") { const n = await markKnown(db, v); console.log("known", ch.field, n); continue; }
+          /* שמש כתבה בעצמה מהאפליקציה – הבוט שותק בשיחה הזאת (או חוזר, אם כתבה #בוט). #ידני – הבוט לא יענה לאיש הקשר הזה בכלל */
           if (ch.field === "smb_message_echoes") for (const m of v.message_echoes || []) {
             const k = "st:" + m.to, raw = await db.get(k); const st = raw ? JSON.parse(raw) : { step: "done", list: [], cur: fresh(), g: {} };
             const t = (m.text && m.text.body) || "";
-            if (OWNER_RESUME.test(t)) { await resume(env, m.to, st, null, db, "owner"); await db.put(k, JSON.stringify(st)); }
+            if (/#ידני/.test(t)) { await db.put("known:" + m.to, "1", 3650 * 86400); await db.del("botok:" + m.to); st.human = Date.now(); st.owner = Date.now(); await db.put(k, JSON.stringify(st)); continue; }
+            if (/#בוט/.test(t)) { await db.del("known:" + m.to); await db.put("botok:" + m.to, "1", 3650 * 86400); }
+            if (OWNER_RESUME.test(t) && live) { await resume(envC, m.to, st, null, db, "owner"); await db.put(k, JSON.stringify(st)); }
+            else if (real && (await db.get("known:" + m.to))) continue;     /* שיחה עם איש קשר מוכר – לא שומרים */
             else { st.human = Date.now(); st.owner = Date.now(); await db.put(k, JSON.stringify(st)); await logQA(env, st, m.to, "a", "", t); }   /* שמש כותבת – הבוט שותק; התשובה נשמרת לחלון */
           }
+          if (!live) { if ((v.messages || []).length) console.log("055 not live yet – skip", (v.messages || []).length); continue; }
           const name = (v.contacts && v.contacts[0] && v.contacts[0].profile && v.contacts[0].profile.name) || "";
           for (const m of v.messages || []) {
             const ev = {};
@@ -1129,7 +1179,8 @@ export default {
             else if (m.type === "image") { ev.image = { media: m.image.id, sha: m.image.sha256 || "" }; ev.caption = m.image.caption || ""; ev.mid = m.id || ""; }
             else continue;
             console.log("in", m.type, ev.id || (ev.image ? "image" : "text"));   /* לבדיקת תקלות – בלי תוכן ההודעה */
-            const envM = Object.assign({}, env, { MID: m.id || "" });     /* מזהה ההודעה – ל"מקליד…" */
+            if (real && (await db.get("known:" + m.from))) continue;   /* חברים, משפחה, לקוחות ותיקים – הבוט לא עונה ולא שומר כלום */
+            const envM = Object.assign({}, envC, { MID: m.id || "" });     /* מזהה ההודעה – ל"מקליד…" */
             await typing(envM);
             await handle(envM, m.from, name, ev);
           }
@@ -1137,6 +1188,7 @@ export default {
       })());
       return new Response("ok");
     }
+    if (url.pathname === "/es") return esSignup(req, env);
     const p = url.pathname.match(/^\/p\/([a-f0-9]{36}\.jpg)$/);
     if (p && req.method === "GET") {
       const { value, metadata } = await env.STATE.getWithMetadata(p[1], { type: "arrayBuffer" });

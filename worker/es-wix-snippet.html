@@ -1,0 +1,41 @@
+<!-- BOOQLI – כפתור "חיבור הוואטסאפ לבוט" (Embedded Signup של מטא, coexistence), 5.11.2026
+     מודבק בוויקס: הגדרות ← קוד מותאם אישית ← Body – end ← רק בדף "whatsapp-connect" (דף נסתר). סוג קוד: Essential.
+     שולח את הקוד מפייסבוק לבוט (booqli-wa/es), שם מחליפים אותו במפתח ושומרים. אין כאן שום סוד. -->
+<div id="bq-es" dir="rtl" style="position:fixed;inset:0;z-index:2147483000;background:#fdf6fa;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;padding:16px">
+  <div style="max-width:520px;width:100%;background:#fff;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.08);padding:28px;text-align:center;color:#2b2b2b">
+    <div style="font-size:44px">🦄</div>
+    <h1 style="font-size:24px;margin:8px 0">חיבור הוואטסאפ של BOOQLI לבוט ההזמנות</h1>
+    <p style="font-size:16px;line-height:1.6;margin:8px 0 20px">הדף הזה משמש רק את צוות BOOQLI.<br>לוחצים, מתחברים לפייסבוק וסורקים את הקוד מאפליקציית וואטסאפ ביזנס.<br>המספר נשאר גם באפליקציה בטלפון.</p>
+    <button id="bq-es-btn" style="background:#1877f2;color:#fff;border:0;border-radius:12px;padding:14px 26px;font-size:18px;cursor:pointer">חיבור לוואטסאפ</button>
+    <p id="bq-es-msg" style="font-size:15px;margin-top:18px;min-height:22px"></p>
+    <p style="font-size:12px;color:#777;margin-top:18px" dir="ltr">BOOQLI · WhatsApp Business connection (Meta Embedded Signup)</p>
+  </div>
+</div>
+<script>
+window.fbAsyncInit = function () { FB.init({ appId: "2539020683273159", autoLogAppEvents: true, xfbml: false, version: "v23.0" }); };
+(function () {
+  var s = document.createElement("script"); s.async = true; s.defer = true; s.crossOrigin = "anonymous";
+  s.src = "https://connect.facebook.net/en_US/sdk.js"; document.head.appendChild(s);
+  var info = {}, msg = function (t) { document.getElementById("bq-es-msg").textContent = t; };
+  window.addEventListener("message", function (e) {
+    try { if (!/(^|\.)facebook\.com$/.test(new URL(e.origin).hostname)) return; var d = JSON.parse(e.data);
+      if (d.type === "WA_EMBEDDED_SIGNUP") { info = d.data || {}; info.event = d.event || ""; if (d.event === "CANCEL") msg("החיבור בוטל – אפשר לנסות שוב."); } } catch (x) {}
+  });
+  function send(code) {
+    msg("רגע, מחברים את המספר לבוט…");
+    setTimeout(function () {
+      fetch("https://booqli-wa.shemeshtzoor.workers.dev/es", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: code, waba_id: info.waba_id, phone_number_id: info.phone_number_id, business_id: info.business_id, event: info.event }) })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { msg(j.ok ? "✅ המספר מחובר! הבוט עוד לא עונה בו – שמש תפעיל אותו כשהכל מוכן." : "❌ משהו לא עבד: " + (j.error || "") + " " + (j.detail || "")); })
+        .catch(function () { msg("❌ אין חיבור לבוט – נסו שוב בעוד רגע."); });
+    }, 1500);
+  }
+  document.getElementById("bq-es-btn").addEventListener("click", function () {
+    if (!window.FB) { msg("עוד רגע… פייסבוק נטען. נסו שוב."); return; }
+    FB.login(function (r) { if (r.authResponse && r.authResponse.code) send(r.authResponse.code); else msg("החיבור לא הושלם."); },
+      { config_id: "1148560434189574", response_type: "code", override_default_response_type: true,
+        extras: { setup: {}, featureType: "whatsapp_business_app_onboarding", sessionInfoVersion: "3" } });
+  });
+})();
+</script>
