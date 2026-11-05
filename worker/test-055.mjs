@@ -34,4 +34,24 @@ sent.length = 0; await hook(live, "messages", msg("555", "972500000003", "עוד
 check("#ידני – הבוט לא עונה יותר", sent.length === 0);
 sent.length = 0; await hook(live, "messages", msg("111", "972500000004", "היי"));
 check("מספר הבדיקה ממשיך לעבוד גם עם 055", sent.length > 0 && sent.every(s => s.phone === "111"));
+/* אבטחה: /es מחבר רק חשבון של העסק של BOOQLI (653487867852808); /orders סגור בלי ORDERS_KEY */
+async function es(owner){
+  const calls = [];
+  globalThis.fetch = async (u, o) => { u = String(u); calls.push(u);
+    if (u.includes("oauth/access_token")) return { ok: true, json: async () => ({ access_token: "NEW" }) };
+    if (u.includes("owner_business_info")) return { ok: true, json: async () => ({ owner_business_info: { id: owner } }) };
+    return { ok: true, json: async () => ({ success: true }) }; };
+  const req = new Request("https://x/es", { method: "POST", headers: { Origin: "https://www.booqli.ai", "Content-Type": "application/json" },
+    body: JSON.stringify({ code: "c", waba_id: "77", phone_number_id: "88", business_id: owner }) });
+  const r = await worker.fetch(req, Object.assign({}, base, { ES_APP_SECRET: "s" }), { waitUntil: () => {} });
+  return { st: r.status, j: await r.json(), calls };
+}
+const before = kv["es:conn"];
+let r = await es("123456");
+check("/es – חשבון של עסק זר נדחה ולא דורס את החיבור", r.st === 403 && kv["es:conn"] === before && !r.calls.some(u => u.includes("subscribed_apps")));
+r = await es("653487867852808");
+check("/es – החשבון של BOOQLI מתחבר", r.j.ok === true && JSON.parse(kv["es:conn"]).phone === "88");
+let o = await worker.fetch(new Request("https://x/orders?k=TEST"), Object.assign({}, base, { VERIFY_TOKEN: "TEST" }), { waitUntil: () => {} });
+check("/orders עם VERIFY_TOKEN – סגור", o.status !== 200 || !(await o.text()).includes("order"));
+
 console.log(fail ? `\n✗ ${fail} בעיות` : "\nאין בעיות ✓"); process.exit(fail ? 1 : 0);

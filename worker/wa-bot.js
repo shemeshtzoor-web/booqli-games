@@ -16,7 +16,7 @@
    שאלה חופשית בכל שלב: הבוט עונה רק מתוך התשובות שכאן (QA) + "▶️ ממשיכים" / "🙋 לא עזר – לשמש"; לא יודע – עובר לשמש + מייל אליה.
    דרייב: כל תמונה נשמרת מיד ב"BOOQLI הזמנות / <מספר> · <שם> · <תאריך> / בנים|בנות / <שם הילד>.jpg";
    בסוף – מסמך "סיכום ההזמנה" + מייל לשמש. הדרייב לא זמין? התמונה נשמרת ב-KV ומנסים שוב בסוף ההזמנה.
-   KV בשם STATE. כתובות: GET/POST /wa (webhook), GET /p/<id>.jpg (גיבוי תמונות), GET /orders?k=VERIFY_TOKEN. */
+   KV בשם STATE. כתובות: GET/POST /wa (webhook), GET /p/<id>.jpg (גיבוי תמונות), GET /orders?k=ORDERS_KEY (סגור אם לא הוגדר). */
 
 const GRAPH = "https://graph.facebook.com/v23.0";
 const SITE = "https://games.booqli.ai";
@@ -1107,7 +1107,7 @@ async function verify(req, env, body){
 /* ===== חיבור המספר האמיתי (055) – כפתור החיבור של מטא בדף booqli.ai/whatsapp-connect (קוד מותאם בוויקס) =====
    הדף שולח לכאן את הקוד שחוזר מפייסבוק; מחליפים אותו במפתח, שומרים ב-DB (לא במאגר), מחברים את ה-webhooks,
    ומבקשים ממטא את אנשי הקשר וההיסטוריה (חייבים תוך 24 שעות) – כדי שהבוט לא יענה לחברים ולמשפחה. */
-const ES_APP = "2539020683273159", ES_ORIGIN = "https://www.booqli.ai";
+const ES_APP = "2539020683273159", ES_ORIGIN = "https://www.booqli.ai", OWNER_BIZ = "653487867852808";   /* רק החשבון העסקי של BOOQLI */
 const digits = s => String(s || "").replace(/\D/g, "");
 async function esSignup(req, env){
   const cors = { "Access-Control-Allow-Origin": ES_ORIGIN, "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
@@ -1119,6 +1119,9 @@ async function esSignup(req, env){
   const t = await (await fetch(`${GRAPH}/oauth/access_token?client_id=${ES_APP}&client_secret=${encodeURIComponent(env.ES_APP_SECRET)}&code=${encodeURIComponent(b.code)}`)).json();
   if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
   const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
+  /* אבטחה: מחברים רק חשבון וואטסאפ של העסק שלנו – אחרת זר היה יכול לחבר מספר שלו ולדרוס את החיבור של 055 */
+  const own = digits(b.waba_id) ? await (await fetch(`${GRAPH}/${digits(b.waba_id)}?fields=owner_business_info`, { headers: auth })).json().catch(() => ({})) : {};
+  if (!own.owner_business_info || String(own.owner_business_info.id) !== OWNER_BIZ) { console.log("es refused – not our business"); return out({ ok: false, error: "החשבון הזה לא שייך לעסק של BOOQLI" }, 403); }
   const rec = { waba: digits(b.waba_id), phone: digits(b.phone_number_id), business: digits(b.business_id), event: String(b.event || "").slice(0, 60), at: Date.now(), token: t.access_token };
   await db.put("es:conn", JSON.stringify(rec), 3650 * 86400);
   let subscribed = false, synced = [];
@@ -1194,7 +1197,7 @@ export default {
       const { value, metadata } = await env.STATE.getWithMetadata(p[1], { type: "arrayBuffer" });
       return value ? new Response(value, { headers: { "Content-Type": (metadata && metadata.type) || "image/jpeg", "Cache-Control": "private, max-age=3600", "X-Robots-Tag": "noindex" } }) : new Response("not found", { status: 404 });
     }
-    if (url.pathname === "/orders" && env.VERIFY_TOKEN && url.searchParams.get("k") === env.VERIFY_TOKEN) {
+    if (url.pathname === "/orders" && env.ORDERS_KEY && env.ORDERS_KEY.length >= 24 && url.searchParams.get("k") === env.ORDERS_KEY) {   /* מפתח נפרד וארוך (לא VERIFY_TOKEN); בלי ORDERS_KEY – סגור */
       const ks = await store(env).list("order:"), out = [];
       const db = store(env); for (const k of ks.slice(-50)) out.push(JSON.parse(await db.get(k)));
       return Response.json(out);
