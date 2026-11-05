@@ -161,7 +161,7 @@ async function send(){
   ev("gan_fast_send", String(kids()));
   try {
     const J = (path, body, tok) => fetch(API + path, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, tok ? { "X-Tok": tok } : {}), body: JSON.stringify(body) }).then(r => r.json());
-    const s = await J("start", { kind: "gan", gan: d.gan, who: d.first + " " + d.last, book: G.topic, consent: true }); if (!s.ok) throw new Error(s.error || "start");
+    let s; try { s = await J("start", { kind: "gan", gan: d.gan, who: d.first + " " + d.last, book: G.topic, consent: true }); } catch (x) { throw new Error("start: " + (x && x.message || x)); } if (!s.ok) throw new Error("start: " + (s.error || "?"));
     let done = 0, bad = 0; const q = G.pics.slice();
     const one = async p => { let ok = false;
       for (let t = 0; t < 2 && !ok; t++) { try { ok = (await fetch(API + "photo?sub=" + encodeURIComponent(p.sub) + "&name=" + encodeURIComponent(p.name.trim()), { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": s.tok }, body: p.blob })).ok; } catch (e) {} }
@@ -185,7 +185,8 @@ async function send(){
     box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} אצלנו</h3><p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ. אפשר לסגור את העמוד.</p></div>`;
   } catch (e) {
     ev("gan_fast_fail", String(e && e.message || e)); delete btn.dataset.busy;
-    modal(`<div class="gbig2">😕</div><h3>משהו לא נשלח</h3><p>בודקים את האינטרנט ולוחצים שוב על "שולחים". אם זה חוזר – כתבו לנו בוואטסאפ ונעזור מיד.</p>
+    const code = String(e && e.message || e).slice(0, 60);
+    modal(`<div class="gbig2">😕</div><h3>משהו לא נשלח</h3><p>בודקים את האינטרנט ולוחצים שוב על "שולחים". אם זה חוזר – כתבו לנו בוואטסאפ ונעזור מיד.</p><p class="gfine" dir="ltr">(${esc(code)})</p>
       <a class="btn btn-wa gsend" href="https://wa.me/${PHONE}?text=${encodeURIComponent("היי BOOQLI, ניסיתי לשלוח הזמנה לגן באתר וזה לא עבר 🙏")}">💬 וואטסאפ</a><button type="button" class="galt" id="gClose">חזרה</button>`);
     $("gClose").onclick = closeModal;
   }
