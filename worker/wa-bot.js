@@ -1107,6 +1107,7 @@ async function verify(req, env, body){
 /* ===== חיבור המספר האמיתי (055) – כפתור החיבור של מטא בדף booqli.ai/whatsapp-connect (קוד מותאם בוויקס) =====
    הדף שולח לכאן את הקוד שחוזר מפייסבוק; מחליפים אותו במפתח, שומרים ב-DB (לא במאגר), מחברים את ה-webhooks,
    ומבקשים ממטא את אנשי הקשר וההיסטוריה (חייבים תוך 24 שעות) – כדי שהבוט לא יענה לחברים ולמשפחה. */
+const REAL_NUM = "555549331";   /* 055-5549331 – המספר האמיתי של BOOQLI */
 const ES_APP = "2539020683273159", ES_ORIGIN = "https://www.booqli.ai", OWNER_BIZ = "653487867852808";   /* רק החשבון העסקי של BOOQLI */
 const digits = s => String(s || "").replace(/\D/g, "");
 async function esSignup(req, env){
@@ -1132,18 +1133,21 @@ async function esSignup(req, env){
   if (!t.access_token) return out({ ok: false, error: "exchange", detail: (t.error && t.error.message) || "" });
   const db = store(env), auth = { Authorization: "Bearer " + t.access_token };
   /* אם מטא לא שלחה לדף איזה חשבון ומספר נבחרו – מבררים מהמפתח עצמו */
-  if (!digits(b.waba_id)) {
+  /* מוצאים את 055 בין כל החשבונות שהמפתח פותח (גם חשבון הניסיון יכול להופיע שם – הוא לא 055) */
+  let wabas = digits(b.waba_id) ? [digits(b.waba_id)] : [];
+  if (!wabas.length) {
     const d = await (await fetch(`${GRAPH}/debug_token?input_token=${encodeURIComponent(t.access_token)}&access_token=${ES_APP}|${encodeURIComponent(env.ES_APP_SECRET)}`)).json().catch(() => ({}));
     const sc = ((d.data && d.data.granular_scopes) || []).find(g => g.scope === "whatsapp_business_management");
-    b.waba_id = sc && sc.target_ids && sc.target_ids[0];
-    console.log("es waba from token:", b.waba_id || "none");
+    wabas = ((sc && sc.target_ids) || []).map(digits);
   }
-  if (digits(b.waba_id) && !digits(b.phone_number_id)) {
-    const ph = await (await fetch(`${GRAPH}/${digits(b.waba_id)}/phone_numbers?fields=id,display_phone_number`, { headers: auth })).json().catch(() => ({}));
-    const arr = ph.data || [], m = arr.find(x => digits(x.display_phone_number).endsWith("555549331")) || (arr.length === 1 ? arr[0] : null);
-    b.phone_number_id = m && m.id;
-    console.log("es phone from waba:", b.phone_number_id ? "found" : "none", arr.length);
+  b.waba_id = ""; b.phone_number_id = "";
+  for (const w of wabas) {
+    const ph = await (await fetch(`${GRAPH}/${w}/phone_numbers?fields=id,display_phone_number`, { headers: auth })).json().catch(() => ({}));
+    const m = (ph.data || []).find(x => digits(x.display_phone_number).endsWith(REAL_NUM));
+    if (m) { b.waba_id = w; b.phone_number_id = m.id; break; }
   }
+  console.log("es wabas:", wabas.join(",") || "none", "→ 055:", b.phone_number_id ? b.waba_id : "not found");
+  if (!b.phone_number_id || b.phone_number_id === env.WA_PHONE_ID) return out({ ok: false, error: "בחלון של מטא לא נבחר המספר 055. לוחצים שוב על הכפתור, בוחרים Edit settings ומחברים את אפליקציית וואטסאפ ביזנס של 055." });
   /* אבטחה: מחברים רק חשבון וואטסאפ של העסק שלנו – אחרת זר היה יכול לחבר מספר שלו ולדרוס את החיבור של 055 */
   const own = digits(b.waba_id) ? await (await fetch(`${GRAPH}/${digits(b.waba_id)}?fields=owner_business_info`, { headers: auth })).json().catch(() => ({})) : {};
   if (!own.owner_business_info || String(own.owner_business_info.id) !== OWNER_BIZ) { console.log("es refused – not our business"); return out({ ok: false, error: "החשבון הזה לא שייך לעסק של BOOQLI" }, 403); }
@@ -1184,7 +1188,7 @@ export default {
         for (const e of j.entry || []) for (const ch of e.changes || []) {
           const v = ch.value || {};
           /* איזה מספר: 055 (BOOQLI Connect) או מספר הבדיקה. ב-055 הבוט עונה רק אחרי ES_LIVE="1" */
-          const pid = digits(v.metadata && v.metadata.phone_number_id), real = !!(es && es.phone && pid === es.phone);
+          const pid = digits(v.metadata && v.metadata.phone_number_id), real = !!(es && es.phone && pid === es.phone && es.phone !== digits(env.WA_PHONE_ID));   /* מספר הבדיקה אף פעם לא "אמיתי" */
           const envC = real ? Object.assign({}, env, { WA_PHONE_ID: es.phone, WA_TOKEN: es.token }) : env, live = !real || env.ES_LIVE === "1";
           if (ch.field === "history" || ch.field === "smb_app_state_sync") { const n = await markKnown(db, v); console.log("known", ch.field, n); continue; }
           /* שמש כתבה בעצמה מהאפליקציה – הבוט שותק בשיחה הזאת (או חוזר, אם כתבה #בוט). #ידני – הבוט לא יענה לאיש הקשר הזה בכלל */

@@ -40,6 +40,7 @@ async function es(owner){
   globalThis.fetch = async (u, o) => { u = String(u); calls.push(u);
     if (u.includes("oauth/access_token")) return { ok: true, json: async () => ({ access_token: "NEW" }) };
     if (u.includes("owner_business_info")) return { ok: true, json: async () => ({ owner_business_info: { id: owner } }) };
+    if (u.includes("/phone_numbers")) return { ok: true, json: async () => ({ data: [{ id: "88", display_phone_number: "+972 55-554-9331" }] }) };
     return { ok: true, json: async () => ({ success: true }) }; };
   const req = new Request("https://x/es", { method: "POST", headers: { Origin: "https://www.booqli.ai", "Content-Type": "application/json" },
     body: JSON.stringify({ code: "c", waba_id: "77", phone_number_id: "88", business_id: owner }) });
