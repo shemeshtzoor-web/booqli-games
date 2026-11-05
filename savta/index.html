@@ -182,6 +182,7 @@ section.sv{margin-top:34px}
 .wz .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
 .wz .two .btn{justify-content:center;font-size:21px;padding:18px 10px}
 .wamust{background:#E9F9EF;border:3px solid #25D366;border-radius:20px;padding:12px 14px;margin:12px 0;text-align:center}.wamust .t{font-weight:800;font-size:20px;color:#1E7F45;margin:0 0 4px}.wamust p{margin:4px 0}.wamust .btn{white-space:normal;max-width:100%;box-sizing:border-box;width:100%;justify-content:center;text-align:center}.wamust .ph{font-size:16px}.wamust .ph a{color:var(--mag);font-weight:800;text-decoration:none}
+.notbuy{background:#FFF1F6;border:2px solid #F6C6DA;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:15px;line-height:1.5;text-align:right}
 .wz .drafted{background:#EAF6F1;border:2px dashed var(--mint);border-radius:16px;padding:8px 12px;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.wz .drafted button{margin-inline-start:auto;border:0;background:none;color:var(--mag);font:800 15px Assistant,sans-serif;text-decoration:underline;cursor:pointer}
 .know{background:#FFF8E6;border:2px solid #FBE3A6;border-radius:16px;padding:10px 14px;margin-top:12px}.know p{font-weight:800;margin:0 0 4px}.know ul{list-style:none;padding:0;margin:0;font-size:15.5px;line-height:1.5}.know li{margin:4px 0}
 .osum{background:#fff;border:3px solid var(--mint);border-radius:22px;padding:16px;margin-top:12px;text-align:right}.osum h3{color:var(--mag);margin:0 0 4px;font-size:22px}.osum .sd{color:var(--mute);font-size:15px;margin:0 0 8px}
@@ -470,7 +471,7 @@ function stepHTML(){
     <div class="dform">${[["first","שם פרטי","text","given-name"],["last","שם משפחה","text","family-name"],["phone","טלפון","tel","tel"],["email","מייל","email","email"],["street","רחוב ומספר","text","street-address"],["city","עיר","text","address-level2"]].map(([k, l, t, a]) => `<label class="df"><span>${l}</span><input id="d_${k}" type="${t}" value="${esc(ORD.d[k] || "")}" autocomplete="${a}" ${t === "tel" ? 'inputmode="tel"' : ""}></label>`).join("")}</div>
     <label class="chk"><input type="checkbox" id="mkWa" ${ORD.mkWa ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI בוואטסאפ (לא חובה)</span></label>
     <label class="chk"><input type="checkbox" id="mkMail" ${ORD.mkMail ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI במייל (לא חובה)</span></label>
-    <div class="know"><p>📌 חשוב לדעת לפני ששולחים</p><ul><li>🤖 <b>בינה מלאכותית אינה מצלמה</b> – ייתכנו הבדלים קלים במראה ובפרופורציות. כל ספר עובר בדיקה אנושית.</li><li>📷 <b>אחרי השליחה לא ניתן להחליף תמונה</b> – בודקים עכשיו שהכל נכון.</li><li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li></ul></div>
+    <div class="know"><p>📌 חשוב לדעת לפני ששולחים</p><ul><li>🤖 <b>בינה מלאכותית אינה מצלמה</b> – ייתכנו הבדלים קלים במראה ובפרופורציות. כל ספר עובר בדיקה אנושית.</li><li>📷 <b>אחרי השליחה לא ניתן להחליף תמונה</b> – בודקים עכשיו שהכל נכון.</li><li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li><li>📝 <b>זו בקשה להזמנה – עדיין לא קנייה.</b> קודם מקבלים סקיצה. ההזמנה בתוקף רק אחרי שאישרתם אותה ושילמתם; עד אז אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</li></ul></div>
     <label class="chk"><input type="checkbox" id="wOk"> <span>קראתי את "חשוב לדעת", את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
     <button type="button" class="btn btn-wa go" id="wSend">✅ שולחים לנו את ההזמנה</button>
     <button type="button" class="alt" data-more="yes">➕ בעצם, עוד ספר</button>
@@ -528,7 +529,7 @@ async function sendDrive(){
   const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "בת" : "בן"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"} – בתיקייה "ספר ${i + 1} · ${book(it.book).name} · ${it.name}"`);
   const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
   const D = ORD.d;
-  const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (AI אינה מצלמה, אין החלפת תמונה אחרי השליחה, שינוי לפי טעם אישי – 20 ₪ לתיקון), את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
+  const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (בקשה ולא קנייה – בתוקף רק אחרי אישור סקיצה ותשלום, אספקה 7–14 ימי עסקים מהתשלום, רשאים לא לבצע הזמנה לא תקינה; AI אינה מצלמה; אין החלפת תמונה אחרי השליחה; שינוי לפי טעם אישי – 20 ₪), את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
   const cust = {email: D.email, first: D.first, items: ORD.list.map((it, i) => ({book: book(it.book).name, name: it.name, ded: it.ded, folder: `ספר ${i + 1} · ${book(it.book).name} · ${it.name}`})), total: `${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)`};
   const d = await bqUp.done(s.tok, summary, cust); if (!d.ok) throw new Error("done");
   return {oid: s.oid, mailed: !!d.mailed};
@@ -537,10 +538,11 @@ async function sendDrive(){
 function sumText(oid){ const D = ORD.d, n = ORD.list.length;
   return `סיכום ההזמנה ${oid} · BOOQLI 💛\n${D.first} ${D.last} · ${D.phone}\n${D.street}, ${D.city}\n\n` + ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name}\n👤 ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})\n✍️ ${it.ded}`).join("\n\n") + `\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}`; }
 function sumHTML(oid, mailed){ const D = ORD.d, n = ORD.list.length;
-  return `<div class="osum" id="oSum"><h3>📄 סיכום ההזמנה ${esc(oid)}</h3><p class="sd">${new Date().toLocaleDateString("he-IL")} · ${esc(D.first)} ${esc(D.last)} · ${esc(D.phone)} · <span dir="ltr">${esc(D.email)}</span><br>🏠 ${esc(D.street)}, ${esc(D.city)}</p>
+  return `<div class="osum" id="oSum"><h3>📄 סיכום בקשת ההזמנה ${esc(oid)}</h3><p class="sd">${new Date().toLocaleDateString("he-IL")} · ${esc(D.first)} ${esc(D.last)} · ${esc(D.phone)} · <span dir="ltr">${esc(D.email)}</span><br>🏠 ${esc(D.street)}, ${esc(D.city)}</p>
     ${ORD.list.map((it, i) => `<div class="oi">${it.pics[0] ? `<img src="${it.pics[0].url}" alt="">` : ""}<div><b>📖 ספר ${i + 1}: ${esc(book(it.book).name)}</b>\n👤 ${esc(it.name)} (${isGirl(it) ? "ילדה" : "ילד"}) · ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}\n✍️ ${esc(it.ded)}</div></div>`).join("")}
     <p style="font-weight:800;margin-top:6px">💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}</p>
     <p class="h" style="font-size:14px">📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>
+    <div class="notbuy"><b>📝 חשוב: זה סיכום של בקשת הזמנה – לא אישור קנייה.</b><br>ההזמנה נכנסת לתוקף רק אחרי שתאשרו את הסקיצה ותשלמו. עד התשלום אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</div>
     ${mailed ? `<p class="h">📧 הסיכום נשלח גם למייל שלכם.</p>` : ""}
     <div class="btns noprint"><button type="button" class="btn btn-main" id="oPdf">📄 שמירה כ-PDF</button><a class="btn btn-wa" id="oWa" target="_blank" rel="noopener" href="#">💬 לשמור את הסיכום בוואטסאפ</a></div></div>`; }
 function wireSum(oid){ $("oPdf").onclick = () => { ev("savta-sum", "pdf"); bqPrint($("oSum")); };
@@ -582,13 +584,13 @@ async function send(){
     <div class="wprog"><span id="mBar"></span></div><p class="st" id="mSt">⏳ שולחים…</p><p class="fine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
   try { const res = await sendDrive(), oid = res.oid; ORDER = oid; ev("savta-send", ORD.list.length + "-drive"); if (window.bqDraft) bqDraft.clear("savta"); DONE = true;
     const t = waMsg(oid), wa = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(t);
-    $("wz").innerHTML = `<div class="step"><h3>${SB}✅ ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+    $("wz").innerHTML = `<div class="step"><h3>${SB}✅ בקשת ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
       ${waMust(wa, "wDoneWa")}</div>${sumHTML(oid, res.mailed)}`;
     wireSum(oid); $("wDoneWa").onclick = () => { ev("savta-done-wa", "page"); WA_SENT = true; };
-    modal(`${SB}<h3>✅ ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
+    modal(`${SB}<h3>✅ בקשת ההזמנה נשמרה!</h3><p class="h" style="font-size:20px">מספר ההזמנה: <b>${esc(oid)}</b></p>
       ${waMust(wa, "mWa")}
       <div class="afterwa" id="mAfter" hidden>${res.mailed ? `<p class="h">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(ORD.d.email)}</b></p>` : ""}
-      <ol class="wnext"><li>🎨 מכינים לכם סקיצה${ORD.list.length ? " של הספר עבור " + esc(names()) : ""} ושולחים לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 אהבתם? ממשיכים לתשלום</li><li>🤝 לא אהבתם? נפרדים כידידים</li></ol>
+      <ol class="wnext"><li>🎨 מכינים לכם סקיצה${ORD.list.length ? " של הספר עבור " + esc(names()) : ""} ושולחים לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 אהבתם? משלמים – ורק אז ההזמנה בתוקף. הספרים מגיעים תוך 7–14 ימי עסקים מהתשלום</li><li>🤝 לא אהבתם? נפרדים כידידים</li></ol>
       <button type="button" class="btn btn-main go" id="mSum">📄 לסיכום ההזמנה</button>
       <button type="button" class="alt" id="mClose">סגירה</button></div>`);
     $("mSum").onclick = () => { closeModal(); $("oSum").scrollIntoView({behavior: "smooth", block: "start"}); };

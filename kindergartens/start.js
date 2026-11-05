@@ -118,7 +118,8 @@ function stepHTML(){
 const KNOW = `<div class="gknow"><p class="gkh">📌 חשוב לדעת לפני ששולחים</p><ul>
   <li>🤖 <b>בינה מלאכותית אינה מצלמה</b> – גם כשהדמיון גבוה מאוד, ייתכנו הבדלים קלים במראה ובפרופורציות. כל ספר עובר בדיקה אנושית.</li>
   <li>📷 <b>אחרי השליחה לא ניתן להחליף תמונה</b> – בודקים עכשיו שכל התמונות נכונות.</li>
-  <li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li></ul></div>`;
+  <li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li>
+  <li>📝 <b>זו בקשה להזמנה – עדיין לא קנייה.</b> קודם מקבלים סקיצה. ההזמנה בתוקף רק אחרי שאישרתם אותה ושילמתם; עד אז אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</li></ul></div>`;
 /* חלון "איזה תמונות לשלוח?" – נפתח בלחיצה, ופעם אחת אוטומטית לפני שבוחרים תמונות */
 const TIPS = `<h3>📸 איזה תמונות לשלוח?</h3><p class="gone" style="margin:0 0 10px">☝️ <b>תמונה אחת לכל ילד/ה בלבד</b></p>
   <video class="gvid" src="video/photo.mp4" poster="video/photo.jpg" controls playsinline preload="metadata"></video>
@@ -179,7 +180,7 @@ box.addEventListener("drop", e => { const w = e.target.closest("[data-drop]"); i
 function modal(html){ let m = $("gModal"); if (!m) { m = document.createElement("div"); m.id = "gModal"; m.className = "gmodal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); document.body.appendChild(m); }
   m.innerHTML = `<div class="gcard">${html}</div>`; m.hidden = false; document.body.style.overflow = "hidden"; }
 function closeModal(){ const m = $("gModal"); if (m) m.hidden = true; document.body.style.overflow = ""; }
-const NEXT = `<ol class="gnextl"><li>🎨 <b>מכינים את הסקיצות</b> – בין כמה דקות ליום עסקים אחד – ושולחים לכם בוואטסאפ קישור לתיקייה לצפייה</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>`;
+const NEXT = `<ol class="gnextl"><li>🎨 <b>מכינים את הסקיצות</b> – בין כמה דקות ליום עסקים אחד – ושולחים לכם בוואטסאפ קישור לתיקייה לצפייה</li><li>😍 <b>אהבתם?</b> משלמים – ורק אז ההזמנה בתוקף. הספרים מגיעים תוך 7–14 ימי עסקים מהתשלום</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>`;
 /* הודעת הוואטסאפ הראשונה – חובה (שמש, 5.11.2026): כל הפרטים בהודעה, כדי שתיפתח שיחה בלי לחפש כלום */
 function waMsg(oid){ const d = G.d, b = book(G.topic), n = kids(), p = price(G.cover, n);
   const nm = sub => G.pics.filter(x => x.sub === sub).map(x => x.name.trim()).join(", ") || "—";
@@ -191,10 +192,11 @@ const waMust = (href, id) => `<div class="gwam"><p class="t">📲 שלב אחר�
 /* סיכום ההזמנה על המסך: כל התמונות עם השמות, הנושא, ההקדשה והפרטים. שמירה כ-PDF + שמירה בוואטסאפ */
 function sumHTML(oid, mailed){ const d = G.d, b = book(G.topic), n = kids(), p = price(G.cover, n);
   const grid = sub => { const L = G.pics.filter(x => x.sub === sub); return L.length ? `<p class="gsl">${sub === "בנים" ? "👦 בנים" : "👧 בנות"} (${L.length})</p><div class="gsg">${L.map(x => `<figure><img src="${x.url}" alt=""><figcaption>${esc(x.name.trim())}</figcaption></figure>`).join("")}</div>` : ""; };
-  return `<div class="gsum" id="gSum"><h3>📄 סיכום ההזמנה ${esc(oid)}</h3><p class="gsd">${new Date().toLocaleDateString("he-IL")} · 🏫 ${esc(d.gan)} · ${esc(d.first)} ${esc(d.last)} · ${esc(d.phone)} · <span dir="ltr">${esc(d.email)}</span><br>🏠 ${esc(d.street)}, ${esc(d.city)}</p>
+  return `<div class="gsum" id="gSum"><h3>📄 סיכום בקשת ההזמנה ${esc(oid)}</h3><p class="gsd">${new Date().toLocaleDateString("he-IL")} · 🏫 ${esc(d.gan)} · ${esc(d.first)} ${esc(d.last)} · ${esc(d.phone)} · <span dir="ltr">${esc(d.email)}</span><br>🏠 ${esc(d.street)}, ${esc(d.city)}</p>
     <p><b>📖 הנושא:</b> ${esc(b.name)} · <b>📕</b> ${esc(COVERS.find(c => c[0] === G.cover)[1])}${p ? ` · ${n} × ${ils(p)} = <b>${ils(n * p)}</b> + משלוח` : ""}</p>
     <p><b>✍️ ההקדשה:</b></p><p class="gded">${esc(G.ded)}</p>${grid("בנים")}${grid("בנות")}
     <p class="gfine">📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>
+    <div class="notbuy"><b>📝 חשוב: זה סיכום של בקשת הזמנה – לא אישור קנייה.</b><br>ההזמנה נכנסת לתוקף רק אחרי שתאשרו את הסקיצה ותשלמו. עד התשלום אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</div>
     ${mailed ? `<p class="gh">📧 הסיכום נשלח גם למייל שלכם.</p>` : ""}
     <div class="gsb noprint"><button type="button" class="btn btn-main" id="gPdf">📄 שמירה כ-PDF</button><a class="btn btn-wa" id="gSWa" target="_blank" rel="noopener" href="#">💬 לשמור את הסיכום בוואטסאפ</a></div></div>`; }
 function wireSum(oid){ const d = G.d, b = book(G.topic);
@@ -227,17 +229,17 @@ async function send(){
       `📖 הנושא: ${b.name}`, `👧👦 ${n} ילדים (👦 ${boys()} · 👧 ${girls()})`, `📕 ${COVERS.find(c => c[0] === G.cover)[1]}${p ? ` · ${n} × ${p} ₪ = ${n * p} ₪ (+ משלוח 40 ₪ או איסוף עצמי)` : ""}`, "",
       "💌 ההקדשה:", G.ded, "", "📷 השמות:", ...G.pics.map(x => (x.sub === "בנות" ? "👧 " : "👦 ") + x.name.trim()), "",
       `📣 דיוור בוואטסאפ: ${G.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${G.mkMail ? "מאשר/ת ✔️" : "לא"}`,
-      `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (AI אינה מצלמה, אין החלפת תמונה אחרי השליחה, שינוי לפי טעם אישי – 20 ₪ לתיקון), את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
+      `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (בקשה ולא קנייה – בתוקף רק אחרי אישור סקיצה ותשלום, אספקה 7–14 ימי עסקים מהתשלום, רשאים לא לבצע הזמנה לא תקינה; AI אינה מצלמה; אין החלפת תמונה אחרי השליחה; שינוי לפי טעם אישי – 20 ₪), את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
       SRC ? "מקור: " + SRC : ""].join("\n");
     const cust = {email: d.email, first: d.first, gan: d.gan, ded: G.ded, items: G.pics.map(x => ({book: b.name, name: x.name.trim()}))};
     const r = await bqUp.done(s.tok, summary, cust); if (!r.ok) throw new Error("done");
     ev("gan_fast_done", String(n)); DONE = true; if (window.bqDraft) bqDraft.clear("gan");
     const t = waMsg(s.oid), wa = `https://wa.me/${PHONE}?text=${encodeURIComponent(t)}`;
-    modal(`<div class="gbig2">✅</div><h3>ההזמנה של ${esc(d.gan)} נשמרה!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${waMust(wa, "gWa")}
+    modal(`<div class="gbig2">✅</div><h3>בקשת ההזמנה של ${esc(d.gan)} נשמרה!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${waMust(wa, "gWa")}
       <div id="gAfter" hidden>${r.mailed ? `<p class="gh">📧 שלחנו את סיכום ההזמנה גם למייל <b dir="ltr">${esc(d.email)}</b></p>` : ""}${NEXT}
       <button type="button" class="btn btn-main gsend" id="gSumGo">📄 לסיכום ההזמנה</button><button type="button" class="galt" id="gClose">סגירה</button></div>`);
     $("gWa").onclick = () => { ev("gan_fast_wa", "modal"); setTimeout(() => { const a = $("gAfter"); if (a) a.hidden = false; }, 600); }; $("gClose").onclick = closeModal;
-    box.innerHTML = `<div class="gs"><h3>✅ ההזמנה ${esc(s.oid)} נשמרה</h3>${waMust(wa, "gWa2")}<p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ.</p></div>${sumHTML(s.oid, r.mailed)}`;
+    box.innerHTML = `<div class="gs"><h3>✅ בקשת ההזמנה ${esc(s.oid)} נשמרה</h3>${waMust(wa, "gWa2")}<p class="gh">שמש תעבור על התמונות, תכין את הסקיצות ותחזור אליכם בוואטסאפ.</p></div>${sumHTML(s.oid, r.mailed)}`;
     $("gWa2").onclick = () => ev("gan_fast_wa", "page");
     wireSum(s.oid); $("gSumGo").onclick = () => { closeModal(); $("gSum").scrollIntoView({ behavior: "smooth", block: "start" }); };
   } catch (e) {

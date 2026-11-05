@@ -165,14 +165,15 @@ function custMail_(D, c, P) {
       : "<div style='border:1px solid #f0dbe6;border-radius:14px;padding:10px 12px;margin:10px 0;overflow:hidden'>" + img + "<b>📖 ספר " + (i + 1) + ": " + h(it.book, 40) + "</b><br>👤 " + h(it.name, 30) + "<br><span style='color:#5d4c58'>✍️ " + h(it.ded, 600) + "</span></div>");
   });
   var body = "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#2b2b2b;max-width:560px'>"
-    + "<h2 style='color:#C13671;margin:0 0 6px'>💛 קיבלנו את ההזמנה שלכם!</h2>"
-    + "<p style='margin:0 0 10px'>שלום " + h(c.first, 30) + ", זה סיכום ההזמנה <b>" + h(D.oid, 20) + "</b> מ-BOOQLI. שמרו את המייל הזה.</p>"
+    + "<h2 style='color:#C13671;margin:0 0 6px'>💛 קיבלנו את בקשת ההזמנה שלכם!</h2>"
+    + "<p style='margin:0 0 10px'>שלום " + h(c.first, 30) + ", זה סיכום בקשת ההזמנה <b>" + h(D.oid, 20) + "</b> מ-BOOQLI. שמרו את המייל הזה.</p>"
     + (gan ? "<p>🏫 <b>" + h(c.gan, 50) + "</b> · 📖 " + h(items[0] && items[0].book, 40) + "</p><p>✍️ ההקדשה:<br>" + h(c.ded, 700) + "</p><p>👧👦 " + items.length + " ילדים:</p><ul>" + rows.join("") + "</ul>" : rows.join(""))
     + (c.total ? "<p>💰 " + h(c.total, 120) + "</p>" : "")
-    + "<p style='background:#EAF6F1;border-radius:12px;padding:10px 12px'><b>מה הלאה?</b><br>🎨 מכינים סקיצות – בין כמה דקות ליום עסקים אחד, ושולחים לכם לאישור.<br>😍 אהבתם? ממשיכים לתשלום ולהדפסה.<br>🤝 לא אהבתם? נפרדים כידידים – בלי לשלם.</p>"
+    + "<p style='background:#EAF6F1;border-radius:12px;padding:10px 12px'><b>מה הלאה?</b><br>🎨 מכינים סקיצות – בין כמה דקות ליום עסקים אחד, ושולחים לכם לאישור.<br>😍 אהבתם? משלמים – ורק אז ההזמנה בתוקף. הספרים מגיעים תוך 7–14 ימי עסקים מרגע התשלום.<br>🤝 לא אהבתם? נפרדים כידידים – בלי לשלם.</p>"
+    + "<p style='background:#FFF1F6;border-radius:12px;padding:10px 12px'><b>📝 זה סיכום של בקשת הזמנה – לא אישור קנייה.</b><br>ההזמנה נכנסת לתוקף רק אחרי שתאשרו את הסקיצה ותשלמו. עד התשלום אין התחייבות לספרים מודפסים. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</p>"
     + "<p style='font-size:13px;color:#5d4c58'>📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים במראה ובפרופורציות. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים מיד בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>"
     + "<p>שאלה? כתבו לנו בוואטסאפ: <a href='https://wa.me/972555549331'>055-5549331</a></p><p style='color:#C13671'><b>BOOQLI</b></p></div>";
-  MailApp.sendEmail({ to: em, name: "BOOQLI", subject: "סיכום ההזמנה " + D.oid + " · BOOQLI 💛", htmlBody: body, inlineImages: imgs });
+  MailApp.sendEmail({ to: em, name: "BOOQLI", subject: "סיכום בקשת ההזמנה " + D.oid + " · BOOQLI 💛", htmlBody: body, inlineImages: imgs });
   return true;
 }
 /* ניקוי: מפתחות של יותר מ-14 יום, קודי גן של יותר מ-90 יום, ספירות יומיות ישנות */
