@@ -74,6 +74,9 @@ header.top{background:linear-gradient(90deg,var(--sage),var(--sage-2));color:#ff
 .uplist .s{font-size:18px;width:24px;text-align:center;flex-shrink:0}
 .up .st{font-weight:800;text-align:center;color:var(--sage-deep);margin-top:8px;min-height:22px}
 .up .cnt{font-weight:800;color:var(--magenta)}
+.upcta{display:flex;margin:16px auto 0;max-width:420px;font-size:20px;padding:14px 20px;text-decoration:none}
+.upsteps{margin:4px 0 12px;padding-inline-start:22px;font-size:16px}.upsteps li{margin:2px 0}
+.upcol .btn{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 #A3216F;width:100%;justify-content:center}
 .up details{margin-top:12px}.up summary{cursor:pointer;font-weight:800;color:var(--sage-deep)}
 .btn{border:0;border-radius:999px;padding:13px 22px;font:800 18px Assistant,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-main{background:var(--pink-btn);color:#fff;box-shadow:0 4px 0 var(--pink-shadow)}
@@ -268,6 +271,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
 <div class="hello">
   <span class="k">📚 ההזמנה של הגן – הכל במקום אחד</span>
   <h1 id="hi">שלום! איזה כיף שבחרתם בבוקלי ❤️</h1>
+  <a class="btn btn-main upcta" id="upCta" href="#upBox" hidden>📤 מעלים כאן את תמונות הילדים ←</a>
 </div>
 
 <div class="howbox">
@@ -435,6 +439,7 @@ ol.how{margin:12px 0 0;padding-inline-start:22px;display:grid;gap:4px}
     <h3><span class="ck">4</span>העלאת התמונות 📤</h3>
     <div class="up" id="upBox">
       <p><b>מעלים את התמונות כאן – הן נשמרות ישר אצלנו</b>, מסודרות לבנים ולבנות. לא צריך תיקייה ולא צריך לשנות שמות לקבצים.</p>
+      <ol class="upsteps"><li>מסמנים את האישור ☑️</li><li>לוחצים <b>"➕ בוחרים תמונות"</b> – בבנים ובבנות</li><li>כותבים את השם ליד כל תמונה ✏️</li><li>לוחצים <b>"⬆️ מעלים"</b> – ובסוף <b>"✅ סיימנו"</b></li></ol>
       <label class="chk"><input type="checkbox" id="upConsent"> <span>קיבלנו אישור מההורים לשלוח ל-BOOQLI את התמונות של הילדים כדי ליצור מהן איורים לספר (גם בבינה מלאכותית), וקראנו את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>. התמונות נמחקות כ-3 חודשים אחרי ההזמנה.</span></label>
       <div class="upcols">
         <div class="upcol boy" data-sub="בנים"><h4>👦 בנים</h4><label class="btn btn-soft">➕ בוחרים תמונות<input type="file" accept="image/*" multiple hidden data-pick="בנים"></label><ul class="uplist" id="upL-בנים"></ul></div>
@@ -768,6 +773,7 @@ $("upFinish").addEventListener("click", async () => {
   const w = window.open(wa("היי שמש 📤 כאן " + who() + ".\nהעלינו בעמוד את כל התמונות (" + S.up.n + ") ✅ הזמנה " + S.up.oid), "_blank"); if (!w) location.href = wa("העלינו בעמוד את כל התמונות ✅ הזמנה " + S.up.oid);
 });
 upDraw();
+$("upCta").addEventListener("click", e => { e.preventDefault(); $("upBox").scrollIntoView({ behavior: "smooth", block: "start" }); try { siteEvent("order_up_cta", ""); } catch (x) {} });
 /* הקדשות */
 $("tB").value = S.dedB || ""; $("tG").value = S.dedG || "";
 function dedUi(){
@@ -895,6 +901,7 @@ function stepDone(k){
 }
 function curStep(){ return STEPS.find(s => !stepDone(s[0]) && !(s[0] === "drive" && S.route !== "drive")) || STEPS[3]; }
 function refresh(){
+  { const c = $("upCta"); if (c) c.hidden = !(S.route === "drive" && S.done.photos && !S.done.folder); }
   const b = books(), p = priceFor(S.cover, b), t = total(), sh = shipCost();
   $("sTot").textContent = p ? ils(t) : "—"; $("sPer").textContent = p ? b + " ספרים · " + p + " ₪ לספר" : "סיכות – מ-20 ספרים";
   if (gan()) { $("hi").textContent = "שלום " + gan() + "! איזה כיף שבחרתם בבוקלי ❤️"; document.title = "ההזמנה של " + gan() + " · BOOQLI"; }
