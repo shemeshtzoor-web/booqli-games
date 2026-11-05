@@ -435,7 +435,7 @@ async function ask(env, to, st, log, db){
     case "g-dedmode": return S(buttons(`💌 *הקדשה מהגן*\nאפשר הקדשה אחת לכל הגן, או הקדשה נפרדת לכל ספר (${G.books.map(b => book(b).name).join(" / ")}).\nאת ההתאמה לבנים ולבנות אנחנו עושים 🙂`, [["gdm:one", "💌 אחת לכל הגן"], ["gdm:each", "📚 אחת לכל ספר"]]));
     case "g-ded": {
       const L = ganDed(st), idea = L[(G.dedI || 0) % L.length], per = G.dedFor && G.dedFor !== "all";
-      return S(buttons(`${per ? `הקדשה לספר "${book(G.dedFor).name}" ❤️` : "הקדשה מהגן לכל הילדים ❤️"}\n(בלי שמות – השם של כל ילד כבר בספר. את ההתאמה לבנים ולבנות אנחנו עושים)\n\n${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
+      return S(buttons(`💌 *מגיעה לכם הקדשה מודפסת מטעם הגן – בעמוד השער של כל ספר.*\nהנה הצעה לדוגמה – אפשר לאשר, לבחור אחרת או לכתוב בעצמכם.\n(בלי שמות – השם של כל ילד כבר בספר. את ההתאמה לבנים ולבנות אנחנו עושים)\n\n${per ? `📚 ${book(G.dedFor).name}:\n` : ""}${idea}`, [["gd:ok", "✅ מאשרים"], ["gd:next", "✨ הקדשה אחרת"], ["gd:own", "✍️ אכתוב בעצמי"]]));
     }
     case "g-dedown": return S(text(`כתבו כאן את ההקדשה${G.dedFor && G.dedFor !== "all" ? ` לספר "${book(G.dedFor).name}"` : " של הגן"} ❤️ (עד 350 תווים בערך)\nכותבים פעם אחת – ואת ההתאמה לבנים ולבנות אנחנו עושים.`));
     case "g-who": return S(buttons(`מי שולח את התמונות? 📷\n\n📷 *הגננת או הוועד* – שולחים כאן את כל התמונות.\n👨‍👩‍👧 *כל הורה בעצמו* – נכין לך הודעה עם קישור להעביר לקבוצת ההורים. כל הורה מאשר ושולח תמונה של הילד שלו.\n\nאפשר גם לשלב: חלק מההורים שולחים, ואת השאר משלימים כאן.`,
@@ -540,7 +540,7 @@ async function step(env, from, st, ev, log, db){
     const bi = G.books.indexOf(G.dedFor);
     if (G.dedFor && G.dedFor !== "all" && bi >= 0 && bi + 1 < G.books.length) { G.dedFor = G.books[bi + 1]; G.dedI = 0; st.step = "g-ded"; return; }
     G.ded = G.deds.all ? G.deds.all.t : G.books.map(b => `📚 ${book(b).name}:\n${(G.deds[b] || {}).t || ""}`).join("\n\n");
-    G.grp = ""; st.step = "g-who";
+    G.grp = ""; st.step = "ship";                                    /* ההקדשה היא השלב האחרון לפני משלוח */
   };
   const askPend = (pr, n) => askPendF(S, st, pr, n);
   /* גן – משייכים תמונות שממתינות: שם בכיתוב / שם שנכתב קודם / תשובה לשאלה. כפילות (אותה תמונה בדיוק) – מזהים לפי חתימת הקובץ */
@@ -810,13 +810,13 @@ async function step(env, from, st, ev, log, db){
     case "g-name": if (txt && !id) { if (junk(txt)) await S(text("כתבו את שם הגן 🙂 (למשל: גן רימון, חיפה)")); else { G.name = txt.slice(0, 50); st.step = "g-teacher"; } } break;
     case "g-teacher": if (txt && !id) { if (junk(txt)) await S(text("כתבו את השם שלך 🙂")); else { st.who = txt.slice(0, 40); st.step = "g-kids"; } } break;
     case "g-kids": { const k = parseInt(txt.replace(/[^\d]/g, ""), 10); if (k > 0 && k < 1000) { G.kids = k; st.page = 0; st.step = "g-book"; await S(text(priceCalc(true, k).split("\n\n🧮")[0] + "\n(את סוג הכריכה בוחרים בסוף, אחרי התמונות)")); st.intro = 1; } else if (txt) { await S(text("כתבו רק מספר, למשל 25 🙂")); return; } break; }
-    case "g-book": if (id.startsWith("gb:") && book(id.slice(3))) { const nb = id.slice(3); if (!G.books.includes(nb)) { G.books.push(nb); for (const v of ["b", "g"]) if ((PAGES[nb] || {})[v]) await RB(nb, v); } if (G.books.length >= GANBOOKS) toDed(); else st.step = "g-book2"; } break;
+    case "g-book": if (id.startsWith("gb:") && book(id.slice(3))) { const nb = id.slice(3); if (!G.books.includes(nb)) { G.books.push(nb); for (const v of ["b", "g"]) if ((PAGES[nb] || {})[v]) await RB(nb, v); } if (G.books.length >= GANBOOKS) st.step = "g-who"; else st.step = "g-book2"; } break;   /* ההקדשה – בסוף, אחרי הכריכה */
     case "g-book2":
-      if (id === "g:one") toDed();
+      if (id === "g:one") st.step = "g-who";
       else if (id === "g:more") { st.page = 0; st.step = "g-book"; }
       else if (id === "g:read") { for (const b of G.books.filter(b => PAGES[b])) await readAsk(S, b, RB); return; }
       break;
-    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); st.step = "ship"; } break;   /* הכריכה – בסוף, אחרי התמונות */
+    case "g-cover": if (/^c:(staple|soft|hard)$/.test(id) && ganP(id.slice(2), G.kids)) { G.cover = id.slice(2); toDed(); } break;   /* הכריכה – אחרי התמונות, ואחריה ההקדשה */
     case "g-dedmode":
       if (id === "gdm:one") { G.deds = {}; G.dedFor = "all"; G.dedI = 0; st.step = "g-ded"; }
       else if (id === "gdm:each") { G.deds = {}; G.dedFor = G.books[0]; G.dedI = 0; st.step = "g-ded"; }
@@ -881,8 +881,8 @@ function btnStep(id){
   return "";
 }
 const SEGS = [["ver", "name", "ded", "dedown", "pics", "picsmore", "cover", "who", "whoown", "more"],
-  ["g-cover", "ship", "addr", "phone", "phoneown", "email", "pay", "consent", "g-consent"],
-  ["g-book2", "g-dedmode", "g-ded", "g-dedown"]];
+  ["g-cover", "g-dedmode", "g-ded", "g-dedown", "ship", "addr", "phone", "phoneown", "email", "pay", "consent", "g-consent"],
+  ["g-book2", "g-who"]];
 function canBack(cur, to){ return SEGS.some(s => s.includes(cur) && s.includes(to) && s.indexOf(to) < s.indexOf(cur)); }
 
 /* סוף הזמנה: סיכום ללקוח (בלי קישורים), תודה, דרייב (מסמך + מייל לשמש), שמירה ב-KV */
