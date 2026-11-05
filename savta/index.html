@@ -493,18 +493,17 @@ function photo(file, done){
 async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {"Content-Type": "image/jpeg"}, body: bl}); if (!r.ok) throw new Error(r.status); return (await r.json()).url; }
 /* שליחה לדרייב: פותחים הזמנה, מעלים כל תמונה (2 ניסיונות), ושולחים סיכום. מחזיר את מספר ההזמנה, או "" אם לא הצליח */
 async function sendDrive(){
-  const J = (path, body, tok) => fetch(DRIVE_UP + path, {method: "POST", headers: Object.assign({"Content-Type": "application/json"}, tok ? {"X-Tok": tok} : {}), body: JSON.stringify(body)}).then(r => r.json());
-  const s = await J("start", {kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
+  const s = await bqUp.start({kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
   const all = ORD.list.flatMap(it => it.pics.map(x => ({it, x}))); let k = 0;
   for (const {it, x} of all) { k++; prog(k, all.length);
     const q = "photo?sub=" + encodeURIComponent(isGirl(it) ? "בנות" : "בנים") + "&name=" + encodeURIComponent(it.name);
-    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { const r = await fetch(DRIVE_UP + q, {method: "POST", headers: {"Content-Type": "image/jpeg", "X-Tok": s.tok}, body: x.blob}); ok = r.ok; } catch (e) {} }
+    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, x.blob, isGirl(it) ? "בנות" : "בנים", it.name)).ok; } catch (e) {} }
     if (!ok) throw new Error("photo"); }
   const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "נכדה" : "נכד"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}`);
   const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
   const D = ORD.d;
   const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
-  const d = await J("done", {summary}, s.tok); if (!d.ok) throw new Error("done");
+  const d = await bqUp.done(s.tok, summary); if (!d.ok) throw new Error("done");
   return s.oid;
 }
 /* חלון שקופץ מיד בלחיצה על "שולחים" (שמש, 5.11.2026): מה קורה עכשיו ומה הלאה, עם התקדמות ההעלאה. בסוף הופך ל"✅ קיבלנו" */

@@ -716,7 +716,7 @@ const upJ = (path, body, tok) => fetch(UPAPI + path, { method: "POST", headers: 
 async function upStart(){
   if (S.up && S.up.tok) return S.up;
   if (!$("upConsent").checked) { $("upSt").textContent = "☝️ מסמנים קודם את האישור למעלה"; throw new Error("consent"); }
-  const j = await upJ("start", { kind: "gan", gan: gan() || "גן", who: S.name, book: S.topics[0] || "", consent: true });
+  const j = await bqUp.start({ kind: "gan", gan: gan() || "גן", who: S.name, book: S.topics[0] || "", consent: true });
   if (!j.ok) throw new Error(j.error || "start");
   S.up = { tok: j.tok, oid: j.oid, code: j.code, n: 0, names: [], at: today() }; save(); return S.up;
 }
@@ -751,7 +751,7 @@ $("upGo").addEventListener("click", async () => {
   $("upGo").disabled = true; let k = 0, bad = 0;
   for (const x of todo) { k++; x.st = "up"; upDraw(); $("upSt").textContent = `⏳ מעלים… ${k} מתוך ${todo.length}`;
     const q = "photo?sub=" + encodeURIComponent(x.sub) + "&name=" + encodeURIComponent(x.name.trim()) + (S.topics.length > 1 ? "&topic=" + encodeURIComponent((BOOKS.find(b => b.id === x.topic) || {}).name || "") : "");
-    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { const r = await fetch(UPAPI + q, { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": u.tok }, body: x.blob }); ok = r.ok; } catch (e) {} }
+    let ok = false; for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(u.tok, x.blob, x.sub, x.name.trim(), S.topics.length > 1 ? ((BOOKS.find(b => b.id === x.topic) || {}).name || "") : "")).ok; } catch (e) {} }
     x.st = ok ? "ok" : "err"; if (ok) { u.n++; u.names.push((x.sub === "בנות" ? "👧 " : "👦 ") + x.name.trim()); save(); } else bad++; }
   $("upSt").textContent = bad ? `⚠️ ${bad} תמונות לא עלו – לוחצים שוב על "מעלים"` : "✅ כל התמונות עלו!";
   try { siteEvent("order_up_done", String(todo.length - bad)); } catch (x) {} upDraw();
@@ -767,7 +767,7 @@ $("upFinish").addEventListener("click", async () => {
   if (!S.up) return; $("upFinish").disabled = true; $("upSt").textContent = "⏳ שולחים לשמש סיכום…";
   const boys = S.up.names.filter(x => x.startsWith("👦")).length, girls = S.up.n - boys;
   const summary = `🏫 ${who()}\n${orderLine()}\n\n📷 הועלו בעמוד: ${S.up.n} (👦 ${boys} · 👧 ${girls})\n${S.up.names.join("\n")}\n\n✓ אישור הגן (${S.up.at}): קראתי את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`;
-  let ok = false; try { ok = (await upJ("done", { summary }, S.up.tok)).ok; } catch (e) {}
+  let ok = false; try { ok = (await bqUp.done(S.up.tok, summary)).ok; } catch (e) {}
   if (!ok) { $("upSt").textContent = "❌ לא נשלח – נסו שוב בעוד רגע"; $("upFinish").disabled = false; return; }
   $("upSt").textContent = "✅ קיבלנו! שמש תעבור על התמונות ותחזור אליכם בוואטסאפ"; mark("folder");
   const w = window.open(wa("היי שמש 📤 כאן " + who() + ".\nהעלינו בעמוד את כל התמונות (" + S.up.n + ") ✅ הזמנה " + S.up.oid), "_blank"); if (!w) location.href = wa("העלינו בעמוד את כל התמונות ✅ הזמנה " + S.up.oid);

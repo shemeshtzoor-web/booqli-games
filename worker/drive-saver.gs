@@ -13,6 +13,7 @@ var ROOT = "BOOQLI הזמנות";
 function doPost(e) {
   try {
     var q = JSON.parse(e.postData.contents);
+    if (String(q.action || "").indexOf("web") === 0) return out_(web_(q));   /* העלאה מהאתר – בלי המילה הסודית, עם בדיקות משלה (למטה) */
     var secret = PropertiesService.getScriptProperties().getProperty("SECRET");
     if (!secret || q.key !== secret) return out_({ ok: false, error: "key" });
     if (q.action === "photo") return out_(savePhoto_(q));
@@ -53,7 +54,10 @@ function clean_(s) { return String(s || "").replace(/[\\\/:*?"<>|#%]/g, " ").rep
 /* תמונה אחת: {order, title, topic?, sub: "בנים"|"בנות", name, mime, b64} */
 function savePhoto_(q) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);   /* כמה תמונות באותו רגע – בלי שמות כפולים */
-  try {
+  try { return savePhotoIn_(q); } finally { lock.releaseLock(); }
+}
+function savePhotoIn_(q) {
+  {
     var folder = orderFolder_(q.order, q.title), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;   /* גן עם 2 נושאים: <גן>/<נושא>/בנים|בנות */
     var dir = sub_(base_, q.sub === "בנות" ? "בנות" : "בנים");
     var base = clean_(q.name), ext = /png/.test(q.mime) ? ".png" : ".jpg", name = base + ext, n = 1;
@@ -61,7 +65,89 @@ function savePhoto_(q) {
     var blob = Utilities.newBlob(Utilities.base64Decode(q.b64), q.mime || "image/jpeg", name);
     var file = dir.createFile(blob);
     return { ok: true, file: file.getUrl(), folder: folder.getUrl(), name: name };
-  } finally { lock.releaseLock(); }
+  }
+}
+
+/* ===== העלאה ישר מהאתר games.booqli.ai (5.11.2026) =====
+   למה כאן ולא דרך Cloudflare: סינונים (רימון / נטפרי / גלישה בטוחה בסלולר) חוסמים את workers.dev, אבל לא את גוגל.
+   הדף שולח POST (text/plain, בלי preflight) עם JSON:
+     webstart {kind:"private"|"gan"|"parent", who, gan, book, code, kid, consent:true} → {ok, oid, tok, code?}
+     webphoto {tok, sub:"בנים"|"בנות", name, topic, mime, b64}                       → {ok, n}
+     webdone  {tok, summary}                                                         → {ok, photos}
+     webgan   {code}                                                                 → {ok, name, book}
+   הגנות: אישור תקנון חובה, מפתח אקראי לכל הזמנה (14 יום), עד 50/300/5 תמונות (פרטי/גן/הורה), עד ~6MB לתמונה,
+   עד 300 הזמנות חדשות ביום לכל האתר. האישורים של ההורים נשמרים ונכנסים לסיכום של הגן. */
+var WEB_MAX = { private: 50, gan: 300, parent: 5 };
+function web_(q) {
+  var P = PropertiesService.getScriptProperties(), lock = LockService.getScriptLock();
+  var get = function (k) { var v = P.getProperty(k); try { return v ? JSON.parse(v) : null; } catch (e) { return null; } };
+  var cut = function (s, n) { return String(s || "").replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n); };
+  var day = Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM");
+  if (q.action === "webgan") { var L = get("web_code_" + String(q.code || "").replace(/\D/g, "")); return L ? { ok: true, name: L.name, book: L.book } : { ok: false, error: "code" }; }
+  if (q.action === "webstart") {
+    if (q.consent !== true) return { ok: false, error: "consent" };
+    lock.waitLock(20000);
+    try {
+      webClean_(P);
+      var dk = "web_day_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd"), dn = +(P.getProperty(dk) || 0);
+      if (dn >= 300) return { ok: false, error: "limit" };
+      P.setProperty(dk, String(dn + 1));
+      var kind = ["private", "gan", "parent"].indexOf(q.kind) >= 0 ? q.kind : "private", rec;
+      if (kind === "parent") {
+        var C = get("web_code_" + String(q.code || "").replace(/\D/g, ""));
+        if (!C) return { ok: false, error: "code" };
+        rec = { kind: kind, oid: C.oid, title: C.oid + " · " + C.name + " · " + C.day };
+        var pk = "web_pc_" + C.oid, pc = get(pk) || [];
+        pc.push({ who: cut(q.who, 40), kid: cut(q.kid, 30), at: Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM.yyyy HH:mm") });
+        P.setProperty(pk, JSON.stringify(pc.slice(-60)));
+      } else {
+        var oid = (kind === "gan" ? "גן-" : "סב-") + (1000 + Math.floor(Math.random() * 9000)), who = cut(kind === "gan" ? q.gan : q.who, 50) || "אתר";
+        rec = { kind: kind, oid: oid, title: oid + " · " + who + " · " + day };
+        if (kind === "gan") {
+          var c = ""; for (var i = 0; i < 30 && !c; i++) { var t = String(1000 + Math.floor(Math.random() * 9000)); if (!P.getProperty("web_code_" + t)) c = t; }
+          rec.code = c; P.setProperty("web_code_" + c, JSON.stringify({ oid: oid, name: who, book: cut(q.book, 40), day: day, at: Date.now() }));
+        }
+      }
+      rec.n = 0; rec.max = WEB_MAX[kind]; rec.at = Date.now();
+      var tok = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "").slice(0, 16);
+      P.setProperty("web_t_" + tok, JSON.stringify(rec));
+      return { ok: true, oid: rec.oid, tok: tok, code: rec.code || "" };
+    } finally { lock.releaseLock(); }
+  }
+  var tk = "web_t_" + String(q.tok || "").replace(/[^a-f0-9]/g, "");
+  if (q.action === "webphoto") {
+    if (!/^image\/(jpeg|png)$/.test(q.mime || "")) return { ok: false, error: "type" };
+    var len = String(q.b64 || "").length; if (len < 2000 || len > 8500000) return { ok: false, error: "size" };
+    lock.waitLock(28000);
+    try {
+      var R = get(tk); if (!R || Date.now() - R.at > 14 * 864e5) return { ok: false, error: "tok" };
+      if (R.n >= R.max) return { ok: false, error: "max" };
+      var f = savePhotoIn_({ order: R.oid, title: R.title, topic: cut(q.topic, 40), sub: q.sub === "בנות" ? "בנות" : "בנים", name: cut(q.name, 40) || "ילד", mime: q.mime, b64: q.b64 });
+      R.n++; P.setProperty(tk, JSON.stringify(R));
+      return { ok: true, n: R.n };
+    } finally { lock.releaseLock(); }
+  }
+  if (q.action === "webdone") {
+    var D = get(tk); if (!D) return { ok: false, error: "tok" };
+    var pcs = D.kind === "gan" ? (get("web_pc_" + D.oid) || []) : [];
+    var extra = pcs.length ? "\n\n👪 הורים שהעלו בעצמם ואישרו תקנון ופרטיות (" + pcs.length + "):\n" + pcs.map(function (x) { return "• " + (x.who || "הורה") + (x.kid ? " – " + x.kid : "") + " · " + x.at; }).join("\n") : "";
+    var sum = String(q.summary || "").slice(0, 8000) + extra + "\n\n🌐 נשלח מהאתר games.booqli.ai · " + (D.kind === "gan" ? "גן" : D.kind === "parent" ? "הורה" : "פרטי") + (D.code ? " · קוד להורים: " + D.code : "");
+    var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n });
+    if (D.kind !== "gan") P.deleteProperty(tk);
+    return { ok: true, photos: r.photos };
+  }
+  return { ok: false, error: "action" };
+}
+/* ניקוי: מפתחות של יותר מ-14 יום, קודי גן של יותר מ-90 יום, ספירות יומיות ישנות */
+function webClean_(P) {
+  var now = Date.now(), all = P.getProperties(), today = "web_day_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd");
+  Object.keys(all).forEach(function (k) {
+    try {
+      if (k.indexOf("web_t_") === 0 && now - JSON.parse(all[k]).at > 14 * 864e5) P.deleteProperty(k);
+      else if (k.indexOf("web_code_") === 0 && now - (JSON.parse(all[k]).at || 0) > 90 * 864e5) P.deleteProperty(k);
+      else if (k.indexOf("web_day_") === 0 && k !== today) P.deleteProperty(k);
+    } catch (e) {}
+  });
 }
 
 /* הקדשה לגן: {order, title, topic?, sub, text} – מסמך "הקדשה" בתוך התיקייה של הספר + בנים|בנות (מחליף אם כבר קיים) */

@@ -160,11 +160,10 @@ async function send(){
     <div class="gprog"><span id="gBar"></span></div><p class="gst" id="gSt">⏳ שולחים…</p><p class="gfine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
   ev("gan_fast_send", String(kids()));
   try {
-    const J = (path, body, tok) => fetch(API + path, { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, tok ? { "X-Tok": tok } : {}), body: JSON.stringify(body) }).then(r => r.json());
-    let s; try { s = await J("start", { kind: "gan", gan: d.gan, who: d.first + " " + d.last, book: G.topic, consent: true }); } catch (x) { throw new Error("start: " + (x && x.message || x)); } if (!s.ok) throw new Error("start: " + (s.error || "?"));
+    let s; try { s = await bqUp.start({ kind: "gan", gan: d.gan, who: d.first + " " + d.last, book: G.topic, consent: true }); } catch (x) { throw new Error("start: " + (x && x.message || x)); } if (!s.ok) throw new Error("start: " + (s.error || "?"));
     let done = 0, bad = 0; const q = G.pics.slice();
     const one = async p => { let ok = false;
-      for (let t = 0; t < 2 && !ok; t++) { try { ok = (await fetch(API + "photo?sub=" + encodeURIComponent(p.sub) + "&name=" + encodeURIComponent(p.name.trim()), { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": s.tok }, body: p.blob })).ok; } catch (e) {} }
+      for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, p.blob, p.sub, p.name.trim())).ok; } catch (e) {} }
       if (!ok) bad++; done++; const st = $("gSt"), bar = $("gBar"); if (st) st.textContent = `⏳ שומרים את התמונות… ${done} מתוך ${q.length}`; if (bar) bar.style.width = Math.round(100 * done / q.length) + "%"; };
     const workers = Array.from({ length: Math.min(3, q.length) }, async () => { while (q.length) await one(q.shift()); });
     await Promise.all(workers);
@@ -176,7 +175,7 @@ async function send(){
       `📣 דיוור בוואטסאפ: ${G.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${G.mkMail ? "מאשר/ת ✔️" : "לא"}`,
       `✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את התקנון ואת מדיניות הפרטיות, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.`,
       SRC ? "מקור: " + SRC : ""].join("\n");
-    const r = await J("done", { summary }, s.tok); if (!r.ok) throw new Error("done");
+    const r = await bqUp.done(s.tok, summary); if (!r.ok) throw new Error("done");
     ev("gan_fast_done", String(n));
     const t = `שלום BOOQLI 💛 שלחנו עכשיו באתר את הזמנה ${s.oid} · ${d.gan} (${n} ילדים, ${b.name})`;
     modal(`<div class="gbig2">✅</div><h3>קיבלנו את ההזמנה של ${esc(d.gan)}!</h3><p class="gbig">מספר ההזמנה: <b>${esc(s.oid)}</b></p>${NEXT}

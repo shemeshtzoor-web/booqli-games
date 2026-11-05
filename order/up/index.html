@@ -105,7 +105,7 @@ const $ = id => document.getElementById(id);
 const ev = (k, n) => { try { siteEvent(k, n); } catch (e) {} };
 let CODE = (new URLSearchParams(location.search).get("c") || "").replace(/\D/g, "").slice(0, 4), GAN = null, SUB = "", PICS = [];
 async function loadGan(c){
-  try { const j = await (await fetch(API + "gan?code=" + c)).json(); return j.ok ? j : null; } catch (e) { return null; }
+  try { const j = await bqUp.gan(c); return j.ok ? j : null; } catch (e) { return null; }
 }
 async function openGan(c){
   const g = await loadGan(c);
@@ -135,10 +135,10 @@ $("send").onclick = async () => {
   if (!$("ok").checked) return err("☑️ מסמנים את האישור");
   err(""); $("send").disabled = true; $("st").textContent = "⏳ שולחים…";
   try {
-    const s = await (await fetch(API + "start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "parent", code: CODE, who: $("who").value.trim(), kid, consent: true }) })).json();
+    const s = await bqUp.start({ kind: "parent", code: CODE, who: $("who").value.trim(), kid, consent: true });
     if (!s.ok) throw new Error(s.error);
     for (const p of PICS) { let ok = false;
-      for (let t = 0; t < 2 && !ok; t++) { try { ok = (await fetch(API + "photo?sub=" + encodeURIComponent(SUB) + "&name=" + encodeURIComponent(kid), { method: "POST", headers: { "Content-Type": "image/jpeg", "X-Tok": s.tok }, body: p.blob })).ok; } catch (e) {} }
+      for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, p.blob, SUB, kid)).ok; } catch (e) {} }
       if (!ok) throw new Error("photo"); }
     ev("gan_parent_sent", String(PICS.length));
     $("form").hidden = true; $("done").hidden = false;

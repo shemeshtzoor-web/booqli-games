@@ -9,12 +9,26 @@ window.SITE = {
   phone: "972555549331",
   /* שרת התמונות של עמוד הסבים (worker/photo-upload.js). ריק = בלי שרת: התמונות נשלחות בחלון השיתוף של הטלפון */
   photoUpload: "https://booqli-photos.shemeshtzoor.workers.dev/",
-  driveUpload: "https://booqli-wa.shemeshtzoor.workers.dev/up/",   /* שמירת תמונות ישר בדרייב של שמש (worker/wa-bot.js /up) – 5.11.2026 */
+  driveUpload: "https://booqli-wa.shemeshtzoor.workers.dev/up/",   /* (ישן – חסום בסינונים, לא בשימוש) */
+  /* שמירת תמונות ישר בדרייב של שמש – הקוד בגוגל (worker/drive-saver.gs, פעולות web*). גוגל לא חסום בסינונים, workers.dev כן (5.11.2026) */
+  driveScript: "https://script.google.com/macros/s/AKfycbw8ZvVe-MF785NNR0Mf5_-JEgCfAg0flx7MxmxczcEH7AxcgXDMYtGZv_bpnepzf4nH/exec",
   // קוד המדידה מ-Cloudflare Web Analytics. להדביק כאן בין המירכאות כשיתקבל
   analyticsToken: "cd51ae95df984ed1b317d05f080dc9a3",
   // מצב בעלת האתר (שמש): רק "טביעת אצבע" של הקוד, הקוד עצמו לא נכתב כאן. ראו "מצב בעלת האתר" למטה
   ownerHash: "66cbc49d397a041a14b33b3cdd4b2f62f574765543510d613bcec7d9b170840c"
 };
+/* העלאת תמונות לדרייב של שמש (עמודי הסבים, הגנים וההורים). text/plain = בלי preflight, גוגל מחזיר JSON */
+window.bqUp = (function () {
+  var post = function (o) { return fetch(SITE.driveScript, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) }).then(function (r) { return r.json(); }); };
+  var b64 = function (blob) { return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(String(r.result).split(",")[1]); }; r.onerror = rej; r.readAsDataURL(blob); }); };
+  return {
+    start: function (o) { return post(Object.assign({ action: "webstart" }, o)); },
+    photo: function (tok, blob, sub, name, topic) { return b64(blob).then(function (d) { return post({ action: "webphoto", tok: tok, sub: sub, name: name, topic: topic || "", mime: blob.type === "image/png" ? "image/png" : "image/jpeg", b64: d }); }); },
+    done: function (tok, summary) { return post({ action: "webdone", tok: tok, summary: summary }); },
+    gan: function (code) { return post({ action: "webgan", code: code }); }
+  };
+})();
+
 
 /* ======================== מצב בעלת האתר (מ-1.11.2026) ========================
    במכשיר של שמש הכל פתוח: בלי מספר סודי, לפני תאריך הפתיחה, אחרי הסגירה, ועמודים בהכנה.
