@@ -558,7 +558,7 @@ function drawOverlay(){
   s.style.width = it.w * ppm + "px"; s.style.height = it.h * ppm + "px";
   s.style.transform = "rotate(" + (it.rot || 0) + "deg)";
   var hs = it.type === "text" ? ["nw", "ne", "sw", "se", "e", "w"] : ["nw", "ne", "sw", "se"];
-  if (!it.locked && !(isM() && it.type === "img" && !imgMove && lastPT === "touch")) {
+  if (!it.locked) {
     hs.forEach(function(k){ var d = document.createElement("div"); d.className = "h " + k; d.dataset.h = k; s.appendChild(d); });
     var st = document.createElement("div"); st.className = "stem"; s.appendChild(st);
     var r = document.createElement("div"); r.className = "h rot"; r.dataset.h = "rot"; r.title = "סיבוב"; s.appendChild(r);
@@ -803,6 +803,7 @@ function onPhoto(file){
       addItem({ type: "img", w: w, h: h, src: src });
     }
     replaceTarget = null; hideToast();
+    if (it && isM()) toast("✓ התמונה הוחלפה · גוררים כדי להזיז, שתי אצבעות – להגדיל");
   }).catch(function(){ toast("לא הצלחנו לפתוח את התמונה. נסו קובץ אחר."); });
 }
 function readImage(file){
@@ -1087,7 +1088,7 @@ function showHelp(){
     '<li><b>בחירה:</b> לחיצה על תמונה, טקסט או מדבקה. למטה מופיעים הכלים שלה, ו"🎨 עיצוב" פותח את כל האפשרויות.</li>' +
     '<li><b>הזזה:</b> גוררים טקסט, מדבקה או צורה. <b>הגדלה וסיבוב:</b> שתי אצבעות על מה שנבחר, או העיגולים בפינות.</li>' +
     '<li><b>טקסט:</b> לחיצה על טקסט שנבחר – כותבים. "✏️ טקסט" למטה מוסיף טקסט חדש.</li>' +
-    '<li><b>תמונה:</b> לחיצה על תמונה – בוחרים תמונה אחרת מהטלפון, והיא נכנסת לאותו מקום. כדי להזיז או להגדיל: "↔️ להזיז". איזה חלק מהתמונה רואים – ב"🎨 עיצוב".</li>' +
+    '<li><b>תמונה:</b> לחיצה על תמונה – בוחרים תמונה אחרת מהטלפון, והיא נכנסת לאותו מקום. אחרי זה (או כשהתמונה מסומנת) – גוררים להזזה, שתי אצבעות או העיגולים להגדלה. "✋ בתוך המסגרת" – איזה חלק מהתמונה רואים.</li>' +
     '<li><b>מעבר בין עמודים:</b> מחליקים ימינה/שמאלה, החצים בצדדים, או הפס התחתון. <b>זום:</b> שתי אצבעות על מקום ריק.</li>' :
     '') + (isM() ? '' :
     '<li><b>בחירה:</b> לוחצים על תמונה, טקסט או מדבקה.</li>' +
@@ -1607,10 +1608,10 @@ function mUpdate(){
   if (it.type === "text") bar.appendChild(mTab("✏️", "לכתוב", function(){ startEdit(sel.pg, it); }));
   if (it.type === "img") {
     bar.appendChild(mTab(it.src ? "🔄" : "📷", it.src ? "להחליף" : "תמונה", function(){ pickPhoto({ pg: sel.pg, id: it.id }); }));
-    bar.appendChild(mTab(imgMove || panMode ? "✅" : "↔️", imgMove || panMode ? "סיימתי" : "להזיז", function(){
-      if (panMode) panMode = false; else imgMove = !imgMove; renderProps(); requestDraw();
-      if (imgMove) toast("גוררים כדי להזיז · שתי אצבעות – להגדיל ולסובב");
-    }, imgMove || panMode ? "on" : ""));
+    if (it.src && it.fit !== "stretch") bar.appendChild(mTab(panMode ? "✅" : "✋", panMode ? "סיימתי" : "בתוך המסגרת", function(){
+      panMode = !panMode; renderProps(); requestDraw();
+      toast(panMode ? "גררו את התמונה כדי לבחור איזה חלק ממנה רואים" : "גוררים כדי להזיז · שתי אצבעות – להגדיל ולסובב");
+    }, panMode ? "on" : ""));
   }
   bar.appendChild(mTab("🎨", "עיצוב", function(){ mSheet(mSheetIs("props") ? null : "props"); }, mSheetIs("props") ? "on" : ""));
   if (it.type !== "img") bar.appendChild(mTab("📑", "שכפול", dupSel));
@@ -1655,10 +1656,10 @@ function onStageDown(e){
   if (hnd && it) { tap = null; onDown(e); return; }               // ידיות: הגדלה / סיבוב
   var h = hitTouch(e.clientX, e.clientY); tap.h = h;
   var isSel = !!(h && it && h.it.id === it.id && viewOf(sel.pg) === view); tap.wasSel = isSel;
-  // טקסט, מדבקה, צורה: גוררים מיד (גם בלי לבחור קודם). תמונה נשארת במקום – זזה רק אחרי "↔️ להזיז" (או "להזיז בפנים")
+  // טקסט, מדבקה, צורה: גוררים מיד (גם בלי לבחור קודם). תמונה נשארת במקום עד שבוחרים אותה – אחרי שנבחרה (או הוחלפה) גוררים ומגדילים כרגיל
   if (h && !h.it.locked) {
     var exact = (function(){ var q = xyToMM(e.clientX, e.clientY), x = hit(q.x, q.y); return x && x.it.id === h.it.id; })();
-    if (exact && (h.it.type !== "img" || (isSel && (imgMove || panMode)))) {
+    if (exact && (h.it.type !== "img" || isSel)) {
       if (!isSel) { imgMove = false; panMode = false; }
       onDown(e); return;
     }
@@ -1712,7 +1713,7 @@ function onTap(t){
   sel = { pg: h.pg, id: h.it.id };
   if (h.it.type === "text" && (t.wasSel || dbl)) { lastTap = null; startEdit(h.pg, h.it); return; }   // לחיצה על טקסט שכבר נבחר = כותבים
   // תמונה (שמש, 6.11.2026): לחיצה = קודם כל מציעים להחליף – נפתחת בחירת תמונה מהטלפון. התמונה החדשה נכנסת לאותה מסגרת ונשארת במקום.
-  if (h.it.type === "img" && !imgMove && !panMode) { lastTap = null; renderProps(); requestDraw(); pickPhoto({ pg: h.pg, id: h.it.id }); return; }
+  if (h.it.type === "img" && !t.wasSel && !panMode) { lastTap = null; renderProps(); requestDraw(); pickPhoto({ pg: h.pg, id: h.it.id }); return; }
   renderProps(); requestDraw();
 }
 function startPinch(){
@@ -1761,7 +1762,7 @@ function mInit(){
   document.querySelectorAll("#more [data-click]").forEach(function(b){ b.onclick = function(){ var id = b.getAttribute("data-click"); if (!/^z/.test(id)) mSheet(null); $(id).click(); }; });
   // אחרי הוספה מהמגירה – סוגרים אותה כדי לראות את מה שנוסף (צבע רקע – נשארים, אפשר לנסות כמה)
   $("tools").addEventListener("click", function(e){ if (isM() && e.target.closest(".add,.stk button")) setTimeout(function(){ mSheet(null); }, 0); });
-  var mi = $("mInfo"); if (mi) mi.innerHTML = "👆 <b>לחיצה על תמונה</b> – מחליפים אותה (להזזה: ↔️ להזיז) · <b>גרירה</b> של טקסט, מדבקה או צורה מזיזה · <b>שתי אצבעות</b> על מה שנבחר – מגדילות ומסובבות, בשאר המקום – זום · <b>החלקה</b> ימינה/שמאלה – עמוד הבא/הקודם · לחיצה על טקסט שנבחר – כותבים.";
+  var mi = $("mInfo"); if (mi) mi.innerHTML = "👆 <b>לחיצה על תמונה</b> – מחליפים אותה, ואז אפשר לגרור ולהגדיל · <b>גרירה</b> של טקסט, מדבקה או צורה מזיזה · <b>שתי אצבעות</b> על מה שנבחר – מגדילות ומסובבות, בשאר המקום – זום · <b>החלקה</b> ימינה/שמאלה – עמוד הבא/הקודם · לחיצה על טקסט שנבחר – כותבים.";
   var onMQ = function(){ if (!P || $("ed").classList.contains("hidden")) return; if (editingId) finishEdit(); zoom = 1; mSheet(null); buildThumbs(); renderProps(); fit(); };
   if (MQ.addEventListener) MQ.addEventListener("change", onMQ); else if (MQ.addListener) MQ.addListener(onMQ);
 }
