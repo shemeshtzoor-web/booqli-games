@@ -693,9 +693,9 @@ window.SITE.doors = [
 ];
 /* התפריט המלא (☰ תפריט, 2.11.2026): כל הנושאים המרכזיים בקבוצות. נושא עם id מקבל לבד "נפתח ב-..." / "נסגר" לפי SITE.opens / SITE.closes. */
 window.SITE.menu = [
-  { h: "📖 ספרי BOOQLI", items: [
-    { ic: "📚", t: "כל הספרים – לקרוא ולבחור", href: "/savta/#books" },
-    { ic: "✍️", t: "הדפיסו את הספר שלכם", href: "/book-maker/" } ] },
+  /* הקבוצה הראשונה = ספרי BOOQLI: בתפריט נבנית מרשימת הספרים (order/books/books.js) + "ספר בעיצוב אישי". כל השאר – תחת "booqli Games" (שמש, 6.11.2026) */
+  { h: "📖 ספרי BOOQLI", books: true, items: [
+    { ic: "✍️", t: "ספר בעיצוב אישי – מדפיסים את הספר שלכם", href: "/book-maker/" } ] },
   { h: "🧭 ראשי", items: [
     { ic: "🏠", t: "דף הבית", href: "/" },
     { ic: "🗺️", t: "מפת האתר – כל מה שיש", href: "/map/", hot: true },
@@ -734,6 +734,11 @@ window.SITE.menu = [
     { ic: "✍️", t: "קורס: כותבים ספר ילדים", href: "/course/" },
     { ic: "📲", t: "האפליקציה", href: "/app/" } ] }
 ];
+function siteMenuBooks(){
+  var B = window.BQ_BOOKS; if (!B || !B.length) return "";
+  return B.map(function(b){ return '<a href="/savta/?book=' + b.id + '&utm_source=booqli_games&utm_medium=menu&utm_campaign=' + b.id + '#order"><span aria-hidden="true">📖</span>' + b.name + '</a>'; }).join("");
+}
+function siteMenuItem(x){ return '<a href="' + x.href + '"><span aria-hidden="true">' + x.ic + '</span>' + x.t + '</a>'; }
 /* תפריט ☰ (שמש, 5.11.2026: "הכי חשוב הספרים וההזמנה לגנים, כל השאר בתת־תפריטים"): שני כפתורים גדולים למעלה, וכל קבוצה נפתחת בלחיצה */
 window.SITE.menuTop = [
   { ic: "📚", t: "להזמין ספר אישי", s: "לילד, לנכד, מתנה", href: "/savta/?utm_source=booqli_games&utm_medium=menu&utm_campaign=order#order" },
@@ -761,8 +766,10 @@ function siteDoorsNav(){
     ".bq-doors .mg summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;font-family:'Varela Round',Assistant,sans-serif;font-weight:700;font-size:16px;color:#213330;border-radius:16px}" +
     ".bq-doors .mg summary::-webkit-details-marker{display:none}" +
     ".bq-doors .mg summary::after{content:'';width:9px;height:9px;border-left:2.5px solid #2F6F63;border-bottom:2.5px solid #2F6F63;transform:rotate(-45deg);transition:transform .2s}" +
-    ".bq-doors .mg[open] summary::after{transform:rotate(135deg)}" +
+    ".bq-doors .mg[open]>summary::after{transform:rotate(135deg)}" +
     ".bq-doors .mg[open]{padding-bottom:6px}.bq-doors .mg a{margin:0 6px}" +
+    ".bq-doors .mgg>summary small{display:block;font-family:Assistant,sans-serif;font-weight:600;font-size:13px;color:#566B67}" +
+    ".bq-doors .mg.sub{background:#fff;margin:4px 8px;border:1px solid #E4F0EC}.bq-doors .mg.sub summary{font-size:15px;padding:9px 12px}" +
     ".bq-doors .menu a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;text-decoration:none;color:#213330;font-weight:700;font-size:15.5px}" +
     ".bq-doors .menu a:hover,.bq-doors .menu a[aria-current=page]{background:#fff;box-shadow:0 2px 0 #CDE7DC}" +
     ".bq-doors .menu a.hot{background:linear-gradient(90deg,#FDE6F6,#E1F0EA);color:#C5309A;font-weight:800}" +
@@ -787,12 +794,23 @@ function siteDoorsNav(){
     '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>תפריט</span></button></div>' +
     '<div class="menu" id="bqMore" hidden><div class="mtop">' + SITE.menuTop.map(function(x, i){
       return '<a class="mt' + (i ? '' : ' or') + '" href="' + x.href + '"><span class="i" aria-hidden="true">' + x.ic + '</span><span><b>' + x.t + '</b><small>' + x.s + '</small></span></a>';
-    }).join("") + '</div>' + SITE.menu.map(function(g){
-      return '<details class="mg"><summary>' + g.h + '</summary>' + g.items.map(function(x){
+    }).join("") + '</div>' + (function(){
+      var bk = SITE.menu[0];
+      return '<details class="mg" id="bqBooks"><summary>' + bk.h + '</summary><div id="bqBookList">' + siteMenuBooks() + '</div>' + bk.items.map(siteMenuItem).join("") + '</details>' +
+        '<details class="mg mgg"><summary><span>🎮 booqli Games<small>משחקים · מערכים · דפי עבודה · פעילויות – בחינם</small></span></summary>' + SITE.menu.slice(1).map(function(g){
+      return '<details class="mg sub"><summary>' + g.h + '</summary>' + g.items.map(function(x){
         var w = "";
         try { if (x.id && siteIsClosed(x.id)) w = '<span class="when cl">נסגר</span>'; else if (x.id && siteIsSoon(x.id)) { var d = siteOpenDate(x.id); w = '<span class="when">נפתח ' + d.getDate() + "." + (d.getMonth() + 1) + '</span>'; } } catch (e) {}
         return '<a href="' + x.href + '"' + cur(x.href) + (x.hot ? ' class="hot"' : '') + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
-      }).join("") + '</details>'; }).join("") + '</div>';
+      }).join("") + '</details>'; }).join("") + '</details>'; })() + '</div>';
+  setTimeout(function(){
+    var g = document.getElementById("bqBooks"), L = document.getElementById("bqBookList"); if (!g || !L) return;
+    g.addEventListener("toggle", function(){
+      if (!g.open || L.children.length) return;
+      if (window.BQ_BOOKS) { L.innerHTML = siteMenuBooks(); return; }
+      var sc = document.createElement("script"); sc.src = "/order/books/books.js"; sc.onload = function(){ L.innerHTML = siteMenuBooks(); }; document.head.appendChild(sc);
+    });
+  }, 0);
   var top = document.querySelector(".bq-nav");
   /* מתחת לפס הלוגו (5.11.2026), כך שהפס הטורקיז למעלה הוא חטיבה אחת – כמו באתר הראשי */
   var hdr = document.querySelector("body > header, header.top");
