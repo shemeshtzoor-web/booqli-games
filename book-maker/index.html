@@ -35,6 +35,8 @@ button{cursor:pointer}
 .ideas .row5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .ideas figure{margin:0;background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px 8px 10px;text-align:center}
 .ideas img{width:100%;height:auto;display:block}
+.ideas figure.rd{cursor:pointer;transition:transform .15s,border-color .15s}.ideas figure.rd:hover,.ideas figure.rd:focus-visible{transform:translateY(-3px);border-color:var(--pink,#FA57C4);outline:none}
+.ideas .rdh{display:inline-block;margin-top:6px;background:#FDE6F6;color:#C5309A;font-weight:800;font-size:13.5px;border-radius:999px;padding:3px 12px}
 .ideas figcaption{font-weight:800;font-size:15px;margin-top:4px;color:var(--ink)}
 @media (max-width:900px){.ideas .row5{grid-template-columns:repeat(2,1fr)}.ideas figure:last-child{grid-column:1/3;max-width:50%;justify-self:center}}
 .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
@@ -207,11 +209,11 @@ button{cursor:pointer}
   <section class="ideas">
     <h2>💡 רעיונות לספר שלכם</h2>
     <div class="row5">
-      <figure><img src="img/book1.webp" alt="ספר יום הולדת" loading="lazy" width="560" height="560"><figcaption>🎂 ספר יום הולדת</figcaption></figure>
-      <figure><img src="img/book2.webp" alt="ספר עולה לכיתה א'" loading="lazy" width="560" height="560"><figcaption>🎒 עולים לכיתה א'</figcaption></figure>
-      <figure><img src="img/book3.webp" alt="סיפור הרפתקה עם דרקון" loading="lazy" width="560" height="560"><figcaption>🐉 סיפור הרפתקה</figcaption></figure>
-      <figure><img src="img/book4.webp" alt="סיפור שהילדים כתבו" loading="lazy" width="560" height="560"><figcaption>✏️ סיפור שהילדים כתבו</figcaption></figure>
-      <figure><img src="img/book5.webp" alt="הספר הראשון של התינוק" loading="lazy" width="560" height="560"><figcaption>👶 הספר הראשון</figcaption></figure>
+      <figure class="rd" data-read="birthday" data-ver="0" role="button" tabindex="0" aria-label="לקרוא את הספר המלא"><img src="img/book1.webp" alt="ספר יום הולדת" loading="lazy" width="560" height="560"><figcaption>🎂 ספר יום הולדת</figcaption><span class="rdh">📖 לקרוא</span></figure>
+      <figure class="rd" data-read="class1" data-ver="1" role="button" tabindex="0" aria-label="לקרוא את הספר המלא"><img src="img/book2.webp" alt="ספר עולה לכיתה א'" loading="lazy" width="560" height="560"><figcaption>🎒 עולים לכיתה א'</figcaption><span class="rdh">📖 לקרוא</span></figure>
+      <figure class="rd" data-read="druki" data-ver="1" role="button" tabindex="0" aria-label="לקרוא את הספר המלא"><img src="img/book3.webp" alt="סיפור הרפתקה עם דרקון" loading="lazy" width="560" height="560"><figcaption>🐉 סיפור הרפתקה</figcaption><span class="rdh">📖 לקרוא</span></figure>
+      <figure class="rd" data-read="druki" data-ver="0" role="button" tabindex="0" aria-label="לקרוא את הספר המלא"><img src="img/book4.webp" alt="סיפור שהילדים כתבו" loading="lazy" width="560" height="560"><figcaption>✏️ סיפור שהילדים כתבו</figcaption><span class="rdh">📖 לקרוא</span></figure>
+      <figure class="rd" data-read="first" data-ver="1" role="button" tabindex="0" aria-label="לקרוא את הספר המלא"><img src="img/book5.webp" alt="הספר הראשון של התינוק" loading="lazy" width="560" height="560"><figcaption>👶 הספר הראשון</figcaption><span class="rdh">📖 לקרוא</span></figure>
     </div>
   </section>
 
@@ -303,5 +305,14 @@ button{cursor:pointer}
 <script src="../common.js"></script>
 <script src="sample.js"></script>
 <script src="editor.js"></script>
+<script src="../order/books/books.js"></script>
+<script src="../order/books/reader.js"></script>
+<script>
+/* רעיונות לספר – לחיצה פותחת את הספר המלא לקריאה (6.11.2026, שמש) */
+document.querySelectorAll(".ideas [data-read]").forEach(f => {
+  const go = () => { if (window.bqRead) { bqRead(f.dataset.read, +(f.dataset.ver || 0)); if (window.siteEvent) siteEvent("click", "bm_read_" + f.dataset.read); } };
+  f.addEventListener("click", go); f.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+});
+</script>
 </body>
 </html>

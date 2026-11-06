@@ -9,7 +9,7 @@
   css.textContent =
     ".bqr{position:fixed;inset:0;z-index:400;background:rgba(30,18,28,.92);display:flex;flex-direction:column;direction:rtl;font-family:Assistant,Arial,sans-serif;color:#fff;padding:calc(8px + env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}" +
     ".bqr[hidden]{display:none}" +
-    ".bqr .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 4px 8px}" +
+    ".bqr .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 4px 8px;background:none;border:0;overflow:visible;grid-area:auto;color:#fff}" +
     ".bqr h2{font:700 19px Fredoka,Assistant,sans-serif;margin:0;flex:1;min-width:0}" +
     ".bqr .vb{border:1.5px solid rgba(255,255,255,.5);background:none;color:#fff;border-radius:999px;padding:4px 12px;font:800 14px Assistant,sans-serif;cursor:pointer}" +
     ".bqr .vb.on{background:#fff;color:#C5309A;border-color:#fff}" +
