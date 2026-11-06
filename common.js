@@ -794,7 +794,7 @@ function siteDoorsNav(){
     '<button type="button" class="mb" aria-expanded="false" aria-controls="bqMore"><span class="i" aria-hidden="true">☰</span><span>תפריט</span></button></div>' +
     '<div class="menu" id="bqMore" hidden><div class="mtop">' + SITE.menuTop.map(function(x, i){
       return '<a class="mt' + (i ? '' : ' or') + '" href="' + x.href + '"><span class="i" aria-hidden="true">' + x.ic + '</span><span><b>' + x.t + '</b><small>' + x.s + '</small></span></a>';
-    }).join("") + '</div>' + (function(){
+    }).join("") + (siteShareOk() ? '<a class="mt mt-sh" href="#" data-share="1"><span class="i" aria-hidden="true">📤</span><span><b>שתפו עם חברים</b><small>וואטסאפ או העתקת קישור</small></span></a>' : '') + '</div>' + (function(){
       var bk = SITE.menu[0];
       return '<details class="mg" id="bqBooks"><summary>' + bk.h + '</summary><div id="bqBookList">' + siteMenuBooks() + '</div>' + bk.items.map(siteMenuItem).join("") + '</details>' +
         '<details class="mg mgg"><summary><span>🎮 booqli Games<small>משחקים · מערכים · דפי עבודה · פעילויות – בחינם</small></span></summary>' + SITE.menu.slice(1).map(function(g){
@@ -803,6 +803,8 @@ function siteDoorsNav(){
         try { if (x.id && siteIsClosed(x.id)) w = '<span class="when cl">נסגר</span>'; else if (x.id && siteIsSoon(x.id)) { var d = siteOpenDate(x.id); w = '<span class="when">נפתח ' + d.getDate() + "." + (d.getMonth() + 1) + '</span>'; } } catch (e) {}
         return '<a href="' + x.href + '"' + cur(x.href) + (x.hot ? ' class="hot"' : '') + '><span aria-hidden="true">' + x.ic + '</span>' + x.t + w + '</a>';
       }).join("") + '</details>'; }).join("") + '</details>'; })() + '</div>';
+  var shb = nav.querySelector("[data-share]");
+  if (shb) shb.addEventListener("click", function(e){ e.preventDefault(); siteShareMenu(); siteEvent("click", "share_open"); });
   setTimeout(function(){
     var g = document.getElementById("bqBooks"), L = document.getElementById("bqBookList"); if (!g || !L) return;
     g.addEventListener("toggle", function(){
@@ -819,6 +821,13 @@ function siteDoorsNav(){
   var mb = nav.querySelector(".mb"), menu = nav.querySelector(".menu");
   var close = function(){ menu.hidden = true; mb.setAttribute("aria-expanded", "false"); };
   mb.onclick = function(e){ e.stopPropagation(); menu.hidden = !menu.hidden; mb.setAttribute("aria-expanded", String(!menu.hidden)); };
+  var hb = solo && document.querySelector("body > header .brand, header.top .brand");
+  if (hb) {
+    var b2 = document.createElement("button"); b2.type = "button"; b2.className = "bq-hmenu"; b2.setAttribute("aria-controls", "bqMore"); b2.setAttribute("aria-expanded", "false");
+    b2.innerHTML = '<span aria-hidden="true">☰</span><b>תפריט</b>'; b2.setAttribute("aria-label", "תפריט");
+    var wa = hb.querySelector(".btn-wa"); hb.insertBefore(b2, wa ? wa.nextSibling : null);
+    b2.onclick = function(e){ e.stopPropagation(); mb.onclick(e); b2.setAttribute("aria-expanded", String(!menu.hidden)); };
+  }
   var ul = solo && top && top.querySelector("ul");
   if (ul) {
     var li = document.createElement("li"); li.className = "mn";
@@ -978,6 +987,8 @@ document.addEventListener("click", function(e){
   window.open(SITE.main.home, "_blank", "noopener");
 });
 function siteMainNav(){
+  /* 6.11.2026 (שמש: "הבאנר למעלה מכוער"): פס ההזמנה ירד – "להזמין ספר", "לכל הגן" ו"שתפו" נמצאים בתפריט ☰ */
+  return;
   if (document.querySelector(".bq-nav")) return;
   var css = document.createElement("style");
   css.textContent =
@@ -1052,12 +1063,21 @@ function siteMainNav(){
     "html.bq-brand:not(.bq-play) h1,html.bq-brand:not(.bq-play) h2,html.bq-brand:not(.bq-play) h3{font-family:'Varela Round',Assistant,sans-serif;letter-spacing:.01em;line-height:1.25}" +
     "html.bq-brand:not(.bq-play) main p,html.bq-brand:not(.bq-play) main li{line-height:1.65;word-spacing:.05em}" +
     /* הפס עם הלוגו – כמו בראש האתר הראשי */
-    "html.bq-brand body>header,html.bq-brand header.top{background:linear-gradient(90deg,#6DAFA1,#8CC5B9)!important;box-shadow:0 2px 14px rgba(33,51,48,.10)!important;text-shadow:0 1px 2px rgba(33,51,48,.25)}" +
+    /* פס הלוגו – בהיר ורגוע (שמש, 6.11.2026: "פחות צבעוני, יותר יפה"); הלוגו הכהה מוחלף לבד */
+    "html.bq-brand body>header,html.bq-brand header.top{background:rgba(255,255,255,.92)!important;box-shadow:0 1px 0 #E3EFEB,0 4px 16px rgba(33,51,48,.05)!important;text-shadow:none;color:#213330}" +
+    "html.bq-brand header .btn-wa{background:#fff!important;color:#178A45!important;border:2px solid #9ED9B4!important;box-shadow:none!important}" +
+    "html.bq-brand header .btn-wa:hover{background:#F0FAF4!important}" +
+    ".bq-hmenu{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#213330;border:2px solid #DCEDE8;border-radius:999px;padding:7px 14px;font:800 14px Assistant,sans-serif;cursor:pointer;white-space:nowrap}" +
+    "@media (max-width:620px){.bq-hmenu{padding:7px 12px}.bq-hmenu b{display:none}html.bq-brand header .btn-wa{font-size:13px!important;padding:7px 11px!important}}" +
+    "@media (max-width:350px){html.bq-brand header .brand{gap:8px}html.bq-brand header img.logo{width:84px;height:auto}html.bq-brand header .btn-wa{font-size:12px!important;padding:6px 9px!important}.bq-hmenu{padding:6px 10px}}" +
+    ".bq-hmenu span{font-size:17px;line-height:1}.bq-hmenu:hover{background:#F4FAF8}.bq-hmenu:focus-visible{outline:3px solid #FA57C4;outline-offset:2px}" +
     "html.bq-brand header .pill,html.bq-brand header .btn-wa{text-shadow:none}" +
     "@media print{html.bq-brand body>header{text-shadow:none}}" +
     /* בלי כפילות למעלה (5.11.2026): "לכל הגן" כבר בפס ההזמנה, והלוגו כבר מוביל לדף הבית */
     "html.bq-brand header .gan{display:none!important}html.bq-brand .bq-nav .home{display:none}html.bq-brand .bq-nav ul{margin:0 auto}";
   (document.head || html).appendChild(css);
+  var dark = function(){ document.querySelectorAll("body > header img.logo, header.top img.logo").forEach(function(i){ if (/logo\.png(\?|$)/.test(i.getAttribute("src") || "")) i.src = i.getAttribute("src").replace(/logo\.png/, "logo-dark.png"); }); };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", dark); else dark();
 })();
 
 /* אייקון הלשונית (favicon) – החד־קרן של BOOQLI, לכל העמודים. הקבצים בשורש האתר וב-img/ */

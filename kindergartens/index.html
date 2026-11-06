@@ -408,6 +408,10 @@ section{margin-top:64px}
 @media (max-width:780px){
   .hero .wrap,.split,.guide,.covers,.bulk{grid-template-columns:minmax(0,1fr)}
   .hero-art{max-width:400px;margin:0 auto;width:100%;order:-1}
+  /* 6.11.2026 (שמש): בטלפון הכותרת מעל הילדה */
+  .hero .wrap{gap:14px;padding-top:20px}.hero .wrap>div:first-child{display:contents}
+  .hero .kicker{order:-3;justify-self:center}.hero h1{order:-2;margin-top:0;text-align:center}
+  .hero .wrap>*{min-width:0}
   .split.rev .art{order:-1}
   .books,.prices,.orders,.steps{grid-template-columns:minmax(0,1fr)}
   .books{grid-template-columns:repeat(2,minmax(0,1fr))}
