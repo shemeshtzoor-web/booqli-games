@@ -43,7 +43,9 @@ function root_() {
 }
 
 /* תיקיית ההזמנה: מחפשים לפי מספר ההזמנה בתחילת השם; אם אין – יוצרים */
-function orderFolder_(order, title) {
+function orderFolder_(order, title, fid) {
+  /* fid = מזהה תיקייה שכבר נוצרה (ספר בעיצוב אישי): החיפוש בדרייב מתעדכן באיחור, ובלי זה כל חלק פותח תיקייה חדשה (6.11.2026) */
+  if (fid) { try { var ff = DriveApp.getFolderById(fid); if (title && ff.getName() !== title) ff.setName(title); return ff; } catch (e) {} }
   var root = root_(), it = root.searchFolders("title contains '" + order.replace(/'/g, "") + "'");
   while (it.hasNext()) { var f = it.next(); if (f.getName().indexOf(order) === 0) { if (title && f.getName() !== title) f.setName(title); return f; } }
   return root.createFolder(title || order);
@@ -151,7 +153,7 @@ function web_(q) {
     var pcs = D.kind === "gan" ? (get("web_pc_" + D.oid) || []) : [];
     var extra = pcs.length ? "\n\n👪 הורים שהעלו בעצמם ואישרו תקנון ופרטיות (" + pcs.length + "):\n" + pcs.map(function (x) { return "• " + (x.who || "הורה") + (x.kid ? " – " + x.kid : "") + " · " + x.at; }).join("\n") : "";
     var sum = String(q.summary || "").slice(0, 8000) + extra + "\n\n🌐 נשלח מהאתר games.booqli.ai · " + (D.kind === "gan" ? "גן" : D.kind === "parent" ? "הורה" : D.kind === "book" ? "ספר בעיצוב אישי – בקשה להצעת מחיר" : "פרטי") + (D.code ? " · קוד להורים: " + D.code : "");
-    var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n, book: D.kind === "book" });
+    var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n, book: D.kind === "book", fid: D.fid || "" });
     var mailed = false; try { if (q.cust && r.photos > 0) mailed = custMail_(D, q.cust, P); } catch (e) { mailed = false; }
     if (D.kind !== "gan") P.deleteProperty(tk);
     return { ok: true, photos: r.photos, mailed: mailed };
@@ -198,7 +200,8 @@ function webPart_(q, R, tk, P) {
   var U = R.up[which];
   if (!U || U.total !== total || off === 0) {
     if (off !== 0) return { ok: false, error: "restart" };
-    var folder = orderFolder_(R.oid, "🌐 " + R.title);
+    var folder = orderFolder_(R.oid, "🌐 " + R.title, R.fid);
+    R.fid = folder.getId();
     var name = R.oid + " – " + (which === "cover" ? "כריכה" : "עמודים") + " (" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM HH-mm") + ").pdf";
     var s = UrlFetchApp.fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
       method: "post", contentType: "application/json; charset=UTF-8", muteHttpExceptions: true,
@@ -313,7 +316,7 @@ function erase_(q) {
 
 /* סוף ההזמנה: {order, title, summary, expected} – מסמך סיכום + מייל */
 function saveOrder_(q) {
-  var folder = orderFolder_(q.order, q.title);
+  var folder = orderFolder_(q.order, q.title, q.fid);
   var count = countPhotos_(folder);
   var doc = DocumentApp.create("סיכום ההזמנה – " + q.order);
   var body = doc.getBody();
