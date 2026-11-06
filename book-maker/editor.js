@@ -681,6 +681,11 @@ function onUp(){
       sel.pg = target; activePg = target;
     }
   }
+  if (isM() && sel) {   // טלפון: אחרי שגררו לצד השני – המסך עובר לעמוד שבו הפריט נמצא עכשיו
+    var ns = view === 0 ? ((it.x + it.w / 2) > (SPINE0 + SPINE1) / 2 ? NPAGES + 1 : 0) : (pageOn(sel.pg) ? sel.pg : mSlot);
+    if (ns !== mSlot) { mSlot = ns; activePg = view === 0 ? "c" : ns; lastCoverSide = ns === NPAGES + 1 ? "back" : "front"; mLabel(); }
+    if (zoom <= 1.05) centerSlot();
+  }
   commit(); renderProps(); requestDraw();
 }
 
@@ -1545,8 +1550,17 @@ function centerSlot(){
   st.scrollTop += (cr.top + viewH() * ppm / 2) - (sr.top + st.clientHeight / 2);
 }
 function mLabel(){
-  var l = $("pglab"); if (l) l.textContent = slotName(mSlot) + " · " + (mSlot + 1) + "/" + (NPAGES + 2);
-  var a = $("swPv"), b = $("swNx"); if (a) a.disabled = mSlot <= 0; if (b) b.disabled = mSlot >= NPAGES + 1;
+  var k = mOrder().indexOf(mSlot), n = mOrder().length;
+  var l = $("pglab"); if (l) l.textContent = slotName(mSlot);
+  var a = $("swPv"), b = $("swNx"); if (a) a.disabled = k <= 0; if (b) b.disabled = k >= n - 1;
+}
+/* הסדר לפי המקום על המסך (שמש, 6.11.2026: "כל הזמן חוזר לצד שמאל"): הכריכה האחורית נמצאת מימין לקדמית,
+   ובכל כפולה העמוד הנמוך מימין. מחליקים אצבע שמאלה = רואים את מה שמימין, ימינה = את מה שמשמאל (הלאה בספר). */
+function mOrder(){ var o = [NPAGES + 1, 0]; for (var i = 1; i <= NPAGES; i++) o.push(i); return o; }
+function mStep(d){
+  var o = mOrder(), k = o.indexOf(mSlot) + d;
+  if (k < 0 || k >= o.length) { centerSlot(); return; }
+  goSlot(o[k]);
 }
 function goSlot(i){
   i = Math.max(0, Math.min(NPAGES + 1, i));
@@ -1658,6 +1672,21 @@ function tMove(e){
   if (pinch) { if (!pinchRaf) pinchRaf = requestAnimationFrame(function(){ pinchRaf = 0; pinchMove(); }); return; }
   if (tap && Math.abs(e.clientX - tap.x) + Math.abs(e.clientY - tap.y) > 10) tap.moved = true;
   if (pan && e.pointerId === pan.id) { var st = $("stage"); st.scrollLeft = pan.sl - (e.clientX - pan.x); st.scrollTop = pan.stp - (e.clientY - pan.y); }
+  if (drag && drag.mode === "move") edgeCheck(e.clientX, e.clientY);
+}
+/* גוררים פריט לקצה המסך – העמוד נגלל לבד לצד השני (כמו בקנבה) */
+var edge = { dir: 0, x: 0, y: 0, raf: 0 };
+function edgeCheck(x, y){
+  var r = $("stage").getBoundingClientRect();
+  edge.x = x; edge.y = y; edge.dir = x < r.left + 34 ? -1 : x > r.right - 34 ? 1 : 0;
+  if (edge.dir && !edge.raf) edge.raf = requestAnimationFrame(edgeTick);
+}
+function edgeTick(){
+  edge.raf = 0;
+  if (!edge.dir || !drag || drag.mode !== "move") { edge.dir = 0; return; }
+  var st = $("stage"), before = st.scrollLeft; st.scrollLeft += edge.dir * 9;
+  if (st.scrollLeft !== before) onMove({ clientX: edge.x, clientY: edge.y });
+  edge.raf = requestAnimationFrame(edgeTick);
 }
 function tEnd(e){
   if (!touches[e.pointerId]) return;
@@ -1665,7 +1694,7 @@ function tEnd(e){
   if (pinch) { if (Object.keys(touches).length < 2) endPinch(); return; }
   if (pan && e.pointerId === pan.id) {
     var dx = e.clientX - pan.x, dy = e.clientY - pan.y; pan = null;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2 && zoom <= 1.05) { tap = null; goSlot(mSlot + (dx > 0 ? 1 : -1)); return; }   // החלקה: לעמוד הבא (שמאלה, כמו בספר בעברית)
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2 && zoom <= 1.05) { tap = null; mStep(dx > 0 ? 1 : -1); return; }   // החלקה: אצבע ימינה = מה שמשמאל (הלאה בספר), שמאלה = מה שמימין
     if (zoom <= 1.05) centerSlot();
   }
   if (tap && !tap.moved && Date.now() - tap.t < 700 && e.type === "pointerup") onTap(tap);
@@ -1726,8 +1755,8 @@ function endPinch(){
 function mInit(){
   window.addEventListener("pointermove", tMove, { passive: true });
   window.addEventListener("pointerup", tEnd); window.addEventListener("pointercancel", tEnd);
-  $("swPv").onclick = function(){ goSlot(mSlot - 1); };
-  $("swNx").onclick = function(){ goSlot(mSlot + 1); };
+  $("swPv").onclick = function(){ mStep(-1); };
+  $("swNx").onclick = function(){ mStep(1); };
   document.querySelectorAll("#ed [data-close]").forEach(function(b){ b.onclick = function(){ mSheet(null); }; });
   document.querySelectorAll("#more [data-click]").forEach(function(b){ b.onclick = function(){ var id = b.getAttribute("data-click"); if (!/^z/.test(id)) mSheet(null); $(id).click(); }; });
   // אחרי הוספה מהמגירה – סוגרים אותה כדי לראות את מה שנוסף (צבע רקע – נשארים, אפשר לנסות כמה)
