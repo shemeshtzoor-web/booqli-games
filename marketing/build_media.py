@@ -9,6 +9,7 @@ slot = "<נושא>:video" או "<נושא>:image" – אם המשבצת של ה�
 import json, os, time
 HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.join(HERE, "media")
 GROUPS = [
+  {"id":"birthday","name":"🎂 ספר יום הולדת – לפרטיים ולגנים (חדש)","note":"2 סרטונים 4:5 (6.11.2026), מוזיקה מקורית של מסיבת יום הולדת: ספר שהילד הוא הגיבור → כמה קל להזמין (הקלטה אמיתית של האתר) → מה מקבלים → במתנה (booqli Games לפרטיים / קיט חגיגי לגן) → משלמים רק אם אוהבים. מחליפים את הסרטונים הישנים של יום הולדת."},
   {"id":"game-maker","name":"🎙️ ממציאים משחק עם כל הגן","note":"סרטון 20 שנ' עם מוזיקה מקורית: בוחרים נושא → כל ילד אומר מילה → סבאבוקלי מגריל משחק → המרוץ. 4:5 לפייסבוק/וואטסאפ, 9:16 לסטורי."},
   {"id":"savta","name":"💛 סבים – ספר אישי לנכדים","note":"9 סרטונים 4:5 עם מוזיקה מקורית. כל סרטון מוביל לעמוד הסבים עם הספר שלו כבר בטופס (?book=), ונמדד בנפרד (utm_content).","link":"https://games.booqli.ai/savta/"},
   {"id":"dictation","name":"✏️ מאמן ההכתבה – כיתות א'–ג'","note":"סרטון 22 שנ' עם מוזיקה מקורית: מילים להכתבה? ← ההורה מקליד והניקוד נוסף לבד ← 5 משחקים ← שולחים לכל הכיתה בקישור אחד ← בחינם, בטוח לילדים, עובד גם בלי אינטרנט. 4:5 לפיד ולוואטסאפ, 9:16 לסטורי."},
@@ -145,9 +146,37 @@ ITEMS += [
   {"id":"kinder-3-photos","group":"kinder-send","topic":"kinder-book","title":"3. תמונות + סרטון תמונה טובה","kind":"video","ratio":"16:9","file":"../../kindergartens/video/photo.mp4","thumb":"../../kindergartens/video/photo.jpg","date":"2026-11-05","text":K3},
   {"id":"kinder-4-covers","group":"kinder-send","topic":"kinder-book","title":"4. כריכות + סרטון הכריכות","kind":"video","ratio":"16:9","file":"../../kindergartens/video/covers.mp4","thumb":"../../kindergartens/video/covers.jpg","date":"2026-11-05","text":K4},
 ]
+# ---- 6.11.2026: שני סרטוני יום ההולדת החדשים (במקום הישנים: savta-birthday והקיט לגנים שהוביל ל-booqli.ai) ----
+BD_PRIVATE = """🎂 ספר יום הולדת שהילד/ה הוא/היא הגיבור/ה!
+
+השם והפנים של הילד/ה בכל עמוד – ספר מודפס בכריכה קשה, עם ההקדשה שלכם.
+📷 מזמינים בשתי דקות: בוחרים ספר, שם ותמונה אחת – ושולחים.
+🎁 ובמתנה: booqli Games – מלא משחקים חינוכיים לילדים, בחינם.
+
+💚 משלמים רק אם אוהבים: קודם רואים את הסקיצה, ורק אם אוהבים – משלמים.
+
+👈 https://games.booqli.ai/savta/?book=birthday&utm_source=facebook&utm_medium=paid&utm_campaign=birthday_private#order"""
+BD_GAN = """🎂 ספר אישי לכל ילד בגן – כל ילד הגיבור של הספר שלו!
+
+📷 מעלים את כל התמונות בבת אחת, שם לכל ילד, נושא אחד לכל הגן – ושולחים. 5 דקות.
+🎁 ובמתנה לגן: קיט חגיגי ליום ההולדת – מערך 45 דק' שמכתיר את החוגג, משחקים להקרנה, כתר עם השם, כרטיס ברכה עם תמונה והודעה מוכנה להורים.
+
+💚 משלמים רק אם אוהבים: רואים את כל הספרים לפני שמשלמים.
+ככל שיותר ילדים – זול יותר.
+
+👈 https://games.booqli.ai/kindergartens/?utm_source=facebook&utm_medium=paid&utm_campaign=birthday_gan"""
+ITEMS = [x for x in ITEMS if x["id"] not in ("savta-birthday",)]
+for x in ITEMS:
+    if x["id"] == "kinder-1-first":
+        x["file"] = "birthday/booqli-gan-birthday-4x5.mp4"; x["thumb"] = "birthday/booqli-gan-birthday-4x5.jpg"; x["date"] = "2026-11-06"
+ITEMS = [
+  {"id":"birthday-private-4x5","group":"birthday","topic":"savta","title":"לפרטיים – ספר יום הולדת","kind":"video","ratio":"4:5","file":"birthday/booqli-private-birthday-4x5.mp4","thumb":"birthday/booqli-private-birthday-4x5.jpg","date":"2026-11-06","text":BD_PRIVATE},
+  {"id":"birthday-gan-4x5","group":"birthday","topic":"kinder-book","title":"לגנים – ספר לכל ילד + קיט חגיגי","kind":"video","ratio":"4:5","file":"birthday/booqli-gan-birthday-4x5.mp4","thumb":"birthday/booqli-gan-birthday-4x5.jpg","date":"2026-11-06","text":BD_GAN},
+] + ITEMS
 for it in ITEMS:
     p = os.path.join(M, it["file"]); assert os.path.exists(p), p
     it["bytes"] = os.path.getsize(p)
 ids = [i["id"] for i in ITEMS]; assert len(ids) == len(set(ids))
 json.dump({"version": time.strftime("%Y-%m-%d %H:%M"), "groups": GROUPS, "items": ITEMS}, open(os.path.join(M, "media.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("ok", len(ITEMS), "items", round(sum(i["bytes"] for i in ITEMS) / 1e6, 1), "MB")
+
