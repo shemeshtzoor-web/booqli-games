@@ -112,11 +112,11 @@ function getMarkQR(){
 /* הסימון הקבוע: מספר הספר + BOOQLI · booqli.ai + קוד QR לאתר. לא אובייקט – אי אפשר להזיז או למחוק. */
 var MARK_W = 62, MARK_H = 17, MARK_ICON = "../img/favicon-512.png";
 function markBox(pg){
-  if (pg === "c") return { x: CW - CBL - SAFE - MARK_W, y: CH - CBL - SAFE - MARK_H + 2 };  // פינה תחתונה בכריכה האחורית (מימין)
+  if (pg === "c") return { x: (SPINE1 + CW - CBL) / 2 - MARK_W / 2, y: CH - CBL - 30 - MARK_H };  // באמצע הכריכה האחורית, 3 ס"מ מעל קו החיתוך
   if (pg === 1) return { x: PG / 2 - MARK_W / 2, y: PG - BL - SAFE - MARK_H + 2 };          // תחתית עמוד 1, באמצע
   return null;
 }
-function drawMark(ctx, pg){
+function drawMark(ctx, pg, opt){
   var b = markBox(pg); if (!b || !P) return;
   if (!P.bid) P.bid = newBookId();
   var x = b.x, y = b.y, w = MARK_W, h = MARK_H, q = 13, pad = 2;
@@ -137,6 +137,14 @@ function drawMark(ctx, pg){
   ctx.fillText(P.bid, tx, cyy + 0.6);
   ctx.fillStyle = "#6b5a72"; ctx.font = "600 " + (6.5 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";
   ctx.fillText("BOOQLI · booqli.ai", tx, cyy + 4.4);
+  if (!(opt && opt.print)) {                                   // רק בעורך: מסגרת ותווית, כדי שלא יכתבו מתחת
+    ctx.setLineDash([1.2, 0.8]); ctx.strokeStyle = "rgba(193,54,113,.7)"; ctx.lineWidth = 0.35;
+    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(x, y, w, h, 2.5); ctx.stroke(); } else ctx.strokeRect(x, y, w, h);
+    ctx.setLineDash([]);
+    ctx.direction = "rtl"; ctx.textAlign = "center"; ctx.fillStyle = "rgba(193,54,113,.9)";
+    ctx.font = "700 3.2px Assistant, Arial, sans-serif";
+    ctx.fillText("מספר הספר – קבוע, לא לכתוב מתחתיו", x + w / 2, y - 1.2);
+  }
   ctx.restore();
 }
 function ensureBrand(){
@@ -347,7 +355,7 @@ function drawPage(ctx, pg, opt){
   var p = pageObj(pg);
   ctx.fillStyle = p.bg || "#FFFFFF"; ctx.fillRect(0, 0, pageW(pg), pageH(pg));
   p.items.forEach(function(it){ drawItem(ctx, it, opt); });
-  drawMark(ctx, pg);
+  drawMark(ctx, pg, opt);
 }
 function drawDisabled(ctx, x, w, h, label){
   ctx.fillStyle = "#E9E1E6"; ctx.fillRect(x, 0, w, h);
@@ -1093,6 +1101,12 @@ function checkBook(){
       var bad = badPlacement(pg, it);
       if (bad === "spine") errs.push(name + ": יש טקסט על השדרה – אסור.");
       else if (bad === "edge") errs.push(name + ": טקסט קרוב מדי לקצה ועלול להיחתך.");
+      var mb = markBox(pg);
+      if (mb && (it.type === "text" || it.type === "sticker")) {
+        var ib = itemBox(it);
+        if (ib.x1 > mb.x && ib.x0 < mb.x + MARK_W && ib.y1 > mb.y && ib.y0 < mb.y + MARK_H)
+          errs.push(name + ": יש " + (it.type === "text" ? "טקסט" : "מדבקה") + " מתחת למלבן של מספר הספר – הוא יוסתר. הזיזו אותו קצת.");
+      }
       if (lowRes(it, pg)) warns.push(name + ": תמונה באיכות נמוכה לגודל שלה – עלולה לצאת מטושטשת.");
     });
   });
