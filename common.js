@@ -83,7 +83,7 @@ function siteKidAllowed(href){
   var u; try { u = new URL(href, location.href); } catch (e) { return false; }
   if (u.origin !== location.origin) return false;
   var p = u.pathname;
-  if (/^\/kids(\/|$)/.test(p) || /^\/games\/[^/]+(\/|\/index\.html)?$/.test(p) || /^\/school\/(reading|dictation)(\/|\/index\.html)?$/.test(p) && !/[?&](sheet|p)=/.test(u.search) || p === "/offline.html") return true;
+  if (/^\/kids(\/|$)/.test(p) || /^\/games\/[^/]+(\/|\/index\.html)?$/.test(p) || /^\/school\/(reading|dictation|english)(\/|\/index\.html)?$/.test(p) && !/[?&](sheet|p)=/.test(u.search) || p === "/offline.html") return true;
   if (/^\/topics\/[^/]+(\/|\/index\.html)?$/.test(p)) return /[?&]play=1(&|$)/.test(u.search);
   return false;
 }
@@ -498,7 +498,7 @@ function siteJoinPopup(){
   var force = /[?&]join=1/.test(qs), st = null;
   /* רק באזורי התכנים: מערכים, משחקים, נושאים (שמש, 5.11.2026). לא בדף הבית ולא בעמודי ההזמנה – שם רואים קודם את הספר */
   if (!force && !/^\/(teachers|parents|kids|school|topics|games|library|my|g)\//.test(location.pathname)) return;
-  var kids = /\/(kids|school\/(reading|dictation))\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
+  var kids = /\/(kids|school\/(reading|dictation|english))\//.test(location.pathname) || sitePlayMode(), kidsOk = false;
   try { kidsOk = localStorage.getItem("booqli_kids_ok") === "1"; } catch (e) { kidsOk = true; }
   try { st = JSON.parse(localStorage.getItem("booqli_join") || "{}") || {}; } catch (e) { st = null; }
   var save = function(o){ try { localStorage.setItem("booqli_join", JSON.stringify(o)); } catch (e) {} };
@@ -732,6 +732,7 @@ window.SITE.menu = [
   { h: "🎒 כיתות א'–ג'", items: [
     { ic: "📖", t: "מסלול הקריאה: מהאותיות ועד קריאה מלאה", href: "/school/reading/", hot: true },
     { ic: "✏️", t: "מאמן ההכתבה: מילות השבוע", href: "/school/dictation/", hot: true },
+    { ic: "🇬🇧", t: "הכתבה באנגלית לכיתה ג'", href: "/school/english/", hot: true },
     { ic: "🎒", t: "כל התכנים לכיתות", href: "/school/" } ] },
   { h: "🎁 עוד מ-BOOQLI", items: [
     { ic: "🎁", t: "מתנות וספקיות לגן", href: "/gifts/" },
@@ -1051,7 +1052,7 @@ function siteMainNav(){
   if (document.getElementById("bq-brand")) return;
   var path = location.pathname, html = document.documentElement;
   html.classList.add("bq-brand");
-  if (/^\/(games|g)\/|^\/kids\/(play|animate)\/|^\/school\/(reading|dictation)\/|^\/topics\/game-maker\//.test(path)) html.classList.add("bq-play");
+  if (/^\/(games|g)\/|^\/kids\/(play|animate)\/|^\/school\/(reading|dictation|english)\/|^\/topics\/game-maker\//.test(path)) html.classList.add("bq-play");
   var he = "U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F",
       la = "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD";
   var face = function(fam, w){

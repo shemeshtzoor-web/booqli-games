@@ -1,9 +1,10 @@
 {
- "version": "c55920254c62",
- "bytes": 17749851,
+ "version": "1ca52693238d",
+ "bytes": 17742723,
  "fonts": [
   "https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap",
+  "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Andika:wght@400;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Secular+One&family=Assistant:wght@400;600;700&display=swap"
@@ -172,6 +173,9 @@
   "/qrcode.min.js",
   "/school/dictation/",
   "/school/dictation/app.js",
+  "/school/english/",
+  "/school/english/app.js",
+  "/school/english/words.js",
   "/school/reading/",
   "/school/reading/app.js",
   "/school/reading/data.js",

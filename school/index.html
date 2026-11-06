@@ -42,6 +42,7 @@
 .dictq em{font-style:normal;background:#FA57C4;color:#fff;border-radius:999px;padding:1px 10px;font-size:13px;font-family:Assistant,sans-serif;font-weight:800;vertical-align:middle}
 .dictq small{font-size:15px;color:#4b3a46}
 .dictq .go{background:#6B2FA3;color:#fff;border-radius:999px;padding:8px 14px;font-weight:800;white-space:nowrap}
+.engq{border-color:#CFE0FB}.engq b{color:#2F5FC4}.engq .go{background:#2F5FC4}
 @media (max-width:420px){.dictq{flex-wrap:wrap}.dictq .go{width:100%;text-align:center}}
 @media (max-width:420px){.quad{gap:8px}.quad a{padding:12px 10px;min-height:136px}.quad a b{font-size:17px}.quad a small{font-size:13px}}
 </style>
@@ -80,6 +81,11 @@
   <span class="t"><b>מאמן ההכתבה <em>חדש!</em></b><small>ההורה מכניס את מילות ההכתבה של השבוע (או מקבל קישור מהכיתה), והילד מתרגל במשחקים: בונים מילה, כתיב נכון, בלונים, כותבים מהזיכרון והכתבה אמיתית.</small></span>
   <span class="go">מתרגלים ←</span>
 </a>
+<a class="dictq engq" href="english/">
+  <span class="i" aria-hidden="true">🇬🇧</span>
+  <span class="t"><b>הכתבה באנגלית לכיתה ג' <em>חדש!</em></b><small>מכניסים את מילות ההכתבה באנגלית של השבוע. הטלפון מקריא באנגלית, ליד כל מילה פירוש בעברית ואימוג'י, והילד מתרגל ב-5 משחקים. ההוראות בעברית.</small></span>
+  <span class="go">מתרגלים ←</span>
+</a>
 <div class="tools"><label for="zsort">סדר לפי:</label><select id="zsort"></select><span class="count" id="zcount"></span></div>
 <div id="zone"></div>
 </main>
@@ -92,7 +98,7 @@
 <script src="../common.js"></script>
 <script src="../catalog.js"></script>
 <script>
-const LIST = CATALOG.filter(t => (t.aud.includes("s") || t.ages[1] >= 7) && t.id !== "school-reading" && t.id !== "school-dictation"); /* מסלול הקריאה ומאמן ההכתבה – למעלה */
+const LIST = CATALOG.filter(t => (t.aud.includes("s") || t.ages[1] >= 7) && t.id !== "school-reading" && t.id !== "school-dictation" && t.id !== "school-english"); /* מסלול הקריאה, מאמן ההכתבה והכתבה באנגלית – למעלה */
 const OPT = {};
 const SECTIONS = [
   {id:"open", title:"✨ פתוח עכשיו", filter: t => CAT.state(t) === "open" && !t.book, sort:"open"},
