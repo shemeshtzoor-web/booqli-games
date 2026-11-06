@@ -184,6 +184,48 @@ function asAll(){
   }); });
 }
 function asClear(){ return idb(STORE_AS, "readwrite", function(s){ s.clear(); }); }
+function kvDel(k){ return idb(STORE_KV, "readwrite", function(s){ s.delete(k); }); }
+function asDel(ids){ return ids.length ? idb(STORE_AS, "readwrite", function(s){ ids.forEach(function(id){ s.delete(id); }); }) : Promise.resolve(); }
+/* ---------- כמה ספרים (שמש, 6.11.2026): כל ספר נשמר לבד ("p:<מספר הספר>"), תמונה קטנה של הכריכה ב-"t:<מספר>".
+   התמונות של כל הספרים יושבות יחד (מזהה ייחודי לכל תמונה); תמונה נמחקת רק כשאף ספר כבר לא משתמש בה. */
+function bookKey(bid){ return "p:" + bid; }
+function kvAll(prefix){
+  return db().then(function(d){ return new Promise(function(res){
+    var out = [], t = d.transaction(STORE_KV, "readonly"), c = t.objectStore(STORE_KV).openCursor();
+    c.onsuccess = function(){ var cur = c.result; if (cur) { if (String(cur.key).indexOf(prefix) === 0) out.push({ key: cur.key, value: cur.value }); cur.continue(); } };
+    t.oncomplete = function(){ res(out); };
+    t.onerror = function(){ res(out); };
+  }); });
+}
+function listBooks(){
+  return kvAll("p:").then(function(r){ return r.map(function(x){ return x.value; }).filter(function(p){ return p && p.bid; }).sort(function(a, b){ return (b.updated || 0) - (a.updated || 0); }); });
+}
+/* ספר מהגרסה הקודמת (ספר אחד בשם "project") עובר לרשימה – בלי לאבד כלום */
+function migrateOld(){
+  return kvGet("project").then(function(old){
+    if (!old) return;
+    if (!old.bid) old.bid = newBookId();
+    return kvGet(bookKey(old.bid)).then(function(ex){ return ex ? null : kvSet(bookKey(old.bid), old); }).then(function(){ return kvDel("project"); });
+  }).catch(function(){});
+}
+function assetIdsOf(p){
+  var ids = {}, scan = function(items){ (items || []).forEach(function(i){ if (i.src && i.src.indexOf("a:") === 0) ids[i.src.slice(2)] = 1; }); };
+  scan(p.cover.items); for (var k in p.pages) scan(p.pages[k].items);
+  return Object.keys(ids);
+}
+/* מוחקים תמונות שאף ספר לא משתמש בהן (אחרי מחיקת ספר) */
+function cleanAssets(){
+  return Promise.all([listBooks(), asAll()]).then(function(r){
+    var keep = {}; r[0].forEach(function(p){ assetIdsOf(p).forEach(function(id){ keep[id] = 1; }); });
+    if (P) assetIdsOf(P).forEach(function(id){ keep[id] = 1; });
+    return asDel(Object.keys(r[1]).filter(function(id){ return !keep[id]; }));
+  });
+}
+var persistAsked = false;
+function askPersist(){   // מבקשים מהדפדפן לא למחוק את הספרים לבד כשחסר מקום
+  if (persistAsked) return; persistAsked = true;
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function(){}); } catch (e) {}
+}
 
 var saveT = null;
 function scheduleSave(){
@@ -195,7 +237,9 @@ function scheduleSave(){
 function saveNow(){
   if (!P) return Promise.resolve();
   P.updated = Date.now();
-  return kvSet("project", P).then(function(){ dirty = false; $("status").textContent = "✓ נשמר במחשב"; })
+  if (!P.bid) P.bid = newBookId();
+  askPersist();
+  return kvSet(bookKey(P.bid), P).then(function(){ dirty = false; $("status").textContent = "✓ נשמר במחשב"; })
     .catch(function(){ $("status").textContent = "⚠️ לא נשמר – שמרו גיבוי"; });
 }
 function loadAssetsFromDB(){
@@ -1010,7 +1054,7 @@ var SAVE_HELP =
   '<li>מנקים את היסטוריית הגלישה בדפדפן</li><li>עובדים בחלון גלישה בסתר</li>' +
   '<li>עוברים למחשב אחר או לדפדפן אחר (שם הספר פשוט לא יופיע)</li></ul></div>' +
   '<div class="box"><b>💾 כדי לא לאבד את העבודה:</b> לחצו מדי פעם על "שמירת גיבוי" (למעלה). יורד למחשב קובץ אחד עם כל הספר. כדי להמשיך, גם ממחשב אחר, לוחצים "פתיחת גיבוי" ובוחרים את הקובץ.</div>' +
-  '<p>💾 הספר נשמר בדפדפן במחשב הזה, ולכן כדאי לשמור גיבוי.</p>';
+  '<p>📚 <b>אפשר כמה ספרים:</b> לוחצים "הספרים שלי" (למעלה) – שם כל הספרים, וכל אחד נשמר לבד. ספר חדש לא מוחק ספר אחר.</p>';
 function showSaveHelp(after){
   var m = modal(SAVE_HELP + '<label style="display:flex;gap:8px;align-items:center;font-size:15px;margin-top:6px"><input type="checkbox" id="noMore"> לא להציג שוב במחשב הזה</label><div class="row"><button class="big-btn" id="okHelp">הבנתי, בואו נתחיל ←</button></div>', { sticky: true });
   m.querySelector("#okHelp").onclick = function(){
@@ -1052,33 +1096,53 @@ function download(blob, name){
 function saveBackup(){
   if (editingId) finishEdit();
   toast("מכינים קובץ גיבוי…");
-  var ids = usedAssets(), out = { app: "booqli-book", v: 1, saved: new Date().toISOString(), project: P, assets: {} };
-  Promise.all(ids.map(function(id){ var a = assets[id]; return a ? blobToData(a.blob).then(function(d){ out.assets[id] = { data: d, w: a.w, h: a.h }; }) : null; }))
-    .then(function(){
-      download(new Blob([JSON.stringify(out)], { type: "application/json" }), safeName() + ".booqli");
+  saveNow().then(function(){ return backupFile([P], safeName() + " " + P.bid); }).then(function(){
       lastBackup = Date.now(); editsSinceBackup = 0;
       toast("💾 הקובץ ירד למחשב (בתיקיית ההורדות). שמרו אותו במקום בטוח.");
       ev("book", "backup");
     });
+}
+/* קובץ גיבוי לספר אחד או לכמה ספרים. ספר אחד = כמו פעם (project), כמה = books[] */
+function backupFile(books, name){
+  return asAll().then(function(all){
+    var pack = function(p){
+      var o = { project: p, assets: {} };
+      return Promise.all(assetIdsOf(p).map(function(id){ var a = all[id]; return a ? blobToData(a.blob).then(function(d){ o.assets[id] = { data: d, w: a.w, h: a.h }; }) : null; })).then(function(){ return o; });
+    };
+    return Promise.all(books.map(pack));
+  }).then(function(packs){
+    var out = packs.length === 1 ? { app: "booqli-book", v: 1, saved: new Date().toISOString(), project: packs[0].project, assets: packs[0].assets }
+      : { app: "booqli-book", v: 2, saved: new Date().toISOString(), books: packs };
+    download(new Blob([JSON.stringify(out)], { type: "application/json" }), String(name).replace(/[\\/:*?"<>|]+/g, "") + ".booqli");
+  });
 }
 function openBackup(file){
   if (!file) return;
   var r = new FileReader();
   r.onload = function(){
     var o; try { o = JSON.parse(r.result); } catch (e) { o = null; }
-    if (!o || o.app !== "booqli-book" || !o.project) { toast("זה לא קובץ גיבוי של ספר BOOQLI 🙁"); return; }
-    var go2 = function(){
-      asClear().then(function(){
-        return Promise.all(Object.keys(o.assets || {}).map(function(id){
-          return fetch(o.assets[id].data).then(function(x){ return x.blob(); }).then(function(b){ return asPut(id, { blob: b, w: o.assets[id].w, h: o.assets[id].h }); });
-        }));
-      }).then(loadAssetsFromDB).then(function(){
-        P = o.project; ensureBrand(); lastBackup = Date.now(); editsSinceBackup = 0;
-        return saveNow();
-      }).then(function(){ openEditor(false); toast("📂 הספר נפתח מהגיבוי"); ev("book", "open-backup"); });
-    };
-    if (P && $("ed").classList.contains("hidden") === false) confirmBox("לפתוח את הגיבוי במקום הספר שפתוח עכשיו?", "הספר הנוכחי יוחלף. אם לא שמרתם ממנו גיבוי – כדאי לשמור קודם.", go2);
-    else go2();
+    var packs = o && o.app === "booqli-book" ? (o.books || (o.project ? [{ project: o.project, assets: o.assets }] : [])) : [];
+    packs = packs.filter(function(x){ return x && x.project && x.project.cover && x.project.pages; });
+    if (!packs.length) { toast("זה לא קובץ גיבוי של ספר BOOQLI 🙁"); return; }
+    packs.forEach(function(x){ if (!x.project.bid) x.project.bid = newBookId(); });
+    listBooks().then(function(have){
+      var ex = {}; have.forEach(function(p){ ex[p.bid] = p; });
+      var clash = packs.filter(function(x){ return ex[x.project.bid]; });
+      var go2 = function(){
+        Promise.all(packs.map(function(x){
+          return Promise.all(Object.keys(x.assets || {}).map(function(id){
+            return fetch(x.assets[id].data).then(function(b){ return b.blob(); }).then(function(b){ return asPut(id, { blob: b, w: x.assets[id].w, h: x.assets[id].h }); });
+          })).then(function(){ x.project.cover.items = x.project.cover.items.filter(function(i){ return i.type !== "brand"; }); return kvSet(bookKey(x.project.bid), x.project); });
+        })).then(loadAssetsFromDB).then(function(){
+          ev("book", "open-backup");
+          if (packs.length === 1) openBook(packs[0].project.bid, "📂 הספר נפתח מהגיבוי");
+          else { if (!$("ed").classList.contains("hidden")) exitEditor(); else renderBooks(); toast("📂 " + packs.length + " ספרים נוספו לרשימה \"הספרים שלי\""); }
+        });
+      };
+      if (clash.length) confirmBox(clash.length === 1 ? "הספר הזה כבר נמצא במחשב" : clash.length + " מהספרים כבר נמצאים במחשב",
+        "\"" + esc(clash[0].project.title || "הספר שלי") + "\"" + (clash.length > 1 ? " ועוד" : "") + " – הגרסה מהקובץ תחליף את מה שנמצא במחשב. שאר הספרים לא ייפגעו.", go2);
+      else go2();
+    });
   };
   r.readAsText(file);
 }
@@ -1233,7 +1297,10 @@ function custLines(){
     "\n📚 עותקים: " + c.copies + (c.notes ? "\n📝 " + c.notes : "");
 }
 function bookSummary(){
-  return "📖 ספר בעיצוב אישי – בקשה להצעת מחיר (לא הזמנה ולא תשלום)\n🔢 מספר הספר: " + P.bid + "\n📕 שם הספר: " + (P.title || "") +
+  var prev = P.sent || [];
+  return "📖 ספר בעיצוב אישי – בקשה להצעת מחיר (לא הזמנה ולא תשלום)\n" +
+    (prev.length ? "✏️ תיקון – גרסה " + (prev.length + 1) + " (הגרסה הקודמת נשלחה " + fmtDate(prev[prev.length - 1].at) + "). להחליף את הקבצים הקודמים בתיקייה הזאת.\n" : "") +
+    "🔢 מספר הספר: " + P.bid + "\n📕 שם הספר: " + (P.title || "") +
     "\n📄 כריכה קשה, 24 עמודים, 20×20 ס\"מ\n\n" + custLines() +
     "\n\n📎 קבצים: " + printFiles.cover.name + " (" + (printFiles.cover.size / 1048576).toFixed(1) + " MB), " + printFiles.pages.name + " (" + (printFiles.pages.size / 1048576).toFixed(1) + " MB)";
 }
@@ -1259,14 +1326,19 @@ function sendToBooqli(){
   var all = printFiles.cover.size + printFiles.pages.size;
   var show = function(n, t){ var p = Math.min(99, Math.round(n / t * 100)); $("pgBar").style.width = p + "%"; $("pgTxt").textContent = "נשלח " + p + "%…"; };
   if (!window.bqUp || !window.SITE || !SITE.driveScript) { sendFailed(); return; }
-  bqUp.start({ kind: "book", bid: P.bid, who: cust.first + " " + cust.last, consent: true }).then(function(r){
+  var ver = (P.sent || []).length + 1;
+  bqUp.start({ kind: "book", bid: P.bid, who: cust.first + " " + cust.last + (ver > 1 ? " · תיקון " + ver : ""), consent: true }).then(function(r){
     if (!r || !r.ok || !r.tok) throw new Error((r && r.error) || "start");
     var tok = r.tok;
     return upFile(tok, "cover", printFiles.cover, 0, all, show)
       .then(function(){ return upFile(tok, "pages", printFiles.pages, printFiles.cover.size, all, show); })
       .then(function(){ $("pgTxt").textContent = "שומרים את הפרטים…"; return bqUp.done(tok, bookSummary(), null); })
       .then(function(d){ if (!d || !d.ok) throw new Error("done"); });
-  }).then(function(){ sendFails = 0; ev("book", "sent"); showSend(true); })
+  }).then(function(){
+    sendFails = 0; ev("book", "sent");
+    P.sent = (P.sent || []).concat([{ at: Date.now() }]); saveNow();
+    showSend(true);
+  })
     .catch(function(e){ try { console.error(e); } catch (x) {} sendFails++; ev("book", "send-fail"); sendFailed(); });
 }
 function sendFailed(){
@@ -1277,6 +1349,7 @@ function sendFailed(){
 }
 function showSend(sent){
   var msg = "היי BOOQLI 👋\n" + (sent ? "שלחתי עכשיו מהאתר ספר בעיצוב אישי ואשמח להצעת מחיר להדפסה בכריכה קשה." : "עיצבתי ספר באתר booqli Games ואשמח להצעת מחיר להדפסה בכריכה קשה. השליחה מהאתר לא הצליחה – מצרפ/ת כאן את 2 הקבצים (כריכה ועמודים).") +
+    (sent && P.sent && P.sent.length > 1 ? "\n✏️ זה תיקון – גרסה " + P.sent.length + " של הספר." : "") +
     "\n🔢 מספר הספר: " + P.bid + "\n📕 שם הספר: " + (P.title || "") + "\n\n" + custLines();
   var canShare = false;
   try { canShare = !!(navigator.canShare && navigator.canShare({ files: [printFiles.cover, printFiles.pages] })); } catch (e) {}
@@ -1326,42 +1399,84 @@ function openEditor(fresh){
   var skipHelp = false; try { skipHelp = localStorage.getItem("booqli_book_help") === "1"; } catch (e) {}
   if (!skipHelp) showSaveHelp();
 }
+function coverThumb(){
+  try {
+    var c = document.createElement("canvas"); c.width = 280; c.height = Math.round(280 * CH / CW);
+    var ctx = c.getContext("2d"); ctx.setTransform(c.width / CW, 0, 0, c.height / CH, 0, 0);
+    drawPage(ctx, "c", { print: true });
+    return c.toDataURL("image/jpeg", 0.75);
+  } catch (e) { return ""; }
+}
 function exitEditor(){
   if (editingId) finishEdit();
-  saveNow().then(function(){
+  var t = coverThumb();
+  saveNow().then(function(){ return t ? kvSet("t:" + P.bid, t) : null; }).catch(function(){}).then(function(){
     $("ed").classList.add("hidden"); $("intro").classList.remove("hidden");
-    document.body.style.overflow = ""; closeModal(); checkResume();
+    document.body.style.overflow = ""; closeModal(); clearTimeout(saveT); clearTimeout(thumbT); clearTimeout(allThumbT); renderBooks();
   });
 }
 function start(kind){
-  var go3 = function(){
-    asClear().then(function(){
-      Object.keys(assets).forEach(function(k){ URL.revokeObjectURL(assets[k].url); }); assets = {};
-      P = kind === "sample" ? newSample() : newBlank(); P.bid = newBookId(); lastBackup = Date.now(); editsSinceBackup = 0;
-      return saveNow();
-    }).then(function(){ ev("book", "start-" + kind); openEditor(true); });
-  };
-  kvGet("project").then(function(old){
-    if (old) confirmBox("להתחיל ספר חדש?", "כבר יש ספר שמור במחשב הזה (\"" + esc(old.title || "") + "\"). ספר חדש יחליף אותו. אם אתם רוצים לשמור אותו – פתחו אותו קודם ולחצו \"שמירת גיבוי\".", go3);
-    else go3();
-  }).catch(go3);
+  P = kind === "sample" ? newSample() : newBlank(); P.bid = newBookId(); lastBackup = Date.now(); editsSinceBackup = 0;
+  saveNow().then(function(){ ev("book", "start-" + kind); openEditor(true); });
 }
-function checkResume(){
-  kvGet("project").then(function(p){
-    if (!p) { $("resumeBox").classList.add("hidden"); return; }
-    $("resumeName").textContent = "\"" + (p.title || "הספר שלי") + "\"";
-    $("resumeWhen").textContent = p.updated ? "(עודכן " + new Date(p.updated).toLocaleDateString("he-IL") + ")" : "";
-    $("resumeBox").classList.remove("hidden");
-  }).catch(function(){
-    $("resumeBox").classList.add("hidden");
+function openBook(bid, msg){
+  kvGet(bookKey(bid)).then(function(p){
+    if (!p) { toast("לא מצאנו את הספר הזה במחשב 🙁"); renderBooks(); return; }
+    P = p; ensureBrand(); lastBackup = Date.now(); editsSinceBackup = 0;
+    return loadAssetsFromDB().then(function(){ openEditor(false); if (msg) toast(msg); });
   });
 }
-function resume(){
-  kvGet("project").then(function(p){
+function copyBook(bid){
+  kvGet(bookKey(bid)).then(function(p){
     if (!p) return;
-    P = p; ensureBrand();
-    return loadAssetsFromDB().then(function(){ openEditor(false); });
+    var c = JSON.parse(JSON.stringify(p)); c.bid = newBookId(); delete c.sent;
+    c.title = ((p.title || "הספר שלי") + " – עותק").slice(0, 60); c.updated = Date.now();
+    return kvSet(bookKey(c.bid), c).then(function(){ return kvGet("t:" + bid); }).then(function(t){ return t ? kvSet("t:" + c.bid, t) : null; })
+      .then(function(){ ev("book", "copy"); renderBooks(); toast("📄 נוצר עותק עם מספר ספר חדש: " + c.bid); });
   });
+}
+function deleteBook(bid){
+  kvGet(bookKey(bid)).then(function(p){
+    if (!p) return;
+    confirmBox("למחוק את הספר \"" + esc(p.title || "הספר שלי") + "\"?", "הספר והתמונות שלו יימחקו מהמחשב הזה, ואי אפשר לבטל. שאר הספרים לא ייפגעו. רוצים ליתר ביטחון? לחצו קודם \"💾 גיבוי\" ליד הספר." + (p.sent && p.sent.length ? " (מה שכבר נשלח ל-BOOQLI נשאר אצלנו.)" : ""), function(){
+      kvDel(bookKey(bid)).then(function(){ return kvDel("t:" + bid); }).then(cleanAssets).then(loadAssetsFromDB)
+        .then(function(){ ev("book", "delete"); renderBooks(); toast("🗑️ הספר נמחק"); });
+    });
+  });
+}
+function backupBook(bid){
+  kvGet(bookKey(bid)).then(function(p){ if (!p) return; toast("מכינים קובץ גיבוי…"); return backupFile([p], (p.title || "הספר שלי") + " " + p.bid).then(function(){ ev("book", "backup"); toast("💾 הקובץ ירד למחשב (בתיקיית ההורדות)"); }); });
+}
+function backupAll(){
+  listBooks().then(function(all){ if (!all.length) return; toast("מכינים קובץ גיבוי של כל הספרים…"); return backupFile(all, "כל הספרים שלי BOOQLI " + new Date().toLocaleDateString("he-IL").replace(/\./g, "-")).then(function(){ ev("book", "backup-all"); toast("💾 קובץ אחד עם כל " + all.length + " הספרים ירד למחשב"); }); });
+}
+function fmtDate(t){ try { return new Date(t).toLocaleDateString("he-IL", { day: "numeric", month: "numeric", year: "2-digit" }) + " " + new Date(t).toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+function renderBooks(){
+  var box = $("booksBox"); if (!box) return;
+  migrateOld().then(listBooks).then(function(books){
+    if (!books.length) { box.classList.add("hidden"); box.innerHTML = ""; return; }
+    return Promise.all(books.map(function(p){ return kvGet("t:" + p.bid).catch(function(){ return null; }); })).then(function(th){
+      box.classList.remove("hidden");
+      box.innerHTML = '<h3>📚 הספרים שלי <small>(' + books.length + ')</small></h3>' +
+        '<p class="bk-note">כל ספר נשמר לבד – ספר חדש לא מוחק ספר אחר. הספרים שמורים <b>בדפדפן הזה, במחשב הזה</b>. כדי לא לאבד אותם (מחשב אחר, ניקוי הדפדפן) – שמרו קובץ גיבוי.</p>' +
+        '<div class="bk-list">' + books.map(function(p, i){
+          var sent = p.sent && p.sent.length ? '<span class="bk-sent">✅ נשלח ל-BOOQLI ' + fmtDate(p.sent[p.sent.length - 1].at) + (p.sent.length > 1 ? " (גרסה " + p.sent.length + ")" : "") + "</span>" : '<span class="bk-draft">✏️ עוד לא נשלח</span>';
+          return '<div class="bk"><button class="bk-img" data-open="' + esc(p.bid) + '" aria-label="לערוך">' + (th[i] ? '<img src="' + th[i] + '" alt="">' : "<span>📖</span>") + "</button>" +
+            '<div class="bk-info"><b>' + esc(p.title || "הספר שלי") + '</b><span dir="ltr" class="bk-id">' + esc(p.bid) + "</span>" +
+            '<small>עודכן ' + fmtDate(p.updated) + "</small>" + sent +
+            '<div class="bk-btns"><button class="big-btn green sm" data-open="' + esc(p.bid) + '">✏️ לערוך</button>' +
+            '<button class="sbtn" data-copy="' + esc(p.bid) + '">📄 שכפול</button>' +
+            '<button class="sbtn" data-bak="' + esc(p.bid) + '">💾 גיבוי</button>' +
+            '<button class="sbtn del" data-del="' + esc(p.bid) + '">🗑️</button></div></div></div>';
+        }).join("") + "</div>" +
+        (books.length > 1 ? '<button class="big-btn alt" id="bakAll">💾 קובץ גיבוי אחד לכל ' + books.length + " הספרים</button>" : "");
+      box.querySelectorAll("[data-open]").forEach(function(b){ b.onclick = function(){ openBook(b.getAttribute("data-open")); }; });
+      box.querySelectorAll("[data-copy]").forEach(function(b){ b.onclick = function(){ copyBook(b.getAttribute("data-copy")); }; });
+      box.querySelectorAll("[data-bak]").forEach(function(b){ b.onclick = function(){ backupBook(b.getAttribute("data-bak")); }; });
+      box.querySelectorAll("[data-del]").forEach(function(b){ b.onclick = function(){ deleteBook(b.getAttribute("data-del")); }; });
+      var ba = $("bakAll"); if (ba) ba.onclick = backupAll;
+    });
+  }).catch(function(){ box.classList.add("hidden"); });
 }
 
 // ---------- חיבור הכפתורים ----------
@@ -1373,7 +1488,6 @@ function init(){
   $("btnOpen").onclick = $("btnOpen2").onclick = function(){ $("fileBackup").value = ""; $("fileBackup").click(); };
   $("fileBackup").onchange = function(){ openBackup(this.files[0]); };
   $("filePhoto").onchange = function(){ onPhoto(this.files[0]); };
-  $("btnResume").onclick = resume;
   $("btnBackup").onclick = saveBackup;
   $("btnHelp").onclick = showHelp;
   $("btnExit").onclick = exitEditor;
@@ -1425,7 +1539,7 @@ function init(){
     if (editsSinceBackup > 15 && Date.now() - lastBackup > 20 * 60000) { lastBackup = Date.now() - 10 * 60000; toast("💾 עבדתם הרבה – כדאי לשמור גיבוי", ["שמירת גיבוי", saveBackup]); }
   }, 60000);
   if (!window.indexedDB) toast("הדפדפן הזה לא שומר את הספר. השתמשו בכרום או אדג', ושמרו גיבוי.");
-  checkResume();
+  renderBooks();
   ev("book", "page");
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();

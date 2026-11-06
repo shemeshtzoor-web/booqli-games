@@ -46,6 +46,24 @@ button{cursor:pointer}
 .big-btn{border:0;border-radius:999px;padding:13px 22px;font-weight:800;font-size:17px;background:var(--btn);color:#fff;box-shadow:0 3px 0 #A8237A}
 .big-btn.alt{background:#fff;color:var(--mag);border:2px solid var(--pink);box-shadow:none}
 .big-btn.green{background:var(--sage2);box-shadow:0 3px 0 #355E53}
+.books{background:var(--mint);border-radius:18px;padding:14px;margin-bottom:16px}
+.books h3,.new-h{margin:0 0 6px;font-family:Fredoka,Assistant,sans-serif;color:var(--sage2);font-size:20px}
+.new-h{color:var(--mag);margin-bottom:10px}.new-h small,.books h3 small{font-family:Assistant,sans-serif;font-size:14px;font-weight:600;color:#6b5a72}
+.bk-note{margin:0 0 10px;font-size:14.5px;line-height:1.5;color:#40524d}
+.bk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:10px;margin-bottom:10px}
+.bk{display:flex;gap:10px;background:#fff;border-radius:14px;padding:10px;align-items:flex-start;min-width:0}
+.bk-img{flex:none;width:120px;aspect-ratio:466/250;border:0;padding:0;border-radius:8px;overflow:hidden;background:#FDE6F6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:30px}
+.bk-img img{width:100%;height:100%;object-fit:cover;display:block}
+.bk-info{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.bk-info b{font-size:16.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bk-id{font-size:13px;color:#6b5a72;font-weight:700;text-align:right}
+.bk-info small{font-size:13px;color:#6b5a72}
+.bk-sent{font-size:13px;color:#2F7A4A;font-weight:700}.bk-draft{font-size:13px;color:#A8237A;font-weight:700}
+.bk-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.big-btn.sm{padding:7px 14px;font-size:14.5px}
+@media (max-width:420px){.bk{flex-direction:column;align-items:stretch}.bk-img{width:100%}}
+.sbtn{border:2px solid var(--line,#eadde6);background:#fff;border-radius:999px;padding:5px 10px;font-size:14px;font-weight:700;cursor:pointer}
+.sbtn.del{color:#C62828}
 .resume{background:var(--mint);border-radius:16px;padding:12px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
 .mobile-note{display:none;background:#FFF3D6;border:2px solid #F3C969;border-radius:16px;padding:14px;margin:14px 0;font-size:16.5px;line-height:1.5}
 .mobile-note .big-btn{margin-top:8px}
@@ -199,19 +217,17 @@ button{cursor:pointer}
 
   <div class="steps3">
     <div><b>1. מעצבים</b>מתחילים מהספר לדוגמה או מספר ריק. גוררים, מחליפים תמונות וכותבים.</div>
-    <div><b>2. שומרים</b>הכל נשמר לבד במחשב. כדאי לשמור גם קובץ גיבוי.</div>
-    <div><b>3. שולחים להדפסה</b>בסיום נוצרים שני קבצים (כריכה ועמודים) ושולחים לנו בוואטסאפ. נחזור אליכם עם הצעת מחיר.</div>
+    <div><b>2. שומרים</b>הכל נשמר לבד במחשב, ואפשר כמה ספרים. כדאי לשמור גם קובץ גיבוי.</div>
+    <div><b>3. שולחים להדפסה</b>בסיום ממלאים פרטים, והספר נשלח אלינו לבד. נחזור אליכם עם הצעת מחיר. אפשר לתקן ולשלוח שוב.</div>
   </div>
 
   <section class="start" id="startBox">
     <h2>בואו נתחיל</h2>
-    <div class="resume hidden" id="resumeBox">
-      <span>📚 יש לכם ספר שמור במחשב הזה: <b id="resumeName"></b> <small id="resumeWhen"></small></span>
-      <button class="big-btn green" id="btnResume">להמשיך לעבוד על הספר ←</button>
-    </div>
+    <div class="books hidden" id="booksBox"></div>
+    <h3 class="new-h">➕ ספר חדש <small>(לא מוחק את הספרים שכבר יש)</small></h3>
     <div class="choices">
-      <button class="big-btn" id="btnSample">✨ להתחיל מהספר לדוגמה</button>
-      <button class="big-btn alt" id="btnBlank">📄 ספר ריק</button>
+      <button class="big-btn" id="btnSample">✨ ספר חדש מהספר לדוגמה</button>
+      <button class="big-btn alt" id="btnBlank">📄 ספר ריק חדש</button>
       <button class="big-btn alt" id="btnOpen">📂 פתיחת קובץ גיבוי</button>
     </div>
     <p class="notice">💾 הספר נשמר בדפדפן במחשב הזה, ולכן כדאי לשמור גיבוי. המחיר נקבע בהצעה אישית בוואטסאפ.</p>
@@ -233,7 +249,7 @@ button{cursor:pointer}
     <button class="tbtn" id="btnBackup" title="מוריד קובץ אחד עם כל הספר">💾 שמירת גיבוי</button>
     <button class="tbtn" id="btnOpen2">📂 פתיחת גיבוי</button>
     <button class="tbtn" id="btnHelp">❓ עזרה</button>
-    <button class="tbtn" id="btnExit">🏠 יציאה</button>
+    <button class="tbtn" id="btnExit">📚 הספרים שלי</button>
     <button class="tbtn done" id="btnDone">✅ סיימתי – שליחה להדפסה</button>
   </header>
 
