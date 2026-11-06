@@ -227,11 +227,13 @@
     const card = c => { const t = topic(c.topic) || { ic: "📣", id: "" }, s = st[c.n] || c.status;
       return `<div class="card"${/^רץ/.test(s) ? ' style="border:2px solid #17733b"' : ""}><div class="row"><span class="pill ${/^רץ/.test(s) ? "g" : "w"}">${c.n}</span><h3 style="margin:0;flex:1">${t.ic} ${esc(c.name)}</h3><span class="pill">${esc(c.aud)}</span><span class="small mute">${esc(c.kind)}</span></div>
       <p class="small" style="margin:6px 0">${esc(c.note)}</p>
+      ${c.copy ? `<details style="margin:6px 0"><summary><b>⚙️ כל ההגדרות והטקסטים – להעתקה</b></summary>${c.copy.map(x => `<div style="margin:8px 0"><div class="row"><b style="flex:1">${esc(x.h)}</b>${cbtn(x.t)}</div><div class="txt" style="max-height:none;white-space:pre-wrap${/^https?:/.test(x.t) ? ";direction:ltr;text-align:left;font-size:13px" : ""}">${esc(x.t)}</div></div>`).join("")}</details>` : ""}
       ${c.link ? `<div class="txt" style="max-height:none;direction:ltr;text-align:left;font-size:13px">${esc(c.link)}</div><div class="row">${cbtn(c.link, "📋 להעתיק את הקישור למודעה")}${c.measure ? `<span class="small mute">בדוח: 🚪 ${esc(c.measure)}</span>` : ""}</div>` : ""}
-      <div class="row" style="margin-top:6px"><label class="small">מצב: <select data-camp="${c.n}">${[c.status, "רץ", "רץ – לבדוק!", "מושהה", "בהמתנה", "הסתיים", s].filter((v, i, a) => v && a.indexOf(v) === i).map(o => `<option ${o === s ? "selected" : ""}>${o}</option>`).join("")}</select></label>
+      <div class="row" style="margin-top:6px"><label class="small">מצב: <select data-camp="${c.n}">${[c.status, "מוכן להעלאה", "רץ", "רץ – לבדוק!", "מושהה", "בהמתנה", "הסתיים", s].filter((v, i, a) => v && a.indexOf(v) === i).map(o => `<option ${o === s ? "selected" : ""}>${o}</option>`).join("")}</select></label>
       ${t.id ? `<button class="btn sm o" data-gotopic="${t.id}">הטקסטים והתמונה של המודעה ←</button>` : ""}</div></div>`; };
-    const all = KIT.campaigns, run = all.filter(c => /^רץ/.test(st[c.n] || c.status)), rest = all.filter(c => !/^רץ/.test(st[c.n] || c.status));
+    const all = KIT.campaigns, run = all.filter(c => /^רץ/.test(st[c.n] || c.status)), ready = all.filter(c => /^מוכן/.test(st[c.n] || c.status)), rest = all.filter(c => !/^(רץ|מוכן)/.test(st[c.n] || c.status));
     return `<h1>📣 הקמפיינים בממומן</h1><p class="mute"><b>${run.length} רצים עכשיו.</b> מודדים לפי מה שהם מביאים בסוף (פנייה, הרשמה), לא לפי מחיר לכניסה. את הכניסות מכל מודעה רואים ב"📊 מדידה" ← 🚪.</p>
+${ready.length ? `<h2>🚀 מוכנים להעלאה</h2>${ready.map(card).join("")}` : ""}
       <h2>🟢 רץ עכשיו</h2>${run.map(card).join("") || '<div class="card">אין קמפיין פעיל.</div>'}
       <details class="card"><summary><b>💤 מושהים ורעיונות לעתיד (${rest.length})</b></summary>${rest.map(card).join("")}</details>`;
   }

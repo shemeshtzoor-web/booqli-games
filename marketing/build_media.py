@@ -177,6 +177,8 @@ for x in ITEMS:
 ITEMS = [
   {"id":"birthday-private-4x5","group":"birthday","topic":"savta","title":"לפרטיים – ספר יום הולדת","kind":"video","ratio":"4:5","file":"birthday/booqli-private-birthday-4x5.mp4","thumb":"birthday/booqli-private-birthday-4x5.jpg","date":"2026-11-06","text":BD_PRIVATE},
   {"id":"birthday-gan-4x5","group":"birthday","topic":"kinder-book","title":"לגנים – ספר לכל ילד + קיט חגיגי","kind":"video","ratio":"4:5","file":"birthday/booqli-gan-birthday-4x5.mp4","thumb":"birthday/booqli-gan-birthday-4x5.jpg","date":"2026-11-06","text":BD_GAN},
+  {"id":"birthday-private-1x1","group":"birthday","topic":"savta","title":"לפרטיים – תמונה ריבועית למודעה","kind":"image","ratio":"1:1","file":"birthday/booqli-private-birthday-1x1.jpg","thumb":"birthday/booqli-private-birthday-1x1.jpg","date":"2026-11-06","text":BD_PRIVATE},
+  {"id":"birthday-gan-1x1","group":"birthday","topic":"kinder-book","title":"לגנים – תמונה ריבועית למודעה","kind":"image","ratio":"1:1","file":"birthday/booqli-gan-birthday-1x1.jpg","thumb":"birthday/booqli-gan-birthday-1x1.jpg","date":"2026-11-06","text":BD_GAN},
 ] + ITEMS
 for it in ITEMS:
     p = os.path.join(M, it["file"]); assert os.path.exists(p), p

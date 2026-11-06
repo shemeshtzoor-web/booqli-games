@@ -1347,7 +1347,8 @@ document.querySelectorAll('a[href^="https://www.booqli.ai"]').forEach(a => {
   a.target = "_blank"; a.rel = "noopener";
 });
 document.querySelectorAll(".js-wa").forEach(a => {
-  a.href = "https://wa.me/972555549331?text=" + encodeURIComponent("היי BOOQLI, אשמח לפרטים על ספרים אישיים לגן 🙂");
+  const fromAd = /^birthday/.test(new URLSearchParams(location.search).get("utm_campaign") || ""); /* ממודעת יום ההולדת (6.11.2026) */
+  a.href = "https://wa.me/972555549331?text=" + encodeURIComponent(fromAd ? "היי BOOQLI, ראיתי את המודעה של ספר יום הולדת לכל ילד בגן 🎂 אשמח לפרטים" : "היי BOOQLI, אשמח לפרטים על ספרים אישיים לגן 🙂");
   a.target = "_blank"; a.rel = "noopener";
 });
 document.addEventListener("click", e => {

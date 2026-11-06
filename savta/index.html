@@ -343,7 +343,8 @@ const SRC = (() => { try { const q = new URLSearchParams(location.search); retur
 const ev = (k, n) => { try { siteEvent(k, n); } catch (e) {} };
 
 /* וואטסאפ "שאלה?" */
-const waQ = "שלום BOOQLI 💛 יש לי שאלה על ספר אישי:";
+/* מגיעים ממודעה של ספר יום ההולדת (6.11.2026) – ההודעה בוואטסאפ אומרת מאיפה באו */
+const waQ = /^birthday/.test(new URLSearchParams(location.search).get("utm_campaign") || "") ? "שלום BOOQLI 💛 ראיתי את המודעה של ספר יום ההולדת 🎂 ויש לי שאלה:" : "שלום BOOQLI 💛 יש לי שאלה על ספר אישי:";
 document.querySelectorAll(".js-wa-sv").forEach(a => { a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(waQ); a.addEventListener("click", () => ev("savta-wa", a.dataset.where || "")); });
 
 /* לפני ← אחרי (כרטיסיות רצות) */
