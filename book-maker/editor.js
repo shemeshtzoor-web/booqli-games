@@ -544,7 +544,7 @@ function drawOverlay(){
         ov.appendChild(b);
       } else if (it.hint) {
         var h = document.createElement("div"); h.className = "hint";
-        h.textContent = it.hint === "text" ? "✏️ לחצו פעמיים לשינוי הטקסט" : "🔄 לחצו פעמיים להחלפת התמונה";
+        h.textContent = it.hint === "text" ? (isM() ? "✏️ לחצו לשינוי הטקסט" : "✏️ לחצו פעמיים לשינוי הטקסט") : (isM() ? "🔄 לחצו להחלפת התמונה" : "🔄 לחצו פעמיים להחלפת התמונה");
         h.style.left = cx + "px"; h.style.top = (it.hint === "text" ? Math.max(10, it.y * ppm - 13) : cy) + "px"; h.style.transform = "translate(-50%,-50%)";
         ov.appendChild(h);
       }
@@ -558,7 +558,7 @@ function drawOverlay(){
   s.style.width = it.w * ppm + "px"; s.style.height = it.h * ppm + "px";
   s.style.transform = "rotate(" + (it.rot || 0) + "deg)";
   var hs = it.type === "text" ? ["nw", "ne", "sw", "se", "e", "w"] : ["nw", "ne", "sw", "se"];
-  if (!it.locked) {
+  if (!it.locked && !(isM() && it.type === "img" && !imgMove && lastPT === "touch")) {
     hs.forEach(function(k){ var d = document.createElement("div"); d.className = "h " + k; d.dataset.h = k; s.appendChild(d); });
     var st = document.createElement("div"); st.className = "stem"; s.appendChild(st);
     var r = document.createElement("div"); r.className = "h rot"; r.dataset.h = "rot"; r.title = "סיבוב"; s.appendChild(r);
@@ -929,7 +929,7 @@ function renderProps1(){
       var zr = document.createElement("input"); zr.type = "range"; zr.min = 1; zr.max = 3; zr.step = 0.02; zr.value = it.zoom || 1;
       zr.oninput = function(){ setProp("zoom", +zr.value); };
       box.appendChild(row("זום", zr));
-      box.appendChild(btn(panMode ? "✅ סיימתי להזיז" : "✋ להזיז את התמונה בתוך המסגרת", function(){ panMode = !panMode; renderProps(); }, "wide"));
+      box.appendChild(btn(panMode ? "✅ סיימתי להזיז" : "✋ להזיז את התמונה בתוך המסגרת", function(){ panMode = !panMode; imgMove = false; renderProps(); if (panMode && isM()) { mSheet(null); toast("גררו את התמונה כדי לבחור איזה חלק ממנה רואים"); } }, "wide"));
       if (panMode) { var pm = document.createElement("div"); pm.className = "empty-props"; pm.textContent = "גררו את התמונה כדי לבחור איזה חלק ממנה רואים."; box.appendChild(pm); }
     }
     var cl = document.createElement("div"); cl.className = "seg";
@@ -1023,7 +1023,7 @@ function renderThumb(v){
 }
 function go(v){
   if (editingId) finishEdit();
-  view = Math.max(0, Math.min(NSPREADS, v)); sel = null; panMode = false;
+  view = Math.max(0, Math.min(NSPREADS, v)); sel = null; panMode = false; imgMove = false;
   activePg = targetPageDefault();
   if (!go.keep) mSlot = view === 0 ? 0 : activePg;
   document.querySelectorAll(".th").forEach(function(t){ t.classList.toggle("on", +t.dataset.v === view); });
@@ -1080,9 +1080,9 @@ function showSaveHelp(after){
 function showHelp(){
   var m = modal('<h2>❓ עזרה</h2><ul>' + (isM() ?
     '<li><b>בחירה:</b> לחיצה על תמונה, טקסט או מדבקה. למטה מופיעים הכלים שלה, ו"🎨 עיצוב" פותח את כל האפשרויות.</li>' +
-    '<li><b>הזזה:</b> גוררים את מה שנבחר. <b>הגדלה וסיבוב:</b> שתי אצבעות על מה שנבחר, או העיגולים בפינות.</li>' +
+    '<li><b>הזזה:</b> גוררים טקסט, מדבקה או צורה. <b>הגדלה וסיבוב:</b> שתי אצבעות על מה שנבחר, או העיגולים בפינות.</li>' +
     '<li><b>טקסט:</b> לחיצה על טקסט שנבחר – כותבים. "✏️ טקסט" למטה מוסיף טקסט חדש.</li>' +
-    '<li><b>תמונה:</b> "🔄 להחליף" או לחיצה כפולה. "✋ להזיז בפנים" – בוחרים איזה חלק מהתמונה רואים.</li>' +
+    '<li><b>תמונה:</b> לחיצה על תמונה – בוחרים תמונה אחרת מהטלפון, והיא נכנסת לאותו מקום. כדי להזיז או להגדיל: "↔️ להזיז". איזה חלק מהתמונה רואים – ב"🎨 עיצוב".</li>' +
     '<li><b>מעבר בין עמודים:</b> מחליקים ימינה/שמאלה, החצים בצדדים, או הפס התחתון. <b>זום:</b> שתי אצבעות על מקום ריק.</li>' :
     '') + (isM() ? '' :
     '<li><b>בחירה:</b> לוחצים על תמונה, טקסט או מדבקה.</li>' +
@@ -1529,7 +1529,7 @@ function renderBooks(){
    "מקומות" (slots) בטלפון: 0 = כריכה קדמית, 1–24 = העמודים, 25 = כריכה אחורית. */
 var MQ = window.matchMedia ? window.matchMedia("(max-width:820px),(max-height:500px)") : { matches: false };
 function isM(){ return !!MQ.matches; }
-var mSlot = 0, lastPT = "", touches = {}, pinch = null, pan = null, tap = null, lastTap = null, pinchRaf = 0;
+var imgMove = false, mSlot = 0, lastPT = "", touches = {}, pinch = null, pan = null, tap = null, lastTap = null, pinchRaf = 0;
 function slotView(i){ return i === 0 || i === NPAGES + 1 ? 0 : viewOf(i); }
 function slotRange(i){
   if (i === 0) return [0, (SPINE0 + SPINE1) / 2];
@@ -1593,15 +1593,15 @@ function mUpdate(){
   if (it.type === "text") bar.appendChild(mTab("✏️", "לכתוב", function(){ startEdit(sel.pg, it); }));
   if (it.type === "img") {
     bar.appendChild(mTab(it.src ? "🔄" : "📷", it.src ? "להחליף" : "תמונה", function(){ pickPhoto({ pg: sel.pg, id: it.id }); }));
-    if (it.src && it.fit !== "stretch") bar.appendChild(mTab(panMode ? "✅" : "✋", panMode ? "סיימתי" : "להזיז בפנים", function(){
-      panMode = !panMode; renderProps();
-      if (panMode) toast("גררו את התמונה כדי לבחור איזה חלק ממנה רואים");
-    }, panMode ? "on" : ""));
+    bar.appendChild(mTab(imgMove || panMode ? "✅" : "↔️", imgMove || panMode ? "סיימתי" : "להזיז", function(){
+      if (panMode) panMode = false; else imgMove = !imgMove; renderProps(); requestDraw();
+      if (imgMove) toast("גוררים כדי להזיז · שתי אצבעות – להגדיל ולסובב");
+    }, imgMove || panMode ? "on" : ""));
   }
   bar.appendChild(mTab("🎨", "עיצוב", function(){ mSheet(mSheetIs("props") ? null : "props"); }, mSheetIs("props") ? "on" : ""));
   if (it.type !== "img") bar.appendChild(mTab("📑", "שכפול", dupSel));
   bar.appendChild(mTab("🗑️", "מחיקה", delSel, "del"));
-  bar.appendChild(mTab("✓", "סיום", function(){ sel = null; panMode = false; renderProps(); requestDraw(); }));
+  bar.appendChild(mTab("✓", "סיום", function(){ sel = null; panMode = false; imgMove = false; renderProps(); requestDraw(); }));
 }
 function mStartEdit(pg, it){
   if ($("mText")) finishEdit();
@@ -1640,7 +1640,15 @@ function onStageDown(e){
   tap = { t: Date.now(), x: e.clientX, y: e.clientY, moved: false, h: null, wasSel: false };
   if (hnd && it) { tap = null; onDown(e); return; }               // ידיות: הגדלה / סיבוב
   var h = hitTouch(e.clientX, e.clientY); tap.h = h;
-  if (h && it && h.it.id === it.id && viewOf(sel.pg) === view && !it.locked) { tap.wasSel = true; onDown(e); return; } // גרירה של מה שנבחר
+  var isSel = !!(h && it && h.it.id === it.id && viewOf(sel.pg) === view); tap.wasSel = isSel;
+  // טקסט, מדבקה, צורה: גוררים מיד (גם בלי לבחור קודם). תמונה נשארת במקום – זזה רק אחרי "↔️ להזיז" (או "להזיז בפנים")
+  if (h && !h.it.locked) {
+    var exact = (function(){ var q = xyToMM(e.clientX, e.clientY), x = hit(q.x, q.y); return x && x.it.id === h.it.id; })();
+    if (exact && (h.it.type !== "img" || (isSel && (imgMove || panMode)))) {
+      if (!isSel) { imgMove = false; panMode = false; }
+      onDown(e); return;
+    }
+  }
   var st = $("stage");
   pan = { id: e.pointerId, x: e.clientX, y: e.clientY, sl: st.scrollLeft, stp: st.scrollTop };   // אחרת: גלילה / החלקה לעמוד הבא
 }
@@ -1665,16 +1673,17 @@ function tEnd(e){
 }
 function onTap(t){
   var h = t.h, now = Date.now();
-  if (!h) { lastTap = null; if (sel) { sel = null; panMode = false; renderProps(); requestDraw(); } return; }
+  if (!h) { lastTap = null; if (sel) { sel = null; panMode = false; imgMove = false; renderProps(); requestDraw(); } return; }
   if (h.it.locked) { toast("הלוגו של BOOQLI קבוע בגב הכריכה 💗"); return; }
   var dbl = lastTap && lastTap.id === h.it.id && now - lastTap.t < 450;
   lastTap = { id: h.it.id, t: now };
   activePg = h.pg;
   if (view === 0) lastCoverSide = xyToMM(t.x, t.y).x > (SPINE0 + SPINE1) / 2 ? "back" : "front";
-  if (!sel || sel.id !== h.it.id) panMode = false;
+  if (!sel || sel.id !== h.it.id) { panMode = false; imgMove = false; }
   sel = { pg: h.pg, id: h.it.id };
   if (h.it.type === "text" && (t.wasSel || dbl)) { lastTap = null; startEdit(h.pg, h.it); return; }   // לחיצה על טקסט שכבר נבחר = כותבים
-  if (h.it.type === "img" && dbl && !panMode) { lastTap = null; renderProps(); requestDraw(); pickPhoto({ pg: h.pg, id: h.it.id }); return; }
+  // תמונה (שמש, 6.11.2026): לחיצה = קודם כל מציעים להחליף – נפתחת בחירת תמונה מהטלפון. התמונה החדשה נכנסת לאותה מסגרת ונשארת במקום.
+  if (h.it.type === "img" && !imgMove && !panMode) { lastTap = null; renderProps(); requestDraw(); pickPhoto({ pg: h.pg, id: h.it.id }); return; }
   renderProps(); requestDraw();
 }
 function startPinch(){
@@ -1723,7 +1732,7 @@ function mInit(){
   document.querySelectorAll("#more [data-click]").forEach(function(b){ b.onclick = function(){ var id = b.getAttribute("data-click"); if (!/^z/.test(id)) mSheet(null); $(id).click(); }; });
   // אחרי הוספה מהמגירה – סוגרים אותה כדי לראות את מה שנוסף (צבע רקע – נשארים, אפשר לנסות כמה)
   $("tools").addEventListener("click", function(e){ if (isM() && e.target.closest(".add,.stk button")) setTimeout(function(){ mSheet(null); }, 0); });
-  var mi = $("mInfo"); if (mi) mi.innerHTML = "👆 <b>לחיצה</b> בוחרת · <b>גרירה</b> של מה שנבחר מזיזה · <b>שתי אצבעות</b> על מה שנבחר – מגדילות ומסובבות, בשאר המקום – זום · <b>החלקה</b> ימינה/שמאלה – עמוד הבא/הקודם · לחיצה על טקסט שנבחר – כותבים.";
+  var mi = $("mInfo"); if (mi) mi.innerHTML = "👆 <b>לחיצה על תמונה</b> – מחליפים אותה (להזזה: ↔️ להזיז) · <b>גרירה</b> של טקסט, מדבקה או צורה מזיזה · <b>שתי אצבעות</b> על מה שנבחר – מגדילות ומסובבות, בשאר המקום – זום · <b>החלקה</b> ימינה/שמאלה – עמוד הבא/הקודם · לחיצה על טקסט שנבחר – כותבים.";
   var onMQ = function(){ if (!P || $("ed").classList.contains("hidden")) return; if (editingId) finishEdit(); zoom = 1; mSheet(null); buildThumbs(); renderProps(); fit(); };
   if (MQ.addEventListener) MQ.addEventListener("change", onMQ); else if (MQ.addListener) MQ.addListener(onMQ);
 }
