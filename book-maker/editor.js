@@ -1,5 +1,5 @@
 /* booqli Games – עורך "הספר שלכם בכריכה קשה"
-   הכל קורה בדפדפן. הספר נשמר ב-IndexedDB במחשב של המשתמשת, ואפשר להוריד/לפתוח קובץ גיבוי (.booqli).
+   הכל קורה בדפדפן. הספר נשמר ב-IndexedDB במכשיר של המשתמשת (מחשב או טלפון), ואפשר להוריד/לפתוח קובץ גיבוי (.booqli).
    מידות (מ"מ): עמוד פנימי 206×206 (200 + 3 בליד מכל צד), כריכה 466×250 (426×210 + 20 בליד מכל צד).
    כריכה (מבט מבחוץ, פרוסה): קדמית משמאל · שדרה + שטח מת באמצע · אחורית מימין. בשדרה אסור טקסט.
    24 עמודים. תצוגה בכפולות: כפולה 1 = [פנים הכריכה | עמוד 1], ואז 2–3 ... 22–23, ובסוף [24 | פנים הכריכה האחורית].
@@ -239,7 +239,7 @@ function saveNow(){
   P.updated = Date.now();
   if (!P.bid) P.bid = newBookId();
   askPersist();
-  return kvSet(bookKey(P.bid), P).then(function(){ dirty = false; $("status").textContent = "✓ נשמר במחשב"; })
+  return kvSet(bookKey(P.bid), P).then(function(){ dirty = false; $("status").textContent = "✓ נשמר"; })
     .catch(function(){ $("status").textContent = "⚠️ לא נשמר – שמרו גיבוי"; });
 }
 function loadAssetsFromDB(){
@@ -468,17 +468,28 @@ function requestDraw(){ if (drawReq) return; drawReq = true; requestAnimationFra
 function draw(){
   if (!P) return;
   var cv = $("cv"), dpr = window.devicePixelRatio || 1, W = viewW(), H = viewH();
+  if (isM()) dpr = Math.min(dpr, 2);
+  dpr = Math.min(dpr, 8000 / Math.max(1, W * ppm), 8000 / Math.max(1, H * ppm));
   cv.width = Math.round(W * ppm * dpr); cv.height = Math.round(H * ppm * dpr);
   cv.style.width = W * ppm + "px"; cv.style.height = H * ppm + "px";
   var ctx = cv.getContext("2d");
   ctx.setTransform(ppm * dpr, 0, 0, ppm * dpr, 0, 0);
-  drawView(ctx, view, { guides: true, skip: editingId });
+  drawView(ctx, view, { guides: true, skip: isM() ? null : editingId });
   drawOverlay();
 }
 
 // ---------- גודל התצוגה ----------
-function fit(){
-  var st = $("stage"), aw = st.clientWidth - 30, ah = st.clientHeight - 70;
+function fit(noCenter){
+  var st = $("stage");
+  if (isM()) {
+    var mw = st.clientWidth - 12, mh = st.clientHeight - 12;
+    ppm = Math.max(0.2, Math.min(mw / (viewW() / 2), mh / viewH())) * zoom;
+    $("zVal").textContent = Math.round(zoom * 100) + "%";
+    st.style.overflow = ""; st.style.justifyContent = "";
+    draw(); if (!noCenter) centerSlot(); mLabel();
+    return;
+  }
+  var aw = st.clientWidth - 30, ah = st.clientHeight - 70;
   ppm = Math.max(0.5, Math.min(aw / viewW(), ah / viewH())) * zoom;
   $("zVal").textContent = Math.round(zoom * 100) + "%";
   st.style.overflow = zoom > 1 ? "auto" : "hidden";
@@ -709,6 +720,7 @@ function drawGuides(){
 // ---------- עריכת טקסט במקום ----------
 function startEdit(pg, it){
   if (it.type !== "text") return;
+  if (isM()) { mStartEdit(pg, it); return; }
   editingId = it.id; sel = { pg: pg, id: it.id };
   var ta = document.createElement("textarea"); ta.id = "textEdit";
   var off = pgOffset(pg);
@@ -732,6 +744,7 @@ function startEdit(pg, it){
 function finishEdit(){
   var ta = $("textEdit"); if (!editingId) return;
   editingId = null; if (ta) ta.remove();
+  var mt = $("mText"); if (mt) mt.remove();
   commit(); renderProps(); requestDraw();
 }
 
@@ -861,7 +874,8 @@ function swatchRow(list, cur, fn){
 }
 function row(label, el){ var r = document.createElement("div"); r.className = "prop-row"; if (label) { var l = document.createElement("label"); l.textContent = label; r.appendChild(l); } r.appendChild(el); return r; }
 function btn(txt, fn, cls){ var b = document.createElement("button"); b.className = "tbtn " + (cls || ""); b.textContent = txt; b.onclick = fn; return b; }
-function renderProps(){
+function renderProps(){ renderProps1(); mUpdate(); }
+function renderProps1(){
   var box = $("props"); box.innerHTML = "";
   var it = selItem();
   if (!it || viewOf(sel.pg) !== view) {
@@ -1001,7 +1015,7 @@ function buildThumbs(){
 function renderThumb(v){
   var b = document.querySelector('.th[data-v="' + v + '"]'); if (!b) return;
   var c = b.querySelector("canvas"), save = view; view = v;
-  var W = viewW(), H = viewH(), k = 112 / W, dpr = window.devicePixelRatio || 1;
+  var W = viewW(), H = viewH(), k = (isM() ? 74 : 112) / W, dpr = window.devicePixelRatio || 1;
   c.width = Math.round(W * k * dpr); c.height = Math.round(H * k * dpr); c.style.width = W * k + "px"; c.style.height = H * k + "px";
   var ctx = c.getContext("2d"); ctx.setTransform(k * dpr, 0, 0, k * dpr, 0, 0);
   drawView(ctx, v, { guides: false });
@@ -1011,6 +1025,7 @@ function go(v){
   if (editingId) finishEdit();
   view = Math.max(0, Math.min(NSPREADS, v)); sel = null; panMode = false;
   activePg = targetPageDefault();
+  if (!go.keep) mSlot = view === 0 ? 0 : activePg;
   document.querySelectorAll(".th").forEach(function(t){ t.classList.toggle("on", +t.dataset.v === view); });
   var cur = document.querySelector(".th.on"); if (cur) cur.scrollIntoView({ inline: "center", block: "nearest" });
   refreshAll();
@@ -1049,27 +1064,33 @@ function hideToast(){ clearTimeout(toastT); var t = $("toast"); if (t) t.remove(
 
 var SAVE_HELP =
   '<h2>📌 לפני שמתחילים: איך הספר שלכם נשמר</h2>' +
-  '<p>כל שינוי נשמר אוטומטית בדפדפן, <b>במחשב הזה</b>. אפשר לסגור ולחזור מתי שרוצים, מאותו מחשב ואותו דפדפן.</p>' +
+  '<p>כל שינוי נשמר אוטומטית בדפדפן, <b>במכשיר הזה</b> (מחשב או טלפון). אפשר לסגור ולחזור מתי שרוצים, מאותו מכשיר ואותו דפדפן.</p>' +
   '<div class="warn"><b>שימו לב, הספר יימחק אם:</b><ul>' +
   '<li>מנקים את היסטוריית הגלישה בדפדפן</li><li>עובדים בחלון גלישה בסתר</li>' +
-  '<li>עוברים למחשב אחר או לדפדפן אחר (שם הספר פשוט לא יופיע)</li></ul></div>' +
-  '<div class="box"><b>💾 כדי לא לאבד את העבודה:</b> לחצו מדי פעם על "שמירת גיבוי" (למעלה). יורד למחשב קובץ אחד עם כל הספר. כדי להמשיך, גם ממחשב אחר, לוחצים "פתיחת גיבוי" ובוחרים את הקובץ.</div>' +
-  '<p>📚 <b>אפשר כמה ספרים:</b> לוחצים "הספרים שלי" (למעלה) – שם כל הספרים, וכל אחד נשמר לבד. ספר חדש לא מוחק ספר אחר.</p>';
+  '<li>עוברים למכשיר אחר או לדפדפן אחר (שם הספר פשוט לא יופיע)</li></ul></div>' +
+  '<div class="box"><b>💾 כדי לא לאבד את העבודה:</b> לחצו מדי פעם על "שמירת גיבוי" (למעלה; בטלפון – ב"⋯ עוד" למטה). יורד קובץ אחד עם כל הספר. כדי להמשיך, גם ממכשיר אחר, לוחצים "פתיחת גיבוי" ובוחרים את הקובץ.</div>' +
+  '<p>📚 <b>אפשר כמה ספרים:</b> לוחצים "הספרים שלי" (למעלה; בטלפון – ב"⋯ עוד") – שם כל הספרים, וכל אחד נשמר לבד. ספר חדש לא מוחק ספר אחר.</p>';
 function showSaveHelp(after){
-  var m = modal(SAVE_HELP + '<label style="display:flex;gap:8px;align-items:center;font-size:15px;margin-top:6px"><input type="checkbox" id="noMore"> לא להציג שוב במחשב הזה</label><div class="row"><button class="big-btn" id="okHelp">הבנתי, בואו נתחיל ←</button></div>', { sticky: true });
+  var m = modal(SAVE_HELP + '<label style="display:flex;gap:8px;align-items:center;font-size:15px;margin-top:6px"><input type="checkbox" id="noMore"> לא להציג שוב במכשיר הזה</label><div class="row"><button class="big-btn" id="okHelp">הבנתי, בואו נתחיל ←</button></div>', { sticky: true });
   m.querySelector("#okHelp").onclick = function(){
     if (m.querySelector("#noMore").checked) try { localStorage.setItem("booqli_book_help", "1"); } catch (e) {}
     closeModal(); if (after) after();
   };
 }
 function showHelp(){
-  var m = modal('<h2>❓ עזרה</h2><ul>' +
+  var m = modal('<h2>❓ עזרה</h2><ul>' + (isM() ?
+    '<li><b>בחירה:</b> לחיצה על תמונה, טקסט או מדבקה. למטה מופיעים הכלים שלה, ו"🎨 עיצוב" פותח את כל האפשרויות.</li>' +
+    '<li><b>הזזה:</b> גוררים את מה שנבחר. <b>הגדלה וסיבוב:</b> שתי אצבעות על מה שנבחר, או העיגולים בפינות.</li>' +
+    '<li><b>טקסט:</b> לחיצה על טקסט שנבחר – כותבים. "✏️ טקסט" למטה מוסיף טקסט חדש.</li>' +
+    '<li><b>תמונה:</b> "🔄 להחליף" או לחיצה כפולה. "✋ להזיז בפנים" – בוחרים איזה חלק מהתמונה רואים.</li>' +
+    '<li><b>מעבר בין עמודים:</b> מחליקים ימינה/שמאלה, החצים בצדדים, או הפס התחתון. <b>זום:</b> שתי אצבעות על מקום ריק.</li>' :
+    '') + (isM() ? '' :
     '<li><b>בחירה:</b> לוחצים על תמונה, טקסט או מדבקה.</li>' +
     '<li><b>הזזה:</b> גוררים. <b>הגדלה:</b> מושכים בעיגולים הלבנים בפינות. <b>סיבוב:</b> העיגול הסגול למעלה.</li>' +
     '<li><b>טקסט:</b> לחיצה כפולה כדי לכתוב. גופן, גודל וצבע – בצד שמאל.</li>' +
     '<li><b>תמונה:</b> לחיצה כפולה כדי להחליף. "זום" ו"להזיז בתוך המסגרת" בצד שמאל.</li>' +
     '<li><b>מעבר בין עמודים:</b> בפס למטה, או בחיצים.</li>' +
-    '<li><b>קיצורים:</b> Delete מחיקה · Ctrl+Z ביטול · Ctrl+D שכפול · חיצים להזזה עדינה.</li>' +
+    '<li><b>קיצורים:</b> Delete מחיקה · Ctrl+Z ביטול · Ctrl+D שכפול · חיצים להזזה עדינה.</li>') +
     '<li><b>קווים בעמוד:</b> האדום = איפה שהדף ייחתך. הוורוד המקווקו = אזור בטוח לטקסט. תמונות רקע כן צריכות להגיע עד הקצה.</li>' +
     '<li><b>כריכה:</b> משמאל הכריכה הקדמית, מימין האחורית. על השדרה באמצע אסור לכתוב.</li></ul>' +
     '<div class="box">💬 צריכים עזרה? <a target="_blank" rel="noopener" href="' + waLink("היי BOOQLI, אני מעצבת ספר באתר ויש לי שאלה:") + '">כתבו לנו בוואטסאפ</a></div>' +
@@ -1139,8 +1160,8 @@ function openBackup(file){
           else { if (!$("ed").classList.contains("hidden")) exitEditor(); else renderBooks(); toast("📂 " + packs.length + " ספרים נוספו לרשימה \"הספרים שלי\""); }
         });
       };
-      if (clash.length) confirmBox(clash.length === 1 ? "הספר הזה כבר נמצא במחשב" : clash.length + " מהספרים כבר נמצאים במחשב",
-        "\"" + esc(clash[0].project.title || "הספר שלי") + "\"" + (clash.length > 1 ? " ועוד" : "") + " – הגרסה מהקובץ תחליף את מה שנמצא במחשב. שאר הספרים לא ייפגעו.", go2);
+      if (clash.length) confirmBox(clash.length === 1 ? "הספר הזה כבר נמצא במכשיר" : clash.length + " מהספרים כבר נמצאים במכשיר",
+        "\"" + esc(clash[0].project.title || "הספר שלי") + "\"" + (clash.length > 1 ? " ועוד" : "") + " – הגרסה מהקובץ תחליף את מה שנמצא במכשיר. שאר הספרים לא ייפגעו.", go2);
       else go2();
     });
   };
@@ -1407,7 +1428,7 @@ function showSend(sent){
 var built = false;
 function openEditor(fresh){
   hist = []; fut = []; lastSnap = snap(); updUndo();
-  view = 0; sel = null; activePg = "c";
+  view = 0; sel = null; activePg = "c"; mSlot = 0; lastCoverSide = "front"; if (isM()) zoom = 1; mSheet(null);
   $("title").value = P.title || "";
   if (!P.bid) P.bid = newBookId();
   if ($("bidTag")) $("bidTag").textContent = isRealBid(P.bid) ? "🔢 " + P.bid : "🔢 מספר הספר יינתן בשליחה";
@@ -1443,7 +1464,7 @@ function start(kind){
 }
 function openBook(bid, msg){
   kvGet(bookKey(bid)).then(function(p){
-    if (!p) { toast("לא מצאנו את הספר הזה במחשב 🙁"); renderBooks(); return; }
+    if (!p) { toast("לא מצאנו את הספר הזה במכשיר 🙁"); renderBooks(); return; }
     P = p; ensureBrand(); lastBackup = Date.now(); editsSinceBackup = 0;
     return loadAssetsFromDB().then(function(){ openEditor(false); if (msg) toast(msg); });
   });
@@ -1480,7 +1501,7 @@ function renderBooks(){
     return Promise.all(books.map(function(p){ return kvGet("t:" + p.bid).catch(function(){ return null; }); })).then(function(th){
       box.classList.remove("hidden");
       box.innerHTML = '<h3>📚 הספרים שלי <small>(' + books.length + ')</small></h3>' +
-        '<p class="bk-note">כל ספר נשמר לבד – ספר חדש לא מוחק ספר אחר. הספרים שמורים <b>בדפדפן הזה, במחשב הזה</b>. כדי לא לאבד אותם (מחשב אחר, ניקוי הדפדפן) – שמרו קובץ גיבוי.</p>' +
+        '<p class="bk-note">כל ספר נשמר לבד – ספר חדש לא מוחק ספר אחר. הספרים שמורים <b>בדפדפן הזה, במכשיר הזה</b>. כדי לא לאבד אותם (מחשב אחר, ניקוי הדפדפן) – שמרו קובץ גיבוי.</p>' +
         '<div class="bk-list">' + books.map(function(p, i){
           var sent = p.sent && p.sent.length ? '<span class="bk-sent">✅ נשלח ל-BOOQLI ' + fmtDate(p.sent[p.sent.length - 1].at) + (p.sent.length > 1 ? " (גרסה " + p.sent.length + ")" : "") + "</span>" : '<span class="bk-draft">✏️ עוד לא נשלח</span>';
           return '<div class="bk"><button class="bk-img" data-open="' + esc(p.bid) + '" aria-label="לערוך">' + (th[i] ? '<img src="' + th[i] + '" alt="">' : "<span>📖</span>") + "</button>" +
@@ -1501,10 +1522,215 @@ function renderBooks(){
   }).catch(function(){ box.classList.add("hidden"); });
 }
 
+// ---------- טלפון (6.11.2026, שמש: "כל מה שעושים במחשב – גם בטלפון") ----------
+/* כמו בקנבה בטלפון: עמוד אחד ממלא את המסך · מחליקים ימינה/שמאלה בין עמודים ·
+   לחיצה בוחרת, גרירה של פריט שנבחר מזיזה · שתי אצבעות: על פריט שנבחר – מגדילות ומסובבות, בשאר המקומות – זום ·
+   סרגל תחתון שמתחלף כשבוחרים פריט · הכלים נפתחים כמגירה מלמטה · כתיבת טקסט בתיבה למעלה (המקלדת למטה).
+   "מקומות" (slots) בטלפון: 0 = כריכה קדמית, 1–24 = העמודים, 25 = כריכה אחורית. */
+var MQ = window.matchMedia ? window.matchMedia("(max-width:820px),(max-height:500px)") : { matches: false };
+function isM(){ return !!MQ.matches; }
+var mSlot = 0, lastPT = "", touches = {}, pinch = null, pan = null, tap = null, lastTap = null, pinchRaf = 0;
+function slotView(i){ return i === 0 || i === NPAGES + 1 ? 0 : viewOf(i); }
+function slotRange(i){
+  if (i === 0) return [0, (SPINE0 + SPINE1) / 2];
+  if (i === NPAGES + 1) return [(SPINE0 + SPINE1) / 2, CW];
+  var save = view; view = viewOf(i); var off = pgOffset(i); view = save;
+  return off === 0 ? [0, PG - BL] : [PG - BL, PG * 2 - BL * 2];
+}
+function slotName(i){ return i === 0 ? "כריכה קדמית" : i === NPAGES + 1 ? "כריכה אחורית" : "עמוד " + i; }
+function centerSlot(){
+  var st = $("stage"), cv = $("cv"); if (!st || !cv) return;
+  var r = slotRange(mSlot), sr = st.getBoundingClientRect(), cr = cv.getBoundingClientRect();
+  st.scrollLeft += (cr.left + (r[0] + r[1]) / 2 * ppm) - (sr.left + st.clientWidth / 2);
+  st.scrollTop += (cr.top + viewH() * ppm / 2) - (sr.top + st.clientHeight / 2);
+}
+function mLabel(){
+  var l = $("pglab"); if (l) l.textContent = slotName(mSlot) + " · " + (mSlot + 1) + "/" + (NPAGES + 2);
+  var a = $("swPv"), b = $("swNx"); if (a) a.disabled = mSlot <= 0; if (b) b.disabled = mSlot >= NPAGES + 1;
+}
+function goSlot(i){
+  i = Math.max(0, Math.min(NPAGES + 1, i));
+  if (editingId) finishEdit();
+  mSlot = i; var v = slotView(i);
+  if (v !== view) { go.keep = true; go(v); go.keep = false; }
+  else { sel = null; panMode = false; renderProps(); }
+  activePg = v === 0 ? "c" : i; lastCoverSide = i === NPAGES + 1 ? "back" : "front";
+  if (zoom > 1.05) zoom = 1;
+  fit();
+}
+function mSheet(name){
+  var ed = $("ed"); if (!ed) return;
+  var was = (ed.className.match(/sh-(\w+)/) || [])[1] || null;
+  ed.classList.remove("sh-tools", "sh-props", "sh-more");
+  if (name) ed.classList.add("sh-" + name);
+  if (was !== name && P && !ed.classList.contains("hidden") && isM()) { fit(); mUpdate(); }
+}
+function mSheetIs(name){ var ed = $("ed"); return !!ed && ed.classList.contains("sh-" + name); }
+function mTab(icon, label, fn, cls, off){
+  var b = document.createElement("button"); b.type = "button"; if (cls) b.className = cls;
+  b.innerHTML = "<span>" + icon + "</span>" + esc(label); b.onclick = fn; if (off) b.disabled = true; return b;
+}
+function mUpdate(){
+  var bar = $("mtabs"); if (!bar || !isM()) return;
+  var it = sel && viewOf(sel.pg) === view ? selItem() : null;
+  // מגירת העיצוב: כותרת עם סגירה; בלי פריט – סוגרים אותה
+  var pr = $("props");
+  if (pr && !pr.querySelector(".shd")) {
+    var h = document.createElement("div"); h.className = "shd";
+    h.innerHTML = "<b>🎨 עיצוב</b>"; var x = document.createElement("button"); x.className = "shx"; x.textContent = "✕"; x.setAttribute("aria-label", "סגירה");
+    x.onclick = function(){ mSheet(null); }; h.appendChild(x); pr.insertBefore(h, pr.firstChild);
+  }
+  if (!it && mSheetIs("props")) { mSheet(null); return; }
+  bar.innerHTML = "";
+  if (!it) {
+    bar.appendChild(mTab("➕", "הוספה", function(){ mSheet(mSheetIs("tools") ? null : "tools"); $("tools").scrollTop = 0; }, mSheetIs("tools") ? "on" : ""));
+    bar.appendChild(mTab("📷", "תמונה", function(){ mSheet(null); pickPhoto(null); }));
+    bar.appendChild(mTab("✏️", "טקסט", function(){ mSheet(null); addText(false); }));
+    bar.appendChild(mTab("🎨", "רקע", function(){ mSheet("tools"); var h = $("bgH"); if (h) $("tools").scrollTop = h.offsetTop - 50; }));
+    bar.appendChild(mTab("⋯", "עוד", function(){ mSheet(mSheetIs("more") ? null : "more"); }, mSheetIs("more") ? "on" : ""));
+    return;
+  }
+  if (it.type === "text") bar.appendChild(mTab("✏️", "לכתוב", function(){ startEdit(sel.pg, it); }));
+  if (it.type === "img") {
+    bar.appendChild(mTab(it.src ? "🔄" : "📷", it.src ? "להחליף" : "תמונה", function(){ pickPhoto({ pg: sel.pg, id: it.id }); }));
+    if (it.src && it.fit !== "stretch") bar.appendChild(mTab(panMode ? "✅" : "✋", panMode ? "סיימתי" : "להזיז בפנים", function(){
+      panMode = !panMode; renderProps();
+      if (panMode) toast("גררו את התמונה כדי לבחור איזה חלק ממנה רואים");
+    }, panMode ? "on" : ""));
+  }
+  bar.appendChild(mTab("🎨", "עיצוב", function(){ mSheet(mSheetIs("props") ? null : "props"); }, mSheetIs("props") ? "on" : ""));
+  if (it.type !== "img") bar.appendChild(mTab("📑", "שכפול", dupSel));
+  bar.appendChild(mTab("🗑️", "מחיקה", delSel, "del"));
+  bar.appendChild(mTab("✓", "סיום", function(){ sel = null; panMode = false; renderProps(); requestDraw(); }));
+}
+function mStartEdit(pg, it){
+  if ($("mText")) finishEdit();
+  editingId = it.id; sel = { pg: pg, id: it.id };
+  var box = document.createElement("div"); box.className = "mtext"; box.id = "mText";
+  var ta = document.createElement("textarea"); ta.setAttribute("aria-label", "הטקסט");
+  var ok = document.createElement("button"); ok.type = "button"; ok.textContent = "✓ סיום";
+  ta.value = it.text; ta.dir = isRTL(it.text) ? "rtl" : "ltr";
+  ta.addEventListener("input", function(){ it.text = ta.value; ta.dir = isRTL(ta.value) ? "rtl" : "ltr"; delete it.hint; layoutText(it); requestDraw(); });
+  ta.addEventListener("keydown", function(e){ if (e.key === "Escape") { e.preventDefault(); finishEdit(); } e.stopPropagation(); });
+  ok.onclick = finishEdit;
+  box.appendChild(ta); box.appendChild(ok); document.body.appendChild(box);
+  ta.focus(); if (it.hint) ta.select(); else try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {}
+  requestDraw();
+}
+function xyToMM(x, y){ var r = $("cv").getBoundingClientRect(); return { x: (x - r.left) / ppm, y: (y - r.top) / ppm }; }
+function hitTouch(x, y){
+  var p = xyToMM(x, y), h = hit(p.x, p.y); if (h) return h;
+  var d = 9 / ppm, tries = [[d, 0], [-d, 0], [0, d], [0, -d]];
+  for (var i = 0; i < tries.length; i++) { h = hit(p.x + tries[i][0], p.y + tries[i][1]); if (h) return h; }
+  return null;
+}
+function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+function angle(a, b){ return Math.atan2(b.y - a.y, b.x - a.x); }
+function onStageDown(e){
+  lastPT = e.pointerType;
+  if (e.target.closest && e.target.closest("button,textarea,input,select,.zoom")) return;
+  if (e.pointerType !== "touch") { onDown(e); return; }
+  e.preventDefault();
+  touches[e.pointerId] = { x: e.clientX, y: e.clientY };
+  var n = Object.keys(touches).length;
+  if (n === 2) { startPinch(); return; }
+  if (n > 2) return;
+  if (editingId) finishEdit();
+  var it = selItem(), hnd = e.target.dataset && e.target.dataset.h;
+  tap = { t: Date.now(), x: e.clientX, y: e.clientY, moved: false, h: null, wasSel: false };
+  if (hnd && it) { tap = null; onDown(e); return; }               // ידיות: הגדלה / סיבוב
+  var h = hitTouch(e.clientX, e.clientY); tap.h = h;
+  if (h && it && h.it.id === it.id && viewOf(sel.pg) === view && !it.locked) { tap.wasSel = true; onDown(e); return; } // גרירה של מה שנבחר
+  var st = $("stage");
+  pan = { id: e.pointerId, x: e.clientX, y: e.clientY, sl: st.scrollLeft, stp: st.scrollTop };   // אחרת: גלילה / החלקה לעמוד הבא
+}
+function tMove(e){
+  if (!touches[e.pointerId]) return;
+  touches[e.pointerId] = { x: e.clientX, y: e.clientY };
+  if (pinch) { if (!pinchRaf) pinchRaf = requestAnimationFrame(function(){ pinchRaf = 0; pinchMove(); }); return; }
+  if (tap && Math.abs(e.clientX - tap.x) + Math.abs(e.clientY - tap.y) > 10) tap.moved = true;
+  if (pan && e.pointerId === pan.id) { var st = $("stage"); st.scrollLeft = pan.sl - (e.clientX - pan.x); st.scrollTop = pan.stp - (e.clientY - pan.y); }
+}
+function tEnd(e){
+  if (!touches[e.pointerId]) return;
+  delete touches[e.pointerId];
+  if (pinch) { if (Object.keys(touches).length < 2) endPinch(); return; }
+  if (pan && e.pointerId === pan.id) {
+    var dx = e.clientX - pan.x, dy = e.clientY - pan.y; pan = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2 && zoom <= 1.05) { tap = null; goSlot(mSlot + (dx > 0 ? 1 : -1)); return; }   // החלקה: לעמוד הבא (שמאלה, כמו בספר בעברית)
+    if (zoom <= 1.05) centerSlot();
+  }
+  if (tap && !tap.moved && Date.now() - tap.t < 700 && e.type === "pointerup") onTap(tap);
+  tap = null;
+}
+function onTap(t){
+  var h = t.h, now = Date.now();
+  if (!h) { lastTap = null; if (sel) { sel = null; panMode = false; renderProps(); requestDraw(); } return; }
+  if (h.it.locked) { toast("הלוגו של BOOQLI קבוע בגב הכריכה 💗"); return; }
+  var dbl = lastTap && lastTap.id === h.it.id && now - lastTap.t < 450;
+  lastTap = { id: h.it.id, t: now };
+  activePg = h.pg;
+  if (view === 0) lastCoverSide = xyToMM(t.x, t.y).x > (SPINE0 + SPINE1) / 2 ? "back" : "front";
+  if (!sel || sel.id !== h.it.id) panMode = false;
+  sel = { pg: h.pg, id: h.it.id };
+  if (h.it.type === "text" && (t.wasSel || dbl)) { lastTap = null; startEdit(h.pg, h.it); return; }   // לחיצה על טקסט שכבר נבחר = כותבים
+  if (h.it.type === "img" && dbl && !panMode) { lastTap = null; renderProps(); requestDraw(); pickPhoto({ pg: h.pg, id: h.it.id }); return; }
+  renderProps(); requestDraw();
+}
+function startPinch(){
+  var st = $("stage"), ids = Object.keys(touches), a = touches[ids[0]], b = touches[ids[1]];
+  var onItem = !!drag;
+  if (drag) {
+    if (drag.mode === "move" || drag.mode === "pan") { var o0 = drag.o; drag.it.x = o0.x; drag.it.y = o0.y; drag.it.ox = o0.ox; drag.it.oy = o0.oy; }
+    window.removeEventListener("pointermove", onMove); drag = null; guides = []; drawGuides();
+  }
+  pan = null; tap = null;
+  var it = onItem ? selItem() : null; if (it && it.locked) it = null;
+  var m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  pinch = { ids: ids, d0: Math.max(10, dist(a, b)), a0: angle(a, b), it: it, o: it ? clone(it) : null, z0: zoom, mm: xyToMM(m.x, m.y) };
+}
+function pinchMove(){
+  if (!pinch) return;
+  var a = touches[pinch.ids[0]], b = touches[pinch.ids[1]]; if (!a || !b) return;
+  var f = dist(a, b) / pinch.d0, m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  if (pinch.it) {
+    var it = pinch.it, o = pinch.o, cx = o.x + o.w / 2, cy = o.y + o.h / 2;
+    if (it.type === "text") { it.size = Math.max(6, Math.min(150, Math.round(o.size * f * 2) / 2)); it.w = Math.max(10, o.w * f); layoutText(it); }
+    else { it.w = Math.max(5, o.w * f); it.h = Math.max(5, o.h * f); }
+    var r = (o.rot || 0) + (angle(a, b) - pinch.a0) * 180 / Math.PI; r = ((r % 360) + 360) % 360;
+    [0, 90, 180, 270, 360].forEach(function(t){ if (Math.abs(r - t) < 5) r = t % 360; });
+    it.rot = Math.round(r); it.x = cx - it.w / 2; it.y = cy - it.h / 2;
+    requestDraw(); return;
+  }
+  zoom = Math.max(0.5, Math.min(3, pinch.z0 * f));
+  fit(true);
+  var st = $("stage"), cr = $("cv").getBoundingClientRect();
+  st.scrollLeft += (cr.left + pinch.mm.x * ppm) - m.x;
+  st.scrollTop += (cr.top + pinch.mm.y * ppm) - m.y;
+}
+function endPinch(){
+  var p = pinch; pinch = null; touches = {};
+  if (!p) return;
+  if (p.it) { commit(); renderProps(); requestDraw(); return; }
+  if (zoom > 0.9 && zoom < 1.12) { zoom = 1; fit(); }
+}
+function mInit(){
+  window.addEventListener("pointermove", tMove, { passive: true });
+  window.addEventListener("pointerup", tEnd); window.addEventListener("pointercancel", tEnd);
+  $("swPv").onclick = function(){ goSlot(mSlot - 1); };
+  $("swNx").onclick = function(){ goSlot(mSlot + 1); };
+  document.querySelectorAll("#ed [data-close]").forEach(function(b){ b.onclick = function(){ mSheet(null); }; });
+  document.querySelectorAll("#more [data-click]").forEach(function(b){ b.onclick = function(){ var id = b.getAttribute("data-click"); if (!/^z/.test(id)) mSheet(null); $(id).click(); }; });
+  // אחרי הוספה מהמגירה – סוגרים אותה כדי לראות את מה שנוסף (צבע רקע – נשארים, אפשר לנסות כמה)
+  $("tools").addEventListener("click", function(e){ if (isM() && e.target.closest(".add,.stk button")) setTimeout(function(){ mSheet(null); }, 0); });
+  var mi = $("mInfo"); if (mi) mi.innerHTML = "👆 <b>לחיצה</b> בוחרת · <b>גרירה</b> של מה שנבחר מזיזה · <b>שתי אצבעות</b> על מה שנבחר – מגדילות ומסובבות, בשאר המקום – זום · <b>החלקה</b> ימינה/שמאלה – עמוד הבא/הקודם · לחיצה על טקסט שנבחר – כותבים.";
+  var onMQ = function(){ if (!P || $("ed").classList.contains("hidden")) return; if (editingId) finishEdit(); zoom = 1; mSheet(null); buildThumbs(); renderProps(); fit(); };
+  if (MQ.addEventListener) MQ.addEventListener("change", onMQ); else if (MQ.addListener) MQ.addListener(onMQ);
+}
+
 // ---------- חיבור הכפתורים ----------
 function init(){
   // טלפון: קישור לשלוח לעצמי
-  var self = $("sendSelf"); if (self) self.href = "https://wa.me/?text=" + encodeURIComponent("📖 לעצב ספר בכריכה קשה במחשב: https://games.booqli.ai/book-maker/");
   $("btnSample").onclick = function(){ start("sample"); };
   $("btnBlank").onclick = function(){ start("blank"); };
   $("btnOpen").onclick = $("btnOpen2").onclick = function(){ $("fileBackup").value = ""; $("fileBackup").click(); };
@@ -1528,9 +1754,11 @@ function init(){
   $("zIn").onclick = function(){ zoom = Math.min(2.5, zoom + 0.25); fit(); };
   $("zOut").onclick = function(){ zoom = Math.max(0.5, zoom - 0.25); fit(); };
   var wrap = $("wrap");
-  wrap.addEventListener("pointerdown", onDown);
+  $("stage").addEventListener("pointerdown", onStageDown);
+  mInit();
   wrap.addEventListener("pointermove", function(e){ if (view === 0 && !drag) { var p = evPos(e); lastCoverSide = p.x > (SPINE0 + SPINE1) / 2 ? "back" : "front"; } });
   wrap.addEventListener("dblclick", function(e){
+    if (lastPT === "touch") return;
     var p = evPos(e), h = hit(p.x, p.y); if (!h || h.it.locked) return;
     if (h.it.type === "text") startEdit(h.pg, h.it);
     else if (h.it.type === "img") pickPhoto({ pg: h.pg, id: h.it.id });

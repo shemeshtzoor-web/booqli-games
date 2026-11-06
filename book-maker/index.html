@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>הספר שלכם בכריכה קשה – מעצבים ומדפיסים | booqli Games</title>
-<meta name="description" content="מעצבים ספר משלכם במחשב – 24 עמודים בכריכה קשה פרימיום: תמונות, טקסט בעברית ובאנגלית, מדבקות וספר לדוגמה. להורים ולגננות. בסיום שולחים ל-BOOQLI להדפסה.">
+<meta name="description" content="מעצבים ספר משלכם במחשב או בטלפון – 24 עמודים בכריכה קשה פרימיום: תמונות, טקסט בעברית ובאנגלית, מדבקות וספר לדוגמה. להורים ולגננות. בסיום שולחים ל-BOOQLI להדפסה.">
 <link rel="canonical" href="https://games.booqli.ai/book-maker/">
 <meta property="og:title" content="הספר שלכם בכריכה קשה – מעצבים ומדפיסים">
-<meta property="og:description" content="מעצבים ספר משלכם במחשב, 24 עמודים בכריכה קשה פרימיום. להורים ולגננות.">
+<meta property="og:description" content="מעצבים ספר משלכם במחשב או בטלפון, 24 עמודים בכריכה קשה פרימיום. להורים ולגננות.">
 <meta property="og:url" content="https://games.booqli.ai/book-maker/">
 <meta property="og:image" content="https://games.booqli.ai/book-maker/img/og.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
@@ -67,12 +67,9 @@ button{cursor:pointer}
 .sbtn{border:2px solid var(--line,#eadde6);background:#fff;border-radius:999px;padding:5px 10px;font-size:14px;font-weight:700;cursor:pointer}
 .sbtn.del{color:#C62828}
 .resume{background:var(--mint);border-radius:16px;padding:12px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-.mobile-note{display:none;background:#FFF3D6;border:2px solid #F3C969;border-radius:16px;padding:14px;margin:14px 0;font-size:16.5px;line-height:1.5}
-.mobile-note .big-btn{margin-top:8px}
 .notice{font-size:14.5px;color:#6b5a72;margin-top:14px;line-height:1.5}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr}.steps3{grid-template-columns:1fr}
-  .mobile-note{display:block}
   .hero h1{font-size:27px}
 }
 
@@ -176,6 +173,76 @@ button{cursor:pointer}
 .toast button{border:0;border-radius:99px;padding:5px 12px;font-weight:800;background:var(--pink);color:#fff}
 .lowres{color:#B26A00;font-size:13px;font-weight:700;background:#FFF3D6;border-radius:10px;padding:6px 8px;margin-top:6px}
 @media (max-width:1150px){.ed{grid-template-columns:230px 1fr 215px}.top .title{width:150px}}
+
+/* ===== העורך בטלפון (6.11.2026, שמש: "כל מה שעושים במחשב – גם בטלפון") =====
+   כמו בקנבה: עמוד אחד ממלא את המסך, מחליקים בין עמודים, סרגל תחתון שמשתנה כשבוחרים פריט,
+   והכלים נפתחים כמגירה מלמטה (העמוד מתכווץ מעליה ונשאר גלוי). */
+.mtabs,.more,.shd,.stov{display:none}
+@media (max-width:820px),(max-height:500px){
+  .ed{grid-template-columns:100%;grid-template-rows:50px minmax(0,1fr) auto auto 62px;grid-template-areas:"top" "stage" "sheet" "strip" "tabs";height:100%;height:100dvh}
+  .top{padding:6px 8px;gap:5px}
+  .top .logo,.top .status,#bidTag,#btnBackup,#btnOpen2,#btnHelp,#btnExit,.top .sp{display:none}
+  .top .title{flex:1;width:auto;min-width:0;font-size:16px;padding:5px 6px}
+  .tbtn{padding:6px 8px;font-size:14px}
+  .tbtn.done{padding:8px 12px;font-size:15px}
+  .tbtn.done .lg{display:none}
+  #undo,#redo{font-size:0;padding:4px 9px}#undo::before{content:"↶";font-size:20px}#redo::before{content:"↷";font-size:20px}
+  .tools,.props,.more{grid-area:sheet;display:none;border:0;border-top:2px solid var(--line);max-height:46vh;max-height:46dvh;padding:0 12px 12px;box-shadow:0 -6px 18px rgba(51,38,61,.10);position:relative;z-index:2}
+  .ed.sh-tools .tools,.ed.sh-props .props,.ed.sh-more .more{display:block}
+  .ed.sh-tools .strip,.ed.sh-props .strip,.ed.sh-more .strip{display:none}
+  .shd{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:3;padding:8px 0 6px;margin-bottom:4px;font-size:16px;color:var(--mag)}
+  .shx{border:0;background:#FDE6F6;color:var(--mag);border-radius:50%;width:36px;height:36px;font-size:17px;font-weight:800}
+  .tools>h3:first-of-type{display:none}
+  .addrow{grid-template-columns:repeat(4,1fr)}
+  .add{padding:9px 4px;font-size:13.5px}
+  .stk{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .stk-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.stk-tabs button{flex-shrink:0;padding:5px 12px;font-size:14px}
+  .swatches{grid-template-columns:repeat(8,1fr)}
+  .prop-row{font-size:15px}.prop-row select,.prop-row input[type=number]{padding:8px 5px;font-size:16px}
+  .seg button{padding:9px 2px}
+  .pbtns{grid-template-columns:repeat(3,1fr)}.pbtns .wide{grid-column:1/4}.pbtns .tbtn{padding:9px 4px}
+  .props>.tbtn{padding:10px}
+  .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .mnote{font-size:13.5px;color:#6b5a72;line-height:1.5;margin:10px 0 0}
+  .stage{padding:6px;justify-content:flex-start;align-items:flex-start;overflow:hidden!important;touch-action:none}
+  .stage .wrap{margin:auto;flex-shrink:0}
+  .labels,.legend,.stage .zoom{display:none}
+  .stov{display:block;grid-area:stage;position:relative;pointer-events:none;z-index:4}
+  .stov .swp{pointer-events:auto}
+  .pglab{position:absolute;top:8px;right:10px;z-index:4;background:rgba(51,38,61,.78);color:#fff;font-weight:800;font-size:13.5px;border-radius:99px;padding:3px 11px;pointer-events:none}
+  .swp{position:absolute;top:50%;z-index:4;transform:translateY(-50%);border:0;width:34px;height:52px;background:rgba(255,255,255,.85);color:var(--mag);font-size:22px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .swp.nx{left:0;border-radius:0 14px 14px 0}.swp.pv{right:0;border-radius:14px 0 0 14px}.swp:disabled{display:none}
+  .strip{padding:5px 6px;gap:6px}.strip .nav{display:none}
+  .th{font-size:11px;padding:1px}
+  .mtabs{grid-area:tabs;display:flex;background:#fff;border-top:2px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom));gap:2px;z-index:3}
+  .mtabs button{flex:1;min-width:0;border:0;background:none;border-radius:12px;font-weight:800;font-size:12.5px;line-height:1.15;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px}
+  .mtabs button span{font-size:21px;line-height:1}
+  .mtabs button.on{background:#FDE6F6;color:var(--mag)}
+  .mtabs button.del{color:#C62828}
+  .mtabs button:disabled{opacity:.35}
+  .toast{bottom:76px}
+  #textEdit{display:none}
+  .mtext{position:fixed;top:0;left:0;right:0;z-index:600;background:#fff;padding:8px;box-shadow:0 6px 20px rgba(0,0,0,.2);display:flex;gap:8px;align-items:stretch}
+  .mtext textarea{flex:1;min-width:0;border:2px solid var(--pink);border-radius:12px;padding:8px;font-size:17px;resize:none;height:5.6em;font-family:Assistant,sans-serif}
+  .mtext button{border:0;border-radius:12px;background:var(--btn);color:#fff;font-weight:800;font-size:16px;padding:0 14px}
+}
+@media (max-height:500px){
+  .ed{grid-template-rows:46px minmax(0,1fr) auto auto 52px}
+  .th canvas{max-height:34px;width:auto!important}
+  .mtabs button{flex-direction:row;gap:5px;font-size:13px}.mtabs button span{font-size:18px}
+  /* טלפון לרוחב: המגירה בצד, כדי שהעמוד יישאר גדול */
+  .ed.sh-tools,.ed.sh-props,.ed.sh-more{grid-template-columns:minmax(0,1fr) min(330px,45vw);grid-template-rows:46px minmax(0,1fr) 52px;grid-template-areas:"top top" "stage sheet" "tabs tabs"}
+  .tools,.props,.more{max-height:none;border-top:0;border-right:2px solid var(--line)}
+}
+/* אצבע: ידיות גדולות */
+@media (pointer:coarse){
+  .sel .h{width:26px;height:26px;border-width:3px}
+  .sel .h.nw{top:-14px;left:-14px}.sel .h.ne{top:-14px;right:-14px}.sel .h.sw{bottom:-14px;left:-14px}.sel .h.se{bottom:-14px;right:-14px}
+  .sel .h.e{top:calc(50% - 13px);right:-14px}.sel .h.w{top:calc(50% - 13px);left:-14px}
+  .sel .h.rot{top:-52px;left:calc(50% - 13px);width:26px;height:26px}
+  .sel .stem{top:-28px;height:26px}
+  #wrap{touch-action:none}
+}
 </style>
 <!-- בלי קפיצות בטעינה: העמוד מוצג כשהסרגלים במקום (common.js), ולבד אחרי 1.5 שניות -->
 <style>body{visibility:hidden;animation:bqShow 0s 1.5s forwards}html.bq-ready body{visibility:visible;animation:none}@keyframes bqShow{to{visibility:visible}}</style>
@@ -190,7 +257,7 @@ button{cursor:pointer}
   <section class="hero">
     <div>
       <h1>📖 הספר שלכם, בכריכה קשה</h1>
-      <p>מעצבים ספר משלכם במחשב, ואנחנו מדפיסים אותו בכריכה קשה פרימיום. ספר של הגן, ספר יום הולדת, ספר זיכרונות מהשנה, או סיפור שהילדים כתבו.</p>
+      <p>מעצבים ספר משלכם במחשב או בטלפון, ואנחנו מדפיסים אותו בכריכה קשה פרימיום. ספר של הגן, ספר יום הולדת, ספר זיכרונות מהשנה, או סיפור שהילדים כתבו.</p>
       <ul>
         <li>24 עמודים בגודל 20 × 20 ס"מ</li>
         <li>תמונות שלכם, טקסט בעברית ובאנגלית, מדבקות ורקעים</li>
@@ -201,10 +268,6 @@ button{cursor:pointer}
     <div class="pics"><img src="img/books-fan.webp" alt="ספרים בכריכה קשה שאפשר לעצב: ילדת יום הולדת, עולה לכיתה א', הרפתקה עם דרקון, הספר הראשון" width="1100" height="520"></div>
   </section>
 
-  <div class="mobile-note">💻 <b>העורך עובד במחשב</b> (או בטאבלט גדול), כי צריך מסך רחב כדי לעצב ספר בנוחות.<br>
-    שלחו לעצמכם את הקישור ופתחו אותו במחשב:<br>
-    <a class="big-btn green" id="sendSelf" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">📲 לשלוח לעצמי את הקישור</a>
-  </div>
 
   <section class="ideas">
     <h2>💡 רעיונות לספר שלכם</h2>
@@ -219,7 +282,7 @@ button{cursor:pointer}
 
   <div class="steps3">
     <div><b>1. מעצבים</b>מתחילים מהספר לדוגמה או מספר ריק. גוררים, מחליפים תמונות וכותבים.</div>
-    <div><b>2. שומרים</b>הכל נשמר לבד במחשב, ואפשר כמה ספרים. כדאי לשמור גם קובץ גיבוי.</div>
+    <div><b>2. שומרים</b>הכל נשמר לבד במכשיר, ואפשר כמה ספרים. כדאי לשמור גם קובץ גיבוי.</div>
     <div><b>3. שולחים להדפסה</b>בסיום ממלאים פרטים, והספר נשלח אלינו לבד. נחזור אליכם עם הצעת מחיר. אפשר לתקן ולשלוח שוב.</div>
   </div>
 
@@ -232,7 +295,7 @@ button{cursor:pointer}
       <button class="big-btn alt" id="btnBlank">📄 ספר ריק חדש</button>
       <button class="big-btn alt" id="btnOpen">📂 פתיחת קובץ גיבוי</button>
     </div>
-    <p class="notice">💾 הספר נשמר בדפדפן במחשב הזה, ולכן כדאי לשמור גיבוי. המחיר נקבע בהצעה אישית בוואטסאפ.</p>
+    <p class="notice">💾 הספר נשמר בדפדפן במכשיר הזה, ולכן כדאי לשמור גיבוי. המחיר נקבע בהצעה אישית בוואטסאפ.</p>
   </section>
 </main>
 <input type="file" id="fileBackup" accept=".booqli,application/json" hidden>
@@ -243,7 +306,7 @@ button{cursor:pointer}
   <header class="top">
     <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40">
     <input class="title" id="title" aria-label="שם הספר" maxlength="60">
-    <span class="status" id="status">✓ נשמר במחשב</span>
+    <span class="status" id="status">✓ נשמר</span>
     <span class="status" id="bidTag" style="white-space:nowrap" title="מספר הספר – מופיע בכריכה האחורית ובעמוד 1, כדי שבית הדפוס יחבר בין הכריכה לעמודים" dir="ltr"></span>
     <button class="tbtn" id="undo" title="ביטול (Ctrl+Z)">↶ ביטול</button>
     <button class="tbtn" id="redo" title="חזרה (Ctrl+Y)">↷ חזרה</button>
@@ -252,15 +315,16 @@ button{cursor:pointer}
     <button class="tbtn" id="btnOpen2">📂 פתיחת גיבוי</button>
     <button class="tbtn" id="btnHelp">❓ עזרה</button>
     <button class="tbtn" id="btnExit">📚 הספרים שלי</button>
-    <button class="tbtn done" id="btnDone">✅ סיימתי – שליחה להדפסה</button>
+    <button class="tbtn done" id="btnDone">✅ סיימתי<span class="lg"> – שליחה להדפסה</span></button>
   </header>
 
-  <aside class="tools">
+  <aside class="tools" id="tools">
+    <div class="shd"><b>➕ הוספה לעמוד</b><button class="shx" data-close aria-label="סגירה">✕</button></div>
     <h3>➕ הוספה לעמוד</h3>
     <div class="addrow">
       <button class="add" id="addTitle"><span>🔤</span>כותרת</button>
       <button class="add" id="addText"><span>✏️</span>טקסט</button>
-      <button class="add" id="addPhoto"><span>📷</span>תמונה מהמחשב</button>
+      <button class="add" id="addPhoto"><span>📷</span>תמונה שלי</button>
       <button class="add" id="addFrame"><span>🖼️</span>מסגרת לתמונה</button>
     </div>
     <h3>⭐ מדבקות</h3>
@@ -273,7 +337,7 @@ button{cursor:pointer}
       <button class="add" data-shape="circle"><span>⚫</span>עיגול</button>
       <button class="add" data-shape="band"><span>➖</span>פס רוחב</button>
     </div>
-    <h3>🎨 צבע רקע לעמוד</h3>
+    <h3 id="bgH">🎨 צבע רקע לעמוד</h3>
     <div id="bgTargets" class="prop-row"></div>
     <div class="swatches" id="bgSw"></div>
     <div class="credit">מדבקות: <a href="https://github.com/jdecked/twemoji" target="_blank" rel="noopener">Twemoji</a> (CC-BY 4.0). גופנים: Google Fonts (חינמיים).</div>
@@ -289,6 +353,7 @@ button{cursor:pointer}
     <div class="zoom"><button id="zOut" aria-label="הקטנה">−</button><span id="zVal">100%</span><button id="zIn" aria-label="הגדלה">+</button></div>
   </section>
 
+  <div class="stov"><span class="pglab" id="pglab"></span><button class="swp pv" id="swPv" aria-label="העמוד הקודם">›</button><button class="swp nx" id="swNx" aria-label="העמוד הבא">‹</button></div>
   <aside class="props" id="props"></aside>
 
   <div class="strip">
@@ -296,6 +361,21 @@ button{cursor:pointer}
     <div class="thumbs" id="thumbs"></div>
     <button class="nav" id="nextSp" aria-label="הכפולה הבאה">←</button>
   </div>
+
+  <!-- טלפון (6.11.2026): סרגל תחתון כמו בקנבה – רגיל, ומשתנה כשבוחרים פריט -->
+  <aside class="more" id="more">
+    <div class="shd"><b>⋯ עוד</b><button class="shx" data-close aria-label="סגירה">✕</button></div>
+    <div class="mgrid">
+      <button class="add" data-click="btnExit"><span>📚</span>הספרים שלי</button>
+      <button class="add" data-click="btnBackup"><span>💾</span>שמירת גיבוי</button>
+      <button class="add" data-click="btnOpen2"><span>📂</span>פתיחת גיבוי</button>
+      <button class="add" data-click="btnHelp"><span>❓</span>עזרה</button>
+      <button class="add" data-click="zOut"><span>🔍➖</span>להקטין</button>
+      <button class="add" data-click="zIn"><span>🔍➕</span>להגדיל</button>
+    </div>
+    <p class="mnote" id="mInfo"></p>
+  </aside>
+  <nav class="mtabs" id="mtabs" aria-label="כלים"></nav>
 </div>
 
 <div id="modalRoot"></div>
