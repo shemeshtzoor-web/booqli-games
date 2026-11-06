@@ -134,7 +134,7 @@ function drawMark(ctx, pg, opt){
   var tx = qx - 2.2, cyy = y + h / 2;
   ctx.direction = "ltr"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#33263D";
   ctx.font = "700 " + (12 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";          // 12 נקודות
-  ctx.fillText(P.bid, tx, cyy + 0.6);
+  ctx.fillText(isRealBid(P.bid) || (opt && opt.print) ? P.bid : "H-····-·", tx, cyy + 0.6);
   ctx.fillStyle = "#6b5a72"; ctx.font = "600 " + (6.5 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";
   ctx.fillText("BOOQLI · booqli.ai", tx, cyy + 4.4);
   if (!(opt && opt.print)) {                                   // רק בעורך: מסגרת ותווית, כדי שלא יכתבו מתחת
@@ -1195,6 +1195,28 @@ function onDone(){
   m.querySelector("#mk").onclick = askDetails;
 }
 
+// ---------- מספר ספר קבוע (שמש, 6.11.2026): H-<מספר לקוח>-<ספר> מגוגל, לפני ה-PDF ----------
+/* עד השליחה לספר יש מספר זמני (newBookId). המספר הקבוע: מספר הלקוח לפי הטלפון (1002) + מספר הספר שלו (4) = H-1002-4 */
+function isRealBid(b){ return /^H-\d{4,6}-\d{1,3}$/.test(b || ""); }
+function ensureNumber(){
+  if (isRealBid(P.bid)) return Promise.resolve();
+  modal('<h2>🔢 מקבלים מספר ספר…</h2><p>רגע אחד.</p>', { sticky: true });
+  if (!window.bqUp || !bqUp.num) return Promise.reject(new Error("num"));
+  return bqUp.num({ kind: "book", phone: cust.phone, cname: cust.first + " " + cust.last }).then(function(r){
+    if (!r || !r.ok || !isRealBid(r.bid)) throw new Error((r && r.error) || "num");
+    var old = P.bid; P.bid = r.bid;
+    if ($("bidTag")) $("bidTag").textContent = "🔢 " + P.bid;
+    requestDraw(); thumbSoon();
+    return saveNow().then(function(){ return kvGet("t:" + old).catch(function(){ return null; }); })
+      .then(function(t){ return Promise.all([kvDel(bookKey(old)), kvDel("t:" + old), t ? kvSet("t:" + P.bid, t) : null]); }).catch(function(){});
+  });
+}
+function numFailed(){
+  var m = modal('<h2>אופס 😕</h2><p>לא הצלחנו לקבל מספר ספר. בדרך כלל זה האינטרנט – בדקו את החיבור ונסו שוב.</p><div class="row"><button class="big-btn" id="nr">🔄 לנסות שוב</button><button class="big-btn alt" id="nc">חזרה לספר</button></div>', { sticky: true });
+  m.querySelector("#nr").onclick = function(){ ensureNumber().then(makePrint, numFailed); };
+  m.querySelector("#nc").onclick = closeModal;
+}
+
 // ---------- פרטים לפני ההדפסה (שמש, 6.11.2026): הספר והפרטים נשלחים לדרייב של BOOQLI, ורק אז מורידים ----------
 var cust = null;
 function askDetails(){
@@ -1231,7 +1253,7 @@ function askDetails(){
       if (err) { $("cErr").textContent = "❗ " + err; $("cErr").classList.remove("hidden"); return; }
       cust = o; kvSet("cust", o).catch(function(){});
       ev("book", "details");
-      makePrint();
+      ensureNumber().then(makePrint, numFailed);
     };
   });
 }
@@ -1388,7 +1410,7 @@ function openEditor(fresh){
   view = 0; sel = null; activePg = "c";
   $("title").value = P.title || "";
   if (!P.bid) P.bid = newBookId();
-  if ($("bidTag")) $("bidTag").textContent = "🔢 " + P.bid;
+  if ($("bidTag")) $("bidTag").textContent = isRealBid(P.bid) ? "🔢 " + P.bid : "🔢 מספר הספר יינתן בשליחה";
   $("intro").classList.add("hidden"); $("ed").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   if (!built) { built = true; renderStickers(); }
@@ -1462,7 +1484,7 @@ function renderBooks(){
         '<div class="bk-list">' + books.map(function(p, i){
           var sent = p.sent && p.sent.length ? '<span class="bk-sent">✅ נשלח ל-BOOQLI ' + fmtDate(p.sent[p.sent.length - 1].at) + (p.sent.length > 1 ? " (גרסה " + p.sent.length + ")" : "") + "</span>" : '<span class="bk-draft">✏️ עוד לא נשלח</span>';
           return '<div class="bk"><button class="bk-img" data-open="' + esc(p.bid) + '" aria-label="לערוך">' + (th[i] ? '<img src="' + th[i] + '" alt="">' : "<span>📖</span>") + "</button>" +
-            '<div class="bk-info"><b>' + esc(p.title || "הספר שלי") + '</b><span dir="ltr" class="bk-id">' + esc(p.bid) + "</span>" +
+            '<div class="bk-info"><b>' + esc(p.title || "הספר שלי") + '</b><span dir="ltr" class="bk-id">' + (isRealBid(p.bid) ? esc(p.bid) : '<span dir="rtl">מספר יינתן בשליחה</span>') + "</span>" +
             '<small>עודכן ' + fmtDate(p.updated) + "</small>" + sent +
             '<div class="bk-btns"><button class="big-btn green sm" data-open="' + esc(p.bid) + '">✏️ לערוך</button>' +
             '<button class="sbtn" data-copy="' + esc(p.bid) + '">📄 שכפול</button>' +

@@ -27,6 +27,8 @@ window.bqUp = (function () {
     done: function (tok, summary, cust) { return post({ action: "webdone", tok: tok, summary: summary, cust: cust || null }); },
     gan: function (code) { return post({ action: "webgan", code: code }); },
     /* חלק של קובץ PDF מעורך הספר (book-maker/) – עד 4MB, לפי הסדר */
+    /* ספר בעיצוב אישי: מספר קבוע (H-1002-4) לפני יצירת ה-PDF */
+    num: function (o) { return post(Object.assign({ action: "webnum" }, o)); },
     part: function (tok, file, off, total, blob) { return b64(blob).then(function (d) { return post({ action: "webpart", tok: tok, file: file, off: off, total: total, b64: d }); }); }
   };
 })();

@@ -68,12 +68,27 @@ function catFolder_(kind) {
   if (!f) { f = sub_(root_(), CATS[kind] || "אחר"); P.setProperty(key, f.getId()); }
   return f;
 }
-function custFolder_(kind, name, phone) {
+function custFolder_(kind, name, phone, num) {
   var P = PropertiesService.getScriptProperties(), ph = phone_(phone), nm = String(name || "").replace(/[\\\/:*?"<>|#%]/g, " ").replace(/\s+/g, " ").trim().slice(0, 50) || "לקוח";
   var key = "cf_" + kind + "_" + (ph || nm), f = byId_(P, key);
-  if (!f) { f = catFolder_(kind).createFolder(nm + (ph ? " · " + ph.slice(0, 3) + "-" + ph.slice(3) : "")); P.setProperty(key, f.getId()); }
+  var title = (num ? num + " · " : "") + nm + (ph ? " · " + ph.slice(0, 3) + "-" + ph.slice(3) : "");
+  if (!f) { f = catFolder_(kind).createFolder(title); P.setProperty(key, f.getId()); }
+  else if (num && f.getName().indexOf(num + " · ") !== 0) f.setName(title);
   return f;
 }
+
+/* ===== מספר לקוח + מספר ספר (שמש, 6.11.2026) =====
+   לכל לקוח (לפי טלפון) מספר ראשי קבוע מ-1001, ולכל ספר שלו מספר המשך: 1002-1, 1002-2, 1002-3… – גם בהזמנות הבאות.
+   הזמנת גן = מספר המשך אחד לכל ההזמנה. ספר בעיצוב אישי = "H-1002-4" (מודפס על הכריכה ובעמוד 1). */
+function custNum_(P, phone, count) {
+  var ph = phone_(phone), rec = null;
+  if (ph) { try { rec = JSON.parse(P.getProperty("cn_" + ph) || "null"); } catch (e) {} }
+  if (!rec) { var next = +(P.getProperty("num_next") || 1001); rec = { n: next, last: 0 }; P.setProperty("num_next", String(next + 1)); }
+  var subs = []; for (var i = 0; i < count; i++) subs.push(++rec.last);
+  if (ph) P.setProperty("cn_" + ph, JSON.stringify(rec));
+  return { n: rec.n, subs: subs };
+}
+function subsLabel_(n, subs) { return n + "-" + subs[0] + (subs.length > 1 ? "…" + subs[subs.length - 1] : ""); }
 
 function clean_(s) { return String(s || "").replace(/[\\\/:*?"<>|#%]/g, " ").replace(/\s+/g, " ").trim().slice(0, 60) || "ילד"; }
 
@@ -116,6 +131,16 @@ function web_(q) {
   var cut = function (s, n) { return String(s || "").replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n); };
   var day = Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM");
   if (q.action === "webgan") { var L = get("web_code_" + String(q.code || "").replace(/\D/g, "")); return L ? { ok: true, name: L.name, book: L.book } : { ok: false, error: "code" }; }
+  if (q.action === "webnum") {   /* ספר בעיצוב אישי: מספר קבוע לפני יצירת ה-PDF */
+    lock.waitLock(20000);
+    try {
+      var nk = "web_num_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd"), nn = +(P.getProperty(nk) || 0);
+      if (nn >= 300) return { ok: false, error: "limit" };
+      P.setProperty(nk, String(nn + 1));
+      var NB = custNum_(P, q.phone, 1);
+      return { ok: true, bid: "H-" + NB.n + "-" + NB.subs[0], num: NB.n };
+    } finally { lock.releaseLock(); }
+  }
   if (q.action === "webstart") {
     if (q.consent !== true) return { ok: false, error: "consent" };
     lock.waitLock(20000);
@@ -127,8 +152,9 @@ function web_(q) {
       var kind = ["private", "gan", "parent", "book"].indexOf(q.kind) >= 0 ? q.kind : "private", rec;
       if (kind === "book") {
         var bid = String(q.bid || "").toUpperCase();
-        if (!/^H-\d{4}-\d{4}$/.test(bid)) return { ok: false, error: "bid" };
-        rec = { kind: kind, oid: bid, title: bid + " · " + (cut(q.who, 50) || "אתר") + " · " + day, up: {} };
+        if (!/^H-\d{4}-\d{4}$/.test(bid) && !/^H-\d{4,6}-\d{1,3}$/.test(bid)) return { ok: false, error: "bid" };
+        var bm = /^H-(\d{4,6})-\d{1,3}$/.exec(bid);
+        rec = { kind: kind, oid: bid, title: bid + " · " + (cut(q.who, 50) || "אתר") + " · " + day, up: {}, num: bm ? bm[1] : "" };
       } else if (kind === "parent") {
         var C = get("web_code_" + String(q.code || "").replace(/\D/g, ""));
         if (!C) return { ok: false, error: "code" };
@@ -137,8 +163,9 @@ function web_(q) {
         pc.push({ who: cut(q.who, 40), kid: cut(q.kid, 30), at: Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM.yyyy HH:mm") });
         P.setProperty(pk, JSON.stringify(pc.slice(-60)));
       } else {
-        var oid = (kind === "gan" ? "גן-" : "סב-") + (1000 + Math.floor(Math.random() * 9000)), who = cut(kind === "gan" ? q.gan : q.who, 50) || "אתר";
-        rec = { kind: kind, oid: oid, title: oid + " · " + who + " · " + day };
+        var CN = custNum_(P, q.phone, kind === "gan" ? 1 : Math.max(1, Math.min(10, Math.floor(+q.books || 1))));
+        var oid = kind === "gan" ? CN.n + "-" + CN.subs[0] : String(CN.n), who = cut(kind === "gan" ? q.gan : q.who, 50) || "אתר";
+        rec = { kind: kind, oid: oid, title: (kind === "gan" ? oid : subsLabel_(CN.n, CN.subs)) + " · " + who + " · " + day, num: String(CN.n), subs: CN.subs };
         if (kind === "gan") {
           var c = ""; for (var i = 0; i < 30 && !c; i++) { var t = String(1000 + Math.floor(Math.random() * 9000)); if (!P.getProperty("web_code_" + t)) c = t; }
           rec.code = c; P.setProperty("web_code_" + c, JSON.stringify({ oid: oid, name: who, book: cut(q.book, 40), day: day, at: Date.now() }));
@@ -150,14 +177,14 @@ function web_(q) {
         var ft = "🌐 " + rec.title, of = null;
         if (kind === "book") of = byId_(P, "bf_" + rec.oid);   /* תיקון של אותו ספר – לאותה תיקייה */
         if (of) of.setName(ft);
-        else { of = custFolder_(kind, q.cname || q.who, q.phone).createFolder(ft); if (kind === "book") P.setProperty("bf_" + rec.oid, of.getId()); }
+        else { of = custFolder_(kind, q.cname || q.who, q.phone, rec.num).createFolder(ft); if (kind === "book") P.setProperty("bf_" + rec.oid, of.getId()); }
         rec.fid = of.getId();
         if (kind === "gan" && rec.code) { var CR = get("web_code_" + rec.code); if (CR) { CR.fid = rec.fid; P.setProperty("web_code_" + rec.code, JSON.stringify(CR)); } }
       }
       rec.n = 0; rec.max = WEB_MAX[kind]; rec.at = Date.now();
       var tok = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "").slice(0, 16);
       P.setProperty("web_t_" + tok, JSON.stringify(rec));
-      return { ok: true, oid: rec.oid, tok: tok, code: rec.code || "" };
+      return { ok: true, oid: rec.oid, tok: tok, code: rec.code || "", num: rec.num || "", subs: rec.subs || [] };
     } finally { lock.releaseLock(); }
   }
   var tk = "web_t_" + String(q.tok || "").replace(/[^a-f0-9]/g, "");
@@ -203,7 +230,7 @@ function custMail_(D, c, P) {
     var id = D.f && D.f[String(it.folder || "").trim().slice(0, 60)], img = "";
     if (!gan && id) { try { imgs["p" + i] = DriveApp.getFileById(id).getBlob(); img = "<img src='cid:p" + i + "' width='90' style='width:90px;height:auto;border-radius:10px;float:left;margin-right:10px'>"; } catch (e) {} }
     rows.push(gan ? "<li>" + h(it.name, 30) + "</li>"
-      : "<div style='border:1px solid #f0dbe6;border-radius:14px;padding:10px 12px;margin:10px 0;overflow:hidden'>" + img + "<b>📖 ספר " + (i + 1) + ": " + h(it.book, 40) + "</b><br>👤 " + h(it.name, 30) + "<br><span style='color:#5d4c58'>✍️ " + h(it.ded, 600) + "</span></div>");
+      : "<div style='border:1px solid #f0dbe6;border-radius:14px;padding:10px 12px;margin:10px 0;overflow:hidden'>" + img + "<b>📖 " + (it.no ? h(it.no, 20) + " · " : "ספר " + (i + 1) + ": ") + h(it.book, 40) + "</b><br>👤 " + h(it.name, 30) + "<br><span style='color:#5d4c58'>✍️ " + h(it.ded, 600) + "</span></div>");
   });
   var body = "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#2b2b2b;max-width:560px'>"
     + "<h2 style='color:#C13671;margin:0 0 6px'>💛 קיבלנו את בקשת ההזמנה שלכם!</h2>"

@@ -519,28 +519,35 @@ function photo(file, done){
 }
 /* שליחה: מעלים כל תמונה לשרת הקטן, ואז הודעה אחת לשמש בוואטסאפ */
 async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {"Content-Type": "image/jpeg"}, body: bl}); if (!r.ok) throw new Error(r.status); return (await r.json()).url; }
+let NUMS = [];   /* מספרי הספרים מהשרת: ["1002-3", "1002-4"] */
+const bkNo = i => NUMS[i] || `ספר ${i + 1}`;
+const bkFolder = (it, i) => `${NUMS[i] ? NUMS[i] : "ספר " + (i + 1)} · ${book(it.book).name} · ${it.name}`;
 /* שליחה לדרייב: פותחים הזמנה, מעלים כל תמונה (2 ניסיונות), ושולחים סיכום. מחזיר את מספר ההזמנה, או "" אם לא הצליח */
 async function sendDrive(){
-  const s = await bqUp.start({kind: "private", who: ORD.who, cname: ORD.d.first + " " + ORD.d.last, phone: ORD.d.phone, consent: true}); if (!s.ok) throw new Error(s.error || "start");
+  const s = await bqUp.start({kind: "private", who: ORD.who, cname: ORD.d.first + " " + ORD.d.last, phone: ORD.d.phone, books: ORD.list.length, consent: true}); if (!s.ok) throw new Error(s.error || "start");
+  /* מספר לכל ספר: 1002-1, 1002-2… (מספר הלקוח קבוע, ההמשך ממשיך גם בהזמנות הבאות) – בשביל בית הדפוס */
+  NUMS = (s.num && s.subs && s.subs.length === ORD.list.length) ? s.subs.map(x => s.num + "-" + x) : [];
   /* כל ספר בתיקייה משלו: "ספר 1 · <שם הספר> · <שם הילד/ה>" / בנים|בנות / <שם>.jpg (שמש: "ספר, שם הילד, הקדשה – שיהיה לי הכל מסודר") */
-  const all = ORD.list.flatMap((it, i) => it.pics.map(x => ({it, x, f: `ספר ${i + 1} · ${book(it.book).name} · ${it.name}`}))); let k = 0;
+  const all = ORD.list.flatMap((it, i) => it.pics.map(x => ({it, x, f: bkFolder(it, i)}))); let k = 0;
   for (const {it, x, f} of all) { k++; prog(k, all.length);
     let ok = false; for (let t = 0; t < 3 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, x.blob, isGirl(it) ? "בנות" : "בנים", it.name, f)).ok; } catch (e) {} }
     if (!ok) throw new Error("photo"); }
-  const lines = ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name} (${isGirl(it) ? "בת" : "בן"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"} – בתיקייה "ספר ${i + 1} · ${book(it.book).name} · ${it.name}"`);
+  const lines = ORD.list.map((it, i) => `📖 ${bkNo(i)}: ${book(it.book).name} (${isGirl(it) ? "בת" : "בן"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"} – בתיקייה "${bkFolder(it, i)}"`);
   const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
   const D = ORD.d;
   const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (בקשה ולא קנייה – בתוקף רק אחרי אישור סקיצה ותשלום, אספקה 7–14 ימי עסקים מהתשלום, רשאים לא לבצע הזמנה לא תקינה; AI אינה מצלמה; אין החלפת תמונה אחרי השליחה; שינוי לפי טעם אישי – 20 ₪), את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
-  const cust = {email: D.email, first: D.first, items: ORD.list.map((it, i) => ({book: book(it.book).name, name: it.name, ded: it.ded, folder: `ספר ${i + 1} · ${book(it.book).name} · ${it.name}`})), total: `${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)`};
+  const cust = {email: D.email, first: D.first, items: ORD.list.map((it, i) => ({no: NUMS[i] || "", book: book(it.book).name, name: it.name, ded: it.ded, folder: bkFolder(it, i)})), total: `${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)`};
   const d = await bqUp.done(s.tok, summary, cust); if (!d.ok) throw new Error("done");
-  return {oid: s.oid, mailed: !!d.mailed};
+  /* מה שמוצג ללקוח כ"מספר ההזמנה": 1002-3 או 1002-3…5 */
+  const label = NUMS.length ? NUMS[0] + (NUMS.length > 1 ? "…" + NUMS[NUMS.length - 1].split("-")[1] : "") : s.oid;
+  return {oid: label, mailed: !!d.mailed};
 }
 /* סיכום ההזמנה על המסך (שמש, 5.11.2026: "חייב להיות להם סיכום – איזה ספר, איזה ילד, התמונה, השם וההקדשה"). שמירה כ-PDF + שמירה בוואטסאפ */
 function sumText(oid){ const D = ORD.d, n = ORD.list.length;
-  return `סיכום ההזמנה ${oid} · BOOQLI 💛\n${D.first} ${D.last} · ${D.phone}\n${D.street}, ${D.city}\n\n` + ORD.list.map((it, i) => `📖 ספר ${i + 1}: ${book(it.book).name}\n👤 ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})\n✍️ ${it.ded}`).join("\n\n") + `\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}`; }
+  return `סיכום ההזמנה ${oid} · BOOQLI 💛\n${D.first} ${D.last} · ${D.phone}\n${D.street}, ${D.city}\n\n` + ORD.list.map((it, i) => `📖 ${bkNo(i)}: ${book(it.book).name}\n👤 ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})\n✍️ ${it.ded}`).join("\n\n") + `\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}`; }
 function sumHTML(oid, mailed){ const D = ORD.d, n = ORD.list.length;
   return `<div class="osum" id="oSum"><h3>📄 סיכום בקשת ההזמנה ${esc(oid)}</h3><p class="sd">${new Date().toLocaleDateString("he-IL")} · ${esc(D.first)} ${esc(D.last)} · ${esc(D.phone)} · <span dir="ltr">${esc(D.email)}</span><br>🏠 ${esc(D.street)}, ${esc(D.city)}</p>
-    ${ORD.list.map((it, i) => `<div class="oi">${it.pics[0] ? `<img src="${it.pics[0].url}" alt="">` : ""}<div><b>📖 ספר ${i + 1}: ${esc(book(it.book).name)}</b>\n👤 ${esc(it.name)} (${isGirl(it) ? "ילדה" : "ילד"}) · ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}\n✍️ ${esc(it.ded)}</div></div>`).join("")}
+    ${ORD.list.map((it, i) => `<div class="oi">${it.pics[0] ? `<img src="${it.pics[0].url}" alt="">` : ""}<div><b>📖 ${esc(bkNo(i))}: ${esc(book(it.book).name)}</b>\n👤 ${esc(it.name)} (${isGirl(it) ? "ילדה" : "ילד"}) · ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}\n✍️ ${esc(it.ded)}</div></div>`).join("")}
     <p style="font-weight:800;margin-top:6px">💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}</p>
     <p class="h" style="font-size:14px">📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>
     <div class="notbuy"><b>📝 חשוב: זה סיכום של בקשת הזמנה – לא אישור קנייה.</b><br>ההזמנה נכנסת לתוקף רק אחרי שתאשרו את הסקיצה ותשלמו. עד התשלום אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</div>
@@ -553,7 +560,7 @@ let WA_SENT = false;
 function waMsg(oid){ const D = ORD.d, n = ORD.list.length, me = (D.first + " " + D.last).trim();
   const dl = ORD.list.reduce((a, it) => a + it.ded.length, 0), withDed = dl <= 1200;
   return `שלום BOOQLI 💛\nשלחתי הזמנה מהאתר: *${oid}*\n\n👤 המזמין/ה: ${me}${ORD.who && ORD.who !== me ? " (" + ORD.who + ")" : ""}\n📞 ${D.phone}\n✉️ ${D.email}\n🏠 כתובת למשלוח: ${D.street}, ${D.city}\n\n📚 ${n === 1 ? "ספר אחד" : n + " ספרים"}:\n`
-    + ORD.list.map((it, i) => `${i + 1}. *${book(it.book).name}* – ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})` + (withDed ? `\n✍️ ${it.ded}` : "")).join("\n\n")
+    + ORD.list.map((it, i) => `${NUMS[i] ? "🔢 *" + NUMS[i] + "*" : (i + 1) + "."} *${book(it.book).name}* – ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})` + (withDed ? `\n✍️ ${it.ded}` : "")).join("\n\n")
     + (withDed ? "" : "\n\n✍️ ההקדשות – בסיכום ההזמנה") + `\n\n💰 סה"כ ${ils(n * priceOf(n, "hard") + SHIP)} (כולל משלוח)`; }
 const waMust = (href, id) => `<div class="wamust"><p class="t">📲 שלב אחרון – חובה</p><p>שולחים לנו את ההזמנה בוואטסאפ. ההודעה כבר כתובה – רק לוחצים שם <b>➤ שליחה</b>. בלי ההודעה הזו לא נוכל להתחיל.</p>
   <a class="btn btn-wa go" id="${id}" href="${href}" target="_blank" rel="noopener">💬 שליחת ההזמנה בוואטסאפ</a>
