@@ -89,8 +89,7 @@ function newBlank(){
   p.cover.items = withIds([
     { type: "text", x: 35, y: 90, w: 170, h: 30, size: 40, text: "שם הספר", font: "Secular One", color: "#C5309A", align: "center", rot: 0, hint: "text" },
     { type: "img", x: 45, y: 135, w: 150, h: 75, src: "", rot: 0, clip: "round", hint: "photo" },
-    { type: "text", x: 266, y: 90, w: 160, h: 20, size: 16, text: "הספר נוצר באהבה\nעל ידי: ___", font: "Varela Round", bold: true, color: "#C5309A", align: "center", rot: 0, hint: "text" },
-    brandItem()
+    { type: "text", x: 266, y: 90, w: 160, h: 20, size: 16, text: "הספר נוצר באהבה\nעל ידי: ___", font: "Varela Round", bold: true, color: "#C5309A", align: "center", rot: 0, hint: "text" }
   ]);
   p.pages[1].items = withIds([{ type: "text", x: 23, y: 80, w: 160, h: 20, size: 20, text: "הַסֵּפֶר הַזֶּה שַׁיָּךְ לְ...", font: "Varela Round", color: "#33263D", align: "center", rot: 0, hint: "text" }]);
   return p;
@@ -111,7 +110,7 @@ function getMarkQR(){
   var q = qrcode(0, "M"); q.addData(MARK_URL); q.make(); markQR = q; return q;
 }
 /* הסימון הקבוע: מספר הספר + BOOQLI · booqli.ai + קוד QR לאתר. לא אובייקט – אי אפשר להזיז או למחוק. */
-var MARK_W = 48, MARK_H = 17;
+var MARK_W = 62, MARK_H = 17, MARK_ICON = "../img/favicon-512.png";
 function markBox(pg){
   if (pg === "c") return { x: CW - CBL - SAFE - MARK_W, y: CH - CBL - SAFE - MARK_H + 2 };  // פינה תחתונה בכריכה האחורית (מימין)
   if (pg === 1) return { x: PG / 2 - MARK_W / 2, y: PG - BL - SAFE - MARK_H + 2 };          // תחתית עמוד 1, באמצע
@@ -130,6 +129,8 @@ function drawMark(ctx, pg){
     ctx.fillStyle = "#33263D";
     for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (Q.isDark(r, c)) ctx.fillRect(qx + c * m, qy + r * m, m + 0.02, m + 0.02);
   }
+  var ic = getImg(MARK_ICON), is = 13;                                                     // החד־קרן – בצד שמאל של המלבן
+  if (ic && ic.ok) ctx.drawImage(ic.img, x + pad, y + (h - is) / 2, is, is);
   var tx = qx - 2.2, cyy = y + h / 2;
   ctx.direction = "ltr"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#33263D";
   ctx.font = "700 " + (12 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";          // 12 נקודות
@@ -140,7 +141,8 @@ function drawMark(ctx, pg){
 }
 function ensureBrand(){
   if (P && !P.bid) P.bid = newBookId();
-  if (!P.cover.items.some(function(i){ return i.type === "brand"; })) { var b = brandItem(); b.id = uid(); P.cover.items.push(b); }
+  /* 6.11.2026 (שמש): הלוגו הנפרד בכריכה האחורית ירד – החד־קרן נמצא עכשיו בתוך הסימון של מספר הספר */
+  P.cover.items = P.cover.items.filter(function(i){ return i.type !== "brand"; });
 }
 
 // ---------- אחסון (IndexedDB) ----------
@@ -1139,7 +1141,7 @@ function makePrint(){
   var step = function(i, n, txt){ $("pgBar").style.width = Math.round(i / n * 100) + "%"; $("pgTxt").textContent = txt; };
   var tick = function(){ return new Promise(function(r){ setTimeout(r, 20); }); };
   if (!P.bid) P.bid = newBookId();
-  Promise.all([loadFontsFor(items), waitImages(items), document.fonts.load('700 40px "Assistant"', "H-0123").catch(function(){}), document.fonts.load('600 40px "Assistant"', "BOOQLI").catch(function(){})]).then(function(){
+  Promise.all([loadFontsFor(items), waitImages(items), (getImg(MARK_ICON) || {}).p, document.fonts.load('700 40px "Assistant"', "H-0123").catch(function(){}), document.fonts.load('600 40px "Assistant"', "BOOQLI").catch(function(){})]).then(function(){
     step(0, 26, "הכריכה…");
     return tick();
   }).then(function(){
