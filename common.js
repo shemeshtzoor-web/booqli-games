@@ -1063,11 +1063,11 @@ function siteMainNav(){
     "html.bq-brand:not(.bq-play) h1,html.bq-brand:not(.bq-play) h2,html.bq-brand:not(.bq-play) h3{font-family:'Varela Round',Assistant,sans-serif;letter-spacing:.01em;line-height:1.25}" +
     "html.bq-brand:not(.bq-play) main p,html.bq-brand:not(.bq-play) main li{line-height:1.65;word-spacing:.05em}" +
     /* הפס עם הלוגו – כמו בראש האתר הראשי */
-    /* פס הלוגו – בהיר ורגוע (שמש, 6.11.2026: "פחות צבעוני, יותר יפה"); הלוגו הכהה מוחלף לבד */
-    "html.bq-brand body>header,html.bq-brand header.top{background:rgba(255,255,255,.92)!important;box-shadow:0 1px 0 #E3EFEB,0 4px 16px rgba(33,51,48,.05)!important;text-shadow:none;color:#213330}" +
-    "html.bq-brand header .btn-wa{background:#fff!important;color:#178A45!important;border:2px solid #9ED9B4!important;box-shadow:none!important}" +
+    /* פס הלוגו – בדיוק כמו בראש booqli.ai: ירוק־מנטה עדין והלוגו הלבן (שמש, 6.11.2026) */
+    "html.bq-brand body>header,html.bq-brand header.top{background:linear-gradient(90deg,#6DAFA1,#8CC5B9)!important;box-shadow:0 2px 14px rgba(33,51,48,.10)!important;text-shadow:none}" +
+    "html.bq-brand header .btn-wa{background:#fff!important;color:#178A45!important;border:2px solid #fff!important;box-shadow:0 2px 8px rgba(33,51,48,.12)!important}" +
     "html.bq-brand header .btn-wa:hover{background:#F0FAF4!important}" +
-    ".bq-hmenu{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#213330;border:2px solid #DCEDE8;border-radius:999px;padding:7px 14px;font:800 14px Assistant,sans-serif;cursor:pointer;white-space:nowrap}" +
+    ".bq-hmenu{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#213330;border:2px solid #fff;border-radius:999px;padding:7px 14px;font:800 14px Assistant,sans-serif;cursor:pointer;white-space:nowrap}" +
     "@media (max-width:620px){.bq-hmenu{padding:7px 12px}.bq-hmenu b{display:none}html.bq-brand header .btn-wa{font-size:13px!important;padding:7px 11px!important}}" +
     "@media (max-width:350px){html.bq-brand header .brand{gap:8px}html.bq-brand header img.logo{width:84px;height:auto}html.bq-brand header .btn-wa{font-size:12px!important;padding:6px 9px!important}.bq-hmenu{padding:6px 10px}}" +
     ".bq-hmenu span{font-size:17px;line-height:1}.bq-hmenu:hover{background:#F4FAF8}.bq-hmenu:focus-visible{outline:3px solid #FA57C4;outline-offset:2px}" +
@@ -1076,8 +1076,6 @@ function siteMainNav(){
     /* בלי כפילות למעלה (5.11.2026): "לכל הגן" כבר בפס ההזמנה, והלוגו כבר מוביל לדף הבית */
     "html.bq-brand header .gan{display:none!important}html.bq-brand .bq-nav .home{display:none}html.bq-brand .bq-nav ul{margin:0 auto}";
   (document.head || html).appendChild(css);
-  var dark = function(){ document.querySelectorAll("body > header img.logo, header.top img.logo").forEach(function(i){ if (/logo\.png(\?|$)/.test(i.getAttribute("src") || "")) i.src = i.getAttribute("src").replace(/logo\.png/, "logo-dark.png"); }); };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", dark); else dark();
 })();
 
 /* אייקון הלשונית (favicon) – החד־קרן של BOOQLI, לכל העמודים. הקבצים בשורש האתר וב-img/ */
