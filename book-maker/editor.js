@@ -95,7 +95,51 @@ function newBlank(){
   p.pages[1].items = withIds([{ type: "text", x: 23, y: 80, w: 160, h: 20, size: 20, text: "הַסֵּפֶר הַזֶּה שַׁיָּךְ לְ...", font: "Varela Round", color: "#33263D", align: "center", rot: 0, hint: "text" }]);
   return p;
 }
+/* מספר ספר ייחודי (שמש, 6.11.2026): H = כריכה קשה + 8 ספרות. מופיע זהה בכריכה האחורית ובתחתית עמוד 1,
+   כדי שבית הדפוס יחבר ידנית בין קובץ הכריכה לקובץ העמודים. נשמר בפרויקט ובגיבוי; ספר חדש = מספר חדש. */
+function newBookId(){
+  var d = "";
+  try { var a = new Uint32Array(2); crypto.getRandomValues(a); d = String(a[0] % 1e4 + 1e4).slice(1) + String(a[1] % 1e4 + 1e4).slice(1); }
+  catch (e) { d = String(Math.floor(Math.random() * 1e8) + 1e8).slice(1); }
+  if (d.charAt(0) === "0") d = "1" + d.slice(1);
+  return "H-" + d.slice(0, 4) + "-" + d.slice(4);
+}
+var MARK_URL = "https://games.booqli.ai/?utm_source=printed_book";
+var markQR = null;
+function getMarkQR(){
+  if (markQR || typeof qrcode !== "function") return markQR;
+  var q = qrcode(0, "M"); q.addData(MARK_URL); q.make(); markQR = q; return q;
+}
+/* הסימון הקבוע: מספר הספר + BOOQLI · booqli.ai + קוד QR לאתר. לא אובייקט – אי אפשר להזיז או למחוק. */
+var MARK_W = 48, MARK_H = 17;
+function markBox(pg){
+  if (pg === "c") return { x: CW - CBL - SAFE - MARK_W, y: CH - CBL - SAFE - MARK_H + 2 };  // פינה תחתונה בכריכה האחורית (מימין)
+  if (pg === 1) return { x: PG / 2 - MARK_W / 2, y: PG - BL - SAFE - MARK_H + 2 };          // תחתית עמוד 1, באמצע
+  return null;
+}
+function drawMark(ctx, pg){
+  var b = markBox(pg); if (!b || !P) return;
+  if (!P.bid) P.bid = newBookId();
+  var x = b.x, y = b.y, w = MARK_W, h = MARK_H, q = 13, pad = 2;
+  ctx.save();
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(x, y, w, h, 2.5); ctx.fill(); } else ctx.fillRect(x, y, w, h);
+  var Q = getMarkQR(), qx = x + w - pad - q, qy = y + (h - q) / 2;
+  if (Q) {
+    var n = Q.getModuleCount(), m = q / n;
+    ctx.fillStyle = "#33263D";
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (Q.isDark(r, c)) ctx.fillRect(qx + c * m, qy + r * m, m + 0.02, m + 0.02);
+  }
+  var tx = qx - 2.2, cyy = y + h / 2;
+  ctx.direction = "ltr"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#33263D";
+  ctx.font = "700 " + (12 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";          // 12 נקודות
+  ctx.fillText(P.bid, tx, cyy + 0.6);
+  ctx.fillStyle = "#6b5a72"; ctx.font = "600 " + (6.5 * PT).toFixed(2) + "px Assistant, Arial, sans-serif";
+  ctx.fillText("BOOQLI · booqli.ai", tx, cyy + 4.4);
+  ctx.restore();
+}
 function ensureBrand(){
+  if (P && !P.bid) P.bid = newBookId();
   if (!P.cover.items.some(function(i){ return i.type === "brand"; })) { var b = brandItem(); b.id = uid(); P.cover.items.push(b); }
 }
 
@@ -301,6 +345,7 @@ function drawPage(ctx, pg, opt){
   var p = pageObj(pg);
   ctx.fillStyle = p.bg || "#FFFFFF"; ctx.fillRect(0, 0, pageW(pg), pageH(pg));
   p.items.forEach(function(it){ drawItem(ctx, it, opt); });
+  drawMark(ctx, pg);
 }
 function drawDisabled(ctx, x, w, h, label){
   ctx.fillStyle = "#E9E1E6"; ctx.fillRect(x, 0, w, h);
@@ -1093,7 +1138,8 @@ function makePrint(){
   if (!J) { m.innerHTML = "<h2>אופס</h2><p>לא הצלחנו לטעון את כלי ההדפסה. בדקו את החיבור לאינטרנט ונסו שוב.</p>"; return; }
   var step = function(i, n, txt){ $("pgBar").style.width = Math.round(i / n * 100) + "%"; $("pgTxt").textContent = txt; };
   var tick = function(){ return new Promise(function(r){ setTimeout(r, 20); }); };
-  Promise.all([loadFontsFor(items), waitImages(items)]).then(function(){
+  if (!P.bid) P.bid = newBookId();
+  Promise.all([loadFontsFor(items), waitImages(items), document.fonts.load('700 40px "Assistant"', "H-0123").catch(function(){}), document.fonts.load('600 40px "Assistant"', "BOOQLI").catch(function(){})]).then(function(){
     step(0, 26, "הכריכה…");
     return tick();
   }).then(function(){
@@ -1115,7 +1161,7 @@ function makePrint(){
     });
   }).then(function(f){
     step(26, 26, "מוכן!");
-    printFiles = { cover: new File([f.cover], safeName() + " - כריכה.pdf", { type: "application/pdf" }), pages: new File([f.pages], safeName() + " - עמודים.pdf", { type: "application/pdf" }) };
+    printFiles = { cover: new File([f.cover], P.bid + " " + safeName() + " - כריכה.pdf", { type: "application/pdf" }), pages: new File([f.pages], P.bid + " " + safeName() + " - עמודים.pdf", { type: "application/pdf" }) };
     ev("book", "export");
     showSend();
   }).catch(function(err){
@@ -1124,7 +1170,7 @@ function makePrint(){
   });
 }
 function showSend(){
-  var msg = "היי BOOQLI 👋\nעיצבתי ספר באתר booqli Games ואשמח להצעת מחיר להדפסה בכריכה קשה.\n📖 שם הספר: " + (P.title || "") + "\n📄 24 עמודים, 20×20 ס\"מ\nמצרפ/ת 2 קבצים: כריכה ועמודים.";
+  var msg = "היי BOOQLI 👋\nעיצבתי ספר באתר booqli Games ואשמח להצעת מחיר להדפסה בכריכה קשה.\n🔢 מספר הספר: " + P.bid + "\n📖 שם הספר: " + (P.title || "") + "\n📄 24 עמודים, 20×20 ס\"מ\nמצרפ/ת 2 קבצים: כריכה ועמודים.";
   var canShare = false;
   try { canShare = !!(navigator.canShare && navigator.canShare({ files: [printFiles.cover, printFiles.pages] })); } catch (e) {}
   var mb = function(f){ return (f.size / 1048576).toFixed(1) + " MB"; };
@@ -1153,6 +1199,8 @@ function openEditor(fresh){
   hist = []; fut = []; lastSnap = snap(); updUndo();
   view = 0; sel = null; activePg = "c";
   $("title").value = P.title || "";
+  if (!P.bid) P.bid = newBookId();
+  if ($("bidTag")) $("bidTag").textContent = "🔢 " + P.bid;
   $("intro").classList.add("hidden"); $("ed").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   if (!built) { built = true; renderStickers(); }
@@ -1174,7 +1222,7 @@ function start(kind){
   var go3 = function(){
     asClear().then(function(){
       Object.keys(assets).forEach(function(k){ URL.revokeObjectURL(assets[k].url); }); assets = {};
-      P = kind === "sample" ? newSample() : newBlank(); lastBackup = Date.now(); editsSinceBackup = 0;
+      P = kind === "sample" ? newSample() : newBlank(); P.bid = newBookId(); lastBackup = Date.now(); editsSinceBackup = 0;
       return saveNow();
     }).then(function(){ ev("book", "start-" + kind); openEditor(true); });
   };

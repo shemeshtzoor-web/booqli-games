@@ -218,6 +218,7 @@ button{cursor:pointer}
     <img class="logo" src="../img/logo-dark.png" alt="BOOQLI" width="95" height="40">
     <input class="title" id="title" aria-label="שם הספר" maxlength="60">
     <span class="status" id="status">✓ נשמר במחשב</span>
+    <span class="status" id="bidTag" style="white-space:nowrap" title="מספר הספר – מופיע בכריכה האחורית ובעמוד 1, כדי שבית הדפוס יחבר בין הכריכה לעמודים" dir="ltr"></span>
     <button class="tbtn" id="undo" title="ביטול (Ctrl+Z)">↶ ביטול</button>
     <button class="tbtn" id="redo" title="חזרה (Ctrl+Y)">↷ חזרה</button>
     <span class="sp"></span>
@@ -274,6 +275,7 @@ button{cursor:pointer}
 <div id="modalRoot"></div>
 
 <script src="../lib/jspdf-2.5.1.umd.min.js"></script>
+<script src="../qrcode.min.js"></script>
 <script src="../common.js"></script>
 <script src="sample.js"></script>
 <script src="editor.js"></script>
