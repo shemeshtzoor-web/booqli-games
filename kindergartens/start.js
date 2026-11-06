@@ -111,7 +111,7 @@ function stepHTML(){
     <label class="gchk"><input type="checkbox" id="gOk"> <span>קראתי את "חשוב לדעת", את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, וקיבלנו אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
     <p class="gerr" id="gErr"></p>
     <button type="button" class="btn btn-wa gsend" id="gSend">✅ שולחים את ההזמנה</button>
-    <p class="gh" style="text-align:center">משלמים רק אחרי שרואים את הסקיצות ואוהבים 💛</p></div>`; }
+    <p class="gh" style="text-align:center">לפני ההדפסה מקבלים סקיצות לאישור 💛</p></div>`; }
   return "";
 }
 /* חשוב לדעת – לפני ששולחים (שמש, 5.11.2026) */
