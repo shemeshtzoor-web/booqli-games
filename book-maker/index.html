@@ -65,6 +65,14 @@ button{cursor:pointer}
 .modal .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .modal .box{background:var(--mint);border-radius:14px;padding:10px 14px;margin:10px 0}
 .modal .warn{background:#FFF3D6;border-radius:14px;padding:10px 14px;margin:10px 0}
+.modal .flds{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin:10px 0}
+.modal .fld{display:flex;flex-direction:column;gap:3px;font-size:15px;font-weight:600}
+.modal .fld small{font-weight:400;color:#6b5a72}
+.modal .fld input{border:2px solid var(--line);border-radius:12px;padding:9px 11px;font-size:16px;font-weight:400;background:#fff;min-width:0}
+.modal .fld input:focus{outline:none;border-color:#FA57C4}
+.modal .chk{display:flex;gap:8px;align-items:flex-start;font-size:14.5px;line-height:1.5;margin:6px 0}
+.modal .chk input{width:20px;height:20px;flex:none;margin-top:2px}
+@media (max-width:560px){.modal .flds{grid-template-columns:1fr}}
 .modal .ok{background:#E6F6EC;border-radius:14px;padding:10px 14px;margin:10px 0}
 .bar{height:14px;background:#F4E6EF;border-radius:99px;overflow:hidden;margin:12px 0 4px}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--mag));transition:width .2s}

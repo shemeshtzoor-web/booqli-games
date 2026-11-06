@@ -25,7 +25,9 @@ window.bqUp = (function () {
     start: function (o) { return post(Object.assign({ action: "webstart" }, o)); },
     photo: function (tok, blob, sub, name, topic) { return b64(blob).then(function (d) { return post({ action: "webphoto", tok: tok, sub: sub, name: name, topic: topic || "", mime: blob.type === "image/png" ? "image/png" : "image/jpeg", b64: d }); }); },
     done: function (tok, summary, cust) { return post({ action: "webdone", tok: tok, summary: summary, cust: cust || null }); },
-    gan: function (code) { return post({ action: "webgan", code: code }); }
+    gan: function (code) { return post({ action: "webgan", code: code }); },
+    /* חלק של קובץ PDF מעורך הספר (book-maker/) – עד 4MB, לפי הסדר */
+    part: function (tok, file, off, total, blob) { return b64(blob).then(function (d) { return post({ action: "webpart", tok: tok, file: file, off: off, total: total, b64: d }); }); }
   };
 })();
 /* טיוטה של הזמנה בטלפון (שמש, 5.11.2026: "אם התחלתי הזמנה – שזה יישמר"). IndexedDB – גם התמונות. רק במכשיר ובדפדפן הזה, 30 יום. */

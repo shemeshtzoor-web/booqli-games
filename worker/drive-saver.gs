@@ -81,9 +81,14 @@ function savePhotoIn_(q) {
      webdone  {tok, summary, cust}                                                   → {ok, photos, mailed}
               cust = {email, first, gan, items:[{book, name, ded}], total} – סיכום ההזמנה נשלח ללקוח במייל (נבנה כאן, לא מהדף)
      webgan   {code}                                                                 → {ok, name, book}
+   ספר בעיצוב אישי (book-maker/, 6.11.2026 – בקשה להצעת מחיר, לא הזמנה):
+     webstart {kind:"book", bid:"H-1234-5678", who, consent:true}                    → {ok, oid, tok}
+     webpart  {tok, file:"cover"|"pages", off, total, b64}  חלק של קובץ PDF (עד 4MB, לפי הסדר) → {ok, next} / {ok, done:true}
+              הקובץ עולה לדרייב בהעלאה מתחדשת (resumable) לתיקיית הבקשה: "H-1234-5678 · שם · 06.11"
+     webdone  כמו בהזמנה, בלי מייל ללקוח. כל שליחה חוזרת של אותו ספר נכנסת לאותה תיקייה (עם שעה בשם הקובץ).
    הגנות: אישור תקנון חובה, מפתח אקראי לכל הזמנה (14 יום), עד 50/300/5 תמונות (פרטי/גן/הורה), עד ~6MB לתמונה,
    עד 300 הזמנות חדשות ביום לכל האתר. האישורים של ההורים נשמרים ונכנסים לסיכום של הגן. */
-var WEB_MAX = { private: 50, gan: 300, parent: 5 };
+var WEB_MAX = { private: 50, gan: 300, parent: 5, book: 0 };
 function web_(q) {
   var P = PropertiesService.getScriptProperties(), lock = LockService.getScriptLock();
   var get = function (k) { var v = P.getProperty(k); try { return v ? JSON.parse(v) : null; } catch (e) { return null; } };
@@ -98,8 +103,12 @@ function web_(q) {
       var dk = "web_day_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd"), dn = +(P.getProperty(dk) || 0);
       if (dn >= 300) return { ok: false, error: "limit" };
       P.setProperty(dk, String(dn + 1));
-      var kind = ["private", "gan", "parent"].indexOf(q.kind) >= 0 ? q.kind : "private", rec;
-      if (kind === "parent") {
+      var kind = ["private", "gan", "parent", "book"].indexOf(q.kind) >= 0 ? q.kind : "private", rec;
+      if (kind === "book") {
+        var bid = String(q.bid || "").toUpperCase();
+        if (!/^H-\d{4}-\d{4}$/.test(bid)) return { ok: false, error: "bid" };
+        rec = { kind: kind, oid: bid, title: bid + " · " + (cut(q.who, 50) || "אתר") + " · " + day, up: {} };
+      } else if (kind === "parent") {
         var C = get("web_code_" + String(q.code || "").replace(/\D/g, ""));
         if (!C) return { ok: false, error: "code" };
         rec = { kind: kind, oid: C.oid, title: C.oid + " · " + C.name + " · " + C.day };
@@ -136,12 +145,13 @@ function web_(q) {
       return { ok: true, n: R.n };
     } finally { lock.releaseLock(); }
   }
+  if (q.action === "webpart") return webPart_(q, get(tk), tk, P);
   if (q.action === "webdone") {
     var D = get(tk); if (!D) return { ok: false, error: "tok" };
     var pcs = D.kind === "gan" ? (get("web_pc_" + D.oid) || []) : [];
     var extra = pcs.length ? "\n\n👪 הורים שהעלו בעצמם ואישרו תקנון ופרטיות (" + pcs.length + "):\n" + pcs.map(function (x) { return "• " + (x.who || "הורה") + (x.kid ? " – " + x.kid : "") + " · " + x.at; }).join("\n") : "";
-    var sum = String(q.summary || "").slice(0, 8000) + extra + "\n\n🌐 נשלח מהאתר games.booqli.ai · " + (D.kind === "gan" ? "גן" : D.kind === "parent" ? "הורה" : "פרטי") + (D.code ? " · קוד להורים: " + D.code : "");
-    var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n });
+    var sum = String(q.summary || "").slice(0, 8000) + extra + "\n\n🌐 נשלח מהאתר games.booqli.ai · " + (D.kind === "gan" ? "גן" : D.kind === "parent" ? "הורה" : D.kind === "book" ? "ספר בעיצוב אישי – בקשה להצעת מחיר" : "פרטי") + (D.code ? " · קוד להורים: " + D.code : "");
+    var r = saveOrder_({ order: D.oid, title: "🌐 " + D.title, summary: sum, expected: D.n, book: D.kind === "book" });
     var mailed = false; try { if (q.cust && r.photos > 0) mailed = custMail_(D, q.cust, P); } catch (e) { mailed = false; }
     if (D.kind !== "gan") P.deleteProperty(tk);
     return { ok: true, photos: r.photos, mailed: mailed };
@@ -177,6 +187,45 @@ function custMail_(D, c, P) {
   return true;
 }
 /* ניקוי: מפתחות של יותר מ-14 יום, קודי גן של יותר מ-90 יום, ספירות יומיות ישנות */
+/* חלק של קובץ PDF מהעורך. Drive API בהעלאה מתחדשת: החלק הראשון פותח "שיחת העלאה", כל חלק נשלח עם הטווח שלו,
+   ואם משהו נכשל – שואלים את גוגל כמה כבר הגיע, והדף ממשיך משם (next). */
+function webPart_(q, R, tk, P) {
+  if (!R || R.kind !== "book" || Date.now() - R.at > 14 * 864e5) return { ok: false, error: "tok" };
+  var which = q.file === "cover" ? "cover" : "pages", total = Math.floor(+q.total || 0), off = Math.floor(+q.off || 0);
+  if (!(total > 1000 && total <= 150 * 1048576) || off < 0 || off >= total) return { ok: false, error: "size" };
+  var len = String(q.b64 || "").length; if (len < 4 || len > 5800000) return { ok: false, error: "size" };
+  R.up = R.up || {};
+  var U = R.up[which];
+  if (!U || U.total !== total || off === 0) {
+    if (off !== 0) return { ok: false, error: "restart" };
+    var folder = orderFolder_(R.oid, "🌐 " + R.title);
+    var name = R.oid + " – " + (which === "cover" ? "כריכה" : "עמודים") + " (" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "dd.MM HH-mm") + ").pdf";
+    var s = UrlFetchApp.fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
+      method: "post", contentType: "application/json; charset=UTF-8", muteHttpExceptions: true,
+      headers: { Authorization: "Bearer " + ScriptApp.getOAuthToken(), "X-Upload-Content-Type": "application/pdf", "X-Upload-Content-Length": String(total) },
+      payload: JSON.stringify({ name: name, parents: [folder.getId()], mimeType: "application/pdf" })
+    });
+    var h = s.getAllHeaders(), loc = h.Location || h.location;
+    if (!loc) return { ok: false, error: "session " + s.getResponseCode() };
+    U = R.up[which] = { uri: loc, total: total };
+    P.setProperty(tk, JSON.stringify(R));
+  }
+  var bytes = Utilities.base64Decode(q.b64), end = off + bytes.length - 1;
+  if (end >= total) return { ok: false, error: "size" };
+  var r = UrlFetchApp.fetch(U.uri, { method: "put", contentType: "application/pdf", payload: bytes, muteHttpExceptions: true,
+    headers: { "Content-Range": "bytes " + off + "-" + end + "/" + total } });
+  var code = r.getResponseCode();
+  if (code === 200 || code === 201) return { ok: true, done: true };
+  if (code === 308) return { ok: true, next: rangeNext_(r) };
+  /* משהו השתבש – כמה כבר הגיע? */
+  var st = UrlFetchApp.fetch(U.uri, { method: "put", muteHttpExceptions: true, headers: { "Content-Range": "bytes */" + total } });
+  if (st.getResponseCode() === 200 || st.getResponseCode() === 201) return { ok: true, done: true };
+  if (st.getResponseCode() === 308) return { ok: false, error: "retry", next: rangeNext_(st) };
+  delete R.up[which]; P.setProperty(tk, JSON.stringify(R));
+  return { ok: false, error: "restart" };
+}
+function rangeNext_(r) { var h = r.getAllHeaders(), g = String(h.Range || h.range || ""), m = /-(\d+)$/.exec(g); return m ? +m[1] + 1 : 0; }
+
 function webClean_(P) {
   var now = Date.now(), all = P.getProperties(), today = "web_day_" + Utilities.formatDate(new Date(), "Asia/Jerusalem", "yyyyMMdd");
   Object.keys(all).forEach(function (k) {
@@ -272,7 +321,7 @@ function saveOrder_(q) {
   body.appendParagraph(q.title).setHeading(DocumentApp.ParagraphHeading.HEADING1);
   String(q.summary || "").split("\n").forEach(function (line) { body.appendParagraph(line.replace(/\*/g, "")); });
   body.appendParagraph("");
-  body.appendParagraph("📷 בתיקייה: " + count + " תמונות" + (q.expected && q.expected !== count ? " (הבוט קיבל " + q.expected + " – כדאי לבדוק)" : ""));
+  if (!q.book) body.appendParagraph("📷 בתיקייה: " + count + " תמונות" + (q.expected && q.expected !== count ? " (הבוט קיבל " + q.expected + " – כדאי לבדוק)" : ""));
   body.getParagraphs().forEach(function (p) { p.setLeftToRight(false).setAlignment(DocumentApp.HorizontalAlignment.RIGHT); });
   doc.saveAndClose();
   var f = DriveApp.getFileById(doc.getId()); f.moveTo(folder);
@@ -281,11 +330,11 @@ function saveOrder_(q) {
   var warn = q.expected && q.expected !== count ? "<p style='color:#c2410c'>⚠️ הבוט קיבל " + q.expected + " תמונות, ובתיקייה יש " + count + ".</p>" : "";
   MailApp.sendEmail({
     to: me,
-    subject: "הזמנה חדשה בוואטסאפ: " + q.title,
+    subject: (q.book ? "📖 ספר בעיצוב אישי – בקשה להצעת מחיר: " : "הזמנה חדשה בוואטסאפ: ") + q.title,
     htmlBody: "<div dir='rtl' style='font-family:Arial,sans-serif;font-size:15px'>"
       + "<p><b>" + esc_(q.title) + "</b></p>"
       + "<p><a href='" + folder.getUrl() + "'>📁 לתיקיית ההזמנה</a> · <a href='" + f.getUrl() + "'>📄 לסיכום</a></p>"
-      + "<p>📷 " + count + " תמונות בתיקייה</p>" + warn
+      + (q.book ? "<p>📄 קבצי ה-PDF (כריכה + עמודים) בתיקייה</p>" : "<p>📷 " + count + " תמונות בתיקייה</p>" + warn)
       + "<pre style='white-space:pre-wrap;font-family:Arial,sans-serif'>" + esc_(String(q.summary || "").replace(/\*/g, "")) + "</pre></div>"
   });
   return { ok: true, folder: folder.getUrl(), doc: f.getUrl(), photos: count };

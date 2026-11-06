@@ -1123,11 +1123,53 @@ function onDone(){
   if (!c.errs.length && !c.warns.length) html += '<div class="ok">🎉 הכל נראה מעולה! אפשר ליצור את קבצי ההדפסה.</div>';
   if (c.errs.length) html += '<div class="warn"><b>❗ כדאי לתקן לפני ששולחים:</b>' + list(c.errs) + "</div>";
   if (c.warns.length) html += '<div class="box"><b>💡 לתשומת לבכם (אפשר להמשיך):</b>' + list(c.warns) + "</div>";
-  html += "<p>ייווצרו <b>שני קבצי PDF</b> להדפסה: קובץ כריכה וקובץ 24 עמודים. זה לוקח כחצי דקה.</p>" +
-    '<div class="row"><button class="big-btn" id="mk">📄 ליצור את קבצי ההדפסה</button><button class="big-btn alt" id="bk">חזרה לתיקונים</button></div>';
+  html += "<p>ייווצרו <b>שני קבצי PDF</b> להדפסה: קובץ כריכה וקובץ 24 עמודים.</p>" +
+    '<div class="box">📨 <b>כשיוצרים את קבצי ההדפסה, הספר נשלח אוטומטית ל-BOOQLI</b> יחד עם הפרטים שלכם, כדי שנוכל לתת לכם הצעת מחיר. זו <b>לא הזמנה ולא תשלום</b> – רק כדי שהכל יהיה אצלנו מסודר.</div>' +
+    '<div class="row"><button class="big-btn" id="mk">📄 להמשיך: הפרטים שלכם</button><button class="big-btn alt" id="bk">חזרה לתיקונים</button></div>';
   var m = modal(html);
   m.querySelector("#bk").onclick = closeModal;
-  m.querySelector("#mk").onclick = makePrint;
+  m.querySelector("#mk").onclick = askDetails;
+}
+
+// ---------- פרטים לפני ההדפסה (שמש, 6.11.2026): הספר והפרטים נשלחים לדרייב של BOOQLI, ורק אז מורידים ----------
+var cust = null;
+function askDetails(){
+  kvGet("cust").catch(function(){ return null; }).then(function(old){
+    var c = old || {}, f = function(id, label, type, ph, val, req, extra){
+      return '<label class="fld"><span>' + label + (req ? ' <b style="color:#C13671">*</b>' : ' <small>(לא חובה)</small>') + '</span><input id="' + id + '" type="' + type + '"' + (ph ? ' placeholder="' + ph + '"' : "") + ' value="' + esc(val || "") + '"' + (extra || "") + '></label>';
+    };
+    var m = modal('<h2>📋 הפרטים שלכם</h2>' +
+      '<p style="margin-top:0">כדי שנוכל לחזור אליכם עם הצעת מחיר. <b>זו לא הזמנה ולא תשלום</b> – רק שהכל יהיה אצלנו מסודר.</p>' +
+      '<div class="flds">' +
+      f("cFirst", "שם פרטי", "text", "", c.first, true, ' maxlength="30" autocomplete="given-name"') +
+      f("cLast", "שם משפחה", "text", "", c.last, true, ' maxlength="30" autocomplete="family-name"') +
+      f("cPhone", "טלפון", "tel", "050-1234567", c.phone, true, ' maxlength="15" autocomplete="tel" dir="ltr"') +
+      f("cEmail", "מייל", "email", "name@example.com", c.email, true, ' maxlength="80" autocomplete="email" dir="ltr"') +
+      f("cStreet", "רחוב ומספר בית", "text", "", c.street, true, ' maxlength="60" autocomplete="street-address"') +
+      f("cCity", "עיר", "text", "", c.city, true, ' maxlength="30" autocomplete="address-level2"') +
+      f("cCopies", "כמה עותקים?", "number", "", c.copies || 1, true, ' min="1" max="99"') +
+      f("cNotes", "הערות / מה תרצו", "text", "", c.notes, false, ' maxlength="200"') +
+      '</div>' +
+      '<label class="chk"><input type="checkbox" id="cOk"> <span>אני מאשר/ת ששני קבצי הספר והפרטים שלי נשלחים ל-BOOQLI לצורך הצעת מחיר (לא הזמנה ולא תשלום). קראתי את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ויש לי אישור להשתמש בתמונות שבספר.</span></label>' +
+      '<p id="cErr" class="warn hidden" style="margin:8px 0 0"></p>' +
+      '<div class="row"><button class="big-btn" id="cGo">📨 ליצור את הקבצים ולשלוח ל-BOOQLI</button><button class="big-btn alt" id="cBk">חזרה</button></div>');
+    m.querySelector("#cBk").onclick = closeModal;
+    m.querySelector("#cGo").onclick = function(){
+      var v = function(id){ return String($(id).value || "").replace(/\s+/g, " ").trim(); };
+      var o = { first: v("cFirst"), last: v("cLast"), phone: v("cPhone"), email: v("cEmail"), street: v("cStreet"), city: v("cCity"), copies: Math.max(1, Math.min(99, parseInt(v("cCopies"), 10) || 0)), notes: v("cNotes") };
+      var digits = o.phone.replace(/\D/g, ""), err = "";
+      if (!o.first || !o.last) err = "חסר שם פרטי או שם משפחה.";
+      else if (!/^(0\d{8,9}|972\d{8,9})$/.test(digits)) err = "מספר הטלפון לא נראה תקין.";
+      else if (!/^[^@\s<>"]+@[^@\s<>"]+\.[^@\s<>"]+$/.test(o.email)) err = "כתובת המייל לא נראית תקינה.";
+      else if (!o.street || !o.city) err = "חסרה כתובת (רחוב ומספר, ועיר).";
+      else if (!parseInt(v("cCopies"), 10)) err = "כמה עותקים? (מספר)";
+      else if (!$("cOk").checked) err = "צריך לסמן את האישור.";
+      if (err) { $("cErr").textContent = "❗ " + err; $("cErr").classList.remove("hidden"); return; }
+      cust = o; kvSet("cust", o).catch(function(){});
+      ev("book", "details");
+      makePrint();
+    };
+  });
 }
 
 // ---------- קבצי הדפסה ----------
@@ -1179,32 +1221,89 @@ function makePrint(){
     step(26, 26, "מוכן!");
     printFiles = { cover: new File([f.cover], P.bid + " " + safeName() + " - כריכה.pdf", { type: "application/pdf" }), pages: new File([f.pages], P.bid + " " + safeName() + " - עמודים.pdf", { type: "application/pdf" }) };
     ev("book", "export");
-    showSend();
+    sendToBooqli();
   }).catch(function(err){
     m.innerHTML = '<h2>אופס, משהו השתבש</h2><p>לא הצלחנו ליצור את הקבצים. נסו שוב, ואם זה חוזר – כתבו לנו בוואטסאפ.</p><div class="row"><button class="big-btn" onclick="document.getElementById(\'modalRoot\').innerHTML=\'\'">סגירה</button></div>';
     try { console.error(err); } catch (e) {}
   });
 }
-function showSend(){
-  var msg = "היי BOOQLI 👋\nעיצבתי ספר באתר booqli Games ואשמח להצעת מחיר להדפסה בכריכה קשה.\n🔢 מספר הספר: " + P.bid + "\n📖 שם הספר: " + (P.title || "") + "\n📄 24 עמודים, 20×20 ס\"מ\nמצרפ/ת 2 קבצים: כריכה ועמודים.";
+function custLines(){
+  var c = cust || {};
+  return "👤 " + c.first + " " + c.last + "\n📞 " + c.phone + "\n✉️ " + c.email + "\n🏠 " + c.street + ", " + c.city +
+    "\n📚 עותקים: " + c.copies + (c.notes ? "\n📝 " + c.notes : "");
+}
+function bookSummary(){
+  return "📖 ספר בעיצוב אישי – בקשה להצעת מחיר (לא הזמנה ולא תשלום)\n🔢 מספר הספר: " + P.bid + "\n📕 שם הספר: " + (P.title || "") +
+    "\n📄 כריכה קשה, 24 עמודים, 20×20 ס\"מ\n\n" + custLines() +
+    "\n\n📎 קבצים: " + printFiles.cover.name + " (" + (printFiles.cover.size / 1048576).toFixed(1) + " MB), " + printFiles.pages.name + " (" + (printFiles.pages.size / 1048576).toFixed(1) + " MB)";
+}
+var sendFails = 0;
+var CHUNK = 4 * 1048576;   // 4MB לחלק (כפולה של 256KB, כמו שגוגל דורש)
+function upFile(tok, which, file, done0, all, show){
+  var total = file.size;
+  var go = function(off, tries){
+    if (off >= total) return Promise.resolve();
+    show(done0 + off, all);
+    return bqUp.part(tok, which, off, total, file.slice(off, Math.min(total, off + CHUNK))).then(function(r){
+      if (r && r.ok && r.done) return;
+      if (r && r.ok && r.next > off) return go(r.next, 0);
+      if (r && r.error === "retry" && typeof r.next === "number" && tries < 3) return go(r.next, tries + 1);
+      if (r && r.error === "restart" && off !== 0 && tries < 2) return go(0, tries + 1);
+      throw new Error((r && r.error) || "part");
+    }, function(e){ if (tries < 3) return new Promise(function(res){ setTimeout(res, 1500); }).then(function(){ return go(off, tries + 1); }); throw e; });
+  };
+  return go(0, 0);
+}
+function sendToBooqli(){
+  var m = modal('<h2>📨 שולחים את הספר ל-BOOQLI…</h2><p id="pgTxt">מתחילים…</p><div class="bar"><i id="pgBar"></i></div><p style="font-size:14px;color:#6b5a72">אל תסגרו את החלון. זה יכול לקחת דקה-שתיים, תלוי באינטרנט.</p>', { sticky: true });
+  var all = printFiles.cover.size + printFiles.pages.size;
+  var show = function(n, t){ var p = Math.min(99, Math.round(n / t * 100)); $("pgBar").style.width = p + "%"; $("pgTxt").textContent = "נשלח " + p + "%…"; };
+  if (!window.bqUp || !window.SITE || !SITE.driveScript) { sendFailed(); return; }
+  bqUp.start({ kind: "book", bid: P.bid, who: cust.first + " " + cust.last, consent: true }).then(function(r){
+    if (!r || !r.ok || !r.tok) throw new Error((r && r.error) || "start");
+    var tok = r.tok;
+    return upFile(tok, "cover", printFiles.cover, 0, all, show)
+      .then(function(){ return upFile(tok, "pages", printFiles.pages, printFiles.cover.size, all, show); })
+      .then(function(){ $("pgTxt").textContent = "שומרים את הפרטים…"; return bqUp.done(tok, bookSummary(), null); })
+      .then(function(d){ if (!d || !d.ok) throw new Error("done"); });
+  }).then(function(){ sendFails = 0; ev("book", "sent"); showSend(true); })
+    .catch(function(e){ try { console.error(e); } catch (x) {} sendFails++; ev("book", "send-fail"); sendFailed(); });
+}
+function sendFailed(){
+  var m = modal('<h2>אופס, השליחה לא הצליחה 😕</h2><p>הקבצים מוכנים, אבל לא הצלחנו לשלוח אותם ל-BOOQLI. בדרך כלל זה האינטרנט – בדקו את החיבור ונסו שוב.</p>' +
+    '<div class="row"><button class="big-btn" id="rt">🔄 לנסות שוב</button>' + (sendFails >= 2 ? '<button class="big-btn alt" id="man">💬 לשלוח לנו בוואטסאפ במקום</button>' : "") + "</div>", { sticky: true });
+  m.querySelector("#rt").onclick = sendToBooqli;
+  var man = m.querySelector("#man"); if (man) man.onclick = function(){ showSend(false); };
+}
+function showSend(sent){
+  var msg = "היי BOOQLI 👋\n" + (sent ? "שלחתי עכשיו מהאתר ספר בעיצוב אישי ואשמח להצעת מחיר להדפסה בכריכה קשה." : "עיצבתי ספר באתר booqli Games ואשמח להצעת מחיר להדפסה בכריכה קשה. השליחה מהאתר לא הצליחה – מצרפ/ת כאן את 2 הקבצים (כריכה ועמודים).") +
+    "\n🔢 מספר הספר: " + P.bid + "\n📕 שם הספר: " + (P.title || "") + "\n\n" + custLines();
   var canShare = false;
   try { canShare = !!(navigator.canShare && navigator.canShare({ files: [printFiles.cover, printFiles.pages] })); } catch (e) {}
   var mb = function(f){ return (f.size / 1048576).toFixed(1) + " MB"; };
-  var m = modal('<h2>🎉 הקבצים מוכנים!</h2>' +
-    '<p>נשאר לשלוח לנו אותם בוואטסאפ, ונחזור אליכם עם הצעת מחיר.</p>' +
-    '<div class="box"><b>שלב 1 – הורדת שני הקבצים:</b><div class="row" style="margin-top:8px">' +
+  var waBtn = '<a class="big-btn" id="wa" target="_blank" rel="noopener" style="text-decoration:none;background:#1FA855;box-shadow:0 3px 0 #13773A">💬 ' + (sent ? "שליחת ההודעה ל-BOOQLI בוואטסאפ" : "פתיחת וואטסאפ ל-BOOQLI") + "</a>";
+  var dl = '<div class="row" id="dlRow" style="margin-top:8px' + (sent ? ';display:none' : "") + '">' +
     '<button class="big-btn green" id="dlC">⬇️ קובץ הכריכה (' + mb(printFiles.cover) + ')</button>' +
-    '<button class="big-btn green" id="dlP">⬇️ קובץ העמודים (' + mb(printFiles.pages) + ')</button></div></div>' +
-    '<div class="box"><b>שלב 2 – שליחה בוואטסאפ:</b><div class="row" style="margin-top:8px">' +
-    '<a class="big-btn" id="wa" target="_blank" rel="noopener" style="text-decoration:none;background:#1FA855;box-shadow:0 3px 0 #13773A">💬 פתיחת וואטסאפ ל-BOOQLI</a>' +
-    (canShare ? '<button class="big-btn alt" id="shr">📤 שיתוף ישיר של הקבצים</button>' : "") + "</div>" +
-    '<p style="margin:10px 0 0">בשיחה שתיפתח: לוחצים על 📎 ← <b>מסמך</b> ← בוחרים את שני הקבצים מתיקיית ההורדות. חשוב לשלוח כ<b>מסמך</b> ולא כתמונה, כדי לשמור על איכות ההדפסה.</p></div>' +
-    '<p style="font-size:14.5px;color:#6b5a72">💾 טיפ: שמרו גם קובץ גיבוי של הספר, למקרה שתרצו לתקן משהו אחר כך.</p>' +
-    '<div class="row"><button class="big-btn alt" id="bk2">💾 שמירת גיבוי</button><button class="big-btn alt" id="cl2">חזרה לספר</button></div>');
+    '<button class="big-btn green" id="dlP">⬇️ קובץ העמודים (' + mb(printFiles.pages) + ')</button></div>';
+  var html = sent
+    ? '<h2>✅ הספר הגיע ל-BOOQLI!</h2>' +
+      '<div class="ok">הספר והפרטים שלכם אצלנו. <b>מספר הספר: <span dir="ltr">' + esc(P.bid) + '</span></b>. נחזור אליכם עם הצעת מחיר. זו לא הזמנה ולא תשלום.</div>' +
+      '<div class="box"><b>שלב אחרון – הודעה בוואטסאפ:</b> לוחצים, ובשיחה שנפתחת לוחצים "שליחה". כך נחזור אליכם הכי מהר.<div class="row" style="margin-top:8px">' + waBtn + '</div>' +
+      '<p style="margin:8px 0 0;font-size:14.5px;color:#6b5a72">אחרי ההודעה יופיעו כאן גם קבצי ה-PDF בשבילכם.</p>' + dl + "</div>"
+    : '<h2>💬 שליחה בוואטסאפ</h2>' +
+      '<div class="box"><b>שלב 1 – הורדת שני הקבצים:</b>' + dl + "</div>" +
+      '<div class="box"><b>שלב 2 – שליחה בוואטסאפ:</b><div class="row" style="margin-top:8px">' + waBtn +
+      (canShare ? '<button class="big-btn alt" id="shr">📤 שיתוף ישיר של הקבצים</button>' : "") + "</div>" +
+      '<p style="margin:10px 0 0">בשיחה שתיפתח: לוחצים על 📎 ← <b>מסמך</b> ← בוחרים את שני הקבצים מתיקיית ההורדות. חשוב לשלוח כ<b>מסמך</b> ולא כתמונה.</p></div>';
+  html += '<p style="font-size:14.5px;color:#6b5a72">💾 טיפ: שמרו גם קובץ גיבוי של הספר, למקרה שתרצו לתקן משהו אחר כך.</p>' +
+    '<div class="row"><button class="big-btn alt" id="bk2">💾 שמירת גיבוי</button><button class="big-btn alt" id="cl2">חזרה לספר</button></div>';
+  var m = modal(html);
   m.querySelector("#dlC").onclick = function(){ download(printFiles.cover, printFiles.cover.name); this.textContent = "✓ הכריכה ירדה"; };
   m.querySelector("#dlP").onclick = function(){ download(printFiles.pages, printFiles.pages.name); this.textContent = "✓ העמודים ירדו"; };
-  var wa = m.querySelector("#wa"); wa.href = waLink(msg); wa.onclick = function(){ ev("book", "whatsapp"); };
-  if (canShare) m.querySelector("#shr").onclick = function(){ navigator.share({ files: [printFiles.cover, printFiles.pages], text: msg }).then(function(){ ev("book", "share"); }).catch(function(){}); };
+  var wa = m.querySelector("#wa"); wa.href = waLink(msg);
+  wa.onclick = function(){ ev("book", sent ? "whatsapp-after-send" : "whatsapp"); var r = $("dlRow"); if (r) r.style.display = ""; };
+  var shr = m.querySelector("#shr");
+  if (shr) shr.onclick = function(){ navigator.share({ files: [printFiles.cover, printFiles.pages], text: msg }).then(function(){ ev("book", "share"); }).catch(function(){}); };
   m.querySelector("#bk2").onclick = saveBackup;
   m.querySelector("#cl2").onclick = closeModal;
 }
