@@ -216,7 +216,7 @@ async function send(){
     <div class="gprog"><span id="gBar"></span></div><p class="gst" id="gSt">⏳ שולחים…</p><p class="gfine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
   ev("gan_fast_send", String(kids()));
   try {
-    let s; try { s = await bqUp.start({ kind: "gan", gan: d.gan, who: d.first + " " + d.last, book: G.topic, consent: true }); } catch (x) { throw new Error("start: " + (x && x.message || x)); } if (!s.ok) throw new Error("start: " + (s.error || "?"));
+    let s; try { s = await bqUp.start({ kind: "gan", gan: d.gan, who: d.first + " " + d.last, cname: d.first + " " + d.last, phone: d.phone, book: G.topic, consent: true }); } catch (x) { throw new Error("start: " + (x && x.message || x)); } if (!s.ok) throw new Error("start: " + (s.error || "?"));
     let done = 0, bad = 0; const q = G.pics.slice();
     const one = async p => { let ok = false;
       for (let t = 0; t < 2 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, p.blob, p.sub, p.name.trim())).ok; } catch (e) {} }

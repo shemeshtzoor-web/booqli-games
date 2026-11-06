@@ -521,7 +521,7 @@ function photo(file, done){
 async function up(bl){ const r = await fetch(UPLOAD, {method: "POST", headers: {"Content-Type": "image/jpeg"}, body: bl}); if (!r.ok) throw new Error(r.status); return (await r.json()).url; }
 /* שליחה לדרייב: פותחים הזמנה, מעלים כל תמונה (2 ניסיונות), ושולחים סיכום. מחזיר את מספר ההזמנה, או "" אם לא הצליח */
 async function sendDrive(){
-  const s = await bqUp.start({kind: "private", who: ORD.who, consent: true}); if (!s.ok) throw new Error(s.error || "start");
+  const s = await bqUp.start({kind: "private", who: ORD.who, cname: ORD.d.first + " " + ORD.d.last, phone: ORD.d.phone, consent: true}); if (!s.ok) throw new Error(s.error || "start");
   /* כל ספר בתיקייה משלו: "ספר 1 · <שם הספר> · <שם הילד/ה>" / בנים|בנות / <שם>.jpg (שמש: "ספר, שם הילד, הקדשה – שיהיה לי הכל מסודר") */
   const all = ORD.list.flatMap((it, i) => it.pics.map(x => ({it, x, f: `ספר ${i + 1} · ${book(it.book).name} · ${it.name}`}))); let k = 0;
   for (const {it, x, f} of all) { k++; prog(k, all.length);

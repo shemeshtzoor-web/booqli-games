@@ -1327,7 +1327,7 @@ function sendToBooqli(){
   var show = function(n, t){ var p = Math.min(99, Math.round(n / t * 100)); $("pgBar").style.width = p + "%"; $("pgTxt").textContent = "נשלח " + p + "%…"; };
   if (!window.bqUp || !window.SITE || !SITE.driveScript) { sendFailed(); return; }
   var ver = (P.sent || []).length + 1;
-  bqUp.start({ kind: "book", bid: P.bid, who: cust.first + " " + cust.last + (ver > 1 ? " · תיקון " + ver : ""), consent: true }).then(function(r){
+  bqUp.start({ kind: "book", bid: P.bid, who: cust.first + " " + cust.last + (ver > 1 ? " · תיקון " + ver : ""), cname: cust.first + " " + cust.last, phone: cust.phone, consent: true }).then(function(r){
     if (!r || !r.ok || !r.tok) throw new Error((r && r.error) || "start");
     var tok = r.tok;
     return upFile(tok, "cover", printFiles.cover, 0, all, show)

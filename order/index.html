@@ -716,7 +716,7 @@ const upJ = (path, body, tok) => fetch(UPAPI + path, { method: "POST", headers: 
 async function upStart(){
   if (S.up && S.up.tok) return S.up;
   if (!$("upConsent").checked) { $("upSt").textContent = "☝️ מסמנים קודם את האישור למעלה"; throw new Error("consent"); }
-  const j = await bqUp.start({ kind: "gan", gan: gan() || "גן", who: S.name, book: S.topics[0] || "", consent: true });
+  const j = await bqUp.start({ kind: "gan", gan: gan() || "גן", who: S.name, cname: (S.addr && S.addr.name) || S.name, phone: (S.addr && S.addr.phone) || "", book: S.topics[0] || "", consent: true });
   if (!j.ok) throw new Error(j.error || "start");
   S.up = { tok: j.tok, oid: j.oid, code: j.code, n: 0, names: [], at: today() }; save(); return S.up;
 }

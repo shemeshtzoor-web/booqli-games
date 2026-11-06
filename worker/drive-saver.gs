@@ -56,6 +56,25 @@ function sub_(parent, name) {
   return it.hasNext() ? it.next() : parent.createFolder(name);
 }
 
+/* ===== סידור התיקיות (שמש, 6.11.2026) =====
+   BOOQLI הזמנות / הזמנות פרטיים | הזמנות גנים | ספר בעיצוב אישי / <שם הלקוח · טלפון> / <תיקיית הזמנה>
+   הלקוח מזוהה לפי הטלפון: עוד הזמנה מאותו מספר נכנסת לאותה תיקיית לקוח. מזהי התיקיות נשמרים במאפייני הסקריפט,
+   כי החיפוש בדרייב מתעדכן באיחור (בלי זה נוצרות תיקיות כפולות). */
+var CATS = { private: "הזמנות פרטיים", gan: "הזמנות גנים", book: "ספר בעיצוב אישי" };
+function phone_(p) { var d = String(p || "").replace(/\D/g, ""); if (d.indexOf("972") === 0) d = "0" + d.slice(3); return /^0\d{8,9}$/.test(d) ? d : ""; }
+function byId_(P, key) { var id = P.getProperty(key); if (!id) return null; try { var f = DriveApp.getFolderById(id); return f.isTrashed() ? null : f; } catch (e) { return null; } }
+function catFolder_(kind) {
+  var P = PropertiesService.getScriptProperties(), key = "cat_" + kind, f = byId_(P, key);
+  if (!f) { f = sub_(root_(), CATS[kind] || "אחר"); P.setProperty(key, f.getId()); }
+  return f;
+}
+function custFolder_(kind, name, phone) {
+  var P = PropertiesService.getScriptProperties(), ph = phone_(phone), nm = String(name || "").replace(/[\\\/:*?"<>|#%]/g, " ").replace(/\s+/g, " ").trim().slice(0, 50) || "לקוח";
+  var key = "cf_" + kind + "_" + (ph || nm), f = byId_(P, key);
+  if (!f) { f = catFolder_(kind).createFolder(nm + (ph ? " · " + ph.slice(0, 3) + "-" + ph.slice(3) : "")); P.setProperty(key, f.getId()); }
+  return f;
+}
+
 function clean_(s) { return String(s || "").replace(/[\\\/:*?"<>|#%]/g, " ").replace(/\s+/g, " ").trim().slice(0, 60) || "ילד"; }
 
 /* תמונה אחת: {order, title, topic?, sub: "בנים"|"בנות", name, mime, b64} */
@@ -65,7 +84,7 @@ function savePhoto_(q) {
 }
 function savePhotoIn_(q) {
   {
-    var folder = orderFolder_(q.order, q.title), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;   /* גן עם 2 נושאים: <גן>/<נושא>/בנים|בנות */
+    var folder = orderFolder_(q.order, q.title, q.fid), base_ = q.topic ? sub_(folder, String(q.topic).slice(0, 60)) : folder;   /* גן עם 2 נושאים: <גן>/<נושא>/בנים|בנות */
     var dir = sub_(base_, q.sub === "בנות" ? "בנות" : "בנים");
     var base = clean_(q.name), ext = /png/.test(q.mime) ? ".png" : ".jpg", name = base + ext, n = 1;
     while (dir.getFilesByName(name).hasNext()) { n++; name = base + " (" + n + ")" + ext; }   /* עוד תמונה של אותו ילד: "יוסי 1 (2).jpg" */
@@ -125,6 +144,16 @@ function web_(q) {
           rec.code = c; P.setProperty("web_code_" + c, JSON.stringify({ oid: oid, name: who, book: cut(q.book, 40), day: day, at: Date.now() }));
         }
       }
+      /* תיקיית ההזמנה נוצרת כבר עכשיו, במקום הנכון, וכל ההמשך נכנס אליה לפי המזהה */
+      if (kind === "parent") rec.fid = C.fid || "";
+      else {
+        var ft = "🌐 " + rec.title, of = null;
+        if (kind === "book") of = byId_(P, "bf_" + rec.oid);   /* תיקון של אותו ספר – לאותה תיקייה */
+        if (of) of.setName(ft);
+        else { of = custFolder_(kind, q.cname || q.who, q.phone).createFolder(ft); if (kind === "book") P.setProperty("bf_" + rec.oid, of.getId()); }
+        rec.fid = of.getId();
+        if (kind === "gan" && rec.code) { var CR = get("web_code_" + rec.code); if (CR) { CR.fid = rec.fid; P.setProperty("web_code_" + rec.code, JSON.stringify(CR)); } }
+      }
       rec.n = 0; rec.max = WEB_MAX[kind]; rec.at = Date.now();
       var tok = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "").slice(0, 16);
       P.setProperty("web_t_" + tok, JSON.stringify(rec));
@@ -139,7 +168,7 @@ function web_(q) {
     try {
       var R = get(tk); if (!R || Date.now() - R.at > 14 * 864e5) return { ok: false, error: "tok" };
       if (R.n >= R.max) return { ok: false, error: "max" };
-      var f = savePhotoIn_({ order: R.oid, title: R.title, topic: cut(q.topic, 60), sub: q.sub === "בנות" ? "בנות" : "בנים", name: cut(q.name, 40) || "ילד", mime: q.mime, b64: q.b64 });
+      var f = savePhotoIn_({ order: R.oid, title: "🌐 " + R.title, fid: R.fid, topic: cut(q.topic, 60), sub: q.sub === "בנות" ? "בנות" : "בנים", name: cut(q.name, 40) || "ילד", mime: q.mime, b64: q.b64 });
       R.n++;
       /* התמונה הראשונה של כל ספר – לתמונה הקטנה במייל ללקוח (רק בפרטי) */
       if (R.kind === "private" && f && f.id) { R.f = R.f || {}; var fk = cut(q.topic, 60) || cut(q.name, 40); if (!R.f[fk] && Object.keys(R.f).length < 10) R.f[fk] = f.id; }
@@ -371,4 +400,30 @@ function testSetup() {
   var r = root_();
   MailApp.sendEmail(notify_(), "BOOQLI – החיבור לדרייב עובד ✓", "התיקייה הראשית: " + r.getUrl());
   Logger.log(r.getUrl());
+}
+
+/* ===== חד־פעמי (6.11.2026): מעביר את תיקיות ההזמנות הישנות מהאתר ("🌐 ...") שיושבות ישר ב-"BOOQLI הזמנות"
+   לסידור החדש. מריצים פעם אחת מהעורך: בוחרים organizeExisting ← Run. הטלפון נלקח ממסמך הסיכום שבתיקייה. */
+function organizeExisting() {
+  var P = PropertiesService.getScriptProperties(), root = root_(), it = root.getFolders(), moved = [], all = P.getProperties();
+  var list = []; while (it.hasNext()) list.push(it.next());
+  list.forEach(function (f) {
+    var n = f.getName(), m = /^🌐 (גן-|סב-|H-)(\S+) · (.*?)(?: · תיקון \d+)? · \d\d\.\d\d$/.exec(n);
+    if (!m) return;
+    var kind = m[1] === "גן-" ? "gan" : m[1] === "סב-" ? "private" : "book", oid = m[1] + m[2], who = m[3], phone = "", cname = "";
+    var docs = f.getFilesByType(MimeType.GOOGLE_DOCS);
+    while (docs.hasNext() && !phone) {
+      try {
+        var t = DocumentApp.openById(docs.next().getId()).getBody().getText();
+        var pm = /(?:\+?972[-\s]?|0)5\d[-\s]?\d{3}[-\s]?\d{4}|0[2-9][-\s]?\d{7}/.exec(t); if (pm) phone = pm[0];
+        var nm = /👤 (?:המזמין\/ה: )?([^\n·]+)/.exec(t); if (nm) cname = nm[1].trim();
+      } catch (e) {}
+    }
+    var cf = custFolder_(kind, kind === "gan" ? (cname || who) : (cname || who), phone);
+    f.moveTo(cf); moved.push(n + " → " + CATS[kind] + " / " + cf.getName());
+    if (kind === "book") P.setProperty("bf_" + oid, f.getId());
+    if (kind === "gan") for (var k in all) if (k.indexOf("web_code_") === 0) { try { var CR = JSON.parse(all[k]); if (CR.oid === oid) { CR.fid = f.getId(); P.setProperty(k, JSON.stringify(CR)); } } catch (e) {} }
+  });
+  Logger.log(moved.length + " folders moved:\n" + moved.join("\n"));
+  return moved;
 }
