@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>בדיקת תמונות – בדיקה פנימית</title>
+<style>body{font-family:system-ui,sans-serif;margin:16px;background:#fff;color:#222}.r{display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd;padding:8px 0}.r img,.r canvas{width:110px;height:110px;object-fit:cover;border-radius:8px}.r pre{white-space:pre-wrap;font-size:13px;margin:0}</style></head>
+<body><h1>בדיקת תמונות (פנימי)</h1><p id="st">טוען…</p><div id="out"></div>
+<script src="photocheck.js"></script>
+<script>
+/* דף בדיקה פנימי ל-photocheck.js – לא מקושר מהאתר */
+const IMG = ["../savta/img/p-hugs-g.webp","../savta/img/p-birthday-g.webp","../savta/img/p-druki-b.webp","../order/books/savanna-b/03.webp","../order/books/savanna-b/05.webp","../order/books/savanna-b/07.webp","../order/books/savanna-b/09.webp","../games/bye-bye-diaper/img/u-unicorn.jpg"];
+const load = u => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = u; });
+const blobOf = c => new Promise(r => c.toBlob(r, "image/jpeg", .9));
+async function variants(){
+  const a = await load(IMG[0]), b = await load(IMG[1]), L = [];
+  let c = document.createElement("canvas"); c.width = 1200; c.height = 800; let x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0,0,1200,800); x.drawImage(a, 0, 0, 600, 800); x.drawImage(b, 600, 0, 600, 800); L.push(["two kids", c]);
+  c = document.createElement("canvas"); c.width = 1600; c.height = 1200; x = c.getContext("2d"); x.fillStyle = "#cde"; x.fillRect(0,0,1600,1200); x.drawImage(a, 700, 500, 120, 160); L.push(["tiny", c]);
+  c = document.createElement("canvas"); c.width = a.naturalWidth; c.height = a.naturalHeight; x = c.getContext("2d"); x.filter = "brightness(25%)"; x.drawImage(a, 0, 0); L.push(["dark", c]);
+  c = document.createElement("canvas"); c.width = a.naturalWidth; c.height = a.naturalHeight; x = c.getContext("2d"); x.filter = "blur(9px)"; x.drawImage(a, 0, 0); L.push(["blur", c]);
+  return L;
+}
+(async () => {
+  const st = document.getElementById("st"), out = document.getElementById("out"), t0 = performance.now(), res = [];
+  const items = [];
+  for (const u of IMG) { const r = await fetch(u); items.push([u.split("/").slice(-2).join("/"), await r.blob(), u]); }
+  for (const [n, c] of await variants()) items.push([n, await blobOf(c), c.toDataURL("image/jpeg", .6)]);
+  for (const [n, bl, src] of items) {
+    const iss = await bqPhotoCheck(bl), info = bqPhotoCheck.last || {};
+    res.push({n, codes: iss.map(i => i.code), info, err: bqPhotoCheck.err});
+    out.insertAdjacentHTML("beforeend", `<div class="r"><img src="${src}"><pre>${n}\n${iss.map(i => i.msg).join("\n") || "✅ בסדר"}\n${JSON.stringify(info)}</pre></div>`);
+  }
+  st.textContent = "סיום ב-" + Math.round(performance.now() - t0) + "ms" + (bqPhotoCheck.err ? " · שגיאה: " + bqPhotoCheck.err : "");
+  window.RESULTS = res;
+})();
+</script></body></html>
