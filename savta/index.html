@@ -684,7 +684,7 @@ document.querySelectorAll("[data-start]").forEach(a => a.addEventListener("click
   CUR = fresh(); if (q && book(q)) { CUR.book = q; STEP = "ver"; }
   draw(false);
   /* מגיעים מדף הבית (#order, 5.11.2026): כבר ראו שם את השלבים ואת הספרים – נוחתים ישר ב"ההזמנה שלי", בלי כפילות */
-  if (location.hash === "#order") { let moved = false; const land = () => { if (!moved) $("order").scrollIntoView({block: "start"}); };
+  if (location.hash === "#order" || u.get("go") === "order") { let moved = false;   /* go=order: במודעות פייסבוק ה-# נמחק כשהפרמטרים עוברים ל-Tracking */ const land = () => { if (!moved) $("order").scrollIntoView({block: "start"}); };
     addEventListener("wheel", () => moved = true, {once: true, passive: true}); addEventListener("touchmove", () => moved = true, {once: true, passive: true});
     land(); setTimeout(land, 400); addEventListener("load", () => setTimeout(land, 50), {once: true}); }
   if (window.bqDraft) bqDraft.load("savta").then(v => { LOADED = true; if (!v || !v.ORD || DONE) return;
