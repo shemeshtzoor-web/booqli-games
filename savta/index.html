@@ -336,7 +336,7 @@ section.sv{margin-top:34px}
 <script src="../common.js"></script>
 <script src="../order/books/books.js"></script>
 <script src="../order/books/reader.js"></script>
-<script src="../lib/photocheck.js"></script>
+<script src="../lib/photocheck.js?v=2"></script>
 <script>
 /* ===== עמוד הסבים =====
    הנתונים: הספרים מ-order/books/books.js · המחירים כמו בעמוד הגנים (TIERS) עד 10 ספרים · הטלפון מ-SITE.phone.
@@ -462,7 +462,7 @@ function stepHTML(){
     <textarea id="wDed" maxlength="400">${esc(it.ded)}</textarea>
     <button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="ded">הבא ←</button></div>`; }
   if (STEP === "photo") { const n = it.pics.length; if (window.bqPhotoCheck) bqPhotoCheck.warm();
-    return `<div class="step"><h3>${SB}${n ? "תמונות של " : "תמונה של "}${esc(it.name)}</h3><p class="h">אפשר לשלוח כמה תמונות – ואנחנו נבחר את הטובה ביותר 💛</p>
+    return `<div class="step"><h3>${SB}${n ? "תמונות של " : "תמונה של "}${esc(it.name)}</h3><p class="h">אפשר לשלוח כמה תמונות – ואנחנו נבחר את הטובה ביותר 💛</p><p class="h"><b>📸 הכי חשוב: הילד/ה מסתכל/ת ישר למצלמה</b> – לא הצידה, לא למטה ולא למעלה.</p>
     <details class="vid"><summary>🎬 איזו תמונה מתאימה? (סרטון קצר)</summary><video src="../kindergartens/video/photo.mp4" poster="../kindergartens/video/photo.jpg" controls playsinline preload="none"></video></details>
     ${n ? `<div class="pics">${it.pics.map((x, k) => `<div class="${x.chk && x.chk.length && !x.keep ? "bad" : ""}"><img src="${x.url}" alt="תמונה ${k + 1}"><button type="button" class="rm" data-rmpic="${k}" aria-label="להוריד את תמונה ${k + 1}">✕</button>${x.chk === undefined ? `<span class="chk">🔎 בודקים…</span>` : x.chk.length && !x.keep ? `<span class="chk">⚠️</span>` : `<span class="chk">✓</span>`}</div>`).join("")}</div>` : ""}
     ${it.pics.map((x, k) => x.chk && x.chk.length && !x.keep ? `<div class="pwarn"><img src="${x.url}" alt=""><div>${x.chk.map(c => esc(c.msg)).join("<br>")}
