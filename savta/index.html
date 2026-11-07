@@ -190,6 +190,7 @@ section.sv{margin-top:34px}
 .osum .oi{display:flex;gap:12px;align-items:flex-start;border-top:1.5px dashed #f0dbe6;padding:10px 0}.osum .oi img{width:78px;height:78px;object-fit:cover;border-radius:12px;flex-shrink:0}.osum .oi div{font-size:15.5px;line-height:1.5;white-space:pre-line;min-width:0;overflow-wrap:anywhere}
 .osum .btns{display:grid;gap:8px;margin-top:10px}.osum .btns .btn{justify-content:center;width:100%;max-width:100%;box-sizing:border-box;white-space:normal;text-align:center;padding-inline:12px}
 .wz .rels{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}.wz .rel{border:2px solid #f0dbe6;background:#fff;border-radius:999px;padding:7px 12px;font:700 15px Assistant,sans-serif;cursor:pointer;color:var(--mag)}.wz .rel.on{background:var(--mag);color:#fff;border-color:var(--mag)}
+.wz .covs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.wz .cvo{border:2px solid #DCEDE8;background:#fff;border-radius:16px;padding:10px 6px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px}.wz .cvo b{font-size:16px;color:var(--ink)}.wz .cvo span{font-size:18px;font-weight:800;color:var(--saged)}.wz .cvo.on{border-color:var(--pink);background:#FFF0FA;box-shadow:0 0 0 3px rgba(250,87,196,.18)}
 .wz .upsl{margin-top:10px;background:#FFF7E0;border:2px dashed #F3C969;border-radius:18px;padding:12px 14px;font-size:16px;line-height:1.5}.wz .upsl b{font-size:18px;color:#8A5A00}.wz .upb{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}.wz .upb .btn{padding:10px 18px;font-size:17px}.wz .upb a{color:var(--mag);font-weight:800}
 .wz .alt{margin-top:10px;width:100%;border:2px dashed var(--pink);background:#fff;color:var(--mag);border-radius:999px;padding:11px;font:800 17px Assistant,sans-serif;cursor:pointer}
 .wz .cov{display:flex;gap:12px;align-items:center;margin-top:10px;font-weight:800}
@@ -311,7 +312,7 @@ section.sv{margin-top:34px}
   <h2>שאלות ששואלים אותנו</h2>
   <details><summary>אני לא מסתדר/ת עם מחשבים. זה בשבילי?</summary><p>בדיוק בשבילכם. אפשר פשוט ללחוץ על "כתבו לנו" ולשלוח לנו בוואטסאפ – ואנחנו נעשה את כל השאר. בן אדם אמיתי עונה, א׳–ה׳ 8:00–18:00.</p></details>
   <details><summary>איזו תמונה לשלוח?</summary><p>תמונה עדכנית וברורה, שהילד/ה מסתכל/ת בה למצלמה, לבד בתמונה, בלי כובע, משקפי שמש או אוכל על הפנים. כשמעלים תמונה בעמוד, נבדוק אותה בשבילכם תוך שנייה – והיא לא יוצאת מהטלפון עד שאתם שולחים.</p></details>
-  <details><summary>מה אם לא אאהב את הספר?</summary><p>אתם רואים את כל הספר לפני שמשלמים. לא אהבתם – לא משלמים. רוצים שינוי? טעות שלנו מתוקנת בחינם, ושינוי לפי העדפה אישית עולה 20 ₪ להזמנה.</p></details>
+  <details><summary>מה אם לא אאהב את הספר?</summary><p>קודם מקבלים את הספר הדיגיטלי – בחינם. לא אוהבים את הספר הדיגיטלי? לא משלמים כלום. רוצים שינוי? טעות שלנו מתוקנת בחינם, ושינוי לפי העדפה אישית עולה 20 ₪ להזמנה.</p></details>
   <details id="faqDigital"><summary>מה זה ספר דיגיטלי?</summary><p>קובצי PDF של הספר, מוכנים להדפסה, עם סימן מים. מקבלים אותם בחינם, ורואים את כל הספר. אחרי התשלום מסירים את סימן המים – והספר נשלח להדפסה איכותית בכריכה קשה פרימיום (או רכה, לבחירה).</p></details>
   <details id="faqPrice"><summary>כמה זה עולה?</summary><p>הספר הדיגיטלי – בחינם. משלמים רק על ספר מודפס. ככל שמזמינים יותר ספרים – המחיר לכל ספר יורד:</p><div class="ptab" id="pTab"></div><p>משלוח: עד הבית 40 ₪, לנקודת חלוקה 18 ₪.</p></details>
   <details><summary>תוך כמה זמן הספר מגיע?</summary><p>7–14 ימי עסקים מהתשלום. מזמינים לאירוע? כתבו לנו את התאריך, ונעזור לתכנן בזמן.</p></details>
@@ -415,8 +416,10 @@ function want(id){ ev("savta-want", id);
 /* ציור המסלול: מה שכבר עשינו – שורות קטנות עם "לתקן"; הצעד של עכשיו – כרטיס גדול */
 /* המחיר בשפה פשוטה: כמה ספרים × כמה = סה"כ, וכמה חוסכים לעומת ספר בודד. משלוח עד הבית 40 ₪ */
 const SHIP = 40;
-function priceLine(n){ const p = priceOf(n, "hard"), t = n * p, save = n * priceOf(1, "hard") - t;
-  return `${n === 1 ? "ספר מודפס בכריכה קשה פרימיום" : n + " ספרים מודפסים בכריכה קשה פרימיום"}: <span class="nw">${n === 1 ? ils(p) : n + " × " + ils(p) + " = " + ils(t)}</span>${save > 0 ? ` <b class="sv">חוסכים ${ils(save)}</b>` : ""}`; }
+/* הכריכה נבחרת רק בסוף, בשלב השליחה (שמש, 7.11.2026). ברירת מחדל: קשה פרימיום */
+const CV = () => ORD.cover === "soft" ? "soft" : "hard", CVN = () => CV() === "soft" ? "כריכה רכה" : "כריכה קשה פרימיום";
+function priceLine(n){ const p = priceOf(n, CV()), t = n * p, save = n * priceOf(1, CV()) - t;
+  return `${n === 1 ? "ספר מודפס ב" + CVN() : n + " ספרים מודפסים ב" + CVN()}: <span class="nw">${n === 1 ? ils(p) : n + " × " + ils(p) + " = " + ils(t)}</span>${save > 0 ? ` <b class="sv">חוסכים ${ils(save)}</b>` : ""}`; }
 function draw(scroll){
   const w = $("wz"), n = ORD.list.length, h = [];
   ORD.list.forEach((it, i) => h.push(`<div class="doneb">✓ <b>ספר ${i + 1}:</b> ${esc(book(it.book).name)} · ${esc(it.name)} ${it.pics.map(x => `<img src="${x.url}" alt="">`).join("")}</div>`));
@@ -467,22 +470,23 @@ function stepHTML(){
     <p class="h">📖 קודם מקבלים את הספר לצפייה – <b>בחינם</b>. משלמים רק אם רוצים להדפיס.</p>
     <button type="button" class="btn btn-wa go" data-more="no" style="margin-top:12px">📨 ממשיכים לשליחת ההזמנה ←</button>
     ${n < MAX ? `<button type="button" class="alt" data-more="yes">➕ להוסיף ספר לילד/ה נוסף/ת</button>` : ""}</div>`; }
-  if (STEP === "send") { const n = ORD.list.length, tot = n * priceOf(n, "hard");
+  if (STEP === "send") { const n = ORD.list.length, tot = n * priceOf(n, CV());
     /* (שמש, 7.11.2026) זו הזמנה לספר דיגיטלי (בחינם). המחיר – רק אם רוצים מודפס, ובמפורש "כריכה קשה פרימיום". מתחת – כמה עולה ספר מודפס נוסף */
-    const add = n < MAX ? (n + 1) * priceOf(n + 1, "hard") - tot : 0, sv2 = (n + 1) * priceOf(1, "hard") - (n + 1) * priceOf(n + 1, "hard");
+    const add = n < MAX ? (n + 1) * priceOf(n + 1, CV()) - tot : 0, sv2 = (n + 1) * priceOf(1, CV()) - (n + 1) * priceOf(n + 1, CV());
     return `<div class="step"><h3>${SB}שולחים לנו את ההזמנה לספר ${n === 1 ? "הדיגיטלי" : "הדיגיטליים"} 📖</h3>
     <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
     <p class="h" style="margin-top:8px"><b>📖 קודם מקבלים את הספר הדיגיטלי – בחינם</b> (<a href="#faqDigital" data-faq="faqDigital" style="color:var(--mag)">מה זה?</a>). משלמים רק אם רוצים אותו מודפס.</p>
-    <p class="h" style="margin-top:10px"><b>🖨️ אם תרצו את הספר מודפס:</b></p>
+    <p class="h" style="margin-top:10px"><b>🖨️ אם תרצו את הספר מודפס – איזו כריכה?</b></p>
+    <div class="covs">${[["hard","📕 כריכה קשה פרימיום"],["soft","📗 כריכה רכה"]].map(([k, l]) => `<button type="button" class="cvo ${CV() === k ? "on" : ""}" data-cov="${k}" aria-pressed="${CV() === k}"><b>${l}</b><span>${ils(priceOf(n, k))} ${n > 1 ? "לספר" : ""}</span></button>`).join("")}</div>
     <div class="prc" style="margin-top:4px"><div>📖 ${priceLine(n)}</div><div class="sh">🚚 משלוח עד הבית ${ils(SHIP)}</div><div class="tot">סה"כ ${ils(tot + SHIP)}</div></div>
-    ${n < MAX ? `<div class="upsl"><b>💛 ספר מודפס נוסף – רק ${ils(add)}!</b><br>${n + 1} ספרים: כל ספר ${ils(priceOf(n + 1, "hard"))} במקום ${ils(priceOf(1, "hard"))} – חוסכים ${ils(sv2)}. מתנה לאח, לאחות, לבן דוד או לחבר/ה.
+    ${n < MAX ? `<div class="upsl"><b>💛 ספר מודפס נוסף – רק ${ils(add)}!</b><br>${n + 1} ספרים: כל ספר ${ils(priceOf(n + 1, CV()))} במקום ${ils(priceOf(1, CV()))} – חוסכים ${ils(sv2)}. מתנה לאח, לאחות, לבן דוד או לחבר/ה.
       <div class="upb"><button type="button" class="btn btn-main" data-more="yes">➕ להוסיף ספר</button><a href="#faqPrice" data-faq="faqPrice">💰 לכל המחירים</a></div></div>` : ""}
     <p class="h" style="margin-top:12px"><b>לאן לשלוח את הסקיצה והספרים?</b></p>
     <div class="dform">${[["first","שם פרטי","text","given-name"],["last","שם משפחה","text","family-name"],["phone","טלפון","tel","tel"],["email","מייל","email","email"],["street","רחוב ומספר","text","street-address"],["city","עיר","text","address-level2"]].map(([k, l, t, a]) => `<label class="df"><span>${l}</span><input id="d_${k}" type="${t}" value="${esc(ORD.d[k] || "")}" autocomplete="${a}" ${t === "tel" ? 'inputmode="tel"' : ""}></label>`).join("")}</div>
     <label class="chk"><input type="checkbox" id="mkWa" ${ORD.mkWa ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI בוואטסאפ (לא חובה)</span></label>
     <label class="chk"><input type="checkbox" id="mkMail" ${ORD.mkMail ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI במייל (לא חובה)</span></label>
     <div class="know"><p>📌 חשוב לדעת לפני ששולחים</p><ul><li>🤖 <b>בינה מלאכותית אינה מצלמה</b> – ייתכנו הבדלים קלים במראה ובפרופורציות. כל ספר עובר בדיקה אנושית.</li><li>📷 <b>אחרי השליחה לא ניתן להחליף תמונה</b> – בודקים עכשיו שהכל נכון.</li><li>🛠️ <b>טעות שלנו?</b> מתקנים מיד, בחינם. <b>שינוי לפי טעם אישי</b> – 20 ₪ לתיקון.</li><li>📝 <b>זו בקשה להזמנה – עדיין לא קנייה.</b> קודם מקבלים סקיצה. ההזמנה בתוקף רק אחרי שאישרתם אותה ושילמתם; עד אז אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</li></ul></div>
-    <label class="chk"><input type="checkbox" id="wOk"> <span>קראתי את "חשוב לדעת", את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
+    <label class="chk"><input type="checkbox" id="wOk" ${ORD.ok ? "checked" : ""}> <span>קראתי את "חשוב לדעת", את <a href="https://www.booqli.ai/he/terms-of-service" target="_blank" rel="noopener">התקנון</a> ואת <a href="https://www.booqli.ai/he/privacy-policy" target="_blank" rel="noopener">מדיניות הפרטיות</a>, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.</span></label>
     <button type="button" class="btn btn-wa go" id="wSend">✅ שולחים לנו את ההזמנה</button>
     <p class="st" id="wSt"></p>
     <p class="h" style="margin-top:6px">התמונות נשמרות אצלנו בצורה מאובטחת, ומיד אחר כך אפשר לעדכן אותנו בוואטסאפ.</p>
@@ -508,11 +512,12 @@ $("wz").addEventListener("click", e => {
   if (t.dataset.next === "who") { const v = $("wWho").value.trim(); if (!v) return err("כותבים את השם שלך 🙂"); ORD.who = v; STEP = "more"; ev("savta-step", "who"); draw(true); return; }
   if (t.dataset.more === "yes") { if (STEP === "more") ORD.list.push(CUR); CUR = fresh(); STEP = "book"; ev("savta-more", String(ORD.list.length)); draw(true); return; }
   if (t.dataset.more === "no") { ORD.list.push(CUR); CUR = null; STEP = "send"; ev("savta-step", "more-no"); draw(true); return; }
+  if (t.dataset.cov) { ORD.cover = t.dataset.cov; ev("savta-cover", ORD.cover); draw(false); return; }
   if (t.id === "wSend") send();
 });
 $("wz").addEventListener("input", e => { if (e.target.id === "wDed" && CUR) CUR.ded = e.target.value;
   const k = /^d_(\w+)$/.exec(e.target.id || ""); if (k) ORD.d[k[1]] = e.target.value.trim();
-  if (e.target.id === "mkWa") ORD.mkWa = e.target.checked; if (e.target.id === "mkMail") ORD.mkMail = e.target.checked;
+  if (e.target.id === "mkWa") ORD.mkWa = e.target.checked; if (e.target.id === "wOk") ORD.ok = e.target.checked; if (e.target.id === "mkMail") ORD.mkMail = e.target.checked;
   if (e.target.id === "wName" && CUR) CUR.name = e.target.value.trim(); if (e.target.id === "wWho") ORD.who = e.target.value.trim();
   saveDraft(); });
 $("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".nav .nextb"); b && b.click(); } });
@@ -541,10 +546,10 @@ async function sendDrive(){
     let ok = false; for (let t = 0; t < 3 && !ok; t++) { try { ok = !!(await bqUp.photo(s.tok, x.blob, isGirl(it) ? "בנות" : "בנים", it.name, f)).ok; } catch (e) {} }
     if (!ok) throw new Error("photo"); }
   const lines = ORD.list.map((it, i) => `📖 ${bkNo(i)}: ${book(it.book).name} (${isGirl(it) ? "בת" : "בן"})\n👤 שם: ${it.name}\n✍️ הקדשה: ${it.ded}\n📷 ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"} – בתיקייה "${bkFolder(it, i)}"`);
-  const n = ORD.list.length, tot = n * priceOf(n, "hard") + SHIP;
+  const n = ORD.list.length, tot = n * priceOf(n, CV()) + SHIP;
   const D = ORD.d;
-  const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (בקשה ולא קנייה – בתוקף רק אחרי אישור סקיצה ותשלום, אספקה 7–14 ימי עסקים מהתשלום, רשאים לא לבצע הזמנה לא תקינה; AI אינה מצלמה; אין החלפת תמונה אחרי השליחה; שינוי לפי טעם אישי – 20 ₪), את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
-  const cust = {email: D.email, first: D.first, items: ORD.list.map((it, i) => ({no: NUMS[i] || "", book: book(it.book).name, name: it.name, ded: it.ded, folder: bkFolder(it, i)})), total: `${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (כריכה קשה)`};
+  const summary = `👵 המזמין/ה: ${ORD.who}\n👤 ${D.first} ${D.last} · 📞 ${D.phone} · ✉️ ${D.email}\n🏠 ${D.street}, ${D.city}\n📣 דיוור בוואטסאפ: ${ORD.mkWa ? "מאשר/ת ✔️" : "לא"} · במייל: ${ORD.mkMail ? "מאשר/ת ✔️" : "לא"}\n\n${lines.join("\n\n")}\n\n💰 ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (${CVN()})\n\n✓ אישור (${new Date().toLocaleString("he-IL")}): קראתי את "חשוב לדעת" (בקשה ולא קנייה – בתוקף רק אחרי אישור סקיצה ותשלום, אספקה 7–14 ימי עסקים מהתשלום, רשאים לא לבצע הזמנה לא תקינה; AI אינה מצלמה; אין החלפת תמונה אחרי השליחה; שינוי לפי טעם אישי – 20 ₪), את התקנון ואת מדיניות הפרטיות, ואני ההורה או שקיבלתי אישור מההורים לשלוח את התמונות ליצירת הספר.${SRC ? "\nמקור: " + SRC : ""}`;
+  const cust = {email: D.email, first: D.first, items: ORD.list.map((it, i) => ({no: NUMS[i] || "", book: book(it.book).name, name: it.name, ded: it.ded, folder: bkFolder(it, i)})), total: `${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${tot} ₪ (${CVN()})`};
   const d = await bqUp.done(s.tok, summary, cust); if (!d.ok) throw new Error("done");
   /* מה שמוצג ללקוח כ"מספר ההזמנה": 1002-3 או 1002-3…5 */
   const label = NUMS.length ? NUMS[0] + (NUMS.length > 1 ? "…" + NUMS[NUMS.length - 1].split("-")[1] : "") : s.oid;
@@ -552,11 +557,11 @@ async function sendDrive(){
 }
 /* סיכום ההזמנה על המסך (שמש, 5.11.2026: "חייב להיות להם סיכום – איזה ספר, איזה ילד, התמונה, השם וההקדשה"). שמירה כ-PDF + שמירה בוואטסאפ */
 function sumText(oid){ const D = ORD.d, n = ORD.list.length;
-  return `סיכום ההזמנה ${oid} · BOOQLI 💛\n${D.first} ${D.last} · ${D.phone}\n${D.street}, ${D.city}\n\n` + ORD.list.map((it, i) => `📖 ${bkNo(i)}: ${book(it.book).name}\n👤 ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})\n✍️ ${it.ded}`).join("\n\n") + `\n\n📖 הזמנה לספר דיגיטלי – בחינם\n🖨️ אם רוצים מודפס (כריכה קשה פרימיום): ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}`; }
+  return `סיכום ההזמנה ${oid} · BOOQLI 💛\n${D.first} ${D.last} · ${D.phone}\n${D.street}, ${D.city}\n\n` + ORD.list.map((it, i) => `📖 ${bkNo(i)}: ${book(it.book).name}\n👤 ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})\n✍️ ${it.ded}`).join("\n\n") + `\n\n📖 הזמנה לספר דיגיטלי – בחינם\n🖨️ אם רוצים מודפס (${CVN()}): ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, CV()) + SHIP)}`; }
 function sumHTML(oid, mailed){ const D = ORD.d, n = ORD.list.length;
   return `<div class="osum" id="oSum"><h3>📄 סיכום ההזמנה לספר דיגיטלי ${esc(oid)}</h3><p class="sd">${new Date().toLocaleDateString("he-IL")} · ${esc(D.first)} ${esc(D.last)} · ${esc(D.phone)} · <span dir="ltr">${esc(D.email)}</span><br>🏠 ${esc(D.street)}, ${esc(D.city)}</p>
     ${ORD.list.map((it, i) => `<div class="oi">${it.pics[0] ? `<img src="${it.pics[0].url}" alt="">` : ""}<div><b>📖 ${esc(bkNo(i))}: ${esc(book(it.book).name)}</b>\n👤 ${esc(it.name)} (${isGirl(it) ? "ילדה" : "ילד"}) · ${it.pics.length} ${it.pics.length === 1 ? "תמונה" : "תמונות"}\n✍️ ${esc(it.ded)}</div></div>`).join("")}
-    <p style="font-weight:800;margin-top:6px">📖 הספר הדיגיטלי – בחינם · 🖨️ אם תרצו מודפס (כריכה קשה פרימיום): ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, "hard") + SHIP)}</p>
+    <p style="font-weight:800;margin-top:6px">📖 הספר הדיגיטלי – בחינם · 🖨️ אם תרצו מודפס (${CVN()}): ${n === 1 ? "ספר אחד" : n + " ספרים"} + משלוח = ${ils(n * priceOf(n, CV()) + SHIP)}</p>
     <p class="h" style="font-size:14px">📌 בינה מלאכותית אינה מצלמה – ייתכנו הבדלים קלים. אחרי השליחה לא ניתן להחליף תמונה. טעות שלנו – מתקנים בחינם; שינוי לפי טעם אישי – 20 ₪ לתיקון.</p>
     <div class="notbuy"><b>📝 חשוב: זה סיכום של בקשת הזמנה – לא אישור קנייה.</b><br>ההזמנה נכנסת לתוקף רק אחרי שתאשרו את הסקיצה ותשלמו. עד התשלום אין התחייבות לספרים מודפסים. זמן אספקה: 7–14 ימי עסקים מרגע התשלום. אנחנו רשאים שלא לבצע הזמנה שאינה תקינה.</div>
     ${mailed ? `<p class="h">📧 הסיכום נשלח גם למייל שלכם.</p>` : ""}
@@ -572,7 +577,7 @@ function waMsg(oid){ const D = ORD.d, n = ORD.list.length, me = (D.first + " " +
   const dl = ORD.list.reduce((a, it) => a + it.ded.length, 0), withDed = dl <= 1200;
   return `שלום BOOQLI 💛\nשלחתי הזמנה לספר דיגיטלי מהאתר: *${oid}*\n\n👤 המזמין/ה: ${me}${ORD.who && ORD.who !== me ? " (" + ORD.who + ")" : ""}\n📞 ${D.phone}\n✉️ ${D.email}\n🏠 כתובת למשלוח: ${D.street}, ${D.city}\n\n📚 ${n === 1 ? "ספר אחד" : n + " ספרים"}:\n`
     + ORD.list.map((it, i) => `${NUMS[i] ? "🔢 *" + NUMS[i] + "*" : (i + 1) + "."} *${book(it.book).name}* – ${it.name} (${isGirl(it) ? "ילדה" : "ילד"})` + (withDed ? `\n✍️ ${it.ded}` : "")).join("\n\n")
-    + (withDed ? "" : "\n\n✍️ ההקדשות – בסיכום ההזמנה") + `\n\n🖨️ אם ארצה מודפס (כריכה קשה פרימיום): סה"כ ${ils(n * priceOf(n, "hard") + SHIP)} (כולל משלוח)\n📝 זו הזמנה – לא אישור תשלום. BOOQLI שומרת לעצמה את הזכות שלא לבצע הזמנה שאינה תקינה.`; }
+    + (withDed ? "" : "\n\n✍️ ההקדשות – בסיכום ההזמנה") + `\n\n🖨️ אם ארצה מודפס (${CVN()}): סה"כ ${ils(n * priceOf(n, CV()) + SHIP)} (כולל משלוח)\n📝 זו הזמנה – לא אישור תשלום. BOOQLI שומרת לעצמה את הזכות שלא לבצע הזמנה שאינה תקינה.`; }
 const waMust = (href, id) => `<div class="wamust"><p class="t">📲 שלב אחרון – חובה</p><p>שולחים לנו את ההזמנה בוואטסאפ. ההודעה כבר כתובה – רק לוחצים שם <b>➤ שליחה</b>. בלי ההודעה הזו לא נוכל להתחיל.</p>
   <a class="btn btn-wa go" id="${id}" href="${href}" target="_blank" rel="noopener">💬 שליחת ההזמנה בוואטסאפ</a>
   <p class="ph">אין וואטסאפ? <a href="tel:+${PHONE}">📞 <span dir="ltr">055-5549331</span></a></p></div>`;
@@ -582,7 +587,7 @@ const strip = it => it && Object.assign({}, it, {pics: it.pics.map(x => ({blob: 
 const unstrip = it => it && Object.assign(it, {pics: (it.pics || []).filter(x => x && x.blob).map(x => ({blob: x.blob, url: URL.createObjectURL(x.blob)}))});
 function saveDraft(){ if (DONE || !LOADED || !window.bqDraft) return; const has = ORD.list.length || (CUR && (CUR.book || CUR.name || CUR.pics.length));
   if (!has) return; bqDraft.save("savta", {ORD: Object.assign({}, ORD, {list: ORD.list.map(strip)}), CUR: strip(CUR), STEP}); }
-function resetAll(){ if (window.bqDraft) bqDraft.clear("savta"); Object.assign(ORD, {who: "", rel: "", list: [], d: {}, mkWa: false, mkMail: false}); CUR = fresh(); STEP = "book"; RESTORED = false; ev("savta-draft", "reset"); draw(true); }
+function resetAll(){ if (window.bqDraft) bqDraft.clear("savta"); Object.assign(ORD, {who: "", rel: "", list: [], d: {}, mkWa: false, mkMail: false, cover: "", ok: false}); CUR = fresh(); STEP = "book"; RESTORED = false; ev("savta-draft", "reset"); draw(true); }
 /* חלון שקופץ מיד בלחיצה על "שולחים" (שמש, 5.11.2026): מה קורה עכשיו ומה הלאה, עם התקדמות ההעלאה. בסוף הופך ל"✅ קיבלנו" */
 const names = () => { const n = ORD.list.map(it => it.name); return n.length < 2 ? n.join("") : n.slice(0, -1).join(", ") + " ו" + n[n.length - 1]; };
 function modal(html){ let m = $("wModal"); if (!m) { m = document.createElement("div"); m.id = "wModal"; m.className = "wmodal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); document.body.appendChild(m); }
