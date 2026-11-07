@@ -458,16 +458,17 @@ function stepHTML(){
   if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
     <input type="text" id="wWho" value="${esc(ORD.who)}" maxlength="40" autocomplete="name" placeholder="למשל: סבתא רינה / אמא של נועה / דודה מיכל">
     <p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="who">הבא ←</button></div>`;
+  /* (שמש, 7.11.2026) כאן עוד לא מדברים על מחירים – רק מעודדים להמשיך. המחירים מופיעים בסוף, בשלב השליחה */
   if (STEP === "more") { const n = ORD.list.length + 1;
-    return `<div class="step"><h3>${SB}כל הכבוד! 🎉 רוצים ספר גם לילד/ה נוסף/ת?</h3>
-    <div class="prc"><div>📖 עכשיו – ${priceLine(n)}</div>${n < MAX ? `<div class="up">➕ עם עוד ספר – ${priceLine(n + 1)}</div>` : ""}<div class="sh">🚚 + משלוח עד הבית ${ils(SHIP)}</div></div>
-    ${n < MAX ? `<p class="h" style="margin-top:8px">ככל שמוסיפים ספרים – המחיר של כל ספר יורד. כדאי להזמין לכולם ביחד!</p>` : ""}
-    <div class="two" style="margin-top:12px">${n < MAX ? `<button type="button" class="btn btn-main" data-more="yes">➕ כן, עוד ספר</button>` : ""}<button type="button" class="btn btn-wa" data-more="no">✅ לא, זהו</button></div></div>`; }
+    return `<div class="step"><h3>${SB}כל הכבוד! 🎉 הספר של ${esc(it.name)} כמעט מוכן</h3>
+    <p class="h">📖 קודם מקבלים את הספר לצפייה – <b>בחינם</b>. משלמים רק אם רוצים להדפיס.</p>
+    <button type="button" class="btn btn-wa go" data-more="no" style="margin-top:12px">📨 ממשיכים לשליחת ההזמנה ←</button>
+    ${n < MAX ? `<button type="button" class="alt" data-more="yes">➕ להוסיף ספר לילד/ה נוסף/ת</button>` : ""}</div>`; }
   if (STEP === "send") { const n = ORD.list.length, tot = n * priceOf(n, "hard");
     return `<div class="step"><h3>${SB}שולחים לנו את ההזמנה</h3>
     <ul class="sumr">${ORD.list.map((x, i) => `<li>📖 ${esc(book(x.book).name)} – ${esc(x.name)}</li>`).join("")}</ul>
     <div class="prc" style="margin-top:10px"><div>📖 ${priceLine(n)}</div><div class="sh">🚚 משלוח עד הבית ${ils(SHIP)}</div><div class="tot">סה"כ ${ils(tot + SHIP)}</div></div>
-    <p class="h" style="margin-top:8px"><b>משלמים רק אחרי שרואים את כל הספר ואוהבים.</b></p>
+    <p class="h" style="margin-top:8px"><b>📖 קודם מקבלים את הספר לצפייה – בחינם. משלמים רק אם רוצים להדפיס.</b></p>
     <p class="h" style="margin-top:12px"><b>לאן לשלוח את הסקיצה והספרים?</b></p>
     <div class="dform">${[["first","שם פרטי","text","given-name"],["last","שם משפחה","text","family-name"],["phone","טלפון","tel","tel"],["email","מייל","email","email"],["street","רחוב ומספר","text","street-address"],["city","עיר","text","address-level2"]].map(([k, l, t, a]) => `<label class="df"><span>${l}</span><input id="d_${k}" type="${t}" value="${esc(ORD.d[k] || "")}" autocomplete="${a}" ${t === "tel" ? 'inputmode="tel"' : ""}></label>`).join("")}</div>
     <label class="chk"><input type="checkbox" id="mkWa" ${ORD.mkWa ? "checked" : ""}> <span>מאשר/ת לקבל עדכונים ומבצעים מ-BOOQLI בוואטסאפ (לא חובה)</span></label>
