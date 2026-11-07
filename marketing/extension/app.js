@@ -427,7 +427,7 @@ ${ready.length ? `<h2>🚀 מוכנים להעלאה</h2>${ready.map(card).join(
     copyN = 0; for (const k in COPY) delete COPY[k];
     document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "day" ? "month" : view)));
     const m = $("#main");
-    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "stats" ? await window.BQ_STATS.html() : view === "media" ? await window.BQ_MEDIA.html() : view === "ideas" ? vIdeas() : view === "page" ? await vPage() : view === "chats" ? await vChats() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
+    const html = view === "today" ? await vToday() : view === "day" ? await vDayDetail() : view === "month" ? vMonth() : view === "topics" ? await vTopics() : view === "site" ? await vSite() : view === "orders" ? await window.BQ_ORDERS.html() : view === "stats" ? await window.BQ_STATS.html() : view === "media" ? await window.BQ_MEDIA.html() : view === "ideas" ? vIdeas() : view === "page" ? await vPage() : view === "chats" ? await vChats() : view === "msgs" ? vMsgs() : view === "camps" ? vCamps() : view === "guide" ? vGuide() : vSettings();
     m.innerHTML = html;
     $("#sub").textContent = "booqli Games · " + nice(todayISO());
   }

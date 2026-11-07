@@ -7,6 +7,7 @@
    מה נשמר:  BOOQLI הזמנות / "סב-1234 · רחל כהן · 04.11" / בנים|בנות / "דנה.jpg", "דנה (2).jpg" ...
               גן עם 2 נושאים: BOOQLI הזמנות / "גן-1234 · גן רימון · 04.11" / <נושא> / בנים|בנות / ...
               + "סיכום ההזמנה" (מסמך גוגל) באותה תיקייה, ומייל לבעלת החשבון עם קישור לתיקייה.
+   (7.11.2026) לשונית "📦 הזמנות" בתוסף: מאפיין סקריפט PANEL_KEY = קוד ארוך אקראי, שמור רק כאן ובתוסף של שמש (לא במאגר).
    אין כאן שום מידע פרטי: המייל נשלח לחשבון שבו הקוד רץ, והמילה הסודית שמורה במאפייני הסקריפט. */
 
 var ROOT = "BOOQLI הזמנות";
@@ -15,6 +16,7 @@ function doPost(e) {
   try {
     var q = JSON.parse(e.postData.contents);
     if (String(q.action || "").indexOf("web") === 0) return out_(web_(q));   /* העלאה מהאתר – בלי המילה הסודית, עם בדיקות משלה (למטה) */
+    if (q.action === "panel") return out_(panel_(q));                         /* לשונית "📦 הזמנות" בתוסף של שמש – קוד נפרד PANEL_KEY (למטה) */
     var secret = PropertiesService.getScriptProperties().getProperty("SECRET");
     if (!secret || q.key !== secret) return out_({ ok: false, error: "key" });
     if (q.action === "photo") return out_(savePhoto_(q));
@@ -218,6 +220,50 @@ function web_(q) {
 }
 /* סיכום ההזמנה ללקוח במייל (שמש, 5.11.2026: "הם חייבים לראות את זה"). נבנה כאן מתבנית קבועה – הדף שולח רק נתונים,
    וכל הטקסט עובר escape. עד 80 מיילים ללקוחות ביום, ורק אם נשמרה לפחות תמונה אחת. */
+/* ===== לשונית "📦 הזמנות" בתוסף מרכז הפרסום (שמש, 7.11.2026) =====
+   קריאה בלבד. מוגן בקוד נפרד: מאפיין הסקריפט PANEL_KEY (לא SECRET של הבוט), שנשמר רק בתוסף של שמש.
+   {action:"panel", key, op:"list", days} → כל תיקיות ההזמנה (פרטיים / גנים / ספר בעיצוב אישי) מהימים האחרונים, עם הסטטוס מהשם
+     ("✅ booqli 12109" = נשלחה ל-booqli.ai, "⛔" = לבדיקה).
+   {action:"panel", key, op:"order", id} → טקסט "סיכום ההזמנה" + התמונות (שם, מזהה) – רק לתיקייה שבתוך "BOOQLI הזמנות". */
+function panel_(q) {
+  var P = PropertiesService.getScriptProperties(), pk = P.getProperty("PANEL_KEY");
+  if (!pk || String(q.key || "") !== pk) return { ok: false, error: "key" };
+  var tz = "Asia/Jerusalem", fmt = function (d) { return Utilities.formatDate(d, tz, "yyyy-MM-dd HH:mm"); };
+  if (q.op === "list") {
+    var since = Date.now() - Math.min(365, Math.max(1, +q.days || 90)) * 864e5, out = [];
+    ["private", "gan", "book"].forEach(function (kind) {
+      var cust = catFolder_(kind).getFolders();
+      while (cust.hasNext() && out.length < 400) {
+        var c = cust.next(); if (c.getLastUpdated().getTime() < since) continue;
+        var ords = c.getFolders();
+        while (ords.hasNext()) {
+          var o = ords.next(), cr = o.getDateCreated().getTime(); if (cr < since) continue;
+          var nm = o.getName(), books = [], bs = o.getFolders(); while (bs.hasNext() && books.length < 12) books.push(bs.next().getName());
+          var m = /✅\s*booqli\s*(\d+)/.exec(nm);
+          out.push({ kind: kind, id: o.getId(), name: nm, url: o.getUrl(), cust: c.getName(), custUrl: c.getUrl(), created: fmt(o.getDateCreated()), updated: fmt(o.getLastUpdated()),
+            booqli: m ? m[1] : "", check: nm.indexOf("⛔") >= 0, books: books });
+        }
+      }
+    });
+    out.sort(function (a, b) { return a.created < b.created ? 1 : -1; });
+    return { ok: true, orders: out, at: fmt(new Date()) };
+  }
+  if (q.op === "order") {
+    var f; try { f = DriveApp.getFolderById(String(q.id || "")); } catch (e) { return { ok: false, error: "id" }; }
+    var root = root_().getId(), up = f, inside = false;
+    for (var i = 0; i < 6 && !inside; i++) { var ps = up.getParents(); if (!ps.hasNext()) break; up = ps.next(); if (up.getId() === root) inside = true; }
+    if (!inside) return { ok: false, error: "id" };
+    var sum = "", fl = f.getFiles(); while (fl.hasNext()) { var x = fl.next(); if (x.getName().indexOf("סיכום ההזמנה") === 0) { try { sum = DocumentApp.openById(x.getId()).getBody().getText().slice(0, 9000); } catch (e) {} sum = sum || ""; break; } }
+    var pics = [], walk = function (d, path, depth) {
+      var it = d.getFiles(); while (it.hasNext() && pics.length < 60) { var p = it.next(); if (/^image\//.test(p.getMimeType())) pics.push({ id: p.getId(), name: p.getName(), path: path, url: p.getUrl() }); }
+      if (depth < 3) { var sd = d.getFolders(); while (sd.hasNext()) { var s = sd.next(); walk(s, (path ? path + " / " : "") + s.getName(), depth + 1); } }
+    };
+    walk(f, "", 0);
+    return { ok: true, name: f.getName(), url: f.getUrl(), summary: sum, pics: pics };
+  }
+  return { ok: false, error: "op" };
+}
+
 function custMail_(D, c, P) {
   var em = String(c.email || "").trim();
   if (!/^[^@\s<>"]+@[^@\s<>"]+\.[^@\s<>"]+$/.test(em) || em.length > 80) return false;
