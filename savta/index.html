@@ -616,7 +616,7 @@ async function send(){
   { const dg = ORD.d.phone.replace(/\D/g, ""); if (dg.length < 9 || dg.length > 12) { $("wSt").textContent = "📞 בודקים את מספר הטלפון"; $("d_phone").focus(); return; } }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(ORD.d.email)) { $("wSt").textContent = "✉️ בודקים את כתובת המייל"; $("d_email").focus(); return; }
   if (!$("wOk").checked) { $("wSt").textContent = "☑️ מסמנים קודם שקראתם את \"חשוב לדעת\", התקנון ומדיניות הפרטיות"; return; }
-  b.dataset.busy = "1";
+  b.dataset.busy = "1"; ev("savta-step", "send-try");
   modal(`${SB}<h3>💛 ברגעים אלו אנחנו מקבלים את ההזמנה שלכם${ORD.list.length ? " עבור " + esc(names()) : ""}</h3>
     <ol class="wnext"><li>🎨 <b>מכינים לכם סקיצה</b> של הספר ושולחים לכם לאישור בוואטסאפ – תוך יום עסקים</li><li>😍 <b>אהבתם?</b> ממשיכים לתשלום ולהדפסה</li><li>🤝 <b>לא אהבתם?</b> נפרדים כידידים – בלי לשלם כלום</li></ol>
     <div class="wprog"><span id="mBar"></span></div><p class="st" id="mSt">⏳ שולחים…</p><p class="fine">לא סוגרים את העמוד עד שמופיע ✅</p>`);
@@ -684,7 +684,7 @@ document.querySelectorAll("[data-start]").forEach(a => a.addEventListener("click
   CUR = fresh(); if (q && book(q)) { CUR.book = q; STEP = "ver"; }
   draw(false);
   /* מגיעים מדף הבית (#order, 5.11.2026): כבר ראו שם את השלבים ואת הספרים – נוחתים ישר ב"ההזמנה שלי", בלי כפילות */
-  if (location.hash === "#order" || u.get("go") === "order") { let moved = false;   /* go=order: במודעות פייסבוק ה-# נמחק כשהפרמטרים עוברים ל-Tracking */ const land = () => { if (!moved) $("order").scrollIntoView({block: "start"}); };
+  if (location.hash === "#order" || u.get("go") === "order") { let moved = false;   /* go=order: במודעות פייסבוק ה-# נמחק כשהפרמטרים עוברים ל-Tracking */ const land = () => { if (!moved) $("order").scrollIntoView({block: "start"}); }; ev("savta-step", "land");
     addEventListener("wheel", () => moved = true, {once: true, passive: true}); addEventListener("touchmove", () => moved = true, {once: true, passive: true});
     land(); setTimeout(land, 400); addEventListener("load", () => setTimeout(land, 50), {once: true}); }
   if (window.bqDraft) bqDraft.load("savta").then(v => { LOADED = true; if (!v || !v.ORD || DONE) return;

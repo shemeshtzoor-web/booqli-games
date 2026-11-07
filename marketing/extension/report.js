@@ -201,6 +201,35 @@
       `\n\nהעמודים המובילים:\n` + top(C.pages, 5).map(([p, v], i) => `${i + 1}. ${p} – ${fmtN(v)}`).join("\n");
   }
 
+  /* (7.11.2026, שמש) 🛒 משפך ההזמנה לפרטיים – כמה אנשים הגיעו לכל שלב ב-savta/ (מהאירועים savta-step / savta-send) */
+  function funnelHtml(C, D) {
+    const n = (k, name) => C.ev[k] ? (name == null ? C.ev[k].total : (C.ev[k].names[name] || 0)) : 0;
+    let page = 0; D.paths.forEach(x => { if (/^\/savta\/?(index\.html)?$/.test(x.dimensions.requestPath || "")) page += x.count; });
+    const steps = [
+      ["👀", "נכנסו לעמוד ההזמנה", page],
+      ["📚", "בחרו ספר (מי שלא הגיע עם ספר מוכן)", n("savta-step", "book")],
+      ["👦👧", "בחרו בן / בת", n("savta-step", "ver")],
+      ["✍️", "כתבו את שם הילד/ה", n("savta-step", "name")],
+      ["💌", "כתבו הקדשה", n("savta-step", "ded")],
+      ["📷", "העלו תמונה והמשיכו", n("savta-step", "photo")],
+      ["🙋", "כתבו מי מזמין", n("savta-step", "who")],
+      ["✅", "סיימו לבחור ספרים", n("savta-step", "more-no")],
+      ["📨", "לחצו \"שולחים\" (מ-7.11)", n("savta-step", "send-try")],
+      ["🎉", "ההזמנה נשלחה", n("savta-send")]
+    ];
+    const top = Math.max(1, steps[0][2]);
+    const photoWarn = C.ev["savta-photo-check"] ? Object.entries(C.ev["savta-photo-check"].names).filter(([k]) => k !== "ok" && k !== "keep" && k !== "replace").reduce((s, [, v]) => s + v, 0) : 0;
+    let prev = null;
+    const rows = steps.map(([ic, t, v], i) => {
+      const pct = Math.round(v / top * 100), drop = prev != null && prev > 0 && i !== 1 ? Math.round((1 - v / prev) * 100) : null;
+      if (i !== 1) prev = v;
+      return `<div class="st-bar"><span class="l">${ic} ${t}</span><span class="b"><i style="width:${v ? Math.max(2, v / top * 100) : 0}%"></i></span><b>${fmtN(v)}</b><small>${i ? pct + "%" : ""}${drop != null && drop > 0 ? ` · ⬇️ ${drop}% נשרו` : ""}</small></div>`;
+    }).join("");
+    return `<div class="card"><h3>🛒 תהליך ההזמנה לפרטיים – כמה הגיעו לכל שלב</h3>${rows}
+      <p class="small mute" style="margin:8px 0 0">${n("savta-step", "land") ? `🎯 ${fmtN(n("savta-step", "land"))} הגיעו ישר להזמנה מקישור/מודעה · ` : ""}📷 אזהרות על תמונה: ${fmtN(photoWarn)} · "להשאיר בכל זאת": ${fmtN(n("savta-photo-check", "keep"))} · "להחליף": ${fmtN(n("savta-photo-check", "replace"))} · ➕ הוסיפו עוד ספר: ${fmtN(n("savta-more"))}</p>
+      <p class="small mute" style="margin:4px 0 0">כל לחיצה נספרת (מי שחזר אחורה ועשה שלב פעמיים – נספר פעמיים). "⬇️ נשרו" = כמה לא המשיכו מהשלב הקודם. לא נספרים: המכשירים של שמש.</p></div>`;
+  }
+
   async function html() {
     const cfg = await store.get();
     if (!cfg.token || !cfg.account || SETUP) return setupHtml(cfg);
@@ -216,6 +245,7 @@
     window.__bqStatsText = summaryText(C, D);
     h += `<p class="mute small"><b>${when(D.R)}</b>${D.R.one && D.R.b < new Date(D.R.a.getFullYear(), D.R.a.getMonth(), D.R.a.getDate() + 1) ? ` (עד עכשיו, ${new Date().toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" })})` : ""} · ${ch != null ? `<b style="color:${ch >= 0 ? "#17733b" : "#C13671"}">${ch >= 0 ? "▲" : "▼"} ${Math.abs(ch)}% צפיות ${vsTxt(D.R)}</b> · ` : ""}לא כולל את המכשירים שלך · ${!D.R.one && D.first && new Date(D.first + "T00:00:00") > D.R.a ? `<b>נמדד רק מ-${new Date(D.first + "T12:00:00").getDate()}.${new Date(D.first + "T12:00:00").getMonth() + 1}</b> · ` : ""}${D.R.one ? "ספירה מדויקת" : "ספירה מדויקת, יום אחרי יום"} · <button class="btn sm wa" data-st="copy">📋 להעתיק סיכום</button></p>`;
     h += `<div class="st-kpi">` + C.kpi.map(k => `<div><span>${k[0]}</span><b>${fmtN(k[2])}</b><small>${k[1]}</small></div>`).join("") + `</div>`;
+    h += funnelHtml(C, D);
     /* לפי יום */
     const days = D.days.slice().sort((a, b) => a.dimensions.date < b.dimensions.date ? -1 : 1), dmax = Math.max(1, ...days.map(x => x.count));
     if (D.R.one) {
