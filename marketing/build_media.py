@@ -178,6 +178,21 @@ BD_BOY = """🦸 ספר שהילד שלכם הוא גיבור העל – בחי�
 ⭐ בוקלי – כי ספרי ילדים זה אחריות.
 
 👈 https://games.booqli.ai/savta/?book=superhero&utm_source=facebook&utm_medium=paid&utm_campaign=birthday_private&utm_content=boy#order"""
+BD_UNICORN = """🦄 ספר שהילדה שלכם רוכבת בו על חד־קרן – בחינם!
+🎁 משלמים רק אם רוצים להדפיס.
+
+"אני והחד־קרן" – הרפתקה קסומה בלילה, ספר מושלם לפני השינה. השם והפנים של הילדה בכל עמוד, עם ההקדשה שלכם.
+📷 מזמינים בשתי דקות: שם ותמונה אחת – ושולחים.
+📖 מודפס בכריכה קשה או רכה לבחירה.
+🎁 ובמתנה: booqli Games – מלא משחקים חינוכיים לילדים, בחינם.
+
+✍️ ספרים מאת הסופרת שמש צור – ערוכים, מנוקדים ובחריזה.
+✋ אתם לא עורכים ולא בודקים: מעלים תמונה – ומקבלים ספר.
+💛 הנחות משמעותיות החל מהספר השני.
+
+⭐ בוקלי – כי ספרי ילדים זה אחריות.
+
+👈 https://games.booqli.ai/savta/?book=night&utm_source=facebook&utm_medium=paid&utm_campaign=birthday_private&utm_content=unicorn#order"""
 BD_GAN = """❤️ ספר אישי לכל ילד בגן – מתנה ליום הולדת או לסוף השנה. כל ילד הגיבור של הספר שלו!
 
 📷 מעלים את כל התמונות בבת אחת, שם לכל ילד, נושא אחד לכל הגן – ושולחים. 5 דקות.
@@ -201,6 +216,8 @@ ITEMS = [
   {"id":"birthday-private-1x1","group":"birthday","topic":"savta","title":"לפרטיים – תמונה ריבועית למודעה","kind":"image","ratio":"1:1","file":"birthday/booqli-private-birthday-1x1.jpg","thumb":"birthday/booqli-private-birthday-1x1.jpg","date":"2026-11-06","text":BD_PRIVATE},
   {"id":"birthday-boy-4x5","group":"birthday","topic":"savta","title":"לפרטיים – גרסת בנים (גיבור על)","kind":"video","ratio":"4:5","file":"birthday/booqli-private-boy-4x5.mp4","thumb":"birthday/booqli-private-boy-4x5.jpg","date":"2026-11-07","text":BD_BOY},
   {"id":"birthday-boy-1x1","group":"birthday","topic":"savta","title":"לפרטיים – גרסת בנים, תמונה ריבועית","kind":"image","ratio":"1:1","file":"birthday/booqli-private-boy-1x1.jpg","thumb":"birthday/booqli-private-boy-1x1.jpg","date":"2026-11-07","text":BD_BOY},
+  {"id":"unicorn-4x5","group":"birthday","topic":"savta","title":"לפרטיים – אני והחד־קרן","kind":"video","ratio":"4:5","file":"birthday/booqli-private-unicorn-4x5.mp4","thumb":"birthday/booqli-private-unicorn-4x5.jpg","date":"2026-11-07","text":BD_UNICORN},
+  {"id":"unicorn-1x1","group":"birthday","topic":"savta","title":"לפרטיים – חד־קרן, תמונה ריבועית","kind":"image","ratio":"1:1","file":"birthday/booqli-private-unicorn-1x1.jpg","thumb":"birthday/booqli-private-unicorn-1x1.jpg","date":"2026-11-07","text":BD_UNICORN},
   {"id":"birthday-gan-1x1","group":"birthday","topic":"kinder-book","title":"לגנים – תמונה ריבועית למודעה","kind":"image","ratio":"1:1","file":"birthday/booqli-gan-birthday-1x1.jpg","thumb":"birthday/booqli-gan-birthday-1x1.jpg","date":"2026-11-06","text":BD_GAN},
 ] + ITEMS
 for it in ITEMS:
