@@ -36,9 +36,19 @@ async function addFiles(sub, files){
   const fs = [...files].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name));
   for (const f of fs) { const b = await shrink(f); if (!b) continue;
     const nm = /[֐-׿]/.test(f.name) ? cleanName(f.name.replace(/\.[^.]+$/, "").replace(/\d+/g, "")).trim() : "";
-    G.pics.push({ sub, blob: b, url: URL.createObjectURL(b), name: nm, id: Math.random().toString(36).slice(2) }); }
+    const p = { sub, blob: b, url: URL.createObjectURL(b), name: nm, id: Math.random().toString(36).slice(2) }; G.pics.push(p); checkPic(p); }
   ev("gan_fast_pick", sub + "-" + fs.length); draw();
 }
+/* בדיקת כל תמונה בתוך הטלפון (lib/photocheck.js, שמש 7.11.2026): פנים אחד, בלי בעלי חיים, לא קטן/חשוך/מטושטש.
+   אזהרה בלבד – סימון כתום ליד התמונה + "להשאיר". מעדכנים רק את התמונה עצמה (בלי לצייר הכל מחדש, כדי לא להפריע להקלדת השמות) */
+const bad = p => p.chk && p.chk.length && !p.keep;
+function stHTML(p){ return p.chk === undefined ? "🔎 בודקים…" : bad(p) ? `⚠️ ${esc(p.chk.map(c => c.short).join(" · "))} · <button type="button" data-keep="${p.id}">להשאיר</button>` : "✓ התמונה נראית טוב"; }
+function chkSum(){ const n = G.pics.filter(bad).length; return n ? `⚠️ ${n === 1 ? "בתמונה אחת" : "ב-" + n + " תמונות"} כדאי לבדוק (מסומנות בכתום): עדיף תמונה שבה רק הילד/ה, הפנים גדולות, ברורות ומוארות. אפשר למחוק (✕) ולהעלות אחרת – או "להשאיר".` : ""; }
+function paintChk(p){ const el = box.querySelector(`.gp[data-id="${p.id}"]`);
+  if (el) { el.classList.toggle("warn", !!bad(p)); const s = el.querySelector(".gps"); if (s) { s.innerHTML = stHTML(p); s.classList.toggle("w", !!bad(p)); } }
+  const sm = $("gChk"); if (sm) { const t = chkSum(); sm.innerHTML = t; sm.hidden = !t; } }
+function checkPic(p){ if (!window.bqPhotoCheck) { p.chk = []; return; }
+  bqPhotoCheck(p.blob).then(iss => { p.chk = iss; ev("gan_photo_check", iss.length ? iss.map(i => i.code).join("+") : "ok"); paintChk(p); }); }
 const kids = () => G.pics.length, boys = () => G.pics.filter(p => p.sub === "בנים").length, girls = () => kids() - boys();
 const book = id => BOOKS.find(b => b.id === id);
 function dedIdeas(){
@@ -59,7 +69,7 @@ function win(sub){
     <div class="gwh"><b>${boy ? "👦 בנים" : "👧 בנות"}</b><span>${L.length}</span></div>
     <label class="gpick">➕ ${boy ? "תמונות של בנים" : "תמונות של בנות"}<input type="file" accept="image/*" multiple hidden data-pick="${sub}"></label>
     <p class="gdrop">או גוררים לכאן תמונות 📥</p>
-    <div class="gl">${L.map(([p, i]) => `<div class="gp" draggable="true" data-id="${p.id}"><img src="${p.url}" alt="">
+    <div class="gl">${L.map(([p, i]) => `<div class="gp ${bad(p) ? "warn" : ""}" draggable="true" data-id="${p.id}"><img src="${p.url}" alt=""><p class="gps ${bad(p) ? "w" : ""}">${stHTML(p)}</p>
       <input data-name="${i}" value="${esc(p.name)}" placeholder="שם פרטי" maxlength="20" autocomplete="off" aria-label="שם ה${boy ? "ילד" : "ילדה"}">
       <div class="ga"><button type="button" data-mv="${i}" title="${boy ? "להעביר לבנות" : "להעביר לבנים"}">⇄ ${boy ? "לבנות" : "לבנים"}</button><button type="button" data-rm="${i}" title="למחוק" aria-label="למחוק">✕</button></div></div>`).join("")}</div>
   </div>`;
@@ -78,12 +88,14 @@ function draw(scroll){
 }
 function stepHTML(){
   const b = book(G.topic);
+  if (STEP === "pics" && window.bqPhotoCheck) bqPhotoCheck.warm();
   if (STEP === "pics") return `<div class="gs"><h3><span class="gn">1</span>מעלים תמונות של הילדים</h3>
     <p class="gone">☝️ <b>תמונה אחת לכל ילד/ה בלבד</b></p>
     <button type="button" class="gtipsb" data-tips="1"><span class="garr" aria-hidden="true">👈</span> 📸 איזה תמונות לשלוח? <u>סרטון קצר והסבר</u></button>
     <p class="gwarn">⚠️ <b>שימו לב לא להתבלבל:</b> תמונות של בנים – לחלון הבנים, ושל בנות – לחלון הבנות. טעיתם? לוחצים ⇄ ומעבירים.</p>
     <div class="gws">${win("בנים")}${win("בנות")}</div>
     <p class="gtip">✏️ ליד כל תמונה כותבים את <b>השם הפרטי</b> של הילד/ה – רק השם, כמו שיודפס בספר. · <button type="button" class="glink" data-tips="1">📸 איזה תמונות לשלוח?</button></p>
+    <p class="gchk" id="gChk" ${chkSum() ? "" : "hidden"}>${chkSum()}</p>
     <p class="gerr" id="gErr"></p>
     <button type="button" class="btn btn-main gnext" data-next="pics">הבא: בוחרים נושא ←</button></div>`;
   if (STEP === "topic") return `<div class="gs"><h3><span class="gn">2</span>בוחרים נושא אחד לכל הגן</h3>
@@ -149,6 +161,7 @@ box.addEventListener("input", e => {
   saveDraft();
 });
 box.addEventListener("click", e => {
+  { const k = e.target.closest && e.target.closest("[data-keep]"); if (k) { const p = G.pics.find(x => x.id === k.dataset.keep); if (p) { p.keep = true; ev("gan_photo_check", "keep"); paintChk(p); } return; } }
   const lab = e.target.closest(".gpick"); if (lab && !tipsSeen) { e.preventDefault(); tips(lab.querySelector("input")); return; }
   const t = e.target.closest("button,[data-go]"); if (!t) return;
   if (t.dataset.tips) { tips(); return; }
@@ -252,6 +265,6 @@ async function send(){
 }
 draw();
 if (window.bqDraft) bqDraft.load("gan").then(v => { LOADED = true; if (!v || !v.G || DONE || G.pics.length) return;
-  try { Object.assign(G, v.G, {pics: (v.G.pics || []).filter(p => p && p.blob).map(p => Object.assign(p, {url: URL.createObjectURL(p.blob)}))});
+  try { Object.assign(G, v.G, {pics: (v.G.pics || []).filter(p => p && p.blob).map(p => Object.assign(p, {url: URL.createObjectURL(p.blob), chk: []}))});
     STEP = v.STEP || "pics"; RESTORED = true; ev("gan_fast_draft", "restore"); draw(); } catch (e) {} });
 })();

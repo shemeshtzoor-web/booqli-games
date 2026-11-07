@@ -200,6 +200,11 @@ section.sv{margin-top:34px}
 .wz .pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin:6px 0 4px}
 .wz .pics div{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.12)}
 .wz .pics img{width:100%;height:100%;object-fit:cover;display:block}
+.wz .pics div.bad{border-color:#F2A23A}.wz .pics .chk{position:absolute;bottom:4px;right:4px;background:rgba(255,255,255,.92);border-radius:99px;padding:1px 7px;font-size:13px;font-weight:800}
+.wz .pwarn{display:flex;gap:10px;align-items:flex-start;background:#FFF5E6;border:2px solid #F2C27A;border-radius:16px;padding:10px;margin:8px 0;font-size:15.5px;line-height:1.45}
+.wz .pwarn img{width:62px;height:62px;object-fit:cover;border-radius:10px;flex-shrink:0}.wz .pwarn .pb{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.wz .pwarn .pb label,.wz .pwarn .pb button{border:0;border-radius:99px;padding:7px 14px;font:800 15px Assistant,sans-serif;cursor:pointer}
+.wz .pwarn .pb label{background:var(--pink);color:#fff}.wz .pwarn .pb button{background:#fff;color:var(--ink);border:2px solid #E5D5C0}
 .wz .pics .rm{position:absolute;top:4px;left:4px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(43,21,38,.75);color:#fff;font-size:15px;cursor:pointer}
 .wz .doneb img+img{margin-inline-start:-18px}
 .wz .err{color:#B3261E;font-weight:800;margin-top:8px}
@@ -331,6 +336,7 @@ section.sv{margin-top:34px}
 <script src="../common.js"></script>
 <script src="../order/books/books.js"></script>
 <script src="../order/books/reader.js"></script>
+<script src="../lib/photocheck.js"></script>
 <script>
 /* ===== עמוד הסבים =====
    הנתונים: הספרים מ-order/books/books.js · המחירים כמו בעמוד הגנים (TIERS) עד 10 ספרים · הטלפון מ-SITE.phone.
@@ -455,10 +461,12 @@ function stepHTML(){
     <p class="h">כתבנו לכם הקדשה. אפשר לשנות כל מילה – או פשוט לאשר 💛</p>
     <textarea id="wDed" maxlength="400">${esc(it.ded)}</textarea>
     <button type="button" class="alt" data-ded="next">✨ הקדשה אחרת</button><p class="err" id="wErr"></p></div><div class="nav"><button type="button" class="btn btn-main nextb" data-next="ded">הבא ←</button></div>`; }
-  if (STEP === "photo") { const n = it.pics.length;
+  if (STEP === "photo") { const n = it.pics.length; if (window.bqPhotoCheck) bqPhotoCheck.warm();
     return `<div class="step"><h3>${SB}${n ? "תמונות של " : "תמונה של "}${esc(it.name)}</h3><p class="h">אפשר לשלוח כמה תמונות – ואנחנו נבחר את הטובה ביותר 💛</p>
     <details class="vid"><summary>🎬 איזו תמונה מתאימה? (סרטון קצר)</summary><video src="../kindergartens/video/photo.mp4" poster="../kindergartens/video/photo.jpg" controls playsinline preload="none"></video></details>
-    ${n ? `<div class="pics">${it.pics.map((x, k) => `<div><img src="${x.url}" alt="תמונה ${k + 1}"><button type="button" class="rm" data-rmpic="${k}" aria-label="להוריד את תמונה ${k + 1}">✕</button></div>`).join("")}</div>` : ""}
+    ${n ? `<div class="pics">${it.pics.map((x, k) => `<div class="${x.chk && x.chk.length && !x.keep ? "bad" : ""}"><img src="${x.url}" alt="תמונה ${k + 1}"><button type="button" class="rm" data-rmpic="${k}" aria-label="להוריד את תמונה ${k + 1}">✕</button>${x.chk === undefined ? `<span class="chk">🔎 בודקים…</span>` : x.chk.length && !x.keep ? `<span class="chk">⚠️</span>` : `<span class="chk">✓</span>`}</div>`).join("")}</div>` : ""}
+    ${it.pics.map((x, k) => x.chk && x.chk.length && !x.keep ? `<div class="pwarn"><img src="${x.url}" alt=""><div>${x.chk.map(c => esc(c.msg)).join("<br>")}
+      <div class="pb"><label>📷 להחליף<input type="file" accept="image/*" hidden data-repl="${k}"></label><button type="button" data-keep="${k}">להשאיר בכל זאת</button></div></div></div>` : "").join("")}
     ${n < PICS ? `<label class="${n ? "alt" : "btn btn-main pick"}" ${n ? 'style="display:block;text-align:center"' : ""}>📷 ${n ? "עוד תמונה" : "בוחרים תמונות מהטלפון"}<input type="file" accept="image/*" id="wFile" multiple hidden></label>` : ""}
     <p class="err" id="wErr"></p></div>${n ? '<div class="nav"><button type="button" class="btn btn-main nextb" data-next="photo">הבא ←</button></div>' : ""}`; }
   if (STEP === "who") return `<div class="step"><h3>${SB}ואיך קוראים לך?</h3><p class="h">כדי שנדע עם מי אנחנו מדברים 🙂</p>
@@ -496,6 +504,8 @@ function stepHTML(){
 const err = t => { const e = $("wErr"); if (e) e.textContent = t; };
 $("wz").addEventListener("change", e => {
   if (e.target.id === "wBook" && e.target.value) { CUR.book = e.target.value; CUR.ver = ""; CUR.ded = ""; STEP = "ver"; ev("savta-step", "book"); draw(true); }
+  if (e.target.dataset && e.target.dataset.repl !== undefined && e.target.files.length) { const k = +e.target.dataset.repl, old = CUR.pics.splice(k, 1)[0]; if (old) URL.revokeObjectURL(old.url);
+    ev("savta-photo-check", "replace"); photo(e.target.files[0], () => draw(false)); return; }
   if (e.target.id === "wFile" && e.target.files.length) { const fs = [...e.target.files].slice(0, PICS - CUR.pics.length); let left = fs.length; fs.forEach(f => photo(f, () => { if (!--left) draw(true); })); }
 });
 $("wz").addEventListener("click", e => {
@@ -503,6 +513,7 @@ $("wz").addEventListener("click", e => {
   if (t.dataset.reset) { resetAll(); return; }
   if (t.dataset.go) { STEP = t.dataset.go; if (STEP === "book") { CUR.ver = ""; } draw(true); return; }
   if (t.dataset.ver !== undefined) { CUR.ver = t.dataset.ver; CUR.ded = ""; STEP = "name"; ev("savta-step", "ver"); draw(true); return; }
+  if (t.dataset.keep !== undefined) { const x = CUR.pics[+t.dataset.keep]; if (x) x.keep = true; ev("savta-photo-check", "keep"); draw(false); return; }
   if (t.dataset.rmpic !== undefined) { const x = CUR.pics.splice(+t.dataset.rmpic, 1)[0]; if (x) URL.revokeObjectURL(x.url); draw(false); return; }
   if (t.dataset.rel) { ORD.rel = t.dataset.rel; CUR.dedI = 0; CUR.ded = dedIdeas(CUR)[0]; draw(false); return; }
   if (t.dataset.ded) { const L = dedIdeas(CUR); CUR.dedI = (CUR.dedI + 1) % L.length; CUR.ded = L[CUR.dedI]; $("wDed").value = CUR.ded; return; }
@@ -521,12 +532,15 @@ $("wz").addEventListener("input", e => { if (e.target.id === "wDed" && CUR) CUR.
   if (e.target.id === "wName" && CUR) CUR.name = e.target.value.trim(); if (e.target.id === "wWho") ORD.who = e.target.value.trim();
   saveDraft(); });
 $("wz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input[type=text]")) { e.preventDefault(); const b = $("wz").querySelector(".nav .nextb"); b && b.click(); } });
+/* בדיקת התמונה בתוך הטלפון (lib/photocheck.js, שמש 7.11.2026): פנים אחד, בלי בעלי חיים, לא קטן/חשוך/מטושטש. אזהרה בלבד */
+function checkPic(x){ if (!window.bqPhotoCheck) { x.chk = []; return; }
+  bqPhotoCheck(x.blob).then(iss => { x.chk = iss; ev("savta-photo-check", iss.length ? iss.map(i => i.code).join("+") : "ok"); if (STEP === "photo" && !DONE) draw(false); }); }
 /* תמונה: מקטינים בטלפון (עד 2000 פיקסלים, JPEG) כדי שתעלה מהר */
 function photo(file, done){
   const img = new Image(), u = URL.createObjectURL(file);
   img.onload = () => { const k = Math.min(1, 2000 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
     c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    c.toBlob(bl => { URL.revokeObjectURL(u); if (bl && CUR.pics.length < PICS) CUR.pics.push({blob: bl, url: URL.createObjectURL(bl)}); ev("savta-photo", "pick"); done(); }, "image/jpeg", .88); };
+    c.toBlob(bl => { URL.revokeObjectURL(u); if (bl && CUR.pics.length < PICS) { const x = {blob: bl, url: URL.createObjectURL(bl)}; CUR.pics.push(x); checkPic(x); } ev("savta-photo", "pick"); done(); }, "image/jpeg", .88); };
   img.onerror = () => { URL.revokeObjectURL(u); done(); setTimeout(() => err("תמונה אחת לא נפתחה – אפשר לבחור אחרת"), 50); };
   img.src = u;
 }
@@ -584,7 +598,7 @@ const waMust = (href, id) => `<div class="wamust"><p class="t">📲 שלב אח�
 /* טיוטה: כל מה שהכניסו נשמר בטלפון (בלי ה-URL הזמני של התמונות), וחוזרים לאותו מקום */
 let DONE = false, RESTORED = false, LOADED = !window.bqDraft;
 const strip = it => it && Object.assign({}, it, {pics: it.pics.map(x => ({blob: x.blob}))});
-const unstrip = it => it && Object.assign(it, {pics: (it.pics || []).filter(x => x && x.blob).map(x => ({blob: x.blob, url: URL.createObjectURL(x.blob)}))});
+const unstrip = it => it && Object.assign(it, {pics: (it.pics || []).filter(x => x && x.blob).map(x => ({blob: x.blob, url: URL.createObjectURL(x.blob), chk: []}))});
 function saveDraft(){ if (DONE || !LOADED || !window.bqDraft) return; const has = ORD.list.length || (CUR && (CUR.book || CUR.name || CUR.pics.length));
   if (!has) return; bqDraft.save("savta", {ORD: Object.assign({}, ORD, {list: ORD.list.map(strip)}), CUR: strip(CUR), STEP}); }
 function resetAll(){ if (window.bqDraft) bqDraft.clear("savta"); Object.assign(ORD, {who: "", rel: "", list: [], d: {}, mkWa: false, mkMail: false, cover: "", ok: false}); CUR = fresh(); STEP = "book"; RESTORED = false; ev("savta-draft", "reset"); draw(true); }
