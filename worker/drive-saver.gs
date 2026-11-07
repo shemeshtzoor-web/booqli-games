@@ -78,12 +78,12 @@ function custFolder_(kind, name, phone, num) {
 }
 
 /* ===== מספר לקוח + מספר ספר (שמש, 6.11.2026) =====
-   לכל לקוח (לפי טלפון) מספר ראשי קבוע מ-1001, ולכל ספר שלו מספר המשך: 1002-1, 1002-2, 1002-3… – גם בהזמנות הבאות.
+   לכל לקוח (לפי טלפון) מספר ראשי קבוע – לקוחות חדשים מ-15000 (שמש, 7.11.2026; קודם מ-1001), ולכל ספר שלו מספר המשך: 1002-1, 1002-2, 1002-3… – גם בהזמנות הבאות.
    הזמנת גן = מספר המשך אחד לכל ההזמנה. ספר בעיצוב אישי = "H-1002-4" (מודפס על הכריכה ובעמוד 1). */
 function custNum_(P, phone, count) {
   var ph = phone_(phone), rec = null;
   if (ph) { try { rec = JSON.parse(P.getProperty("cn_" + ph) || "null"); } catch (e) {} }
-  if (!rec) { var next = +(P.getProperty("num_next") || 1001); rec = { n: next, last: 0 }; P.setProperty("num_next", String(next + 1)); }
+  if (!rec) { var next = Math.max(15000, +(P.getProperty("num_next") || 0));   /* לקוח חדש: לא פחות מ-15000 */ rec = { n: next, last: 0 }; P.setProperty("num_next", String(next + 1)); }
   var subs = []; for (var i = 0; i < count; i++) subs.push(++rec.last);
   if (ph) P.setProperty("cn_" + ph, JSON.stringify(rec));
   return { n: rec.n, subs: subs };
